@@ -14,18 +14,94 @@ Item {
         currentIndex: tabBar.currentIndex
         Page {
             id: wireBuilder
+            Rectangle {
+                anchors.top: parent.top
+                anchors.fill: parent
+                color: "#48484a"
+            }
+            MyLineEdit {
+                id: wireName
+                width: 300
+                height: 50
+                anchors.top: parent.top
+                anchors.topMargin: tabBar.height + 15
+                inputWidth: parent.width * 0.8
+                inputHeight: parent.height * 0.05
+                defaultText: "WIRE NAME"
+                maxSize: 20
+            }
+            Label {
+                id: properties
+                color: "white"
+                text: qsTr("PROPERTIES")
+                anchors.top: wireName.bottom
+                font.family: "arial"
+                font.pointSize: 16
+                opacity: 0.5
+            }
+            Item {
+                id: itemColor
+                width: parent.width
+                height: parent.height * 0.05
+                anchors.top: properties.bottom
+                Label {
+                    id: labelColor
+                    color: "white"
+                    text: qsTr("Color")
+                    font.family: "arial"
+                    font.pointSize: 14
+                    anchors.left: parent.left
+                    anchors.leftMargin: 40
+                }
+                Rectangle {
+                    width: 40
+                    height: 20
+                    color: "green"
+                    anchors.left: labelColor.right
+                    anchors.leftMargin: 30
+                }
+            }
+            Item {
+                id: itemStripe
+                width: parent.width
+                height: parent.height * 0.05
+                anchors.top: itemColor.bottom
+                Label {
+                    id: labelStripe
+                    color: "white"
+                    text: qsTr("Stripe")
+                    font.family: "arial"
+                    font.pointSize: 14
+                    anchors.left: parent.left
+                    anchors.leftMargin: 40
+                }
+                Rectangle {
+                    width: 40
+                    height: 20
+                    color: "green"
+                    anchors.left: labelStripe.right
+                    anchors.leftMargin: 30
+                }
+            }
+
 
         }
 
         Page {
             id: weldSettting
+            Rectangle {
+                anchors.topMargin: tabBar.height
+                anchors.top: parent.top
+                anchors.fill: parent
+                color: "#48484a"
+            }
             ListModel {
                 id: settingsModel
                 Component.onCompleted: {
                     settingsModel.append({"name":"Energy"})
                     settingsModel.append({"name":"Trigger"})
-                    settingsModel.append({"name":"Amplitude"})
-                    settingsModel.append({"name":"Weld Pressure"})
+                    settingsModel.append({"name":"Amplitu"})
+                    settingsModel.append({"name":"Weld Pre"})
                     settingsModel.append({"name":"Width"})
                     settingsModel.append({"name":"Amplitude"})
                 }
@@ -89,16 +165,36 @@ Item {
         anchors.top: parent.top
         width: Screen.desktopAvailableWidth * 0.2
         TabButton {
-            font.family: "arial"
-            font.pointSize: 16
-            text: qsTr("WIRE BUILDER")
-            opacity: 0.33
+            Rectangle {
+                anchors.fill: parent
+                color: tabBar.currentIndex == 0 ? "black" : "#48484a"
+            }
+            Text {
+                anchors.centerIn: parent
+                font.family: "arial"
+                font.pointSize: 14
+                color: "white"
+                text: qsTr("WIRE BUILDER")
+                opacity: 0.5
+                width: parent.width
+                clip: true
+            }
         }
         TabButton {
-            font.family: "arial"
-            font.pointSize: 16
-            text: qsTr("WELD SETTINGS")
-            opacity: 0.33
+            Rectangle {
+                anchors.fill: parent
+                color: tabBar.currentIndex == 1 ? "black" : "#48484a"
+            }
+            Text {
+                anchors.centerIn: parent
+                font.family: "arial"
+                font.pointSize: 14
+                color: "white"
+                text: qsTr("WELD SETTINGS")
+                opacity: 0.5
+                width: parent.width
+                clip: true
+            }
         }
     }
 
@@ -109,7 +205,7 @@ Item {
         height: parent.height // * 0.5
         Rectangle {
             anchors.fill: parent
-            color: "#AAAAAA"
+            color: "#626465"
         }
         MyLineEdit {
             id: edit1
@@ -118,6 +214,11 @@ Item {
             anchors.top: parent.top
             inputWidth: parent.width * 0.3
             inputHeight: parent.height * 0.05
+            defaultText: "SPLICE NAME"
+            anchors.topMargin: 8
+            anchors.left: parent.left
+            anchors.leftMargin: 20
+            clip: true
             //displayText: qsTr("SPLICE NAME")
 
         }
