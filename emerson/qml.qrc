@@ -1,0 +1,19 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>Page1.qml</file>
+        <file>Page1Form.ui.qml</file>
+        <file>HeadBar.qml</file>
+        <file>Content.qml</file>
+        <file>Switch2.qml</file>
+        <file>MyLineEdit.qml</file>
+        <file>BoardLayOut.qml</file>
+        <file>CButton.qml</file>
+        <file>KeyBoardNum.qml</file>
+        <file>SpliceListView.qml</file>
+        <file>CreatWire.qml</file>
+        <file>CButton.qml</file>
+        <file>KeyBoardNum.qml</file>
+        <file>CStatusBar.qml</file>
+    </qresource>
+</RCC>
