@@ -401,5 +401,20 @@ Item {
             columns: 4
             rows: 4
         }
+        CButton {
+            id: wire
+            anchors.top: boardlayout.bottom
+            anchors.topMargin: 20
+            anchors.left: parent.left
+            anchors.leftMargin: 6
+            text: "ADD WIRE"
+            textColor: "white"
+            width: parent.width - 12
+            height: 30
+            pointSize: 16
+            onClicked: {
+                loader.source = "qrc:/CreatWire.qml"
+            }
+        }
     }
 }
