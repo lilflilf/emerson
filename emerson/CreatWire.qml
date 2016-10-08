@@ -2,10 +2,17 @@ import QtQuick 2.0
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.0
 import QtQuick.Window 2.2
+import QtQuick.Controls 1.4
 
 Item {
+    id: creatWire
     width: Screen.desktopAvailableWidth
     height: Screen.desktopAvailableHeight
+
+//    function onColorChanged(color)
+//    {
+//        console.log("111111111111",color)
+//    }
 
     SwipeView {
         width: Screen.desktopAvailableWidth * 0.2
@@ -44,6 +51,7 @@ Item {
                 width: parent.width
                 height: parent.height * 0.05
                 anchors.top: properties.bottom
+                property alias color: rectcolor.color
                 Label {
                     id: labelColor
                     color: "white"
@@ -54,13 +62,32 @@ Item {
                     anchors.leftMargin: 40
                 }
                 Rectangle {
+                    id: rectcolor
                     width: 40
                     height: 20
                     color: "green"
                     anchors.left: labelColor.right
                     anchors.leftMargin: 30
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            colorLoader.source = "qrc:/MyColor.qml"
+                        }
+                    }
                 }
             }
+            Loader {
+                id: colorLoader
+            }
+            Connections {
+                target: colorLoader.item
+                onColorChanged: {
+                    itemColor.color = color
+                    //console.log("sseeeeeeeeeeeeeeeeeeeee",color)
+                    colorLoader.source = ""
+                }
+            }
+
             Item {
                 id: itemStripe
                 width: parent.width
@@ -83,7 +110,192 @@ Item {
                     anchors.leftMargin: 30
                 }
             }
+            Item {
+                id: itemGauge
+                width: parent.width
+                height: parent.height * 0.05
+                anchors.top: itemStripe.bottom
+                Label {
+                    id: labelGauge
+                    color: "white"
+                    text: qsTr("Gauge")
+                    font.family: "arial"
+                    font.pointSize: 14
+                    anchors.left: parent.left
+                    anchors.leftMargin: 40
+                }
+                MyLineEdit {
+                    id: edit2
+                    anchors.left: labelGauge.right
+                    anchors.leftMargin: 30
+                    width: 300
+                    height: 50
+                    inputWidth: parent.width * 0.3
+                    inputHeight: parent.height
+                    horizontalAlignment: Qt.AlignHCenter
+                    maxSize: 20
+                    opacity: 0.7
+                }
+            }
+            Item {
+                id: itemType
+                width: parent.width
+                height: parent.height * 0.05
+                anchors.top: itemGauge.bottom
+                anchors.topMargin: 15
+                Label {
+                    id: labelType
+                    color: "white"
+                    text: qsTr("Type of Wire")
+                    font.family: "arial"
+                    font.pointSize: 14
+                    anchors.left: parent.left
+                    anchors.leftMargin: 20
+                }
+                Switch2 {
+                    width: parent.width * 0.5
+                    height: parent.height
+                    anchors.left: labelType.right
+                    textLeft: qsTr("Copper")
+                    textRight: qsTr("Alum")
+                    state: "left"
+                    opacity: 0.8
 
+                }
+            }
+            Label {
+                id: position
+                color: "white"
+                text: qsTr("POSITION")
+                anchors.top: itemType.bottom
+                font.family: "arial"
+                font.pointSize: 14
+                opacity: 0.5
+            }
+            Item {
+                id: itemSide
+                width: parent.width
+                height: parent.height * 0.05
+                anchors.top: position.bottom
+                anchors.topMargin: 15
+                Label {
+                    id: labelSide
+                    color: "white"
+                    text: qsTr("Side")
+                    font.family: "arial"
+                    font.pointSize: 14
+                    anchors.left: parent.left
+                    anchors.leftMargin: 20
+                }
+                Switch2 {
+                    width: parent.width * 0.5
+                    height: parent.height
+                    anchors.left: labelSide.right
+                    textLeft: qsTr("Left")
+                    textRight: qsTr("Right")
+                    state: "left"
+                    opacity: 0.8
+                }
+            }
+            Item {
+                id: itemLocation
+                width: parent.width
+                height: parent.height * 0.05
+                anchors.top: itemSide.bottom
+                anchors.topMargin: 15
+                Label {
+                    id: labelLocation
+                    color: "white"
+                    text: qsTr("VERTICAL LOCATION")
+                    font.family: "arial"
+                    font.pointSize: 10
+                    anchors.left: parent.left
+                    anchors.leftMargin: 10
+                }
+                Switch2 {
+                    width: parent.width * 0.5
+                    height: parent.height
+                    anchors.left: labelLocation.right
+                    textLeft: qsTr("Basic")
+                    textRight: qsTr("Adv")
+                    state: "left"
+                    opacity: 0.8
+                }
+            }
+            Column {
+                anchors.top: itemLocation.bottom
+                anchors.topMargin: 20
+                anchors.left: parent.left
+                anchors.leftMargin: 20
+                spacing: 20
+                ExclusiveGroup {
+                    id: tabPositionGroup;
+                }
+                Item {
+                    width: Screen.desktopAvailableWidth * 0.2
+                    height: 30
+                    Label {
+                        id: labelTop
+                        text: qsTr("Top")
+                        font.pointSize: 14
+                        font.family: "arial"
+                        color: "white"
+                    }
+                    RadioButton {
+                        scale: 2
+                        checked: true
+                        anchors.right: parent.right
+                        anchors.rightMargin: 100
+                        exclusiveGroup: tabPositionGroup
+                    }
+                }
+
+                Item {
+                    width: Screen.desktopAvailableWidth * 0.2
+                    height: 30
+                    Label {
+                        id: labelMiddle
+                        text: qsTr("Middle")
+                        font.pointSize: 14
+                        font.family: "arial"
+                        color: "white"
+                    }
+                    RadioButton {
+                        scale: 2
+                        anchors.right: parent.right
+                        anchors.rightMargin: 100
+                        exclusiveGroup: tabPositionGroup
+                    }
+                }
+                Item {
+                    width: Screen.desktopAvailableWidth * 0.2
+                    height: 30
+                    Label {
+                        id: labelBottom
+                        text: qsTr("Bottom")
+                        font.pointSize: 14
+                        font.family: "arial"
+                        color: "white"
+                    }
+                    RadioButton {
+                        scale: 2
+                        anchors.right: parent.right
+                        anchors.rightMargin: 100
+                        exclusiveGroup: tabPositionGroup
+                    }
+                }
+            }
+            CButton {
+                text: qsTr("SAVE TO WIRE\nLIBRARY")
+                pointSize: 12
+                anchors.bottom: parent.bottom
+                width: parent.width * 0.5
+                height: parent.height * 0.05
+                anchors.bottomMargin: 50
+                anchors.right: parent.right
+                anchors.rightMargin: 30
+
+            }
 
         }
 
@@ -220,8 +432,9 @@ Item {
             anchors.leftMargin: 20
             clip: true
             //displayText: qsTr("SPLICE NAME")
-
         }
+
+
     }
 }
 

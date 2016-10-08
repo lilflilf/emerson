@@ -65,7 +65,7 @@ Item {
         text: textLeft
         color: "white"
         font.family: "arial"
-        font.pointSize: 16
+        font.pointSize: 14
     }
     Text {
         id: rightSwitch
@@ -77,7 +77,7 @@ Item {
         text: textRight
         color: "black"
         font.family: "arial"
-        font.pointSize: 16
+        font.pointSize: 14
     }
 
     states: [
