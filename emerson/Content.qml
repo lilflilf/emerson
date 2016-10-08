@@ -17,26 +17,47 @@ Item {
         id: listModel
     }
     Component.onCompleted: {
-        listModel.append({"nameValue":"111111111","stationColor":"yellow","station":"A"})
-        listModel.append({"nameValue":"222222222","stationColor":"yellow","station":"C"})
-        listModel.append({"nameValue":"111111111","stationColor":"yellow","station":"D"})
-        listModel.append({"nameValue":"333333333","stationColor":"yellow","station":"B"})
-        listModel.append({"nameValue":"111111111","stationColor":"yellow","station":"E"})
-        listModel.append({"nameValue":"444444444","stationColor":"yellow","station":"G"})
-        listModel.append({"nameValue":"111111111","stationColor":"yellow","station":"P"})
-        listModel.append({"nameValue":"111111111","stationColor":"yellow","station":"P"})
-        listModel.append({"nameValue":"111111111","stationColor":"yellow","station":"P"})
-        listModel.append({"nameValue":"111111111","stationColor":"yellow","station":"P"})
-        listModel.append({"nameValue":"111111111","stationColor":"yellow","station":"P"})
-        listModel.append({"nameValue":"111111111","stationColor":"yellow","station":"P"})
-        listModel.append({"nameValue":"111111111","stationColor":"yellow","station":"P"})
-        listModel.append({"nameValue":"111111111","stationColor":"yellow","station":"P"})
-        listModel.append({"nameValue":"111111111","stationColor":"yellow","station":"P"})
-        listModel.append({"nameValue":"111111111","stationColor":"yellow","station":"P"})
-        listModel.append({"nameValue":"111111111","stationColor":"yellow","station":"P"})
-        listModel.append({"nameValue":"111111111","stationColor":"yellow","station":"P"})
+        listModel.append({"nameValue":"Splice1 test title","stationColor":"yellow","station":"A"})
+        listModel.append({"nameValue":"Splice2 test title","stationColor":"yellow","station":"C"})
+        listModel.append({"nameValue":"Splice3 test title","stationColor":"yellow","station":"D"})
+        listModel.append({"nameValue":"Splice4 test title2222222222","stationColor":"yellow","station":"B"})
+        listModel.append({"nameValue":"Splice5 test title","stationColor":"yellow","station":"E"})
+        listModel.append({"nameValue":"Splice6 test title","stationColor":"yellow","station":"G"})
+        listModel.append({"nameValue":"Splice7 test title","stationColor":"yellow","station":"P"})
+        listModel.append({"nameValue":"Splice8 test title","stationColor":"yellow","station":"P"})
+        listModel.append({"nameValue":"Splice9 test title","stationColor":"yellow","station":"P"})
+        listModel.append({"nameValue":"Splice10 test title","stationColor":"yellow","station":"P"})
+        listModel.append({"nameValue":"Splice11 test title","stationColor":"yellow","station":"P"})
+        listModel.append({"nameValue":"Splice12 test title","stationColor":"yellow","station":"P"})
+        listModel.append({"nameValue":"Splice13 test title","stationColor":"yellow","station":"P"})
+        listModel.append({"nameValue":"Splice14 test title","stationColor":"yellow","station":"P"})
+        listModel.append({"nameValue":"Splice15 test title","stationColor":"yellow","station":"P"})
+        listModel.append({"nameValue":"Splice16 test title","stationColor":"yellow","station":"P"})
+        listModel.append({"nameValue":"Splice17 test title","stationColor":"yellow","station":"P"})
+        listModel.append({"nameValue":"Splice18 test title","stationColor":"yellow","station":"P"})
 
     }
+    function getAllWorkstationColor(count)
+    {
+        var array = ["#f44242","#f4a142","#f4d742","#d1f442","#9ef442","#42f448","#42f4df","#42bcf4","#424ef4","#a442f4"]
+        colorModel.clear()
+        if (count > 10)
+            count = 10
+        for (var i = 0; i < count; i++) {
+            colorModel.append({"workcolor":array[i]});
+        }
+    }
+    function getBoardlayoutTestData(rows,colums)
+    {
+        if (rows == 0 || colums == 0) {
+            roundModel.clear()
+        } else {
+            for (var i = 0; i < rows*colums; i++) {
+                roundModel.append({"listNum":i,"count":"2","color1":"red","color2":"yellow"})
+            }
+        }
+    }
+
     SwipeView {
         width: Screen.desktopAvailableWidth * 0.2
         height: parent.height
@@ -166,7 +187,12 @@ Item {
                 horizontalAlignment: Qt.AlignHCenter
                 tipsText: qsTr("#of Workstations")
                 maxSize: 20
+                regExp: RegExpValidator{regExp: /([1-9]|1[0-9]|20)/}
                 opacity: 0.7
+                onTextChange: {
+                    getAllWorkstationColor(text)
+                    workStationcolor.allWorkTotal = text
+                }
             }
             MyLineEdit {
                 id: edit2
@@ -182,7 +208,11 @@ Item {
                 horizontalAlignment: Qt.AlignHCenter
                 tipsText: qsTr("#of Splices per Workstations")
                 maxSize: 20
+                regExp: RegExpValidator{regExp: /([1-9]|1[0-9]|20)/}
                 opacity: 0.7
+                onTextChange: {
+                    workStationcolor.maxSpliceNum = text
+                }
             }
             Label {
                 id: lab2
@@ -210,8 +240,13 @@ Item {
                 inputWidth: parent.width * 0.3
                 inputHeight: parent.height * 0.05
                 tipsText: qsTr("Rows")
+                regExp: RegExpValidator{regExp: /^[1-4]{1}$/}
                 maxSize: 20
                 opacity: 0.7
+                onTextChange: {
+                    getBoardlayoutTestData(text,edit4.inputText)
+                    boardlayout.rows = text
+                }
             }
             MyLineEdit {
                 id: edit4
@@ -226,8 +261,13 @@ Item {
                 inputWidth: parent.width * 0.3
                 inputHeight: parent.height * 0.05
                 tipsText: qsTr("Columns")
+                regExp: RegExpValidator{regExp: /^[1-4]{1}$/}
                 maxSize: 20
                 opacity: 0.7
+                onTextChange: {
+                    getBoardlayoutTestData(edit3.inputText,text)
+                    boardlayout.columns = text
+                }
             }
             MyLineEdit {
                 id: edit5
@@ -242,8 +282,11 @@ Item {
                 inputHeight: parent.height * 0.05
                 horizontalAlignment: Qt.AlignHCenter
                 tipsText: qsTr("Max Splice Per Zone")
+                regExp: RegExpValidator{regExp: /^[1-9]{1,2}$/}
                 maxSize: 20
                 opacity: 0.7
+                onTextChange: {
+                }
             }
             Label {
                 id: lab3
@@ -354,24 +397,9 @@ Item {
         height: parent.height // * 0.5
         ListModel {
             id: roundModel
-            Component.onCompleted: {
-                roundModel.append({"listNum":"1","count":"2","color1":"red","color2":"yellow"})
-                roundModel.append({"listNum":"2","count":"2","color1":"blue","color2":"blue"})
-                roundModel.append({"listNum":"3","count":"2","color1":"green","color2":"green"})
-                roundModel.append({"listNum":"4","count":"3","color1":"red","color2":"blue"})
-                roundModel.append({"listNum":"5","count":"4","color1":"red","color2":"green"})
-                roundModel.append({"listNum":"6","count":"5","color1":"red","color2":"yellow"})
-                roundModel.append({"listNum":"7","count":"0","color1":"red","color2":"yellow"})
-                roundModel.append({"listNum":"8","count":"2","color1":"red","color2":"yellow"})
-                roundModel.append({"listNum":"9","count":"2","color1":"red","color2":"yellow"})
-                roundModel.append({"listNum":"10","count":"2","color1":"red","color2":"yellow"})
-                roundModel.append({"listNum":"11","count":"2","color1":"red","color2":"yellow"})
-                roundModel.append({"listNum":"12","count":"2","color1":"red","color2":"yellow"})
-                roundModel.append({"listNum":"13","count":"2","color1":"red","color2":"yellow"})
-                roundModel.append({"listNum":"14","count":"2","color1":"red","color2":"yellow"})
-                roundModel.append({"listNum":"15","count":"2","color1":"red","color2":"yellow"})
-                roundModel.append({"listNum":"16","count":"2","color1":"red","color2":"yellow"})
-            }
+        }
+        ListModel {
+            id: colorModel
         }
 
         Rectangle {
@@ -398,23 +426,69 @@ Item {
             anchors.left: parent.left
             anchors.leftMargin: 50
             listModel: roundModel
-            columns: 4
-            rows: 4
+            columns: 0
+            rows: 0
         }
         CButton {
             id: wire
             anchors.top: boardlayout.bottom
-            anchors.topMargin: 20
-            anchors.left: parent.left
-            anchors.leftMargin: 6
+            anchors.topMargin: 30
+            anchors.right: boardlayout.right
             text: "ADD WIRE"
             textColor: "white"
-            width: parent.width - 12
+            width: 200
             height: 30
             pointSize: 16
             onClicked: {
                 loader.source = "qrc:/CreatWire.qml"
             }
+        }
+        CButton {
+            id: exportSPlice
+            anchors.top: wire.bottom
+            anchors.topMargin: 30
+            anchors.right: boardlayout.right
+            text: "EXPORT SPLICE"
+            textColor: "white"
+            width: 200
+            height: 30
+            pointSize: 16
+            onClicked: {
+            }
+        }
+        CButton {
+            id: savePart
+            anchors.top: exportSPlice.bottom
+            anchors.topMargin: 30
+            anchors.right: boardlayout.right
+            text: "SAVE PART"
+            textColor: "white"
+            width: 200
+            height: 30
+            pointSize: 16
+            onClicked: {
+            }
+        }
+        Text {
+            id: workStation
+            anchors.top: boardlayout.bottom
+            anchors.topMargin: 30
+            anchors.left: boardlayout.left
+            text: qsTr("WORKSTATIONS")
+            color: "white"
+            opacity: 0.5
+            font.family: "arial"
+            font.pointSize: 16
+        }
+
+        WorkStationColor {
+            id: workStationcolor
+            anchors.top: workStation.bottom
+            anchors.topMargin: 10
+            anchors.left: boardlayout.left
+            listModel: colorModel
+            allWorkTotal: 0
+            maxSpliceNum: 0
         }
     }
 }

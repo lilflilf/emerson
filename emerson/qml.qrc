@@ -15,5 +15,10 @@
         <file>CButton.qml</file>
         <file>KeyBoardNum.qml</file>
         <file>CStatusBar.qml</file>
+        <file>WorkStationColor.qml</file>
+    </qresource>
+    <qresource prefix="/Images">
+        <file>images/you.png</file>
+        <file>images/zuo.png</file>
     </qresource>
 </RCC>

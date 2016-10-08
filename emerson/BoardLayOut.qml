@@ -12,18 +12,24 @@ Item {
     property int theIndex: 0
     property int count: 0
     property string selecte: ""
-    property variant array: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","p"]
+    property var array: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","p"]
     property alias listModel: rec.model
 
+    function getStationColor(index)
+    {
+        var array = ["#f44242","#f4a142","#f4d742","#d1f442","#9ef442","#42f448","#42f4df","#42bcf4","#424ef4","#a442f4"]
+        return array[index]
+    }
 
     Rectangle {
         anchors.top: parent.top
         anchors.left: parent.left
         width: parent.width
         height: parent.height
-        color: "white"
+        color: (rows == 0 || columns == 0) ? "#6d6e71" : "white"
         Grid {
             id: layout
+            visible: (rows == 0 || columns == 0) ? false : true
             anchors.fill: parent
             columns: boardLayout.columns
             rows: boardLayout.rows
@@ -75,12 +81,11 @@ Item {
                             radius: 35
                             border.color: "white"
                             border.width: 1
-                            color: listModel.get(index).color2
-                            visible: listModel.get(index).count == 2 ? true : false
+                            color: getStationColor(index)
                             Text {
                                 anchors.centerIn: parent
                                 color: "white"
-                                text: listModel.get(index).listNum
+                                text: "3"
                                 font.pointSize: 16
                                 font.family: "arial"
                             }

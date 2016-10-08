@@ -19,6 +19,8 @@ Item {
     property alias horizontalAlignment: textInput.horizontalAlignment
     property alias defaultText: defaultText.text
     property alias defaultTextSize: defaultText.font.pointSize
+    property alias inputText: textInput.text
+    signal textChange(int text)
     Rectangle {
         id: back
         anchors.fill: textInput
@@ -45,6 +47,9 @@ Item {
             anchors.centerIn: parent
             opacity: 0.5
             anchors.verticalCenter: parent.verticalCenter
+        }
+        onTextChanged: {
+            textChange(textInput.text)
         }
     }
 
