@@ -84,6 +84,7 @@ MouseArea {
             font.pointSize: button.pointSize
             color: button.textColor
             text: button.text
+            font.family: "arial"
 
         }
     }

@@ -20,5 +20,6 @@
     <qresource prefix="/Images">
         <file>images/you.png</file>
         <file>images/zuo.png</file>
+        <file>MyColor.qml</file>
     </qresource>
 </RCC>

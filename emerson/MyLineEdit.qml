@@ -44,9 +44,11 @@ Item {
             color: "white"
             font.pointSize: 12
             font.family: "arial"
-            anchors.centerIn: parent
+            anchors.left: parent.left
+            anchors.leftMargin: 8
             opacity: 0.5
             anchors.verticalCenter: parent.verticalCenter
+            visible: textInput.text.length == 0 ? true : false
         }
         onTextChanged: {
             textChange(textInput.text)
