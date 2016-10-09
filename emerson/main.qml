@@ -8,7 +8,7 @@ ApplicationWindow {
     visible: true
     width: Screen.desktopAvailableWidth
     height: Screen.desktopAvailableHeight
-    title: qsTr("Hello World")
+    title: tr("Hello World")
     function menuInit(index)
     {
         console.log("creat splice")
@@ -16,7 +16,11 @@ ApplicationWindow {
         contentLoader.source = "qrc:/Content.qml"
     }
     Component.onCompleted: {
-        root.showFullScreen()
+
+        root.showMaximized()
+//        w.setWindowFlags(w.windowFlags()& ~Qt::WindowMaximizeButtonHint&  ~Qt::WindowMinimizeButtonHint);
+//        w.showMaximized();
+        //root.showFullScreen()
     }
 
     CStatusBar {

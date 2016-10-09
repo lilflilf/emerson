@@ -17,14 +17,16 @@ Item {
             color: "white"
             anchors.right: parent.right
             anchors.rightMargin: Screen.desktopAvailableWidth * 0.05
-            text: Qt.formatDateTime(new Date(),"dddd yyyy-MM-dd-MMM-hh-mm-ss")
+            text: Qt.formatDateTime(new Date(),"hh-mm dd MMMM yyyy")
+            //QDate::longMonthName
         }
         Timer {
             interval: 1000
             repeat: true
             running: true
             onTriggered: {
-                time.text = Qt.formatDateTime(new Date(),"dddd yyyy-MM-dd-MMM-hh-mm-ss")
+                //QDate::longMonthName()
+                time.text = Qt.formatDateTime(new Date(),"hh-mm dd MMMM yyyy")
             }
         }
     }

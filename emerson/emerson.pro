@@ -2,7 +2,12 @@ QT += qml quick
 
 CONFIG += c++11
 
-SOURCES += main.cpp
+CONFIG += localize_deployment
+
+TRANSLATIONS = displayChinese_zh_CN.ts
+
+SOURCES += main.cpp \
+    hmiadaptor.cpp
 
 RESOURCES += qml.qrc
 
@@ -14,4 +19,5 @@ include(deployment.pri)
 
 DISTFILES +=
 
-HEADERS +=
+HEADERS += \
+    hmiadaptor.h

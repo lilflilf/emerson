@@ -213,6 +213,7 @@ Item {
                     anchors.leftMargin: 10
                 }
                 Switch2 {
+                    id: basicSwitch
                     width: parent.width * 0.5
                     height: parent.height
                     anchors.left: labelLocation.right
@@ -220,9 +221,17 @@ Item {
                     textRight: qsTr("Adv")
                     state: "left"
                     opacity: 0.8
+                    onOnChanged: {
+                        if (basicSwitch.state == "left") {
+                            column1.visible = true
+                        } else {
+                            column1.visible = false
+                        }
+                    }
                 }
             }
             Column {
+                id: column1
                 anchors.top: itemLocation.bottom
                 anchors.topMargin: 20
                 anchors.left: parent.left
@@ -432,6 +441,34 @@ Item {
             anchors.leftMargin: 20
             clip: true
             //displayText: qsTr("SPLICE NAME")
+        }
+        Label {
+            id: spliceDetails
+            anchors.top: edit1.bottom
+            anchors.left: edit1.left
+            text: qsTr("SpliceDetails")
+            font.pointSize: 16
+            font.family: "arial"
+            color: "white"
+        }
+        Label {
+            id: spliceDetailsTips
+            anchors.top: spliceDetails.bottom
+            anchors.left: spliceDetails.left
+            text: qsTr("TOTAL CROSS SECTION 0mm")
+            font.pointSize: 12
+            font.family: "arial"
+            color: "white"
+            opacity: 0.5
+        }
+        SpliceDetails {
+            width: Screen.desktopAvailableWidth * 0.8
+            height: Screen.desktopAvailableHeight *0.5
+            anchors.top: spliceDetailsTips.bottom
+            anchors.left: spliceDetails.left
+            anchors.right: parent.right
+            anchors.rightMargin: 40
+
         }
 
 
