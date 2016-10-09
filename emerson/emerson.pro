@@ -1,13 +1,9 @@
-QT += qml quick
+TEMPLATE = app
 
+QT += qml quick
 CONFIG += c++11
 
-CONFIG += localize_deployment
-
-TRANSLATIONS = displayChinese_zh_CN.ts
-
-SOURCES += main.cpp \
-    hmiadaptor.cpp
+SOURCES += main.cpp
 
 RESOURCES += qml.qrc
 
@@ -16,8 +12,3 @@ QML_IMPORT_PATH =
 
 # Default rules for deployment.
 include(deployment.pri)
-
-DISTFILES +=
-
-HEADERS += \
-    hmiadaptor.h
