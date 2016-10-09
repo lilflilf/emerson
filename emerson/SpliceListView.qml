@@ -6,6 +6,7 @@ import QtQuick.Controls 1.4
 Item {
     id: spliceList
     property alias listModel: splice.model
+    property bool bIsWorkShow: true
     width: Screen.desktopAvailableWidth*0.2
     height: Screen.desktopAvailableHeight*0.5
     signal currentSelecte(int index)
@@ -30,7 +31,7 @@ Item {
         Rectangle {
             id: button
             anchors.left: parent.left
-            y: splice.visibleArea.yPosition * scrollbar.height
+            y: (splice.visibleArea.yPosition < 0 ) ? 0 : splice.visibleArea.yPosition * scrollbar.height
             width: 10
             height: splice.visibleArea.heightRatio * scrollbar.height;
             color: "#717275"
@@ -86,8 +87,8 @@ Item {
             Rectangle {
                 id: background
                 anchors.left: numIndex.right
-                anchors.leftMargin: 10
-                width: parent.width - 40
+                anchors.leftMargin: 2
+                width: parent.width - 55
                 height: parent.height
                 color: "black"
                 opacity: 0
@@ -98,12 +99,13 @@ Item {
                 anchors.top: parent.top
                 anchors.topMargin: 10
                 anchors.left: numIndex.right
-                anchors.leftMargin: 16
-                width: parent.width*0.55
+                anchors.leftMargin: 6
+                width: parent.width*0.57
                 height: 28
-                font.pointSize: 16
+                font.pointSize: 14
                 font.family: "arial"
                 text: nameValue
+                elide: Text.ElideRight
                 color: "white"
                 clip: true
             }
@@ -114,6 +116,7 @@ Item {
                 anchors.left: spliceName.right
                 anchors.leftMargin: 10
                 clip: true
+                visible: bIsWorkShow
                 width: 28
                 height: 28
                 backgroundComponent: Rectangle {
