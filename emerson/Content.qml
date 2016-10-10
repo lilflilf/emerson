@@ -16,25 +16,27 @@ Item {
     ListModel{
         id: listModel
     }
+
     Component.onCompleted: {
-        listModel.append({"nameValue":"Splice1 test title","stationColor":"yellow","station":"A"})
-        listModel.append({"nameValue":"Splice2 test title","stationColor":"yellow","station":"C"})
-        listModel.append({"nameValue":"Splice3 test title","stationColor":"yellow","station":"D"})
-        listModel.append({"nameValue":"Splice4 test title2222222222","stationColor":"yellow","station":"B"})
-        listModel.append({"nameValue":"Splice5 test title","stationColor":"yellow","station":"E"})
-        listModel.append({"nameValue":"Splice6 test title","stationColor":"yellow","station":"G"})
-        listModel.append({"nameValue":"Splice7 test title","stationColor":"yellow","station":"P"})
-        listModel.append({"nameValue":"Splice8 test title","stationColor":"yellow","station":"P"})
-        listModel.append({"nameValue":"Splice9 test title","stationColor":"yellow","station":"P"})
-        listModel.append({"nameValue":"Splice10 test title","stationColor":"yellow","station":"P"})
-        listModel.append({"nameValue":"Splice11 test title","stationColor":"yellow","station":"P"})
-        listModel.append({"nameValue":"Splice12 test title","stationColor":"yellow","station":"P"})
-        listModel.append({"nameValue":"Splice13 test title","stationColor":"yellow","station":"P"})
-        listModel.append({"nameValue":"Splice14 test title","stationColor":"yellow","station":"P"})
-        listModel.append({"nameValue":"Splice15 test title","stationColor":"yellow","station":"P"})
-        listModel.append({"nameValue":"Splice16 test title","stationColor":"yellow","station":"P"})
-        listModel.append({"nameValue":"Splice17 test title","stationColor":"yellow","station":"P"})
-        listModel.append({"nameValue":"Splice18 test title","stationColor":"yellow","station":"P"})
+        listModel.append({"nameValue":"Splice1 test title","stationColor":"white","station":"?"})
+        listModel.append({"nameValue":"Splice2 test title","stationColor":"white","station":"?"})
+        listModel.append({"nameValue":"Splice2 test title","stationColor":"white","station":"?"})
+        listModel.append({"nameValue":"Splice3 test title","stationColor":"white","station":"?"})
+        listModel.append({"nameValue":"Splice4 test title2222222222","stationColor":"white","station":"?"})
+        listModel.append({"nameValue":"Splice5 test title","stationColor":"white","station":"?"})
+        listModel.append({"nameValue":"Splice6 test title","stationColor":"white","station":"?"})
+        listModel.append({"nameValue":"Splice7 test title","stationColor":"white","station":"?"})
+        listModel.append({"nameValue":"Splice8 test title","stationColor":"white","station":"?"})
+        listModel.append({"nameValue":"Splice9 test title","stationColor":"white","station":"?"})
+        listModel.append({"nameValue":"Splice10 test title","stationColor":"white","station":"?"})
+        listModel.append({"nameValue":"Splice11 test title","stationColor":"white","station":"?"})
+        listModel.append({"nameValue":"Splice12 test title","stationColor":"white","station":"?"})
+        listModel.append({"nameValue":"Splice13 test title","stationColor":"white","station":"?"})
+        listModel.append({"nameValue":"Splice14 test title","stationColor":"white","station":"?"})
+        listModel.append({"nameValue":"Splice15 test title","stationColor":"white","station":"?"})
+        listModel.append({"nameValue":"Splice16 test title","stationColor":"white","station":"?"})
+        listModel.append({"nameValue":"Splice17 test title","stationColor":"white","station":"?"})
+        listModel.append({"nameValue":"Splice18 test title","stationColor":"white","station":"?"})
 
     }
     function getAllWorkstationColor(count)
@@ -47,17 +49,6 @@ Item {
             colorModel.append({"workcolor":array[i]});
         }
     }
-    function getBoardlayoutTestData(rows,colums)
-    {
-        if (rows == 0 || colums == 0) {
-            roundModel.clear()
-        } else {
-            for (var i = 0; i < rows*colums; i++) {
-                roundModel.append({"listNum":i,"count":"2","color1":"red","color2":"yellow"})
-            }
-        }
-    }
-
     SwipeView {
         width: Screen.desktopAvailableWidth * 0.2
         height: parent.height
@@ -114,7 +105,8 @@ Item {
                     listModel.set(index,{"nameValue":"gggggggg"})
                 }
                 onCurrentWorkStation: {
-                    listModel.set(index,{"station":"D"})
+                    stationSet.index = index
+                    stationSet.visible = true
                 }
             }
         }
@@ -244,7 +236,6 @@ Item {
                 maxSize: 20
                 opacity: 0.7
                 onTextChange: {
-                    getBoardlayoutTestData(text,edit4.inputText)
                     boardlayout.rows = text
                 }
             }
@@ -265,7 +256,6 @@ Item {
                 maxSize: 20
                 opacity: 0.7
                 onTextChange: {
-                    getBoardlayoutTestData(edit3.inputText,text)
                     boardlayout.columns = text
                 }
             }
@@ -396,12 +386,8 @@ Item {
         width: Screen.desktopAvailableWidth * 0.8
         height: parent.height // * 0.5
         ListModel {
-            id: roundModel
-        }
-        ListModel {
             id: colorModel
         }
-
         Rectangle {
             anchors.fill: parent
             color: "#686a6c"
@@ -425,7 +411,6 @@ Item {
             anchors.topMargin: 10
             anchors.left: parent.left
             anchors.leftMargin: 50
-            listModel: roundModel
             columns: 0
             rows: 0
         }
@@ -489,6 +474,53 @@ Item {
             listModel: colorModel
             allWorkTotal: 0
             maxSpliceNum: 0
+        }
+        Loader {
+            id: test
+            anchors.top: boardText.bottom
+            anchors.topMargin: 60
+            anchors.left: boardlayout.left
+            width: 560
+            height: 280
+        }
+
+        WorkStationSet {
+            id: stationSet
+            anchors.top: boardText.bottom
+            anchors.topMargin: 60
+            anchors.left: boardlayout.left
+            width: 560
+            height: 280
+            allWorkTotal: workStationcolor.allWorkTotal
+            allZoneTotal: boardlayout.columns*boardlayout.rows
+            z: 10
+            visible: false
+            onSelecteZoneChanged: {
+                if (stationSet.selecteZone == "") {
+                    return
+                }
+                listModel.set(stationSet.index,{"station":stationSet.selecteZone})
+                if (stationSet.selecteColor != "") {
+                    console.log("4444444444",stationSet.selecteIndex)
+                    boardlayout.setBoardLayoutColor(stationSet.selecteIndex,stationSet.selecteColor,stationSet.index+1)
+                    stationSet.visible = false
+                    stationSet.selecteColor = ""
+                    stationSet.selecteZone = ""
+                }
+            }
+            onSelecteColorChanged: {
+                if (stationSet.selecteColor == "") {
+                    return
+                }
+                listModel.set(stationSet.index,{"stationColor":stationSet.selecteColor})
+                if (stationSet.selecteZone != "") {
+                    console.log("3333333333",stationSet.selecteIndex)
+                    boardlayout.setBoardLayoutColor(stationSet.selecteIndex,stationSet.selecteColor,stationSet.index+1)
+                    stationSet.visible = false
+                    stationSet.selecteColor = ""
+                    stationSet.selecteZone = ""
+                }
+            }
         }
     }
 }

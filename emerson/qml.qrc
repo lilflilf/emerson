@@ -16,6 +16,7 @@
         <file>KeyBoardNum.qml</file>
         <file>CStatusBar.qml</file>
         <file>WorkStationColor.qml</file>
+        <file>WorkStationSet.qml</file>
     </qresource>
     <qresource prefix="/Images">
         <file>images/you.png</file>

@@ -83,7 +83,7 @@ MouseArea {
             anchors.verticalCenter: parent.verticalCenter
             font.pointSize: button.pointSize
             color: button.textColor
-            text: button.text
+            text: qsTr(button.text)
             font.family: "arial"
 
         }
