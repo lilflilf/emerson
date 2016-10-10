@@ -3,12 +3,13 @@ import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.0
 import QtQuick.Window 2.2
 
-ApplicationWindow {
+//ApplicationWindow {
+Window {
     id: root
     visible: true
     width: Screen.desktopAvailableWidth
     height: Screen.desktopAvailableHeight
-    title: qsTr("Hello World")
+    title: tr("Hello World")
     function menuInit(index)
     {
         console.log("creat splice")
@@ -16,6 +17,10 @@ ApplicationWindow {
         contentLoader.source = "qrc:/Content.qml"
     }
     Component.onCompleted: {
+
+        //root.showMaximized()
+//        w.setWindowFlags(w.windowFlags()& ~Qt::WindowMaximizeButtonHint&  ~Qt::WindowMinimizeButtonHint);
+//        w.showMaximized();
         root.showFullScreen()
     }
 

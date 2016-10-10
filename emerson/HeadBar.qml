@@ -12,13 +12,13 @@ Item {
         color: "#f79428"
     }
 
-    CButton {
-        width: 40
-        height: parent.height
-        onClicked: {
-            root.close()
-        }
-    }
+//    CButton {
+//        width: 40
+//        height: parent.height
+//        onClicked: {
+//            root.close()
+//        }
+//    }
     Button {
         id: btn
         height: parent.height
