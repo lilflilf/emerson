@@ -102,6 +102,7 @@ Item {
         }
     }
 
+
     Text {
         id: title
         anchors.leftMargin: 20

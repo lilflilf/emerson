@@ -3,7 +3,8 @@ import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.0
 import QtQuick.Window 2.2
 
-ApplicationWindow {
+//ApplicationWindow {
+Window {
     id: root
     visible: true
     width: Screen.desktopAvailableWidth
@@ -19,7 +20,7 @@ ApplicationWindow {
         //root.showMaximized()
 //        w.setWindowFlags(w.windowFlags()& ~Qt::WindowMaximizeButtonHint&  ~Qt::WindowMinimizeButtonHint);
 //        w.showMaximized();
-        //root.showFullScreen()
+        root.showFullScreen()
     }
 
     CStatusBar {

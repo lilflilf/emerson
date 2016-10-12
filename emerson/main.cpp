@@ -8,7 +8,6 @@
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(argc, argv);
 
     QString locale = QLocale::system().name();
@@ -18,9 +17,7 @@ int main(int argc, char *argv[])
     app.installTranslator(&translator);
 
     QQmlApplicationEngine engine;
-    engine.load(QUrl(QLatin1String("qrc:/main.qml")));
-    HmiAdaptor * adaptor = new HmiAdaptor;
-    engine.rootContext()->setContextProperty("adaptor",adaptor);
+    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
 
 

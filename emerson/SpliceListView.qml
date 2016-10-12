@@ -104,7 +104,7 @@ Item {
                 height: 28
                 font.pointSize: 14
                 font.family: "arial"
-                text: nameValue
+                text: qsTr(nameValue)
                 elide: Text.ElideRight
                 color: "white"
                 clip: true
@@ -128,6 +128,12 @@ Item {
                 pointSize: 20
                 onClicked: {
                     currentWorkStation(index)
+                }
+                onTextChanged: {
+                    if (station == "?")
+                        workStation.textColor = "black"
+                    else
+                        workStation.textColor = "white"
                 }
             }
             Timer {

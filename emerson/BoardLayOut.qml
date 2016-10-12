@@ -12,13 +12,22 @@ Item {
     property int theIndex: 0
     property int count: 0
     property string selecte: ""
-    property var array: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","p"]
-    property alias listModel: rec.model
-
+    property var array: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P"]
     function getStationColor(index)
     {
-        var array = ["#f44242","#f4a142","#f4d742","#d1f442","#9ef442","#42f448","#42f4df","#42bcf4","#424ef4","#a442f4"]
+        var array = ["#ff6699","#ff0033","#33FFCC","#cc99ff","#cc0099","#930202","#99ccff","#f79428","#0000cc","Olive"]
         return array[index]
+    }
+
+    function setBoardLayoutColor(index,color,selecteIndex)
+    {
+        if (rec.itemAt(index).bIsCenterShow) {
+            rec.itemAt(index).zoneModel.append({"zonecolor":color,"selecteNum":selecteIndex})
+        } else {
+            rec.itemAt(index).bIsCenterShow = true
+            rec.itemAt(index).centerColor = color
+            rec.itemAt(index).centerNum = selecteIndex
+        }
     }
 
     Rectangle {
@@ -36,58 +45,69 @@ Item {
             spacing: 1
             Repeater {
                 id: rec
-                model: listModel//layout.columns*layout.rows
-                delegate:  Rectangle {
+                model: layout.columns*layout.rows
+                delegate:  Item {
+                    property alias zoneModel: zoneRepeater.model
+                    property bool bIsCenterShow: false
+                    property string centerColor: ""
+                    property int centerNum: 0
                     width: parent.width/layout.columns
                     height: parent.height/layout.rows
-                    color: "#6d6e71"
-                    Text {
-                        id: name
-                        anchors.left: parent.left
-                        anchors.leftMargin: 10
-                        anchors.top: parent.top
-                        anchors.topMargin: 6
-                        color: "#b2a9b9"
-                        text: boardLayout.array[index]
-                        font.pointSize: 16
-                        font.family: "arial"
-                    }
                     Rectangle {
-                        anchors.centerIn: parent
-                        width: 35
-                        height: 35
-                        radius: 35
-                        border.color: "white"
-                        border.width: 1
-                        color: listModel.get(index).color1
-                        visible: listModel.get(index).count > 0 ? true : false
+                        anchors.fill: parent
+                        color: "#6d6e71"
                         Text {
-                            anchors.centerIn: parent
-                            color: "white"
-                            text: listModel.get(index).listNum
+                            id: name
+                            anchors.left: parent.left
+                            anchors.leftMargin: 10
+                            anchors.top: parent.top
+                            anchors.topMargin: 6
+                            color: "#b2a9b9"
+                            text: boardLayout.array[index]
                             font.pointSize: 16
                             font.family: "arial"
                         }
-                    }
-                    Repeater {
-                        model: listModel.get(index).count
                         Rectangle {
-                            anchors.top: parent.top
-                            anchors.topMargin: 10
-                            anchors.left: parent.left
-                            anchors.leftMargin: 35+index*35+6
+                            anchors.centerIn: parent
                             width: 35
                             height: 35
                             radius: 35
                             border.color: "white"
                             border.width: 1
-                            color: getStationColor(index)
+                            color: centerColor
+                            visible: bIsCenterShow
                             Text {
                                 anchors.centerIn: parent
                                 color: "white"
-                                text: "3"
+                                text: centerNum
                                 font.pointSize: 16
                                 font.family: "arial"
+                            }
+                        }
+                        ListModel {
+                            id: testModel
+                        }
+                        Repeater {
+                            id: zoneRepeater
+                            model: testModel
+                            Rectangle {
+                                anchors.top: parent.top
+                                anchors.topMargin: 10
+                                anchors.left: parent.left
+                                anchors.leftMargin: 35+index*35+6
+                                width: 35
+                                height: 35
+                                radius: 35
+                                border.color: "white"
+                                border.width: 1
+                                color: testModel.get(index).zonecolor
+                                Text {
+                                    anchors.centerIn: parent
+                                    color: "white"
+                                    text: testModel.get(index).selecteNum
+                                    font.pointSize: 16
+                                    font.family: "arial"
+                                }
                             }
                         }
                     }

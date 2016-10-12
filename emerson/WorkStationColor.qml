@@ -8,8 +8,8 @@ Item {
     width: Screen.desktopAvailableWidth * 0.65
     height: Screen.desktopAvailableHeight*0.18
     property alias listModel: color.model
-    property variant array: ["#f44242","#f4a142","#f4d742","#d1f442","#9ef442","#42f448","#42f4df","#42bcf4",
-        "#424ef4","#a442f4","#d742f4","#f442d7","#f4429e","#f44242","#494911","#00cc66","#3366ff","#cc33cc","#cc9966","#9400D3"]
+    property variant array: ["#ff6699","#ff0033","#33FFCC","#cc99ff","#cc0099","#930202","#99ccff","#f79428",
+        "#0000cc","Olive","#ffff33","#ffcc00","#cc9909","#66ff00","#009900","#00cc66","#3366ff","#cc33cc","#cc9966","#9400D3"]
     property int currentIndex : 9
     property int allWorkTotal: 0
     property int clickCount: 0
@@ -112,7 +112,7 @@ Item {
                     visible: maxSpliceNum == 0 ? false : true
                     font.pointSize: 15
                     font.family: "arial"
-                    text: qsTr("3/")+maxSpliceNum
+                    text: qsTr("3/" + numToString(maxSpliceNum))
                 }
                 Text {
                     id: stationText
@@ -126,9 +126,15 @@ Item {
                     visible: maxSpliceNum == 0 ? false : true
                     font.pointSize: 10
                     font.family: "arial"
-                    text: qsTr("Station")+(index+1+clickCount)
+                    text: qsTr("Station" + numToString(index+1+clickCount))
                 }
             }
         }
+    }
+    function numToString(num)
+    {
+        var name = "1"
+        name = num
+        return name
     }
 }
