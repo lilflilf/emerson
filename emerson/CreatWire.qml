@@ -8,24 +8,60 @@ Item {
     id: creatWire
     width: Screen.desktopAvailableWidth
     height: Screen.desktopAvailableHeight
-
-//    function onColorChanged(color)
-//    {
-//        console.log("111111111111",color)
-//    }
+    property bool detailIsChang: true
+    function wireChanged(selectColor,selectPosition,selectText)
+    {
+        spliceDetailsItem.selectColor = selectColor
+        spliceDetailsItem.selectText = selectText
+        spliceDetailsItem.selectPosition = selectPosition
+    }
 
     SwipeView {
-        width: Screen.desktopAvailableWidth * 0.2
+        width: Screen.desktopAvailableWidth * 0.3
         height: parent.height
         id: swipeView
         currentIndex: tabBar.currentIndex
         Page {
             id: wireBuilder
+
+            Connections {
+                target: spliceDetailsItem
+                onWireSelected: {
+                    //signal wireSelected(var selectColor,var selectDirection,var selectPosition,var selectText)
+                    forground.visible = false
+                    rectcolor.color = selectColor
+                    wireDirection.state = selectDirection
+                    edit2.inputText = selectText
+                }
+                onChanging: {
+                    console.log("onChanging",bIsChang)
+                    detailIsChang = bIsChang
+                }
+            }
+
             Rectangle {
                 anchors.top: parent.top
                 anchors.fill: parent
                 color: "#48484a"
             }
+            Rectangle {
+                id: forground
+                anchors.top: parent.top
+                anchors.fill: parent
+                color: "#48484a"
+                z:10
+                Label {
+                    id: nowire
+                    color: "white"
+                    text: qsTr("No Wires Selected")
+                    anchors.top: parent.top
+                    anchors.topMargin: tabBar.height + 15
+                    font.family: "arial"
+                    font.pointSize: 16
+                    opacity: 0.5
+                }
+            }
+
             MyLineEdit {
                 id: wireName
                 width: 300
@@ -83,7 +119,7 @@ Item {
                 target: colorLoader.item
                 onColorChanged: {
                     itemColor.color = color
-                    //console.log("sseeeeeeeeeeeeeeeeeeeee",color)
+                    spliceDetailsItem.selectColor = color
                     colorLoader.source = ""
                 }
             }
@@ -135,6 +171,11 @@ Item {
                     horizontalAlignment: Qt.AlignHCenter
                     maxSize: 20
                     opacity: 0.7
+                    onTextChange: {
+                        if(detailIsChang)
+                            return
+                        spliceDetailsItem.selectText = inputText
+                    }
                 }
             }
             Item {
@@ -188,6 +229,7 @@ Item {
                     anchors.leftMargin: 20
                 }
                 Switch2 {
+                    id: wireDirection
                     width: parent.width * 0.5
                     height: parent.height
                     anchors.left: labelSide.right
@@ -195,6 +237,13 @@ Item {
                     textRight: qsTr("Right")
                     state: "left"
                     opacity: 0.8
+                    onStateChanged: {
+                        console.log("onStateChanged",wireDirection.state,spliceDetailsItem.selectDirection,detailIsChang)
+                        if(detailIsChang)
+                            return
+                        if (spliceDetailsItem.selectDirection != wireDirection.state)
+                            spliceDetailsItem.selectDirection = wireDirection.state
+                    }
                 }
             }
             Item {
@@ -223,9 +272,9 @@ Item {
                     opacity: 0.8
                     onOnChanged: {
                         if (basicSwitch.state == "left") {
-                            column1.visible = true
-                        } else {
                             column1.visible = false
+                        } else {
+                            column1.visible = true
                         }
                     }
                 }
@@ -237,6 +286,7 @@ Item {
                 anchors.left: parent.left
                 anchors.leftMargin: 20
                 spacing: 20
+                visible: false
                 ExclusiveGroup {
                     id: tabPositionGroup;
                 }
@@ -256,6 +306,10 @@ Item {
                         anchors.right: parent.right
                         anchors.rightMargin: 100
                         exclusiveGroup: tabPositionGroup
+                        onCheckedChanged: {
+                            if (checked)
+                                spliceDetailsItem.selectLocation = "top"
+                        }
                     }
                 }
 
@@ -274,6 +328,10 @@ Item {
                         anchors.right: parent.right
                         anchors.rightMargin: 100
                         exclusiveGroup: tabPositionGroup
+                        onCheckedChanged: {
+                            if (checked)
+                                spliceDetailsItem.selectLocation = "middle"
+                        }
                     }
                 }
                 Item {
@@ -291,6 +349,10 @@ Item {
                         anchors.right: parent.right
                         anchors.rightMargin: 100
                         exclusiveGroup: tabPositionGroup
+                        onCheckedChanged: {
+                            if (checked)
+                                spliceDetailsItem.selectLocation = "bottom"
+                        }
                     }
                 }
             }
@@ -384,7 +446,7 @@ Item {
         id: tabBar
         currentIndex: swipeView.currentIndex
         anchors.top: parent.top
-        width: Screen.desktopAvailableWidth * 0.2
+        width: Screen.desktopAvailableWidth * 0.3
         TabButton {
             Rectangle {
                 anchors.fill: parent
@@ -422,7 +484,7 @@ Item {
     Item {
         id: rightArea
         anchors.left: swipeView.right
-        width: Screen.desktopAvailableWidth * 0.8
+        width: Screen.desktopAvailableWidth * 0.7
         height: parent.height // * 0.5
         Rectangle {
             anchors.fill: parent
@@ -462,6 +524,7 @@ Item {
             opacity: 0.5
         }
         SpliceDetails {
+            id: spliceDetailsItem
             width: Screen.desktopAvailableWidth * 0.8
             height: Screen.desktopAvailableHeight *0.5
             anchors.top: spliceDetailsTips.bottom
@@ -469,6 +532,13 @@ Item {
             anchors.right: parent.right
             anchors.rightMargin: 40
 
+        }
+        CButton {
+            width: 150
+            height: 50
+            anchors.left: spliceDetailsItem.left
+            anchors.top: spliceDetailsItem.bottom
+            text: qsTr("ADD WIRE")
         }
 
 

@@ -4,8 +4,12 @@ CONFIG += c++11
 
 CONFIG += localize_deployment
 
-TRANSLATIONS = displayChinese_zh_CN.ts
+TRANSLATIONS = displayChinese_zh_CN.ts \
+               displayFrench_zh_CN.ts
 
+lupdate_only{
+    SOURCES += *.qml
+}
 SOURCES += main.cpp \
     hmiadaptor.cpp
 

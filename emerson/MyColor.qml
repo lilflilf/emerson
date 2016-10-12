@@ -3,8 +3,6 @@ import QtQuick.Dialogs 1.2
 
 Item {
     id: mycolor
-    width: parent.width
-    height: parent.width
     signal colorChanged(var color)
     ColorDialog {
         id: colorDialog

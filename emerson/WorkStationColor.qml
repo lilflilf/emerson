@@ -5,7 +5,7 @@ import QtQuick.Dialogs 1.2
 
 Item {
     id: workStation
-    width: Screen.desktopAvailableWidth*0.8
+    width: Screen.desktopAvailableWidth * 0.65
     height: Screen.desktopAvailableHeight*0.18
     property alias listModel: color.model
     property variant array: ["#f44242","#f4a142","#f4d742","#d1f442","#9ef442","#42f448","#42f4df","#42bcf4",
