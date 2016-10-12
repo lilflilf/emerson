@@ -89,6 +89,15 @@ Item {
                     color: listModel.get(index).workcolor
                     border.color: "white"
                     border.width: 1
+                    Drag.active: dragArea.drag.active;
+                    Drag.supportedActions: Qt.CopyAction;
+                    Drag.dragType: Drag.Automatic;
+                    Drag.mimeData: {"color": color, "width": width, "height": height};
+                    MouseArea {
+                        id: dragArea;
+                        anchors.fill: parent;
+                        drag.target: parent;
+                    }
                 }
                 Rectangle {
                     id: tips

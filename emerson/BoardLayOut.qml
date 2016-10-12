@@ -18,15 +18,59 @@ Item {
         var array = ["#ff6699","#ff0033","#33FFCC","#cc99ff","#cc0099","#930202","#99ccff","#f79428","#0000cc","Olive"]
         return array[index]
     }
-
     function setBoardLayoutColor(index,color,selecteIndex)
     {
+        var i;
+        for ( i = 0; i < boardLayout.columns*boardLayout.rows; i++) {
+            if (selecteIndex == rec.itemAt(i).centerNum) {
+                rec.itemAt(i).bIsCenterShow = false
+                break
+            }
+            if (rec.itemAt(i).zoneModel.count != 0) {
+                for (var j = 0; j < rec.itemAt(i).zoneModel.count; j++) {
+                    if (selecteIndex == rec.itemAt(i).zoneModel.get(j).selecteNum) {
+                        rec.itemAt(i).zoneModel.remove(j)
+                        break
+                    }
+                }
+            }
+        }
+
+        if (rec.itemAt(index).centerNum == selecteIndex) {
+            rec.itemAt(index).centerColor = color
+            return
+        }
+        for (var i = 0; i < rec.itemAt(index).zoneModel.count; i++) {
+            if (rec.itemAt(index).zoneModel.get(i).selecteNum == selecteIndex) {
+                rec.itemAt(index).zoneModel.remove(i);
+                rec.itemAt(index).zoneModel.insert(i,{"zonecolor":color,"selecteNum":selecteIndex})
+                return
+            }
+        }
+
         if (rec.itemAt(index).bIsCenterShow) {
             rec.itemAt(index).zoneModel.append({"zonecolor":color,"selecteNum":selecteIndex})
         } else {
             rec.itemAt(index).bIsCenterShow = true
             rec.itemAt(index).centerColor = color
             rec.itemAt(index).centerNum = selecteIndex
+        }
+    }
+    function setBoardLayoutYPosition(index)
+    {
+        if (index < 5) {
+            return 2
+        } else {
+            return boardLayout.height/boardLayout.rows-37
+        }
+    }
+
+    function setBoardLayoutXPosition(index)
+    {
+        if (index < 5) {
+            return 34+index*(boardLayout.width/boardLayout.columns/5 - 10)
+        } else {
+            return 5+(index-5)*(boardLayout.width/boardLayout.columns/5 - 10)
         }
     }
 
@@ -63,7 +107,7 @@ Item {
                             anchors.top: parent.top
                             anchors.topMargin: 6
                             color: "#b2a9b9"
-                            text: boardLayout.array[index]
+                            text: qsTr(boardLayout.array[index])
                             font.pointSize: 16
                             font.family: "arial"
                         }
@@ -92,9 +136,9 @@ Item {
                             model: testModel
                             Rectangle {
                                 anchors.top: parent.top
-                                anchors.topMargin: 10
+                                anchors.topMargin: setBoardLayoutYPosition(index)
                                 anchors.left: parent.left
-                                anchors.leftMargin: 35+index*35+6
+                                anchors.leftMargin: setBoardLayoutXPosition(index)//35+index*35+6
                                 width: 35
                                 height: 35
                                 radius: 35

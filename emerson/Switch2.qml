@@ -27,7 +27,8 @@ Item {
         if (knob.x == 1) {
             if (toggleswitch.state == "left") return;
         }
-        if (knob.x == parent.width/2) {
+        console.log("33333333333",knob.x)
+        if (knob.x == toggleswitch.width/2) {
             if (toggleswitch.state == "right") return;
         }
         toggle();
@@ -50,7 +51,7 @@ Item {
         color: "white"
         MouseArea {
             anchors.fill: parent
-            drag.target: knob; drag.axis: Drag.XAxis; drag.minimumX: 1; drag.maximumX: parent.width/2
+            drag.target: knob; drag.axis: Drag.XAxis; drag.minimumX: 1; drag.maximumX: toggleswitch.width/2
             onClicked: toggle()
             onReleased: releaseSwitch()
         }
@@ -83,7 +84,7 @@ Item {
     states: [
         State {
             name: "right"
-            PropertyChanges { target: knob; x: parent.width/2 }
+            PropertyChanges { target: knob; x: toggleswitch.width/2 }
             PropertyChanges { target: toggleswitch; on: true }
             PropertyChanges { target: leftSwitch; color: "white" }
             PropertyChanges { target: rightSwitch; color: "black" }

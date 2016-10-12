@@ -9,7 +9,7 @@ Window {
     visible: true
     width: Screen.desktopAvailableWidth
     height: Screen.desktopAvailableHeight
-    title: tr("Hello World")
+    title: qsTr("Hello World")
     function menuInit(index)
     {
         console.log("creat splice")

@@ -6,6 +6,8 @@ import QtQuick.Window 2.2
 Item {
     id: content
     property bool bIsBasic: true
+    property bool bIsDrag: false
+    property string draColor: ""
     width: Screen.desktopAvailableWidth
     height: Screen.desktopAvailableHeight
     Loader {
@@ -41,7 +43,7 @@ Item {
     }
     function getAllWorkstationColor(count)
     {
-        var array = ["#f44242","#f4a142","#f4d742","#d1f442","#9ef442","#42f448","#42f4df","#42bcf4","#424ef4","#a442f4"]
+        var array = ["#ff6699","#ff0033","#33FFCC","#cc99ff","#cc0099","#930202","#99ccff","#f79428","#0000cc","Olive"]
         colorModel.clear()
         if (count > 10)
             count = 10
@@ -126,8 +128,8 @@ Item {
                 color: "white"
                 opacity: 0.5
                 text: qsTr("PROCESS MODE")
-//                height: parent.height * 0.1
-//                width: parent.width * 0.5
+                //                height: parent.height * 0.1
+                //                width: parent.width * 0.5
                 font.family: "arial"
                 font.pointSize: 16
             }
@@ -144,6 +146,7 @@ Item {
                 textRight: qsTr("Adv")
                 state: "left"
                 opacity: 0.8
+                clip: true
                 onOnChanged: {
                     if (basicSwitch.state == "left") {
                         bIsBasic = true
@@ -237,6 +240,10 @@ Item {
                 opacity: 0.7
                 onTextChange: {
                     boardlayout.rows = text
+                    for (var i = 0; i< workModel.count; i++) {
+                        workModel.get(i).workStation.destroy()
+                    }
+                    workModel.clear()
                 }
             }
             MyLineEdit {
@@ -257,6 +264,10 @@ Item {
                 opacity: 0.7
                 onTextChange: {
                     boardlayout.columns = text
+                    for (var i = 0; i< workModel.count; i++) {
+                        workModel.get(i).workStation.destroy()
+                    }
+                    workModel.clear()
                 }
             }
             MyLineEdit {
@@ -315,6 +326,7 @@ Item {
                 height: 30
                 pointSize: 16
                 onClicked: {
+                    loader.source = "qrc:/CreatWire.qml"
                 }
             }
             CButton {
@@ -388,14 +400,65 @@ Item {
         ListModel {
             id: colorModel
         }
+        ListModel {
+            id: workModel
+        }
         Rectangle {
             anchors.fill: parent
             color: "#686a6c"
         }
+        MyLineEdit {
+            id: edit6
+            anchors.top: parent.top
+            anchors.topMargin: 4
+            anchors.left: parent.left
+            anchors.leftMargin: 50
+            width: parent.width * 0.67
+            height: 50
+            inputWidth: parent.width * 0.67
+            inputHeight: parent.height * 0.05
+            horizontalAlignment: Qt.AlignHCenter
+            defaultText: qsTr("PART NAME")
+            //regExp: RegExpValidator{regExp: /^[1-9]{1,2}$/}
+            maxSize: 60
+            clip: true
+            onTextChange: {
+            }
+        }
+        CButton {
+            id: template
+            anchors.top: parent.top
+            anchors.topMargin: 4
+            anchors.right: boardlayout.right
+            text: qsTr("Template")
+            textColor: "white"
+            width: 200
+            height: 30
+            pointSize: 16
+            onClicked: {
+            }
+        }
+        MyLineEdit {
+            id: edit7
+            anchors.top: edit6.bottom
+            anchors.topMargin: 2
+            anchors.left: parent.left
+            anchors.leftMargin: 50
+            width: parent.width * 0.67
+            height: 50
+            inputWidth: parent.width * 0.67
+            inputHeight: parent.height * 0.05
+            horizontalAlignment: Qt.AlignHCenter
+            defaultText: qsTr("WORK ORDER ID")
+            //regExp: RegExpValidator{regExp: /^[1-9]{1,2}$/}
+            maxSize: 60
+            clip: true
+            onTextChange: {
+            }
+        }
         Text {
             id: boardText
-            anchors.top: parent.top
-            anchors.topMargin: 60
+            anchors.top: edit7.bottom
             anchors.left: parent.left
             anchors.leftMargin: 50
             color: "white"
@@ -405,32 +468,112 @@ Item {
             font.pointSize: 16
             text: qsTr("Board Layout")
         }
+
         BoardLayOut {
             id: boardlayout
             anchors.top: boardText.bottom
-            anchors.topMargin: 10
+            anchors.topMargin: 6
             anchors.left: parent.left
             anchors.leftMargin: 50
             columns: 0
             rows: 0
+            onColumnsChanged: {
+                followArea.visible = false
+            }
+            onRowsChanged: {
+                followArea.visible = false
+            }
         }
-        CButton {
-            id: wire
-            anchors.top: boardlayout.bottom
-            anchors.topMargin: 30
-            anchors.right: boardlayout.right
-            text: "ADD WIRE"
-            textColor: "white"
-            width: 200
-            height: 30
-            pointSize: 16
-            onClicked: {
-                loader.source = "qrc:/CreatWire.qml"
+
+        Component {
+            id: dragColor
+            Rectangle {
+                id: dragItem
+                width: 35
+                height: 35
+                radius: 35
+                border.color: "white"
+                border.width: 1
+                Drag.active: dragArea.drag.active
+                Drag.supportedActions: Qt.MoveAction
+                Drag.dragType: Drag.Internal
+                Drag.mimeData: {"color": color, "width": width, "height": height};
+                MouseArea {
+                    id: dragArea;
+                    anchors.fill: parent
+                    drag.target: parent
+                    drag.minimumX: 0
+                    drag.maximumX: boardlayout.width-35
+                    drag.minimumY: 0
+                    drag.maximumY: boardlayout.height-35
+                    onPositionChanged: {
+                        draColor = dragItem.color
+                        bIsDrag = true
+                    }
+                    onReleased: {
+                        bIsDrag = false
+                    }
+                }
+            }
+        }
+
+        DropArea {
+            id: dropContainer;
+            property bool bFollow: followArea.visible
+            anchors.top: boardText.bottom
+            anchors.topMargin: 6
+            anchors.left: parent.left
+            anchors.leftMargin: 50
+            width: boardlayout.width-35
+            height: boardlayout.height-35
+            onEntered: {
+                drag.accepted = true;
+                if (!bIsDrag) {
+                    followArea.visible = false
+                    followArea.color = drag.getDataAsString("color");
+                } else {
+                    followArea.color = draColor
+                }
+            }
+            onPositionChanged: {
+                drag.accepted = true;
+                followArea.visible = true
+                followArea.x = drag.x
+                followArea.y = drag.y
+            }
+            onDropped: {
+                if(drop.supportedActions == Qt.CopyAction){
+                    var component =  dragColor.createObject(boardlayout,{
+                                                          "x": drop.x,
+                                                          "y": drop.y,
+                                                          "width": parseInt(drop.getDataAsString("width")),
+                                                          "height": parseInt(drop.getDataAsString("height")),
+                                                          "color": drop.getDataAsString("color"),
+                                                          "Drag.supportedActions": Qt.MoveAction,
+                                                          "Drag.dragType": Drag.Internal
+                                                      });
+                    workModel.append({"workStation":component})
+                    followArea.visible = false
+                }
+                drop.acceptProposedAction();
+                drop.accepted = true;
+            }
+            Rectangle {
+                id: followArea
+                radius: 35
+                width: 35
+                height: 35
+                border.color: "white"
+                border.width: 1
+                visible: parent.containsDrag
+                onVisibleChanged: {
+                    console.log("aaaaaaaaa",followArea.visible)
+                }
             }
         }
         CButton {
             id: exportSPlice
-            anchors.top: wire.bottom
+            anchors.top: boardlayout.bottom
             anchors.topMargin: 30
             anchors.right: boardlayout.right
             text: "EXPORT SPLICE"
@@ -457,7 +600,7 @@ Item {
         Text {
             id: workStation
             anchors.top: boardlayout.bottom
-            anchors.topMargin: 30
+            anchors.topMargin: 10
             anchors.left: boardlayout.left
             text: qsTr("WORKSTATIONS")
             color: "white"
@@ -469,25 +612,17 @@ Item {
         WorkStationColor {
             id: workStationcolor
             anchors.top: workStation.bottom
-            anchors.topMargin: 10
+            anchors.topMargin: 4
             anchors.left: boardlayout.left
             listModel: colorModel
             allWorkTotal: 0
             maxSpliceNum: 0
         }
-        Loader {
-            id: test
-            anchors.top: boardText.bottom
-            anchors.topMargin: 60
-            anchors.left: boardlayout.left
-            width: 560
-            height: 280
-        }
 
         WorkStationSet {
             id: stationSet
             anchors.top: boardText.bottom
-            anchors.topMargin: 60
+            anchors.topMargin: 50
             anchors.left: boardlayout.left
             width: 560
             height: 280
@@ -501,7 +636,6 @@ Item {
                 }
                 listModel.set(stationSet.index,{"station":stationSet.selecteZone})
                 if (stationSet.selecteColor != "") {
-                    console.log("4444444444",stationSet.selecteIndex)
                     boardlayout.setBoardLayoutColor(stationSet.selecteIndex,stationSet.selecteColor,stationSet.index+1)
                     stationSet.visible = false
                     stationSet.selecteColor = ""
@@ -514,7 +648,6 @@ Item {
                 }
                 listModel.set(stationSet.index,{"stationColor":stationSet.selecteColor})
                 if (stationSet.selecteZone != "") {
-                    console.log("3333333333",stationSet.selecteIndex)
                     boardlayout.setBoardLayoutColor(stationSet.selecteIndex,stationSet.selecteColor,stationSet.index+1)
                     stationSet.visible = false
                     stationSet.selecteColor = ""
