@@ -3,7 +3,17 @@ TEMPLATE = app
 QT += qml quick
 CONFIG += c++11
 
-SOURCES += main.cpp
+CONFIG += localize_deployment
+
+TRANSLATIONS = displayChinese_zh_CN.ts \
+               displayFrench_zh_CN.ts
+
+lupdate_only{
+    SOURCES += *.qml
+}
+SOURCES += main.cpp \
+    hmiadaptor.cpp
+
 
 RESOURCES += qml.qrc
 RC_FILE += test.rc

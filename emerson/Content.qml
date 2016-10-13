@@ -52,7 +52,7 @@ Item {
         }
     }
     SwipeView {
-        width: Screen.desktopAvailableWidth * 0.2
+        width: Screen.desktopAvailableWidth * 0.3
         height: parent.height
         id: swipeView
         currentIndex: tabBar.currentIndex
@@ -374,7 +374,7 @@ Item {
         }
     }
     TabBar {
-        width: Screen.desktopAvailableWidth * 0.2
+        width: Screen.desktopAvailableWidth * 0.3
         id: tabBar
         currentIndex: swipeView.currentIndex
         anchors.top: parent.top
@@ -395,7 +395,7 @@ Item {
     Item {
         id: rightArea
         anchors.left: swipeView.right
-        width: Screen.desktopAvailableWidth * 0.8
+        width: Screen.desktopAvailableWidth * 0.7
         height: parent.height // * 0.5
         ListModel {
             id: colorModel

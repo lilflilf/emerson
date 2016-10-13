@@ -7,7 +7,7 @@ Item {
     id: spliceList
     property alias listModel: splice.model
     property bool bIsWorkShow: true
-    width: Screen.desktopAvailableWidth*0.2
+    width: Screen.desktopAvailableWidth * 0.25
     height: Screen.desktopAvailableHeight*0.5
     signal currentSelecte(int index)
     signal currentWorkStation(int index)

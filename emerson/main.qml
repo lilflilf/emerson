@@ -12,7 +12,6 @@ Window {
     title: qsTr("Hello World")
     function menuInit(index)
     {
-        console.log("creat splice")
         contentLoader.source = ""
         contentLoader.source = "qrc:/Content.qml"
     }

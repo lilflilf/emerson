@@ -1,7 +1,9 @@
 #ifndef HMIADAPTOR_H
 #define HMIADAPTOR_H
 
+#include<QMetaType>
 #include <QObject>
+#define HMI_PRINT (qDebug() <<"HMI adapter:" << __FILE__ << __FUNCTION__ << __LINE__ << ": ")
 
 class HmiAdaptor : public QObject
 {
