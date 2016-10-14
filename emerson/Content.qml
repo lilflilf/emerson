@@ -12,7 +12,7 @@ Item {
     height: Screen.desktopAvailableHeight
     Loader {
         id: loader
-        z: 10
+        z: 9
         anchors.fill: parent
     }
     ListModel{
@@ -628,7 +628,7 @@ Item {
             height: 280
             allWorkTotal: workStationcolor.allWorkTotal
             allZoneTotal: boardlayout.columns*boardlayout.rows
-            z: 10
+            z: 9
             visible: false
             onSelecteZoneChanged: {
                 if (stationSet.selecteZone == "") {

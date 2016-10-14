@@ -17,7 +17,7 @@ Window {
     }
     Component.onCompleted: {
 
-        //root.showMaximized()
+//        root.showMaximized()
 //        w.setWindowFlags(w.windowFlags()& ~Qt::WindowMaximizeButtonHint&  ~Qt::WindowMinimizeButtonHint);
 //        w.showMaximized();
         root.showFullScreen()
@@ -31,10 +31,12 @@ Window {
         id: headBar
         height: Screen.desktopAvailableHeight * 0.07
         anchors.top: statusBar.bottom
+        z:10
     }
 
     Loader {
         id: contentLoader
+        z:9
         anchors.top: headBar.bottom
         width: Screen.desktopAvailableWidth
         height: Screen.desktopAvailableHeight

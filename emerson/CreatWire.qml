@@ -32,6 +32,7 @@ Item {
                     rectcolor.color = selectColor
                     wireDirection.state = selectDirection
                     edit2.inputText = selectText
+                    topRadio.checked = true
                 }
                 onChanging: {
                     console.log("onChanging",bIsChang)
@@ -301,12 +302,15 @@ Item {
                         color: "white"
                     }
                     RadioButton {
+                        id: topRadio
                         scale: 2
-                        checked: true
+                        checked: false
                         anchors.right: parent.right
                         anchors.rightMargin: 100
                         exclusiveGroup: tabPositionGroup
                         onCheckedChanged: {
+                            if (detailIsChang)
+                                return
                             if (checked)
                                 spliceDetailsItem.selectLocation = "top"
                         }
@@ -324,11 +328,14 @@ Item {
                         color: "white"
                     }
                     RadioButton {
+                        id: midRadio
                         scale: 2
                         anchors.right: parent.right
                         anchors.rightMargin: 100
                         exclusiveGroup: tabPositionGroup
                         onCheckedChanged: {
+                            if (detailIsChang)
+                                return
                             if (checked)
                                 spliceDetailsItem.selectLocation = "middle"
                         }
@@ -350,6 +357,8 @@ Item {
                         anchors.rightMargin: 100
                         exclusiveGroup: tabPositionGroup
                         onCheckedChanged: {
+                            if (detailIsChang)
+                                return
                             if (checked)
                                 spliceDetailsItem.selectLocation = "bottom"
                         }
@@ -381,32 +390,35 @@ Item {
             ListModel {
                 id: settingsModel
                 Component.onCompleted: {
-                    settingsModel.append({"name":"Energy"})
-                    settingsModel.append({"name":"Trigger"})
-                    settingsModel.append({"name":"Amplitu"})
-                    settingsModel.append({"name":"Weld Pre"})
-                    settingsModel.append({"name":"Width"})
-                    settingsModel.append({"name":"Amplitude"})
+                    settingsModel.append({"topText":"Energy","bottomText":"30J"})
+                    settingsModel.append({"topText":"Trigger\npressure","bottomText":"50PSI"})
+                    settingsModel.append({"topText":"Amplitu","bottomText":"micron"})
+                    settingsModel.append({"topText":"Weld\nPressure","bottomText":"50PSI"})
+                    settingsModel.append({"topText":"Width","bottomText":"12.5mm"})
                 }
             }
             ListModel {
                 id: settingsModel2
                 Component.onCompleted: {
-                    settingsModel2.append({"name":"Button1"})
-                    settingsModel2.append({"name":"Button2"})
-                    settingsModel2.append({"name":"Button3"})
-                    settingsModel2.append({"name":"Button4"})
-                    settingsModel2.append({"name":"Button5"})
-                    settingsModel2.append({"name":"Button6"})
-                    settingsModel2.append({"name":"Button7"})
-                    settingsModel2.append({"name":"Button8"})
+                    settingsModel2.append({"topText":"Time","bottomText":"40%"})
+                    settingsModel2.append({"topText":"Time","bottomText":"40%"})
+                    settingsModel2.append({"topText":"Power","bottomText":"40%"})
+                    settingsModel2.append({"topText":"Power","bottomText":"40%"})
+                    settingsModel2.append({"topText":"Pre-Height","bottomText":"40%"})
+                    settingsModel2.append({"topText":"Pre-Height","bottomText":"40%"})
+                    settingsModel2.append({"topText":"Height","bottomText":"40%"})
+                    settingsModel2.append({"topText":"Height","bottomText":"40%"})
+
+
                 }
             }
 
             Grid {
                 id: settingLayout
                 anchors.top: parent.top
-                anchors.topMargin: tabBar.height
+                anchors.topMargin: tabBar.height + 10
+                anchors.left: parent.left
+                anchors.leftMargin: 15
                 rows: 4
                 columns: 2
                 width: 220
@@ -418,68 +430,134 @@ Item {
                     CButton {
                         width: 100
                         height: 80
-                        text: name
+                        backgroundComponent: Item {
+                            Rectangle {
+                                anchors.centerIn: parent
+                                anchors.fill: parent
+                                radius: 3
+                                color: "#000000"
+                                Rectangle{
+                                    anchors.fill: parent
+                                    anchors.margins: 1
+                                    radius: 3
+                                    anchors.centerIn: parent
+                                    color: "#000000"
+                                }
+                            }
+                        }
+                        Text {
+                            id: buttonTop
+                            text: qsTr(topText)
+                            anchors.top: parent.top
+                            anchors.topMargin: 3
+                            anchors.left: parent.left
+                            anchors.leftMargin: 3
+                            font.pointSize: 12
+                            font.family: "arial"
+                            color: "white"
+                        }
+                        Text {
+                            text: qsTr(bottomText)
+                            anchors.top: buttonTop.bottom
+                            anchors.topMargin: 3
+                            anchors.left: parent.left
+                            anchors.leftMargin: 3
+                            font.pointSize: 16
+                            font.family: "arial"
+                            color: "white"
+
+                        }
                     }
                 }
             }
             Row {
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: 100
-                spacing: 10
+                anchors.left: parent.left
+                anchors.leftMargin: 15
+                spacing: 20
                 height: 50
                 width: parent.width
                 CButton {
-                    width: parent.width * 0.4
+                    pointSize: 14
+                    width: parent.width * 0.45
                     height: 50
+                    text: qsTr("QUALITY WINDOW\nSETTINGS")
                     onClicked: {
                         repeater.model = settingsModel2
                     }
                 }
                 CButton {
-                    width: parent.width * 0.4
+                    pointSize: 14
+                    text: qsTr("ADVANCED WELD\nSETTINGS")
+                    width: parent.width * 0.45
                     height: 50
+                    onClicked: {
+                        settingRightArea.visible = true
+                    }
                 }
             }
         }
     }
+
     TabBar {
+        width: Screen.desktopAvailableWidth * 0.3
         id: tabBar
         currentIndex: swipeView.currentIndex
         anchors.top: parent.top
-        width: Screen.desktopAvailableWidth * 0.3
         TabButton {
-            Rectangle {
-                anchors.fill: parent
-                color: tabBar.currentIndex == 0 ? "black" : "#48484a"
-            }
-            Text {
-                anchors.centerIn: parent
-                font.family: "arial"
-                font.pointSize: 14
-                color: "white"
-                text: qsTr("WIRE BUILDER")
-                opacity: 0.5
-                width: parent.width
-                clip: true
-            }
+            font.family: "arial"
+            font.pointSize: 16
+            text: qsTr("WIRE BUILDER")
+            opacity: 0.33
         }
         TabButton {
-            Rectangle {
-                anchors.fill: parent
-                color: tabBar.currentIndex == 1 ? "black" : "#48484a"
-            }
-            Text {
-                anchors.centerIn: parent
-                font.family: "arial"
-                font.pointSize: 14
-                color: "white"
-                text: qsTr("WELD SETTINGS")
-                opacity: 0.5
-                width: parent.width
-                clip: true
-            }
+            font.family: "arial"
+            font.pointSize: 16
+            text: qsTr("WELD SETTINGS")
+            opacity: 0.33
         }
     }
+
+//    TabBar {
+//        id: tabBar
+//        currentIndex: swipeView.currentIndex
+//        anchors.top: parent.top
+//        width: Screen.desktopAvailableWidth * 0.3
+//        TabButton {
+//            Rectangle {
+//                anchors.fill: parent
+//                color: tabBar.currentIndex == 0 ? "black" : "#48484a"
+//                Text {
+//                    anchors.centerIn: parent
+//                    font.family: "arial"
+//                    font.pointSize: 14
+//                    color: "white"
+//                    text: qsTr("WIRE BUILDER")
+//                    opacity: 0.5
+//                    width: parent.width
+//                    clip: true
+//                }
+//            }
+
+//        }
+//        TabButton {
+//            Rectangle {
+//                anchors.fill: parent
+//                color: tabBar.currentIndex == 1 ? "black" : "#48484a"
+//                Text {
+//                    anchors.centerIn: parent
+//                    font.family: "arial"
+//                    font.pointSize: 14
+//                    color: "white"
+//                    text: qsTr("WELD SETTINGS")
+//                    opacity: 0.5
+//                    width: parent.width
+//                    clip: true
+//                }
+//            }
+//        }
+//    }
 
     Item {
         id: rightArea
@@ -492,10 +570,10 @@ Item {
         }
         MyLineEdit {
             id: edit1
-            width: 300
+            width: 600
             height: 50
             anchors.top: parent.top
-            inputWidth: parent.width * 0.3
+            inputWidth: parent.width * 0.6
             inputHeight: parent.height * 0.05
             defaultText: "SPLICE NAME"
             anchors.topMargin: 8
@@ -533,15 +611,268 @@ Item {
             anchors.rightMargin: 40
 
         }
+
         CButton {
-            width: 150
+            id: addWire
+            pointSize: 14
+            width: 200
             height: 50
             anchors.left: spliceDetailsItem.left
             anchors.top: spliceDetailsItem.bottom
+            anchors.topMargin: 10
             text: qsTr("ADD WIRE")
         }
 
+        CButton {
+            id: wirelibrary
+            pointSize: 14
+            width: 200
+            height: 50
+            anchors.left: spliceDetailsItem.left
+            anchors.top: addWire.bottom
+            anchors.topMargin: 10
+            text: qsTr("WIRE LIBRARY")
+        }
 
+        CButton {
+            id: saveSplice
+            pointSize: 14
+            width: 200
+            height: 50
+            anchors.right: spliceDetailsItem.right
+            anchors.bottom: wirelibrary.bottom
+            text: qsTr("WIRE LIBRARY")
+        }
+    }
+    Item {
+        id: settingRightArea
+        anchors.left: swipeView.right
+        width: Screen.desktopAvailableWidth * 0.7
+        height: parent.height // * 0.5
+        visible: false
+        Rectangle {
+            anchors.fill: parent
+            color: "#626465"
+        }
+        Rectangle {
+            id: rect1
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.leftMargin: 15
+            anchors.topMargin: 10
+            opacity: 0.33
+            anchors.right: parent.right
+            height: 40
+            border.width: 1
+            border.color: "blue"
+        }
+        Text {
+            text: qsTr("Splice#:KKK0003BAC")
+            anchors.left: rect1.left
+            anchors.leftMargin: 10
+            anchors.verticalCenter: rect1.verticalCenter
+            color: "white"
+            font.pointSize: 14
+            font.family: "arial"
+        }
+        Rectangle {
+            id: line1
+            anchors.top: rect1.bottom
+            anchors.topMargin: 10
+            anchors.left: rect1.left
+            anchors.right: rect1.right
+            border.color: "white"
+            border.width: 2
+            height: 4
+        }
+        Rectangle {
+            id: rect2
+            anchors.top: line1.bottom
+            anchors.topMargin: 10
+            border.width: 1
+            border.color: "blue"
+            anchors.left: rect1.left
+            anchors.right: parent.right
+            color: Qt.rgba(255,255,255,0.3)
+            height: 150
+            Text {
+                id: weldModel
+                text: qsTr("Weld Model")
+                color: "white"
+                font.pointSize: 16
+                font.family: "arial"
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.topMargin: 5
+                anchors.leftMargin: 15
+            }
+
+            ExclusiveGroup {
+                id: weldModelSetting
+            }
+            Component {
+                id: buttonBackBlue
+                Item {
+                    Rectangle {
+                        anchors.centerIn: parent
+                        anchors.fill: parent
+                        radius: 3
+                        color: "blue"
+                        Rectangle{
+                            anchors.fill: parent
+                            anchors.margins: 1
+                            radius: 3
+                            anchors.centerIn: parent
+                            color: "blue"
+                        }
+                    }
+                }
+            }
+            Component {
+                id: buttonBackWhite
+                Item {
+                    Rectangle {
+                        anchors.centerIn: parent
+                        anchors.fill: parent
+                        radius: 3
+                        color: "#ffffff"
+                        Rectangle{
+                            anchors.fill: parent
+                            anchors.margins: 1
+                            radius: 3
+                            anchors.centerIn: parent
+                            color: "#ffffff"
+                        }
+                    }
+                }
+            }
+            ListModel {
+                id: weldListModel
+                Component.onCompleted: {
+                    weldListModel.append({"buttonName":"Energy"})
+                    weldListModel.append({"buttonName":"Time"})
+                    weldListModel.append({"buttonName":"Height"})
+                    weldListModel.append({"buttonName":"Energy/Height"})
+                    weldListModel.append({"buttonName":"Step-Energy"})
+                    weldListModel.append({"buttonName":"Step-Time"})
+                    weldListModel.append({"buttonName":"Step-Power"})
+                }
+            }
+
+            Grid {
+                anchors.top: weldModel.bottom
+                anchors.topMargin: 10
+                width: parent.width
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
+                anchors.leftMargin: 20
+                spacing: 20
+                rows: 2
+                columns: 4
+                Repeater {
+                    model: weldListModel
+                    CButton {
+                        id: weldModelButton
+                        width: 150
+                        height: 40
+                        backgroundComponent: buttonBackWhite
+                        text: buttonName
+                        pointSize: 14
+                        textColor: weldModelCheck.checked ? "white" : "black"
+                        RadioButton {
+                            id: weldModelCheck
+                            exclusiveGroup: tabPositionGroup
+                            visible: false
+                            checked: index == 0 ? true : false
+                            onCheckedChanged: {
+                                if (weldModelCheck.checked)
+                                    weldModelButton.backgroundComponent = buttonBackBlue
+                                else
+                                    weldModelButton.backgroundComponent = buttonBackWhite
+                            }
+                        }
+                        onClicked: {
+                            weldModelCheck.checked = !weldModelCheck.checked
+                        }
+                    }
+                }
+            }
+        }
+
+        Rectangle {
+            id: rect3
+            anchors.top: rect2.bottom
+            anchors.topMargin: 10
+            border.width: 1
+            border.color: "blue"
+            anchors.left: rect1.left
+            anchors.right: parent.right
+            color: Qt.rgba(255,255,255,0.3)
+            height: 350
+            Text {
+                id: adWeldSetting
+                text: qsTr("Advanced Weld Setting")
+                color: "white"
+                font.pointSize: 16
+                font.family: "arial"
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.topMargin: 5
+                anchors.leftMargin: 15
+            }
+        }
+        Rectangle {
+            id: line2
+            anchors.top: rect3.bottom
+            anchors.topMargin: 10
+            anchors.left: rect1.left
+            anchors.right: rect1.right
+            border.color: "white"
+            border.width: 2
+            height: 4
+        }
+        Row {
+            id: bottomRow
+            spacing: 30
+            anchors.right: parent.right
+            anchors.rightMargin: 20
+            anchors.top: line2.bottom
+            anchors.bottomMargin: 30
+            CButton {
+                width: 150
+                height: 40
+                text: qsTr("Back")
+                textColor: "white"
+                backgroundComponent: Component {
+                    Item {
+                        Rectangle {
+                            anchors.centerIn: parent
+                            anchors.fill: parent
+                            color: Qt.rgba(255,255,255,0.3)
+                            border.color: "blue"
+                            border.width: 2
+                        }
+                    }
+                }
+            }
+            CButton {
+                width: 150
+                height: 40
+                text: qsTr("Save")
+                textColor: "white"
+                backgroundComponent: Component {
+                    Item {
+                        Rectangle {
+                            anchors.centerIn: parent
+                            anchors.fill: parent
+                            color: Qt.rgba(255,255,255,0.3)
+                            border.color: "blue"
+                            border.width: 2
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
