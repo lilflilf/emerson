@@ -5,6 +5,9 @@ import QtQuick.Layouts 1.0
 import QtQuick.Window 2.2
 
 Item {
+    z: 10
+    id: headBar
+    property var selectIndex: 0
     width: Screen.desktopAvailableWidth
     height: Screen.desktopAvailableHeight * 0.07
     Rectangle {
@@ -12,50 +15,31 @@ Item {
         color: "#f79428"
     }
 
-//    CButton {
-//        width: 40
-//        height: parent.height
-//        onClicked: {
-//            root.close()
-//        }
-//    }
-//    Button {
-//        id: btn
-//        height: parent.height
-//        width: parent.width * 0.1
-//        anchors.left: parent.left
-//        anchors.leftMargin: parent.width * 0.02
-//        text: "Menu Button"
-//        menu: Menu {
-//            id: menu
-//            MenuItem {text: "Button1";onTriggered: root.menuInit(3)}
-//            MenuItem {text: "Button2";onTriggered: btn.text=text}
-//            MenuItem {text: "Button3";onTriggered: btn.text=text}
-//            MenuItem {text: "Button4";onTriggered: btn.text=text}
-
-//        }
-//    }
-
     Item {
         id: btn
+        property bool isCheck: false
         height: parent.height
         width: parent.width * 0.05
         anchors.left: parent.left
         anchors.leftMargin: parent.width * 0.02
+        Rectangle {
+            id: btnBack
+            anchors.fill: parent
+            color: "#404041"
+            visible: false
+        }
+
         Image {
             id: backGround
-            anchors.top: parent.top
-            anchors.topMargin: 6
+            anchors.centerIn: parent
             height: parent.height-30
             width: parent.width*0.68
-            anchors.left: parent.left
             source: "qrc:/Images/images/menu.png"
         }
         Text {
             id: menu
             anchors.top: backGround.bottom
-            anchors.left: parent.left
-            anchors.leftMargin: parent.width * 0.02
+            anchors.horizontalCenter: parent.horizontalCenter
             text: qsTr("MENU")
             color: "white"
             font.pointSize: 12
@@ -63,25 +47,30 @@ Item {
         }
         MouseArea {
             anchors.fill: parent
+            onClicked: {
+                btn.isCheck = !btn.isCheck
+                if (btn.isCheck){
+                    btnBack.visible = true
+                    mainMenu.mainModel = null
+                    mainMenu.mainModel = listMainMenu
+                }
+                else
+                {
+                    btnBack.visible = false
+                    creatMenu.visible = false
+                }
+            }
         }
     }
 
-//    Button {
-//        id: btn
-//        height: parent.height
-//        width: parent.width * 0.05
-//        anchors.left: parent.left
-//        anchors.leftMargin: parent.width * 0.02
-//        text: "Menu Button"
-//        checkable: true
-//    }
     Item {
         id: mainMenu
+        property alias mainModel: mainModel.model
         width: 150
         height: 240
         anchors.top: btn.bottom
         anchors.left: btn.left
-        visible: btn.checked ? true : false
+        visible: btn.isCheck ? true : false
         z: 10
         Rectangle {
             anchors.fill: parent
@@ -105,6 +94,7 @@ Item {
         Column {
             anchors.fill: parent
             Repeater {
+                id: mainModel
                 model: listMainMenu
                 Item {
                     id: item
@@ -129,33 +119,38 @@ Item {
                                         console.log("index == ",index)
                                         if (index == 0) {
                                             creatMenu.visible = true
+                                            creatMenu.childModel = null
                                             creatMenu.childModel = creatMenuList
                                             creatMenu.height = creatMenuList.count * 40
                                         }
                                         else if (index == 3) {
                                             creatMenu.visible = true
+                                            creatMenu.childModel = null
                                             creatMenu.childModel = maintenanceList
                                             creatMenu.height = maintenanceList.count * 40
 
                                         }
                                         else if (index == 4) {
                                             creatMenu.visible = true
+                                            creatMenu.childModel = null
                                             creatMenu.childModel = viewDataList
                                             creatMenu.height = viewDataList.count * 40
                                         }
                                         else if (index == 5) {
                                             creatMenu.visible = true
+                                            creatMenu.childModel = null
                                             creatMenu.childModel = settingList
                                             creatMenu.height = settingList.count * 40
                                         }
                                         else if (index == 1 || index == 2)
                                             creatMenu.visible = false
-
+                                        headBar.selectIndex = index
                                     }
                                     else {
                                         console.log("index ==== ",index)
                                         item.background = 0
-                                        //creatMenu.visible = false
+                                        if (headBar.selectIndex == index)
+                                            creatMenu.visible = false
                                     }
                                 }
                             }
@@ -216,7 +211,7 @@ Item {
         anchors.left: mainMenu.right
         anchors.leftMargin: 5
         visible: false
-        z: 10
+        z: 11
         property alias childModel: childMenu.model
         Rectangle {
             anchors.fill: parent
@@ -256,6 +251,16 @@ Item {
                             anchors.fill: parent
                             onClicked: {
                                 childMenuCheck.checked = !childMenuCheck.checked
+                                //mainMenu.visible = false
+                                btn.isCheck = false
+                                creatMenu.visible = false
+                                btnBack.visible = false
+                                if (menuKey == "Create New"){
+                                    root.menuInit(0)
+                                }
+                                if (menuKey == "Edit Existing"){
+                                    root.menuInit(1)
+                                }
                             }
                         }
                         RadioButton {
@@ -276,14 +281,14 @@ Item {
         }
     }
 
-    CButton {
-        anchors.left: btn.right
-        width: 40
-        height: parent.height
-        onClicked: {
-            root.menuInit(3)
-        }
-    }
+//    CButton {
+//        anchors.left: btn.right
+//        width: 40
+//        height: parent.height
+//        onClicked: {
+//            root.menuInit(3)
+//        }
+//    }
 
 
     Text {

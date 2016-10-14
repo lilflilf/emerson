@@ -854,6 +854,9 @@ Item {
                         }
                     }
                 }
+                onClicked: {
+                    settingRightArea.visible = false
+                }
             }
             CButton {
                 width: 150
@@ -870,6 +873,9 @@ Item {
                             border.width: 2
                         }
                     }
+                }
+                onClicked: {
+                    settingRightArea.visible = false
                 }
             }
         }
