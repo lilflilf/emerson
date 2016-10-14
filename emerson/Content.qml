@@ -7,6 +7,7 @@ Item {
     id: content
     property bool bIsBasic: true
     property bool bIsDrag: false
+    property bool bIsEdit: false
     property string draColor: ""
     width: Screen.desktopAvailableWidth
     height: Screen.desktopAvailableHeight
@@ -21,7 +22,9 @@ Item {
     ListModel {
         id: testModel
     }
-
+    ListModel{
+        id: listModel2
+    }
     Component.onCompleted: {
         listModel.append({"nameValue":"Splice1 test title hellow word! welcome ","stationColor":"white","station":"?"})
         listModel.append({"nameValue":"Splice2 test title hellow word! welcome ","stationColor":"white","station":"?"})
@@ -108,7 +111,7 @@ Item {
             }
             SpliceListView {
                 id: spliceList
-                listModel: listModel
+                listModel: bIsEdit ? listModel2: listModel
                 anchors.top: tipsRec.bottom
                 anchors.topMargin: 6
                 bIsWorkShow: !bIsBasic
