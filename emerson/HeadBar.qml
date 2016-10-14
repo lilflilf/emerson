@@ -35,15 +35,46 @@ Item {
 
 //        }
 //    }
-    Button {
+
+    Item {
         id: btn
         height: parent.height
         width: parent.width * 0.05
         anchors.left: parent.left
         anchors.leftMargin: parent.width * 0.02
-        text: "Menu Button"
-        checkable: true
+        Image {
+            id: backGround
+            anchors.top: parent.top
+            anchors.topMargin: 6
+            height: parent.height-30
+            width: parent.width*0.68
+            anchors.left: parent.left
+            source: "qrc:/Images/images/menu.png"
+        }
+        Text {
+            id: menu
+            anchors.top: backGround.bottom
+            anchors.left: parent.left
+            anchors.leftMargin: parent.width * 0.02
+            text: qsTr("MENU")
+            color: "white"
+            font.pointSize: 12
+            font.family: "arial"
+        }
+        MouseArea {
+            anchors.fill: parent
+        }
     }
+
+//    Button {
+//        id: btn
+//        height: parent.height
+//        width: parent.width * 0.05
+//        anchors.left: parent.left
+//        anchors.leftMargin: parent.width * 0.02
+//        text: "Menu Button"
+//        checkable: true
+//    }
     Item {
         id: mainMenu
         width: 150
