@@ -6,8 +6,8 @@ import QtQuick.Controls 1.4
 Item {
     id: spliceList
     property alias listModel: splice.model
-    property bool bIsWorkShow: true
-    width: Screen.desktopAvailableWidth * 0.25
+    property bool bIsWorkShow: false
+    width: Screen.desktopAvailableWidth * 0.3
     height: Screen.desktopAvailableHeight*0.5
     signal currentSelecte(int index)
     signal currentWorkStation(int index)
@@ -100,7 +100,7 @@ Item {
                 anchors.topMargin: 10
                 anchors.left: numIndex.right
                 anchors.leftMargin: 6
-                width: parent.width*0.57
+                width: bIsWorkShow ? parent.width*0.65 : parent.width*0.75
                 height: 28
                 font.pointSize: 14
                 font.family: "arial"
@@ -134,6 +134,25 @@ Item {
                         workStation.textColor = "black"
                     else
                         workStation.textColor = "white"
+                }
+            }
+            CButton {
+                id: deleteButton
+                anchors.top: parent.top
+                anchors.topMargin: 10
+                anchors.left: bIsWorkShow ? workStation.right : spliceName.right
+                anchors.leftMargin: 10
+                clip: true
+                width: 28
+                height: 28
+                backgroundComponent: Rectangle {
+                    anchors.fill: parent
+                    color: "red"
+                }
+                text: "X"
+                textColor: "black"
+                onClicked: {
+
                 }
             }
             Timer {

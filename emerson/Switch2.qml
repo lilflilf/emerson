@@ -27,7 +27,6 @@ Item {
         if (knob.x == 1) {
             if (toggleswitch.state == "left") return;
         }
-        console.log("33333333333",knob.x)
         if (knob.x == toggleswitch.width/2) {
             if (toggleswitch.state == "right") return;
         }

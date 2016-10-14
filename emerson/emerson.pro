@@ -27,4 +27,4 @@ include(deployment.pri)
 DISTFILES +=
 
 HEADERS += \
-    test.rc
+    hmiadaptor.h

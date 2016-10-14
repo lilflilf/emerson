@@ -8,21 +8,21 @@
         <file>Switch2.qml</file>
         <file>MyLineEdit.qml</file>
         <file>BoardLayOut.qml</file>
-        <file>CButton.qml</file>
         <file>KeyBoardNum.qml</file>
         <file>SpliceListView.qml</file>
         <file>CreatWire.qml</file>
         <file>CButton.qml</file>
-        <file>KeyBoardNum.qml</file>
         <file>CStatusBar.qml</file>
         <file>WorkStationColor.qml</file>
         <file>WorkStationSet.qml</file>
         <file>MyColor.qml</file>
         <file>MyFileDialog.qml</file>
         <file>SpliceDetails.qml</file>
+        <file>AddExistingSpliceWire.qml</file>
     </qresource>
     <qresource prefix="/Images">
         <file>images/you.png</file>
         <file>images/zuo.png</file>
+        <file>images/menu.png</file>
     </qresource>
 </RCC>

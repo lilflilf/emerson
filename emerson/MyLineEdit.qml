@@ -2,7 +2,7 @@ import QtQuick 2.0
 
 Item {
     width: parent.width
-    height: parent.width
+    height: parent.height
     property alias inputSize: textInput.font.pointSize
     property alias tipsSize: inputTips.font.pointSize
     property alias inputColor: textInput.color
@@ -10,7 +10,7 @@ Item {
     property alias tipsText: inputTips.text
     property alias maxSize: textInput.maximumLength
     property alias backgroundcolor: back.color
-    property alias inputWidth: textInput.width
+    property int inputWidth: 0
     property alias tipsWidth: inputTips.width
     property alias inputHeight: textInput.height
     property alias tipsHeight: inputTips.height
@@ -23,14 +23,20 @@ Item {
     signal textChange(int text)
     Rectangle {
         id: back
-        anchors.fill: textInput
+        anchors.left: parent.left
+        anchors.top: parent.top
+        width: inputWidth
+        height: parent.height
         border.color: "#1987ab"
         border.width: 2
         color: "black"
     }
     TextInput {
         id: textInput
-        width: parent.width * 0.5
+        anchors.left: back.left
+        anchors.leftMargin: 5
+        anchors.verticalCenter: parent.verticalCenter
+        width: inputWidth - 10
         height: parent.height
         maximumLength: 60
         clip: true
@@ -59,7 +65,7 @@ Item {
     Text {
         id: inputTips
         anchors.left: textInput.right
-        anchors.leftMargin: 6
+        anchors.leftMargin: 8
         color: "white"
         font.family: "arial"
         font.pointSize: 10

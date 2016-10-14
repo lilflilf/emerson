@@ -38,6 +38,7 @@ Item {
 
         if (rec.itemAt(index).centerNum == selecteIndex) {
             rec.itemAt(index).centerColor = color
+            rec.itemAt(index).bIsCenterShow = true
             return
         }
         for (var i = 0; i < rec.itemAt(index).zoneModel.count; i++) {
@@ -95,6 +96,7 @@ Item {
                     property bool bIsCenterShow: false
                     property string centerColor: ""
                     property int centerNum: 0
+                    property var centerRec: centerWork
                     width: parent.width/layout.columns
                     height: parent.height/layout.rows
                     Rectangle {
@@ -112,6 +114,7 @@ Item {
                             font.family: "arial"
                         }
                         Rectangle {
+                            id: centerWork
                             anchors.centerIn: parent
                             width: 35
                             height: 35

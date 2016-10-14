@@ -10,13 +10,13 @@ Item {
     property alias listModel: color.model
     property variant array: ["#ff6699","#ff0033","#33FFCC","#cc99ff","#cc0099","#930202","#99ccff","#f79428",
         "#0000cc","Olive","#ffff33","#ffcc00","#cc9909","#66ff00","#009900","#00cc66","#3366ff","#cc33cc","#cc9966","#9400D3"]
-    property int currentIndex : 9
+    property int currentIndex : 6
     property int allWorkTotal: 0
     property int clickCount: 0
     property int maxSpliceNum: 0
 
     onAllWorkTotalChanged: {
-        if (allWorkTotal < 11)
+        if (allWorkTotal < 8)
             rightButton.visible = false
         else
             rightButton.visible = true
@@ -36,7 +36,12 @@ Item {
         onClicked: {
             listModel.remove(0)
             clickCount--
-            listModel.insert(9,{"workcolor":array[currentIndex-clickCount]})
+//            listModel.insert(6,{"workcolor":array[currentIndex-clickCount]})
+            if (clickCount < 7) {
+                listModel.insert(6,{"workcolor":array[currentIndex-clickCount]})
+            } else {
+                listModel.insert(6,{"workcolor":array[clickCount]})
+            }
             if (clickCount == 0) {
                 leftButton.visible = false
             }
@@ -53,11 +58,11 @@ Item {
         height: 50
         iconSource: "qrc:/Images/images/zuo.png"
         backgroundEnabled: false
-        visible: allWorkTotal > 10 ? true : false
+        visible: allWorkTotal > 7 ? true : false
         onClicked: {
             leftButton.visible = true
             clickCount++
-            listModel.remove(9)
+            listModel.remove(6)
             listModel.insert(0,{"workcolor":array[currentIndex+clickCount]})
             if ((currentIndex+clickCount+1) == allWorkTotal) {
                 rightButton.visible = false
@@ -74,7 +79,7 @@ Item {
         spacing: 10
         Repeater {
             id: color
-            model: allWorkTotal > 10 ? 10 : allWorkTotal
+            model: allWorkTotal > 7 ? 7 : allWorkTotal
             delegate: Item {
                 id: station
                 width: 55

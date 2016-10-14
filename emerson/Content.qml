@@ -18,35 +18,43 @@ Item {
     ListModel{
         id: listModel
     }
+    ListModel {
+        id: testModel
+    }
 
     Component.onCompleted: {
-        listModel.append({"nameValue":"Splice1 test title","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice2 test title","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice2 test title","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice3 test title","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice4 test title2222222222","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice5 test title","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice6 test title","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice7 test title","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice8 test title","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice9 test title","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice10 test title","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice11 test title","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice12 test title","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice13 test title","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice14 test title","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice15 test title","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice16 test title","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice17 test title","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice18 test title","stationColor":"white","station":"?"})
-
+        listModel.append({"nameValue":"Splice1 test title hellow word! welcome ","stationColor":"white","station":"?"})
+        listModel.append({"nameValue":"Splice2 test title hellow word! welcome ","stationColor":"white","station":"?"})
+        listModel.append({"nameValue":"Splice2 test title hellow word! welcome ","stationColor":"white","station":"?"})
+        listModel.append({"nameValue":"Splice3 test title hellow word! welcome ","stationColor":"white","station":"?"})
+        listModel.append({"nameValue":"Splice4 test title hellow word! welcome ","stationColor":"white","station":"?"})
+        listModel.append({"nameValue":"Splice5 test title hellow word! welcome ","stationColor":"white","station":"?"})
+        listModel.append({"nameValue":"Splice6 test title hellow word! welcome ","stationColor":"white","station":"?"})
+        listModel.append({"nameValue":"Splice7 test title hellow word! welcome ","stationColor":"white","station":"?"})
+        listModel.append({"nameValue":"Splice8 test title hellow word! welcome ","stationColor":"white","station":"?"})
+        listModel.append({"nameValue":"Splice9 test title hellow word! welcome ","stationColor":"white","station":"?"})
+        listModel.append({"nameValue":"Splice10 test title hellow word! welcome ","stationColor":"white","station":"?"})
+        listModel.append({"nameValue":"Splice11 test title hellow word! welcome ","stationColor":"white","station":"?"})
+        listModel.append({"nameValue":"Splice12 test title hellow word! welcome ","stationColor":"white","station":"?"})
+        listModel.append({"nameValue":"Splice13 test title hellow word! welcome ","stationColor":"white","station":"?"})
+        listModel.append({"nameValue":"Splice14 test title hellow word! welcome ","stationColor":"white","station":"?"})
+        listModel.append({"nameValue":"Splice15 test title hellow word! welcome ","stationColor":"white","station":"?"})
+        listModel.append({"nameValue":"Splice16 test title hellow word! welcome ","stationColor":"white","station":"?"})
+        listModel.append({"nameValue":"Splice17 test title hellow word! welcome ","stationColor":"white","station":"?"})
+        listModel.append({"nameValue":"Splice18 test title hellow word! welcome ","stationColor":"white","station":"?"})
+        testModel.append({"name":"splice test title 11111111111222","date":"2016/10/13","middle":"VW","type":"YES","count":"3"})
+        testModel.append({"name":"splice test title 1111111111122","date":"2016/10/13","middle":"VW","type":"YES","count":"3"})
+        testModel.append({"name":"splice test title 11111111111","date":"2016/10/13","middle":"VW","type":"YES","count":"3"})
+        testModel.append({"name":"splice test title 11111111111","date":"2016/10/13","middle":"VW","type":"YES","count":"311"})
+        testModel.append({"name":"splice test title 1111111111133333333333333","date":"2016/10/13","middle":"VW","type":"YES","count":"3"})
     }
+
     function getAllWorkstationColor(count)
     {
         var array = ["#ff6699","#ff0033","#33FFCC","#cc99ff","#cc0099","#930202","#99ccff","#f79428","#0000cc","Olive"]
         colorModel.clear()
-        if (count > 10)
-            count = 10
+        if (count > 7)
+            count = 7
         for (var i = 0; i < count; i++) {
             colorModel.append({"workcolor":array[i]});
         }
@@ -67,11 +75,11 @@ Item {
                 anchors.top: parent.top
                 anchors.topMargin: tabBar.height+10
                 anchors.left: parent.left
-                anchors.leftMargin: 30
+                horizontalAlignment: Qt.AlignHCenter
                 height: 20
-                width: 60
+                width: parent.width/2
                 clip: true
-                font.pointSize: 12
+                font.pointSize: 13
                 font.family: "arial"
                 text: qsTr("Splice")
                 color: "white"
@@ -81,11 +89,11 @@ Item {
                 anchors.top: parent.top
                 anchors.topMargin: tabBar.height+10
                 anchors.left: listname.right
-                anchors.leftMargin: 40
+                horizontalAlignment: Qt.AlignHCenter
                 height: 20
-                width: 140
+                width: parent.width/2
                 clip: true
-                font.pointSize: 12
+                font.pointSize: 13
                 font.family: "arial"
                 text: qsTr("Zone/Workstation")
                 color: "white"
@@ -103,12 +111,15 @@ Item {
                 listModel: listModel
                 anchors.top: tipsRec.bottom
                 anchors.topMargin: 6
+                bIsWorkShow: !bIsBasic
                 onCurrentSelecte: {
                     listModel.set(index,{"nameValue":"gggggggg"})
                 }
                 onCurrentWorkStation: {
                     stationSet.index = index
                     stationSet.visible = true
+                    backGround2.visible = true
+                    backGround2.opacity = 0.5
                 }
             }
         }
@@ -141,7 +152,7 @@ Item {
                 anchors.left: parent.left
                 anchors.leftMargin: 6
                 height: parent.height * 0.04
-                width: parent.width * 0.5
+                width: parent.width * 0.6
                 textLeft: qsTr("Basic")
                 textRight: qsTr("Adv")
                 state: "left"
@@ -184,6 +195,7 @@ Item {
                 maxSize: 20
                 regExp: RegExpValidator{regExp: /([1-9]|1[0-9]|20)/}
                 opacity: 0.7
+                tipsSize: 14
                 onTextChange: {
                     getAllWorkstationColor(text)
                     workStationcolor.allWorkTotal = text
@@ -205,6 +217,7 @@ Item {
                 maxSize: 20
                 regExp: RegExpValidator{regExp: /([1-9]|1[0-9]|20)/}
                 opacity: 0.7
+                tipsSize: 14
                 onTextChange: {
                     workStationcolor.maxSpliceNum = text
                 }
@@ -238,6 +251,7 @@ Item {
                 regExp: RegExpValidator{regExp: /^[1-4]{1}$/}
                 maxSize: 20
                 opacity: 0.7
+                tipsSize: 14
                 onTextChange: {
                     boardlayout.rows = text
                     for (var i = 0; i< workModel.count; i++) {
@@ -262,6 +276,7 @@ Item {
                 regExp: RegExpValidator{regExp: /^[1-4]{1}$/}
                 maxSize: 20
                 opacity: 0.7
+                tipsSize: 14
                 onTextChange: {
                     boardlayout.columns = text
                     for (var i = 0; i< workModel.count; i++) {
@@ -283,9 +298,10 @@ Item {
                 inputHeight: parent.height * 0.05
                 horizontalAlignment: Qt.AlignHCenter
                 tipsText: qsTr("Max Splice Per Zone")
-                regExp: RegExpValidator{regExp: /^[1-9]{1,2}$/}
+                regExp: RegExpValidator{regExp: /([1-9]|1[0-2])/}
                 maxSize: 20
                 opacity: 0.7
+                tipsSize: 14
                 onTextChange: {
                 }
             }
@@ -329,6 +345,7 @@ Item {
                     loader.source = "qrc:/CreatWire.qml"
                 }
             }
+
             CButton {
                 id: addExitSplice
                 anchors.top: addNewSplice.bottom
@@ -341,6 +358,9 @@ Item {
                 height: 30
                 pointSize: 16
                 onClicked: {
+                    backGround.visible = true
+                    backGround.opacity = 0.7
+                    addExit.visible = true
                 }
             }
             CButton {
@@ -396,7 +416,7 @@ Item {
         id: rightArea
         anchors.left: swipeView.right
         width: Screen.desktopAvailableWidth * 0.7
-        height: parent.height // * 0.5
+        height: parent.height
         ListModel {
             id: colorModel
         }
@@ -413,9 +433,9 @@ Item {
             anchors.topMargin: 4
             anchors.left: parent.left
             anchors.leftMargin: 50
-            width: parent.width * 0.67
-            height: 50
-            inputWidth: parent.width * 0.67
+            width: parent.width * 0.62
+            height: 45
+            inputWidth: parent.width * 0.62
             inputHeight: parent.height * 0.05
             horizontalAlignment: Qt.AlignHCenter
             defaultText: qsTr("PART NAME")
@@ -438,27 +458,27 @@ Item {
             onClicked: {
             }
         }
-        MyLineEdit {
-            id: edit7
-            anchors.top: edit6.bottom
-            anchors.topMargin: 2
-            anchors.left: parent.left
-            anchors.leftMargin: 50
-            width: parent.width * 0.67
-            height: 50
-            inputWidth: parent.width * 0.67
-            inputHeight: parent.height * 0.05
-            horizontalAlignment: Qt.AlignHCenter
-            defaultText: qsTr("WORK ORDER ID")
-            //regExp: RegExpValidator{regExp: /^[1-9]{1,2}$/}
-            maxSize: 60
-            clip: true
-            onTextChange: {
-            }
-        }
+//        MyLineEdit {
+//            id: edit7
+//            anchors.top: edit6.bottom
+//            anchors.topMargin: 2
+//            anchors.left: parent.left
+//            anchors.leftMargin: 50
+//            width: parent.width * 0.62
+//            height: 45
+//            inputWidth: parent.width * 0.62
+//            inputHeight: parent.height * 0.05
+//            horizontalAlignment: Qt.AlignHCenter
+//            defaultText: qsTr("WORK ORDER ID")
+//            //regExp: RegExpValidator{regExp: /^[1-9]{1,2}$/}
+//            maxSize: 60
+//            clip: true
+//            onTextChange: {
+//            }
+//        }
         Text {
             id: boardText
-            anchors.top: edit7.bottom
+            anchors.top: edit6.bottom
             anchors.left: parent.left
             anchors.leftMargin: 50
             color: "white"
@@ -572,11 +592,11 @@ Item {
             }
         }
         CButton {
-            id: exportSPlice
+            id: editSplice
             anchors.top: boardlayout.bottom
             anchors.topMargin: 30
             anchors.right: boardlayout.right
-            text: "EXPORT SPLICE"
+            text: "EDIT SPLICE"
             textColor: "white"
             width: 200
             height: 30
@@ -585,11 +605,11 @@ Item {
             }
         }
         CButton {
-            id: savePart
-            anchors.top: exportSPlice.bottom
+            id: testSplice
+            anchors.top: editSplice.bottom
             anchors.topMargin: 30
             anchors.right: boardlayout.right
-            text: "SAVE PART"
+            text: "TEST SPLICE"
             textColor: "white"
             width: 200
             height: 30
@@ -618,41 +638,101 @@ Item {
             allWorkTotal: 0
             maxSpliceNum: 0
         }
+    }
+    Rectangle {
+        id: backGround
+        anchors.fill: parent
+        color: "black"
+        opacity: 0
+        visible: false
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
 
-        WorkStationSet {
-            id: stationSet
-            anchors.top: boardText.bottom
-            anchors.topMargin: 50
-            anchors.left: boardlayout.left
-            width: 560
-            height: 280
-            allWorkTotal: workStationcolor.allWorkTotal
-            allZoneTotal: boardlayout.columns*boardlayout.rows
-            z: 10
-            visible: false
-            onSelecteZoneChanged: {
-                if (stationSet.selecteZone == "") {
-                    return
-                }
-                listModel.set(stationSet.index,{"station":stationSet.selecteZone})
-                if (stationSet.selecteColor != "") {
-                    boardlayout.setBoardLayoutColor(stationSet.selecteIndex,stationSet.selecteColor,stationSet.index+1)
-                    stationSet.visible = false
-                    stationSet.selecteColor = ""
-                    stationSet.selecteZone = ""
+            }
+        }
+    }
+    Rectangle {
+        id: backGround2
+        anchors.fill: parent
+        color: "black"
+        visible: false
+        opacity: 0
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                backGround2.visible = false
+                backGround2.opacity = 0
+                stationSet.visible = false
+                stationSet.selecteColor = ""
+                stationSet.selecteZone = ""
+                var station = listModel.get(stationSet.index).station
+                var stationColor = listModel.get(stationSet.index).stationColor
+                if (station == "?" && stationColor != "white") {
+                    listModel.set(stationSet.index,{"stationColor":"white"})
+                } else if (station != "?" && stationColor == "white") {
+                    listModel.set(stationSet.index,{"station":"?"})
                 }
             }
-            onSelecteColorChanged: {
-                if (stationSet.selecteColor == "") {
-                    return
-                }
-                listModel.set(stationSet.index,{"stationColor":stationSet.selecteColor})
-                if (stationSet.selecteZone != "") {
-                    boardlayout.setBoardLayoutColor(stationSet.selecteIndex,stationSet.selecteColor,stationSet.index+1)
-                    stationSet.visible = false
-                    stationSet.selecteColor = ""
-                    stationSet.selecteZone = ""
-                }
+        }
+    }
+    WorkStationSet {
+        id: stationSet
+        anchors.centerIn: parent
+        width: 560
+        height: 280
+        allWorkTotal: workStationcolor.allWorkTotal
+        allZoneTotal: boardlayout.columns*boardlayout.rows
+        visible: false
+        onSelecteZoneChanged: {
+            if (stationSet.selecteZone == "") {
+                return
+            }
+            listModel.set(stationSet.index,{"station":stationSet.selecteZone})
+            if (stationSet.selecteColor != "") {
+                boardlayout.setBoardLayoutColor(stationSet.selecteIndex,stationSet.selecteColor,stationSet.index+1)
+                stationSet.visible = false
+                stationSet.selecteColor = ""
+                stationSet.selecteZone = ""
+                backGround2.visible = false
+                backGround2.opacity = 0
+            }
+        }
+        onSelecteColorChanged: {
+            if (stationSet.selecteColor == "") {
+                return
+            }
+            listModel.set(stationSet.index,{"stationColor":stationSet.selecteColor})
+            if (stationSet.selecteZone != "") {
+                boardlayout.setBoardLayoutColor(stationSet.selecteIndex,stationSet.selecteColor,stationSet.index+1)
+                stationSet.visible = false
+                stationSet.selecteColor = ""
+                stationSet.selecteZone = ""
+                backGround2.visible = false
+                backGround2.opacity = 0
+            }
+        }
+    }
+    AddExistingSpliceWire {
+        id: addExit
+        anchors.centerIn: parent
+        width: Screen.desktopAvailableWidth*0.7
+        height: Screen.desktopAvailableHeight*0.6
+        visible: false
+        listModel: testModel
+        titleName: qsTr("Add Existing Splice")
+        componentName: qsTr("SPLICE NAME")
+        componentData: qsTr("DATE CREATED")
+        componentMiddle: qsTr("# OF WIRES")
+        componenttype: qsTr("CROSS SECTION")
+        componentCount: qsTr("COUNT")
+        onSelectTypeChanged: {
+            backGround.visible = false
+            backGround.opacity = 0
+            if (selectType == 0) {
+                addExit.visible = false
+            } else {
+                addExit.visible = false
             }
         }
     }

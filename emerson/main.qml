@@ -31,6 +31,7 @@ Window {
         id: headBar
         height: Screen.desktopAvailableHeight * 0.07
         anchors.top: statusBar.bottom
+        z: 10
     }
 
     Loader {
