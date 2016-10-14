@@ -36,6 +36,7 @@ Window {
 
     Loader {
         id: contentLoader
+        z:9
         anchors.top: headBar.bottom
         width: Screen.desktopAvailableWidth
         height: Screen.desktopAvailableHeight

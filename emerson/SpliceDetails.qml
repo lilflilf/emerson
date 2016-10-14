@@ -18,7 +18,43 @@ Item {
 
     onSelectLocationChanged: {
         if (selectDirection == "left" && selectLocation == "middle")
-            console.log("adsf")
+        {
+            console.log("leftList")
+            if (selectPosition == "topLeft" || selectPosition == "bottomLeft")
+            {
+                selectPosition = "leftList"
+                topLeft.sourceComponent = null
+                bottomLeft.sourceComponent = null
+                listModelLeft.append({"myLineLength":200,"mycolor":selectColor.toString(),"isCheck":false,"linetext":selectText})
+                selectIndex = listModelLeft.count - 1
+            }
+        }
+        else if (selectDirection == "left" && selectLocation == "top")
+        {
+            console.log("topLeft",selectPosition)
+            if (selectPosition == "leftList")
+            {
+                selectPosition = "topLeft"
+                listModelLeft.remove(selectIndex,1)
+                topLeft.sourceComponent = left
+            }
+        }
+        else if (selectDirection == "left" && selectLocation == "bottom")
+        {
+            console.log("bottomLeft")
+        }
+        else if (selectDirection == "right" && selectLocation == "middle")
+        {
+            console.log("listRight")
+        }
+        else if (selectDirection == "right" && selectLocation == "top")
+        {
+            console.log("topRight")
+        }
+        else if (selectDirection == "right" && selectLocation == "bottom")
+        {
+            console.log("bottomRight")
+        }
     }
 
     onSelectColorChanged: {
@@ -28,8 +64,10 @@ Item {
         }
         else if (detail.selectPosition == "leftList")
             listModelLeft.set(detail.selectIndex,{"mycolor":selectColor.toString()})
-
-        //topLeft.item.myColor = selectColor
+        else if (detail.selectPosition == "topLeft")
+            topLeft.item.myColor = selectColor
+        else if (detail.selectPosition == "topRight")
+            topRight.item.myColor = selectColor
     }
     onSelectDirectionChanged: {
         console.log("selectDirection selectPosition",selectDirection,selectPosition)
@@ -38,13 +76,24 @@ Item {
             listModelRight.remove(detail.selectIndex, 1)
             detail.selectPosition = "leftList"
             listModelLeft.set(listModelLeft.count - 1, {"isCheck":true})
+            detail.selectIndex = listModelLeft.count - 1
         }
         else if (detail.selectPosition == "leftList" && selectDirection != "left"){
             listModelRight.append(listModelLeft.get(detail.selectIndex))
             listModelLeft.remove(detail.selectIndex, 1)
             detail.selectPosition = "rightList"
             listModelRight.set(listModelRight.count - 1, {"isCheck":true})
+            detail.selectIndex = listModelRight.count - 1
         }
+        else if (detail.selectPosition == "topLeft" && selectDirection != "left"){
+            topLeft.sourceComponent = null
+            topRight.sourceComponent = right
+        }
+        else if (detail.selectPosition == "topRight" && selectDirection != "right"){
+            topLeft.sourceComponent = left
+            topRight.sourceComponent = null
+        }
+
 
     }
     onSelectPositionChanged: {
@@ -89,11 +138,11 @@ Item {
             id: topLeft
             anchors.right: parent.right
             anchors.rightMargin: parent.width / 2 - 40
-            sourceComponent: left
+            //sourceComponent: left
             onLoaded: {
                 topLeft.item.lineLength = 200
-                topLeft.item.myColor = "green"
-                topLeft.item.myText = "green"
+                topLeft.item.myColor = selectColor
+                topLeft.item.myText = selectText
                 topLeft.item.position = "topLeft"
                 topRight.sourceComponent = null
             }
@@ -103,11 +152,11 @@ Item {
             id: topRight
             anchors.left: parent.left
             anchors.leftMargin: parent.width / 2 - 40
-            sourceComponent: right
+            //sourceComponent: right
             onLoaded: {
                 topRight.item.lineLength = 200
-                topRight.item.myColor = "green"
-                topRight.item.myText = "green"
+                topRight.item.myColor = selectColor
+                topRight.item.myText = selectText
                 topRight.item.position = "topRight"
                 topLeft.sourceComponent = null
             }
@@ -123,6 +172,19 @@ Item {
         Rectangle {
             anchors.fill: parent
             opacity: 0.1
+        }
+        Loader {
+            id: bottomLeft
+            anchors.right: parent.right
+            anchors.rightMargin: parent.width / 2 - 40
+            sourceComponent: left
+            onLoaded: {
+                bottomLeft.item.lineLength = 200
+                bottomLeft.item.myColor = "red"
+                bottomLeft.item.myText = "red"
+                bottomLeft.item.position = "bottomRight"
+            }
+            anchors.verticalCenter: parent.verticalCenter
         }
         Loader {
             id: bottomRight
@@ -264,10 +326,13 @@ Item {
                 onCheckedChanged: {
                     if (leftItem.position != "leftList" && radioButton.checked)
                     {
+                        changing(true)
                         selectPosition = leftItem.position
                         selectColor = leftRec.color
                         selectText = mytext.text
                         wireSelected(leftRec.color,"left",leftItem.position,mytext.text)
+                        changing(false)
+
                     }
                     else if (leftItem.position == "leftList" && radioButton.checked)
                     {
