@@ -111,7 +111,7 @@ Item {
             }
             SpliceListView {
                 id: spliceList
-                listModel: bIsEdit ? listModel2: listModel
+                listModel: bIsEdit ? listModel : listModel2
                 anchors.top: tipsRec.bottom
                 anchors.topMargin: 6
                 bIsWorkShow: !bIsBasic
@@ -123,6 +123,75 @@ Item {
                     stationSet.visible = true
                     backGround2.visible = true
                     backGround2.opacity = 0.5
+                }
+            }
+            Rectangle {
+                id: tipsRec2
+                anchors.top: spliceList.bottom
+                anchors.topMargin: 4
+                width: parent.width
+                height: 10
+                color: "#585858"
+            }
+            CButton {
+                id: addNewSplice
+                anchors.top: tipsRec2.bottom
+                anchors.topMargin: 10
+                anchors.left: parent.left
+                anchors.leftMargin: 6
+                text: "+ ADD NEW SPLICE"
+                textColor: "white"
+                width: parent.width - 12
+                height: 30
+                pointSize: 16
+                onClicked: {
+                    loader.source = "qrc:/CreatWire.qml"
+                }
+            }
+
+            CButton {
+                id: addExitSplice
+                anchors.top: addNewSplice.bottom
+                anchors.topMargin: 10
+                anchors.left: parent.left
+                anchors.leftMargin: 6
+                text: "+ ADD EXITING SPLICE"
+                textColor: "white"
+                width: parent.width - 12
+                height: 30
+                pointSize: 16
+                onClicked: {
+                    backGround.visible = true
+                    backGround.opacity = 0.7
+                    addExit.visible = true
+                }
+            }
+            CButton {
+                id: upload
+                anchors.top: addExitSplice.bottom
+                anchors.topMargin: 10
+                anchors.left: parent.left
+                anchors.leftMargin: 6
+                text: "UPLOAD SPLICE"
+                textColor: "white"
+                width: parent.width - 12
+                height: 30
+                pointSize: 16
+                onClicked: {
+                }
+            }
+            CButton {
+                id: save
+                anchors.top: upload.bottom
+                anchors.topMargin: 10
+                anchors.left: parent.left
+                anchors.leftMargin: 6
+                text: "SAVE PART"
+                textColor: "white"
+                width: parent.width - 12
+                height: 30
+                pointSize: 16
+                onClicked: {
                 }
             }
         }
@@ -333,67 +402,6 @@ Item {
                 state: "left"
                 opacity: 0.8
             }
-            CButton {
-                id: addNewSplice
-                anchors.top: unitSwitch.bottom
-                anchors.topMargin: 10
-                anchors.left: parent.left
-                anchors.leftMargin: 6
-                text: "+ ADD NEW SPLICE"
-                textColor: "white"
-                width: parent.width - 12
-                height: 30
-                pointSize: 16
-                onClicked: {
-                    loader.source = "qrc:/CreatWire.qml"
-                }
-            }
-
-            CButton {
-                id: addExitSplice
-                anchors.top: addNewSplice.bottom
-                anchors.topMargin: 10
-                anchors.left: parent.left
-                anchors.leftMargin: 6
-                text: "+ ADD EXITING SPLICE"
-                textColor: "white"
-                width: parent.width - 12
-                height: 30
-                pointSize: 16
-                onClicked: {
-                    backGround.visible = true
-                    backGround.opacity = 0.7
-                    addExit.visible = true
-                }
-            }
-            CButton {
-                id: upload
-                anchors.top: addExitSplice.bottom
-                anchors.topMargin: 10
-                anchors.left: parent.left
-                anchors.leftMargin: 6
-                text: "UPLOAD SPLICE"
-                textColor: "white"
-                width: parent.width - 12
-                height: 30
-                pointSize: 16
-                onClicked: {
-                }
-            }
-            CButton {
-                id: save
-                anchors.top: upload.bottom
-                anchors.topMargin: 10
-                anchors.left: parent.left
-                anchors.leftMargin: 6
-                text: "SAVE PART"
-                textColor: "white"
-                width: parent.width - 12
-                height: 30
-                pointSize: 16
-                onClicked: {
-                }
-            }
         }
     }
     TabBar {
@@ -491,7 +499,16 @@ Item {
             font.pointSize: 16
             text: qsTr("Board Layout")
         }
-
+        Text {
+            id: tempText
+            anchors.top:  edit6.bottom
+            anchors.right: boardlayout.right
+            color: "white"
+            opacity: 0.5
+            font.family: "arial"
+            font.pointSize: 16
+            text: qsTr("Temp(℃):260 Time(s):09.0 ENABLED")
+        }
         BoardLayOut {
             id: boardlayout
             anchors.top: boardText.bottom

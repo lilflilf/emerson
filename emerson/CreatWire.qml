@@ -519,45 +519,45 @@ Item {
         }
     }
 
-//    TabBar {
-//        id: tabBar
-//        currentIndex: swipeView.currentIndex
-//        anchors.top: parent.top
-//        width: Screen.desktopAvailableWidth * 0.3
-//        TabButton {
-//            Rectangle {
-//                anchors.fill: parent
-//                color: tabBar.currentIndex == 0 ? "black" : "#48484a"
-//                Text {
-//                    anchors.centerIn: parent
-//                    font.family: "arial"
-//                    font.pointSize: 14
-//                    color: "white"
-//                    text: qsTr("WIRE BUILDER")
-//                    opacity: 0.5
-//                    width: parent.width
-//                    clip: true
-//                }
-//            }
+    //    TabBar {
+    //        id: tabBar
+    //        currentIndex: swipeView.currentIndex
+    //        anchors.top: parent.top
+    //        width: Screen.desktopAvailableWidth * 0.3
+    //        TabButton {
+    //            Rectangle {
+    //                anchors.fill: parent
+    //                color: tabBar.currentIndex == 0 ? "black" : "#48484a"
+    //                Text {
+    //                    anchors.centerIn: parent
+    //                    font.family: "arial"
+    //                    font.pointSize: 14
+    //                    color: "white"
+    //                    text: qsTr("WIRE BUILDER")
+    //                    opacity: 0.5
+    //                    width: parent.width
+    //                    clip: true
+    //                }
+    //            }
 
-//        }
-//        TabButton {
-//            Rectangle {
-//                anchors.fill: parent
-//                color: tabBar.currentIndex == 1 ? "black" : "#48484a"
-//                Text {
-//                    anchors.centerIn: parent
-//                    font.family: "arial"
-//                    font.pointSize: 14
-//                    color: "white"
-//                    text: qsTr("WELD SETTINGS")
-//                    opacity: 0.5
-//                    width: parent.width
-//                    clip: true
-//                }
-//            }
-//        }
-//    }
+    //        }
+    //        TabButton {
+    //            Rectangle {
+    //                anchors.fill: parent
+    //                color: tabBar.currentIndex == 1 ? "black" : "#48484a"
+    //                Text {
+    //                    anchors.centerIn: parent
+    //                    font.family: "arial"
+    //                    font.pointSize: 14
+    //                    color: "white"
+    //                    text: qsTr("WELD SETTINGS")
+    //                    opacity: 0.5
+    //                    width: parent.width
+    //                    clip: true
+    //                }
+    //            }
+    //        }
+    //    }
 
     Item {
         id: rightArea
@@ -809,6 +809,7 @@ Item {
             anchors.right: parent.right
             color: Qt.rgba(255,255,255,0.3)
             height: 350
+            clip: true
             Text {
                 id: adWeldSetting
                 text: qsTr("Advanced Weld Setting")
@@ -819,6 +820,172 @@ Item {
                 anchors.left: parent.left
                 anchors.topMargin: 5
                 anchors.leftMargin: 15
+            }
+            ListModel {
+                id: weldSettingModel
+                Component.onCompleted: {
+                    weldSettingModel.append({"headText":"Pre Burst:","textValue":"0.00s"})
+                    weldSettingModel.append({"headText":"Hold Time:","textValue":"0.00s"})
+                    weldSettingModel.append({"headText":"Squeeze Time:","textValue":"0.00s"})
+                    weldSettingModel.append({"headText":"After Burst:","textValue":"0.00s"})
+                }
+            }
+            Grid {
+                id: weldSetting
+                anchors.top: adWeldSetting.bottom
+                anchors.left: parent.left
+                anchors.leftMargin: 20
+                width: parent.width-40
+                height: parent.height/2-50
+                columns: 2
+                rows:2
+                columnSpacing: 20
+                rowSpacing: 15
+                Repeater {
+                    model: weldSettingModel
+                    delegate: Item {
+                        width: parent.width/2-20
+                        height: parent.height/2-20
+                        Text {
+                            id: headName
+                            anchors.top: parent.top
+                            anchors.topMargin: 20
+                            anchors.left: parent.left
+                            anchors.leftMargin: 10
+                            width: parent.width/3
+                            font.pointSize: 16
+                            font.family: "arial"
+                            text: qsTr(headText)
+                            color: "white"
+                            clip: true
+                        }
+                        MyLineEdit {
+                            id: inputText
+                            anchors.left: headName.right
+                            anchors.top: parent.top
+                            anchors.topMargin: 15
+                            width: parent.width/2
+                            horizontalAlignment: Qt.AlignHCenter
+                            height: 40
+                            inputWidth: parent.width/2
+                            inputHeight: 40
+                            inputColor: "black"
+                            clip: true
+                            backgroundcolor: "white"
+                            inputText: qsTr(textValue)
+                        }
+                    }
+                }
+            }
+            Text {
+                id: widthSettingText
+                anchors.top: weldSetting.bottom
+                anchors.left: parent.left
+                anchors.leftMargin: 30
+                text: qsTr("Width off-set:")
+                color: "white"
+                font.pointSize: 16
+                font.family: "arial"
+            }
+            ListModel {
+                id: widthModel
+                Component.onCompleted: {
+                    widthModel.append({"widthText":"Displayed:","textValue":"0.00mm"})
+                    widthModel.append({"widthText":"Actual:","textValue":"0.00mm"})
+                }
+            }
+            Grid {
+                id: widthSetting
+                anchors.top: widthSettingText.bottom
+                anchors.left: parent.left
+                anchors.leftMargin: 20
+                width: parent.width-40
+                height: parent.height/3-40
+                columns: 2
+                rows: 1
+                columnSpacing: 20
+                rowSpacing: 15
+                Repeater {
+                    model: widthModel
+                    delegate: Item {
+                        width: parent.width/2-20
+                        height: parent.height/2-20
+                        Text {
+                            id: widthName
+                            anchors.top: parent.top
+                            anchors.topMargin: 20
+                            anchors.left: parent.left
+                            anchors.leftMargin: 10
+                            width: parent.width/3
+                            font.pointSize: 16
+                            font.family: "arial"
+                            text: qsTr(widthText)
+                            color: "white"
+                            clip: true
+                        }
+                        MyLineEdit {
+                            id: widthValue
+                            anchors.left: widthName.right
+                            anchors.top: parent.top
+                            anchors.topMargin: 15
+                            width: parent.width/2
+                            horizontalAlignment: Qt.AlignHCenter
+                            height: 40
+                            inputWidth: parent.width/2
+                            inputHeight: 40
+                            inputColor: "black"
+                            clip: true
+                            backgroundcolor: "white"
+                            inputText: qsTr(textValue)
+                        }
+                    }
+                }
+            }
+            Text {
+                id: antiText
+                anchors.top: widthSetting.bottom
+                anchors.topMargin: 8
+                anchors.left: parent.left
+                anchors.leftMargin: 30
+                width: parent.width/6-13
+                text: qsTr("Anti-Side:")
+                color: "white"
+                font.pointSize: 16
+                font.family: "arial"
+            }
+            Switch2 {
+                id: onoroff
+                anchors.top: widthSetting.bottom
+                anchors.left: antiText.right
+                width: parent.width/4-20
+                height: 38
+                textLeft: qsTr("ON")
+                textRight: qsTr("OFF")
+                state: "left"
+                clip: true
+            }
+            Text {
+                id: instulationText
+                anchors.top: widthSetting.bottom
+                anchors.topMargin: 8
+                anchors.left: onoroff.right
+                anchors.leftMargin: parent.width/8-26
+                width: parent.width/6-13
+                text: qsTr("Instulation:")
+                color: "white"
+                font.pointSize: 16
+                font.family: "arial"
+            }
+            CButton {
+                id: instulationButton
+                anchors.top: widthSetting.bottom
+                anchors.left: instulationText.right
+                width: parent.width/4-20
+                height: 38
+                text: qsTr("Instulation")
+                onClicked: {
+                    shrinkSet.visible = true
+                }
             }
         }
         Rectangle {
@@ -837,6 +1004,7 @@ Item {
             anchors.right: parent.right
             anchors.rightMargin: 20
             anchors.top: line2.bottom
+            anchors.topMargin: 10
             anchors.bottomMargin: 30
             CButton {
                 width: 150
@@ -879,6 +1047,12 @@ Item {
                 }
             }
         }
+        ShrinkSet {
+            id: shrinkSet
+            anchors.centerIn: parent
+            width: parent.width*0.8
+            height: parent.height*0.6
+            visible: false
+        }
     }
 }
-

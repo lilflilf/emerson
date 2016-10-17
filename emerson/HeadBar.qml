@@ -28,13 +28,12 @@ Item {
             color: "#404041"
             visible: false
         }
-
         Image {
             id: backGround
             anchors.centerIn: parent
             height: parent.height-30
             width: parent.width*0.68
-            source: "qrc:/Images/images/menu.png"
+            source: btnBack.visible ? "qrc:/Images/images/menu2.png" : "qrc:/Images/images/menu.png"
         }
         Text {
             id: menu

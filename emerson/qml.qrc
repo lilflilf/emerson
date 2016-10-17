@@ -19,10 +19,12 @@
         <file>MyFileDialog.qml</file>
         <file>SpliceDetails.qml</file>
         <file>AddExistingSpliceWire.qml</file>
+        <file>ShrinkSet.qml</file>
     </qresource>
     <qresource prefix="/Images">
         <file>images/you.png</file>
         <file>images/zuo.png</file>
         <file>images/menu.png</file>
+        <file>images/menu2.png</file>
     </qresource>
 </RCC>
