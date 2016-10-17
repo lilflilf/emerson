@@ -8,7 +8,7 @@ Item {
     property alias listModel: splice.model
     property bool bIsWorkShow: false
     width: Screen.desktopAvailableWidth * 0.3
-    height: Screen.desktopAvailableHeight*0.5
+    height: Screen.desktopAvailableHeight*0.53
     signal currentSelecte(int index)
     signal currentWorkStation(int index)
     ListView {

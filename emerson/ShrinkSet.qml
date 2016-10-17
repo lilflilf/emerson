@@ -4,6 +4,8 @@ import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 
 Item {
+    id: shrink
+    property int selectIndex: -1
     width: parent.width
     height: parent.height
     Rectangle {
@@ -41,8 +43,10 @@ Item {
                 width: parent.width
                 height: 40
                 Repeater {
+                    id: selected
                     model: 4
                     delegate: Item {
+                        property var theopacity: 0.0
                         width: parent.width
                         height: parent.height
                         Text {
@@ -51,19 +55,26 @@ Item {
                             color: "white"
                             font.pointSize: 16
                             font.family: "arial"
+                            verticalAlignment: Qt.AlignVCenter
                             horizontalAlignment: Qt.AlignHCenter
                         }
                         Rectangle {
                             id: backcolor
                             anchors.fill: parent
                             color: "black"
-                            opacity: 0
+                            opacity: theopacity
                         }
-
                         MouseArea {
                             anchors.fill: parent
                             onClicked: {
-                                backcolor.opacity = 0.7
+                                if (selectIndex == -1) {
+                                    selectIndex = index
+                                    selected.itemAt(index).theopacity = 0.5
+                                } else {
+                                    selected.itemAt(selectIndex).theopacity = 0.0
+                                    selected.itemAt(index).theopacity = 0.5
+                                    selectIndex = index
+                                }
                             }
                         }
                     }
@@ -125,7 +136,7 @@ Item {
             anchors.top: shrinkId.bottom
             anchors.topMargin: 24
             anchors.left: timeSet.right
-            anchors.leftMargin: parent.width/11
+            anchors.leftMargin: parent.width/15
             height: 40
             clip: true
             color: "white"
@@ -145,35 +156,56 @@ Item {
             inputWidth: parent.width/7
             inputHeight: 38
         }
-        CheckBox {
-            id: checkRec
+        Text {
+            id: shrinkTube
             anchors.top: tempSet.bottom
             anchors.topMargin: 24
             anchors.left: contArea.right
             anchors.leftMargin: 24
-            width: 100
+            text: qsTr("Shrink Tube:")
+            color: "white"
+            width: parent.width/6
+            font.pointSize: 16
+            font.family: "arial"
+        }
+        Switch2 {
+            id: onoroff
+            anchors.top: tempSet.bottom
+            anchors.topMargin: 18
+            anchors.left: shrinkTube.right
+            anchors.leftMargin: 24
             height: 40
-            checked: true
-            text: qsTr("Shrink Tube")
+            width: parent.width/6
+            textLeft: qsTr("ON")
+            textRight: qsTr("OFF")
+            state: "right"
+            opacity: 0.8
         }
         CButton {
             id: enterButton
-            anchors.top: checkRec.bottom
+            anchors.top: onoroff.bottom
             anchors.topMargin: 24
             anchors.left: contArea.right
-            anchors.leftMargin: 40
-            width: 100
+            anchors.leftMargin: parent.width/8
+            width: parent.width/6
             height: 40
-
+            text: qsTr("Enter")
+            onClicked: {
+                shrink.visible = false
+            }
         }
         CButton {
             id: escButton
-            anchors.top: checkRec.bottom
+            anchors.top: onoroff.bottom
             anchors.topMargin: 24
             anchors.left: enterButton.right
             anchors.leftMargin: 40
-            width: 100
+            width: parent.width/6
             height: 40
+            text: qsTr("Esc")
+            onClicked: {
+                shrink.visible = false
+            }
         }
     }
 }

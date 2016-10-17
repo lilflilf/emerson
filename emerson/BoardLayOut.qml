@@ -6,7 +6,7 @@ import QtQuick.Dialogs 1.2
 Item {
     id: boardLayout
     width: Screen.desktopAvailableWidth * 0.6
-    height: Screen.desktopAvailableHeight*0.5
+    height: Screen.desktopAvailableHeight*0.53
     property int columns: 0
     property int rows: 0
     property int theIndex: 0
