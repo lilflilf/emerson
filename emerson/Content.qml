@@ -10,6 +10,13 @@ Item {
     property string draColor: ""
     width: Screen.desktopAvailableWidth
     height: Screen.desktopAvailableHeight
+    Connections {
+        target: loader.item
+        onSignalSaveSplice: {
+            loader.source = ""
+        }
+    }
+
     Loader {
         id: loader
         z: 10
@@ -417,6 +424,9 @@ Item {
         anchors.left: swipeView.right
         width: Screen.desktopAvailableWidth * 0.7
         height: parent.height
+        MouseArea {
+            anchors.fill: parent
+        }
         ListModel {
             id: colorModel
         }

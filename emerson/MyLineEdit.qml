@@ -1,5 +1,5 @@
 import QtQuick 2.0
-
+//import QtQuick.VirtualKeyboard 2.0
 Item {
     width: parent.width
     height: parent.height
@@ -31,6 +31,8 @@ Item {
         border.width: 2
         color: "black"
     }
+
+
     TextInput {
         id: textInput
         anchors.left: back.left
@@ -59,6 +61,7 @@ Item {
         onTextChanged: {
             textChange(textInput.text)
         }
+
     }
 
 

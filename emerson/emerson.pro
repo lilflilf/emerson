@@ -4,6 +4,10 @@ QT += qml quick
 CONFIG += c++11
 
 CONFIG += localize_deployment
+static {
+    QT += svg
+    QTPLUGIN += qtvirtualkeyboardplugin
+}
 
 TRANSLATIONS = displayChinese_zh_CN.ts \
                displayFrench_zh_CN.ts
