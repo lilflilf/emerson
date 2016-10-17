@@ -384,31 +384,31 @@ Item {
                 onTextChange: {
                 }
             }
-            Label {
-                id: lab3
-                color: "white"
-                anchors.top: edit5.bottom
-                anchors.topMargin: 6
-                anchors.left: parent.left
-                anchors.leftMargin: 6
-                text: qsTr("UNITS")
-                font.family: "arial"
-                font.pointSize: 16
-                opacity: 0.5
-            }
-            Switch2 {
-                id: unitSwitch
-                anchors.top: lab3.bottom
-                anchors.topMargin: 12
-                anchors.left: parent.left
-                anchors.leftMargin: 6
-                height: parent.height * 0.04
-                width: parent.width * 0.6
-                textLeft: qsTr("Imperial")
-                textRight: qsTr("Metric")
-                state: "left"
-                opacity: 0.8
-            }
+//            Label {
+//                id: lab3
+//                color: "white"
+//                anchors.top: edit5.bottom
+//                anchors.topMargin: 6
+//                anchors.left: parent.left
+//                anchors.leftMargin: 6
+//                text: qsTr("UNITS")
+//                font.family: "arial"
+//                font.pointSize: 16
+//                opacity: 0.5
+//            }
+//            Switch2 {
+//                id: unitSwitch
+//                anchors.top: lab3.bottom
+//                anchors.topMargin: 12
+//                anchors.left: parent.left
+//                anchors.leftMargin: 6
+//                height: parent.height * 0.04
+//                width: parent.width * 0.6
+//                textLeft: qsTr("Imperial")
+//                textRight: qsTr("Metric")
+//                state: "left"
+//                opacity: 0.8
+//            }
         }
     }
     TabBar {
@@ -473,8 +473,12 @@ Item {
             anchors.right: boardlayout.right
             text: qsTr("Template")
             textColor: "white"
+            backgroundComponent: Rectangle {
+                anchors.fill: parent
+                color: "black"
+            }
             width: 200
-            height: 30
+            height: 45
             pointSize: 16
             onClicked: {
             }
@@ -500,6 +504,7 @@ Item {
         Text {
             id: boardText
             anchors.top: edit6.bottom
+            anchors.topMargin: 24
             anchors.left: parent.left
             anchors.leftMargin: 50
             color: "white"
@@ -507,11 +512,13 @@ Item {
             width: 100
             font.family: "arial"
             font.pointSize: 16
+            visible: !bIsBasic
             text: qsTr("Board Layout")
         }
         Text {
             id: tempText
             anchors.top:  edit6.bottom
+            anchors.topMargin: 24
             anchors.right: boardlayout.right
             color: "white"
             opacity: 0.5
@@ -522,9 +529,10 @@ Item {
         BoardLayOut {
             id: boardlayout
             anchors.top: boardText.bottom
-            anchors.topMargin: 6
+            anchors.topMargin: 10
             anchors.left: parent.left
             anchors.leftMargin: 50
+            visible: !bIsBasic
             columns: 0
             rows: 0
             onColumnsChanged: {
@@ -624,12 +632,12 @@ Item {
         CButton {
             id: editSplice
             anchors.top: boardlayout.bottom
-            anchors.topMargin: 30
+            anchors.topMargin: parent.height/10-24
             anchors.right: boardlayout.right
             text: "EDIT SPLICE"
             textColor: "white"
             width: 200
-            height: 30
+            height: 45
             pointSize: 16
             onClicked: {
             }
@@ -637,12 +645,12 @@ Item {
         CButton {
             id: testSplice
             anchors.top: editSplice.bottom
-            anchors.topMargin: 30
+            anchors.topMargin: 18
             anchors.right: boardlayout.right
             text: "TEST SPLICE"
             textColor: "white"
             width: 200
-            height: 30
+            height: 45
             pointSize: 16
             onClicked: {
             }
@@ -652,6 +660,7 @@ Item {
             anchors.top: boardlayout.bottom
             anchors.topMargin: 10
             anchors.left: boardlayout.left
+            visible: !bIsBasic
             text: qsTr("WORKSTATIONS")
             color: "white"
             opacity: 0.5

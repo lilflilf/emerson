@@ -1260,7 +1260,7 @@ Item {
                 anchors.left: instulationText.right
                 width: parent.width/4-20
                 height: 38
-                text: qsTr("Instulation")
+                text: qsTr("Insulation")
                 onClicked: {
                     shrinkSet.visible = true
                 }
@@ -1329,7 +1329,7 @@ Item {
             id: shrinkSet
             anchors.centerIn: parent
             width: parent.width*0.8
-            height: parent.height*0.6
+            height: parent.height*0.5
             visible: false
         }
     }
