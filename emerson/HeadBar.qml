@@ -144,6 +144,8 @@ Item {
                                         else if (index == 1 || index == 2)
                                             creatMenu.visible = false
                                         headBar.selectIndex = index
+                                        creatMenu.anchors.topMargin = index * 40
+
                                     }
                                     else {
                                         console.log("index ==== ",index)
@@ -256,9 +258,11 @@ Item {
                                 btnBack.visible = false
                                 if (menuKey == "Create New"){
                                     root.menuInit(0)
+                                    title.text = qsTr("Creat Assembly")
                                 }
                                 if (menuKey == "Edit Existing"){
                                     root.menuInit(1)
+                                    title.text = qsTr("Edit Existing")
                                 }
                             }
                         }

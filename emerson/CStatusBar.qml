@@ -17,7 +17,7 @@ Item {
             color: "white"
             anchors.right: parent.right
             anchors.rightMargin: Screen.desktopAvailableWidth * 0.05
-            text: Qt.formatDateTime(new Date(),"hh-mm dd MMMM yyyy")
+            text: Qt.formatDateTime(new Date(),"hh:mm dd MMMM yyyy")
             //QDate::longMonthName
         }
         Timer {
