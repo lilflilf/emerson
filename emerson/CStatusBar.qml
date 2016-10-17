@@ -26,7 +26,7 @@ Item {
             running: true
             onTriggered: {
                 //QDate::longMonthName()
-                time.text = Qt.formatDateTime(new Date(),"hh-mm dd MMMM yyyy")
+                time.text = Qt.formatDateTime(new Date(),"hh:mm dd MMMM yyyy")
             }
         }
     }

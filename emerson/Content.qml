@@ -9,6 +9,7 @@ Item {
     property bool bIsDrag: false
     property bool bIsEdit: false
     property string draColor: ""
+    signal titleTextChanged(var myTitleText)
     width: Screen.desktopAvailableWidth
     height: Screen.desktopAvailableHeight
     Connections {
@@ -153,6 +154,7 @@ Item {
                 pointSize: 16
                 onClicked: {
                     loader.source = "qrc:/CreatWire.qml"
+                    titleTextChanged("Creat Splice")
                 }
             }
 
@@ -179,7 +181,7 @@ Item {
                 anchors.topMargin: 10
                 anchors.left: parent.left
                 anchors.leftMargin: 6
-                text: "UPLOAD SPLICE"
+                text: "IMPORT SPLICE"
                 textColor: "white"
                 width: parent.width - 12
                 height: 30

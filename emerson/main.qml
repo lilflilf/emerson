@@ -9,7 +9,7 @@ Window {
     visible: true
     width: Screen.desktopAvailableWidth
     height: Screen.desktopAvailableHeight
-    title: qsTr("Hello World")
+    title: qsTr("NewWireSplice")
     property var initIndex: 0
     function menuInit(index)
     {
@@ -48,6 +48,14 @@ Window {
                 contentLoader.item.bIsEdit = true
         }
     }
+    Connections {
+        target: contentLoader.item
+        onTitleTextChanged: {
+            console.log("myTitleText = ",myTitleText)
+            headBar.titleText = myTitleText
+        }
+    }
+
     HeadBar {
         id: headBar
         height: Screen.desktopAvailableHeight * 0.07
