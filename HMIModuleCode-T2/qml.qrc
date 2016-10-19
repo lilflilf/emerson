@@ -1,0 +1,35 @@
+<RCC>
+    <qresource prefix="/">
+        <file>UI/AddExistingSpliceWire.qml</file>
+        <file>UI/BoardLayOut.qml</file>
+        <file>UI/CButton.qml</file>
+        <file>UI/Content.qml</file>
+        <file>UI/CreatWire.qml</file>
+        <file>UI/CStatusBar.qml</file>
+        <file>UI/HeadBar.qml</file>
+        <file>UI/KeyBoardNum.qml</file>
+        <file>UI/MyColor.qml</file>
+        <file>UI/MyFileDialog.qml</file>
+        <file>UI/MyLineEdit.qml</file>
+        <file>UI/NewWireSplice.pro</file>
+        <file>UI/NewWireSplice.pro.user</file>
+        <file>UI/Operate.qml</file>
+        <file>UI/OperateDetails.qml</file>
+        <file>UI/QualityWindow.qml</file>
+        <file>UI/ShrinkSet.qml</file>
+        <file>UI/SpliceDetails.qml</file>
+        <file>UI/SpliceListView.qml</file>
+        <file>UI/Switch2.qml</file>
+        <file>UI/test.rc</file>
+        <file>UI/WorkStationColor.qml</file>
+        <file>UI/WorkStationSet.qml</file>
+        <file>UI/main.qml</file>
+        <file>UI/SpliceLocation.qml</file>
+    </qresource>
+    <qresource prefix="/images">
+        <file>images/menu.png</file>
+        <file>images/menu2.png</file>
+        <file>images/you.png</file>
+        <file>images/zuo.png</file>
+    </qresource>
+</RCC>
