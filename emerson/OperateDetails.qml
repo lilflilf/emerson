@@ -20,6 +20,33 @@ Item {
         color: "white"
         anchors.left: parent.left
         anchors.top: parent.top
+        anchors.leftMargin: 25
+        anchors.topMargin: 15
+    }
+    Switch2 {
+        width: Screen.desktopAvailableWidth * 0.12
+        height: Screen.desktopAvailableHeight * 0.04
+        anchors.right: spliceDetailsItem.right
+        anchors.top: operateTitle.top
+        textLeft: qsTr("Diagram")
+        textRight: qsTr("Image")
+        state: "left"
+        onStateChanged: {
+            if (state == "left") {
+                spliceDetailsItem.visible = true
+                spliceDetailsImage.visible = false
+            }
+            else
+            {
+                spliceDetailsItem.visible = false
+                spliceDetailsImage.visible = true
+            }
+        }
+    }
+
+    Image {
+        id: spliceDetailsImage
+        anchors.fill: spliceDetailsItem
     }
 
     SpliceDetails {
@@ -27,7 +54,8 @@ Item {
         width: Screen.desktopAvailableWidth * 0.5
         height: Screen.desktopAvailableHeight *0.5
         anchors.top: operateTitle.bottom
-
+        anchors.left: operateTitle.left
+        anchors.topMargin: 15
         centerVisable: false
         Component.onCompleted: {
             spliceDetailsItem.leftModel.append({"myLineLength":200,"mycolor":"red","isCheck":false,"linetext":"0"})

@@ -11,6 +11,11 @@ Item {
         anchors.fill: parent
         color: "#6d6e71"
     }
+    Loader {
+        id: loader
+        z: 10
+        anchors.fill: parent
+    }
     ListModel {
         id: listModel
         Component.onCompleted: {
@@ -135,7 +140,7 @@ Item {
         anchors.left: listView.right
         color: "#585858"
         radius: 10
-        z: 10
+        //z: 9
         visible: listView.contentHeight > listView.height ? true : false
         Rectangle {
             id: button
@@ -310,6 +315,10 @@ Item {
         pointSize: 14
         clip: true
         textColor: "white"
+        onClicked: {
+            console.log("ssssssddddddddd")
+            loader.source = "qrc:/OperateDetails.qml"
+        }
     }
     Rectangle {
         id: dialog
