@@ -7,6 +7,7 @@ import QtQuick.Window 2.2
 Item {
     z: 10
     id: headBar
+    property alias titleText: title.text
     property var selectIndex: 0
     width: Screen.desktopAvailableWidth
     height: Screen.desktopAvailableHeight * 0.07

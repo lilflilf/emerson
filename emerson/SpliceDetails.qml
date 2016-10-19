@@ -298,7 +298,7 @@ Item {
             }
             Rectangle {
                 id: leftRec
-                width: 40
+                width: 60
                 height: 20
                 color: mycolor
                 anchors.right: leftLine.left
@@ -385,7 +385,7 @@ Item {
             }
             Rectangle {
                 id: rightRec
-                width: 40
+                width: 60
                 height: 20
                 color: mycolor
                 anchors.left: rightLine.right

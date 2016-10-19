@@ -86,6 +86,9 @@ Item {
                 font.family: "arial"
                 font.pointSize: 16
                 opacity: 0.5
+                anchors.left: parent.left
+                anchors.leftMargin: 10
+                anchors.topMargin: 10
             }
             Item {
                 id: itemColor
@@ -99,8 +102,8 @@ Item {
                     text: qsTr("Color")
                     font.family: "arial"
                     font.pointSize: 14
-                    anchors.left: parent.left
-                    anchors.leftMargin: 40
+                    anchors.right: parent.right
+                    anchors.rightMargin: 290
                 }
                 Rectangle {
                     id: rectcolor
@@ -243,8 +246,8 @@ Item {
                     text: qsTr("Stripe")
                     font.family: "arial"
                     font.pointSize: 14
-                    anchors.left: parent.left
-                    anchors.leftMargin: 40
+                    anchors.right: parent.right
+                    anchors.rightMargin: 290
                 }
                 Rectangle {
                     width: 80
@@ -424,8 +427,8 @@ Item {
                     text: qsTr("Gauge")
                     font.family: "arial"
                     font.pointSize: 14
-                    anchors.left: parent.left
-                    anchors.leftMargin: 40
+                    anchors.right: parent.right
+                    anchors.rightMargin: 290
                 }
                 MyLineEdit {
                     id: edit2
@@ -448,7 +451,7 @@ Item {
             Item {
                 id: itemType
                 width: parent.width
-                height: parent.height * 0.05
+                height: parent.height * 0.04
                 anchors.top: itemGauge.bottom
                 anchors.topMargin: 15
                 Label {
@@ -457,13 +460,14 @@ Item {
                     text: qsTr("Type of Wire")
                     font.family: "arial"
                     font.pointSize: 14
-                    anchors.left: parent.left
-                    anchors.leftMargin: 20
+                    anchors.right: parent.right
+                    anchors.rightMargin: 290
                 }
                 Switch2 {
-                    width: parent.width * 0.5
+                    width: parent.width * 0.4
                     height: parent.height
-                    anchors.left: labelType.right
+                    anchors.left: parent.left
+                    anchors.leftMargin: width + 10
                     textLeft: qsTr("Copper")
                     textRight: qsTr("Alum")
                     state: "left"
@@ -479,11 +483,13 @@ Item {
                 font.family: "arial"
                 font.pointSize: 14
                 opacity: 0.5
+                anchors.left: parent.left
+                anchors.leftMargin: 10
             }
             Item {
                 id: itemSide
                 width: parent.width
-                height: parent.height * 0.05
+                height: parent.height * 0.04
                 anchors.top: position.bottom
                 anchors.topMargin: 15
                 Label {
@@ -492,14 +498,15 @@ Item {
                     text: qsTr("Side")
                     font.family: "arial"
                     font.pointSize: 14
-                    anchors.left: parent.left
-                    anchors.leftMargin: 20
+                    anchors.right: parent.right
+                    anchors.rightMargin: 290
                 }
                 Switch2 {
                     id: wireDirection
-                    width: parent.width * 0.5
+                    width: parent.width * 0.4
                     height: parent.height
-                    anchors.left: labelSide.right
+                    anchors.left: parent.left
+                    anchors.leftMargin: width + 10
                     textLeft: qsTr("Left")
                     textRight: qsTr("Right")
                     state: "left"
@@ -516,23 +523,26 @@ Item {
             Item {
                 id: itemLocation
                 width: parent.width
-                height: parent.height * 0.05
+                height: parent.height * 0.04
                 anchors.top: itemSide.bottom
                 anchors.topMargin: 15
                 Label {
                     id: labelLocation
                     color: "white"
-                    text: qsTr("VERTICAL LOCATION")
+                    text: qsTr("LOCATION") //VERTICAL
                     font.family: "arial"
-                    font.pointSize: 10
-                    anchors.left: parent.left
-                    anchors.leftMargin: 10
+                    font.pointSize: 14
+                    anchors.right: parent.right
+                    anchors.rightMargin: 290
+//                    anchors.left: parent.left
+//                    anchors.leftMargin: 10
                 }
                 Switch2 {
                     id: basicSwitch
-                    width: parent.width * 0.5
+                    width: parent.width * 0.4
                     height: parent.height
-                    anchors.left: labelLocation.right
+                    anchors.left: parent.left
+                    anchors.leftMargin: width + 10
                     textLeft: qsTr("Basic")
                     textRight: qsTr("Adv")
                     state: "left"
@@ -557,6 +567,9 @@ Item {
                 ExclusiveGroup {
                     id: tabPositionGroup;
                 }
+                ExclusiveGroup {
+                    id: tabPositionGroup2;
+                }
                 Item {
                     width: Screen.desktopAvailableWidth * 0.2
                     height: 30
@@ -566,6 +579,8 @@ Item {
                         font.pointSize: 14
                         font.family: "arial"
                         color: "white"
+                        anchors.right: parent.right
+                        anchors.rightMargin: 175
                     }
                     RadioButton {
                         id: topRadio
@@ -592,6 +607,8 @@ Item {
                         font.pointSize: 14
                         font.family: "arial"
                         color: "white"
+                        anchors.right: parent.right
+                        anchors.rightMargin: 175
                     }
                     RadioButton {
                         id: midRadio
@@ -616,6 +633,8 @@ Item {
                         font.pointSize: 14
                         font.family: "arial"
                         color: "white"
+                        anchors.right: parent.right
+                        anchors.rightMargin: 175
                     }
                     RadioButton {
                         scale: 2
@@ -659,7 +678,7 @@ Item {
                 Component.onCompleted: {
                     settingsModel.append({"topText":"Energy","bottomText":"30J"})
                     settingsModel.append({"topText":"Trigger\npressure","bottomText":"50PSI"})
-                    settingsModel.append({"topText":"Amplitu","bottomText":"micron"})
+                    settingsModel.append({"topText":"Amplitu","bottomText":"25um"})
                     settingsModel.append({"topText":"Weld\nPressure","bottomText":"50PSI"})
                     settingsModel.append({"topText":"Width","bottomText":"12.5mm"})
                 }
@@ -667,36 +686,60 @@ Item {
             ListModel {
                 id: settingsModel2
                 Component.onCompleted: {
-                    settingsModel2.append({"topText":"Time","bottomText":"40%"})
-                    settingsModel2.append({"topText":"Time","bottomText":"40%"})
-                    settingsModel2.append({"topText":"Power","bottomText":"40%"})
-                    settingsModel2.append({"topText":"Power","bottomText":"40%"})
-                    settingsModel2.append({"topText":"Pre-Height","bottomText":"40%"})
-                    settingsModel2.append({"topText":"Pre-Height","bottomText":"40%"})
-                    settingsModel2.append({"topText":"Height","bottomText":"40%"})
-                    settingsModel2.append({"topText":"Height","bottomText":"40%"})
+                    settingsModel2.append({"topText":"Time","bottomText":"5.00s"})
+                    settingsModel2.append({"topText":"Time","bottomText":"0.00s"})
+                    settingsModel2.append({"topText":"Power","bottomText":"3960W"})
+                    settingsModel2.append({"topText":"Power","bottomText":"0W"})
+                    settingsModel2.append({"topText":"Pre-Height","bottomText":"15.00mm"})
+                    settingsModel2.append({"topText":"Pre-Height","bottomText":"0.00mm"})
+                    settingsModel2.append({"topText":"Height","bottomText":"15.00mm"})
+                    settingsModel2.append({"topText":"Height","bottomText":"0.00mm"})
 
 
+                }
+            }
+            Row {
+                id: upper
+                anchors.top: parent.top
+                anchors.topMargin: tabBar.height + 5
+                spacing: 105
+                anchors.left: parent.left
+                anchors.leftMargin: 60
+                visible: false
+                Text {
+                    text: qsTr("Upper Limit")
+                    font.pointSize: 14
+                    font.family: "arial"
+                    color: "white"
+                    opacity: 0.5
+                }
+                Text {
+                    font.pointSize: 14
+                    font.family: "arial"
+                    color: "white"
+                    text: qsTr("Lower Limit")
+                    opacity: 0.5
                 }
             }
 
             Grid {
                 id: settingLayout
                 anchors.top: parent.top
-                anchors.topMargin: tabBar.height + 10
+                anchors.topMargin: tabBar.height + 30
                 anchors.left: parent.left
-                anchors.leftMargin: 15
+                anchors.leftMargin: 35
                 rows: 4
                 columns: 2
                 width: 220
                 height: 380
-                spacing: 20
+                columnSpacing: 50
+                rowSpacing: 20
                 Repeater {
                     id: repeater
                     model: settingsModel
                     CButton {
-                        width: 100
-                        height: 80
+                        width: 150
+                        height: 120
                         backgroundComponent: Item {
                             Rectangle {
                                 anchors.centerIn: parent
@@ -722,13 +765,15 @@ Item {
                             font.pointSize: 12
                             font.family: "arial"
                             color: "white"
+                            opacity: 0.5
                         }
                         Text {
+                            anchors.centerIn: parent
                             text: qsTr(bottomText)
-                            anchors.top: buttonTop.bottom
-                            anchors.topMargin: 3
-                            anchors.left: parent.left
-                            anchors.leftMargin: 3
+//                            anchors.top: buttonTop.bottom
+//                            anchors.topMargin: 3
+//                            anchors.left: parent.left
+//                            anchors.leftMargin: 3
                             font.pointSize: 16
                             font.family: "arial"
                             color: "white"
@@ -751,7 +796,16 @@ Item {
                     height: 50
                     text: qsTr("QUALITY WINDOW\nSETTINGS")
                     onClicked: {
-                        repeater.model = settingsModel2
+                        if (repeater.model == settingsModel){
+                            repeater.model = settingsModel2
+                            text = "WELD SETTINGS"
+                            upper.visible = true
+                        }
+                        else {
+                            text = "QUALITY WINDOW\nSETTINGS"
+                            repeater.model = settingsModel
+                            upper.visible = false
+                        }
                     }
                 }
                 CButton {
@@ -863,6 +917,7 @@ Item {
         Label {
             id: spliceDetails
             anchors.top: edit1.bottom
+            anchors.topMargin: 10
             anchors.left: edit1.left
             text: qsTr("SpliceDetails")
             font.pointSize: 16
@@ -872,6 +927,7 @@ Item {
         Label {
             id: spliceDetailsTips
             anchors.top: spliceDetails.bottom
+            anchors.topMargin: 10
             anchors.left: spliceDetails.left
             text: qsTr("TOTAL CROSS SECTION 0mm")
             font.pointSize: 12
@@ -884,6 +940,7 @@ Item {
             width: Screen.desktopAvailableWidth * 0.8
             height: Screen.desktopAvailableHeight *0.5
             anchors.top: spliceDetailsTips.bottom
+            anchors.topMargin: 10
             anchors.left: spliceDetails.left
             anchors.right: parent.right
             anchors.rightMargin: 40
@@ -897,7 +954,7 @@ Item {
             height: 50
             anchors.left: spliceDetailsItem.left
             anchors.top: spliceDetailsItem.bottom
-            anchors.topMargin: 10
+            anchors.topMargin: 20
             text: qsTr("ADD WIRE")
         }
 
@@ -997,13 +1054,13 @@ Item {
                         anchors.centerIn: parent
                         anchors.fill: parent
                         radius: 3
-                        color: "blue"
+                        color: "#0079c1"
                         Rectangle{
                             anchors.fill: parent
                             anchors.margins: 1
                             radius: 3
                             anchors.centerIn: parent
-                            color: "blue"
+                            color: "#0079c1"
                         }
                     }
                 }
@@ -1061,7 +1118,7 @@ Item {
                         textColor: weldModelCheck.checked ? "white" : "black"
                         RadioButton {
                             id: weldModelCheck
-                            exclusiveGroup: tabPositionGroup
+                            exclusiveGroup: index < 4 ? tabPositionGroup : tabPositionGroup2
                             visible: false
                             checked: index == 0 ? true : false
                             onCheckedChanged: {
@@ -1249,7 +1306,7 @@ Item {
                 anchors.left: onoroff.right
                 anchors.leftMargin: parent.width/8-26
                 width: parent.width/6-13
-                text: qsTr("Instulation:")
+                text: qsTr("Insulation:")
                 color: "white"
                 font.pointSize: 16
                 font.family: "arial"
