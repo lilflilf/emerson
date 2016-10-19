@@ -19,6 +19,7 @@ int main(int argc, char *argv[])
     bool success = translator.load("displayChinese_zh_CN.qm");
     app.installTranslator(&translator);
 
+    HmiAdaptor * hmiadaptor = new HmiAdaptor;
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 

@@ -51,8 +51,8 @@ Item {
 
     SpliceDetails {
         id: spliceDetailsItem
-        width: Screen.desktopAvailableWidth * 0.5
-        height: Screen.desktopAvailableHeight *0.5
+        width: Screen.desktopAvailableWidth * 0.4
+        height: Screen.desktopAvailableHeight *0.4
         anchors.top: operateTitle.bottom
         anchors.left: operateTitle.left
         anchors.topMargin: 15
@@ -63,4 +63,14 @@ Item {
             spliceDetailsItem.leftModel.append({"myLineLength":200,"mycolor":"blue","isCheck":false,"linetext":"0"})
         }
     }
+    QualityWindow {
+        id: qualityWindow
+        width: Screen.desktopAvailableWidth * 0.45
+        height: Screen.desktopAvailableHeight *0.45
+        anchors.top: parent.top
+        anchors.right: parent.right
+        anchors.topMargin: 15
+        anchors.rightMargin: 30
+    }
+
 }
