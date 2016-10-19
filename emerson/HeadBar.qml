@@ -192,6 +192,13 @@ Item {
                             anchors.fill: parent
                             onClicked: {
                                 mainMenuCheck.checked = !mainMenuCheck.checked
+                                if (index == 1) {
+                                    btn.isCheck = false
+                                    creatMenu.visible = false
+                                    btnBack.visible = false
+                                    root.menuInit(2)
+                                    title.text = qsTr("Operate")
+                                }
                             }
                         }
                     }

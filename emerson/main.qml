@@ -15,12 +15,18 @@ Window {
     {
         initIndex = index
         contentLoader.source = ""
-        if (index == 0 || index == 1) {
+        switch (index) {
+        case 0:
+        case 1:
             contentLoader.source = "qrc:/Content.qml"
+            break;
+        case 2:
+            contentLoader.source = "qrc:/Operate.qml"
+            break;
+        default:
+            break;
         }
-        else if (index == 2) {
-            contentLoader.source = "qrc:/OperateDetails.qml"
-        }
+
     }
     Component.onCompleted: {
 
