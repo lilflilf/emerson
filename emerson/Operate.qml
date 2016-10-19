@@ -271,7 +271,10 @@ Item {
         clip: true
         textColor: "white"
         onClicked: {
+            backGround.visible = true
+            backGround.opacity = 0.5
             dialog.visible = true
+            dialog.bIsEdit = false
         }
     }
     CButton {
@@ -287,7 +290,10 @@ Item {
         clip: true
         textColor: "white"
         onClicked: {
+            backGround.visible = true
+            backGround.opacity = 0.5
             dialog.visible = true
+            dialog.bIsEdit = true
         }
     }
     CButton {
@@ -321,9 +327,22 @@ Item {
         }
     }
     Rectangle {
+        id: backGround
+        anchors.fill: parent
+        color: "black"
+        opacity: 0
+        visible: false
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+            }
+        }
+    }
+    Rectangle {
         id: dialog
         visible: false
         anchors.centerIn: parent
+        property bool bIsEdit: false
         width: parent.width*0.6
         height: parent.height*0.4
         color: "gray"
@@ -346,10 +365,12 @@ Item {
             anchors.top: parent.top
             anchors.topMargin: 18
             width: parent.width/2
+            horizontalAlignment: Qt.AlignHCenter
             height: 40
             inputWidth: parent.width/2
             inputColor: "white"
             inputHeight: 40
+            inputText: dialog.bIsEdit ? listModel.get(selectIndx).name : ""
         }
         Text {
             id: selectTips
@@ -363,6 +384,21 @@ Item {
             text: qsTr("Select Part")
             color: "white"
         }
+        MyLineEdit {
+            id: selectworkId
+            anchors.left: orderId.right
+            anchors.leftMargin: parent.width*0.03
+            anchors.top: orderId.bottom
+            anchors.topMargin: parent.height*0.12
+            width: parent.width/2
+            horizontalAlignment: Qt.AlignHCenter
+            height: 40
+            inputWidth: parent.width/2
+            inputColor: "white"
+            inputHeight: 40
+            visible: dialog.bIsEdit
+            inputText: dialog.bIsEdit ? listModel.get(selectIndx).middle : ""
+        }
         CButton {
             id: selectPart
             anchors.left: orderId.right
@@ -370,6 +406,7 @@ Item {
             anchors.top: orderId.bottom
             anchors.topMargin: parent.height*0.12
             width: parent.width/2
+            visible: !dialog.bIsEdit
             height: 40
             text: qsTr("SELECT PART")
             textColor: "white"
@@ -393,10 +430,12 @@ Item {
             anchors.top: selectTips.bottom
             anchors.topMargin: parent.height*0.12
             width: parent.width/2
+            horizontalAlignment: Qt.AlignHCenter
             height: 40
             inputWidth: parent.width/2
             inputColor: "white"
             inputHeight: 40
+            inputText: dialog.bIsEdit ? listModel.get(selectIndx).count : ""
         }
         CButton {
             id: cancel
@@ -408,6 +447,11 @@ Item {
             height: 40
             text: qsTr("CANCEL")
             textColor: "white"
+            onClicked: {
+                backGround.visible = false
+                backGround.opacity = 0
+                dialog.visible = false
+            }
         }
         CButton {
             id: sure
@@ -419,6 +463,11 @@ Item {
             height: 40
             text: qsTr("OK")
             textColor: "white"
+            onClicked: {
+                backGround.visible = false
+                backGround.opacity = 0
+                dialog.visible = false
+            }
         }
     }
 }
