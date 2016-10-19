@@ -23,6 +23,7 @@
         <file>Operate.qml</file>
         <file>OperateDetails.qml</file>
         <file>QualityWindow.qml</file>
+        <file>SpliceLocation.qml</file>
     </qresource>
     <qresource prefix="/Images">
         <file>images/you.png</file>

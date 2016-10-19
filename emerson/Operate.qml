@@ -322,7 +322,6 @@ Item {
         clip: true
         textColor: "white"
         onClicked: {
-            console.log("ssssssddddddddd")
             loader.source = "qrc:/OperateDetails.qml"
         }
     }
