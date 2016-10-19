@@ -1,10 +1,8 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QtQml>
-#include "hmiadaptor.h"
 #include <QDebug>
 #include <QFile>
-#include "hmiadaptor.h"
 
 #include <QQuickView>
 #include <QQmlEngine>
@@ -19,9 +17,8 @@ int main(int argc, char *argv[])
     bool success = translator.load("displayChinese_zh_CN.qm");
     app.installTranslator(&translator);
 
-    HmiAdaptor * hmiadaptor = new HmiAdaptor;
     QQmlApplicationEngine engine;
-    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+    engine.load(QUrl(QStringLiteral("qrc:/UI/main.qml")));
 
     return app.exec();
 }

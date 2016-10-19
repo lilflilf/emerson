@@ -1,6 +1,6 @@
 TEMPLATE = app
 
-QT += qml quick
+QT += qml quick sql
 CONFIG += c++11
 
 CONFIG += localize_deployment
