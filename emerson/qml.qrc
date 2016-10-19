@@ -20,6 +20,7 @@
         <file>SpliceDetails.qml</file>
         <file>AddExistingSpliceWire.qml</file>
         <file>ShrinkSet.qml</file>
+        <file>OperateDetails.qml</file>
     </qresource>
     <qresource prefix="/Images">
         <file>images/you.png</file>

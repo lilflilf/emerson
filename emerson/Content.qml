@@ -16,6 +16,7 @@ Item {
         target: loader.item
         onSignalSaveSplice: {
             loader.source = ""
+            titleTextChanged("Creat Assembly")
         }
     }
 
@@ -627,7 +628,7 @@ Item {
                 border.width: 1
                 visible: parent.containsDrag
                 onVisibleChanged: {
-                    console.log("aaaaaaaaa",followArea.visible)
+//                    console.log("aaaaaaaaa",followArea.visible)
                 }
             }
         }
@@ -672,6 +673,7 @@ Item {
 
         WorkStationColor {
             id: workStationcolor
+            visible: !bIsBasic
             anchors.top: workStation.bottom
             anchors.topMargin: 4
             anchors.left: boardlayout.left

@@ -7,6 +7,10 @@ Item {
     id: detail
     width: Screen.desktopAvailableWidth * 0.8
     height: Screen.desktopAvailableHeight *0.5
+    property alias leftModel: listModelLeft
+    property alias rightModel: listModelRight
+    property alias centerVisable: centerButton.visible
+
     property var selectColor: ""
     property var selectText: ""
     property var selectDirection: ""
@@ -252,6 +256,7 @@ Item {
         }
 
         CButton {
+            id: centerButton
             anchors.centerIn: parent
             width: 60
             height: 40

@@ -15,7 +15,12 @@ Window {
     {
         initIndex = index
         contentLoader.source = ""
-        contentLoader.source = "qrc:/Content.qml"
+        if (index == 0 || index == 1) {
+            contentLoader.source = "qrc:/Content.qml"
+        }
+        else if (index == 2) {
+            contentLoader.source = "qrc:/OperateDetails.qml"
+        }
     }
     Component.onCompleted: {
 
@@ -23,6 +28,10 @@ Window {
 //        w.setWindowFlags(w.windowFlags()& ~Qt::WindowMaximizeButtonHint&  ~Qt::WindowMinimizeButtonHint);
 //        w.showMaximized();
         root.showFullScreen()
+    }
+    Rectangle {
+        anchors.fill: parent
+        color: "#626465"
     }
 
     CStatusBar {

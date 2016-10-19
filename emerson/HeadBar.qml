@@ -12,8 +12,21 @@ Item {
     width: Screen.desktopAvailableWidth
     height: Screen.desktopAvailableHeight * 0.07
     Rectangle {
+        id: headBack
         anchors.fill: parent
         color: "#f79428"
+    }
+
+    MouseArea {
+        z: 9
+        visible: btn.isCheck == true ? true : false
+        width: Screen.desktopAvailableWidth
+        height: Screen.desktopAvailableHeight
+        onClicked: {
+            btn.isCheck = false
+            creatMenu.visible = false
+            btnBack.visible = false
+        }
     }
 
     Item {
@@ -116,7 +129,6 @@ Item {
                                 onCheckedChanged: {
                                     if (mainMenuCheck.checked) {
                                         item.background = 0.5
-                                        console.log("index == ",index)
                                         if (index == 0) {
                                             creatMenu.visible = true
                                             creatMenu.childModel = null
@@ -142,14 +154,26 @@ Item {
                                             creatMenu.childModel = settingList
                                             creatMenu.height = settingList.count * 40
                                         }
-                                        else if (index == 1 || index == 2)
+                                        else if (index == 1) {
+                                            btn.isCheck = false
                                             creatMenu.visible = false
+                                            btnBack.visible = false
+                                            root.menuInit(2)
+                                            title.text = qsTr("Operate")
+                                            headBack.color = "blue"
+                                        }
+                                        else if (index == 2) {
+                                            btn.isCheck = false
+                                            creatMenu.visible = false
+                                            btnBack.visible = false
+                                            root.menuInit(2)
+                                        }
+
                                         headBar.selectIndex = index
                                         creatMenu.anchors.topMargin = index * 40
 
                                     }
                                     else {
-                                        console.log("index ==== ",index)
                                         item.background = 0
                                         if (headBar.selectIndex == index)
                                             creatMenu.visible = false

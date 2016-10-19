@@ -831,6 +831,9 @@ Item {
             font.pointSize: 16
             text: qsTr("WIRE BUILDER")
             opacity: 0.33
+            onClicked: {
+                settingRightArea.visible = false
+            }
         }
         TabButton {
             font.family: "arial"
