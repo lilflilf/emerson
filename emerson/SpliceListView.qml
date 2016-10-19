@@ -31,7 +31,8 @@ Item {
         Rectangle {
             id: button
             anchors.left: parent.left
-            y: (splice.visibleArea.yPosition < 0 ) ? 0 : splice.visibleArea.yPosition * scrollbar.height
+            y: (splice.visibleArea.yPosition < 0 ) ? 0 : (splice.contentY+splice.height>splice.contentHeight) ?
+                scrollbar.height - button.height : splice.visibleArea.yPosition * scrollbar.height
             width: 10
             height: splice.visibleArea.heightRatio * scrollbar.height;
             color: "#717275"
