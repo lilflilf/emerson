@@ -1,6 +1,8 @@
 #ifndef CURRENTCLOCK_H
 #define CURRENTCLOCK_H
 #include <qobject>
+
+#define HMI_PRINT (qDebug() <<"HMI adapter by zhangjy:" << __FILE__ << __FUNCTION__ << __LINE__ << ": ")
 class Utility : public QObject
 {
  Q_OBJECT

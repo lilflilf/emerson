@@ -46,6 +46,52 @@ Item {
                 height: Screen.desktopAvailableHeight * 0.4
                 anchors.left: parent.left
                 anchors.leftMargin: 10
+                border.color: "white"
+                border.width: 1
+                color: Qt.rgba(0,0,0,0)
+                Line {
+                    anchors.top: parent.top
+                    anchors.topMargin: parent.height / 2
+                    lineColor: "white"
+                    width: parent.width
+                    height: 2
+                }
+                Line {
+                    anchors.top: parent.top
+                    anchors.topMargin: parent.height * 0.1
+                    lineColor: "red"
+                    width: parent.width
+                    height: 2
+                }
+                Line {
+                    anchors.top: parent.top
+                    anchors.topMargin: parent.height * 0.2
+                    lineColor: "yellow"
+                    width: parent.width
+                    height: 2
+                }
+                Line {
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: parent.height * 0.2
+                    lineColor: "yellow"
+                    width: parent.width
+                    height: 2
+                }
+                Line {
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: parent.height * 0.1
+                    lineColor: "red"
+                    width: parent.width
+                    height: 2
+                }
+                Text {
+                    anchors.top: parent.bottom
+                    font.family: "arial"
+                    color: "white"
+                    font.pointSize: 14
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: qsTr("POWER")
+                }
             }
         }
     }

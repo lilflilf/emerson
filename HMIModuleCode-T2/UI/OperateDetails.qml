@@ -48,6 +48,13 @@ Item {
         id: spliceDetailsImage
         anchors.fill: spliceDetailsItem
     }
+    QualityWindow {
+        id: qualityWindow
+        anchors.right: parent.right
+        anchors.rightMargin: 30
+        anchors.top: operateTitle.top
+
+    }
 
     SpliceDetails {
         id: spliceDetailsItem
