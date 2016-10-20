@@ -104,6 +104,7 @@ bool SQLITCLASS::SQL_Execute(QSqlDatabase *_DBObject, QString SQL_Sentence)
      query.addBindValue(0);
      query.addBindValue(1);
      query.addBindValue(0);
+     //query.value()
 
      if (query.exec())   //run SQL
          bResult = true;

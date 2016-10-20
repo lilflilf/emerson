@@ -27,9 +27,9 @@ Item {
     ListView {
         id: qualityListView
         width: Screen.desktopAvailableWidth * 0.45
-        height: Screen.desktopAvailableHeight *0.45
+        height: Screen.desktopAvailableHeight *0.25
         orientation: Qt.Horizontal
-        interactive: true
+        interactive: false
         anchors.top: qualityWindowTitle.bottom
         anchors.topMargin: 20
         delegate: qualityDelegate
@@ -40,10 +40,10 @@ Item {
         Item {
             id: name
             width: Screen.desktopAvailableWidth * 0.1
-            height: Screen.desktopAvailableHeight * 0.4
+            height: Screen.desktopAvailableHeight * 0.25
             Rectangle {
-                width: 50
-                height: Screen.desktopAvailableHeight * 0.4
+                width: 40
+                height: Screen.desktopAvailableHeight * 0.25
                 anchors.left: parent.left
                 anchors.leftMargin: 10
                 border.color: "white"
@@ -94,5 +94,17 @@ Item {
                 }
             }
         }
+    }
+
+    ListView {
+        id: qualityListViewTwo
+        width: Screen.desktopAvailableWidth * 0.45
+        height: Screen.desktopAvailableHeight *0.25
+        orientation: Qt.Horizontal
+        interactive: false
+        anchors.top: qualityListView.bottom
+        anchors.topMargin: 20
+        delegate: qualityDelegate
+        model: 4
     }
 }

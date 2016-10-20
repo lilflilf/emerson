@@ -48,19 +48,23 @@ MouseArea {
 
     /*! 用于定制按钮的背景样式*/
     property Component backgroundComponent: Item {
-        Rectangle {
-            anchors.centerIn: parent
+        Image {
             anchors.fill: parent
-            radius: 3
-            color: "#0079c1"
-            Rectangle{
-                anchors.fill: parent
-                anchors.margins: 1
-                radius: 3
-                anchors.centerIn: parent
-                color: "#0079c1"
-            }
+            source: "qrc:/images/images/icon-bg.png"
         }
+//        Rectangle {
+//            anchors.centerIn: parent
+//            anchors.fill: parent
+//            radius: 3
+//            color: "#0079c1"
+//            Rectangle{
+//                anchors.fill: parent
+//                anchors.margins: 1
+//                radius: 3
+//                anchors.centerIn: parent
+//                color: "#0079c1"
+//            }
+//        }
     }
 
     /*!

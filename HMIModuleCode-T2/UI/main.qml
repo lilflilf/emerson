@@ -34,14 +34,18 @@ Window {
 //        w.showMaximized();
         root.showFullScreen()
     }
-    Rectangle {
+//    Rectangle {
+//        anchors.fill: parent
+//        color: "#626465"
+//    }
+    Image {
         anchors.fill: parent
-        color: "#626465"
+        source: "qrc:/images/images/bg.png"
     }
 
     CStatusBar {
         id: statusBar
-        height: Screen.desktopAvailableHeight * 0.03
+        height: 40//Screen.desktopAvailableHeight * 0.03
     }
 
 //    Content {
@@ -72,7 +76,7 @@ Window {
 
     HeadBar {
         id: headBar
-        height: Screen.desktopAvailableHeight * 0.07
+        height: 97//Screen.desktopAvailableHeight * 0.07
         anchors.top: statusBar.bottom
         z: 10
     }
