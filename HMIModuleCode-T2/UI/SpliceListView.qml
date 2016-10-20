@@ -21,13 +21,13 @@ Item {
     Rectangle {
         id: scrollbar
         width: 10
-        height: spliceList.height
+        height: splice.height
         anchors.left: splice.right
         anchors.leftMargin: -14
         color: "#ccbfbf"
         radius: 10
         z: 10
-        visible: splice.contentHeight > spliceList.height ? true : false
+        visible: splice.contentHeight > splice.height ? true : false
         Rectangle {
             id: button
             anchors.left: parent.left

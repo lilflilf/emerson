@@ -111,9 +111,16 @@ Item {
             treeModel.append({"id":"N","level":0,"subNode":[]})
             treeModel.append({"id":"O","level":0,"subNode":[]})
             treeModel.append({"id":"P","level":0,"subNode":[]})
-            treeModel.get(0).subNode.append({"spliceNo":"1","spliceColor":"white","level":1,"subNode":[]})
+            treeModel.get(0).subNode.append({"spliceNo":"99","spliceColor":"white","level":1,"subNode":[]})
             treeModel.get(0).subNode.append({"spliceNo":"56","spliceColor":"white","level":1,"subNode":[]})
             treeModel.get(0).subNode.append({"spliceNo":"55","spliceColor":"white","level":1,"subNode":[]})
+            treeModel.get(0).subNode.append({"spliceNo":"54","spliceColor":"white","level":1,"subNode":[]})
+            treeModel.get(0).subNode.append({"spliceNo":"53","spliceColor":"white","level":1,"subNode":[]})
+            treeModel.get(0).subNode.append({"spliceNo":"99","spliceColor":"white","level":1,"subNode":[]})
+            treeModel.get(0).subNode.append({"spliceNo":"56","spliceColor":"white","level":1,"subNode":[]})
+            treeModel.get(0).subNode.append({"spliceNo":"55","spliceColor":"white","level":1,"subNode":[]})
+            treeModel.get(0).subNode.append({"spliceNo":"54","spliceColor":"white","level":1,"subNode":[]})
+            treeModel.get(0).subNode.append({"spliceNo":"53","spliceColor":"white","level":1,"subNode":[]})
             treeModel.get(0).subNode.append({"spliceNo":"54","spliceColor":"white","level":1,"subNode":[]})
             treeModel.get(0).subNode.append({"spliceNo":"53","spliceColor":"white","level":1,"subNode":[]})
             treeModel.get(1).subNode.append({"spliceNo":"52","spliceColor":"white","level":1,"subNode":[]})
@@ -143,5 +150,110 @@ Item {
         columns: 4
         rows: 4
         listModel: treeModel
+    }
+    Rectangle {
+        id: currentSplice
+        anchors.top:  spliceTips.bottom
+        anchors.topMargin: 12
+        anchors.left: spliceLocation.right
+        anchors.leftMargin: 10
+        radius: 15
+        width: 15
+        height: 15
+        color: "#00aa7e"
+    }
+    Text {
+        id: currentspliceTips
+        anchors.top: spliceTips.bottom
+        anchors.topMargin: 10
+        anchors.left: currentSplice.right
+        anchors.leftMargin: 6
+        font.pointSize: 13
+        font.family: "arial"
+        color: "white"
+        text: qsTr("CURRENT SPLICE")
+    }
+    Rectangle {
+        id: nextSPlice
+        anchors.top:  currentspliceTips.bottom
+        anchors.topMargin: 26
+        anchors.left: spliceLocation.right
+        anchors.leftMargin: 10
+        radius: 15
+        width: 15
+        height: 15
+        color: "#00afe9"
+    }
+    Text {
+        id: nextSPliceTips
+        anchors.top: currentspliceTips.bottom
+        anchors.topMargin: 24
+        anchors.left: nextSPlice.right
+        anchors.leftMargin: 6
+        font.pointSize: 13
+        font.family: "arial"
+        color: "white"
+        text: qsTr("NEXT SPLICE")
+    }
+    Rectangle {
+        id: missSplice
+        anchors.top:  nextSPliceTips.bottom
+        anchors.topMargin: 26
+        anchors.left: spliceLocation.right
+        anchors.leftMargin: 10
+        radius: 15
+        width: 15
+        height: 15
+        color: "#d31145"
+    }
+    Text {
+        id: missSpliceTips
+        anchors.top: nextSPliceTips.bottom
+        anchors.topMargin: 24
+        anchors.left: missSplice.right
+        anchors.leftMargin: 6
+        font.pointSize: 13
+        font.family: "arial"
+        color: "white"
+        text: qsTr("MISSED SPLICE")
+    }
+    Rectangle {
+        id: completeMiss
+        anchors.top: missSpliceTips.bottom
+        anchors.topMargin: 24
+        anchors.left: spliceLocation.right
+        anchors.leftMargin: 10
+        width: spliceDetailsItem.width-spliceLocation.width-10
+        height: spliceDetailsItem.height/2.2
+        color: "#6d6e71"
+        opacity: 1
+        Rectangle {
+            id: tipsRec
+            anchors.left: parent.left
+            width: 17
+            height: parent.height
+            color: "#d31145"
+        }
+        Text {
+            id: tipsText
+            anchors.left: tipsRec.right
+            anchors.leftMargin: 10
+            width: parent.width-tipsRec.width-10
+            height: parent.height
+            verticalAlignment: Qt.AlignVCenter
+            text: qsTr("Complete\nMissed\nSplie")
+            color: "white"
+            font.pointSize: 16
+            font.family: "arial"
+        }
+        MouseArea {
+            anchors.fill: parent
+            onPressed: {
+                completeMiss.opacity = 0.5
+            }
+            onReleased: {
+                completeMiss.opacity = 1
+            }
+        }
     }
 }

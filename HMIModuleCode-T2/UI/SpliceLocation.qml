@@ -25,6 +25,11 @@ Item {
         }
     }
 
+    function getspliceNoLeftMargin(index)
+    {
+        return spliceLocationStats.width/spliceLocationStats.columns/4.8*(index%4)+8
+    }
+
     Rectangle {
         anchors.top: parent.top
         anchors.left: parent.left
@@ -56,7 +61,7 @@ Item {
                                     anchors.top: parent.top
                                     anchors.topMargin: getspliceNotopMargin(index)
                                     anchors.left: parent.left
-                                    anchors.leftMargin: 4
+                                    anchors.leftMargin: getspliceNoLeftMargin(index)
                                     height: parent.height/3
                                     verticalAlignment: Qt.AlignVCenter
                                     font.pointSize: 8
@@ -66,9 +71,10 @@ Item {
                                 }
                                 Rectangle {
                                     id: rec
-                                    anchors.top: parent.top
+                                    anchors.top: spliceNo.top
                                     anchors.topMargin: 8
                                     anchors.left: spliceNo.right
+                                    anchors.leftMargin: 2
                                     width: 10
                                     height: 10
                                     radius: 10
