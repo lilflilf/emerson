@@ -11,8 +11,6 @@
         <file>UI/MyColor.qml</file>
         <file>UI/MyFileDialog.qml</file>
         <file>UI/MyLineEdit.qml</file>
-        <file>UI/NewWireSplice.pro</file>
-        <file>UI/NewWireSplice.pro.user</file>
         <file>UI/Operate.qml</file>
         <file>UI/OperateDetails.qml</file>
         <file>UI/QualityWindow.qml</file>
