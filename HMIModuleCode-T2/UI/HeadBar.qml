@@ -10,11 +10,16 @@ Item {
     property alias titleText: title.text
     property var selectIndex: 0
     width: Screen.desktopAvailableWidth
-    height: Screen.desktopAvailableHeight * 0.07
-    Rectangle {
+    height: 97//Screen.desktopAvailableHeight * 0.07
+//    Rectangle {
+//        id: headBack
+//        anchors.fill: parent
+//        color: "#f79428"
+//    }
+    Image {
         id: headBack
         anchors.fill: parent
-        color: "#f79428"
+        source: "qrc:/images/images/headbg.png"
     }
 
     MouseArea {
@@ -32,10 +37,11 @@ Item {
     Item {
         id: btn
         property bool isCheck: false
-        height: parent.height
-        width: parent.width * 0.05
+        height: 60//parent.height
+        width: 60//parent.width * 0.05
         anchors.left: parent.left
-        anchors.leftMargin: parent.width * 0.02
+        anchors.leftMargin: 30//parent.width * 0.02
+        anchors.verticalCenter: parent.verticalCenter
         Rectangle {
             id: btnBack
             anchors.fill: parent
@@ -44,20 +50,20 @@ Item {
         }
         Image {
             id: backGround
-            anchors.centerIn: parent
-            height: parent.height-30
-            width: parent.width*0.68
-            source: btnBack.visible ? "qrc:/images/images/menu2.png" : "qrc:/images/images/menu.png"
+            anchors.fill: parent
+            height: 60//parent.height-30
+            width: 60//parent.width*0.68
+            source: btnBack.visible ? "qrc:/images/images/menu.png" : "qrc:/images/images/menu.png"
         }
-        Text {
-            id: menu
-            anchors.top: backGround.bottom
-            anchors.horizontalCenter: parent.horizontalCenter
-            text: qsTr("MENU")
-            color: "white"
-            font.pointSize: 12
-            font.family: "arial"
-        }
+//        Text {
+//            id: menu
+//            anchors.top: backGround.bottom
+//            anchors.horizontalCenter: parent.horizontalCenter
+//            text: qsTr("MENU")
+//            color: "white"
+//            font.pointSize: 12
+//            font.family: "arial"
+//        }
         MouseArea {
             anchors.fill: parent
             onClicked: {

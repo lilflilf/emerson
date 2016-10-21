@@ -7,9 +7,13 @@ Item {
     width: Screen.desktopAvailableWidth
     height: Screen.desktopAvailableHeight*0.8
     property int selectIndx: -1
-    Rectangle {
+//    Rectangle {
+//        anchors.fill: parent
+//        color: "#6d6e71"
+//    }
+    Image {
         anchors.fill: parent
-        color: "#6d6e71"
+        source: "qrc:/images/images/bg.png"
     }
     Loader {
         id: loader
@@ -127,7 +131,7 @@ Item {
         anchors.left: parent.left
         anchors.leftMargin: 24
         width: parent.width - 48
-        height: Screen.desktopAvailableHeight*0.65
+        height: Screen.desktopAvailableHeight*0.55
         clip: true
         model: listModel
         delegate: listDelegate
@@ -264,8 +268,8 @@ Item {
         anchors.topMargin: 18
         anchors.left: parent.left
         anchors.leftMargin: 24
-        height: 45
-        width: parent.width/4.4
+        height: 79
+        width: 300//parent.width/4.4
         text: qsTr("+ ADD NEW WORK ORDEAR")
         pointSize: 14
         clip: true
@@ -283,8 +287,8 @@ Item {
         anchors.topMargin: 18
         anchors.left: addnewOrder.right
         anchors.leftMargin: 24
-        height: 45
-        width: parent.width/4.4
+        height: 79
+        width: 300//parent.width/4.4
         text: qsTr("EDIT EXISTING WORK ORDER")
         pointSize: 14
         clip: true
@@ -302,8 +306,8 @@ Item {
         anchors.topMargin: 18
         anchors.left: editExistingOrder.right
         anchors.leftMargin: 24
-        height: 45
-        width: parent.width/4.4
+        height: 79
+        width: 300//parent.width/4.4
         text: qsTr("IMPORT WORK ORDER")
         pointSize: 14
         clip: true
@@ -315,8 +319,8 @@ Item {
         anchors.topMargin: 18
         anchors.left: importOrder.right
         anchors.leftMargin: 24
-        height: 45
-        width: parent.width/4.4
+        height: 79
+        width: 300//parent.width/4.4
         text: qsTr("SELECT")
         pointSize: 14
         clip: true
@@ -444,7 +448,7 @@ Item {
             anchors.top: quantity.bottom
             anchors.topMargin: parent.height*0.15
             width: parent.width/3
-            height: 40
+            height: 79
             text: qsTr("CANCEL")
             textColor: "white"
             onClicked: {
@@ -460,7 +464,7 @@ Item {
             anchors.top: quantity.bottom
             anchors.topMargin: parent.height*0.15
             width: parent.width/3
-            height: 40
+            height: 79
             text: qsTr("OK")
             textColor: "white"
             onClicked: {

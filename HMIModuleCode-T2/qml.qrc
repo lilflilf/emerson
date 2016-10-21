@@ -27,9 +27,11 @@
         <file>UI/Progressbar.qml</file>
     </qresource>
     <qresource prefix="/images">
-        <file>images/menu.png</file>
-        <file>images/menu2.png</file>
         <file>images/you.png</file>
         <file>images/zuo.png</file>
+        <file>images/headbg.png</file>
+        <file>images/icon-bg.png</file>
+        <file>images/bg.png</file>
+        <file>images/menu.png</file>
     </qresource>
 </RCC>
