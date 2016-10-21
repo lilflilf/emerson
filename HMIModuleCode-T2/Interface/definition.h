@@ -1,6 +1,7 @@
 #ifndef DEFINITION_H
 #define DEFINITION_H
 #include <QString>
+#include <QMap>
 //Wire Structure
 enum MetalType{
     Copper,
@@ -36,11 +37,12 @@ struct STRIPE
     QString Color;
 };
 
-struct WireElement
+struct WireElementStructure
 {
     QString WireName;
     int     WireID;
-    QString CreateDate;
+    QString CreatedDate;
+    QString OperatorID;
 
     QString Color;
     struct STRIPE Stripe;
@@ -52,24 +54,10 @@ struct WireElement
 };
 
 //Splice Structure
-struct Qual
+struct QualStructure
 {
    int Plus;
    int Minus;
-};
-
-struct RecommendedData
-{
-   int Energy;
-   int Width;
-   int Pressure;
-   int TrigPres;
-   int Amplitude;
-   Qual Time;
-   Qual power;
-   Qual Preheight;
-   Qual Height;
-   Qual Force;
 };
 
 enum WELDMODE
@@ -90,7 +78,7 @@ enum STEPWELDMODE
 
 struct STEPWELD
 {
-    enum STEPWELDMODE StepWeld;
+    enum STEPWELDMODE StepWeldMode;
     int EnergyToStep;         //
     int TimeToStep;           //
     int PowerToStep;          //
@@ -101,7 +89,7 @@ struct SHRINKTUBE
 {
     //Added 30 June 2000 to accommodate the Raychem tube shrinker data
     bool ShrinkOption;
-    long ShrinkTubeIndex;     //Raychem tube index (0 for None,1,2,3,3A,Other)
+    int ShrinkTubeIndex;     //Raychem tube index (0 for None,1,2,3,3A,Other)
     int ShrinkTime;           //Secs * 10
     int ShrinkTemperature;    //In Centigrade degrees
 
@@ -119,11 +107,11 @@ struct WELDSETTING
 
 struct QUALITYWINDONSETTING
 {
-    Qual Time;                //Time limits in seconds/100
-    Qual Power;               //Power limits in percent
-    Qual Preheight;           //Pre weld height limits in mm/100
-    Qual Height;              //Post weld height limits in mm/100
-    Qual Force;               //Force limits in Newtons
+    QualStructure Time;                //Time limits in seconds/100
+    QualStructure Power;               //Power limits in percent
+    QualStructure Preheight;           //Pre weld height limits in mm/100
+    QualStructure Height;              //Post weld height limits in mm/100
+    QualStructure Force;               //Force limits in Newtons
 };
 
 struct ADVANCESETTING
@@ -138,7 +126,7 @@ struct ADVANCESETTING
     int ABDelay;              //Secs * 100
     int ABDur;                //Secs * 100
 
-    bool CutterOff;           //CutterOption
+    bool CutOff;           //CutterOption
     bool AntiSide;
 
     int MeasuredWidth;
@@ -152,33 +140,7 @@ enum TEACHMODETYPE
     STANDARD,
     AUTO,
     SIGMA,
-    Undefined,
-};
-
-enum QUAL_RANGE_MARKER{
-    TIME_PLRG = 0,
-    TIME_MSRG,
-    POWER_PLRG,
-    POWER_MSRG,
-    PRE_HGT_PLRG,
-    PRE_HGT_MSRG,
-    HEIGHT_PLRG,
-    HEIGHT_MSRG,
-    FORCE_PLRG,
-    FORCE_MSRG,
-    TIME_CONFRG_PL,
-    POWER_CONFRG_PL,
-    PRE_HGT_CONFRG_PL,
-    HEIGHT_CONFRG_PL,
-    TIME_CONFRG_MS,
-    POWER_CONFRG_MS,
-    PRE_HGT_CONFRG_MS,
-    HEIGHT_CONFRG_MS,
-    ENERGY_ADJ,
-    PRESSURE_ADJ,
-    AMPLITUDE_ADJ,
-    WIDTH_ADJ,
-    QUAL_RANGES
+    UNDEFINED,
 };
 
 enum TESTMODE
@@ -192,12 +154,12 @@ struct TEACHMODESETTING
 {
     enum TEACHMODETYPE TeachModeType;
     //TeachModeAdvanceSetting
-    int TeachModequal_Window[ENERGY_ADJ];
+    int TeachModequal_Window[18];
 };
 
 struct TESTSETTING
 {
-    long Qutanty;             //Accummulated total
+    int Qutanty;             //Accummulated total
     int StopCount;
     enum TESTMODE TestMode;
     struct TEACHMODESETTING TeachModeSetting;
@@ -209,7 +171,7 @@ struct PresetElement
     int RevCode;              //Amtech Revision Code for possible future use
     int SpliceID;
     QString SpliceName;       //Customer's Part Number
-    QString CreateDate;       //Date of last rev, seconds from Jan 1, 1980
+    QString CreatedDate;       //Date of last rev, seconds from Jan 1, 1980
     QString OperatorID;
 
     int CrossSection;         //Area of part in mm*mm/100
@@ -222,7 +184,7 @@ struct PresetElement
 
     int NoOfWires;            //Number of wires in this splice
     /*WireEl(1 To MAX_WIRE_ELEMENTS) As WireElement*/
-    QMap<int,QString> Wire;   //Store data for individual wires
+    QMap<int,QString> WireIndex;   //Store data for individual wires
 
     struct TESTSETTING TestSetting;
 
@@ -251,15 +213,16 @@ struct BOARDLAYOUT
 struct PARTTYPE
 {
     enum PROCESSMODE ProcessMode;
-    struct WORKSTATIONS;
-    struct BOARDLAYOUT;
+    struct WORKSTATIONS WorkStations;
+    struct BOARDLAYOUT BoardLayout;
 };
 
 struct PARTATTRIBUTE
 {
+    QString SpliceName;
     int CurrentWorkstation;
     int CurrentBoardLayoutZone;
-    QString SpliceName;
+
 };
 
 struct PartElement
@@ -267,13 +230,13 @@ struct PartElement
     int RevCode;
     int PartID;
     QString PartName;
-    QString CreateDate;
+    QString CreatedDate;
     QString OperatorID;
     struct PARTTYPE PartTypeSetting;
 
     int NoOfSplice;
     //#define SEQ_MAX_SPLICES  250
-    QMap<int, struct PARTATTRIBUTE> Splice;
+    QMap<int, struct PARTATTRIBUTE> SpliceIndex;
 
 };
 
@@ -289,16 +252,23 @@ struct WorkOrder
     int RevCode;
     int WorkOrderID;
     QString WorkOrderName;
-    QString CreateDate;
+    QString CreatedDate;
     QString OperatorID;
     int NoOfPart;
-    QMap<int, QString> Part;
+    QMap<int, QString> PartIndex;
 
     int Quantity;
     int CurrentPartCount;
     QMap<int, QString> MissSpliceList;
     struct SpliceIndex CurrentSplice;
     bool WorkOrderDone;
+};
+
+enum TABLENAME{
+    WIRETABLE,
+    PRESETTABLE,
+    PARTTABLE,
+    WORKORDERTABLE,
 };
 
 #endif // DEFINITION_H
