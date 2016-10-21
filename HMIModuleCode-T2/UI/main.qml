@@ -45,7 +45,7 @@ Window {
 
     CStatusBar {
         id: statusBar
-        height: 40//Screen.desktopAvailableHeight * 0.03
+        height: 25//Screen.desktopAvailableHeight * 0.03
     }
 
 //    Content {
@@ -76,7 +76,7 @@ Window {
 
     HeadBar {
         id: headBar
-        height: 97//Screen.desktopAvailableHeight * 0.07
+        height: 79//Screen.desktopAvailableHeight * 0.07
         anchors.top: statusBar.bottom
         z: 10
     }

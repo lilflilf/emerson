@@ -96,15 +96,69 @@ Item {
         }
     }
 
+    Rectangle {
+        anchors.fill: qualityListViewTwo
+        color: "#6d6e71"
+        Line {
+            anchors.top: parent.top
+            anchors.topMargin: parent.height / 2
+            lineColor: "white"
+            width: parent.width
+            height: 2
+        }
+        Line {
+            anchors.top: parent.top
+            anchors.topMargin: parent.height * 0.1
+            lineColor: "red"
+            width: parent.width
+            height: 2
+        }
+        Line {
+            anchors.top: parent.top
+            anchors.topMargin: parent.height * 0.2
+            lineColor: "yellow"
+            width: parent.width
+            height: 2
+        }
+        Line {
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: parent.height * 0.2
+            lineColor: "yellow"
+            width: parent.width
+            height: 2
+        }
+        Line {
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: parent.height * 0.1
+            lineColor: "red"
+            width: parent.width
+            height: 2
+        }
+    }
+
     ListView {
         id: qualityListViewTwo
-        width: Screen.desktopAvailableWidth * 0.45
+        width: Screen.desktopAvailableWidth * 0.35
         height: Screen.desktopAvailableHeight *0.25
         orientation: Qt.Horizontal
         interactive: false
         anchors.top: qualityListView.bottom
         anchors.topMargin: 20
-        delegate: qualityDelegate
-        model: 4
+        delegate: qualityListViewTwoDelegate
+        model: 100
+    }
+    Component {
+        id: qualityListViewTwoDelegate
+        Item {
+            width: 8
+            height: Screen.desktopAvailableHeight * 0.25
+            Rectangle {
+                radius: 100
+                width: 4
+                height: 4
+                anchors.top: parent.top
+                anchors.topMargin: 50
+            }
+        }
     }
 }

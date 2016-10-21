@@ -269,7 +269,7 @@ Item {
         anchors.left: parent.left
         anchors.leftMargin: 24
         height: 79
-        width: parent.width/4.4
+        width: 300//parent.width/4.4
         text: qsTr("+ ADD NEW WORK ORDEAR")
         pointSize: 14
         clip: true
@@ -288,7 +288,7 @@ Item {
         anchors.left: addnewOrder.right
         anchors.leftMargin: 24
         height: 79
-        width: parent.width/4.4
+        width: 300//parent.width/4.4
         text: qsTr("EDIT EXISTING WORK ORDER")
         pointSize: 14
         clip: true
@@ -307,7 +307,7 @@ Item {
         anchors.left: editExistingOrder.right
         anchors.leftMargin: 24
         height: 79
-        width: parent.width/4.4
+        width: 300//parent.width/4.4
         text: qsTr("IMPORT WORK ORDER")
         pointSize: 14
         clip: true
@@ -320,7 +320,7 @@ Item {
         anchors.left: importOrder.right
         anchors.leftMargin: 24
         height: 79
-        width: parent.width/4.4
+        width: 300//parent.width/4.4
         text: qsTr("SELECT")
         pointSize: 14
         clip: true
