@@ -47,6 +47,13 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
     querySecond.exec();
     qDebug() << querySecond.lastError();
 
+    querySecond.prepare("select id,surname from wire where surname=?");
+    querySecond.addBindValue("zhangjylfffffffff");
+    qDebug() << "result = " << querySecond.exec();
+
+    while (querySecond.next()) {
+        qDebug() << querySecond.value(0).toInt();
+    }
 
     db.close();
     seconddb.close();
