@@ -256,4 +256,139 @@ Item {
             }
         }
     }
+    Text {
+        id: progresstracking
+        anchors.bottom: workStation.top
+        anchors.bottomMargin: 4
+        anchors.left: spliceDetailsItem.right
+        anchors.leftMargin: Screen.desktopAvailableWidth*0.1-55
+        font.pointSize: 16
+        font.family: "arial"
+        text: qsTr("Progress and Tracking")
+        color: "white"
+    }
+    Text {
+        id: workStation
+        anchors.bottom: progressBar.top
+        anchors.bottomMargin: 6
+        anchors.left: spliceDetailsItem.right
+        anchors.leftMargin: Screen.desktopAvailableWidth*0.1-55
+        font.pointSize: 13
+        font.family: "arial"
+        text: qsTr("Work Station: B")
+        color: "white"
+    }
+    Text {
+        id: partTask
+        anchors.right: parent.right
+        anchors.rightMargin: 30
+        anchors.bottom: progressBar.top
+        anchors.bottomMargin: 6
+        font.pointSize: 13
+        font.family: "arial"
+        text: qsTr("PART TASKS: 68-72")
+        color: "white"
+    }
+    CButton {
+        id: leftButton
+        anchors.bottom: partCount.top
+        anchors.bottomMargin: 20
+        anchors.left: spliceDetailsItem.right
+        anchors.leftMargin: Screen.desktopAvailableWidth*0.1-55
+        width: 50
+        height: 32
+        iconSource: "qrc:/images/images/you.png"
+        backgroundEnabled: false
+        clip: true
+    }
+    Progressbar {
+        id: progressBar
+        anchors.left: leftButton.right
+        anchors.leftMargin: 25
+        anchors.bottom: partCount.top
+        anchors.bottomMargin: 4
+        width: Screen.desktopAvailableWidth*0.4-150
+        height: 64
+        total: 125
+    }
+
+    CButton {
+        id: rightButton
+        anchors.bottom: partCount.top
+        anchors.bottomMargin: 20
+        anchors.left: progressBar.right
+        anchors.leftMargin: 25
+        width: 50
+        height: 32
+        iconSource: "qrc:/images/images/zuo.png"
+        backgroundEnabled: false
+        clip: true
+        onClicked: {
+            progressBar.finishNo++
+            progressBar.current++
+        }
+    }
+    Text {
+        id: partCount
+        anchors.left: spliceDetailsItem.right
+        anchors.leftMargin: Screen.desktopAvailableWidth*0.1-55
+        anchors.bottom: partProgress.top
+        anchors.bottomMargin: 6
+        font.pointSize: 13
+        font.family: "arial"
+        text: qsTr("PART COUNTER 68/125")
+        color: "white"
+    }
+    Rectangle {
+        id: partProgress
+        anchors.left: spliceDetailsItem.right
+        anchors.leftMargin: Screen.desktopAvailableWidth*0.1-55
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 90
+        height: 10
+        width: Screen.desktopAvailableWidth*0.2
+        color: "#9FA1A4"
+    }
+    Rectangle {
+        id: partgrogressing
+        anchors.left: spliceDetailsItem.right
+        anchors.leftMargin: Screen.desktopAvailableWidth*0.1-55
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 90
+        height: 10
+        width: Screen.desktopAvailableWidth*0.1
+        color: "#60BB46"
+    }
+    Text {
+        id: maintenance
+        anchors.left: partProgress.right
+        anchors.leftMargin: 10
+        anchors.bottom: partProgress.top
+        anchors.bottomMargin: 6
+        font.pointSize: 13
+        font.family: "arial"
+        text: qsTr("MAINTENANCE COUNTER 68K/125K")
+        color: "white"
+    }
+    Rectangle {
+        id: maintenanceProgress
+        anchors.left: partProgress.right
+        anchors.leftMargin: 10
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 90
+        height: 10
+        width: Screen.desktopAvailableWidth*0.2
+        color: "#9FA1A4"
+    }
+    Rectangle {
+        id: maintenancegrogressing
+        anchors.left: partProgress.right
+        anchors.leftMargin: 10
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 90
+        height: 10
+        width: Screen.desktopAvailableWidth*0.1
+        color: "#60BB46"
+    }
+
 }

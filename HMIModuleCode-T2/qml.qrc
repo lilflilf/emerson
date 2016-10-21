@@ -24,6 +24,7 @@
         <file>UI/main.qml</file>
         <file>UI/SpliceLocation.qml</file>
         <file>UI/Line.qml</file>
+        <file>UI/Progressbar.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file>images/menu.png</file>
