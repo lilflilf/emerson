@@ -6,6 +6,7 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include <QObject>
+#include "definition.h"
 
 using namespace std;
 enum TipsScreenMode{
@@ -39,6 +40,17 @@ public:
     void DatabaseOperating(int OperatingType, void*);
 
     //Following for the screen recall
+
+
+    bool SQLQuery(void* _DBObj, QMap<int, QString>* _EntireTableInfo);
+    bool SQLQuery(void* _DBObj, int ID, QString Name, void* _DataStructure);
+
+    bool SQLInsert(void* _DBObj, void* _DataStructure);
+
+    bool SQLUpdate(void* _DBObj, void* _DataStructure);
+
+    bool SQLDelete(void* _DBObj);
+    bool SQLDelete(void* _DBObj, int ID, QString Name);
 private:
 
 

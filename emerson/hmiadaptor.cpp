@@ -47,6 +47,16 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
     querySecond.exec();
     qDebug() << querySecond.lastError();
 
+    querySecond.prepare("select id,surname from wire where surname=?");
+    querySecond.addBindValue("zhangjylfffffffff");
+    qDebug() << "result = " << querySecond.exec();
+
+    //qDebug() << "return ==" << querySecond.next();
+    querySecond.next();
+    qDebug() << "count ==" << querySecond.value(0).toInt();
+    while (querySecond.next()) {
+        qDebug() << querySecond.value(0).toInt();
+    }
 
     db.close();
     seconddb.close();
@@ -60,6 +70,11 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
     query.addBindValue("zhangjyaaaaaaaaaaaaaaaaaaaaaaaaaa");
     query.exec();
     qDebug() << query.lastError();
+
+    query.prepare("delete from wire");
+    query.exec();
+    qDebug() << "TRUNCATE table" << query.lastError();
+
     db.close();
 
 }

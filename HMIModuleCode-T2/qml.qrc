@@ -27,6 +27,7 @@
         <file>UI/Progressbar.qml</file>
         <file>UI/TestSpliceLibrary.qml</file>
         <file>UI/MyRadioButton.qml</file>
+        <file>UI/TestDetail.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file>images/you.png</file>

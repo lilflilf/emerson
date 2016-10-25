@@ -25,7 +25,6 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
     query.exec();
     qDebug() << query.lastError();
     db.close();
-    rows
 }
 
 void HmiAdaptor::openFileDialog()

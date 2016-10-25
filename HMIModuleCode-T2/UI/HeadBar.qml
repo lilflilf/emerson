@@ -329,14 +329,14 @@ Item {
         }
     }
 
-//    CButton {
-//        anchors.left: btn.right
-//        width: 40
-//        height: parent.height
-//        onClicked: {
-//            root.menuInit(3)
-//        }
-//    }
+    CButton {
+        anchors.right: btn.left
+        width: 40
+        height: parent.height
+        onClicked: {
+            Qt.quit()
+        }
+    }
 
 
     Text {
