@@ -25,6 +25,7 @@
         <file>UI/SpliceLocation.qml</file>
         <file>UI/Line.qml</file>
         <file>UI/Progressbar.qml</file>
+        <file>UI/TestDetail.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file>images/you.png</file>

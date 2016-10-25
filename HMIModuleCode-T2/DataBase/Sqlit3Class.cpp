@@ -110,24 +110,6 @@ bool SQLITCLASS::InsertRecordIntoWireTable(WireElementStructure* _WireElement)
      query.addBindValue(_WireElement->Side);
      query.addBindValue(_WireElement->VerticalSide);
      query.addBindValue(_WireElement->Position);
-     QSqlQuery query;
-
-     query.prepare("INSERT INTO Wire (WireName, CreatedDate, OperatorID, Color,"
-                   "StripeTye, StripeColor, Gauge, MetalType, HorizontalLocation,"
-                   "VerticalLocation, VerticalPosition)"
-                   "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-     query.addBindValue("JerryWang");
-     query.addBindValue("20161019");
-     query.addBindValue("JW");
-     query.addBindValue("GREEN");
-     query.addBindValue(0);
-     query.addBindValue("YELLOW");
-     query.addBindValue(50);
-     query.addBindValue(0);
-     query.addBindValue(0);
-     query.addBindValue(1);
-     query.addBindValue(0);
-     //query.value()
 
      if (query.exec())   //run SQL
          bResult = true;
