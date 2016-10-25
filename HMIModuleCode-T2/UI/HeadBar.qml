@@ -53,7 +53,7 @@ Item {
             anchors.fill: parent
             height: 60//parent.height-30
             width: 60//parent.width*0.68
-            source: btnBack.visible ? "qrc:/images/images/menu.png" : "qrc:/images/images/menu.png"
+            source: "qrc:/images/images/menu.png"
         }
 //        Text {
 //            id: menu
@@ -160,21 +160,22 @@ Item {
                                             creatMenu.childModel = settingList
                                             creatMenu.height = settingList.count * 40
                                         }
-                                        else if (index == 1) {
-                                            btn.isCheck = false
-                                            creatMenu.visible = false
-                                            btnBack.visible = false
-                                            root.menuInit(2)
-                                            title.text = qsTr("Operate")
-                                            headBack.color = "blue"
-                                        }
-                                        else if (index == 2) {
-                                            btn.isCheck = false
-                                            creatMenu.visible = false
-                                            btnBack.visible = false
-                                            root.menuInit(2)
-                                        }
-
+//                                        else if (index == 1) {
+//                                            btn.isCheck = false
+//                                            creatMenu.visible = false
+//                                            btnBack.visible = false
+//                                            root.menuInit(2)
+//                                            console.log("3333333333333333333")
+//                                            title.text = qsTr("Operate")
+////                                            headBack.color = "blue"
+//                                        }
+//                                        else if (index == 2) {
+//                                            btn.isCheck = false
+//                                            creatMenu.visible = false
+//                                            btnBack.visible = false
+//                                            root.menuInit(3)
+//                                            console.log("4444444444444444")
+//                                        }
                                         headBar.selectIndex = index
                                         creatMenu.anchors.topMargin = index * 40
 
@@ -204,6 +205,12 @@ Item {
                                     btnBack.visible = false
                                     root.menuInit(2)
                                     title.text = qsTr("Operate")
+                                } else if (index == 2) {
+                                    btn.isCheck = false
+                                    creatMenu.visible = false
+                                    btnBack.visible = false
+                                    root.menuInit(3)
+                                    title.text = qsTr("Test")
                                 }
                             }
                         }

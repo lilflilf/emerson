@@ -9,7 +9,8 @@ Item {
     height: Screen.desktopAvailableHeight * 0.03
     Rectangle {
         anchors.fill: parent
-        color: "#fac834"
+//        color: "#fac834"
+        color: "#004b8d"
         Text {
             id: time
             font.family: "arial"

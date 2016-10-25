@@ -25,13 +25,26 @@
         <file>UI/SpliceLocation.qml</file>
         <file>UI/Line.qml</file>
         <file>UI/Progressbar.qml</file>
+        <file>UI/TestSpliceLibrary.qml</file>
+        <file>UI/MyRadioButton.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file>images/you.png</file>
         <file>images/zuo.png</file>
+        <file>images/bg.png</file>
         <file>images/headbg.png</file>
         <file>images/icon-bg.png</file>
-        <file>images/bg.png</file>
         <file>images/menu.png</file>
+        <file>images/Add.png</file>
+        <file>images/down.png</file>
+        <file>images/import.png</file>
+        <file>images/OK.png</file>
+        <file>images/stting.png</file>
+        <file>images/up.png</file>
+        <file>images/cancel.png</file>
+        <file>images/dialogbg.png</file>
+        <file>images/check-bg.png</file>
+        <file>images/check-click.png</file>
+        <file>images/check-border.png</file>
     </qresource>
 </RCC>
