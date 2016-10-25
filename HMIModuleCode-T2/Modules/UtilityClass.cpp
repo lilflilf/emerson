@@ -85,6 +85,8 @@ bool UtilityClass::StringJsonToMap(QString SourceString, QMap<int, QString>* _De
         if(parse_document.isObject())
         {
             QJsonObject obj = parse_document.object();
+            if(_DestMap->isEmpty() == false)
+                _DestMap->clear();
             QJsonObject::const_iterator i = obj.constBegin();
             while(i != obj.constEnd()){
                 _DestMap->insert(i.key().toInt(), i.value().toString());
@@ -135,6 +137,8 @@ bool UtilityClass::StringJsonToMap(QString SourceString, QMap<int, struct PARTAT
         if(parse_document.isObject())
         {
             QJsonObject obj = parse_document.object();
+            if (_DestMap->isEmpty() == false)
+                _DestMap->clear();
             QJsonObject::const_iterator i = obj.constBegin();
             while(i != obj.constEnd()){
                 QString value = i.value().toString();

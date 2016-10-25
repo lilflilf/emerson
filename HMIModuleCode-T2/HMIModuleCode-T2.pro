@@ -20,9 +20,12 @@ SOURCES += main.cpp \
     Modules/M10RunMode.cpp \
     Modules/UtilityClass.cpp \
     Modules/BransonSerial.cpp \
-    DataBase/Sqlit3Class.cpp \
     UI/hmiadaptor.cpp \
-    TestCase/databasetest.cpp
+    TestCase/databasetest.cpp \
+    DataBase/DBWireTable.cpp \
+    DataBase/DBPresetTable.cpp \
+    DataBase/DBPartTable.cpp \
+    DataBase/DBWorkOrderTable.cpp
 
 RESOURCES += qml.qrc
 
@@ -52,7 +55,11 @@ HEADERS += \
     Interface/Definition.h \
     DataBase/SqlSentence.h \
     UI/hmiadaptor.h \
-    TestCase/databasetest.h
+    TestCase/databasetest.h \
+    DataBase/DBWireTable.h \
+    DataBase/DBPresetTable.h \
+    DataBase/DBPartTable.h \
+    DataBase/DBWorkOrderTable.h
 
 DISTFILES += \
     UI/displayChinese_zh_CN.qm \

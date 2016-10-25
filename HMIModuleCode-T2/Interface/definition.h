@@ -89,7 +89,7 @@ struct SHRINKTUBE
 {
     //Added 30 June 2000 to accommodate the Raychem tube shrinker data
     bool ShrinkOption;
-    int ShrinkTubeIndex;     //Raychem tube index (0 for None,1,2,3,3A,Other)
+    int ShrinkTubeID;     //Raychem tube index (0 for None,1,2,3,3A,Other)
     int ShrinkTime;           //Secs * 10
     int ShrinkTemperature;    //In Centigrade degrees
 
@@ -264,11 +264,77 @@ struct WorkOrder
     bool WorkOrderDone;
 };
 
-enum TABLENAME{
-    WIRETABLE,
-    PRESETTABLE,
-    PARTTABLE,
-    WORKORDERTABLE,
+struct OperatorInfo
+{
+    int RevCode;
+    int OperatorID;
+    QString OperatorName;
+    QString CreatedDate;
+    QString Password;
+    int PermissionLevel;
+};
+
+struct AlarmInfo
+{
+    int RevCode;
+    int AlarmID;
+    QString AlarmMsg;
+    QString CreatedDate;
+    int AlarmType;
+    int WeldResultID;
+};
+
+struct WorkOrderIndex
+{
+    int WorkOrderID;
+    QString WorkOrderName;
+};
+
+struct PartIndex
+{
+    int PartID;
+    QString PartName;
+};
+
+struct WELDRESULT
+{
+    int Energy;
+    int TPressure;
+    int Pressure;
+    int Amplitude;
+    int Amplitude2;
+    int Width;
+    int Time;
+    int Power;
+    int Preheight;
+    int Postheight;
+    int Alarmflags;
+};
+
+enum SAMPLERATIO
+{
+    SampleWith1ms,
+    SampleWith5ms,
+    SampleWith10ms,
+    SampleWith20ms,
+};
+
+struct WeldResultInfo
+{
+    int RevCode;
+    int WeldResultID;
+    QString OperatorName;
+    QString CreatedDate;
+    struct WorkOrderIndex CurrentWorkOrder;
+    struct PartIndex CurrentPart;
+    struct SpliceIndex CurrentSplice;
+    int WeldCount;
+    int PartCount;
+    struct WELDRESULT ActualResult;
+    enum SAMPLERATIO SampleRatio;
+    int NoOfSamples;
+    QMap<int, QString> PowerGraph;
+    QMap<int, QString> PostHeightGraph;
 };
 
 #endif // DEFINITION_H
