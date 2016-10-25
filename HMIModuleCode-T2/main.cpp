@@ -9,10 +9,12 @@
 //  ↵
 #include "Modules/Modstart.h"
 #include "TestCase/databasetest.h"
+#include "UI/alpainteditem.h"
 
 int main(int argc, char *argv[])
 {
     //qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
+    qmlRegisterType<ALPaintedItem>("ALPaintedItem", 1, 0, "ALPaintedItem");
 
     QGuiApplication app(argc, argv);
     QString locale = QLocale::system().name();
@@ -24,6 +26,8 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/UI/main.qml")));
+    ALPaintedItem *alpaint = new ALPaintedItem;
+    engine.rootContext()->setContextProperty("alpaint",alpaint);
 
     DataBaseTest *_TestPtr = new DataBaseTest();
 //    _TestPtr->TestMapJsonToString();

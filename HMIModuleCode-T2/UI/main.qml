@@ -2,6 +2,7 @@ import QtQuick 2.7
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.0
 import QtQuick.Window 2.2
+import ALPaintedItem 1.0
 
 //ApplicationWindow {
 Window {
@@ -80,4 +81,39 @@ Window {
         anchors.top: statusBar.bottom
         z: 10
     }
+//    CButton {
+//        id: testButton
+//        width: 300
+//        height: 100
+//        onClicked: {
+//            //alpaint.clear()
+//            alpaint.draw()
+//        }
+//    }
+
+//    Rectangle {
+//        id:photoMarkedRoot
+//        color: "transparent"
+//        property alias painter: painter
+//        anchors.top: testButton.bottom
+//        width: Screen.desktopAvailableWidth
+//        height: Screen.desktopAvailableHeight
+//        Component.onCompleted: {
+//            painter.penWidth = 2//initHeight/647.0*3
+//            painter.penColor = "red"
+//            painter.init()
+//        }
+
+//        ALPaintedItem {
+//            id: painter;
+//            width: photoMarkedRoot.width
+//            height: photoMarkedRoot.height
+//            onWidthChanged: {
+//                painter.init()
+//            }
+//            onHeightChanged: {
+//                painter.init()
+//            }
+//        }
+//    }
 }

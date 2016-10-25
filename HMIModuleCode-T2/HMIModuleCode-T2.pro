@@ -22,6 +22,7 @@ SOURCES += main.cpp \
     Modules/BransonSerial.cpp \
     UI/hmiadaptor.cpp \
     TestCase/databasetest.cpp \
+    UI/alpainteditem.cpp \
     DataBase/DBWireTable.cpp \
     DataBase/DBPresetTable.cpp \
     DataBase/DBPartTable.cpp \
@@ -56,6 +57,7 @@ HEADERS += \
     DataBase/SqlSentence.h \
     UI/hmiadaptor.h \
     TestCase/databasetest.h \
+    UI/alpainteditem.h \
     DataBase/DBWireTable.h \
     DataBase/DBPresetTable.h \
     DataBase/DBPartTable.h \
