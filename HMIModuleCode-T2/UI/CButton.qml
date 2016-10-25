@@ -29,7 +29,7 @@ MouseArea {
     property int labelVerticalOffset: 0
 
     /*! 设置文本字体大小 */
-    property int pointSize: 20
+    property int pixelSize: 20
 
     /*! 设置图片和文本间距 */
     property int spacing: (button.iconSource != "" && button.text != "") ? 10 : 0   //控制文字与元素间距
@@ -85,7 +85,7 @@ MouseArea {
         Text {
             id: text
             anchors.verticalCenter: parent.verticalCenter
-            font.pointSize: button.pointSize
+            font.pixelSize: button.pixelSize
             color: button.textColor
             text: qsTr(button.text)
             font.family: "arial"

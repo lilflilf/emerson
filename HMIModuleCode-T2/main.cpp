@@ -22,17 +22,18 @@ int main(int argc, char *argv[])
     bool success = translator.load("displayChinese_zh_CN.qm");
     app.installTranslator(&translator);
 
-//    MODstart *_ModStart = MODstart::Instance();
+    MODstart *_ModStart = MODstart::Instance();
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/UI/main.qml")));
     ALPaintedItem *alpaint = new ALPaintedItem;
     engine.rootContext()->setContextProperty("alpaint",alpaint);
 
-//    DataBaseTest *_TestPtr = new DataBaseTest();
+    DataBaseTest *_TestPtr = new DataBaseTest();
 //    _TestPtr->TestMapJsonToString();
 //    _TestPtr->TestStringJsonToMap();
 //    _TestPtr->TestInsertOneRecordIntoWorkOrderTable();
+//    _TestPtr->TestInsertOneRecordIntoPartTable();
 //    _TestPtr->TestInsertOneRecordIntoPresetTable();
 //    _TestPtr->TestInsertOneRecordIntoWireTable();
 //    _TestPtr->TestQueryEntireWireTable();
@@ -40,5 +41,18 @@ int main(int argc, char *argv[])
 //    _TestPtr->TestQueryEntirePartTable();
 //    _TestPtr->TestQueryEntireWorkOrderTable();
 //    _TestPtr->TestQueryOneWireTable();
+//    _TestPtr->TestDeleteEntireWireTable();
+//    _TestPtr->TestDeleteEntirePresetTable();
+//    _TestPtr->TestDeleteEntirePartTable();
+//    _TestPtr->TestDeleteEntireWorkOrderTable();
+//    _TestPtr->TestDeleteOneWireTable();
+//    _TestPtr->TestDeleteOnePresetTable();
+//    _TestPtr->TestDeleteOnePartTable();
+//    _TestPtr->TestDeleteOneWorkOrderTable();
+//    _TestPtr->TestUpdateOneRecordIntoWireTable();
+//    _TestPtr->TestUpdateOneRecordIntoPresetTable();
+//    _TestPtr->TestUpdateOneRecordIntoPartTable();
+//    _TestPtr->TestUpdateOneRecordIntoWorkOrderTable();
+
     return app.exec();
 }

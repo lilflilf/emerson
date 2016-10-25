@@ -25,6 +25,9 @@ Window {
         case 2:
             contentLoader.source = "qrc:/UI/Operate.qml"
             break;
+        case 3:
+            contentLoader.source = "qrc:/UI/TestSpliceLibrary.qml"
+            break;
         default:
             break;
         }
@@ -62,7 +65,7 @@ Window {
         z:3
         anchors.top: headBar.bottom
         width: Screen.desktopAvailableWidth
-        height: Screen.desktopAvailableHeight
+        height: Screen.desktopAvailableHeight - 104
         onLoaded: {
             if (initIndex == 1)
                 contentLoader.item.bIsEdit = true

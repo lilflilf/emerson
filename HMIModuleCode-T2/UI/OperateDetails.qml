@@ -5,8 +5,6 @@ import QtQuick.Window 2.2
 
 Item {
     id: operateDetail
-    width: Screen.desktopAvailableWidth
-    height: Screen.desktopAvailableHeight * 0.8
     Rectangle {
         anchors.fill: parent
         color: "#626465"
@@ -59,7 +57,7 @@ Item {
     SpliceDetails {
         id: spliceDetailsItem
         width: Screen.desktopAvailableWidth * 0.5
-        height: Screen.desktopAvailableHeight *0.4
+        height: Screen.desktopAvailableHeight *0.35
         anchors.top: operateTitle.bottom
         anchors.left: operateTitle.left
         anchors.topMargin: 15
@@ -344,7 +342,7 @@ Item {
         anchors.left: spliceDetailsItem.right
         anchors.leftMargin: Screen.desktopAvailableWidth*0.1-55
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 90
+        anchors.bottomMargin: 20
         height: 10
         width: Screen.desktopAvailableWidth*0.2
         color: "#9FA1A4"
@@ -354,7 +352,7 @@ Item {
         anchors.left: spliceDetailsItem.right
         anchors.leftMargin: Screen.desktopAvailableWidth*0.1-55
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 90
+        anchors.bottomMargin: 20
         height: 10
         width: Screen.desktopAvailableWidth*0.1
         color: "#60BB46"
@@ -375,7 +373,7 @@ Item {
         anchors.left: partProgress.right
         anchors.leftMargin: 10
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 90
+        anchors.bottomMargin: 20
         height: 10
         width: Screen.desktopAvailableWidth*0.2
         color: "#9FA1A4"
@@ -385,7 +383,7 @@ Item {
         anchors.left: partProgress.right
         anchors.leftMargin: 10
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 90
+        anchors.bottomMargin: 20
         height: 10
         width: Screen.desktopAvailableWidth*0.1
         color: "#60BB46"
