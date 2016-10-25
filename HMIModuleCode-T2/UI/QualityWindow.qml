@@ -136,29 +136,37 @@ Item {
         }
     }
 
-    ListView {
-        id: qualityListViewTwo
+//    ListView {
+//        id: qualityListViewTwo
+//        width: Screen.desktopAvailableWidth * 0.35
+//        height: Screen.desktopAvailableHeight *0.25
+//        orientation: Qt.Horizontal
+//        interactive: false
+//        anchors.top: qualityListView.bottom
+//        anchors.topMargin: 20
+//        delegate: qualityListViewTwoDelegate
+//        model: 100
+//    }
+//    Component {
+//        id: qualityListViewTwoDelegate
+//        Item {
+//            width: 8
+//            height: Screen.desktopAvailableHeight * 0.25
+//            Rectangle {
+//                radius: 100
+//                width: 4
+//                height: 4
+//                anchors.top: parent.top
+//                anchors.topMargin: 50
+//            }
+//        }
+//    }
+
+    MyCanvas {
+        id: myCanvas
         width: Screen.desktopAvailableWidth * 0.35
         height: Screen.desktopAvailableHeight *0.25
-        orientation: Qt.Horizontal
-        interactive: false
         anchors.top: qualityListView.bottom
         anchors.topMargin: 20
-        delegate: qualityListViewTwoDelegate
-        model: 100
-    }
-    Component {
-        id: qualityListViewTwoDelegate
-        Item {
-            width: 8
-            height: Screen.desktopAvailableHeight * 0.25
-            Rectangle {
-                radius: 100
-                width: 4
-                height: 4
-                anchors.top: parent.top
-                anchors.topMargin: 50
-            }
-        }
     }
 }
