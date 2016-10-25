@@ -42,15 +42,15 @@ public:
     //Following for the screen recall
 
 
-    bool SQLQuery(enum TABLENAME table, QMap<int, QString>* _EntireTableInfo);
-    bool SQLQuery(enum TABLENAME table, int ID, QString Name, void* _DataStructure);
+    bool SQLQuery(void* _DBObj, QMap<int, QString>* _EntireTableInfo);
+    bool SQLQuery(void* _DBObj, int ID, QString Name, void* _DataStructure);
 
-    bool SQLInsert(enum TABLENAME table, void* _DataStructure);
+    bool SQLInsert(void* _DBObj, void* _DataStructure);
 
-    bool SQLUpdate(enum TABLENAME table, void* _DataStructure);
+    bool SQLUpdate(void* _DBObj, void* _DataStructure);
 
-    bool SQLDelete(enum TABLENAME table, QMap<int, QString>* _TableInfo);
-    bool SQLDelete(enum TABLENAME table, int ID, QString Name);
+    bool SQLDelete(void* _DBObj);
+    bool SQLDelete(void* _DBObj, int ID, QString Name);
 private:
 
 
