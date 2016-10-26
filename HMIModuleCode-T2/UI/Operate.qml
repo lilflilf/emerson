@@ -353,8 +353,7 @@ Item {
         textColor: "white"
         onClicked: {
             console.log("ssssssddddddddd")
-            //loader.source = "qrc:/UI/OperateDetails.qml"
-            loader.source = "qrc:/UI/TestDetail.qml"
+            loader.source = "qrc:/UI/OperateDetails.qml"
         }
     }
     Rectangle {

@@ -344,6 +344,7 @@ Item {
             clip: true
             buttontext: qsTr("Unconstrained")
             exclusiveGroup: mos
+            bIsCheck: true
         }
         MyRadioButton {
             id: splices
@@ -375,9 +376,9 @@ Item {
             anchors.left: teachMode.right
             anchors.leftMargin: 24
             backgroundwidth: 180
-            backgroundheight: 57
-            textLeft: qsTr("oFF")
-            textRight: qsTr("ON")
+            backgroundheight: 47
+            textLeft: qsTr("Off")
+            textRight: qsTr("On")
             state: "left"
         }
         ExclusiveGroup {
@@ -391,7 +392,7 @@ Item {
             anchors.topMargin: 7
             height: 57
             width: 217
-            visible: !diagram.on
+            visible: diagram.on
             clip: true
             buttontext: qsTr("Standard")
             exclusiveGroup: mos2
@@ -405,7 +406,7 @@ Item {
             height: 57
             width: 217
             clip: true
-            visible: !diagram.on
+            visible: diagram.on
             buttontext: qsTr("Auto")
             exclusiveGroup: mos2
         }
@@ -418,7 +419,7 @@ Item {
             height: 57
             width: 217
             clip: true
-            visible: !diagram.on
+            visible: diagram.on
             buttontext: qsTr("Sigma")
             exclusiveGroup: mos2
         }
@@ -452,6 +453,7 @@ Item {
                 backGround.visible = false
                 backGround.opacity = 0
                 testparameters.visible = false
+                loader.source = "qrc:/UI/TestDetail.qml"
             }
         }
     }
