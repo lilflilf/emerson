@@ -41,7 +41,7 @@ struct WireElement
 {
     QString WireName;
     int     WireID;
-    QString CreatedDate;
+    unsigned int CreatedDate;
     int OperatorID;
 
     QString Color;
@@ -171,7 +171,7 @@ struct PresetElement
     int RevCode;              //Amtech Revision Code for possible future use
     int SpliceID;
     QString SpliceName;       //Customer's Part Number
-    QString CreatedDate;       //Date of last rev, seconds from Jan 1, 1980
+    unsigned int CreatedDate;       //Date of last rev, seconds from Jan 1, 1980
     int OperatorID;
 
     int CrossSection;         //Area of part in mm*mm/100
@@ -230,7 +230,7 @@ struct PartElement
     int RevCode;
     int PartID;
     QString PartName;
-    QString CreatedDate;
+    unsigned int CreatedDate;
     int OperatorID;
     struct PARTTYPE PartTypeSetting;
 
@@ -252,7 +252,7 @@ struct WorkOrderElement
     int RevCode;
     int WorkOrderID;
     QString WorkOrderName;
-    QString CreatedDate;
+    unsigned int CreatedDate;
     int OperatorID;
     int NoOfPart;
     QMap<int, QString> PartIndex;
@@ -279,7 +279,7 @@ struct OperatorElement
     int OperatorID;
     QString OperatorName;
     int WhoCreatedNewID;
-    QString CreatedDate;
+    unsigned int CreatedDate;
     QString Password;
     enum PASSWORDCONTROL PermissionLevel;
 };

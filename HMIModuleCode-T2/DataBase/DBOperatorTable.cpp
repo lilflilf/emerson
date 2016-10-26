@@ -14,7 +14,7 @@ DBOperatorTable* DBOperatorTable::Instance()
 
 DBOperatorTable::DBOperatorTable()
 {
-    OperatorDBObj = QSqlDatabase::addDatabase("QSQLITE", "PartDBObjConnect");
+    OperatorDBObj = QSqlDatabase::addDatabase("QSQLITE", "OperatorDBObjConnect");
     OperatorDBObj.setDatabaseName(DatabaseDir + OperatorDBFile);
     if(OperatorDBObj.open())
     {
@@ -34,12 +34,7 @@ bool DBOperatorTable::CreateNewTable()
     QSqlQuery query(OperatorDBObj);
     bool bResult = OperatorDBObj.open();
 
-//    bResult = query.exec(SQLSentence[CREATE_PART_TABLE]);   //run SQL
-    bResult = query.exec("CREATE TABLE Operator ("                   /*0 Create Wire Table*/
-                  "ID INTEGER PRIMARY KEY AUTOINCREMENT, "
-                  "OperatorName VARCHAR UNIQUE, "
-                  "CreatedDate VARCHAR, WhoCreatedNewID INT, Password VARCHAR, "
-                  "PermissionLevel ENUM)");
+    bResult = query.exec(SQLSentence[CREATE_OPERATOR_TABLE]);   //run SQL
 
     if(bResult == false)
         qDebug() << "SQL ERROR:"<< query.lastError();
@@ -63,14 +58,10 @@ bool DBOperatorTable::InsertRecordIntoTable(void *_obj)
         return bResult;
     }
 
-//    UtilityClass *_Utility = UtilityClass::Instance();
-
-//    query.prepare(SQLSentence[INSERT_PART_TABLE]);
-    query.prepare("INSERT INTO Operator ( "
-                  "OperatorName, CreatedDate, WhoCreatedNewID, Password, "
-                  "PermissionLevel)VALUES(?, ?, ?, ?, ?)");
+    query.prepare(SQLSentence[INSERT_OPERATOR_TABLE]);
     query.addBindValue(((OperatorElement*)_obj)->OperatorName);
-    query.addBindValue(((OperatorElement*)_obj)->CreatedDate);
+    QDateTime TimeLabel = QDateTime::fromTime_t(((OperatorElement*)_obj)->CreatedDate);
+    query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
     query.addBindValue(((OperatorElement*)_obj)->WhoCreatedNewID);
     query.addBindValue(((OperatorElement*)_obj)->Password);
     query.addBindValue(((OperatorElement*)_obj)->PermissionLevel);
@@ -95,8 +86,7 @@ bool DBOperatorTable::QueryEntireTable(QMap<int, QString> *_obj)
     if(bResult == false)
         return bResult;
 
-//    bResult = query.exec(SQLSentence[QUERY_ENTIRE_PART_TABLE]);
-    bResult = query.exec("SELECT ID, OperatorName FROM Operator");
+    bResult = query.exec(SQLSentence[QUERY_ENTIRE_OPERATOR_TABLE]);
     if (bResult == true)
     {
         _obj->clear();
@@ -121,7 +111,6 @@ bool DBOperatorTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
     if(_obj == NULL)
         return false;
 
-//    UtilityClass *_Utility = UtilityClass::Instance();
     QSqlQuery query(OperatorDBObj);
     bool bResult = OperatorDBObj.open();
     if(bResult == false)
@@ -130,8 +119,7 @@ bool DBOperatorTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
         return bResult;
     }
 
-//    query.prepare(SQLSentence[QUERY_ONE_RECORD_PART_TABLE]);
-    query.prepare("SELECT * FROM Operator WHERE ID = ? AND OperatorName = ?");
+    query.prepare(SQLSentence[QUERY_ONE_RECORD_OPERATOR_TABLE]);
     query.addBindValue(ID);
     query.addBindValue(Name);
 
@@ -152,7 +140,9 @@ bool DBOperatorTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
 
     ((OperatorElement*)_obj)->OperatorID = query.value("ID").toInt();
     ((OperatorElement*)_obj)->OperatorName = query.value("OperatorName").toString();
-    ((OperatorElement*)_obj)->CreatedDate = query.value("CreatedDate").toString();
+    QDateTime TimeLabel = QDateTime::fromString(query.value("CreatedDate").toString(),
+                                                "yyyy/MM/dd hh:mm:ss");
+    ((OperatorElement*)_obj)->CreatedDate = TimeLabel.toTime_t();
     ((OperatorElement*)_obj)->WhoCreatedNewID = query.value("WhoCreatedNewID").toInt();
     ((OperatorElement*)_obj)->Password = query.value("Password").toString();
     ((OperatorElement*)_obj)->PermissionLevel = (enum PASSWORDCONTROL)query.value("PermissionLevel").toInt();
@@ -170,8 +160,7 @@ bool DBOperatorTable::DeleteEntireTable()
         return bResult;
     }
 
-//    bResult = query.exec(SQLSentence[DELETE_ENTIRE_PART_TABLE]);
-    bResult = query.exec("DELETE FROM Operator");
+    bResult = query.exec(SQLSentence[DELETE_ENTIRE_OPERATOR_TABLE]);
     if(bResult == false)
     {
         qDebug() << "SQL ERROR:"<< query.lastError();
@@ -191,8 +180,7 @@ bool DBOperatorTable::DeleteOneRecordFromTable(int ID, QString Name)
         return bResult;
     }
 
-//    query.prepare(SQLSentence[DELETE_ONE_RECORD_PART_TABLE]);
-    query.prepare("DELETE FROM Operator WHERE ID = ? AND OperatorName = ?");
+    query.prepare(SQLSentence[DELETE_ONE_RECORD_OPERATOR_TABLE]);
     query.addBindValue(ID);
     query.addBindValue(Name);
 
@@ -218,11 +206,10 @@ bool DBOperatorTable::UpdateRecordIntoTable(void *_obj)
         return bResult;
     }
 
-//    query.prepare(SQLSentence[UPDATE_ONE_RECORD_PART_TABLE]);
-    query.prepare("UPDATE Operator Set OperatorName = ?, CreatedDate = ?, "
-                  "WhoCreatedNewID = ?, Password = ?, PermissionLevel = ? WHERE ID = ?");
+    query.prepare(SQLSentence[UPDATE_ONE_RECORD_OPERATOR_TABLE]);
     query.addBindValue(((OperatorElement*)_obj)->OperatorName);
-    query.addBindValue(((OperatorElement*)_obj)->CreatedDate);
+    QDateTime TimeLabel = QDateTime::fromTime_t(((OperatorElement*)_obj)->CreatedDate);
+    query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
     query.addBindValue(((OperatorElement*)_obj)->WhoCreatedNewID);
     query.addBindValue(((OperatorElement*)_obj)->Password);
     query.addBindValue(((OperatorElement*)_obj)->PermissionLevel);
@@ -236,3 +223,71 @@ bool DBOperatorTable::UpdateRecordIntoTable(void *_obj)
     OperatorDBObj.close();
     return bResult;
 }
+
+bool DBOperatorTable::QueryOnlyUseName(QString Name, QMap<int, QString> *_obj)
+{
+    if(_obj == NULL)
+        return false;
+
+    QSqlQuery query(OperatorDBObj);
+    bool bResult = OperatorDBObj.open();
+    if(bResult == false)
+        return bResult;
+
+//    query.prepare(SQLSentence[QUERY_ONE_RECORD_WIRE_TABLE]);
+    query.prepare("SELECT ID, OperatorName FROM Part WHERE OperatorName = ?");
+    query.addBindValue(Name);
+
+    bResult = query.exec();
+    if(bResult == true)
+    {
+        _obj->clear();
+        while(query.next())
+            _obj->insert(query.value("ID").toInt(),
+                           query.value("OperatorName").toString());
+    }
+    else
+    {
+        qDebug() << "SQL ERROR:"<< query.lastError();
+    }
+
+    OperatorDBObj.close();
+    return bResult;
+}
+
+bool DBOperatorTable::QueryOnlyUseTime(unsigned int time_from, unsigned int time_to, QMap<int, QString> *_obj)
+{
+    if(_obj == NULL)
+        return false;
+
+    QSqlQuery query(OperatorDBObj);
+    bool bResult = OperatorDBObj.open();
+    if(bResult == false)
+        return bResult;
+
+//    query.prepare(SQLSentence[QUERY_ONE_RECORD_WIRE_TABLE]);
+    query.prepare("SELECT ID, OperatorName FROM Operator WHERE CreatedDate >= ?"
+                  " AND CreatedDate <= ?");
+    QDateTime TimeLabel = QDateTime::fromTime_t(time_from);
+    query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
+    TimeLabel = QDateTime::fromTime_t(time_to);
+    query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
+
+    bResult = query.exec();
+    if(bResult == true)
+    {
+        _obj->clear();
+        while(query.next())
+            _obj->insert(query.value("ID").toInt(),
+                           query.value("OperatorName").toString());
+    }
+    else
+    {
+        qDebug() << "SQL ERROR:"<< query.lastError();
+    }
+
+    OperatorDBObj.close();
+    return bResult;
+}
+
+

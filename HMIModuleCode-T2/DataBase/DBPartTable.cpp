@@ -64,7 +64,8 @@ bool DBPartTable::InsertRecordIntoTable(void *_obj)
     query.prepare(SQLSentence[INSERT_PART_TABLE]);
 
     query.addBindValue(((PartElement*)_obj)->PartName);
-    query.addBindValue(((PartElement*)_obj)->CreatedDate);
+    QDateTime TimeLabel = QDateTime::fromTime_t(((PartElement*)_obj)->CreatedDate);
+    query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
     query.addBindValue(((PartElement*)_obj)->OperatorID);
     query.addBindValue(((PartElement*)_obj)->PartTypeSetting.ProcessMode);
     query.addBindValue(((PartElement*)_obj)->PartTypeSetting.WorkStations.
@@ -157,7 +158,9 @@ bool DBPartTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
 
     ((PartElement*)_obj)->PartID = query.value("ID").toInt();
     ((PartElement*)_obj)->PartName = query.value("PartName").toString();
-    ((PartElement*)_obj)->CreatedDate = query.value("CreatedDate").toString();
+    QDateTime TimeLabel = QDateTime::fromString(query.value("CreatedDate").toString(),
+                                                "yyyy/MM/dd hh:mm:ss");
+    ((PartElement*)_obj)->CreatedDate = TimeLabel.toTime_t();
     ((PartElement*)_obj)->OperatorID = query.value("OperatorID").toInt();
     ((PartElement*)_obj)->PartTypeSetting.ProcessMode =
             (enum PROCESSMODE)query.value("ProcessMode").toInt();
@@ -236,7 +239,8 @@ bool DBPartTable::UpdateRecordIntoTable(void *_obj)
 
     query.prepare(SQLSentence[UPDATE_ONE_RECORD_PART_TABLE]);
     query.addBindValue(((PartElement*)_obj)->PartName);
-    query.addBindValue(((PartElement*)_obj)->CreatedDate);
+    QDateTime TimeLabel = QDateTime::fromTime_t(((PartElement*)_obj)->CreatedDate);
+    query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
     query.addBindValue(((PartElement*)_obj)->OperatorID);
     query.addBindValue(((PartElement*)_obj)->PartTypeSetting.ProcessMode);
     query.addBindValue(((PartElement*)_obj)->PartTypeSetting.WorkStations.TotalWorkstation);
@@ -255,6 +259,72 @@ bool DBPartTable::UpdateRecordIntoTable(void *_obj)
     {
         qDebug() << "SQL ERROR:"<< query.lastError();
     }
+    PartDBObj.close();
+    return bResult;
+}
+
+bool DBPartTable::QueryOnlyUseName(QString Name, QMap<int, QString> *_obj)
+{
+    if(_obj == NULL)
+        return false;
+
+    QSqlQuery query(PartDBObj);
+    bool bResult = PartDBObj.open();
+    if(bResult == false)
+        return bResult;
+
+//    query.prepare(SQLSentence[QUERY_ONE_RECORD_WIRE_TABLE]);
+    query.prepare("SELECT ID, PartName FROM Part WHERE PartName = ?");
+    query.addBindValue(Name);
+
+    bResult = query.exec();
+    if(bResult == true)
+    {
+        _obj->clear();
+        while(query.next())
+            _obj->insert(query.value("ID").toInt(),
+                           query.value("PartName").toString());
+    }
+    else
+    {
+        qDebug() << "SQL ERROR:"<< query.lastError();
+    }
+
+    PartDBObj.close();
+    return bResult;
+}
+
+bool DBPartTable::QueryOnlyUseTime(unsigned int time_from, unsigned int time_to, QMap<int, QString> *_obj)
+{
+    if(_obj == NULL)
+        return false;
+
+    QSqlQuery query(PartDBObj);
+    bool bResult = PartDBObj.open();
+    if(bResult == false)
+        return bResult;
+
+//    query.prepare(SQLSentence[QUERY_ONE_RECORD_WIRE_TABLE]);
+    query.prepare("SELECT ID, WireName FROM Wire WHERE CreatedDate >= ?"
+                  " AND CreatedDate <= ?");
+    QDateTime TimeLabel = QDateTime::fromTime_t(time_from);
+    query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
+    TimeLabel = QDateTime::fromTime_t(time_to);
+    query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
+
+    bResult = query.exec();
+    if(bResult == true)
+    {
+        _obj->clear();
+        while(query.next())
+            _obj->insert(query.value("ID").toInt(),
+                           query.value("PartName").toString());
+    }
+    else
+    {
+        qDebug() << "SQL ERROR:"<< query.lastError();
+    }
+
     PartDBObj.close();
     return bResult;
 }

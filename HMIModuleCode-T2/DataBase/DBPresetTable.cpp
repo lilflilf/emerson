@@ -63,7 +63,8 @@ bool DBPresetTable::InsertRecordIntoTable(void *_obj)
 
     query.prepare(SQLSentence[INSERT_SPLICE_TABLE]);
     query.addBindValue(((PresetElement*)_obj)->SpliceName);
-    query.addBindValue(((PresetElement*)_obj)->CreatedDate);
+    QDateTime TimeLabel = QDateTime::fromTime_t(((PresetElement*)_obj)->CreatedDate);
+    query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
     query.addBindValue(((PresetElement*)_obj)->OperatorID);
     query.addBindValue(((PresetElement*)_obj)->CrossSection);
     query.addBindValue(((PresetElement*)_obj)->PresetPicNamePath);
@@ -201,7 +202,9 @@ bool DBPresetTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
 
     ((PresetElement*)_obj)->SpliceID = query.value("ID").toInt();
     ((PresetElement*)_obj)->SpliceName = query.value("SpliceName").toString();
-    ((PresetElement*)_obj)->CreatedDate = query.value("CreatedDate").toString();
+    QDateTime TimeLabel = QDateTime::fromString(query.value("CreatedDate").toString(),
+                                                "yyyy/MM/dd hh:mm:ss");
+    ((PresetElement*)_obj)->CreatedDate = TimeLabel.toTime_t();
     ((PresetElement*)_obj)->OperatorID = query.value("OperatorID").toInt();
     ((PresetElement*)_obj)->CrossSection = query.value("Color").toInt();
     ((PresetElement*)_obj)->PresetPicNamePath = query.value("PresetPicPath").toString();
@@ -358,7 +361,8 @@ bool DBPresetTable::UpdateRecordIntoTable(void *_obj)
 
     query.prepare(SQLSentence[UPDATE_ONE_RECORD_SPLICE_TABLE]);
     query.addBindValue(((PresetElement*)_obj)->SpliceName);
-    query.addBindValue(((PresetElement*)_obj)->CreatedDate);
+    QDateTime TimeLabel = QDateTime::fromTime_t(((PresetElement*)_obj)->CreatedDate);
+    query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
     query.addBindValue(((PresetElement*)_obj)->OperatorID);
     query.addBindValue(((PresetElement*)_obj)->CrossSection);
     query.addBindValue(((PresetElement*)_obj)->PresetPicNamePath);
@@ -420,6 +424,73 @@ bool DBPresetTable::UpdateRecordIntoTable(void *_obj)
     {
         qDebug() << "SQL ERROR:"<< query.lastError();
     }
+    SpliceDBObj.close();
+    return bResult;
+}
+
+bool DBPresetTable::QueryOnlyUseName(QString Name, QMap<int, QString> *_obj)
+{
+
+    if(_obj == NULL)
+        return false;
+
+    QSqlQuery query(SpliceDBObj);
+    bool bResult = SpliceDBObj.open();
+    if(bResult == false)
+        return bResult;
+
+//    query.prepare(SQLSentence[QUERY_ONE_RECORD_WIRE_TABLE]);
+    query.prepare("SELECT ID, SpliceName FROM Splice WHERE SpliceName = ?");
+    query.addBindValue(Name);
+
+    bResult = query.exec();
+    if(bResult == true)
+    {
+        _obj->clear();
+        while(query.next())
+            _obj->insert(query.value("ID").toInt(),
+                           query.value("SpliceName").toString());
+    }
+    else
+    {
+        qDebug() << "SQL ERROR:"<< query.lastError();
+    }
+
+    SpliceDBObj.close();
+    return bResult;
+}
+
+bool DBPresetTable::QueryOnlyUseTime(unsigned int time_from, unsigned int time_to, QMap<int, QString> *_obj)
+{
+    if(_obj == NULL)
+        return false;
+
+    QSqlQuery query(SpliceDBObj);
+    bool bResult = SpliceDBObj.open();
+    if(bResult == false)
+        return bResult;
+
+//    query.prepare(SQLSentence[QUERY_ONE_RECORD_WIRE_TABLE]);
+    query.prepare("SELECT ID, SpliceName FROM Splice WHERE CreatedDate >= ?"
+                  " AND CreatedDate <= ?");
+    QDateTime TimeLabel = QDateTime::fromTime_t(time_from);
+    query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
+    TimeLabel = QDateTime::fromTime_t(time_to);
+    query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
+
+    bResult = query.exec();
+    if(bResult == true)
+    {
+        _obj->clear();
+        while(query.next())
+            _obj->insert(query.value("ID").toInt(),
+                           query.value("SpliceName").toString());
+    }
+    else
+    {
+        qDebug() << "SQL ERROR:"<< query.lastError();
+    }
+
     SpliceDBObj.close();
     return bResult;
 }

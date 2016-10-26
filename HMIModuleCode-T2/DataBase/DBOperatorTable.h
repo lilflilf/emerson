@@ -18,6 +18,9 @@ public:
     virtual bool DeleteEntireTable();
     virtual bool DeleteOneRecordFromTable(int ID, QString Name);
 
+    virtual bool QueryOnlyUseName(QString Name, QMap<int, QString> *_obj);
+    virtual bool QueryOnlyUseTime(unsigned int time_from, unsigned int time_to, QMap<int, QString> *_obj);
+
 public:
     static DBOperatorTable* Instance();
 protected:
