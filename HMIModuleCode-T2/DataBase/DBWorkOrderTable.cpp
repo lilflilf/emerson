@@ -63,21 +63,21 @@ bool DBWorkOrderTable::InsertRecordIntoTable(void *_obj)
 
     query.prepare(SQLSentence[INSERT_WORKORDER_TABLE]);
 
-    query.addBindValue(((WorkOrder*)_obj)->WorkOrderName);
-    query.addBindValue(((WorkOrder*)_obj)->CreatedDate);
-    query.addBindValue(((WorkOrder*)_obj)->OperatorID);
-    query.addBindValue(((WorkOrder*)_obj)->NoOfPart);
-    query.addBindValue(((WorkOrder*)_obj)->Quantity);
-    query.addBindValue(((WorkOrder*)_obj)->CurrentPartCount);
-    query.addBindValue(((WorkOrder*)_obj)->CurrentSplice.SpliceID);
-    query.addBindValue(((WorkOrder*)_obj)->CurrentSplice.SpliceName);
-    query.addBindValue(((WorkOrder*)_obj)->WorkOrderDone);
+    query.addBindValue(((WorkOrderElement*)_obj)->WorkOrderName);
+    query.addBindValue(((WorkOrderElement*)_obj)->CreatedDate);
+    query.addBindValue(((WorkOrderElement*)_obj)->OperatorID);
+    query.addBindValue(((WorkOrderElement*)_obj)->NoOfPart);
+    query.addBindValue(((WorkOrderElement*)_obj)->Quantity);
+    query.addBindValue(((WorkOrderElement*)_obj)->CurrentPartCount);
+    query.addBindValue(((WorkOrderElement*)_obj)->CurrentSplice.SpliceID);
+    query.addBindValue(((WorkOrderElement*)_obj)->CurrentSplice.SpliceName);
+    query.addBindValue(((WorkOrderElement*)_obj)->WorkOrderDone);
 
     QString tmpJson;
-    _Utility->MapJsonToString(&((WorkOrder*)_obj)->PartIndex, tmpJson);
+    _Utility->MapJsonToString(&((WorkOrderElement*)_obj)->PartIndex, tmpJson);
     query.addBindValue(tmpJson);
 
-    _Utility->MapJsonToString(&((WorkOrder*)_obj)->MissSpliceList, tmpJson);
+    _Utility->MapJsonToString(&((WorkOrderElement*)_obj)->MissSpliceList, tmpJson);
     query.addBindValue(tmpJson);
 
     bResult = query.exec();   //run SQL
@@ -151,20 +151,20 @@ bool DBWorkOrderTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
         return bResult;
     }
 
-    ((WorkOrder*)_obj)->WorkOrderID = query.value("ID").toInt();
-    ((WorkOrder*)_obj)->WorkOrderName = query.value("WorkOrderName").toString();
-    ((WorkOrder*)_obj)->CreatedDate = query.value("CreatedDate").toString();
-    ((WorkOrder*)_obj)->OperatorID = query.value("OperatorID").toString();
+    ((WorkOrderElement*)_obj)->WorkOrderID = query.value("ID").toInt();
+    ((WorkOrderElement*)_obj)->WorkOrderName = query.value("WorkOrderName").toString();
+    ((WorkOrderElement*)_obj)->CreatedDate = query.value("CreatedDate").toString();
+    ((WorkOrderElement*)_obj)->OperatorID = query.value("OperatorID").toString();
     QString tmpStr = query.value("JSONPartIndex").toString();
-    _Utility->StringJsonToMap(tmpStr, &((WorkOrder*)_obj)->PartIndex);
-    ((WorkOrder*)_obj)->NoOfPart = ((WorkOrder*)_obj)->PartIndex.size();
-    ((WorkOrder*)_obj)->Quantity = query.value("Quantity").toInt();
-    ((WorkOrder*)_obj)->CurrentPartCount = query.value("CurrentPartCount").toInt();
+    _Utility->StringJsonToMap(tmpStr, &((WorkOrderElement*)_obj)->PartIndex);
+    ((WorkOrderElement*)_obj)->NoOfPart = ((WorkOrderElement*)_obj)->PartIndex.size();
+    ((WorkOrderElement*)_obj)->Quantity = query.value("Quantity").toInt();
+    ((WorkOrderElement*)_obj)->CurrentPartCount = query.value("CurrentPartCount").toInt();
     tmpStr = query.value("JSONMissSpliceList").toString();
-    _Utility->StringJsonToMap(tmpStr, &((WorkOrder*)_obj)->MissSpliceList);
-    ((WorkOrder*)_obj)->CurrentSplice.SpliceID = query.value("CurrentSpliceID").toInt();
-    ((WorkOrder*)_obj)->CurrentSplice.SpliceName = query.value("CurrentSpliceName").toString();
-    ((WorkOrder*)_obj)->WorkOrderDone = query.value("WorkOrderDone").toBool();
+    _Utility->StringJsonToMap(tmpStr, &((WorkOrderElement*)_obj)->MissSpliceList);
+    ((WorkOrderElement*)_obj)->CurrentSplice.SpliceID = query.value("CurrentSpliceID").toInt();
+    ((WorkOrderElement*)_obj)->CurrentSplice.SpliceName = query.value("CurrentSpliceName").toString();
+    ((WorkOrderElement*)_obj)->WorkOrderDone = query.value("WorkOrderDone").toBool();
 
     WorkOrderDBObj.close();
 
@@ -227,21 +227,21 @@ bool DBWorkOrderTable::UpdateRecordIntoTable(void *_obj)
     }
 
     query.prepare(SQLSentence[UPDATE_ONE_RECORD_WORKORDER_TABLE]);
-    query.addBindValue(((WorkOrder*)_obj)->WorkOrderName);
-    query.addBindValue(((WorkOrder*)_obj)->CreatedDate);
-    query.addBindValue(((WorkOrder*)_obj)->OperatorID);
-    query.addBindValue(((WorkOrder*)_obj)->PartIndex.size());
-    query.addBindValue(((WorkOrder*)_obj)->Quantity);
-    query.addBindValue(((WorkOrder*)_obj)->CurrentPartCount);
-    query.addBindValue(((WorkOrder*)_obj)->CurrentSplice.SpliceID);
-    query.addBindValue(((WorkOrder*)_obj)->CurrentSplice.SpliceName);
-    query.addBindValue(((WorkOrder*)_obj)->WorkOrderDone);
+    query.addBindValue(((WorkOrderElement*)_obj)->WorkOrderName);
+    query.addBindValue(((WorkOrderElement*)_obj)->CreatedDate);
+    query.addBindValue(((WorkOrderElement*)_obj)->OperatorID);
+    query.addBindValue(((WorkOrderElement*)_obj)->PartIndex.size());
+    query.addBindValue(((WorkOrderElement*)_obj)->Quantity);
+    query.addBindValue(((WorkOrderElement*)_obj)->CurrentPartCount);
+    query.addBindValue(((WorkOrderElement*)_obj)->CurrentSplice.SpliceID);
+    query.addBindValue(((WorkOrderElement*)_obj)->CurrentSplice.SpliceName);
+    query.addBindValue(((WorkOrderElement*)_obj)->WorkOrderDone);
     QString tmpStr;
-    _Utility->MapJsonToString(&((WorkOrder*)_obj)->PartIndex, tmpStr);
+    _Utility->MapJsonToString(&((WorkOrderElement*)_obj)->PartIndex, tmpStr);
     query.addBindValue(tmpStr);
-    _Utility->MapJsonToString(&((WorkOrder*)_obj)->MissSpliceList, tmpStr);
+    _Utility->MapJsonToString(&((WorkOrderElement*)_obj)->MissSpliceList, tmpStr);
     query.addBindValue(tmpStr);
-    query.addBindValue(((WorkOrder*)_obj)->WorkOrderID);
+    query.addBindValue(((WorkOrderElement*)_obj)->WorkOrderID);
 
     bResult = query.exec();
     if(bResult == false)

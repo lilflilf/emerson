@@ -67,17 +67,8 @@ void M10runMode::init_m20_data_events()
     }
 }
 
-void M10runMode::InitializeTextData()
-{
-    //To make a backwards compatible routine
-    M2010* ptr_M2010 = M2010::Instance();
-    InitTextFromSplice(ptr_M2010->Splice);
-}
 
-void M10runMode::InitTextFromSplice(M10Part SpliceData)
-{
 
-}
 
 void M10runMode::UpdateMaintenanceData()
 {

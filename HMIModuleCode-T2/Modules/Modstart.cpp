@@ -9,6 +9,7 @@
 #include "Statistics.h"
 #include "M10runMode.h"
 #include "Interface/interface.h"
+#include "UtilityClass.h"
 #include <QDir>
 #include <QFile>
 #include <QString>
@@ -236,6 +237,7 @@ void MODstart::GlobalInitM10()
     M10INI *ptr_M10INI = M10INI::Instance();
     M102IA *ptr_M102IA = M102IA::Instance();
     Password *ptr_Password = Password::Instance();
+    UtilityClass *_Utility = UtilityClass::Instance();
     ptr_Password->SetPWPIMasks();
     ptr_M2010->M10Run.Auto_Set_Mode = false;
     ptr_M2010->M10Run.Load_From_Lib = false;
@@ -244,7 +246,7 @@ void MODstart::GlobalInitM10()
     ptr_M2010->M10Run.Select_Seq_file = false;
     ptr_M2010->M10Run.Alarm_found = false;
     ptr_M10INI->Power_to_Watts = ptr_M10INI->StatusData.Soft_Settings.SonicGenWatts / 200;
-    ptr_M2010->Maxpower = int(1.2 * ptr_M10INI->StatusData.Soft_Settings.SonicGenWatts);
+    _Utility->Maxpower = int(1.2 * ptr_M10INI->StatusData.Soft_Settings.SonicGenWatts);
     for (i = 0; i <= 6; i++)
         ptr_M10INI->Pwr_Prefix_Data[i] = i * int(0.2 * ptr_M10INI->StatusData.Soft_Settings.SonicGenWatts);
 

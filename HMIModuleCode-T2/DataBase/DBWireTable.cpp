@@ -59,17 +59,17 @@ bool DBWireTable::InsertRecordIntoTable(void *_obj)
     }
 
     query.prepare(SQLSentence[INSERT_WIRE_TABLE]);
-    query.addBindValue(((WireElementStructure*)_obj)->WireName);
-    query.addBindValue(((WireElementStructure*)_obj)->CreatedDate);
-    query.addBindValue(((WireElementStructure*)_obj)->OperatorID);
-    query.addBindValue(((WireElementStructure*)_obj)->Color);
-    query.addBindValue(((WireElementStructure*)_obj)->Stripe.TypeOfStripe);
-    query.addBindValue(((WireElementStructure*)_obj)->Stripe.Color);
-    query.addBindValue(((WireElementStructure*)_obj)->Gauge);
-    query.addBindValue(((WireElementStructure*)_obj)->TypeOfWire);
-    query.addBindValue(((WireElementStructure*)_obj)->Side);
-    query.addBindValue(((WireElementStructure*)_obj)->VerticalSide);
-    query.addBindValue(((WireElementStructure*)_obj)->Position);
+    query.addBindValue(((WireElement*)_obj)->WireName);
+    query.addBindValue(((WireElement*)_obj)->CreatedDate);
+    query.addBindValue(((WireElement*)_obj)->OperatorID);
+    query.addBindValue(((WireElement*)_obj)->Color);
+    query.addBindValue(((WireElement*)_obj)->Stripe.TypeOfStripe);
+    query.addBindValue(((WireElement*)_obj)->Stripe.Color);
+    query.addBindValue(((WireElement*)_obj)->Gauge);
+    query.addBindValue(((WireElement*)_obj)->TypeOfWire);
+    query.addBindValue(((WireElement*)_obj)->Side);
+    query.addBindValue(((WireElement*)_obj)->VerticalSide);
+    query.addBindValue(((WireElement*)_obj)->Position);
 
     bResult = query.exec();   //run SQL
     if(bResult == false)
@@ -138,18 +138,18 @@ bool DBWireTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
         return bResult;
     }
 
-    ((WireElementStructure*)_obj)->WireID = query.value("ID").toInt();
-    ((WireElementStructure*)_obj)->WireName = query.value("WireName").toString();
-    ((WireElementStructure*)_obj)->CreatedDate = query.value("CreatedDate").toString();
-    ((WireElementStructure*)_obj)->OperatorID = query.value("OperatorID").toString();
-    ((WireElementStructure*)_obj)->Color = query.value("Color").toString();
-    ((WireElementStructure*)_obj)->Stripe.Color = query.value("StripeColor").toString();
-    ((WireElementStructure*)_obj)->Stripe.TypeOfStripe = (enum StripeType)query.value("StripeType").toInt();
-    ((WireElementStructure*)_obj)->Gauge = query.value("Gauge").toInt();
-    ((WireElementStructure*)_obj)->TypeOfWire = (enum MetalType)query.value("MetalType").toInt();
-    ((WireElementStructure*)_obj)->Side = (enum HorizontalLocation)query.value("HorizontalLocation").toInt();
-    ((WireElementStructure*)_obj)->VerticalSide = (enum VerticalLocation)query.value("VerticalLocation").toInt();
-    ((WireElementStructure*)_obj)->Position = (enum VerticalPosition)query.value("VerticalPosition").toInt();
+    ((WireElement*)_obj)->WireID = query.value("ID").toInt();
+    ((WireElement*)_obj)->WireName = query.value("WireName").toString();
+    ((WireElement*)_obj)->CreatedDate = query.value("CreatedDate").toString();
+    ((WireElement*)_obj)->OperatorID = query.value("OperatorID").toString();
+    ((WireElement*)_obj)->Color = query.value("Color").toString();
+    ((WireElement*)_obj)->Stripe.Color = query.value("StripeColor").toString();
+    ((WireElement*)_obj)->Stripe.TypeOfStripe = (enum StripeType)query.value("StripeType").toInt();
+    ((WireElement*)_obj)->Gauge = query.value("Gauge").toInt();
+    ((WireElement*)_obj)->TypeOfWire = (enum MetalType)query.value("MetalType").toInt();
+    ((WireElement*)_obj)->Side = (enum HorizontalLocation)query.value("HorizontalLocation").toInt();
+    ((WireElement*)_obj)->VerticalSide = (enum VerticalLocation)query.value("VerticalLocation").toInt();
+    ((WireElement*)_obj)->Position = (enum VerticalPosition)query.value("VerticalPosition").toInt();
 
     bResult = true;
     WireDBObj.close();
@@ -211,18 +211,18 @@ bool DBWireTable::UpdateRecordIntoTable(void *_obj)
     }
 
     query.prepare(SQLSentence[UPDATE_ONE_RECORD_WIRE_TABLE]);
-    query.addBindValue(((WireElementStructure*)_obj)->WireName);
-    query.addBindValue(((WireElementStructure*)_obj)->CreatedDate);
-    query.addBindValue(((WireElementStructure*)_obj)->OperatorID);
-    query.addBindValue(((WireElementStructure*)_obj)->Color);
-    query.addBindValue(((WireElementStructure*)_obj)->Stripe.TypeOfStripe);
-    query.addBindValue(((WireElementStructure*)_obj)->Stripe.Color);
-    query.addBindValue(((WireElementStructure*)_obj)->Gauge);
-    query.addBindValue(((WireElementStructure*)_obj)->TypeOfWire);
-    query.addBindValue(((WireElementStructure*)_obj)->Side);
-    query.addBindValue(((WireElementStructure*)_obj)->VerticalSide);
-    query.addBindValue(((WireElementStructure*)_obj)->Position);
-    query.addBindValue(((WireElementStructure*)_obj)->WireID);
+    query.addBindValue(((WireElement*)_obj)->WireName);
+    query.addBindValue(((WireElement*)_obj)->CreatedDate);
+    query.addBindValue(((WireElement*)_obj)->OperatorID);
+    query.addBindValue(((WireElement*)_obj)->Color);
+    query.addBindValue(((WireElement*)_obj)->Stripe.TypeOfStripe);
+    query.addBindValue(((WireElement*)_obj)->Stripe.Color);
+    query.addBindValue(((WireElement*)_obj)->Gauge);
+    query.addBindValue(((WireElement*)_obj)->TypeOfWire);
+    query.addBindValue(((WireElement*)_obj)->Side);
+    query.addBindValue(((WireElement*)_obj)->VerticalSide);
+    query.addBindValue(((WireElement*)_obj)->Position);
+    query.addBindValue(((WireElement*)_obj)->WireID);
 
     bResult = query.exec();
     if(bResult == false)

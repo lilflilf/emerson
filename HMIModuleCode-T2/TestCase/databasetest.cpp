@@ -16,7 +16,7 @@ DataBaseTest::DataBaseTest()
 void DataBaseTest::TestInsertOneRecordIntoWireTable()
 {
     SQLITCLASS *_SQLITCLASS = DBWireTable::Instance();
-    struct WireElementStructure tmpWire;
+    struct WireElement tmpWire;
     tmpWire.WireName = "TESTWire";
     tmpWire.CreatedDate = "20161020";
     tmpWire.OperatorID = "JW";
@@ -133,7 +133,7 @@ void DataBaseTest::TestInsertOneRecordIntoWorkOrderTable()
 {
     SQLITCLASS *_SQLITCLASS = DBWorkOrderTable::Instance();
 
-    struct WorkOrder tmpWorkOrder;
+    struct WorkOrderElement tmpWorkOrder;
     tmpWorkOrder.WorkOrderName = "TESTWorkOrder";
     tmpWorkOrder.CreatedDate = "20161020";
     tmpWorkOrder.OperatorID = "JW";
@@ -251,7 +251,7 @@ void DataBaseTest::TestQueryEntireWorkOrderTable()
 void DataBaseTest::TestQueryOneWireTable()
 {
     SQLITCLASS *_SQLITCLASS = DBWireTable::Instance();
-    WireElementStructure tmpWire;
+    WireElement tmpWire;
     if(_SQLITCLASS->QueryOneRecordFromTable(1,"TESTWIRE", &tmpWire))
     {
         qDebug()<<"WireID: "<<tmpWire.WireID;
@@ -346,7 +346,7 @@ void DataBaseTest::TestDeleteOneWorkOrderTable()
 void DataBaseTest::TestUpdateOneRecordIntoWireTable()
 {
     SQLITCLASS *_SQLITCLASS = DBWireTable::Instance();
-    struct WireElementStructure tmpWire;
+    struct WireElement tmpWire;
     tmpWire.WireID = 4;
     tmpWire.WireName = "TESTWIRE";
     tmpWire.CreatedDate = "20161024";
@@ -465,7 +465,7 @@ void DataBaseTest::TestUpdateOneRecordIntoWorkOrderTable()
 {
     SQLITCLASS *_SQLITCLASS = DBWorkOrderTable::Instance();
 
-    struct WorkOrder tmpWorkOrder;
+    struct WorkOrderElement tmpWorkOrder;
     tmpWorkOrder.WorkOrderID = 3;
     tmpWorkOrder.WorkOrderName = "TESTWORKORDER";
     tmpWorkOrder.CreatedDate = "20161020";
