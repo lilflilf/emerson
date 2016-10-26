@@ -141,7 +141,7 @@ bool DBWireTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
     ((WireElement*)_obj)->WireID = query.value("ID").toInt();
     ((WireElement*)_obj)->WireName = query.value("WireName").toString();
     ((WireElement*)_obj)->CreatedDate = query.value("CreatedDate").toString();
-    ((WireElement*)_obj)->OperatorID = query.value("OperatorID").toString();
+    ((WireElement*)_obj)->OperatorID = query.value("OperatorID").toInt();
     ((WireElement*)_obj)->Color = query.value("Color").toString();
     ((WireElement*)_obj)->Stripe.Color = query.value("StripeColor").toString();
     ((WireElement*)_obj)->Stripe.TypeOfStripe = (enum StripeType)query.value("StripeType").toInt();

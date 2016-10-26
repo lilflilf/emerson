@@ -32,10 +32,10 @@ int main(int argc, char *argv[])
     DataBaseTest *_TestPtr = new DataBaseTest();
 //    _TestPtr->TestMapJsonToString();
 //    _TestPtr->TestStringJsonToMap();
-//    _TestPtr->TestInsertOneRecordIntoWorkOrderTable();
-//    _TestPtr->TestInsertOneRecordIntoPartTable();
-//    _TestPtr->TestInsertOneRecordIntoPresetTable();
-//    _TestPtr->TestInsertOneRecordIntoWireTable();
+    _TestPtr->TestInsertOneRecordIntoWorkOrderTable();
+    _TestPtr->TestInsertOneRecordIntoPartTable();
+    _TestPtr->TestInsertOneRecordIntoPresetTable();
+    _TestPtr->TestInsertOneRecordIntoWireTable();
 //    _TestPtr->TestQueryEntireWireTable();
 //    _TestPtr->TestQueryEntireSpliceTable();
 //    _TestPtr->TestQueryEntirePartTable();

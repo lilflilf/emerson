@@ -202,7 +202,7 @@ bool DBPresetTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
     ((PresetElement*)_obj)->SpliceID = query.value("ID").toInt();
     ((PresetElement*)_obj)->SpliceName = query.value("SpliceName").toString();
     ((PresetElement*)_obj)->CreatedDate = query.value("CreatedDate").toString();
-    ((PresetElement*)_obj)->OperatorID = query.value("OperatorID").toString();
+    ((PresetElement*)_obj)->OperatorID = query.value("OperatorID").toInt();
     ((PresetElement*)_obj)->CrossSection = query.value("Color").toInt();
     ((PresetElement*)_obj)->PresetPicNamePath = query.value("PresetPicPath").toString();
     ((PresetElement*)_obj)->Verified = query.value("Verified").toBool();

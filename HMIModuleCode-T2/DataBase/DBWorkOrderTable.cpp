@@ -154,7 +154,7 @@ bool DBWorkOrderTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
     ((WorkOrderElement*)_obj)->WorkOrderID = query.value("ID").toInt();
     ((WorkOrderElement*)_obj)->WorkOrderName = query.value("WorkOrderName").toString();
     ((WorkOrderElement*)_obj)->CreatedDate = query.value("CreatedDate").toString();
-    ((WorkOrderElement*)_obj)->OperatorID = query.value("OperatorID").toString();
+    ((WorkOrderElement*)_obj)->OperatorID = query.value("OperatorID").toInt();
     QString tmpStr = query.value("JSONPartIndex").toString();
     _Utility->StringJsonToMap(tmpStr, &((WorkOrderElement*)_obj)->PartIndex);
     ((WorkOrderElement*)_obj)->NoOfPart = ((WorkOrderElement*)_obj)->PartIndex.size();

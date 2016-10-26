@@ -37,9 +37,9 @@ const QString SQLSentence[] = {
     "CREATE TABLE Wire ("                   /*0 Create Wire Table*/
     "ID INTEGER PRIMARY KEY AUTOINCREMENT, "
     "WireName VARCHAR UNIQUE, "
-    "CreatedDate VARCHAR, OperatorID VARCHAR,Color VARCHAR,"
-    "StripeType INT, StripeColor VARCHAR, Gauge INT,"
-    "MetalType INT, HorizontalLocation INT, VerticalLocation INT,"
+    "CreatedDate VARCHAR, OperatorID INT, Color VARCHAR, "
+    "StripeType INT, StripeColor VARCHAR, Gauge INT, "
+    "MetalType INT, HorizontalLocation INT, VerticalLocation INT, "
     "VerticalPosition INT)",
 
     "INSERT INTO Wire ("                    /*1 Insert record into Wire Table*/
@@ -52,7 +52,7 @@ const QString SQLSentence[] = {
     "CREATE TABLE Preset ("                 /*2 Create Preset Table*/
     "ID INTEGER PRIMARY KEY AUTOINCREMENT, "
     "SpliceName VARCHAR UNIQUE, "
-    "CreatedDate VARCHAR, OperatorID VARCHAR, CrossSection INT, "
+    "CreatedDate VARCHAR, OperatorID INT, CrossSection INT, "
     "PresetPicPath VARCHAR, Verified BOOLEAN,"                  /* 7 items */
 
     /*WeldSetting*/                                             /* 5 items */
@@ -119,7 +119,7 @@ const QString SQLSentence[] = {
     "CREATE TABLE Part ("                       /*4 Create Part Table*/
     "ID INTEGER PRIMARY KEY AUTOINCREMENT, "
     "PartName VARCHAR UNIQUE, "
-    "CreatedDate VARCHAR, OperatorID VARCHAR, "
+    "CreatedDate VARCHAR, OperatorID INT, "
     /* PartTypeSetting */
     "ProcessMode ENUM,"
     "TotalWorkstation INT, MaxSplicesPerWorkstation INT, "
@@ -135,7 +135,7 @@ const QString SQLSentence[] = {
     "CREATE TABLE WorkOrder ("                  /*6 Create WorkOrder Table*/
     "ID INTEGER PRIMARY KEY AUTOINCREMENT, "
     "WorkOrderName VARCHAR UNIQUE, "
-    "CreatedDate VARCHAR, OperatorID VARCHAR, "
+    "CreatedDate VARCHAR, OperatorID INT, "
     "NoOfPart INT, Quantity INT, CurrentPartCount INT, "
     "CurrentSpliceID INT, CurrentSpliceName VARCHAR, WorkOrderDone INT, "
     "JSONPartIndex VARCHAR, JSONMissSpliceList VARCHAR)",

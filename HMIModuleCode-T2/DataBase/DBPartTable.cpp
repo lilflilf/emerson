@@ -158,7 +158,7 @@ bool DBPartTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
     ((PartElement*)_obj)->PartID = query.value("ID").toInt();
     ((PartElement*)_obj)->PartName = query.value("PartName").toString();
     ((PartElement*)_obj)->CreatedDate = query.value("CreatedDate").toString();
-    ((PartElement*)_obj)->OperatorID = query.value("OperatorID").toString();
+    ((PartElement*)_obj)->OperatorID = query.value("OperatorID").toInt();
     ((PartElement*)_obj)->PartTypeSetting.ProcessMode =
             (enum PROCESSMODE)query.value("ProcessMode").toInt();
     ((PartElement*)_obj)->PartTypeSetting.WorkStations.TotalWorkstation =

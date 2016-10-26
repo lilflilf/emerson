@@ -26,7 +26,9 @@ SOURCES += main.cpp \
     DataBase/DBWireTable.cpp \
     DataBase/DBPresetTable.cpp \
     DataBase/DBPartTable.cpp \
-    DataBase/DBWorkOrderTable.cpp
+    DataBase/DBWorkOrderTable.cpp \
+    DataBase/DBOperatorTable.cpp \
+    TestCase/ScreenShowConvertTest.cpp
 
 RESOURCES += qml.qrc
 
@@ -61,7 +63,9 @@ HEADERS += \
     DataBase/DBWireTable.h \
     DataBase/DBPresetTable.h \
     DataBase/DBPartTable.h \
-    DataBase/DBWorkOrderTable.h
+    DataBase/DBWorkOrderTable.h \
+    DataBase/DBOperatorTable.h \
+    TestCase/ScreenShowConvertTest.h
 
 DISTFILES += \
     UI/displayChinese_zh_CN.qm \

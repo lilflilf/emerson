@@ -19,7 +19,7 @@ void DataBaseTest::TestInsertOneRecordIntoWireTable()
     struct WireElement tmpWire;
     tmpWire.WireName = "TESTWire";
     tmpWire.CreatedDate = "20161020";
-    tmpWire.OperatorID = "JW";
+    tmpWire.OperatorID = 2;
     tmpWire.Color = "GREEN";
     tmpWire.Stripe.TypeOfStripe = Slash;
     tmpWire.Stripe.Color = "RED";
@@ -39,9 +39,9 @@ void DataBaseTest::TestInsertOneRecordIntoPresetTable()
     TestMap.insert(1,"Mr.Li");
     TestMap.insert(2, "Zhang");
     struct PresetElement tmpSplice;
-    tmpSplice.SpliceName = "TESTSplice";
+    tmpSplice.SpliceName = "TESTSplice4";
     tmpSplice.CreatedDate = "20161020";
-    tmpSplice.OperatorID = "JW";
+    tmpSplice.OperatorID = 2;
     tmpSplice.CrossSection = 100;
     tmpSplice.PresetPicNamePath = "C:\\";
     tmpSplice.Verified = false;
@@ -79,7 +79,7 @@ void DataBaseTest::TestInsertOneRecordIntoPresetTable()
     tmpSplice.AdvanceSetting.ShrinkTube.ShrinkTubeID = 0;
     tmpSplice.AdvanceSetting.ShrinkTube.ShrinkTime = 10;
     tmpSplice.AdvanceSetting.ShrinkTube.ShrinkTemperature = 260;
-    tmpSplice.TestSetting.Qutanty = 55;
+    tmpSplice.TestSetting.Qutanty = 10;
     tmpSplice.TestSetting.StopCount = 20;
     tmpSplice.TestSetting.TestMode = UNCONSTRAINED;
     tmpSplice.TestSetting.TeachModeSetting.TeachModeType = UNDEFINED;
@@ -103,7 +103,7 @@ void DataBaseTest::TestInsertOneRecordIntoPartTable()
     struct PartElement tmpPart;
     tmpPart.PartName = "TESTPart";
     tmpPart.CreatedDate = "20161020";
-    tmpPart.OperatorID = "JW";
+    tmpPart.OperatorID = 2;
     tmpPart.PartTypeSetting.ProcessMode = BASIC;
     tmpPart.PartTypeSetting.WorkStations.TotalWorkstation = 20;
     tmpPart.PartTypeSetting.WorkStations.MaxSplicesPerWorkstation = 30;
@@ -134,13 +134,13 @@ void DataBaseTest::TestInsertOneRecordIntoWorkOrderTable()
     SQLITCLASS *_SQLITCLASS = DBWorkOrderTable::Instance();
 
     struct WorkOrderElement tmpWorkOrder;
-    tmpWorkOrder.WorkOrderName = "TESTWorkOrder";
+    tmpWorkOrder.WorkOrderName = "TESTWorkOrder4";
     tmpWorkOrder.CreatedDate = "20161020";
-    tmpWorkOrder.OperatorID = "JW";
+    tmpWorkOrder.OperatorID = 2;
     tmpWorkOrder.PartIndex.insert(1,"PartName");
     tmpWorkOrder.NoOfPart = tmpWorkOrder.PartIndex.size();
 
-    tmpWorkOrder.Quantity = 50;
+    tmpWorkOrder.Quantity = 10;
     tmpWorkOrder.CurrentPartCount = 30;
 
     tmpWorkOrder.MissSpliceList.insert(0, "MissSplice1");
@@ -350,7 +350,7 @@ void DataBaseTest::TestUpdateOneRecordIntoWireTable()
     tmpWire.WireID = 4;
     tmpWire.WireName = "TESTWIRE";
     tmpWire.CreatedDate = "20161024";
-    tmpWire.OperatorID = "JW";
+    tmpWire.OperatorID = 2;
     tmpWire.Color = "GREEN";
     tmpWire.Stripe.TypeOfStripe = Slash;
     tmpWire.Stripe.Color = "RED";
@@ -373,7 +373,7 @@ void DataBaseTest::TestUpdateOneRecordIntoPresetTable()
     tmpSplice.SpliceID = 3;
     tmpSplice.SpliceName = "TESTSPLICE";
     tmpSplice.CreatedDate = "20161020";
-    tmpSplice.OperatorID = "JW";
+    tmpSplice.OperatorID = 2;
     tmpSplice.CrossSection = 100;
     tmpSplice.PresetPicNamePath = "C:\\";
     tmpSplice.Verified = false;
@@ -435,7 +435,7 @@ void DataBaseTest::TestUpdateOneRecordIntoPartTable()
     tmpPart.PartID = 3;
     tmpPart.PartName = "TESTPART";
     tmpPart.CreatedDate = "20161020";
-    tmpPart.OperatorID = "JW";
+    tmpPart.OperatorID = 2;
     tmpPart.PartTypeSetting.ProcessMode = BASIC;
     tmpPart.PartTypeSetting.WorkStations.TotalWorkstation = 20;
     tmpPart.PartTypeSetting.WorkStations.MaxSplicesPerWorkstation = 30;
@@ -469,7 +469,7 @@ void DataBaseTest::TestUpdateOneRecordIntoWorkOrderTable()
     tmpWorkOrder.WorkOrderID = 3;
     tmpWorkOrder.WorkOrderName = "TESTWORKORDER";
     tmpWorkOrder.CreatedDate = "20161020";
-    tmpWorkOrder.OperatorID = "JW";
+    tmpWorkOrder.OperatorID = 2;
     tmpWorkOrder.PartIndex.insert(1,"PartName");
     tmpWorkOrder.NoOfPart = tmpWorkOrder.PartIndex.size();
 
