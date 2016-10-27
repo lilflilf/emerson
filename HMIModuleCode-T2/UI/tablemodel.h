@@ -4,14 +4,15 @@
 #include <QAbstractTableModel>
 #include <QHash>
 #include "DataBase/DBWorkOrderTable.h"
+#include "DataBase/DBPresetTable.h"
 
 class WorkOrderModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
     explicit WorkOrderModel(QObject *parent = 0);
-    //    void setModelList(const int &netType, const int &contacterType,
-    //                      const QString& searchText, QStringList memberList);
+    void setModelList(unsigned int time_from, unsigned int time_to);
+
     void setModelList();
 
     QStringList m_idList;
@@ -31,64 +32,31 @@ signals:
 public slots:
     void setRoles(const QStringList &names);
     Q_INVOKABLE QVariant getWorkOrderValue(int index, QString key);
+
     //    QString getContacterName(QString contacterId);
     Q_INVOKABLE int count();
     //    void removeContacter(QString info,int rows);
     int getCurrentIndex(QString info);
     //    bool setData(const QModelIndex &index, const QVariant &value, int role);
 
-private:
-    QHash<int, QByteArray> m_roleNames;
-};
-
-/*
-typedef QPair<int, QString> oneList;
-typedef QList<oneList> historyList;
-
-class CallHistoryModel : public QAbstractTableModel
-{
-    Q_OBJECT
-public:
-    explicit CallHistoryModel(QObject *parent = 0);
-    void setModelList(int type, const QString& searchText);
-
-    historyList m_idList;
-    CallHistoryInterfaceAdaptor *m_historyAdaptor;
-    ContacterInterfaceAdaptor *m_contacterAdaptor;
-
- protected:
-    int rowCount(const QModelIndex &parent) const;
-    int columnCount(const QModelIndex &parent) const;
-    QVariant data(const QModelIndex &index, int role) const;
-    QVariant headerData(int section, Qt::Orientation orientation, int role) const;
-    QHash<int, QByteArray> roleNames() const;
-
-signals:
-    void signalMeetingStart(QString startTime);
-    void signalMeetingEnd(QString endTime);
-    void signalMeetingMember(QString id);
-
-public slots:
-    void setRoles(const QStringList &names);
-    QVariant getCallHistoryValue(int index, QString key);
-    void getMeetingTime(QString historyId);
-    int count();
-    void removeTheCallHistory(QString info,int rows);
+    Q_INVOKABLE bool updateRecordIntoTable(int workId, QString workName, int partId, QString partName, int count);
 
 private:
     QHash<int, QByteArray> m_roleNames;
 };
 
-class MessageModel : public QAbstractTableModel
+
+class SpliceModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    explicit MessageModel(QObject *parent = 0);
-    void setModelList(QString groupId);
+    explicit SpliceModel(QObject *parent = 0);
+    void setModelList(unsigned int time_from, unsigned int time_to);
+    void setModelList();
 
     QStringList m_idList;
-    MessageManagerAdaptor *m_messageAdaptor;
-    ContacterInterfaceAdaptor *m_contacterAdaptor;
+    DBPresetTable *m_spliceAdaptor;
+    QMap<int, QString> *splices;
 
  protected:
     int rowCount(const QModelIndex &parent) const;
@@ -98,23 +66,15 @@ public:
     QHash<int, QByteArray> roleNames() const;
 
 signals:
-    void signalFindImage(QString sources);
-    void signalFreshEnd();
-public slots:
 
+
+public slots:
     void setRoles(const QStringList &names);
-    QVariant getMessageValue(int index, QString key);
-    //int count();
-    void removeMessage(QString info,int rows);
-    void getImageList();
-    int getCount();
-    //int getCurrentIndex(QString info);
+    Q_INVOKABLE QVariant getSpliceValue(int index, QString key);
+    Q_INVOKABLE int count();
 
 private:
-    QString m_groupID;
     QHash<int, QByteArray> m_roleNames;
-    QMap<QString, Message> *messages;
-
 };
-*/
+
 #endif // TABLEMODEL_H

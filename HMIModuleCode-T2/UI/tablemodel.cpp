@@ -34,35 +34,29 @@ QVariant WorkOrderModel::data(const QModelIndex &index, int role) const
         WorkOrderElement myWorkOrder;
         m_workOrderAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myWorkOrder);
         if (columnIdx == 0)
-            value = QVariant::fromValue(myWorkOrder.WorkOrderName);
+            value = QVariant::fromValue(myWorkOrder.WorkOrderID);
         else if (columnIdx == 1)
-            value = QVariant::fromValue(QDateTime::fromTime_t(myWorkOrder.CreatedDate).toString("MM/dd/yyyy hh:mm"));
+            value = QVariant::fromValue(myWorkOrder.WorkOrderName);
         else if (columnIdx == 2)
+            value = QVariant::fromValue(QDateTime::fromTime_t(myWorkOrder.CreatedDate).toString("MM/dd/yyyy hh:mm"));
+        else if (columnIdx == 3)
             value = QVariant::fromValue(myWorkOrder.PartIndex.begin().value());
-        else
+        else if (columnIdx == 4)
             value = QVariant::fromValue(myWorkOrder.Quantity);
-        qDebug() << "WorkOrderModel data " << value;
     }
     return value;
 }
 
 
 
-//void WorkOrderModel::setModelList(const int &netType, const int &contacterType, const QString& searchText, QStringList memberList)
-//{
-//    beginResetModel();
-//    if (netType != 0) {
-//        if (searchText == "") {
-//            m_idList  = m_contacterAdaptor->getContactersExcept(1, netType, memberList);
-//        } else {
-//            m_idList  = m_contacterAdaptor->searchContactorsExcept(1, netType, searchText, memberList);
-//        }
-//    } else {
-//        m_idList = m_contacterAdaptor->searchContactors(contacterType, searchText);
-//    }
-//    qDebug()<<"setModelList"<<m_idList.count();
-//    endResetModel();
-//}
+void WorkOrderModel::setModelList(unsigned int time_from, unsigned int time_to)
+{
+    beginResetModel();
+    workOrders->clear();
+    if (m_workOrderAdaptor->QueryOnlyUseTime(time_from,time_to,workOrders))
+        qDebug( )<< "setModelList WorkOrderModel" << workOrders->count();
+    endResetModel();
+}
 
 void WorkOrderModel::setModelList()
 {
@@ -117,6 +111,18 @@ int WorkOrderModel::getCurrentIndex(QString info)
     return temp;
 }
 
+bool WorkOrderModel::updateRecordIntoTable(int workId,QString workName, int partId, QString partName, int count)
+{
+    qDebug() << "updateRecordIntoTable" << workId << workName << partId << partName << count;
+    struct WorkOrderElement tempWorkOrder;
+    m_workOrderAdaptor->QueryOneRecordFromTable(workId, workName,&tempWorkOrder);
+    tempWorkOrder.WorkOrderName = workName;
+    tempWorkOrder.PartIndex.insert(partId, partName);
+    tempWorkOrder.Quantity = count;
+    m_workOrderAdaptor->UpdateRecordIntoTable(&tempWorkOrder);
+    setModelList();
+}
+
 QVariant WorkOrderModel::getWorkOrderValue(int index, QString key)
 {
     QMap<int,QString>::iterator it; //遍历map
@@ -134,6 +140,7 @@ QVariant WorkOrderModel::getWorkOrderValue(int index, QString key)
     WorkOrderElement myWorkOrder;
     m_workOrderAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myWorkOrder);
     QHash<QString, QVariant> WorkOrderModelHash;
+    WorkOrderModelHash.insert("workOrderId",myWorkOrder.WorkOrderID);
     WorkOrderModelHash.insert("name",myWorkOrder.WorkOrderName);
     WorkOrderModelHash.insert("date",QDateTime::fromTime_t(myWorkOrder.CreatedDate).toString("MM/dd/yyyy hh:mm"));
     WorkOrderModelHash.insert("middle",myWorkOrder.PartIndex.begin().value());
@@ -174,3 +181,136 @@ QVariant WorkOrderModel::getWorkOrderValue(int index, QString key)
 //    }
 //}
 
+
+
+SpliceModel::SpliceModel(QObject *parent) :
+    QAbstractTableModel(parent)
+{
+    m_spliceAdaptor = DBPresetTable::Instance();
+    splices = new QMap<int, QString>();
+}
+
+QVariant SpliceModel::data(const QModelIndex &index, int role) const
+{
+    QVariant value;
+    if(role < Qt::UserRole)
+    {
+        qDebug() << "SpliceModel::data(const QModelIndex &index, int role) const";
+    }
+    else
+    {
+        int columnIdx = role - Qt::UserRole - 1;
+        int rowId;
+        QMap<int,QString>::iterator it; //遍历map
+        int i = 0;
+        for ( it = splices->begin(); it != splices->end(); ++it ) {
+            if (i == index.row()){
+                rowId = it.key();
+                break;
+            }
+            else {
+                i++;
+            }
+        }
+        PresetElement mySplice;
+        m_spliceAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&mySplice);
+        if (columnIdx == 0)
+            value = QVariant::fromValue(mySplice.SpliceID);
+        else if (columnIdx == 1)
+            value = QVariant::fromValue(mySplice.SpliceName);
+        else if (columnIdx == 2)
+            value = QVariant::fromValue(QDateTime::fromTime_t(mySplice.CreatedDate).toString("MM/dd/yyyy hh:mm"));
+        else if (columnIdx == 3)
+            value = QVariant::fromValue(mySplice.NoOfWires);
+        else if (columnIdx == 4)
+            value = QVariant::fromValue(mySplice.CrossSection);
+    }
+    return value;
+}
+
+
+
+void SpliceModel::setModelList(unsigned int time_from, unsigned int time_to)
+{
+    beginResetModel();
+    splices->clear();
+    if (m_spliceAdaptor->QueryOnlyUseTime(time_from,time_to,splices))
+        qDebug( )<< "setModelList SpliceModel" << splices->count();
+    endResetModel();
+}
+
+void SpliceModel::setModelList()
+{
+    beginResetModel();
+    splices->clear();
+    if (m_spliceAdaptor->QueryEntireTable(splices))
+        qDebug( )<< "setModelList WorkOrderModel" << splices->count();
+    endResetModel();
+}
+
+
+int SpliceModel::rowCount(const QModelIndex & parent) const
+{
+    return splices->count();
+}
+
+
+int SpliceModel::count()
+{
+    return splices->count();
+}
+
+
+int SpliceModel::columnCount(const QModelIndex &parent) const
+{
+    return 1;
+}
+
+QVariant SpliceModel::headerData(int section, Qt::Orientation orientation, int role) const
+{
+    return QVariant();
+}
+
+void SpliceModel::setRoles(const QStringList &names)
+{
+    m_roleNames.clear();
+    for(int idx=0; idx<names.count(); idx++)
+    {
+        m_roleNames[Qt::UserRole + idx + 1] = names[idx].toLocal8Bit();
+    }
+}
+
+QHash<int, QByteArray> SpliceModel::roleNames() const
+{
+    return m_roleNames;
+}
+
+
+QVariant SpliceModel::getSpliceValue(int index, QString key)
+{
+    QMap<int,QString>::iterator it; //遍历map
+    int i = 0;
+    int orderId;
+    for ( it = splices->begin(); it != splices->end(); ++it ) {
+        if (i == index){
+            orderId = it.key();
+            break;
+        }
+        else {
+            i++;
+        }
+    }
+    PresetElement mySplice;
+    m_spliceAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&mySplice);
+    QHash<QString, QVariant> SpliceModelHash;
+    SpliceModelHash.insert("name",mySplice.SpliceName);
+    SpliceModelHash.insert("date",QDateTime::fromTime_t(mySplice.CreatedDate).toString("MM/dd/yyyy hh:mm"));
+    SpliceModelHash.insert("middle",mySplice.NoOfWires);
+    SpliceModelHash.insert("count",mySplice.CrossSection);
+    //list << "name" << "date" << "middle" << "count";
+    if (key == "") {
+        return SpliceModelHash;
+    } else {
+        return SpliceModelHash.value(key);
+    }
+}
