@@ -10,15 +10,15 @@ class WorkOrderModel : public QAbstractTableModel
     Q_OBJECT
 public:
     explicit WorkOrderModel(QObject *parent = 0);
-//    void setModelList(const int &netType, const int &contacterType,
-//                      const QString& searchText, QStringList memberList);
+    //    void setModelList(const int &netType, const int &contacterType,
+    //                      const QString& searchText, QStringList memberList);
     void setModelList();
 
     QStringList m_idList;
     DBWorkOrderTable *m_workOrderAdaptor;
     QMap<int, QString> *workOrders;
 
- protected:
+protected:
     int rowCount(const QModelIndex &parent) const;
     int columnCount(const QModelIndex &parent) const;
     QVariant data(const QModelIndex &index, int role) const;
@@ -31,12 +31,11 @@ signals:
 public slots:
     void setRoles(const QStringList &names);
     Q_INVOKABLE QVariant getWorkOrderValue(int index, QString key);
-//    QString getContacterName(QString contacterId);
-
-    int count();
-//    void removeContacter(QString info,int rows);
+    //    QString getContacterName(QString contacterId);
+    Q_INVOKABLE int count();
+    //    void removeContacter(QString info,int rows);
     int getCurrentIndex(QString info);
-//    bool setData(const QModelIndex &index, const QVariant &value, int role);
+    //    bool setData(const QModelIndex &index, const QVariant &value, int role);
 
 private:
     QHash<int, QByteArray> m_roleNames;
