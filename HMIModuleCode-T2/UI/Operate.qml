@@ -139,6 +139,7 @@ Item {
         anchors.left: listView.right
         width: 17
         height: 10
+        visible: listView.contentHeight > listView.height ? true : false
         source: "qrc:/images/images/up.png"
     }
     Image {
@@ -148,6 +149,7 @@ Item {
         anchors.left: listView.right
         width: 17
         height: 10
+        visible: listView.contentHeight > listView.height ? true : false
         source: "qrc:/images/images/down.png"
     }
     Rectangle {
@@ -245,14 +247,7 @@ Item {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    if (selectIndx == -1) {
-                        //listModel.set(index,{"opacityValue":"0.3"})
-                        selectIndx = index
-                    } else {
-                        //listModel.set(selectIndx,{"opacityValue":"0"})
-                        selectIndx = index
-                        //listModel.set(index,{"opacityValue":"0.3"})
-                    }
+                    selectIndx = index
                     selectCheck.checked = !selectCheck.checked
                 }
             }
@@ -332,6 +327,9 @@ Item {
         clip: true
         textColor: "white"
         onClicked: {
+            if(workOrderModel.count() == 0) {
+                return
+            }
             backGround.visible = true
             backGround.opacity = 0.5
             dialog.bIsEdit = true
@@ -368,8 +366,8 @@ Item {
         clip: true
         textColor: "white"
         onClicked: {
-            console.log("ssssssddddddddd")
-            loader.source = "qrc:/UI/OperateDetails.qml"
+            if (selectIndx != -1)
+                loader.source = "qrc:/UI/OperateDetails.qml"
         }
     }
     Rectangle {

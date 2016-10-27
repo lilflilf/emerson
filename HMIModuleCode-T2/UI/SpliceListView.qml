@@ -126,7 +126,6 @@ Item {
                 }
                 text: station
                 textColor: "white"
-
                 pixelSize: 20
                 onClicked: {
                     currentWorkStation(index)
@@ -137,7 +136,6 @@ Item {
                     else
                         workStation.textColor = "white"
                 }
-
             }
             CButton {
                 id: deleteButton

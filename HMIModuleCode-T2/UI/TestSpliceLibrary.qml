@@ -17,6 +17,9 @@ Item {
         id: loader
         z: 10
         anchors.fill: parent
+        Loader.item.advanceSettingDefalutClick: {
+            console.log("213213123123123")
+        }
     }
     ListModel {
         id: listModel
@@ -128,6 +131,7 @@ Item {
         anchors.left: listView.right
         width: 17
         height: 10
+        visible: listView.contentHeight > listView.height ? true : false
         source: "qrc:/images/images/up.png"
     }
     Image {
@@ -137,6 +141,7 @@ Item {
         anchors.left: listView.right
         width: 17
         height: 10
+        visible: listView.contentHeight > listView.height ? true : false
         source: "qrc:/images/images/down.png"
     }
     Rectangle {
@@ -300,6 +305,8 @@ Item {
         text: qsTr("OK")
         textColor: "white"
         onClicked: {
+            if(selectIndx == -1)
+                return
             backGround.visible = true
             backGround.opacity = 0.5
             testparameters.visible = true
@@ -373,6 +380,7 @@ Item {
             clip: true
             buttontext: qsTr("#of Splices")
             exclusiveGroup: mos
+            bIsCheck: false
         }
         Text {
             id: teachMode
@@ -391,10 +399,10 @@ Item {
             anchors.topMargin: 7
             anchors.left: teachMode.right
             anchors.leftMargin: 24
-            backgroundwidth: 180
+            backgroundwidth: 200
             backgroundheight: 47
-            textLeft: qsTr("Off")
-            textRight: qsTr("On")
+            textLeft: qsTr("OFF")
+            textRight: qsTr("ON")
             state: "left"
         }
         ExclusiveGroup {
@@ -412,6 +420,7 @@ Item {
             clip: true
             buttontext: qsTr("Standard")
             exclusiveGroup: mos2
+            bIsCheck: true
         }
         MyRadioButton {
             id: auto
@@ -425,6 +434,7 @@ Item {
             visible: diagram.on
             buttontext: qsTr("Auto")
             exclusiveGroup: mos2
+            bIsCheck: false
         }
         MyRadioButton {
             id: sigma
@@ -438,6 +448,7 @@ Item {
             visible: diagram.on
             buttontext: qsTr("Sigma")
             exclusiveGroup: mos2
+            bIsCheck: false
         }
         CButton {
             id: advanceSet
@@ -453,6 +464,8 @@ Item {
                 backGround.visible = false
                 backGround.opacity = 0
                 testparameters.visible = false
+                loader.source = ""
+                loader.source = "qrc:/UI/AdvanceSetting.qml"
             }
         }
         CButton {

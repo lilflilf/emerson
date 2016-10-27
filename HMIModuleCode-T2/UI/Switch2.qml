@@ -47,7 +47,7 @@ Item {
         width: parent.width/2
         height: parent.height
         radius: 5
-        color: "white"
+        color: "#0079C1"
         MouseArea {
             anchors.fill: parent
             drag.target: knob; drag.axis: Drag.XAxis; drag.minimumX: 1; drag.maximumX: toggleswitch.width/2

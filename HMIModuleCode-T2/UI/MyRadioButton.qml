@@ -10,7 +10,7 @@ Item {
     property alias fontSize: buttonText.font.pixelSize
     property int checkLeftmargin: 7
     property int textOffLeftCheckBoxWidth: 20
-    property bool bIsCheck: checkBox.checked
+    property bool bIsCheck: false
     width: parent.width
     height: parent.height
 
@@ -61,6 +61,7 @@ Item {
         anchors.verticalCenter: parent.verticalCenter
         height: 30
         width:  30
+        checked: bIsCheck
         style: checkStyle
     }
     Text {

@@ -12,11 +12,13 @@ class WorkOrderModel : public QAbstractTableModel
 public:
     explicit WorkOrderModel(QObject *parent = 0);
     void setModelList(unsigned int time_from, unsigned int time_to);
+
     void setModelList();
 
     QStringList m_idList;
     DBWorkOrderTable *m_workOrderAdaptor;
     QMap<int, QString> *workOrders;
+
 protected:
     int rowCount(const QModelIndex &parent) const;
     int columnCount(const QModelIndex &parent) const;
@@ -30,12 +32,12 @@ signals:
 public slots:
     void setRoles(const QStringList &names);
     Q_INVOKABLE QVariant getWorkOrderValue(int index, QString key);
-//    QString getContacterName(QString contacterId);
 
+    //    QString getContacterName(QString contacterId);
     Q_INVOKABLE int count();
-//    void removeContacter(QString info,int rows);
+    //    void removeContacter(QString info,int rows);
     int getCurrentIndex(QString info);
-//    bool setData(const QModelIndex &index, const QVariant &value, int role);
+    //    bool setData(const QModelIndex &index, const QVariant &value, int role);
 
     Q_INVOKABLE bool updateRecordIntoTable(int workId, QString workName, int partId, QString partName, int count);
 
