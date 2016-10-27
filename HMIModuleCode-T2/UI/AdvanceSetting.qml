@@ -8,8 +8,6 @@ Item {
     property int currentIndex: 0
     width: parent.width
     height: parent.height
-
-    signal advanceSettingDefalutClick()
     function setClickColor(index)
     {
         if (standardUpperRepeater.itemAt(index).localbordercolor === "#05f91c") {
@@ -447,7 +445,6 @@ Item {
         text: qsTr("Defalut Setting")
         textColor: "white"
         onClicked: {
-            advanceSettingDefalutClick()
         }
     }
 }

@@ -14,9 +14,6 @@ Item {
         id: loader
         z: 10
         anchors.fill: parent
-        Loader.item.advanceSettingDefalutClick: {
-            console.log("213213123123123")
-        }
     }
     ListModel {
         id: listModel

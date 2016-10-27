@@ -490,6 +490,8 @@ Item {
                 backGround.visible = false
                 backGround.opacity = 0
                 dialog.visible = false
+                inputworkId.inputText = ""
+                inputquantity.inputText = ""
             }
         }
         CButton {
@@ -507,6 +509,8 @@ Item {
                 backGround.visible = false
                 backGround.opacity = 0
                 dialog.visible = false
+                inputworkId.inputText = ""
+                inputquantity.inputText = ""
             }
         }
     }
