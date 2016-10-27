@@ -30,7 +30,7 @@ signals:
 
 public slots:
     void setRoles(const QStringList &names);
-//    QVariant getContacterValue(int index, QString key);
+    Q_INVOKABLE QVariant getWorkOrderValue(int index, QString key);
 //    QString getContacterName(QString contacterId);
 
     int count();

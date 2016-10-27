@@ -419,7 +419,7 @@ Item {
             inputWidth: 375
             inputColor: "white"
             inputHeight: 60
-            inputText: dialog.bIsEdit ? listModel.get(selectIndx).name : ""
+            inputText: dialog.bIsEdit ? workOrderModel.getWorkOrderValue(selectIndx, "name") : "" //workOrderModel.get(selectIndx).name : ""
         }
         Text {
             id: selectTips
@@ -445,7 +445,7 @@ Item {
             width: 375
             height: 60
             clip: true
-            text: dialog.bIsEdit ? listModel.get(selectIndx).middle : qsTr("SELECT PART")
+            text: dialog.bIsEdit ? workOrderModel.getWorkOrderValue(selectIndx, "middle") : "SELECT PART" //workOrderModel.get(selectIndx).middle : qsTr("SELECT PART")
             textColor: "white"
         }
         Text {
@@ -475,7 +475,7 @@ Item {
             inputHeight: 60
             inputColor: "white"
             horizontalAlignment: Qt.AlignHCenter
-            inputText: dialog.bIsEdit ? listModel.get(selectIndx).count : ""
+            inputText: dialog.bIsEdit ? workOrderModel.getWorkOrderValue(selectIndx, "count") : "" //.get(selectIndx).count : ""
         }
         CButton {
             id: cancel

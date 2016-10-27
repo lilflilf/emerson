@@ -64,27 +64,6 @@ int main(int argc, char *argv[])
 //    _TestPtr->TestUpdateOneRecordIntoWorkOrderTable();
 //    _TestPtr->TestUpdateOneRecordIntoOperatorTable();
     _TestPtr->TestQueryOnlyTimeWireTable();
-    qDebug() << "str1 = ";
-
-    QString str = "%sJ";
-    QString count = "800";
-    QString str1;
-    str1.sprintf("%s zcxv",count.toLatin1().data());
-    qDebug() << "str1 = " << str1;
-
-//    QString str = "%sJ";
-//    QString count = "800";
-//    QString str1;
-//    str1.sprintf("%s zcxv",count.toLatin1().data());
-//    qDebug() << "str1 = " << str1;
-
-//    int num = 172985;
-//    QString tt = QString::number(num * 0.01, 'f', 2);
-//    qDebug() << tt;
-//    bool ok;
-//    float size = tt.toFloat(&ok) * 100;
-//    int cs = (int)size;
-//    qDebug() << cs;
 
     return app.exec();
 }

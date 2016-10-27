@@ -13,6 +13,8 @@ class HmiAdaptor : public QObject
 public:
     explicit HmiAdaptor(QObject *parent = 0);
     Q_INVOKABLE void openFileDialog();
+//    Q_INVOKABLE QVariant getWorkOrderValue(int index, QString key);
+
     WorkOrderModel *workOrderModel;
 signals:
 
