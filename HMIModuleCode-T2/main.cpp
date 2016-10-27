@@ -10,6 +10,7 @@
 #include "Modules/Modstart.h"
 #include "TestCase/databasetest.h"
 #include "UI/alpainteditem.h"
+#include "UI/hmiadaptor.h"
 
 int main(int argc, char *argv[])
 {
@@ -28,6 +29,9 @@ int main(int argc, char *argv[])
     engine.load(QUrl(QStringLiteral("qrc:/UI/main.qml")));
     ALPaintedItem *alpaint = new ALPaintedItem;
     engine.rootContext()->setContextProperty("alpaint",alpaint);
+    HmiAdaptor *hmiAdaptor = new HmiAdaptor;
+    engine.rootContext()->setContextProperty("hmiAdaptor",hmiAdaptor);
+    engine.rootContext()->setContextProperty("workOrderModel",hmiAdaptor->workOrderModel);
 
     DataBaseTest *_TestPtr = new DataBaseTest();
 //    _TestPtr->TestMapJsonToString();
@@ -53,21 +57,21 @@ int main(int argc, char *argv[])
 //    _TestPtr->TestUpdateOneRecordIntoPresetTable();
 //    _TestPtr->TestUpdateOneRecordIntoPartTable();
 //    _TestPtr->TestUpdateOneRecordIntoWorkOrderTable();
-    qDebug() << "str1 = ";
+//    qDebug() << "str1 = ";
 
-    QString str = "%sJ";
-    QString count = "800";
-    QString str1;
-    str1.sprintf("%s zcxv",count.toLatin1().data());
-    qDebug() << "str1 = " << str1;
+//    QString str = "%sJ";
+//    QString count = "800";
+//    QString str1;
+//    str1.sprintf("%s zcxv",count.toLatin1().data());
+//    qDebug() << "str1 = " << str1;
 
-    int num = 172985;
-    QString tt = QString::number(num * 0.01, 'f', 2);
-    qDebug() << tt;
-    bool ok;
-    float size = tt.toFloat(&ok) * 100;
-    int cs = (int)size;
-    qDebug() << cs;
+//    int num = 172985;
+//    QString tt = QString::number(num * 0.01, 'f', 2);
+//    qDebug() << tt;
+//    bool ok;
+//    float size = tt.toFloat(&ok) * 100;
+//    int cs = (int)size;
+//    qDebug() << cs;
 
     return app.exec();
 }

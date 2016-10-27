@@ -5,6 +5,13 @@
 
 HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
 {
+    workOrderModel = new WorkOrderModel(this);
+//    listModel.append({"name":"work order id111111111111111111111111","date":"2016/10/13","middle":"part65487911111111111111111111111","count":"10011111111111111111111111","opacityValue":"0"})
+    QStringList list;
+    list << "name" << "date" << "middle" << "count";
+    workOrderModel->setRoles(list);
+    workOrderModel->setModelList();
+
     QSqlDatabase db;
     db = QSqlDatabase::addDatabase("QSQLITE", "hmiconnect");
     db.setDatabaseName("./hmi.db");

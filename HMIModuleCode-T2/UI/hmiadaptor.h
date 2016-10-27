@@ -3,6 +3,8 @@
 
 #include<QMetaType>
 #include <QObject>
+#include "tablemodel.h"
+
 #define HMI_PRINT (qDebug() <<"HMI adapter:" << __FILE__ << __FUNCTION__ << __LINE__ << ": ")
 
 class HmiAdaptor : public QObject
@@ -11,6 +13,7 @@ class HmiAdaptor : public QObject
 public:
     explicit HmiAdaptor(QObject *parent = 0);
     Q_INVOKABLE void openFileDialog();
+    WorkOrderModel *workOrderModel;
 signals:
 
 public slots:

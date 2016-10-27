@@ -2,12 +2,16 @@ import QtQuick 2.0
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.0
 import QtQuick.Window 2.2
+import QtQuick.Controls 1.4
 
 Item {
     property int selectIndx: -1
     Image {
         anchors.fill: parent
         source: "qrc:/images/images/bg.png"
+    }
+    ExclusiveGroup {
+        id: listviewPositionGroup;
     }
     Loader {
         id: loader
@@ -125,7 +129,7 @@ Item {
         anchors.bottom: bottomTip.top
         width: parent.width - 60
         clip: true
-        model: listModel
+        model: workOrderModel
         delegate: listDelegate
     }
     Image {
@@ -242,20 +246,32 @@ Item {
                 anchors.fill: parent
                 onClicked: {
                     if (selectIndx == -1) {
-                        listModel.set(index,{"opacityValue":"0.3"})
+                        //listModel.set(index,{"opacityValue":"0.3"})
                         selectIndx = index
                     } else {
-                        listModel.set(selectIndx,{"opacityValue":"0"})
+                        //listModel.set(selectIndx,{"opacityValue":"0"})
                         selectIndx = index
-                        listModel.set(index,{"opacityValue":"0.3"})
+                        //listModel.set(index,{"opacityValue":"0.3"})
                     }
+                    selectCheck.checked = !selectCheck.checked
                 }
             }
             Rectangle {
                 id: backGround
                 anchors.fill: parent
                 color: "black"
-                opacity: opacityValue
+                opacity: 0//opacityValue
+                RadioButton {
+                    id: selectCheck
+                    exclusiveGroup: listviewPositionGroup
+                    visible: false
+                    onCheckedChanged: {
+                        if (checked)
+                            backGround.opacity = 0.3
+                        else
+                            backGround.opacity = 0
+                    }
+                }
             }
         }
     }
