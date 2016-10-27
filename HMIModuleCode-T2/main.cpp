@@ -32,6 +32,7 @@ int main(int argc, char *argv[])
     HmiAdaptor *hmiAdaptor = new HmiAdaptor;
     engine.rootContext()->setContextProperty("hmiAdaptor",hmiAdaptor);
     engine.rootContext()->setContextProperty("workOrderModel",hmiAdaptor->workOrderModel);
+    engine.rootContext()->setContextProperty("spliceModel",hmiAdaptor->spliceModel);
 
     DataBaseTest *_TestPtr = new DataBaseTest();
 //    _TestPtr->TestMapJsonToString();

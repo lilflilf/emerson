@@ -438,6 +438,7 @@ Item {
         }
         CButton {
             id: selectPart
+            property var partId: 1
             anchors.top: inputworkId.bottom
             anchors.topMargin: 20
             anchors.right: parent.right
@@ -494,6 +495,7 @@ Item {
                 dialog.visible = false
             }
         }
+
         CButton {
             id: sure
             anchors.right: parent.right
@@ -509,6 +511,7 @@ Item {
                 backGround.visible = false
                 backGround.opacity = 0
                 dialog.visible = false
+                workOrderModel.updateRecordIntoTable(workOrderModel.getWorkOrderValue(selectIndx, "workOrderId"), inputworkId.inputText,selectPart.partId,selectPart.text, inputquantity.inputText )
             }
         }
     }

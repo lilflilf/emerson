@@ -10,6 +10,9 @@ Item {
         anchors.fill: parent
         source: "qrc:/images/images/bg.png"
     }
+    ExclusiveGroup {
+        id: listviewPositionGroup;
+    }
     Loader {
         id: loader
         z: 10
@@ -115,7 +118,7 @@ Item {
         anchors.bottom: bottomTip.top
         width: parent.width - 60
         clip: true
-        model: listModel
+        model: spliceModel
         delegate: listDelegate
     }
     Image {
@@ -233,20 +236,33 @@ Item {
                 anchors.fill: parent
                 onClicked: {
                     if (selectIndx == -1) {
-                        listModel.set(index,{"opacityValue":"0.3"})
+                        //listModel.set(index,{"opacityValue":"0.3"})
                         selectIndx = index
                     } else {
-                        listModel.set(selectIndx,{"opacityValue":"0"})
+                        //listModel.set(selectIndx,{"opacityValue":"0"})
                         selectIndx = index
-                        listModel.set(index,{"opacityValue":"0.3"})
+                        //listModel.set(index,{"opacityValue":"0.3"})
                     }
+                    selectCheck.checked = !selectCheck.checked
+
                 }
             }
             Rectangle {
                 id: backGround
                 anchors.fill: parent
                 color: "#f79428"//"black"
-                opacity: opacityValue
+                opacity: 0 //opacityValue
+                RadioButton {
+                    id: selectCheck
+                    exclusiveGroup: listviewPositionGroup
+                    visible: false
+                    onCheckedChanged: {
+                        if (checked)
+                            backGround.opacity = 0.3
+                        else
+                            backGround.opacity = 0
+                    }
+                }
             }
         }
     }
