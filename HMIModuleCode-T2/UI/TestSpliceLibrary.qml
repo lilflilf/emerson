@@ -374,9 +374,9 @@ Item {
             anchors.topMargin: 7
             anchors.left: teachMode.right
             anchors.leftMargin: 24
-            backgroundwidth: 180
-            backgroundheight: 57
-            textLeft: qsTr("oFF")
+            backgroundwidth: 200
+            backgroundheight: 49
+            textLeft: qsTr("OFF")
             textRight: qsTr("ON")
             state: "left"
         }
@@ -391,7 +391,7 @@ Item {
             anchors.topMargin: 7
             height: 57
             width: 217
-            visible: !diagram.on
+            visible: diagram.on
             clip: true
             buttontext: qsTr("Standard")
             exclusiveGroup: mos2
@@ -405,7 +405,7 @@ Item {
             height: 57
             width: 217
             clip: true
-            visible: !diagram.on
+            visible: diagram.on
             buttontext: qsTr("Auto")
             exclusiveGroup: mos2
         }
@@ -418,7 +418,7 @@ Item {
             height: 57
             width: 217
             clip: true
-            visible: !diagram.on
+            visible: diagram.on
             buttontext: qsTr("Sigma")
             exclusiveGroup: mos2
         }
@@ -436,6 +436,8 @@ Item {
                 backGround.visible = false
                 backGround.opacity = 0
                 testparameters.visible = false
+                loader.source = ""
+                loader.source = "qrc:/UI/AdvanceSetting.qml"
             }
         }
         CButton {

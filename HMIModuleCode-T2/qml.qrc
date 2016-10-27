@@ -28,6 +28,7 @@
         <file>UI/TestSpliceLibrary.qml</file>
         <file>UI/MyRadioButton.qml</file>
         <file>UI/TestDetail.qml</file>
+        <file>UI/AdvanceSetting.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file>images/you.png</file>
@@ -47,5 +48,9 @@
         <file>images/check-bg.png</file>
         <file>images/check-click.png</file>
         <file>images/check-border.png</file>
+        <file>images/advancesetting-bg1.png</file>
+        <file>images/advancesetting-bg2.png</file>
+        <file>images/blue.png</file>
+        <file>images/orange.png</file>
     </qresource>
 </RCC>

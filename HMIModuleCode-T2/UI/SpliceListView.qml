@@ -126,7 +126,7 @@ Item {
                 }
                 text: station
                 textColor: "white"
-                pointSize: 20
+                pixelSize: 20
                 onClicked: {
                     currentWorkStation(index)
                 }
