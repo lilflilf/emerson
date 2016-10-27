@@ -64,7 +64,8 @@ bool DBWorkOrderTable::InsertRecordIntoTable(void *_obj)
     query.prepare(SQLSentence[INSERT_WORKORDER_TABLE]);
 
     query.addBindValue(((WorkOrderElement*)_obj)->WorkOrderName);
-    query.addBindValue(((WorkOrderElement*)_obj)->CreatedDate);
+    QDateTime TimeLabel = QDateTime::fromTime_t(((WorkOrderElement*)_obj)->CreatedDate);
+    query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
     query.addBindValue(((WorkOrderElement*)_obj)->OperatorID);
     query.addBindValue(((WorkOrderElement*)_obj)->NoOfPart);
     query.addBindValue(((WorkOrderElement*)_obj)->Quantity);
@@ -153,8 +154,10 @@ bool DBWorkOrderTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
 
     ((WorkOrderElement*)_obj)->WorkOrderID = query.value("ID").toInt();
     ((WorkOrderElement*)_obj)->WorkOrderName = query.value("WorkOrderName").toString();
-    ((WorkOrderElement*)_obj)->CreatedDate = query.value("CreatedDate").toString();
-    ((WorkOrderElement*)_obj)->OperatorID = query.value("OperatorID").toString();
+    QDateTime TimeLabel = QDateTime::fromString(query.value("CreatedDate").toString(),
+                                                "yyyy/MM/dd hh:mm:ss");
+    ((WorkOrderElement*)_obj)->CreatedDate = TimeLabel.toTime_t();
+    ((WorkOrderElement*)_obj)->OperatorID = query.value("OperatorID").toInt();
     QString tmpStr = query.value("JSONPartIndex").toString();
     _Utility->StringJsonToMap(tmpStr, &((WorkOrderElement*)_obj)->PartIndex);
     ((WorkOrderElement*)_obj)->NoOfPart = ((WorkOrderElement*)_obj)->PartIndex.size();
@@ -228,7 +231,8 @@ bool DBWorkOrderTable::UpdateRecordIntoTable(void *_obj)
 
     query.prepare(SQLSentence[UPDATE_ONE_RECORD_WORKORDER_TABLE]);
     query.addBindValue(((WorkOrderElement*)_obj)->WorkOrderName);
-    query.addBindValue(((WorkOrderElement*)_obj)->CreatedDate);
+    QDateTime TimeLabel = QDateTime::fromTime_t(((WorkOrderElement*)_obj)->CreatedDate);
+    query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
     query.addBindValue(((WorkOrderElement*)_obj)->OperatorID);
     query.addBindValue(((WorkOrderElement*)_obj)->PartIndex.size());
     query.addBindValue(((WorkOrderElement*)_obj)->Quantity);
@@ -248,6 +252,73 @@ bool DBWorkOrderTable::UpdateRecordIntoTable(void *_obj)
     {
         qDebug() << "SQL ERROR:"<< query.lastError();
     }
+    WorkOrderDBObj.close();
+    return bResult;
+}
+
+bool DBWorkOrderTable::QueryOnlyUseName(QString Name, QMap<int, QString> *_obj)
+{
+    if(_obj == NULL)
+        return false;
+
+    QSqlQuery query(WorkOrderDBObj);
+    bool bResult = WorkOrderDBObj.open();
+    if(bResult == false)
+        return bResult;
+
+//    query.prepare(SQLSentence[QUERY_ONE_RECORD_WIRE_TABLE]);
+    query.prepare("SELECT ID, WorkOrderName FROM WorkOrder WHERE WorkOrderName = ?");
+    query.addBindValue(Name);
+
+    bResult = query.exec();
+    if(bResult == true)
+    {
+        _obj->clear();
+        while(query.next())
+            _obj->insert(query.value("ID").toInt(),
+                           query.value("WorkOrderName").toString());
+    }
+    else
+    {
+        qDebug() << "SQL ERROR:"<< query.lastError();
+    }
+
+    WorkOrderDBObj.close();
+    return bResult;
+}
+
+bool DBWorkOrderTable::QueryOnlyUseTime(unsigned int time_from, unsigned int time_to, QMap<int, QString> *_obj)
+{
+    if(_obj == NULL)
+        return false;
+
+    QSqlQuery query(WorkOrderDBObj);
+    bool bResult = WorkOrderDBObj.open();
+    if(bResult == false)
+        return bResult;
+
+//    query.prepare(SQLSentence[QUERY_ONE_RECORD_WIRE_TABLE]);
+
+    query.prepare("SELECT ID, WorkOrderName FROM WorkOrder WHERE CreatedDate >= ?"
+                      " AND CreatedDate <= ?");
+    QDateTime TimeLabel = QDateTime::fromTime_t(time_from);
+    query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
+    TimeLabel = QDateTime::fromTime_t(time_to);
+    query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
+
+    bResult = query.exec();
+    if(bResult == true)
+    {
+        _obj->clear();
+        while(query.next())
+            _obj->insert(query.value("ID").toInt(),
+                           query.value("WorkOrderName").toString());
+    }
+    else
+    {
+        qDebug() << "SQL ERROR:"<< query.lastError();
+    }
+
     WorkOrderDBObj.close();
     return bResult;
 }

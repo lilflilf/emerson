@@ -11,17 +11,35 @@ public:
     void TestInsertOneRecordIntoPresetTable();
     void TestInsertOneRecordIntoPartTable();
     void TestInsertOneRecordIntoWorkOrderTable();
+    void TestInsertOneRecordIntoOperatorTable();
 
     void TestUpdateOneRecordIntoWireTable();
     void TestUpdateOneRecordIntoPresetTable();
     void TestUpdateOneRecordIntoPartTable();
     void TestUpdateOneRecordIntoWorkOrderTable();
+    void TestUpdateOneRecordIntoOperatorTable();
 
     void TestQueryEntireWireTable();
     void TestQueryEntireSpliceTable();
     void TestQueryEntirePartTable();
     void TestQueryEntireWorkOrderTable();
+    void TestQueryEntireOpertorTable();
+
+    void TestQueryOnlyUseNameWireTable();
+    void TestQueryOnlyUseNameSpliceTable();
+    void TestQueryOnlyUseNamePartTable();
+    void TestQueryOnlyUseNameWorkOrderTable();
+    void TestQueryOnlyUseNameOperatorTable();
+
+    void TestQueryOnlyTimeWireTable();
+    void TestQueryOnlyTimeSpliceTable();
+    void TestQueryOnlyTimePartTable();
+    void TestQueryOnlyTimeWorkOrderTable();
+    void TestQueryOnlyTimeOperatorTable();
+
     void TestQueryOneWireTable();
+    void TestQueryOneOperatorTable();
+
     void TestMapJsonToString();
     void TestStringJsonToMap();
 
@@ -29,11 +47,14 @@ public:
     void TestDeleteEntirePresetTable();
     void TestDeleteEntirePartTable();
     void TestDeleteEntireWorkOrderTable();
+    void TestDeleteEntireOperator();
 
     void TestDeleteOneWireTable();
     void TestDeleteOnePresetTable();
     void TestDeleteOnePartTable();
     void TestDeleteOneWorkOrderTable();
+    void TestDeleteOneOperatorTable();
+
 public:
     DataBaseTest();
 };

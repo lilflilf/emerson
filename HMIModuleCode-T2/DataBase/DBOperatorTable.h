@@ -1,15 +1,14 @@
-#ifndef DBWIRETABLE_H
-#define DBWIRETABLE_H
+#ifndef DBOPERATORTABLE_H
+#define DBOPERATORTABLE_H
 
 #include "Sqlit3Class.h"
-class DBWireTable : public SQLITCLASS
+class DBOperatorTable : public SQLITCLASS
 {
 private:
-    static QString WireDBFile;
+    static QString OperatorDBFile;
     static QString DatabaseDir;
 private:
-    QSqlDatabase WireDBObj;
-
+    QSqlDatabase OperatorDBObj;
 public:
     virtual bool CreateNewTable();
     virtual bool InsertRecordIntoTable(void* _obj);
@@ -23,13 +22,13 @@ public:
     virtual bool QueryOnlyUseTime(unsigned int time_from, unsigned int time_to, QMap<int, QString> *_obj);
 
 public:
-    static DBWireTable* Instance();
+    static DBOperatorTable* Instance();
 protected:
-    DBWireTable();
+    DBOperatorTable();
 private:
-    static DBWireTable* _instance;
+    static DBOperatorTable* _instance;
 public:
-    ~DBWireTable();
+    ~DBOperatorTable();
 };
 
-#endif // DBWIRETABLE_H
+#endif // DBOPERATORTABLE_H

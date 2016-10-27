@@ -41,8 +41,8 @@ struct WireElement
 {
     QString WireName;
     int     WireID;
-    QString CreatedDate;
-    QString OperatorID;
+    unsigned int CreatedDate;
+    int OperatorID;
 
     QString Color;
     struct STRIPE Stripe;
@@ -171,8 +171,8 @@ struct PresetElement
     int RevCode;              //Amtech Revision Code for possible future use
     int SpliceID;
     QString SpliceName;       //Customer's Part Number
-    QString CreatedDate;       //Date of last rev, seconds from Jan 1, 1980
-    QString OperatorID;
+    unsigned int CreatedDate;       //Date of last rev, seconds from Jan 1, 1980
+    int OperatorID;
 
     int CrossSection;         //Area of part in mm*mm/100
     QString PresetPicNamePath;
@@ -230,8 +230,8 @@ struct PartElement
     int RevCode;
     int PartID;
     QString PartName;
-    QString CreatedDate;
-    QString OperatorID;
+    unsigned int CreatedDate;
+    int OperatorID;
     struct PARTTYPE PartTypeSetting;
 
     int NoOfSplice;
@@ -252,8 +252,8 @@ struct WorkOrderElement
     int RevCode;
     int WorkOrderID;
     QString WorkOrderName;
-    QString CreatedDate;
-    QString OperatorID;
+    unsigned int CreatedDate;
+    int OperatorID;
     int NoOfPart;
     QMap<int, QString> PartIndex;
 
@@ -264,16 +264,24 @@ struct WorkOrderElement
     bool WorkOrderDone;
 };
 
+enum PASSWORDCONTROL
+{
+    ADMINISTRATOR,
+    TECHNICIAN,
+    QUALITYCONTROL,
+    OPEN,
+};
+
 //default has two records in user log.
-struct OperatorInfo
+struct OperatorElement
 {
     int RevCode;
     int OperatorID;
     QString OperatorName;
     int WhoCreatedNewID;
-    QString CreatedDate;
+    unsigned int CreatedDate;
     QString Password;
-    int PermissionLevel;
+    enum PASSWORDCONTROL PermissionLevel;
 };
 
 //
