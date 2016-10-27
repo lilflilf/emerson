@@ -7,6 +7,7 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "M10definitions.h"
+#include "UtilityDefine.h"
 using namespace std;
 
 enum MACHINE_TYPE{
@@ -179,13 +180,6 @@ struct Run_File_Record{
     QString Last_file;    //Edited 16 Mar 2001 to accomodate the HP file system
     int LastMade;
 };
-
-//Used by the program to consistently change from PSI to BAR
-#define PRESS2BARFACTOR  (0.1 / 14.5)
-#define PRESS2KPAFACTOR  (0.1 / 0.145)
-#define PSItoBARfactor   (14.5)
-#define PSItoKPAfactor   (0.145)
-
 
 //Color used for Copper on Wire Data Screen
 const long clrCopper = 0x80C0FF;
@@ -423,9 +417,9 @@ public:
     M20Build M10Build;
 
     // The system should use the txt_data information as the only source for data
-    ButtonDataStructure txt_data[DIN_end - 1];
-    button_nums DataSpot[SDNEndFlag - 1];
-    button_nums ActualDataIndex[AINAmplitude2];
+    DataShownStructure txt_data[DIN_end - 1];
+    ScreenShowDataType DataSpot[SDNEndFlag - 1];
+    ScreenShowDataType ActualDataIndex[AINAmplitude2];
 
     long MaintenceCounter;
     long MaintenceDueCounter;
@@ -459,8 +453,6 @@ public:
     Run_File_Record RunFileRecord;
 
     string Run_Option;
-
-    int Maxpower;
 
     long PortNum;           //Stores the value of the Comm Port
     int BaudRate;       //Stores the setting for the Baud Rate of the comm port

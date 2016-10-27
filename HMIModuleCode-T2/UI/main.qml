@@ -11,6 +11,7 @@ Window {
     width: Screen.desktopAvailableWidth
     height: Screen.desktopAvailableHeight
     title: qsTr("NewWireSplice")
+
     property var initIndex: 0
     function menuInit(index)
     {
@@ -84,6 +85,7 @@ Window {
         anchors.top: statusBar.bottom
         z: 10
     }
+
 //    CButton {
 //        id: testButton
 //        width: 300
@@ -91,6 +93,17 @@ Window {
 //        onClicked: {
 //            //alpaint.clear()
 //            alpaint.draw()
+//        }
+//    }
+
+//    Canvas {
+//        id: mycanvas
+//        width: Screen.desktopAvailableWidth
+//        height: Screen.desktopAvailableHeight
+//        onPaint: {
+//            var ctx = getContext("2d");
+//            ctx.fillStyle = Qt.rgba(1, 0, 0, 1);
+//            ctx.fillRect(0, 0, width, height);
 //        }
 //    }
 

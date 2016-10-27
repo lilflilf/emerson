@@ -7,10 +7,10 @@
 #include <QJsonParseError>
 #include <QDebug>
 
-UtilityClass* UtilityClass::_instance = 0;
+UtilityClass* UtilityClass::_instance = NULL;
 UtilityClass* UtilityClass::Instance()
 {
-    if(_instance == 0){
+    if(_instance == NULL){
         _instance = new UtilityClass();
     }
     return _instance;
@@ -18,7 +18,7 @@ UtilityClass* UtilityClass::Instance()
 
 UtilityClass::UtilityClass()
 {
-
+    InitializeTextData();
 }
 
 bool UtilityClass::ReadFromBinaryFile(QString SourcDirectory, void *DestStruct)
@@ -155,4 +155,118 @@ bool UtilityClass::StringJsonToMap(QString SourceString, QMap<int, struct PARTAT
         }
     }
     return bResult;
+}
+
+/**************************************************************************************/
+/* This is the central point for keeping track of all data, mins, maxs, and formatters*/
+/* It receives Splice data and stores in the corresponding data structure.            */
+/* The values related to Amplitude Stepping have been extracted to the data structure */
+/**************************************************************************************/
+void UtilityClass::InitializeTextData()
+{
+    SetTextData(DINEnergy, 0, MINENERGY, MAXENERGY, 2, 1, "%dJ");
+    SetTextData(DINWidth, 0, MINWIDTH, MAXWIDTH, 2, 0.01, "%.2fmm");
+    SetTextData(DINPressure, 0, MINWELDPRESSURE, MAXWELDPRESSURE, 2, 0.1, "%.1fPsi");
+    SetTextData(DINTriggerPressure, 0, MINTRIGPRESSURE, MAXTRIGPRESSURE, 2, 0.1,  "%.1fPsi");
+    // Force is actually not displayed anywhere
+    SetTextData(DINForcePl, 0, MINFORCE, MAXFORCE, 2, 0.1, "%.1fPsi");
+    SetTextData(DINForceMs, 0, MINFORCE, MAXFORCE, 2, 0.1, "%.1fPsi");
+
+//    SetTextData(DINPressure,        0, MINWELDPRESSURE, MAXWELDPRESSURE, 1, PRESS2BARFACTOR, "%.2fB");
+//    SetTextData(DINTriggerPressure, 0, MINTRIGPRESSURE, MAXTRIGPRESSURE, 1, PRESS2BARFACTOR, "%.2fB");
+//    // Force is actually not displayed anywhere
+//    SetTextData(DINForcePl,         0, MINFORCE,        MAXFORCE,        2, PRESS2BARFACTOR, "%.2fB");
+//    SetTextData(DINForceMs,         0, MINFORCE,        MAXFORCE,        2, PRESS2BARFACTOR, "%.2fB");
+
+//    SetTextData(DINAmplitude,         0, MINAMPLITUDE, StatusData.Soft_Settings.Horn_Calibrate), 1, 1, "%dµm");
+    SetTextData(DINTimePl, 0, MINTIME, MAXTIME, 2, 0.005, "%.2fs");
+    SetTextData(DINTimeMs, 0, MINTIME, MAXTIME, 2, 0.005, "%.2fs");
+    SetTextData(DINPowerPl, 0, MINPOWER, Maxpower, 100, 1, "%dW");
+//    SetTextData(DINPowerMs, 0, MINPOWER,
+//                StatusData.Soft_Settings.SonicGenWatts, 100, 1, "%dW");
+    SetTextData(DINPre_HgtPl, 0, MINHEIGHT, MAXHEIGHT, 2, 0.01, "%.2fmm");
+    SetTextData(DINPre_HgtMs, 0, MINHEIGHT, MAXHEIGHT, 2, 0.01, "%.2fmm");
+    SetTextData(DINHeightPl, 0, MINHEIGHT, MAXHEIGHT, 2, 0.01, "%.2fmm");
+    SetTextData(DINHeightMs, 0, MINHEIGHT, MAXHEIGHT, 2, 0.01, "%.2fmm");
+
+    SetTextData(DINABDelay, 0, MINABDELAY, MAXABDELAY, 2, 0.01, "%.2fs");
+    SetTextData(DINABDuration, 0, MINABDURATION, MAXABDURATION, 2, 0.01, "%.2fs");
+    SetTextData(DINPartCounter, 0, MINPARTCOUNT, MAXPARTCOUNT, 0, 1, "%dPcs");
+    SetTextData(DINStopCounter, 0, MINSTOPCOUNT, MAXSTOPCOUNT, 2, 1, "%dPcs");
+    SetTextData(DINSqueezeTime, 0, MINSQUEEZETIME, MAXSQUEEZETIME, 2, 0.01, "%.2fs");
+    SetTextData(DINHoldTime, 0, MINHOLDTIME, MAXHOLDTIME, 2, 0.01, "%.2fs");
+
+    // Flag word is a bit field and must have all bits active
+    SetTextData(DINFlagBits, 0, 0x8000, 0x7FFF, 0, 1, "");
+
+    SetTextData(DINPreBurst, 0, MINPREBURST, MAXPREBURST, 10, 0.01, "%.2fs");
+    SetTextData(DINWeldMode, 0, 0, 2, 1, 1, "");
+    //Amplitude Settings
+    //     SetTextData DINAmpStepMode, .FlagAmpStep And &H3, 0, 0, 2, 1, 1, ""
+//    SetTextData(DINAmplitude2, 0, MINAMPLITUDE,
+//       StatusData.Soft_Settings.Horn_Calibrate, 1, 1, "%dµm");
+    SetTextData(DINEnergy2Step, 0, MINSTEPENERGY, MAXENERGY, 2, 1, "%dJ");
+    SetTextData(DINPower2Step, 0, MINPOWER, Maxpower, 100, 1, "%dW");
+    SetTextData(DINTime2Step, 0, MINTIME, MAXSTEPTIME, 2, 0.001, "%.2fs");
+
+}
+
+void UtilityClass::SetTextData(ScreenShowDataType TypeIndex,int Data,int min, int max,
+                               int incrementor,float factor, QString formater)
+{
+    txtData[TypeIndex].Data = Data;
+    txtData[TypeIndex].min  = min;
+    txtData[TypeIndex].max  = max;
+    txtData[TypeIndex].Incrementor = incrementor;
+    txtData[TypeIndex].Factor = factor;
+    txtData[TypeIndex].Format = formater;
+}
+
+QString UtilityClass::FormatedDataToString(ScreenShowDataType TypeIndex, int Data)
+{
+    QString tmpStr;
+    if(txtData[TypeIndex].Format.contains("d") == true)
+        tmpStr.sprintf(txtData[TypeIndex].Format.toLatin1().data(),(int)(Data * txtData[TypeIndex].Factor));
+    else if(txtData[TypeIndex].Format.contains("f") == true)
+        tmpStr.sprintf(txtData[TypeIndex].Format.toLatin1().data(),(float)(Data * txtData[TypeIndex].Factor));
+    else
+        tmpStr.clear();
+    return tmpStr;
+}
+
+float UtilityClass::FormatedDataToFloat(ScreenShowDataType TypeIndex, int Data)
+{
+    if(txtData[TypeIndex].Format.contains("f") == true)
+        return (Data * txtData[TypeIndex].Factor);
+    else
+        return -1;
+}
+
+int UtilityClass::FormatedDataToInteger(ScreenShowDataType TypeIndex, int Data)
+{
+    if(txtData[TypeIndex].Format.contains("d") == true)
+        return (Data * txtData[TypeIndex].Factor);
+    else
+        return -1;
+}
+
+int UtilityClass::StringToFormatedData(ScreenShowDataType TypeIndex, QString ShownData)
+{
+    ShownData.trimmed();
+    if(ShownData.isEmpty() == true)
+        return -1;
+
+    QByteArray tmpArray = ShownData.toLatin1();
+    const char *s = tmpArray.data();
+    int i = 0;
+    while(((*s >= '0') && (*s <= '9')) || (*s == '.'))
+    {
+        s++;
+        i++;
+    }
+    ShownData.remove(i, ShownData.size() - i);
+
+    double tmpValue = ShownData.toDouble();
+    tmpValue /= txtData[TypeIndex].Factor;
+    return (int)tmpValue;
 }

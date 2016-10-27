@@ -8,6 +8,7 @@
 #include <QDir>
 #include <QDataStream>
 #include <QFile>
+#include "Modules/UtilityClass.h"
 M2010* M2010::_instance = 0;
 M2010* M2010::Instance()
 {
@@ -131,6 +132,7 @@ void M2010::load_splice_file()
     M10runMode  *ptr_M10runMode  = M10runMode::Instance();
     M10INI      *ptr_M10INI      = M10INI::Instance();
     ModRunSetup *ptr_ModRunSetup = ModRunSetup::Instance();
+    UtilityClass* _Utility = UtilityClass::Instance();
 
     //This function will load the splice file present in run record.
     int i = 0;
@@ -162,7 +164,7 @@ void M2010::load_splice_file()
                 Splice.Time.Plus = MAXTIME;
             }
             Splice.Power.Minus = MINPOWER;
-            Splice.Power.Plus = Maxpower;
+            Splice.Power.Plus = _Utility->Maxpower;
             Splice.Preheight.Minus = MINPREHEIGHT;
             Splice.Preheight.Plus = MAXPREHEIGHT;
             if ((Splice.FlagWord & WELDMMODEMASK) != 3)
@@ -178,7 +180,7 @@ void M2010::load_splice_file()
 
         }
     }
-    ptr_M10runMode->InitializeTextData();
+    _Utility->InitializeTextData();
     SpliceData2IA();
 //    frmSetupScreen.UpdateTubeShrinker();
     ptr_M10runMode->InvalidWeldCounter = 0;
@@ -293,113 +295,113 @@ int M2010::GetTeachModeRunCount()
 
 void M2010::CopyPartRevThree(M10PartRevThree PartDestRevThree, M10Part PartDest)
 {
-    PartDest.RevCode      = DEFINEDREVCODE;
-    PartDest.PartNo       = PartDestRevThree.PartNo;
-    PartDest.FlagField    = PartDestRevThree.FlagField;
-    PartDest.Amplitude2   = PartDestRevThree.Amplitude2;
-    PartDest.EnergyToStep = PartDestRevThree.EnergyToStep;
-    PartDest.Area         = PartDestRevThree.Area;
-    PartDest.PartsCnt     = PartDestRevThree.PartsCnt;
-    PartDest.TimeToStep   = PartDestRevThree.TimeToStep;
-    PartDest.PowerToStep  = PartDestRevThree.PowerToStep;
-    PartDest.Energy       = PartDestRevThree.Energy;
-    PartDest.Width        = PartDestRevThree.Width;
-    PartDest.Pressure     = PartDestRevThree.Pressure;
-    PartDest.Amplitude    = PartDestRevThree.Amplitude;
-    PartDest.Time         = PartDestRevThree.Time;
-    PartDest.Power        = PartDestRevThree.Power;
-    PartDest.Preheight    = PartDestRevThree.Preheight;
-    PartDest.Height       = PartDestRevThree.Height;
-    PartDest.Force        = PartDestRevThree.Force;
-    PartDest.NoOfWires    = PartDestRevThree.NoOfWires;
-    for(int i = 0; i< MAX_WIRE_ELEMENTS;i++)
-    {
-        PartDest.WireEl[i].PartName = PartDestRevThree.WireEl[i].PartName;
-        PartDest.WireEl[i].Area = PartDestRevThree.WireEl[i].Area;
-        for (int j = 0; j < 11; j++)
-        {
-            PartDest.WireEl[i].Color[j] = PartDestRevThree.WireEl[i].Color[j];
-        }
-    }
-    PartDest.RecData   = PartDestRevThree.RecData;
-    PartDest.TrigPres  = PartDestRevThree.TrigPres;
-    PartDest.SqzTime   = PartDestRevThree.SqzTime;
-    PartDest.FlagWord  = PartDestRevThree.FlagWord;
-    PartDest.StopCount = PartDestRevThree.StopCount;
-    PartDest.HoldTime  = PartDestRevThree.HoldTime;
-    PartDest.ABDelay   = PartDestRevThree.ABDelay;
-    PartDest.ABDur     = PartDestRevThree.ABDur;
-    PartDest.PreBurst = PartDestRevThree.PreBurst;
-    PartDest.WidthCorr = PartDestRevThree.WidthCorr;
-    PartDest.HeightCorr = PartDestRevThree.HeightCorr;
-    PartDest.ShrinkTubeIndex = PartDestRevThree.ShrinkTubeIndex;
-    PartDest.ShrinkTime = PartDestRevThree.ShrinkTime;
-    PartDest.ShrinkTemperature = PartDestRevThree.ShrinkTemperature;
-    PartDest.PreviousFileNumber = PartDestRevThree.PreviousFileNumber;
-    PartDest.PresetTeachModeSetting = PartDestRevThree.PresetTeachModeSetting;
-    for(int i = 0; i < ENERGY_ADJ; i++)
-    {
-         PartDest.TeachModequal_Window[i] = PartDestRevThree.TeachModequal_Window[i];
-    }
-    PartDest.StandardRunQuantity = PartDestRevThree.StandardRunQuantity;
-    PartDest.AutoRunQuantity = PartDestRevThree.AutoRunQuantity;
-    PartDest.SigmaRunQuantity = PartDestRevThree.SigmaRunQuantity;
-    PartDest.PresetPicName = PartDestRevThree.PresetPicName;
+//    PartDest.RevCode      = DEFINEDREVCODE;
+//    PartDest.PartNo       = PartDestRevThree.PartNo;
+//    PartDest.FlagField    = PartDestRevThree.FlagField;
+//    PartDest.Amplitude2   = PartDestRevThree.Amplitude2;
+//    PartDest.EnergyToStep = PartDestRevThree.EnergyToStep;
+//    PartDest.Area         = PartDestRevThree.Area;
+//    PartDest.PartsCnt     = PartDestRevThree.PartsCnt;
+//    PartDest.TimeToStep   = PartDestRevThree.TimeToStep;
+//    PartDest.PowerToStep  = PartDestRevThree.PowerToStep;
+//    PartDest.Energy       = PartDestRevThree.Energy;
+//    PartDest.Width        = PartDestRevThree.Width;
+//    PartDest.Pressure     = PartDestRevThree.Pressure;
+//    PartDest.Amplitude    = PartDestRevThree.Amplitude;
+//    PartDest.Time         = PartDestRevThree.Time;
+//    PartDest.Power        = PartDestRevThree.Power;
+//    PartDest.Preheight    = PartDestRevThree.Preheight;
+//    PartDest.Height       = PartDestRevThree.Height;
+//    PartDest.Force        = PartDestRevThree.Force;
+//    PartDest.NoOfWires    = PartDestRevThree.NoOfWires;
+//    for(int i = 0; i< MAX_WIRE_ELEMENTS;i++)
+//    {
+//        PartDest.WireEl[i].PartName = PartDestRevThree.WireEl[i].PartName;
+//        PartDest.WireEl[i].Area = PartDestRevThree.WireEl[i].Area;
+//        for (int j = 0; j < 11; j++)
+//        {
+//            PartDest.WireEl[i].Color[j] = PartDestRevThree.WireEl[i].Color[j];
+//        }
+//    }
+//    PartDest.RecData   = PartDestRevThree.RecData;
+//    PartDest.TrigPres  = PartDestRevThree.TrigPres;
+//    PartDest.SqzTime   = PartDestRevThree.SqzTime;
+//    PartDest.FlagWord  = PartDestRevThree.FlagWord;
+//    PartDest.StopCount = PartDestRevThree.StopCount;
+//    PartDest.HoldTime  = PartDestRevThree.HoldTime;
+//    PartDest.ABDelay   = PartDestRevThree.ABDelay;
+//    PartDest.ABDur     = PartDestRevThree.ABDur;
+//    PartDest.PreBurst = PartDestRevThree.PreBurst;
+//    PartDest.WidthCorr = PartDestRevThree.WidthCorr;
+//    PartDest.HeightCorr = PartDestRevThree.HeightCorr;
+//    PartDest.ShrinkTubeIndex = PartDestRevThree.ShrinkTubeIndex;
+//    PartDest.ShrinkTime = PartDestRevThree.ShrinkTime;
+//    PartDest.ShrinkTemperature = PartDestRevThree.ShrinkTemperature;
+//    PartDest.PreviousFileNumber = PartDestRevThree.PreviousFileNumber;
+//    PartDest.PresetTeachModeSetting = PartDestRevThree.PresetTeachModeSetting;
+//    for(int i = 0; i < ENERGY_ADJ; i++)
+//    {
+//         PartDest.TeachModequal_Window[i] = PartDestRevThree.TeachModequal_Window[i];
+//    }
+//    PartDest.StandardRunQuantity = PartDestRevThree.StandardRunQuantity;
+//    PartDest.AutoRunQuantity = PartDestRevThree.AutoRunQuantity;
+//    PartDest.SigmaRunQuantity = PartDestRevThree.SigmaRunQuantity;
+//    PartDest.PresetPicName = PartDestRevThree.PresetPicName;
 }
 
 void M2010::CopyPartRevTwo(M10PartRevTwo PartDestRevTwo, M10Part PartDest)
 {
-    PartDest.RevCode = DEFINEDREVCODE;
-    PartDest.PartNo = PartDestRevTwo.PartNo;
-    PartDest.FlagField = PartDestRevTwo.FlagField;
-    PartDest.Amplitude2 = PartDestRevTwo.Amplitude2;
-    PartDest.EnergyToStep = PartDestRevTwo.EnergyToStep;
-    PartDest.Area = PartDestRevTwo.Area;
-    PartDest.PartsCnt = PartDestRevTwo.PartsCnt;
-    PartDest.TimeToStep = PartDestRevTwo.TimeToStep;
-    PartDest.PowerToStep = PartDestRevTwo.PowerToStep;
-    PartDest.Energy = PartDestRevTwo.Energy;
-    PartDest.Width = PartDestRevTwo.Width;
-    PartDest.Pressure = PartDestRevTwo.Pressure;
-    PartDest.Amplitude = PartDestRevTwo.Amplitude;
-    PartDest.Time = PartDestRevTwo.Time;
-    PartDest.Power = PartDestRevTwo.Power;
-    PartDest.Preheight = PartDestRevTwo.Preheight;
-    PartDest.Height = PartDestRevTwo.Height;
-    PartDest.Force = PartDestRevTwo.Force;
-    PartDest.NoOfWires = PartDestRevTwo.NoOfWires;
-    for(int i = 0; i < MAX_WIRE_ELEMENTS; i++)
-    {
-        PartDest.WireEl[i].PartName = PartDestRevTwo.WireEl[i].PartName;
-        PartDest.WireEl[i].Area = PartDestRevTwo.WireEl[i].Area;
-        for(int j = 0; j < 11; j++)
-        {
-            PartDest.WireEl[i].Color[j] = PartDestRevTwo.WireEl[i].Color[j];
-        }
-        PartDest.WireEl[i].side = PartDestRevTwo.WireEl[i].side;
-    }
-    PartDest.RecData = PartDestRevTwo.RecData;
-    PartDest.TrigPres = PartDestRevTwo.TrigPres;
-    PartDest.SqzTime = PartDestRevTwo.SqzTime;
-    PartDest.FlagWord = PartDestRevTwo.FlagWord;
-    PartDest.StopCount = PartDestRevTwo.StopCount;
-    PartDest.HoldTime = PartDestRevTwo.HoldTime;
-    PartDest.ABDelay = PartDestRevTwo.ABDelay;
-    PartDest.ABDur = PartDestRevTwo.ABDur;
-    PartDest.PreBurst = PartDestRevTwo.PreBurst;
-    PartDest.WidthCorr = PartDestRevTwo.WidthCorr;
-    PartDest.HeightCorr = PartDestRevTwo.HeightCorr;
-    PartDest.ShrinkTubeIndex = PartDestRevTwo.ShrinkTubeIndex;
-    PartDest.ShrinkTime = PartDestRevTwo.ShrinkTime;
-    PartDest.ShrinkTemperature = PartDestRevTwo.ShrinkTemperature;
-    PartDest.PreviousFileNumber = PartDestRevTwo.PreviousFileNumber;
-    PartDest.PresetTeachModeSetting = PartDestRevTwo.PresetTeachModeSetting;
-    for(int i = 0; i < ENERGY_ADJ; i++)
-    {
-        PartDest.TeachModequal_Window[i] = PartDestRevTwo.TeachModequal_Window[i];
-    }
-    PartDest.StandardRunQuantity = PartDestRevTwo.StandardRunQuantity;
-    PartDest.AutoRunQuantity = PartDestRevTwo.AutoRunQuantity;
-    PartDest.SigmaRunQuantity = PartDestRevTwo.SigmaRunQuantity;
-    PartDest.PresetPicName = PartDestRevTwo.PresetPicName;
+//    PartDest.RevCode = DEFINEDREVCODE;
+//    PartDest.PartNo = PartDestRevTwo.PartNo;
+//    PartDest.FlagField = PartDestRevTwo.FlagField;
+//    PartDest.Amplitude2 = PartDestRevTwo.Amplitude2;
+//    PartDest.EnergyToStep = PartDestRevTwo.EnergyToStep;
+//    PartDest.Area = PartDestRevTwo.Area;
+//    PartDest.PartsCnt = PartDestRevTwo.PartsCnt;
+//    PartDest.TimeToStep = PartDestRevTwo.TimeToStep;
+//    PartDest.PowerToStep = PartDestRevTwo.PowerToStep;
+//    PartDest.Energy = PartDestRevTwo.Energy;
+//    PartDest.Width = PartDestRevTwo.Width;
+//    PartDest.Pressure = PartDestRevTwo.Pressure;
+//    PartDest.Amplitude = PartDestRevTwo.Amplitude;
+//    PartDest.Time = PartDestRevTwo.Time;
+//    PartDest.Power = PartDestRevTwo.Power;
+//    PartDest.Preheight = PartDestRevTwo.Preheight;
+//    PartDest.Height = PartDestRevTwo.Height;
+//    PartDest.Force = PartDestRevTwo.Force;
+//    PartDest.NoOfWires = PartDestRevTwo.NoOfWires;
+//    for(int i = 0; i < MAX_WIRE_ELEMENTS; i++)
+//    {
+//        PartDest.WireEl[i].PartName = PartDestRevTwo.WireEl[i].PartName;
+//        PartDest.WireEl[i].Area = PartDestRevTwo.WireEl[i].Area;
+//        for(int j = 0; j < 11; j++)
+//        {
+//            PartDest.WireEl[i].Color[j] = PartDestRevTwo.WireEl[i].Color[j];
+//        }
+//        PartDest.WireEl[i].side = PartDestRevTwo.WireEl[i].side;
+//    }
+//    PartDest.RecData = PartDestRevTwo.RecData;
+//    PartDest.TrigPres = PartDestRevTwo.TrigPres;
+//    PartDest.SqzTime = PartDestRevTwo.SqzTime;
+//    PartDest.FlagWord = PartDestRevTwo.FlagWord;
+//    PartDest.StopCount = PartDestRevTwo.StopCount;
+//    PartDest.HoldTime = PartDestRevTwo.HoldTime;
+//    PartDest.ABDelay = PartDestRevTwo.ABDelay;
+//    PartDest.ABDur = PartDestRevTwo.ABDur;
+//    PartDest.PreBurst = PartDestRevTwo.PreBurst;
+//    PartDest.WidthCorr = PartDestRevTwo.WidthCorr;
+//    PartDest.HeightCorr = PartDestRevTwo.HeightCorr;
+//    PartDest.ShrinkTubeIndex = PartDestRevTwo.ShrinkTubeIndex;
+//    PartDest.ShrinkTime = PartDestRevTwo.ShrinkTime;
+//    PartDest.ShrinkTemperature = PartDestRevTwo.ShrinkTemperature;
+//    PartDest.PreviousFileNumber = PartDestRevTwo.PreviousFileNumber;
+//    PartDest.PresetTeachModeSetting = PartDestRevTwo.PresetTeachModeSetting;
+//    for(int i = 0; i < ENERGY_ADJ; i++)
+//    {
+//        PartDest.TeachModequal_Window[i] = PartDestRevTwo.TeachModequal_Window[i];
+//    }
+//    PartDest.StandardRunQuantity = PartDestRevTwo.StandardRunQuantity;
+//    PartDest.AutoRunQuantity = PartDestRevTwo.AutoRunQuantity;
+//    PartDest.SigmaRunQuantity = PartDestRevTwo.SigmaRunQuantity;
+//    PartDest.PresetPicName = PartDestRevTwo.PresetPicName;
 }

@@ -37,12 +37,12 @@ struct STRIPE
     QString Color;
 };
 
-struct WireElementStructure
+struct WireElement
 {
     QString WireName;
     int     WireID;
-    QString CreatedDate;
-    QString OperatorID;
+    unsigned int CreatedDate;
+    int OperatorID;
 
     QString Color;
     struct STRIPE Stripe;
@@ -54,7 +54,7 @@ struct WireElementStructure
 };
 
 //Splice Structure
-struct QualStructure
+struct Qual
 {
    int Plus;
    int Minus;
@@ -107,11 +107,11 @@ struct WELDSETTING
 
 struct QUALITYWINDONSETTING
 {
-    QualStructure Time;                //Time limits in seconds/100
-    QualStructure Power;               //Power limits in percent
-    QualStructure Preheight;           //Pre weld height limits in mm/100
-    QualStructure Height;              //Post weld height limits in mm/100
-    QualStructure Force;               //Force limits in Newtons
+    Qual Time;                //Time limits in seconds/100
+    Qual Power;               //Power limits in percent
+    Qual Preheight;           //Pre weld height limits in mm/100
+    Qual Height;              //Post weld height limits in mm/100
+    Qual Force;               //Force limits in Newtons
 };
 
 struct ADVANCESETTING
@@ -171,8 +171,8 @@ struct PresetElement
     int RevCode;              //Amtech Revision Code for possible future use
     int SpliceID;
     QString SpliceName;       //Customer's Part Number
-    QString CreatedDate;       //Date of last rev, seconds from Jan 1, 1980
-    QString OperatorID;
+    unsigned int CreatedDate;       //Date of last rev, seconds from Jan 1, 1980
+    int OperatorID;
 
     int CrossSection;         //Area of part in mm*mm/100
     QString PresetPicNamePath;
@@ -230,8 +230,8 @@ struct PartElement
     int RevCode;
     int PartID;
     QString PartName;
-    QString CreatedDate;
-    QString OperatorID;
+    unsigned int CreatedDate;
+    int OperatorID;
     struct PARTTYPE PartTypeSetting;
 
     int NoOfSplice;
@@ -247,13 +247,13 @@ struct SpliceIndex
     QString SpliceName;
 };
 
-struct WorkOrder
+struct WorkOrderElement
 {
     int RevCode;
     int WorkOrderID;
     QString WorkOrderName;
-    QString CreatedDate;
-    QString OperatorID;
+    unsigned int CreatedDate;
+    int OperatorID;
     int NoOfPart;
     QMap<int, QString> PartIndex;
 
@@ -264,16 +264,27 @@ struct WorkOrder
     bool WorkOrderDone;
 };
 
-struct OperatorInfo
+enum PASSWORDCONTROL
+{
+    ADMINISTRATOR,
+    TECHNICIAN,
+    QUALITYCONTROL,
+    OPEN,
+};
+
+//default has two records in user log.
+struct OperatorElement
 {
     int RevCode;
     int OperatorID;
     QString OperatorName;
-    QString CreatedDate;
+    int WhoCreatedNewID;
+    unsigned int CreatedDate;
     QString Password;
-    int PermissionLevel;
+    enum PASSWORDCONTROL PermissionLevel;
 };
 
+//
 struct AlarmInfo
 {
     int RevCode;
@@ -282,6 +293,8 @@ struct AlarmInfo
     QString CreatedDate;
     int AlarmType;
     int WeldResultID;
+    int OperaterID;
+
 };
 
 struct WorkOrderIndex
@@ -298,17 +311,17 @@ struct PartIndex
 
 struct WELDRESULT
 {
-    int Energy;
-    int TPressure;
-    int Pressure;
-    int Amplitude;
-    int Amplitude2;
-    int Width;
-    int Time;
-    int Power;
-    int Preheight;
-    int Postheight;
-    int Alarmflags;
+    int ActualEnergy;
+    int ActualTPressure;
+    int ActualPressure;
+    int ActualAmplitude;
+    int ActualAmplitude2;
+    int ActualWidth;
+    int ActualTime;
+    int ActualPeakPower;
+    int ActualPreheight;
+    int ActualPostheight;
+    int ActualAlarmflags;
 };
 
 enum SAMPLERATIO
@@ -328,10 +341,12 @@ struct WeldResultInfo
     struct WorkOrderIndex CurrentWorkOrder;
     struct PartIndex CurrentPart;
     struct SpliceIndex CurrentSplice;
-    int WeldCount;
-    int PartCount;
+    int WeldCount;//just for the test mode
+    int PartCount;//just for the operate mode
     struct WELDRESULT ActualResult;
+
     enum SAMPLERATIO SampleRatio;
+
     int NoOfSamples;
     QMap<int, QString> PowerGraph;
     QMap<int, QString> PostHeightGraph;

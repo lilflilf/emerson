@@ -434,14 +434,14 @@ void M10INI::Get_INI_File()
     Password *ptr_Password = Password::Instance();
     M2010    *ptr_M2010    = M2010::Instance();
     InterfaceClass *CInterface = InterfaceClass::Instance();
-    UtilityClass *ptr_Utility = UtilityClass::Instance();
+    UtilityClass *_Utility = UtilityClass::Instance();
 //    Const ConfigFilesPath = App.Path & "\etc"
 //    Dim FolderName As String
 //    FolderName = Dir(App.Path & "\etc", vbDirectory)
 //    If FolderName = "" Then MkDir (App.Path & "\etc")
     QDir dir;
     FileName = ConfigFilesPath + AMTECH_INI_FILE;
-    if (ptr_Utility->ReadFromBinaryFile(FileName,&StatusData) == true)
+    if (_Utility->ReadFromBinaryFile(FileName,&StatusData) == true)
     {
 //        bErasePasswords can only be done in the debug mode (Can't be set to true
 //        by program)
@@ -470,7 +470,7 @@ void M10INI::Get_INI_File()
         delete []DataCell;
         DataCell = new int[StatusData.GraphDataLen];
     }
-    if(ptr_Utility->ReadFromBinaryFile(FileName,DataCell)== true)
+    if(_Utility->ReadFromBinaryFile(FileName,DataCell)== true)
     {
         PowerDataReady = true;
         if (ptr_Password->bErasePasswords == true)
@@ -509,5 +509,5 @@ void M10INI::Get_INI_File()
      SetStoragePaths(); //Required for networking applications
 
      //This data is usually initialized from the control input
-     ptr_M2010->Maxpower = int(1.2 * StatusData.Soft_Settings.SonicGenWatts);
+     _Utility->Maxpower = int(1.2 * StatusData.Soft_Settings.SonicGenWatts);
 }

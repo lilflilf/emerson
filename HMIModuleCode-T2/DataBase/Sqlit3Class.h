@@ -5,6 +5,7 @@
 #include <QtSql/QSqlQuery>
 #include <QtSql/QSqlError>
 #include <QtSql/QSqlDriver>
+#include <QDateTime>
 #include "Interface/definition.h"
 #include "sqlsentence.h"
 
@@ -18,6 +19,9 @@ public:
     virtual bool QueryOneRecordFromTable(int ID, QString Name, void* _obj) = 0;
     virtual bool DeleteEntireTable() = 0;
     virtual bool DeleteOneRecordFromTable(int ID, QString Name) = 0;
+
+    virtual bool QueryOnlyUseName(QString Name, QMap<int, QString>* _obj) = 0;
+    virtual bool QueryOnlyUseTime(unsigned int time_from, unsigned int time_to, QMap<int, QString>* _obj) = 0;
 };
 
 #endif // SQLITCLASS_H

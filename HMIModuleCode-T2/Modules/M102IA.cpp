@@ -7,6 +7,7 @@
 #include "Statistics.h"
 #include "ModRunSetup.h"
 #include <QCoreApplication>
+#include "UtilityClass.h"
 
 M102IA* M102IA::_instance = 0;
 M102IA* M102IA::Instance()
@@ -465,6 +466,7 @@ int M102IA::ParseHexStructure(string HexString, int DataSignature)
     MDefine *ptr_MDefine = MDefine::Instance();
     Statistics *ptr_Statistics = Statistics::Instance();
     ModRunSetup *ptr_ModRunSetup = ModRunSetup::Instance();
+    UtilityClass* _Utility = UtilityClass::Instance();
     const string Colon = ":";
 
     int i;
@@ -679,7 +681,7 @@ int M102IA::ParseHexStructure(string HexString, int DataSignature)
     case IASigPWRrating:         //"0F"
         ptr_M10INI->StatusData.Soft_Settings.SonicGenWatts =
                 MakeHexWordNumber(HexString.substr(10, 4));
-        ptr_M2010->Maxpower = int(1.2 * ptr_M10INI->StatusData.Soft_Settings.SonicGenWatts);
+        _Utility->Maxpower = int(1.2 * ptr_M10INI->StatusData.Soft_Settings.SonicGenWatts);
         for (Index = 0; Index <= 6; Index++)
         {
              ptr_M10INI->Pwr_Prefix_Data[Index] = Index *

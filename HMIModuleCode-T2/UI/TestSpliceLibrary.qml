@@ -344,6 +344,7 @@ Item {
             clip: true
             buttontext: qsTr("Unconstrained")
             exclusiveGroup: mos
+            bIsCheck: true
         }
         MyRadioButton {
             id: splices
@@ -375,7 +376,7 @@ Item {
             anchors.left: teachMode.right
             anchors.leftMargin: 24
             backgroundwidth: 200
-            backgroundheight: 49
+            backgroundheight: 47
             textLeft: qsTr("OFF")
             textRight: qsTr("ON")
             state: "left"
@@ -454,6 +455,7 @@ Item {
                 backGround.visible = false
                 backGround.opacity = 0
                 testparameters.visible = false
+                loader.source = "qrc:/UI/TestDetail.qml"
             }
         }
     }

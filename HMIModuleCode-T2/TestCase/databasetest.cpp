@@ -4,8 +4,10 @@
 #include "DataBase/DBPresetTable.h"
 #include "DataBase/DBPartTable.h"
 #include "DataBase/DBWorkOrderTable.h"
+#include "DataBase/DBOperatorTable.h"
 #include <QMap>
 #include <QDebug>
+#include <QDateTime>
 #include "Interface/definition.h"
 #include "Modules/UtilityClass.h"
 DataBaseTest::DataBaseTest()
@@ -16,10 +18,11 @@ DataBaseTest::DataBaseTest()
 void DataBaseTest::TestInsertOneRecordIntoWireTable()
 {
     SQLITCLASS *_SQLITCLASS = DBWireTable::Instance();
-    struct WireElementStructure tmpWire;
-    tmpWire.WireName = "TESTWire";
-    tmpWire.CreatedDate = "20161020";
-    tmpWire.OperatorID = "JW";
+    struct WireElement tmpWire;
+    tmpWire.WireName = "TESTWire1";
+    QDateTime tmp = QDateTime::fromString("2016/10/24 00:00:00", "yyyy/MM/dd hh:mm:ss");
+    tmpWire.CreatedDate = tmp.toTime_t();
+    tmpWire.OperatorID = 2;
     tmpWire.Color = "GREEN";
     tmpWire.Stripe.TypeOfStripe = Slash;
     tmpWire.Stripe.Color = "RED";
@@ -39,9 +42,10 @@ void DataBaseTest::TestInsertOneRecordIntoPresetTable()
     TestMap.insert(1,"Mr.Li");
     TestMap.insert(2, "Zhang");
     struct PresetElement tmpSplice;
-    tmpSplice.SpliceName = "TESTSplice";
-    tmpSplice.CreatedDate = "20161020";
-    tmpSplice.OperatorID = "JW";
+    tmpSplice.SpliceName = "TESTSplice4";
+    QDateTime tmp = QDateTime::fromString("2016/10/20 00:00:00", "yyyy/MM/dd hh:mm:ss");
+    tmpSplice.CreatedDate = tmp.toTime_t();
+    tmpSplice.OperatorID = 2;
     tmpSplice.CrossSection = 100;
     tmpSplice.PresetPicNamePath = "C:\\";
     tmpSplice.Verified = false;
@@ -79,7 +83,7 @@ void DataBaseTest::TestInsertOneRecordIntoPresetTable()
     tmpSplice.AdvanceSetting.ShrinkTube.ShrinkTubeID = 0;
     tmpSplice.AdvanceSetting.ShrinkTube.ShrinkTime = 10;
     tmpSplice.AdvanceSetting.ShrinkTube.ShrinkTemperature = 260;
-    tmpSplice.TestSetting.Qutanty = 55;
+    tmpSplice.TestSetting.Qutanty = 10;
     tmpSplice.TestSetting.StopCount = 20;
     tmpSplice.TestSetting.TestMode = UNCONSTRAINED;
     tmpSplice.TestSetting.TeachModeSetting.TeachModeType = UNDEFINED;
@@ -102,8 +106,9 @@ void DataBaseTest::TestInsertOneRecordIntoPartTable()
 
     struct PartElement tmpPart;
     tmpPart.PartName = "TESTPart";
-    tmpPart.CreatedDate = "20161020";
-    tmpPart.OperatorID = "JW";
+    QDateTime tmp = QDateTime::fromString("2016/10/20 00:00:00", "yyyy/MM/dd hh:mm:ss");
+    tmpPart.CreatedDate = tmp.toTime_t();
+    tmpPart.OperatorID = 2;
     tmpPart.PartTypeSetting.ProcessMode = BASIC;
     tmpPart.PartTypeSetting.WorkStations.TotalWorkstation = 20;
     tmpPart.PartTypeSetting.WorkStations.MaxSplicesPerWorkstation = 30;
@@ -133,14 +138,15 @@ void DataBaseTest::TestInsertOneRecordIntoWorkOrderTable()
 {
     SQLITCLASS *_SQLITCLASS = DBWorkOrderTable::Instance();
 
-    struct WorkOrder tmpWorkOrder;
-    tmpWorkOrder.WorkOrderName = "TESTWorkOrder";
-    tmpWorkOrder.CreatedDate = "20161020";
-    tmpWorkOrder.OperatorID = "JW";
+    struct WorkOrderElement tmpWorkOrder;
+    tmpWorkOrder.WorkOrderName = "TESTWorkOrder4";
+    QDateTime tmp = QDateTime::fromString("2016/10/20 00:00:00", "yyyy/MM/dd hh:mm:ss");
+    tmpWorkOrder.CreatedDate = tmp.toTime_t();
+    tmpWorkOrder.OperatorID = 2;
     tmpWorkOrder.PartIndex.insert(1,"PartName");
     tmpWorkOrder.NoOfPart = tmpWorkOrder.PartIndex.size();
 
-    tmpWorkOrder.Quantity = 50;
+    tmpWorkOrder.Quantity = 10;
     tmpWorkOrder.CurrentPartCount = 30;
 
     tmpWorkOrder.MissSpliceList.insert(0, "MissSplice1");
@@ -153,6 +159,20 @@ void DataBaseTest::TestInsertOneRecordIntoWorkOrderTable()
     tmpWorkOrder.WorkOrderDone = false;
 
     _SQLITCLASS->InsertRecordIntoTable(&tmpWorkOrder);
+}
+
+void DataBaseTest::TestInsertOneRecordIntoOperatorTable()
+{
+    SQLITCLASS *_SQLITCLASS = DBOperatorTable::Instance();
+    struct OperatorElement tmpOperator;
+    tmpOperator.OperatorName = "TESTOperator";
+    QDateTime tmp = QDateTime::fromString("2016/10/20 00:00:00", "yyyy/MM/dd hh:mm:ss");
+    tmpOperator.CreatedDate = tmp.toTime_t();
+    tmpOperator.WhoCreatedNewID = 2;
+    tmpOperator.Password = "4567";
+    tmpOperator.PermissionLevel = OPEN;
+
+    _SQLITCLASS->InsertRecordIntoTable(&tmpOperator);
 }
 
 void DataBaseTest::TestMapJsonToString()
@@ -248,15 +268,30 @@ void DataBaseTest::TestQueryEntireWorkOrderTable()
     }
 }
 
+void DataBaseTest::TestQueryEntireOpertorTable()
+{
+    SQLITCLASS *_SQLITCLASS = DBOperatorTable::Instance();
+    QMap<int, QString> tmpMap;
+    _SQLITCLASS->QueryEntireTable(&tmpMap);
+    QMap<int, QString>::ConstIterator i = tmpMap.constBegin();
+    while(i != tmpMap.constEnd())
+    {
+        qDebug()<<"Operator ID: "<<i.key();
+        qDebug()<<"Operator Name: "<<i.value();
+        ++i;
+    }
+}
+
 void DataBaseTest::TestQueryOneWireTable()
 {
     SQLITCLASS *_SQLITCLASS = DBWireTable::Instance();
-    WireElementStructure tmpWire;
+    WireElement tmpWire;
     if(_SQLITCLASS->QueryOneRecordFromTable(1,"TESTWIRE", &tmpWire))
     {
         qDebug()<<"WireID: "<<tmpWire.WireID;
         qDebug()<<"WireName: "<<tmpWire.WireName;
-        qDebug()<<"CreatedDate: "<<tmpWire.CreatedDate;
+        QDateTime tmp = QDateTime::fromTime_t(tmpWire.CreatedDate);
+        qDebug()<<"CreatedDate: "<<tmp.toString("yyyy/MM/dd hh:mm:ss");
         qDebug()<<"OperatorID: "<<tmpWire.OperatorID;
         qDebug()<<"Color: "<<tmpWire.Color;
         qDebug()<<"StripType: "<<tmpWire.Stripe.TypeOfStripe;
@@ -268,6 +303,22 @@ void DataBaseTest::TestQueryOneWireTable()
         qDebug()<<"VerticalPosition: "<<tmpWire.Position;
     }
 
+}
+
+void DataBaseTest::TestQueryOneOperatorTable()
+{
+    SQLITCLASS *_SQLITCLASS = DBOperatorTable::Instance();
+    OperatorElement tmpOperator;
+    if(_SQLITCLASS->QueryOneRecordFromTable(1,"TESTOperator", &tmpOperator))
+    {
+        qDebug()<<"OperatorID: "<<tmpOperator.OperatorID;
+        qDebug()<<"OperatorName: "<<tmpOperator.OperatorName;
+        QDateTime tmp = QDateTime::fromTime_t(tmpOperator.CreatedDate);
+        qDebug()<<"CreatedDate: "<<tmp.toString("yyyy/MM/dd hh:mm:ss");
+        qDebug()<<"WhoCreatedNewID: "<<tmpOperator.WhoCreatedNewID;
+        qDebug()<<"Password: "<<tmpOperator.Password;
+        qDebug()<<"PermissionLevel: "<<tmpOperator.PermissionLevel;
+    }
 }
 
 void DataBaseTest::TestDeleteEntireWireTable()
@@ -307,6 +358,15 @@ void DataBaseTest::TestDeleteEntireWorkOrderTable()
         qDebug()<<"Delete WorkOrder Table Unsucessful.";
 }
 
+void DataBaseTest::TestDeleteEntireOperator()
+{
+    SQLITCLASS *_SQLITCLASS = DBOperatorTable::Instance();
+    if(_SQLITCLASS->DeleteEntireTable())
+        qDebug()<<"Delete Operator Table Sucessful.";
+    else
+        qDebug()<<"Delete Operator Table Unsucessful.";
+}
+
 void DataBaseTest::TestDeleteOneWireTable()
 {
     SQLITCLASS *_SQLITCLASS = DBWireTable::Instance();
@@ -343,14 +403,24 @@ void DataBaseTest::TestDeleteOneWorkOrderTable()
         qDebug()<<"Delete WorkOrder Table Unsucessful.";
 }
 
+void DataBaseTest::TestDeleteOneOperatorTable()
+{
+    SQLITCLASS *_SQLITCLASS = DBOperatorTable::Instance();
+    if(_SQLITCLASS->DeleteOneRecordFromTable(2, "TESTOperator"))
+        qDebug()<<"Delete Operator Table Sucessful.";
+    else
+        qDebug()<<"Delete Operator Table Unsucessful.";
+}
+
 void DataBaseTest::TestUpdateOneRecordIntoWireTable()
 {
     SQLITCLASS *_SQLITCLASS = DBWireTable::Instance();
-    struct WireElementStructure tmpWire;
-    tmpWire.WireID = 4;
-    tmpWire.WireName = "TESTWIRE";
-    tmpWire.CreatedDate = "20161024";
-    tmpWire.OperatorID = "JW";
+    struct WireElement tmpWire;
+    tmpWire.WireID = 2;
+    tmpWire.WireName = "TESTWire1";
+    QDateTime tmp = QDateTime::fromString("10/23/2016 15:40:00", "yyyy/MM/dd hh:mm:ss");
+    tmpWire.CreatedDate = tmp.toTime_t();
+    tmpWire.OperatorID = 2;
     tmpWire.Color = "GREEN";
     tmpWire.Stripe.TypeOfStripe = Slash;
     tmpWire.Stripe.Color = "RED";
@@ -372,8 +442,9 @@ void DataBaseTest::TestUpdateOneRecordIntoPresetTable()
     struct PresetElement tmpSplice;
     tmpSplice.SpliceID = 3;
     tmpSplice.SpliceName = "TESTSPLICE";
-    tmpSplice.CreatedDate = "20161020";
-    tmpSplice.OperatorID = "JW";
+    QDateTime tmp = QDateTime::fromString("2016/10/20 00:00:00", "yyyy/MM/dd hh:mm:ss");
+    tmpSplice.CreatedDate = tmp.toTime_t();
+    tmpSplice.OperatorID = 2;
     tmpSplice.CrossSection = 100;
     tmpSplice.PresetPicNamePath = "C:\\";
     tmpSplice.Verified = false;
@@ -434,8 +505,9 @@ void DataBaseTest::TestUpdateOneRecordIntoPartTable()
     struct PartElement tmpPart;
     tmpPart.PartID = 3;
     tmpPart.PartName = "TESTPART";
-    tmpPart.CreatedDate = "20161020";
-    tmpPart.OperatorID = "JW";
+    QDateTime tmp = QDateTime::fromString("2016/10/20 00:00:00", "yyyy/MM/dd hh:mm:ss");
+    tmpPart.CreatedDate = tmp.toTime_t();
+    tmpPart.OperatorID = 2;
     tmpPart.PartTypeSetting.ProcessMode = BASIC;
     tmpPart.PartTypeSetting.WorkStations.TotalWorkstation = 20;
     tmpPart.PartTypeSetting.WorkStations.MaxSplicesPerWorkstation = 30;
@@ -465,11 +537,12 @@ void DataBaseTest::TestUpdateOneRecordIntoWorkOrderTable()
 {
     SQLITCLASS *_SQLITCLASS = DBWorkOrderTable::Instance();
 
-    struct WorkOrder tmpWorkOrder;
+    struct WorkOrderElement tmpWorkOrder;
     tmpWorkOrder.WorkOrderID = 3;
     tmpWorkOrder.WorkOrderName = "TESTWORKORDER";
-    tmpWorkOrder.CreatedDate = "20161020";
-    tmpWorkOrder.OperatorID = "JW";
+    QDateTime tmp = QDateTime::fromString("2016/10/20 00:00:00", "yyyy/MM/dd hh:mm:ss");
+    tmpWorkOrder.CreatedDate = tmp.toTime_t();
+    tmpWorkOrder.OperatorID = 2;
     tmpWorkOrder.PartIndex.insert(1,"PartName");
     tmpWorkOrder.NoOfPart = tmpWorkOrder.PartIndex.size();
 
@@ -486,4 +559,41 @@ void DataBaseTest::TestUpdateOneRecordIntoWorkOrderTable()
     tmpWorkOrder.WorkOrderDone = false;
 
     _SQLITCLASS->UpdateRecordIntoTable(&tmpWorkOrder);
+}
+
+void DataBaseTest::TestUpdateOneRecordIntoOperatorTable()
+{
+    SQLITCLASS *_SQLITCLASS = DBOperatorTable::Instance();
+
+    struct OperatorElement tmpOperator;
+    tmpOperator.OperatorID = 3;
+    tmpOperator.OperatorName = "TESTJW";
+    QDateTime tmp = QDateTime::fromString("2016/10/26 00:00:00", "yyyy/MM/dd hh:mm:ss");
+    tmpOperator.CreatedDate = tmp.toTime_t();
+    tmpOperator.Password = "1234";
+    tmpOperator.WhoCreatedNewID = 1;
+    tmpOperator.PermissionLevel = ADMINISTRATOR;
+
+    _SQLITCLASS->UpdateRecordIntoTable(&tmpOperator);
+}
+
+void DataBaseTest::TestQueryOnlyTimeWireTable()
+{
+    SQLITCLASS *_SQLITCLASS = DBWireTable::Instance();
+    unsigned int currentDate = QDateTime::currentDateTime().toTime_t();
+    QMap<int, QString> tmpMap;
+    QDateTime TimeLabel = QDateTime::fromString("2015/10/20 00:00:00", "yyyy/MM/dd hh:mm:ss");
+    _SQLITCLASS->QueryOnlyUseTime(TimeLabel.toTime_t(), currentDate, &tmpMap);
+    QMap<int, QString>::ConstIterator i = tmpMap.constBegin();
+    while(i != tmpMap.constEnd())
+    {
+        qDebug()<<"Wire ID: "<<i.key();
+        qDebug()<<"Wire Name: "<<i.value();
+        ++i;
+    }
+}
+
+void DataBaseTest::TestQueryOnlyUseNameWireTable()
+{
+
 }

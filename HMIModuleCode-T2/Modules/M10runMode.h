@@ -96,12 +96,11 @@ public:
     void Update_Counter();
     void Save_Data_Events();
     void CycleAbortMsg();
-    void SetTextData(button_nums Indexer, int Data, int RecData, int min, int max,
-                     int Incrementor, int Factor, int Formater);
+
     void SetAllTxtDataTemp();
     void SetTextData2Temp();
-    string FormatedData(button_nums Index, int Data = -1, bool Update = true);
-    void InitializeTextData();
+
+
     void InitTextFromSplice(M10Part SpliceData);
     void PostWeld_Indicators_Update(); // called in check weld data
     void UpdateMaintenanceData();

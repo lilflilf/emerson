@@ -30,6 +30,14 @@ enum{
     UPDATE_ONE_RECORD_SPLICE_TABLE = 25,
     UPDATE_ONE_RECORD_PART_TABLE = 26,
     UPDATE_ONE_RECORD_WORKORDER_TABLE = 27,
+    CREATE_OPERATOR_TABLE = 28,
+    INSERT_OPERATOR_TABLE = 29,
+    QUERY_ENTIRE_OPERATOR_TABLE = 30,
+    QUERY_ONE_RECORD_OPERATOR_TABLE = 31,
+    DELETE_ENTIRE_OPERATOR_TABLE = 32,
+    DELETE_ONE_RECORD_OPERATOR_TABLE = 33,
+    UPDATE_ONE_RECORD_OPERATOR_TABLE = 34,
+
 
 };
 
@@ -37,9 +45,9 @@ const QString SQLSentence[] = {
     "CREATE TABLE Wire ("                   /*0 Create Wire Table*/
     "ID INTEGER PRIMARY KEY AUTOINCREMENT, "
     "WireName VARCHAR UNIQUE, "
-    "CreatedDate VARCHAR, OperatorID VARCHAR,Color VARCHAR,"
-    "StripeType INT, StripeColor VARCHAR, Gauge INT,"
-    "MetalType INT, HorizontalLocation INT, VerticalLocation INT,"
+    "CreatedDate VARCHAR, OperatorID INT, Color VARCHAR, "
+    "StripeType INT, StripeColor VARCHAR, Gauge INT, "
+    "MetalType INT, HorizontalLocation INT, VerticalLocation INT, "
     "VerticalPosition INT)",
 
     "INSERT INTO Wire ("                    /*1 Insert record into Wire Table*/
@@ -52,7 +60,7 @@ const QString SQLSentence[] = {
     "CREATE TABLE Preset ("                 /*2 Create Preset Table*/
     "ID INTEGER PRIMARY KEY AUTOINCREMENT, "
     "SpliceName VARCHAR UNIQUE, "
-    "CreatedDate VARCHAR, OperatorID VARCHAR, CrossSection INT, "
+    "CreatedDate VARCHAR, OperatorID INT, CrossSection INT, "
     "PresetPicPath VARCHAR, Verified BOOLEAN,"                  /* 7 items */
 
     /*WeldSetting*/                                             /* 5 items */
@@ -119,7 +127,7 @@ const QString SQLSentence[] = {
     "CREATE TABLE Part ("                       /*4 Create Part Table*/
     "ID INTEGER PRIMARY KEY AUTOINCREMENT, "
     "PartName VARCHAR UNIQUE, "
-    "CreatedDate VARCHAR, OperatorID VARCHAR, "
+    "CreatedDate VARCHAR, OperatorID INT, "
     /* PartTypeSetting */
     "ProcessMode ENUM,"
     "TotalWorkstation INT, MaxSplicesPerWorkstation INT, "
@@ -135,7 +143,7 @@ const QString SQLSentence[] = {
     "CREATE TABLE WorkOrder ("                  /*6 Create WorkOrder Table*/
     "ID INTEGER PRIMARY KEY AUTOINCREMENT, "
     "WorkOrderName VARCHAR UNIQUE, "
-    "CreatedDate VARCHAR, OperatorID VARCHAR, "
+    "CreatedDate VARCHAR, OperatorID INT, "
     "NoOfPart INT, Quantity INT, CurrentPartCount INT, "
     "CurrentSpliceID INT, CurrentSpliceName VARCHAR, WorkOrderDone INT, "
     "JSONPartIndex VARCHAR, JSONMissSpliceList VARCHAR)",
@@ -212,6 +220,28 @@ const QString SQLSentence[] = {
     "CurrentSpliceID = ?, CurrentSpliceName = ?, WorkOrderDone = ?, "
     "JSONPartIndex = ?, JSONMissSpliceList = ?"
     "WHERE ID = ?",                                  /*27 Update One Record to WorkOrder Table*/
+
+    "CREATE TABLE Operator ("                        /*28 Create Operator Table*/
+    "ID INTEGER PRIMARY KEY AUTOINCREMENT, OperatorName VARCHAR, "
+    "CreatedDate VARCHAR, WhoCreatedNewID INT, Password VARCHAR UNIQUE, "
+    "PermissionLevel ENUM)",
+
+    "INSERT INTO Operator (OperatorName, "           /*29 Insert record into Operator Table */
+    "CreatedDate, WhoCreatedNewID, Password, "
+    "PermissionLevel)VALUES(?, ?, ?, ?, ?)",
+
+    "SELECT ID, OperatorName FROM Operator",         /*30 Query Entire Operator Table */
+                                                     /*31 Query One Record From Operator Table*/
+    "SELECT * FROM Operator WHERE ID = ? AND OperatorName = ?",
+
+    "DELETE FROM Operator",                          /*32 Delete Entire Operator Table*/
+    "DELETE FROM Operator WHERE ID = ? AND OperatorName = ?",
+                                                     /*33 Delete One Record from Part Table*/
+    "UPDATE Operator Set OperatorName = ?, "         /*34 Update one Record to Operator Table */
+    "CreatedDate = ?, WhoCreatedNewID = ?, Password = ?, "
+    "PermissionLevel = ? WHERE ID = ?",
+
+
 
 };
 

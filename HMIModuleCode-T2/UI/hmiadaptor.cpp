@@ -5,6 +5,12 @@
 
 HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
 {
+    workOrderModel = new WorkOrderModel(this);
+    QStringList list;
+    list << "name" << "date" << "middle" << "count";
+    workOrderModel->setRoles(list);
+    workOrderModel->setModelList();
+
     QSqlDatabase db;
     db = QSqlDatabase::addDatabase("QSQLITE", "hmiconnect");
     db.setDatabaseName("./hmi.db");
@@ -32,3 +38,8 @@ void HmiAdaptor::openFileDialog()
     qDebug() << tr("openFileDialog");
     //QString fileName = QFileDialog::getOpenFileName(NULL, tr("Open File"),"C:",tr("Images (*.png *.xpm *.jpg)"));
 }
+
+//QVariant HmiAdaptor::getWorkOrderValue(int index, QString key)
+//{
+//    return workOrderModel->getWorkOrderValue(index, key);
+//}
