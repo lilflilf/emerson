@@ -8,9 +8,10 @@ import ALPaintedItem 1.0
 Window {
     id: root
     visible: true
-    width: Screen.desktopAvailableWidth
-    height: Screen.desktopAvailableHeight
+//    width: Screen.desktopAvailableWidth
+//    height: Screen.desktopAvailableHeight
     title: qsTr("NewWireSplice")
+    flags: Qt.FramelessWindowHint|Qt.Window
 
     property var initIndex: 0
     function menuInit(index)
@@ -33,11 +34,12 @@ Window {
         }
     }
     Component.onCompleted: {
-
+        console.log(width,height)
         //root.showMaximized()
-//        w.setWindowFlags(w.windowFlags()& ~Qt::WindowMaximizeButtonHint&  ~Qt::WindowMinimizeButtonHint);
+        //w.setWindowFlags(w.windowFlags()& ~Qt::WindowMaximizeButtonHint&  ~Qt::WindowMinimizeButtonHint);
 //        w.showMaximized();
         root.showFullScreen()
+
     }
 //    Rectangle {
 //        anchors.fill: parent

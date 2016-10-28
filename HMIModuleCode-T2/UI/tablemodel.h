@@ -39,7 +39,7 @@ public slots:
     int getCurrentIndex(QString info);
     //    bool setData(const QModelIndex &index, const QVariant &value, int role);
 
-    Q_INVOKABLE bool updateRecordIntoTable(int workId, QString workName, int partId, QString partName, int count);
+    Q_INVOKABLE bool updateRecordIntoTable(int workId, QString oldWorkName, QString workName, int partId, QString partName, int count);
 
 private:
     QHash<int, QByteArray> m_roleNames;

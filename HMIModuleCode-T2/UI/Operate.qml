@@ -401,6 +401,7 @@ Item {
             onClicked: {
             }
         }
+
     }
 
     Image {
@@ -408,6 +409,7 @@ Item {
         visible: false
         anchors.centerIn: parent
         property bool bIsEdit: false
+        property var oldWorkOrderName: ""
         width: 639
         height: 390
         source: "qrc:/images/images/dialogbg.png"

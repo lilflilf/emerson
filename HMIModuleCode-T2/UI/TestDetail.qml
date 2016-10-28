@@ -19,32 +19,76 @@ Item {
         font.family: "arial"
         color: "white"
         anchors.left: parent.left
-        anchors.top: parent.top
         anchors.leftMargin: 25
-        anchors.topMargin: 15
+        anchors.verticalCenter: finish.verticalCenter
     }
 
-    CButton {
-        width: Screen.desktopAvailableWidth * 0.17
-        height: Screen.desktopAvailableHeight * 0.07
+    Switch2 {
+        width: Screen.desktopAvailableWidth * 0.12
+        height: Screen.desktopAvailableHeight * 0.04
         anchors.right: spliceDetailsItem.right
-        anchors.top: operateTitle.top
-        text: qsTr("FINISH SAMPLE")
+        anchors.leftMargin: 22
+        anchors.top: parent.top
+        textLeft: qsTr("Diagram")
+        textRight: qsTr("Image")
+        state: "left"
+        onStateChanged: {
+            if (state == "left") {
+                spliceDetailsItem.visible = true
+                spliceDetailsImage.visible = false
+            }
+            else
+            {
+                spliceDetailsItem.visible = false
+                spliceDetailsImage.visible = true
+            }
+        }
+    }
+    Image {
+        id: spliceDetailsImage
+        anchors.fill: spliceDetailsItem
+        source: "qrc:/images/images/wiredemo.jpg"
+    }
+
+//    CButton {
+//        id: finish
+//        width: 300//Screen.desktopAvailableWidth * 0.17
+//        height: 79//Screen.desktopAvailableHeight * 0.07
+//        anchors.left: operateTitle.right
+//        anchors.leftMargin: 22
+//        anchors.top: parent.top
+//        text: qsTr("FINISH SAMPLE")
+//    }
+
+    Line {
+        id: line
+        height: parent.height
+        width: 1
+        lineColor: "white"
+        anchors.left: finish.right
+        anchors.leftMargin: 10
     }
 
     QualityWindow {
         id: qualityWindow
+//        anchors.left: line.right
+//        anchors.leftMargin: 36
+//        anchors.right: parent.right
+//        anchors.rightMargin: 30
+////        width: 688
+//        height: 543
+        anchors.top: operateTitle.top
         anchors.right: parent.right
         anchors.rightMargin: 30
-        anchors.top: operateTitle.top
 
     }
     SpliceDetails {
         id: spliceDetailsItem
         width: Screen.desktopAvailableWidth * 0.5
-        height: Screen.desktopAvailableHeight *0.4
+        height: Screen.desktopAvailableHeight *0.45
         anchors.top: operateTitle.bottom
         anchors.left: operateTitle.left
+        //anchors.right: operateTitle.right
         anchors.topMargin: 15
         centerVisable: false
         Component.onCompleted: {
