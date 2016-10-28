@@ -7,7 +7,6 @@ Item {
     id: addExistSpliceOrWire
     width: parent.width
     height: parent.height
-    property int selectType: -1
     property string titleName: ""
     property string componentName: ""
     property string componentData: ""
@@ -15,7 +14,11 @@ Item {
     property string componenttype: ""
     property string componentCount: ""
     property int selectCount: 0
+    property int selectIndex: -1
     property alias listModel: listView.model
+    property bool bIsOnlyOne: false
+    signal signalAddExistSelectClick(string name)
+    signal signalAddExistCancel()
     Rectangle {
         anchors.fill: parent
         color: "#6d6e71"
@@ -110,6 +113,9 @@ Item {
             height: 10
             color: "#585858"
         }
+        ExclusiveGroup{
+            id: mos
+        }
         ListView {
             id: listView
             anchors.top: tipsRec.bottom
@@ -200,14 +206,19 @@ Item {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        if (!backGround.visible) {
-                            selectCount++
-                            backGround.opacity = 0.3
-                            backGround.visible = true
+                        if (bIsOnlyOne) {
+                            selectIndex = index
+                            selectCheck.checked = !selectCheck.checked
                         } else {
-                            selectCount--
-                            backGround.opacity = 0
-                            backGround.visible = false
+                            if (!backGround.visible) {
+                                selectCount++
+                                backGround.opacity = 0.3
+                                backGround.visible = true
+                            } else {
+                                selectCount--
+                                backGround.opacity = 0
+                                backGround.visible = false
+                            }
                         }
                     }
                 }
@@ -215,8 +226,19 @@ Item {
                     id: backGround
                     anchors.fill: parent
                     color: "black"
-                    visible: false
+                    visible: bIsOnlyOne
                     opacity: 0
+                    RadioButton {
+                        id: selectCheck
+                        visible: false
+                        exclusiveGroup: mos
+                        onCheckedChanged: {
+                            if (checked)
+                                backGround.opacity = 0.3
+                            else
+                                backGround.opacity = 0
+                        }
+                    }
                 }
             }
         }
@@ -238,10 +260,11 @@ Item {
             width: 200
             height: 50
             clip: true
-            text: qsTr("Select(" + selectCount + ")")
+            text: bIsOnlyOne ? qsTr("Select") : qsTr("Select(" + selectCount + ")")
             textColor: "white"
             onClicked: {
-                selectType = 0
+                if (selectIndex != -1)
+                    signalAddExistSelectClick(listModel.get(selectIndex).name)
             }
         }
 
@@ -256,7 +279,7 @@ Item {
             text: qsTr("Cancel")
             textColor: "white"
             onClicked: {
-                selectType = 1
+                signalAddExistCancel()
             }
         }
     }

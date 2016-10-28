@@ -821,6 +821,7 @@ Item {
         }
     }
 
+
     TabBar {
         width: Screen.desktopAvailableWidth * 0.3
         id: tabBar
@@ -1392,5 +1393,16 @@ Item {
             height: parent.height*0.5
             visible: false
         }
+    }
+    KeyBoardNum {
+        id: keyNum
+        anchors.centerIn: parent
+        width: 500
+        height: 500
+        visible: false
+        titleText: qsTr("My TEST")
+        maxvalue: 12
+        minvalue: 3
+        currentValue: "123"
     }
 }

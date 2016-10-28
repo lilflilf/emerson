@@ -8,6 +8,8 @@ Item {
     property int currentIndex: 0
     width: parent.width
     height: parent.height
+    signal signalCancel()
+    signal signalAdvanceOk()
     function setClickColor(index)
     {
         if (standardUpperRepeater.itemAt(index).localbordercolor === "#05f91c") {
@@ -421,6 +423,9 @@ Item {
         iconSource: "qrc:/images/images/OK.png"
         text: qsTr("OK")
         textColor: "white"
+        onClicked: {
+            signalAdvanceOk()
+        }
     }
     CButton {
         id: cacelButton
@@ -433,6 +438,9 @@ Item {
         iconSource: "qrc:/images/images/cancel.png"
         text: qsTr("Cancel")
         textColor: "white"
+        onClicked: {
+            signalCancel()
+        }
     }
     CButton {
         id: defaultButton

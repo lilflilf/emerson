@@ -3,6 +3,7 @@ import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.0
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
+import QtQuick.Dialogs 1.2
 
 Item {
     property int selectIndx: -1
@@ -18,6 +19,17 @@ Item {
         z: 10
         anchors.fill: parent
     }
+    Connections{
+        target: loader.item
+        onSignalFileDialogCancel: {
+            loader.source = ""
+        }
+    }
+
+    ListModel {
+        id: testModel
+    }
+
     ListModel {
         id: listModel
         Component.onCompleted: {
@@ -44,6 +56,11 @@ Item {
             listModel.append({"name":"work order id511111111111111111111111","date":"2016/10/13","middle":"part65487911111111111111111111111","count":"10011111111111111111111111","opacityValue":"0"})
             listModel.append({"name":"work order id511111111111111111111111","date":"2016/10/13","middle":"part65487911111111111111111111111","count":"10011111111111111111111111","opacityValue":"0"})
             listModel.append({"name":"work order id511111111111111111111111","date":"2016/10/13","middle":"part65487911111111111111111111111","count":"10011111111111111111111111","opacityValue":"0"})
+            testModel.append({"name":"splice test title 11111111111222","date":"2016/10/13","middle":"VW","type":"YES"})
+            testModel.append({"name":"splice test title 1111111111122","date":"2016/10/13","middle":"VW","type":"YES"})
+            testModel.append({"name":"splice test title 11111111111","date":"2016/10/13","middle":"VW","type":"YES"})
+            testModel.append({"name":"splice test title 11111111111","date":"2016/10/13","middle":"VW","type":"YES"})
+            testModel.append({"name":"splice test title 1111111111133333333333333","date":"2016/10/13","middle":"VW","type":"YES"})
         }
     }
     Text {
@@ -350,6 +367,9 @@ Item {
         pixelSize: 20
         clip: true
         textColor: "white"
+        onClicked: {
+            loader.source = "qrc:/UI/MyFileDialog.qml"
+        }
     }
     CButton {
         id: selectOk
@@ -383,6 +403,7 @@ Item {
         }
 
     }
+
     Image {
         id: dialog
         visible: false
@@ -392,9 +413,9 @@ Item {
         width: 639
         height: 390
         source: "qrc:/images/images/dialogbg.png"
-        onVisibleChanged: {
-            if (bIsEdit && visible)
-                oldWorkOrderName = workOrderModel.getWorkOrderValue(selectIndx, "name")
+        onBIsEditChanged: {
+            if (bIsEdit)
+               selectPart.text = workOrderModel.getWorkOrderValue(selectIndx, "middle")
         }
 
         Text {
@@ -453,6 +474,9 @@ Item {
             clip: true
             text: dialog.bIsEdit ? workOrderModel.getWorkOrderValue(selectIndx, "middle") : "SELECT PART" //workOrderModel.get(selectIndx).middle : qsTr("SELECT PART")
             textColor: "white"
+            onClicked: {
+                addExit.visible = true
+            }
         }
         Text {
             id: quantity
@@ -498,8 +522,10 @@ Item {
                 backGround.visible = false
                 backGround.opacity = 0
                 dialog.visible = false
-//                inputworkId.inputText = ""
-//                inputquantity.inputText = ""
+                dialog.bIsEdit = false
+                if (!dialog.bIsEdit) {
+                    selectPart.text = "SELECT PART"
+                }
             }
         }
 
@@ -518,10 +544,36 @@ Item {
                 backGround.visible = false
                 backGround.opacity = 0
                 dialog.visible = false
-                workOrderModel.updateRecordIntoTable(workOrderModel.getWorkOrderValue(selectIndx, "workOrderId"), dialog.oldWorkOrderName, inputworkId.inputText,selectPart.partId,selectPart.text, inputquantity.inputText )
-//                inputworkId.inputText = ""
-//                inputquantity.inputText = ""
-           	}
+                if (dialog.bIsEdit)
+                    workOrderModel.updateRecordIntoTable(workOrderModel.getWorkOrderValue(selectIndx, "workOrderId"), inputworkId.inputText,selectPart.partId,selectPart.text, inputquantity.inputText )
+                else
+                    selectPart.text = "SELECT PART"
+                selectIndx = -1
+                dialog.bIsEdit = false
+            }
+        }
+    }
+
+    AddExistingSpliceWire {
+        id: addExit
+        anchors.centerIn: parent
+        width: Screen.desktopAvailableWidth*0.7
+        height: Screen.desktopAvailableHeight*0.6
+        visible: false
+        listModel: testModel
+        titleName: qsTr("Add WORK ORDEAR")
+        componentName: qsTr("PART NAME")
+        componentData: qsTr("DATE CREATED")
+        componentMiddle: qsTr("# OF SPLICE")
+        componenttype: qsTr("CROSS SECTION")
+        componentCount: qsTr("")
+        bIsOnlyOne: true
+        onSignalAddExistCancel : {
+            addExit.visible = false
+        }
+        onSignalAddExistSelectClick: {
+            selectPart.text = name
+            addExit.visible = false
         }
     }
 }
