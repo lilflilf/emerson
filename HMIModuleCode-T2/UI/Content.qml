@@ -769,14 +769,15 @@ Item {
         componentMiddle: qsTr("# OF WIRES")
         componenttype: qsTr("CROSS SECTION")
         componentCount: qsTr("COUNT")
-        onSelectTypeChanged: {
+        onSignalAddExistCancel: {
             backGround.visible = false
             backGround.opacity = 0
-            if (selectType == 0) {
-                addExit.visible = false
-            } else {
-                addExit.visible = false
-            }
+            addExit.visible = false
+        }
+        onSignalAddExistSelectClick: {
+            backGround.visible = false
+            backGround.opacity = 0
+            addExit.visible = false
         }
     }
 }

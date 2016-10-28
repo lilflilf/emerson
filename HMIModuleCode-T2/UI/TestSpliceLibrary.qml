@@ -18,6 +18,16 @@ Item {
         z: 10
         anchors.fill: parent
     }
+    Connections {
+        target: loader.item
+        onSignalCancel: {
+            loader.source = ""
+        }
+        onSignalAdvanceOk: {
+            loader.source = ""
+        }
+    }
+
     ListModel {
         id: listModel
         Component.onCompleted: {

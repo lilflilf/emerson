@@ -6,6 +6,7 @@ import QtQuick.Controls 1.4
 Item {
     width: Screen.desktopAvailableWidth / 2
     height: Screen.desktopAvailableHeight / 2
+    signal signalFileDialogCancel()
     FileDialog {
         id: fileDialog
         title: "Please choose a file"
@@ -15,6 +16,7 @@ Item {
         }
         onRejected: {
             console.log("Canceled")
+            signalFileDialogCancel()
         }
         Component.onCompleted: visible = true
     }
