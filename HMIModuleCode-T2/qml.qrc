@@ -30,6 +30,7 @@
         <file>UI/TestDetail.qml</file>
         <file>UI/AdvanceSetting.qml</file>
         <file>UI/MyCanvas.qml</file>
+        <file>UI/SpliceStatusOffLine.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file>images/you.png</file>
