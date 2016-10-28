@@ -414,6 +414,8 @@ Item {
         height: 390
         source: "qrc:/images/images/dialogbg.png"
         onBIsEditChanged: {
+            if (dialog.bIsEdit && dialog.visible)
+                dialog.oldWorkOrderName = selectPart.text
             if (bIsEdit)
                selectPart.text = workOrderModel.getWorkOrderValue(selectIndx, "middle")
         }
@@ -505,7 +507,7 @@ Item {
             inputHeight: 60
             inputColor: "white"
             horizontalAlignment: Qt.AlignHCenter
-            inputText: dialog.bIsEdit ? workOrderModel.getWorkOrderValue(selectIndx, "count") : "" //.get(selectIndx).count : ""
+            inputText: dialog.bIsEdit ? workOrderModel.getWorkOrderValue( selectIndx, "count") : "" //.get(selectIndx).count : ""
         }
         CButton {
             id: cancel
@@ -545,7 +547,7 @@ Item {
                 backGround.opacity = 0
                 dialog.visible = false
                 if (dialog.bIsEdit)
-                    workOrderModel.updateRecordIntoTable(workOrderModel.getWorkOrderValue(selectIndx, "workOrderId"), inputworkId.inputText,selectPart.partId,selectPart.text, inputquantity.inputText )
+                    workOrderModel.updateRecordIntoTable(workOrderModel.getWorkOrderValue(selectIndx, "workOrderId"),dialog.oldWorkOrderName, inputworkId.inputText,selectPart.partId,selectPart.text, inputquantity.inputText )
                 else
                     selectPart.text = "SELECT PART"
                 selectIndx = -1

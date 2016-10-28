@@ -20,7 +20,6 @@ Item {
         color: "white"
         anchors.left: parent.left
         anchors.leftMargin: 25
-        anchors.verticalCenter: finish.verticalCenter
     }
 
     Switch2 {
@@ -50,22 +49,12 @@ Item {
         source: "qrc:/images/images/wiredemo.jpg"
     }
 
-//    CButton {
-//        id: finish
-//        width: 300//Screen.desktopAvailableWidth * 0.17
-//        height: 79//Screen.desktopAvailableHeight * 0.07
-//        anchors.left: operateTitle.right
-//        anchors.leftMargin: 22
-//        anchors.top: parent.top
-//        text: qsTr("FINISH SAMPLE")
-//    }
-
     Line {
         id: line
         height: parent.height
         width: 1
         lineColor: "white"
-        anchors.left: finish.right
+        anchors.left: spliceDetailsItem.right
         anchors.leftMargin: 10
     }
 
@@ -96,5 +85,19 @@ Item {
             spliceDetailsItem.leftModel.append({"myLineLength":200,"mycolor":"black","isCheck":false,"linetext":"0"})
             spliceDetailsItem.leftModel.append({"myLineLength":200,"mycolor":"blue","isCheck":false,"linetext":"0"})
         }
+    }
+
+    ProgressBar {
+        width: 300
+        height: 5
+    }
+
+    CButton {
+        id: finish
+        width: 300//Screen.desktopAvailableWidth * 0.17
+        height: 79//Screen.desktopAvailableHeight * 0.07
+        anchors.right: qualityWindow.right
+        anchors.bottom: parent.bottom
+        text: qsTr("FINISH SAMPLE")
     }
 }
