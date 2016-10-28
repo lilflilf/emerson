@@ -113,7 +113,7 @@ int WorkOrderModel::getCurrentIndex(QString info)
 
 bool WorkOrderModel::updateRecordIntoTable(int workId,QString oldWorkName, QString workName, int partId, QString partName, int count)
 {
-    qDebug() << "updateRecordIntoTable" << workId << workName << partId << partName << count;
+    qDebug() << "updateRecordIntoTable" << workId << oldWorkName << workName << partId << partName << count;
     struct WorkOrderElement tempWorkOrder;
     m_workOrderAdaptor->QueryOneRecordFromTable(workId, oldWorkName,&tempWorkOrder);
     tempWorkOrder.WorkOrderName = workName;
