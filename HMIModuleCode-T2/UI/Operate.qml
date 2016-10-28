@@ -414,10 +414,12 @@ Item {
         height: 390
         source: "qrc:/images/images/dialogbg.png"
         onBIsEditChanged: {
-            if (dialog.bIsEdit && dialog.visible)
-                dialog.oldWorkOrderName = selectPart.text
             if (bIsEdit)
                selectPart.text = workOrderModel.getWorkOrderValue(selectIndx, "middle")
+        }
+        onVisibleChanged: {
+            if (dialog.bIsEdit && dialog.visible)
+                dialog.oldWorkOrderName = workOrderModel.getWorkOrderValue(selectIndx, "name")
         }
 
         Text {
@@ -548,9 +550,11 @@ Item {
                 dialog.visible = false
                 if (dialog.bIsEdit)
                     workOrderModel.updateRecordIntoTable(workOrderModel.getWorkOrderValue(selectIndx, "workOrderId"),dialog.oldWorkOrderName, inputworkId.inputText,selectPart.partId,selectPart.text, inputquantity.inputText )
-                else
+                else {
+
                     selectPart.text = "SELECT PART"
-                selectIndx = -1
+                }
+//                selectIndx = -1
                 dialog.bIsEdit = false
             }
         }
