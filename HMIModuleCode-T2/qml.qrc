@@ -31,6 +31,7 @@
         <file>UI/AdvanceSetting.qml</file>
         <file>UI/MyCanvas.qml</file>
         <file>UI/SpliceStatusOffLine.qml</file>
+        <file>UI/CProgressBar.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file>images/you.png</file>

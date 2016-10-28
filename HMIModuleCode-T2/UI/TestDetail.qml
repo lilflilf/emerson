@@ -87,9 +87,13 @@ Item {
         }
     }
 
-    ProgressBar {
+    CProgressBar {
         width: 300
-        height: 5
+        height: 10
+        anchors.top: spliceDetailsItem.bottom
+        anchors.topMargin: 20
+        anchors.left: parent.left
+        value: 0.5
     }
 
     CButton {
