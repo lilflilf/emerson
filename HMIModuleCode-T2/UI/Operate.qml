@@ -327,7 +327,7 @@ Item {
         clip: true
         textColor: "white"
         onClicked: {
-            if(workOrderModel.count() == 0) {
+            if(workOrderModel.count() == 0 || selectIndx == -1) {
                 return
             }
             backGround.visible = true
@@ -381,15 +381,22 @@ Item {
             onClicked: {
             }
         }
+
     }
     Image {
         id: dialog
         visible: false
         anchors.centerIn: parent
         property bool bIsEdit: false
+        property var oldWorkOrderName: ""
         width: 639
         height: 390
         source: "qrc:/images/images/dialogbg.png"
+        onVisibleChanged: {
+            if (bIsEdit && visible)
+                oldWorkOrderName = workOrderModel.getWorkOrderValue(selectIndx, "name")
+        }
+
         Text {
             id: orderId
             anchors.top: parent.top
@@ -491,8 +498,8 @@ Item {
                 backGround.visible = false
                 backGround.opacity = 0
                 dialog.visible = false
-                inputworkId.inputText = ""
-                inputquantity.inputText = ""
+//                inputworkId.inputText = ""
+//                inputquantity.inputText = ""
             }
         }
 
@@ -511,9 +518,9 @@ Item {
                 backGround.visible = false
                 backGround.opacity = 0
                 dialog.visible = false
-                workOrderModel.updateRecordIntoTable(workOrderModel.getWorkOrderValue(selectIndx, "workOrderId"), inputworkId.inputText,selectPart.partId,selectPart.text, inputquantity.inputText )
-                inputworkId.inputText = ""
-                inputquantity.inputText = ""
+                workOrderModel.updateRecordIntoTable(workOrderModel.getWorkOrderValue(selectIndx, "workOrderId"), dialog.oldWorkOrderName, inputworkId.inputText,selectPart.partId,selectPart.text, inputquantity.inputText )
+//                inputworkId.inputText = ""
+//                inputquantity.inputText = ""
            	}
         }
     }

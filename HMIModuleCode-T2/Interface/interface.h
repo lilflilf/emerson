@@ -28,7 +28,7 @@ class InterfaceClass:public QObject
 {
          Q_OBJECT
 public:
-
+    struct WorkOrderElement WorkOrder;
 public:
 public:
     static InterfaceClass* Instance();

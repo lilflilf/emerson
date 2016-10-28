@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
 //    _TestPtr->TestInsertOneRecordIntoWorkOrderTable();
 //    _TestPtr->TestInsertOneRecordIntoPartTable();
 //    _TestPtr->TestInsertOneRecordIntoPresetTable();
-    _TestPtr->TestInsertOneRecordIntoWireTable();
+//    _TestPtr->TestInsertOneRecordIntoWireTable();
 //    _TestPtr->TestInsertOneRecordIntoOperatorTable();
 //    _TestPtr->TestQueryEntireWireTable();
 //    _TestPtr->TestQueryEntireSpliceTable();
@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
 //    _TestPtr->TestUpdateOneRecordIntoPartTable();
 //    _TestPtr->TestUpdateOneRecordIntoWorkOrderTable();
 //    _TestPtr->TestUpdateOneRecordIntoOperatorTable();
-    _TestPtr->TestQueryOnlyTimeWireTable();
+//    _TestPtr->TestQueryOnlyTimeWireTable();
 
     return app.exec();
 }

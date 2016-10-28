@@ -45,19 +45,19 @@ Item {
     Image {
         id: spliceDetailsImage
         anchors.fill: spliceDetailsItem
+        source: "qrc:/images/images/wiredemo.jpg"
     }
     QualityWindow {
         id: qualityWindow
         anchors.right: parent.right
         anchors.rightMargin: 30
         anchors.top: operateTitle.top
-
     }
 
     SpliceDetails {
         id: spliceDetailsItem
         width: Screen.desktopAvailableWidth * 0.5
-        height: Screen.desktopAvailableHeight *0.35
+        height: Screen.desktopAvailableHeight *0.45
         anchors.top: operateTitle.bottom
         anchors.left: operateTitle.left
         anchors.topMargin: 15
@@ -144,7 +144,7 @@ Item {
         anchors.topMargin: 10
         anchors.left: operateTitle.left
         width: Screen.desktopAvailableWidth * 0.37
-        height: Screen.desktopAvailableHeight *0.35
+        height: Screen.desktopAvailableHeight *0.25
         columns: 4
         rows: 4
         listModel: treeModel
@@ -222,7 +222,7 @@ Item {
         anchors.left: spliceLocation.right
         anchors.leftMargin: 10
         width: spliceDetailsItem.width-spliceLocation.width-10
-        height: spliceDetailsItem.height/2.2
+        height: spliceDetailsItem.height/ 4
         color: "#6d6e71"
         opacity: 1
         Rectangle {

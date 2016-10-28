@@ -332,7 +332,28 @@ enum SAMPLERATIO
     SampleWith20ms,
 };
 
-struct WeldResultInfo
+//struct WeldResultInfo
+//{
+//    int RevCode = 0;
+//    int WeldResultID;
+//    QString OperatorName;
+//    QString CreatedDate;
+//    struct WorkOrderIndex CurrentWorkOrder;
+//    struct PartIndex CurrentPart;
+//    struct SpliceIndex CurrentSplice;
+//    int WeldCount;//just for the test mode
+//    int PartCount;//just for the operate mode
+//    struct WELDRESULT ActualResult;
+
+//    enum SAMPLERATIO SampleRatio;
+
+//    int NoOfSamples;
+//    QMap<int, QString> PowerGraph;
+//    QMap<int, QString> PostHeightGraph;
+//};
+
+
+typedef struct _weldResultInfo
 {
     int RevCode;
     int WeldResultID;
@@ -344,12 +365,26 @@ struct WeldResultInfo
     int WeldCount;//just for the test mode
     int PartCount;//just for the operate mode
     struct WELDRESULT ActualResult;
-
     enum SAMPLERATIO SampleRatio;
-
     int NoOfSamples;
     QMap<int, QString> PowerGraph;
     QMap<int, QString> PostHeightGraph;
-};
+public:
+    _weldResultInfo()
+    {
+        RevCode = 0;
+        WeldResultID = 0;
+        OperatorName = "";
+        CreatedDate = "";
+    }
+    _weldResultInfo& operator=(const _weldResultInfo info)
+    {
+        RevCode = info.RevCode;
+        WeldResultID = info.WeldResultID;
+        OperatorName = info.OperatorName;
+        CreatedDate = info.CreatedDate;
+        return *this;
+    }
+} WeldResultInfo;
 
 #endif // DEFINITION_H

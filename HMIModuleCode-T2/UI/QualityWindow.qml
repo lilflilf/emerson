@@ -4,7 +4,8 @@ import QtQuick.Layouts 1.0
 import QtQuick.Window 2.2
 
 Item {
-    width: Screen.desktopAvailableWidth * 0.4
+    id: qualityParent
+    width: Screen.desktopAvailableWidth * 0.43
     height: Screen.desktopAvailableHeight *0.4
     Text {
         id: qualityWindowTitle
@@ -14,12 +15,25 @@ Item {
         color: "white"
     }
     Switch2 {
+        id: switch2
         width: Screen.desktopAvailableWidth * 0.12
         height: Screen.desktopAvailableHeight * 0.04
         anchors.right: parent.right
         textLeft: qsTr("Quality")
         textRight: qsTr("Graph")
         state: "left"
+        onStateChanged: {
+            if (switch2.state == "left") {
+                qualityListViewTwo.visible = true
+                myCanvas.visible = false
+                qualityListView.visible = true
+            }
+            else {
+                myCanvas.visible = true
+                qualityListViewTwo.visible = false
+                qualityListView.visible = false
+            }
+        }
     }
     ListModel {
         id: qualityModel
@@ -39,8 +53,8 @@ Item {
         id: qualityDelegate
         Item {
             id: name
-            width: Screen.desktopAvailableWidth * 0.1
-            height: Screen.desktopAvailableHeight * 0.25
+            width: Screen.desktopAvailableWidth * 0.1 //qualityParent.width / 4 //
+            height: Screen.desktopAvailableHeight * 0.25 //qualityParent.height / 2 //
             Rectangle {
                 width: 40
                 height: Screen.desktopAvailableHeight * 0.25
@@ -99,6 +113,7 @@ Item {
     Rectangle {
         anchors.fill: qualityListViewTwo
         color: "#6d6e71"
+        visible: qualityListViewTwo.visible
         Line {
             anchors.top: parent.top
             anchors.topMargin: parent.height / 2
@@ -136,37 +151,37 @@ Item {
         }
     }
 
-//    ListView {
-//        id: qualityListViewTwo
-//        width: Screen.desktopAvailableWidth * 0.35
-//        height: Screen.desktopAvailableHeight *0.25
-//        orientation: Qt.Horizontal
-//        interactive: false
-//        anchors.top: qualityListView.bottom
-//        anchors.topMargin: 20
-//        delegate: qualityListViewTwoDelegate
-//        model: 100
-//    }
-//    Component {
-//        id: qualityListViewTwoDelegate
-//        Item {
-//            width: 8
-//            height: Screen.desktopAvailableHeight * 0.25
-//            Rectangle {
-//                radius: 100
-//                width: 4
-//                height: 4
-//                anchors.top: parent.top
-//                anchors.topMargin: 50
-//            }
-//        }
-//    }
+    ListView {
+        id: qualityListViewTwo
+        width: qualityParent.width //Screen.desktopAvailableWidth * 0.35
+        height: Screen.desktopAvailableHeight *0.25
+        orientation: Qt.Horizontal
+        interactive: false
+        anchors.top: qualityListView.bottom
+        anchors.topMargin: 20
+        delegate: qualityListViewTwoDelegate
+        model: 100
+    }
+    Component {
+        id: qualityListViewTwoDelegate
+        Item {
+            width: 8
+            height: Screen.desktopAvailableHeight * 0.25
+            Rectangle {
+                radius: 100
+                width: 4
+                height: 4
+                anchors.top: parent.top
+                anchors.topMargin: 50
+            }
+        }
+    }
 
     MyCanvas {
         id: myCanvas
-        width: Screen.desktopAvailableWidth * 0.35
-        height: Screen.desktopAvailableHeight *0.25
-        anchors.top: qualityListView.bottom
+        width: qualityParent.width //Screen.desktopAvailableWidth * 0.35
+        height: Screen.desktopAvailableHeight * 0.5
+        anchors.top: qualityWindowTitle.bottom
         anchors.topMargin: 20
     }
 }

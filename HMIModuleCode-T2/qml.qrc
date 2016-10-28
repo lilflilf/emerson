@@ -53,5 +53,6 @@
         <file>images/advancesetting-bg2.png</file>
         <file>images/blue.png</file>
         <file>images/orange.png</file>
+        <file>images/wiredemo.jpg</file>
     </qresource>
 </RCC>
