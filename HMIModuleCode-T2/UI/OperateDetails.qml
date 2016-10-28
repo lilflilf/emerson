@@ -151,11 +151,12 @@ Item {
         listModel: treeModel
     }
     SpliceStatusOffLine {
+        id: offline
         anchors.top: spliceTips.bottom
         anchors.topMargin: 10
         anchors.left: operateTitle.left
         width: Screen.desktopAvailableWidth * 0.37
-        height: Screen.desktopAvailableHeight *0.35
+        height: Screen.desktopAvailableHeight *0.2
     }
 
     Rectangle {
@@ -231,7 +232,7 @@ Item {
         anchors.left: spliceLocation.right
         anchors.leftMargin: 10
         width: spliceDetailsItem.width-spliceLocation.width-10
-        height: spliceDetailsItem.height/ 4
+        height: spliceDetailsItem.height/ 4.3
         color: "#6d6e71"
         opacity: 1
         Rectangle {
@@ -263,6 +264,17 @@ Item {
             }
         }
     }
+    Text {
+        id: partCount2
+        anchors.left: offline.left
+        anchors.top: offline.bottom
+        anchors.topMargin: 10
+        font.pointSize: 13
+        font.family: "arial"
+        text: qsTr("PART COUNTER 68/125")
+        color: "white"
+    }
+
     Text {
         id: progresstracking
         anchors.bottom: workStation.top
