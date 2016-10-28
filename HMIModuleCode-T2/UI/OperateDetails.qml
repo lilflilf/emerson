@@ -147,8 +147,17 @@ Item {
         height: Screen.desktopAvailableHeight *0.25
         columns: 4
         rows: 4
+        visible: false
         listModel: treeModel
     }
+    SpliceStatusOffLine {
+        anchors.top: spliceTips.bottom
+        anchors.topMargin: 10
+        anchors.left: operateTitle.left
+        width: Screen.desktopAvailableWidth * 0.37
+        height: Screen.desktopAvailableHeight *0.35
+    }
+
     Rectangle {
         id: currentSplice
         anchors.top:  spliceTips.bottom
@@ -388,5 +397,4 @@ Item {
         width: Screen.desktopAvailableWidth*0.1
         color: "#60BB46"
     }
-
 }
