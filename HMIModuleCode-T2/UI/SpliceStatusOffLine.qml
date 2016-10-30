@@ -5,6 +5,7 @@ import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
 
 Item {
+    property alias listModel: recRepeater.model
     width: parent.width
     height: parent.height
     function setRecColor(index)
@@ -17,6 +18,12 @@ Item {
             return "#9FA1A4"
         }
     }
+    function setSatusOffLineNum(index)
+    {
+        listModel.remove(0)
+        listModel.append({"theNo":index})
+    }
+
 
     Row{
         width: parent.width
@@ -24,7 +31,6 @@ Item {
         spacing: 10
         Repeater {
             id: recRepeater
-            model: 8
             delegate: Item {
                 width: (parent.width-60)/8
                 height: parent.height
@@ -37,7 +43,7 @@ Item {
                     anchors.centerIn: parent
                     font.family: "arial"
                     font.pixelSize: 24
-                    text: index+1
+                    text: theNo
                     color: "white"
                 }
             }

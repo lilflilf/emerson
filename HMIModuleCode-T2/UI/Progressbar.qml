@@ -7,7 +7,7 @@ Item {
     id: progressBar
     property int total: 0
     property int finishNo: 0
-    property int current: 0
+    property int current: 1
     property int missNo: 0
     property bool bIsMiss: missProgress.visible
     width: parent.width

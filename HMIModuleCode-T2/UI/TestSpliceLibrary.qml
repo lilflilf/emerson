@@ -262,7 +262,7 @@ Item {
             Rectangle {
                 id: backGround
                 anchors.fill: parent
-                color: "#f79428"//"black"
+                color: "black"
                 opacity: 0 //opacityValue
                 RadioButton {
                     id: selectCheck

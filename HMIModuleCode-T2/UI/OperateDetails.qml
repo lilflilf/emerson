@@ -89,6 +89,19 @@ Item {
         text: qsTr("TOTAL CROSS SECTION: 2.3mm")
         color: "white"
     }
+    ListModel {
+        id: testModel
+        Component.onCompleted: {
+            testModel.append({"theNo":1})
+            testModel.append({"theNo":2})
+            testModel.append({"theNo":3})
+            testModel.append({"theNo":4})
+            testModel.append({"theNo":5})
+            testModel.append({"theNo":6})
+            testModel.append({"theNo":7})
+            testModel.append({"theNo":8})
+        }
+    }
 
     ListModel {
         id: treeModel
@@ -157,6 +170,7 @@ Item {
         anchors.left: operateTitle.left
         width: Screen.desktopAvailableWidth * 0.37
         height: Screen.desktopAvailableHeight *0.2
+        listModel: testModel
     }
 
     Rectangle {
@@ -274,6 +288,17 @@ Item {
         text: qsTr("PART COUNTER 68/125")
         color: "white"
     }
+    CProgressBar {
+        id: progressBar2
+        anchors.top: partCount2.bottom
+        anchors.topMargin: 10
+        anchors.left: offline.left
+        width: 200
+        height: 10
+        maximum: 125
+        minimum: 1
+        value: 60
+    }
 
     Text {
         id: progresstracking
@@ -330,7 +355,6 @@ Item {
         height: 64
         total: 125
     }
-
     CButton {
         id: rightButton
         anchors.bottom: partCount.top
@@ -345,68 +369,53 @@ Item {
         onClicked: {
             progressBar.finishNo++
             progressBar.current++
+            offline.setSatusOffLineNum(testModel.get(testModel.count-1).theNo+1)
         }
     }
     Text {
         id: partCount
         anchors.left: spliceDetailsItem.right
         anchors.leftMargin: Screen.desktopAvailableWidth*0.1-55
-        anchors.bottom: partProgress.top
+        anchors.bottom: progressBar4.top
         anchors.bottomMargin: 6
         font.pointSize: 13
         font.family: "arial"
         text: qsTr("PART COUNTER 68/125")
         color: "white"
     }
-    Rectangle {
-        id: partProgress
+    CProgressBar {
+        id: progressBar4
         anchors.left: spliceDetailsItem.right
         anchors.leftMargin: Screen.desktopAvailableWidth*0.1-55
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 20
-        height: 10
         width: Screen.desktopAvailableWidth*0.2
-        color: "#9FA1A4"
-    }
-    Rectangle {
-        id: partgrogressing
-        anchors.left: spliceDetailsItem.right
-        anchors.leftMargin: Screen.desktopAvailableWidth*0.1-55
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 20
         height: 10
-        width: Screen.desktopAvailableWidth*0.1
-        color: "#60BB46"
+        maximum: 125
+        minimum: 1
+        value: 60
     }
     Text {
         id: maintenance
-        anchors.left: partProgress.right
+        anchors.left: progressBar4.right
         anchors.leftMargin: 10
-        anchors.bottom: partProgress.top
+        anchors.bottom: progressBar3.top
         anchors.bottomMargin: 6
         font.pointSize: 13
         font.family: "arial"
         text: qsTr("MAINTENANCE COUNTER 68K/125K")
         color: "white"
     }
-    Rectangle {
-        id: maintenanceProgress
-        anchors.left: partProgress.right
+    CProgressBar {
+        id: progressBar3
+        anchors.left: progressBar4.right
         anchors.leftMargin: 10
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 20
-        height: 10
         width: Screen.desktopAvailableWidth*0.2
-        color: "#9FA1A4"
-    }
-    Rectangle {
-        id: maintenancegrogressing
-        anchors.left: partProgress.right
-        anchors.leftMargin: 10
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 20
         height: 10
-        width: Screen.desktopAvailableWidth*0.1
-        color: "#60BB46"
+        maximum: 125
+        minimum: 1
+        value: 60
     }
 }
