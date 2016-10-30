@@ -5,12 +5,12 @@ import QtQuick.Controls 1.4
 
 Item {
     id: keyBoardnum
-    signal currentClickIndex(int index)
     property alias titleText: title.text
     property alias currentValue: currenvalue.text
     property int minvalue: 0
     property string inputText: ""
     property int maxvalue: 0
+    signal currentClickIndex(int index)
     width: parent.width
     height: parent.height
     Rectangle {
@@ -116,7 +116,10 @@ Item {
                 text: modelData
                 textColor: "white"
                 onClicked: {
-                    inputText += modelData
+                    if (index < 11 && index != 9) {
+                        inputText += modelData
+                    }
+                    currentClickIndex(index)
                 }
             }
         }
