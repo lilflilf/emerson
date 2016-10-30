@@ -17,7 +17,7 @@ Item {
     property int selectIndex: -1
     property alias listModel: listView.model
     property bool bIsOnlyOne: false
-    signal signalAddExistSelectClick(string name)
+    signal signalAddExistSelectClick(var partId, var name)
     signal signalAddExistCancel()
     Rectangle {
         anchors.fill: parent
@@ -264,7 +264,7 @@ Item {
             textColor: "white"
             onClicked: {
                 if (selectIndex != -1)
-                    signalAddExistSelectClick(listModel.get(selectIndex).name)
+                    signalAddExistSelectClick(listModel.getPartValue(selectIndex,"partId"),listModel.getPartValue(selectIndex,"name"))
             }
         }
 

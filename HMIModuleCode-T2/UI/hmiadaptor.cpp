@@ -17,6 +17,12 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
     spliceModel->setRoles(list);
     spliceModel->setModelList();
 
+    partModel = new PartModel(this);
+    list.clear();
+    list << "partId" << "name" << "date" << "middle" << "type";
+    partModel->setRoles(list);
+    partModel->setModelList();
+
 
     QSqlDatabase db;
     db = QSqlDatabase::addDatabase("QSQLITE", "hmiconnect");

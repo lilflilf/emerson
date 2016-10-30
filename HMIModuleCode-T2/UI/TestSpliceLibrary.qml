@@ -26,6 +26,9 @@ Item {
         onSignalAdvanceOk: {
             loader.source = ""
         }
+        onSignalSaveSplice: {
+            loader.source = ""
+        }
     }
 
     ListModel {

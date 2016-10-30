@@ -7,6 +7,7 @@ Item {
     id: operateDetail
     width: Screen.desktopAvailableWidth
     height: Screen.desktopAvailableHeight * 0.8
+    signal signalSaveSplice()
     Rectangle {
         anchors.fill: parent
         color: "#626465"
@@ -120,9 +121,8 @@ Item {
             anchors.left: parent.left
             font.family: "arial"
         }
-        Rectangle {
+        Item {
             id: leftBottomBack
-            color: "#4E5051"
             width: spliceDetailsItem.width
             anchors.left: parent.left
             anchors.top: weld.bottom
@@ -264,6 +264,9 @@ Item {
             width: 300//Screen.desktopAvailableWidth * 0.17
             height: 79//Screen.desktopAvailableHeight * 0.07
             text: qsTr("SAVE SPLICE")
+            onClicked: {
+                signalSaveSplice()
+            }
         }
     }
 }

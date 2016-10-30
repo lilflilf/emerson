@@ -551,7 +551,7 @@ Item {
                 if (dialog.bIsEdit)
                     workOrderModel.updateRecordIntoTable(workOrderModel.getWorkOrderValue(selectIndx, "workOrderId"),dialog.oldWorkOrderName, inputworkId.inputText,selectPart.partId,selectPart.text, inputquantity.inputText )
                 else {
-
+                    workOrderModel.insertRecordIntoTable(inputworkId.inputText,selectPart.partId,selectPart.text,inputquantity.inputText)
                     selectPart.text = "SELECT PART"
                 }
 //                selectIndx = -1
@@ -566,7 +566,7 @@ Item {
         width: Screen.desktopAvailableWidth*0.7
         height: Screen.desktopAvailableHeight*0.6
         visible: false
-        listModel: testModel
+        listModel: partModel //testModel
         titleName: qsTr("Add WORK ORDEAR")
         componentName: qsTr("PART NAME")
         componentData: qsTr("DATE CREATED")
@@ -578,6 +578,7 @@ Item {
             addExit.visible = false
         }
         onSignalAddExistSelectClick: {
+            selectPart.partId = partId
             selectPart.text = name
             addExit.visible = false
         }
