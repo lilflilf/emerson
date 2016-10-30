@@ -342,6 +342,8 @@ Item {
             loader.source = "qrc:/UI/AdvanceSetting.qml"
         }
         onSignalTestStart: {
+            testDialog.visible = false
+            backGround.visible = false
             loader.source = "qrc:/UI/TestDetail.qml"
         }
     }
