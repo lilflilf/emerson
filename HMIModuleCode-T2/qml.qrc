@@ -33,6 +33,7 @@
         <file>UI/SpliceStatusOffLine.qml</file>
         <file>UI/CProgressBar.qml</file>
         <file>UI/TestSetingDialog.qml</file>
+        <file>UI/UserLibrarySetting.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file>images/you.png</file>

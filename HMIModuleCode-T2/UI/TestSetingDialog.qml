@@ -83,11 +83,11 @@ Item {
                 clip: true
                 font.pixelSize: 24
                 font.family: "arial"
-//                onFontChanged: {
-//                    if (input.focus) {
-//                        splices.bIsCheck = true
-//                    }
-//                }
+                onFocusChanged: {
+                    if (input.focus) {
+                        splices.bIsCheck = true
+                    }
+                }
 
                 Text {
                     id: defalut

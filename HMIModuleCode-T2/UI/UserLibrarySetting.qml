@@ -1,0 +1,273 @@
+import QtQuick 2.4
+import QtQuick.Controls 1.3
+import QtQuick.Window 2.2
+import QtQuick.Dialogs 1.2
+
+Item {
+    Image {
+        anchors.fill: parent
+        source: "qrc:/images/images/bg.png"
+    }
+    ListModel {
+        id: testModel
+        Component.onCompleted: {
+            testModel.append({"name":"splice test title 11111111111222","date":"2016/10/13","middle":"1111111111VW","count":"YES"})
+            testModel.append({"name":"splice test title 1111111111122","date":"2016/10/13","middle":"VW1111111213123213123123111111111111","count":"YES"})
+            testModel.append({"name":"splice test title 11111111111","date":"2016/10/13","middle":"VW","count":"YES"})
+            testModel.append({"name":"splice test title 11111111111","date":"2016/10/13","middle":"VW","count":"YES"})
+            testModel.append({"name":"splice test title 1111111111133333333333333","date":"2016/10/13","middle":"VW","count":"YES"})
+            testModel.append({"name":"splice test title 11111111111222","date":"2016/10/13","middle":"VW","count":"YES"})
+            testModel.append({"name":"splice test title 1111111111122","date":"2016/10/13","middle":"VW","count":"YES"})
+            testModel.append({"name":"splice test title 11111111111","date":"2016/10/13","middle":"VW","count":"YES"})
+            testModel.append({"name":"splice test title 11111111111","date":"2016/10/13","middle":"VW","count":"YES"})
+            testModel.append({"name":"splice test title 1111111111133333333333333","date":"2016/10/13","middle":"VW","count":"YES"})
+            testModel.append({"name":"splice test title 11111111111222","date":"2016/10/13","middle":"VW","count":"YES"})
+            testModel.append({"name":"splice test title 1111111111122","date":"2016/10/13","middle":"VW","count":"YES"})
+            testModel.append({"name":"splice test title 11111111111","date":"2016/10/13","middle":"VW","count":"YES"})
+            testModel.append({"name":"splice test title 11111111111","date":"2016/10/13","middle":"VW","count":"YES"})
+            testModel.append({"name":"splice test title 1111111111133333333333333","date":"2016/10/13","middle":"VW","count":"YES"})
+        }
+    }
+    ExclusiveGroup {
+        id: listviewPositionGroup;
+    }
+
+    Row {
+        id: headTitle
+        anchors.top: parent.top
+        anchors.topMargin: 50
+        anchors.left: parent.left
+        anchors.leftMargin: 50
+        width: parent.width - 100
+        spacing: 10
+        Text {
+            anchors.horizontalCenter: parent
+            width: (parent.width-30)/4
+            color: "white"
+            clip: true
+            font.pointSize: 24
+            font.family: "arial"
+            text: qsTr("User Name")
+        }
+        Text {
+            anchors.horizontalCenter: parent
+            width: (parent.width-30)/4
+            color: "white"
+            clip: true
+            font.pointSize: 24
+            font.family: "arial"
+            text: qsTr("Date Created")
+        }
+        Text {
+            anchors.horizontalCenter: parent
+            width: (parent.width-30)/4
+            color: "white"
+            clip: true
+            font.pointSize: 24
+            font.family: "arial"
+            text: qsTr("Password")
+        }
+        Text {
+            anchors.horizontalCenter: parent
+            width: (parent.width-30)/4
+            text: qsTr("Permission Level")
+            color: "white"
+            clip: true
+            font.pointSize: 24
+            font.family: "arial"
+        }
+    }
+    Rectangle {
+        id: line1
+        anchors.top: headTitle.bottom
+        anchors.topMargin: 24
+        anchors.left: parent.left
+        anchors.leftMargin: 20
+        width: parent.width-40
+        clip: true
+        height: 1
+        color: "#ffffff"
+    }
+    Rectangle {
+        id: line2
+        anchors.top: line1.bottom
+        anchors.left: parent.left
+        anchors.leftMargin: 20
+        width: parent.width-40
+        clip: true
+        height: 1
+        color: "#0d0f11"
+    }
+    ListView {
+        id: listView
+        anchors.top: line2.bottom
+        anchors.left: parent.left
+        anchors.leftMargin: 50
+        width: parent.width - 100
+        anchors.bottom: line3.top
+        clip: true
+        delegate: listDelegate
+        model: testModel
+    }
+    Image {
+        id: scrollUp
+        anchors.top: line2.bottom
+        anchors.topMargin: 2
+        anchors.left: listView.right
+        width: 17
+        height: 10
+        visible: listView.contentHeight > listView.height ? true : false
+        source: "qrc:/images/images/up.png"
+    }
+    Image {
+        id: scrollDown
+        anchors.bottom: line3.top
+        anchors.bottomMargin: 2
+        anchors.left: listView.right
+        width: 17
+        height: 10
+        visible: listView.contentHeight > listView.height ? true : false
+        source: "qrc:/images/images/down.png"
+    }
+    Rectangle {
+        id: scrollbar
+        width: 10
+        height: listView.height-24
+        anchors.top: scrollUp.bottom
+        anchors.left: listView.right
+        anchors.leftMargin: 4
+        color: "#585858"
+        radius: 10
+        visible: listView.contentHeight > listView.height ? true : false
+        Rectangle {
+            id: button
+            anchors.left: parent.left
+            y: (listView.visibleArea.yPosition < 0 ) ? 0 : (listView.contentY+listView.height>listView.contentHeight) ?
+                scrollbar.height - button.height : listView.visibleArea.yPosition * scrollbar.height
+            width: 10
+            height: listView.visibleArea.heightRatio * scrollbar.height;
+            color: "#ccbfbf"
+            radius: 10
+            // 鼠标区域
+            MouseArea {
+                id: mouseArea
+                anchors.fill: button
+                drag.target: button
+                drag.axis: Drag.YAxis
+                drag.minimumY: 0
+                drag.maximumY: scrollbar.height - button.height
+                // 拖动
+                onMouseYChanged: {
+                    listView.contentY = button.y / scrollbar.height * listView.contentHeight
+                }
+            }
+        }
+    }
+    Component {
+        id: listDelegate
+        Item {
+            width: listView.width
+            height: 50
+            Text {
+                id: headName
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+                width: (parent.width-30)/4-30
+                horizontalAlignment: Qt.AlignLeft
+                elide: Text.ElideRight
+                text: name
+                clip: true
+                color: "white"
+                font.pointSize: 20
+                font.family: "arial"
+            }
+            Text {
+                id: headData
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: headName.right
+                anchors.leftMargin: 40
+                width: (parent.width-30)/4
+                horizontalAlignment: Qt.AlignLeft
+                text: date
+                clip: true
+                elide: Text.ElideRight
+                color: "white"
+                font.pointSize: 20
+                font.family: "arial"
+            }
+            Text {
+                id: headMiddle
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: headData.right
+                anchors.leftMargin: 10
+                width: (parent.width-30)/4
+                horizontalAlignment: Qt.AlignLeft
+                text: middle
+                elide: Text.ElideRight
+                clip: true
+                color: "white"
+                font.pointSize: 20
+                font.family: "arial"
+            }
+            Text {
+                id: headCount
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: headMiddle.right
+                anchors.leftMargin: 10
+                horizontalAlignment: Qt.AlignLeft
+                width: (parent.width-30)/12
+                text: count
+                elide: Text.ElideRight
+                color: "white"
+                clip: true
+                font.pointSize: 20
+                font.family: "arial"
+            }
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    selectIndx = index
+                    selectCheck.checked = !selectCheck.checked
+                }
+            }
+            Rectangle {
+                id: backGround
+                anchors.fill: parent
+                color: "black"
+                opacity: 0//opacityValue
+                RadioButton {
+                    id: selectCheck
+                    exclusiveGroup: listviewPositionGroup
+                    visible: false
+                    onCheckedChanged: {
+                        if (checked)
+                            backGround.opacity = 0.3
+                        else
+                            backGround.opacity = 0
+                    }
+                }
+            }
+        }
+    }
+    Rectangle {
+        id: line3
+        anchors.bottom: line4.top
+        anchors.left: parent.left
+        anchors.leftMargin: 20
+        width: parent.width-40
+        clip: true
+        height: 1
+        color: "#ffffff"
+    }
+    Rectangle {
+        id: line4
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 150
+        anchors.left: parent.left
+        anchors.leftMargin: 20
+        width: parent.width-40
+        clip: true
+        height: 1
+        color: "#0d0f11"
+    }
+}

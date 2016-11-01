@@ -227,7 +227,7 @@ Item {
     }
     ListModel {
         id: maintenanceList
-        ListElement {menuKey:"Permission Setting"}
+        ListElement {menuKey:"Calibration"}
         ListElement {menuKey:"Tool Change"}
         ListElement {menuKey:"Advanced Maintenance"}
         ListElement {menuKey:"Maintenance counter"}
@@ -244,9 +244,9 @@ Item {
     }
     ListModel {
         id: settingList
-        ListElement {menuKey:"Admin"}
+        ListElement {menuKey:"Permission Setting"}
         ListElement {menuKey:"Weld Defaults"}
-        ListElement {menuKey:"Sequence Defaults"}
+        ListElement {menuKey:"Operator Library"}
         ListElement {menuKey:"Data/Communication"}
         ListElement {menuKey:"Branson Setting"}
 
@@ -312,9 +312,9 @@ Item {
                                     root.menuInit(1)
                                     title.text = qsTr("Edit Existing")
                                 }
-                                else if (menuKey == "Edit Existing"){
-                                    root.menuInit(4)
-                                    //title.text = qsTr("Edit Existing")
+                                else if (menuKey == "User Library"){
+                                    root.menuInit(16)
+                                    title.text = qsTr("User Library")
                                 }
                             }
                         }
