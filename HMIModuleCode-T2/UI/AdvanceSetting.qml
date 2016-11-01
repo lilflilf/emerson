@@ -36,11 +36,11 @@ Item {
         standardUpperModel.clear()
         standardUpperModel.append({"head":"Time","value":"40%"})
         standardUpperModel.append({"head":"Power","value":"25%"})
-        standardUpperModel.append({"head":"Pre-Height","value":"40%"})
-        standardUpperModel.append({"head":"Height","value":"25%"})
+        standardUpperModel.append({"head":"Pre-Height","value":"15%"})
+        standardUpperModel.append({"head":"Height","value":"10%"})
         standardLowerModel.clear()
-        standardLowerModel.append({"head":"Time","value":"15%"})
-        standardLowerModel.append({"head":"Power","value":"10%"})
+        standardLowerModel.append({"head":"Time","value":"40%"})
+        standardLowerModel.append({"head":"Power","value":"25%"})
         standardLowerModel.append({"head":"Pre-Height","value":"15%"})
         standardLowerModel.append({"head":"Height","value":"10%"})
         sigmaUpperModel.clear()
@@ -68,7 +68,7 @@ Item {
         font.family: "arial"
         font.pixelSize: 25
         color: "white"
-        text: qsTr("Standard& Auto")
+        text: qsTr("Standard & Auto")
     }
     Text {
         id: sigma
@@ -117,7 +117,7 @@ Item {
     }
     Image {
         id: lower1
-        anchors.top: line2.bottom
+        anchors.bottom: standardLowerrec.top
         anchors.left: standardLowerrec.left
         anchors.leftMargin: -23.5
         width: 192
@@ -149,7 +149,7 @@ Item {
     }
     Image {
         id: lower2
-        anchors.top: line2.bottom
+        anchors.bottom: sigmaLowerrec.top
         anchors.left: sigmaLowerrec.left
         anchors.leftMargin: -23.5
         width: 192
@@ -177,11 +177,11 @@ Item {
         Component.onCompleted: {
             standardUpperModel.append({"head":"Time","value":"40%"})
             standardUpperModel.append({"head":"Power","value":"25%"})
-            standardUpperModel.append({"head":"Pre-Height","value":"40%"})
-            standardUpperModel.append({"head":"Height","value":"25%"})
+            standardUpperModel.append({"head":"Pre-Height","value":"15%"})
+            standardUpperModel.append({"head":"Height","value":"10%"})
 
-            standardLowerModel.append({"head":"Time","value":"15%"})
-            standardLowerModel.append({"head":"Power","value":"10%"})
+            standardLowerModel.append({"head":"Time","value":"40%"})
+            standardLowerModel.append({"head":"Power","value":"25%"})
             standardLowerModel.append({"head":"Pre-Height","value":"15%"})
             standardLowerModel.append({"head":"Height","value":"10%"})
 
@@ -197,19 +197,20 @@ Item {
         }
     }
 
-    Grid {
+    Row {
         id: standardupperrec
         anchors.top: upper1.bottom
         anchors.left: parent.left
         anchors.leftMargin: 50
-        width: 300
+        width: 630
         clip: true
-        anchors.bottom: line3.top
-        anchors.bottomMargin: 10
-        columns: 2
-        rows: 2
-        columnSpacing: 10
-        rowSpacing: 15
+        spacing: 10
+//        anchors.bottom: line3.top
+//        anchors.bottomMargin: 10
+//        columns: 2
+//        rows: 2
+//        columnSpacing: 10
+//        rowSpacing: 15
         Repeater {
             id: standardUpperRepeater
             model: standardUpperModel
@@ -266,19 +267,18 @@ Item {
         }
     }
 
-    Grid {
+    Row {
         id: standardLowerrec
-        anchors.top: upper1.bottom
-        anchors.left: standardupperrec.right
-        anchors.leftMargin: 10
-        width: 300
+        anchors.top: standardupperrec.bottom
+        anchors.topMargin: 49
+        anchors.left: standardupperrec.left
+        width: 630
         clip: true
-        anchors.bottom: line3.top
-        anchors.bottomMargin: 10
-        columns: 2
-        rows: 2
-        columnSpacing: 10
-        rowSpacing: 15
+        spacing: 10
+//        columns: 2
+//        rows: 2
+//        columnSpacing: 10
+//        rowSpacing: 15
         Repeater {
             id: standardlowerRepeater
             model: standardLowerModel
@@ -335,19 +335,20 @@ Item {
         }
     }
 
-    Grid {
+    Row {
         id: sigmaUpperrec
         anchors.top: upper1.bottom
-        anchors.right: sigmaLowerrec.left
-        anchors.rightMargin: 10
-        width: 300
+        anchors.right: parent.right
+        anchors.rightMargin: 50
+        width: 630
         clip: true
-        anchors.bottom: line3.top
-        anchors.bottomMargin: 10
-        columns: 2
-        rows: 2
-        columnSpacing: 10
-        rowSpacing: 15
+        spacing: 10
+//        anchors.bottom: line3.top
+//        anchors.bottomMargin: 10
+//        columns: 2
+//        rows: 2
+//        columnSpacing: 10
+//        rowSpacing: 15
         Repeater {
             id: sigmaUpperRepeater
             model: sigmaUpperModel
@@ -404,19 +405,20 @@ Item {
         }
     }
 
-    Grid {
+    Row {
         id: sigmaLowerrec
-        anchors.top: upper1.bottom
+        anchors.top: sigmaUpperrec.bottom
+        anchors.topMargin: 49
         anchors.right: parent.right
         anchors.rightMargin: 50
-        width: 300
+        width: 630
         clip: true
-        anchors.bottom: line3.top
-        anchors.bottomMargin: 10
-        columns: 2
-        rows: 2
-        columnSpacing: 10
-        rowSpacing: 15
+        spacing: 10
+
+//        columns: 2
+//        rows: 2
+//        columnSpacing: 10
+//        rowSpacing: 15
         Repeater {
             id: sigmaLowerRepeater
             model: sigmaLowerModel

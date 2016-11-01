@@ -27,6 +27,9 @@ Item {
             loader.source = ""
             testDialog.visible = true
         }
+        onSignalSaveSplice: {
+            loader.source = ""
+        }
     }
     ListModel {
         id: listModel
@@ -339,6 +342,8 @@ Item {
             loader.source = "qrc:/UI/AdvanceSetting.qml"
         }
         onSignalTestStart: {
+            testDialog.visible = false
+            backGround.visible = false
             loader.source = "qrc:/UI/TestDetail.qml"
         }
     }

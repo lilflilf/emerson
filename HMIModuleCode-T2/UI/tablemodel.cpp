@@ -123,6 +123,16 @@ bool WorkOrderModel::updateRecordIntoTable(int workId,QString oldWorkName, QStri
     setModelList();
 }
 
+bool WorkOrderModel::insertRecordIntoTable(QString workName, int partId, QString partName, int count)
+{
+    struct WorkOrderElement tempWorkOrder;
+    tempWorkOrder.WorkOrderName = workName;
+    tempWorkOrder.Quantity = count;
+    tempWorkOrder.PartIndex.insert(partId,partName);
+    m_workOrderAdaptor->InsertRecordIntoTable(&tempWorkOrder);
+    setModelList();
+}
+
 QVariant WorkOrderModel::getWorkOrderValue(int index, QString key)
 {
     QMap<int,QString>::iterator it; //遍历map
@@ -314,3 +324,139 @@ QVariant SpliceModel::getSpliceValue(int index, QString key)
         return SpliceModelHash.value(key);
     }
 }
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PartModel::PartModel(QObject *parent) :
+    QAbstractTableModel(parent)
+{
+    m_partAdaptor = DBPartTable::Instance();
+    parts = new QMap<int, QString>();
+}
+
+QVariant PartModel::data(const QModelIndex &index, int role) const
+{
+    QVariant value;
+    if(role < Qt::UserRole)
+    {
+        qDebug() << "PartModel::data(const QModelIndex &index, int role) const";
+    }
+    else
+    {
+        int columnIdx = role - Qt::UserRole - 1;
+        int rowId;
+        QMap<int,QString>::iterator it; //遍历map
+        int i = 0;
+        for ( it = parts->begin(); it != parts->end(); ++it ) {
+            if (i == index.row()){
+                rowId = it.key();
+                break;
+            }
+            else {
+                i++;
+            }
+        }
+        PartElement myPart;
+        m_partAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myPart);
+        if (columnIdx == 0)
+            value = QVariant::fromValue(myPart.PartID);
+        else if (columnIdx == 1)
+            value = QVariant::fromValue(myPart.PartName);
+        else if (columnIdx == 2)
+            value = QVariant::fromValue(QDateTime::fromTime_t(myPart.CreatedDate).toString("MM/dd/yyyy hh:mm"));
+        else if (columnIdx == 3)
+            value = QVariant::fromValue(myPart.NoOfSplice);
+        else if (columnIdx == 4)
+            value = QVariant::fromValue(myPart.OperatorID);
+    }
+    return value;
+}
+
+
+
+void PartModel::setModelList(unsigned int time_from, unsigned int time_to)
+{
+    beginResetModel();
+    parts->clear();
+    if (m_partAdaptor->QueryOnlyUseTime(time_from,time_to,parts))
+        qDebug( )<< "PartModel " << parts->count();
+    endResetModel();
+}
+
+void PartModel::setModelList()
+{
+    beginResetModel();
+    parts->clear();
+    if (m_partAdaptor->QueryEntireTable(parts))
+        qDebug( )<< "PartModel" << parts->count();
+    endResetModel();
+}
+
+
+int PartModel::rowCount(const QModelIndex & parent) const
+{
+    return parts->count();
+}
+
+
+int PartModel::count()
+{
+    return parts->count();
+}
+
+
+int PartModel::columnCount(const QModelIndex &parent) const
+{
+    return 1;
+}
+
+QVariant PartModel::headerData(int section, Qt::Orientation orientation, int role) const
+{
+    return QVariant();
+}
+
+void PartModel::setRoles(const QStringList &names)
+{
+    m_roleNames.clear();
+    for(int idx=0; idx<names.count(); idx++)
+    {
+        m_roleNames[Qt::UserRole + idx + 1] = names[idx].toLocal8Bit();
+    }
+}
+
+QHash<int, QByteArray> PartModel::roleNames() const
+{
+    return m_roleNames;
+}
+
+
+QVariant PartModel::getPartValue(int index, QString key)
+{
+    QMap<int,QString>::iterator it; //遍历map
+    int i = 0;
+    int orderId;
+    for ( it = parts->begin(); it != parts->end(); ++it ) {
+        if (i == index){
+            orderId = it.key();
+            break;
+        }
+        else {
+            i++;
+        }
+    }
+    PartElement myPart;
+    m_partAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myPart);
+    QHash<QString, QVariant> PartModelHash;
+    PartModelHash.insert("partId",myPart.PartID);
+    PartModelHash.insert("name",myPart.PartName);
+    PartModelHash.insert("date",QDateTime::fromTime_t(myPart.CreatedDate).toString("MM/dd/yyyy hh:mm"));
+    PartModelHash.insert("middle",myPart.NoOfSplice);
+    PartModelHash.insert("type","YES");
+    //list << "name" << "date" << "middle" << "count";
+    if (key == "") {
+        return PartModelHash;
+    } else {
+        return PartModelHash.value(key);
+    }
+}
+
+
+

@@ -16,6 +16,7 @@ public:
 
     WorkOrderModel *workOrderModel;
     SpliceModel *spliceModel;
+    PartModel *partModel;
 signals:
 
 public slots:

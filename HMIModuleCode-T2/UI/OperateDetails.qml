@@ -8,6 +8,9 @@ Item {
     Rectangle {
         anchors.fill: parent
         color: "#626465"
+        MouseArea {
+            anchors.fill: parent
+        }
     }
 
     Text {

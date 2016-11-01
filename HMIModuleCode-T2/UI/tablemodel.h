@@ -5,6 +5,7 @@
 #include <QHash>
 #include "DataBase/DBWorkOrderTable.h"
 #include "DataBase/DBPresetTable.h"
+#include "DataBase/DBPartTable.h"
 
 class WorkOrderModel : public QAbstractTableModel
 {
@@ -40,6 +41,7 @@ public slots:
     //    bool setData(const QModelIndex &index, const QVariant &value, int role);
 
     Q_INVOKABLE bool updateRecordIntoTable(int workId, QString oldWorkName, QString workName, int partId, QString partName, int count);
+    Q_INVOKABLE bool insertRecordIntoTable(QString workName, int partId, QString partName, int count);
 
 private:
     QHash<int, QByteArray> m_roleNames;
@@ -72,6 +74,43 @@ public slots:
     void setRoles(const QStringList &names);
     Q_INVOKABLE QVariant getSpliceValue(int index, QString key);
     Q_INVOKABLE int count();
+
+private:
+    QHash<int, QByteArray> m_roleNames;
+};
+
+class PartModel : public QAbstractTableModel
+{
+    Q_OBJECT
+public:
+    explicit PartModel(QObject *parent = 0);
+    void setModelList(unsigned int time_from, unsigned int time_to);
+
+    void setModelList();
+
+    QStringList m_idList;
+    DBPartTable *m_partAdaptor;
+    QMap<int, QString> *parts;
+
+protected:
+    int rowCount(const QModelIndex &parent) const;
+    int columnCount(const QModelIndex &parent) const;
+    QVariant data(const QModelIndex &index, int role) const;
+    QVariant headerData(int section, Qt::Orientation orientation, int role) const;
+    QHash<int, QByteArray> roleNames() const;
+
+signals:
+
+
+public slots:
+    void setRoles(const QStringList &names);
+    Q_INVOKABLE QVariant getPartValue(int index, QString key);
+
+    Q_INVOKABLE int count();
+   // int getCurrentIndex(QString info);
+
+//    Q_INVOKABLE bool updateRecordIntoTable(int workId, QString oldWorkName, QString workName, int partId, QString partName, int count);
+//    Q_INVOKABLE bool insertRecordIntoTable(QString workName, int partId, QString partName, int count);
 
 private:
     QHash<int, QByteArray> m_roleNames;

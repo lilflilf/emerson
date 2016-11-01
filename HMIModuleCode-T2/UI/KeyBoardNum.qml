@@ -109,7 +109,7 @@ Item {
         spacing: 30
         columns: 3
         Repeater {
-            model: ["1","2","3","4","5","6","7","8","9","INC","0","DEC","ESC",".","ENT"]
+            model: ["1","2","3","4","5","6","7","8","9","INC","0","C","ESC",".","OK"]
             delegate: CButton {
                 width: 50
                 height: 50
