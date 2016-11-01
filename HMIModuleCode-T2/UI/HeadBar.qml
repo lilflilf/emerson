@@ -243,9 +243,9 @@ Item {
     }
     ListModel {
         id: settingList
-        ListElement {menuKey:"Admin"}
+        ListElement {menuKey:"Permission Setting"}
         ListElement {menuKey:"Weld Defaults"}
-        ListElement {menuKey:"Sequence Defaults"}
+        ListElement {menuKey:"User Library"}
         ListElement {menuKey:"Data/Communication"}
     }
 
@@ -308,6 +308,10 @@ Item {
                                 if (menuKey == "Edit Existing"){
                                     root.menuInit(1)
                                     title.text = qsTr("Edit Existing")
+                                }
+                                if (menuKey == "User Library"){
+                                    root.menuInit(16)
+                                    title.text = qsTr("User Library")
                                 }
                             }
                         }

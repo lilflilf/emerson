@@ -29,6 +29,9 @@ Window {
         case 3:
             contentLoader.source = "qrc:/UI/TestSpliceLibrary.qml"
             break;
+        case 16:
+            contentLoader.source = "qrc:/UI/UserLibrarySetting.qml"
+            break;
         default:
             break;
         }
