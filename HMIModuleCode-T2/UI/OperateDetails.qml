@@ -25,8 +25,8 @@ Item {
         anchors.topMargin: 15
     }
     Switch2 {
-        width: Screen.desktopAvailableWidth * 0.12
-        height: Screen.desktopAvailableHeight * 0.04
+        width: Screen.width * 0.12
+        height: Screen.height * 0.04
         anchors.right: spliceDetailsItem.right
         anchors.top: operateTitle.top
         textLeft: qsTr("Diagram")
@@ -59,8 +59,8 @@ Item {
 
     SpliceDetails {
         id: spliceDetailsItem
-        width: Screen.desktopAvailableWidth * 0.5
-        height: Screen.desktopAvailableHeight *0.45
+        width: Screen.width * 0.5
+        height: Screen.height *0.45
         anchors.top: operateTitle.bottom
         anchors.left: operateTitle.left
         anchors.topMargin: 15
@@ -159,8 +159,8 @@ Item {
         anchors.top: spliceTips.bottom
         anchors.topMargin: 10
         anchors.left: operateTitle.left
-        width: Screen.desktopAvailableWidth * 0.37
-        height: Screen.desktopAvailableHeight *0.25
+        width: Screen.width * 0.37
+        height: Screen.height *0.25
         columns: 4
         rows: 4
         visible: false
@@ -171,8 +171,8 @@ Item {
         anchors.top: spliceTips.bottom
         anchors.topMargin: 10
         anchors.left: operateTitle.left
-        width: Screen.desktopAvailableWidth * 0.37
-        height: Screen.desktopAvailableHeight *0.2
+        width: Screen.width * 0.37
+        height: Screen.height *0.2
         listModel: testModel
     }
 
@@ -308,7 +308,7 @@ Item {
         anchors.bottom: workStation.top
         anchors.bottomMargin: 4
         anchors.left: spliceDetailsItem.right
-        anchors.leftMargin: Screen.desktopAvailableWidth*0.1-55
+        anchors.leftMargin: Screen.width*0.1-55
         font.pointSize: 16
         font.family: "arial"
         text: qsTr("Progress and Tracking")
@@ -319,7 +319,7 @@ Item {
         anchors.bottom: progressBar.top
         anchors.bottomMargin: 6
         anchors.left: spliceDetailsItem.right
-        anchors.leftMargin: Screen.desktopAvailableWidth*0.1-55
+        anchors.leftMargin: Screen.width*0.1-55
         font.pointSize: 13
         font.family: "arial"
         text: qsTr("Work Station: B")
@@ -341,7 +341,7 @@ Item {
         anchors.bottom: partCount.top
         anchors.bottomMargin: 20
         anchors.left: spliceDetailsItem.right
-        anchors.leftMargin: Screen.desktopAvailableWidth*0.1-55
+        anchors.leftMargin: Screen.width*0.1-55
         width: 50
         height: 32
         iconSource: "qrc:/images/images/you.png"
@@ -354,7 +354,7 @@ Item {
         anchors.leftMargin: 25
         anchors.bottom: partCount.top
         anchors.bottomMargin: 4
-        width: Screen.desktopAvailableWidth*0.4-150
+        width: Screen.width*0.4-150
         height: 64
         total: 125
     }
@@ -378,7 +378,7 @@ Item {
     Text {
         id: partCount
         anchors.left: spliceDetailsItem.right
-        anchors.leftMargin: Screen.desktopAvailableWidth*0.1-55
+        anchors.leftMargin: Screen.width*0.1-55
         anchors.bottom: progressBar4.top
         anchors.bottomMargin: 6
         font.pointSize: 13
@@ -389,10 +389,10 @@ Item {
     CProgressBar {
         id: progressBar4
         anchors.left: spliceDetailsItem.right
-        anchors.leftMargin: Screen.desktopAvailableWidth*0.1-55
+        anchors.leftMargin: Screen.width*0.1-55
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 20
-        width: Screen.desktopAvailableWidth*0.2
+        width: Screen.width*0.2
         height: 10
         maximum: 125
         minimum: 1
@@ -415,7 +415,7 @@ Item {
         anchors.leftMargin: 10
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 20
-        width: Screen.desktopAvailableWidth*0.2
+        width: Screen.width*0.2
         height: 10
         maximum: 125
         minimum: 1

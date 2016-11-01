@@ -8,12 +8,18 @@ import ALPaintedItem 1.0
 Window {
     id: root
     visible: true
-//    width: Screen.desktopAvailableWidth
-//    height: Screen.desktopAvailableHeight
+//    width: Screen.width
+//    height: Screen.height
     title: qsTr("NewWireSplice")
     flags: Qt.FramelessWindowHint|Qt.Window
 
     property var initIndex: 0
+    /*0-- create
+      1-- edit
+      2-- Operate
+      3-- Test
+      4-- maintenance perssion setting
+      */
     function menuInit(index)
     {
         initIndex = index
@@ -52,22 +58,22 @@ Window {
 
     CStatusBar {
         id: statusBar
-        height: 25//Screen.desktopAvailableHeight * 0.03
+        height: 25//Screen.height * 0.03
     }
 
 //    Content {
 //        z:3
 //        anchors.top: headBar.bottom
-//        width: Screen.desktopAvailableWidth
-//        height: Screen.desktopAvailableHeight
+//        width: Screen.width
+//        height: Screen.height
 //    }
 
     Loader {
         id: contentLoader
         z:3
         anchors.top: headBar.bottom
-        width: Screen.desktopAvailableWidth
-        height: Screen.desktopAvailableHeight - 104
+        width: Screen.width
+        height: Screen.height - 104
         onLoaded: {
             if (initIndex == 1)
                 contentLoader.item.bIsEdit = true
@@ -83,7 +89,7 @@ Window {
 
     HeadBar {
         id: headBar
-        height: 79//Screen.desktopAvailableHeight * 0.07
+        height: 79//Screen.height * 0.07
         anchors.top: statusBar.bottom
         z: 10
     }
@@ -100,8 +106,8 @@ Window {
 
 //    Canvas {
 //        id: mycanvas
-//        width: Screen.desktopAvailableWidth
-//        height: Screen.desktopAvailableHeight
+//        width: Screen.width
+//        height: Screen.height
 //        onPaint: {
 //            var ctx = getContext("2d");
 //            ctx.fillStyle = Qt.rgba(1, 0, 0, 1);
@@ -114,8 +120,8 @@ Window {
 //        color: "transparent"
 //        property alias painter: painter
 //        anchors.top: testButton.bottom
-//        width: Screen.desktopAvailableWidth
-//        height: Screen.desktopAvailableHeight
+//        width: Screen.width
+//        height: Screen.height
 //        Component.onCompleted: {
 //            painter.penWidth = 2//initHeight/647.0*3
 //            painter.penColor = "red"

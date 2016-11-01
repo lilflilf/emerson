@@ -19,10 +19,86 @@ DBPresetTable::DBPresetTable()
     SpliceDBObj.setDatabaseName(DatabaseDir + SpliceDBFile);
     if(SpliceDBObj.open())
     {
-        if(!SpliceDBObj.tables().contains("Preset"))
+        if(!SpliceDBObj.tables().contains("Preset")){
             CreateNewTable();
+            InsertTestDataIntoTable();
+        }
     }
     SpliceDBObj.close();
+}
+
+void DBPresetTable::InsertTestDataIntoTable()
+{
+    struct PresetElement tmpSplice;
+    QMap<int, QString> TestMap;
+    TestMap.insert(0, "WANG");
+    TestMap.insert(1,"Mr.Li");
+    TestMap.insert(2, "Zhang");
+    for (int i = 0; i < 6; i++)
+    {
+        if ( i == 0)
+            tmpSplice.SpliceName = "KW001.0032";
+        if ( i == 1)
+            tmpSplice.SpliceName = "KW004.0013";
+        if ( i == 2)
+            tmpSplice.SpliceName = "mod_50742305_proc_1";
+        if ( i == 3)
+            tmpSplice.SpliceName = "mod_50742298_proc_1";
+        tmpSplice.CreatedDate = QDateTime::currentDateTime().toTime_t();
+        tmpSplice.OperatorID = 2;
+        tmpSplice.CrossSection = 100;
+        tmpSplice.PresetPicNamePath = "C:\\";
+        tmpSplice.Verified = false;
+        tmpSplice.WeldSetting.Energy = 155;
+        tmpSplice.WeldSetting.Amplitude = 55;
+        tmpSplice.WeldSetting.Width = 800;
+        tmpSplice.WeldSetting.Pressure = 80;
+        tmpSplice.WeldSetting.TrigPres = 50;
+        tmpSplice.QualitySetting.Time.Plus = 500;
+        tmpSplice.QualitySetting.Time.Minus = 0;
+        tmpSplice.QualitySetting.Power.Plus = 3960;
+        tmpSplice.QualitySetting.Power.Minus = 0;
+        tmpSplice.QualitySetting.Preheight.Plus = 1500;
+        tmpSplice.QualitySetting.Preheight.Minus = 0;
+        tmpSplice.QualitySetting.Height.Plus = 1500;
+        tmpSplice.QualitySetting.Height.Minus = 0;
+        tmpSplice.QualitySetting.Force.Plus = 55;
+        tmpSplice.QualitySetting.Force.Minus = 0;
+        tmpSplice.AdvanceSetting.WeldMode = ENERGY;
+        tmpSplice.AdvanceSetting.StepWeld.StepWeldMode = STEPDISABLE;
+        tmpSplice.AdvanceSetting.StepWeld.EnergyToStep = 55;
+        tmpSplice.AdvanceSetting.StepWeld.TimeToStep = 1;
+        tmpSplice.AdvanceSetting.StepWeld.PowerToStep = 500;
+        tmpSplice.AdvanceSetting.StepWeld.Amplitude2 = 22;
+        tmpSplice.AdvanceSetting.PreBurst = 1000;
+        tmpSplice.AdvanceSetting.HoldTime = 100;
+        tmpSplice.AdvanceSetting.SqzTime = 200;
+        tmpSplice.AdvanceSetting.ABDelay = 300;
+        tmpSplice.AdvanceSetting.ABDur = 400;
+        tmpSplice.AdvanceSetting.CutOff = false;
+        tmpSplice.AdvanceSetting.AntiSide = true;
+        tmpSplice.AdvanceSetting.MeasuredWidth = 100;
+        tmpSplice.AdvanceSetting.MeasuredHeight = 100;
+        tmpSplice.AdvanceSetting.ShrinkTube.ShrinkOption = false;
+        tmpSplice.AdvanceSetting.ShrinkTube.ShrinkTubeID = 0;
+        tmpSplice.AdvanceSetting.ShrinkTube.ShrinkTime = 10;
+        tmpSplice.AdvanceSetting.ShrinkTube.ShrinkTemperature = 260;
+        tmpSplice.TestSetting.Qutanty = 10;
+        tmpSplice.TestSetting.StopCount = 20;
+        tmpSplice.TestSetting.TestMode = UNCONSTRAINED;
+        tmpSplice.TestSetting.TeachModeSetting.TeachModeType = UNDEFINED;
+        for(int i=0;i< 18;i++)
+            tmpSplice.TestSetting.TeachModeSetting.TeachModequal_Window[i] = 40;
+        tmpSplice.TestSetting.TestingDone = true;
+        QMap<int, QString>::const_iterator it = TestMap.constBegin();
+        while (it != TestMap.constEnd()) {
+            tmpSplice.WireIndex.insert(it.key(),it.value());
+            ++it;
+        }
+        tmpSplice.NoOfWires = tmpSplice.WireIndex.size();
+
+        InsertRecordIntoTable(&tmpSplice);
+    }
 }
 
 DBPresetTable::~DBPresetTable()

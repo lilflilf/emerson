@@ -10,8 +10,8 @@ Item {
     property bool bIsEdit: false
     property string draColor: ""
     signal titleTextChanged(var myTitleText)
-    width: Screen.desktopAvailableWidth
-    height: Screen.desktopAvailableHeight
+    width: Screen.width
+    height: Screen.height
     Connections {
         target: loader.item
         onSignalSaveSplice: {
@@ -72,7 +72,7 @@ Item {
         }
     }
     SwipeView {
-        width: Screen.desktopAvailableWidth * 0.3
+        width: Screen.width * 0.3
         height: parent.height
         id: swipeView
         currentIndex: tabBar.currentIndex
@@ -415,7 +415,7 @@ Item {
         }
     }
     TabBar {
-        width: Screen.desktopAvailableWidth * 0.3
+        width: Screen.width * 0.3
         id: tabBar
         currentIndex: swipeView.currentIndex
         anchors.top: parent.top
@@ -436,7 +436,7 @@ Item {
     Item {
         id: rightArea
         anchors.left: swipeView.right
-        width: Screen.desktopAvailableWidth * 0.7
+        width: Screen.width * 0.7
         height: parent.height
         MouseArea {
             anchors.fill: parent
@@ -759,8 +759,8 @@ Item {
     AddExistingSpliceWire {
         id: addExit
         anchors.centerIn: parent
-        width: Screen.desktopAvailableWidth*0.7
-        height: Screen.desktopAvailableHeight*0.6
+        width: Screen.width*0.7
+        height: Screen.height*0.6
         visible: false
         listModel: testModel
         titleName: qsTr("Add Existing Splice")

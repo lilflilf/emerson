@@ -26,6 +26,7 @@ public:
     static DBPresetTable* Instance();
 protected:
     DBPresetTable();
+    void InsertTestDataIntoTable();
 private:
     static DBPresetTable* _instance;
 public:

@@ -563,11 +563,11 @@ Item {
     AddExistingSpliceWire {
         id: addExit
         anchors.centerIn: parent
-        width: Screen.desktopAvailableWidth*0.7
-        height: Screen.desktopAvailableHeight*0.6
+        width: Screen.width*0.7
+        height: Screen.height*0.6
         visible: false
         listModel: partModel //testModel
-        titleName: qsTr("Add WORK ORDEAR")
+        titleName: qsTr("ADD WORK ORDEAR")
         componentName: qsTr("PART NAME")
         componentData: qsTr("DATE CREATED")
         componentMiddle: qsTr("# OF SPLICE")

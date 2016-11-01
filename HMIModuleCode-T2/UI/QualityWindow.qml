@@ -5,8 +5,8 @@ import QtQuick.Window 2.2
 
 Item {
     id: qualityParent
-    width: Screen.desktopAvailableWidth * 0.43
-    height: Screen.desktopAvailableHeight *0.4
+    width: Screen.width * 0.43
+    height: Screen.height *0.4
     property var clickType: 0
     Text {
         id: qualityWindowTitle
@@ -17,8 +17,8 @@ Item {
     }
     Switch2 {
         id: switch2
-        width: Screen.desktopAvailableWidth * 0.12
-        height: Screen.desktopAvailableHeight * 0.04
+        width: Screen.width * 0.12
+        height: Screen.height * 0.04
         anchors.right: parent.right
         textLeft: qsTr("Quality")
         textRight: qsTr("Graph")
@@ -43,8 +43,8 @@ Item {
     }
     ListView {
         id: qualityListView
-        width: Screen.desktopAvailableWidth * 0.45
-        height: Screen.desktopAvailableHeight *0.25
+        width: Screen.width * 0.45
+        height: Screen.height *0.25
         orientation: Qt.Horizontal
         interactive: false
         anchors.top: qualityWindowTitle.bottom
@@ -56,11 +56,11 @@ Item {
         id: qualityDelegate
         Item {
             id: name
-            width: Screen.desktopAvailableWidth * 0.1 //qualityParent.width / 4 //
-            height: Screen.desktopAvailableHeight * 0.25 //qualityParent.height / 2 //
+            width: Screen.width * 0.1 //qualityParent.width / 4 //
+            height: Screen.height * 0.25 //qualityParent.height / 2 //
             Rectangle {
                 width: 40
-                height: Screen.desktopAvailableHeight * 0.25
+                height: Screen.height * 0.25
                 anchors.left: parent.left
                 anchors.leftMargin: 10
                 border.color: "white"
@@ -192,8 +192,8 @@ Item {
 
     ListView {
         id: qualityListViewTwo
-        width: qualityParent.width //Screen.desktopAvailableWidth * 0.35
-        height: Screen.desktopAvailableHeight *0.25
+        width: qualityParent.width //Screen.width * 0.35
+        height: Screen.height *0.25
         orientation: Qt.Horizontal
         interactive: false
         anchors.top: qualityListView.bottom
@@ -205,7 +205,7 @@ Item {
         id: qualityListViewTwoDelegate
         Item {
             width: 8
-            height: Screen.desktopAvailableHeight * 0.25
+            height: Screen.height * 0.25
             Rectangle {
                 id: point
                 radius: 100
@@ -222,8 +222,8 @@ Item {
 
     MyCanvas {
         id: myCanvas
-        width: qualityParent.width //Screen.desktopAvailableWidth * 0.35
-        height: Screen.desktopAvailableHeight * 0.5
+        width: qualityParent.width //Screen.width * 0.35
+        height: Screen.height * 0.5
         anchors.top: qualityWindowTitle.bottom
         anchors.topMargin: 30
     }

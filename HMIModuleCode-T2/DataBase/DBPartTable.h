@@ -25,6 +25,7 @@ public:
     static DBPartTable* Instance();
 protected:
     DBPartTable();
+    void InsertTestDataIntoTable();
 private:
     static DBPartTable* _instance;
 public:

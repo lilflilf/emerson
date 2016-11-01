@@ -5,8 +5,8 @@ import QtQuick.Window 2.2
 
 Item {
     id: operateDetail
-    width: Screen.desktopAvailableWidth
-    height: Screen.desktopAvailableHeight * 0.8
+    width: Screen.width
+    height: Screen.height * 0.8
     signal signalSaveSplice()
     Rectangle {
         anchors.fill: parent
@@ -24,8 +24,8 @@ Item {
     }
 
     Switch2 {
-        width: Screen.desktopAvailableWidth * 0.12
-        height: Screen.desktopAvailableHeight * 0.04
+        width: Screen.width * 0.12
+        height: Screen.height * 0.04
         anchors.right: spliceDetailsItem.right
         anchors.leftMargin: 22
         anchors.top: parent.top
@@ -57,6 +57,7 @@ Item {
         lineColor: "white"
         anchors.left: spliceDetailsItem.right
         anchors.leftMargin: 10
+        visible: false
     }
 
     QualityWindow {
@@ -74,8 +75,8 @@ Item {
     }
     SpliceDetails {
         id: spliceDetailsItem
-        width: Screen.desktopAvailableWidth * 0.5
-        height: Screen.desktopAvailableHeight *0.45
+        width: Screen.width * 0.5
+        height: Screen.height *0.45
         anchors.top: operateTitle.bottom
         anchors.left: operateTitle.left
         //anchors.right: operateTitle.right
@@ -236,8 +237,8 @@ Item {
 
     CButton {
         id: finish
-        width: 300//Screen.desktopAvailableWidth * 0.17
-        height: 79//Screen.desktopAvailableHeight * 0.07
+        width: 300//Screen.width * 0.17
+        height: 79//Screen.height * 0.07
         anchors.right: qualityWindow.right
         anchors.bottom: parent.bottom
         text: qsTr("FINISH SAMPLE")
@@ -256,13 +257,13 @@ Item {
         anchors.bottom: parent.bottom
         spacing: 20
         CButton {
-            width: 300//Screen.desktopAvailableWidth * 0.17
-            height: 79//Screen.desktopAvailableHeight * 0.07
+            width: 300//Screen.width * 0.17
+            height: 79//Screen.height * 0.07
             text: qsTr("EDITE SPLICE")
         }
         CButton {
-            width: 300//Screen.desktopAvailableWidth * 0.17
-            height: 79//Screen.desktopAvailableHeight * 0.07
+            width: 300//Screen.width * 0.17
+            height: 79//Screen.height * 0.07
             text: qsTr("SAVE SPLICE")
             onClicked: {
                 signalSaveSplice()

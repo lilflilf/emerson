@@ -5,8 +5,8 @@ import QtQuick.Dialogs 1.2
 
 Item {
     id: addExistSpliceOrWire
-    width: parent.width
-    height: parent.height
+//    width: Screen.width*0.7
+//    height: Screen.height*0.6
     property string titleName: ""
     property string componentName: ""
     property string componentData: ""
@@ -20,7 +20,8 @@ Item {
     signal signalAddExistSelectClick(var partId, var name)
     signal signalAddExistCancel()
     Rectangle {
-        anchors.fill: parent
+        width: parent.width //Screen.width*0.7
+        height: parent.height //Screen.height*0.6
         color: "#6d6e71"
         Text {
             id: title
@@ -122,7 +123,9 @@ Item {
             anchors.topMargin: 10
             anchors.left: parent.left
             anchors.leftMargin: 24
-            width: parent.width - 48
+            anchors.right: parent.right
+            anchors.rightMargin: 24
+//            width: parent.width - 48
             height: parent.height- 170
             clip: true
             delegate: listDelegate
@@ -146,6 +149,9 @@ Item {
                     color: "white"
                     font.pointSize: 10
                     font.family: "arial"
+                    Component.onCompleted: {
+                        console.log("headData width== ", headData.width)
+                    }
                 }
                 Text {
                     id: headData

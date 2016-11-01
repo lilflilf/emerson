@@ -19,10 +19,42 @@ DBWorkOrderTable::DBWorkOrderTable()
     WorkOrderDBObj.setDatabaseName(DatabaseDir + WorkOrderFile);
     if(WorkOrderDBObj.open())
     {
-        if(!WorkOrderDBObj.tables().contains("WorkOrder"))
+        if(!WorkOrderDBObj.tables().contains("WorkOrder")){
             CreateNewTable();
+            InsertTestDataIntoTable();
+        }
     }
     WorkOrderDBObj.close();
+}
+
+bool DBWorkOrderTable::InsertTestDataIntoTable()
+{
+    WorkOrderElement tmpWorkOrder;
+    for (int i = 0; i < 2; i++)
+    {
+        if ( i == 0)
+            tmpWorkOrder.WorkOrderName = "Honda CR-V";
+        if ( i == 1)
+            tmpWorkOrder.WorkOrderName = "VOLVO SPA V526 TT";
+        tmpWorkOrder.CreatedDate = QDateTime::currentDateTime().toTime_t();
+        tmpWorkOrder.OperatorID = 2;
+        tmpWorkOrder.PartIndex.insert(1,"PartName");
+        tmpWorkOrder.NoOfPart = tmpWorkOrder.PartIndex.size();
+
+        tmpWorkOrder.Quantity = 10;
+        tmpWorkOrder.CurrentPartCount = 30;
+
+        tmpWorkOrder.MissSpliceList.insert(0, "MissSplice1");
+        tmpWorkOrder.MissSpliceList.insert(1, "MissSplice2");
+        tmpWorkOrder.MissSpliceList.insert(2, "MissSplice3");
+
+        tmpWorkOrder.CurrentSplice.SpliceID = 5;
+        tmpWorkOrder.CurrentSplice.SpliceName = "TestSplice";
+
+        tmpWorkOrder.WorkOrderDone = false;
+        InsertRecordIntoTable(&tmpWorkOrder);
+    }
+    return true;
 }
 
 DBWorkOrderTable::~DBWorkOrderTable()

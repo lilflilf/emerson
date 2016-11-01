@@ -6,8 +6,8 @@ import QtQuick.Controls 1.4
 
 Item {
     id: creatWire
-    width: Screen.desktopAvailableWidth
-    height: Screen.desktopAvailableHeight
+    width: Screen.width
+    height: Screen.height
     signal signalSaveSplice()
     property bool detailIsChang: true
     property variant colorArray: ["#ff6699","#ff0033","#33FFCC","#cc99ff","#cc0099","#930202","#99ccff","#f79428",
@@ -21,7 +21,7 @@ Item {
     }
 
     SwipeView {
-        width: Screen.desktopAvailableWidth * 0.3
+        width: Screen.width * 0.3
         height: parent.height
         id: swipeView
         currentIndex: tabBar.currentIndex
@@ -571,7 +571,7 @@ Item {
                     id: tabPositionGroup2;
                 }
                 Item {
-                    width: Screen.desktopAvailableWidth * 0.2
+                    width: Screen.width * 0.2
                     height: 30
                     Label {
                         id: labelTop
@@ -599,7 +599,7 @@ Item {
                 }
 
                 Item {
-                    width: Screen.desktopAvailableWidth * 0.2
+                    width: Screen.width * 0.2
                     height: 30
                     Label {
                         id: labelMiddle
@@ -625,7 +625,7 @@ Item {
                     }
                 }
                 Item {
-                    width: Screen.desktopAvailableWidth * 0.2
+                    width: Screen.width * 0.2
                     height: 30
                     Label {
                         id: labelBottom
@@ -823,7 +823,7 @@ Item {
 
 
     TabBar {
-        width: Screen.desktopAvailableWidth * 0.3
+        width: Screen.width * 0.3
         id: tabBar
         currentIndex: swipeView.currentIndex
         anchors.top: parent.top
@@ -848,7 +848,7 @@ Item {
     //        id: tabBar
     //        currentIndex: swipeView.currentIndex
     //        anchors.top: parent.top
-    //        width: Screen.desktopAvailableWidth * 0.3
+    //        width: Screen.width * 0.3
     //        TabButton {
     //            Rectangle {
     //                anchors.fill: parent
@@ -887,7 +887,7 @@ Item {
     Item {
         id: rightArea
         anchors.left: swipeView.right
-        width: Screen.desktopAvailableWidth * 0.7
+        width: Screen.width * 0.7
         height: parent.height // * 0.5
         Loader {
             id: colorLoader
@@ -941,8 +941,8 @@ Item {
         }
         SpliceDetails {
             id: spliceDetailsItem
-            width: Screen.desktopAvailableWidth * 0.8
-            height: Screen.desktopAvailableHeight *0.5
+            width: Screen.width * 0.8
+            height: Screen.height *0.5
             anchors.top: spliceDetailsTips.bottom
             anchors.topMargin: 10
             anchors.left: spliceDetails.left
@@ -989,7 +989,7 @@ Item {
     Item {
         id: settingRightArea
         anchors.left: swipeView.right
-        width: Screen.desktopAvailableWidth * 0.7
+        width: Screen.width * 0.7
         height: parent.height // * 0.5
         visible: false
         Rectangle {
