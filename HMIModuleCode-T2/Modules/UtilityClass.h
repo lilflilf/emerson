@@ -2,7 +2,7 @@
 #define UTILITY_H
 #include <QString>
 #include <QMap>
-#include "Interface/definition.h"
+#include "Interface/Definition.h"
 #include "UtilityDefine.h"
 
 
@@ -14,7 +14,7 @@ private:
     DataShownStructure txtData[DIN_end];
 public:
     int Maxpower;
-private:
+public:
     void SetTextData(enum ScreenShowDataType TypeIndex,int Data, int min, int max,
                      int incrementor, float factor, QString formater);
 public:

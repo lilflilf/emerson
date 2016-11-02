@@ -1,4 +1,4 @@
-#include "interface.h"
+#include "Interface.h"
 #include "Modules/Modstart.h"
 #include "Modules/M10INI.h"
 InterfaceClass* InterfaceClass::_instance = 0;
@@ -39,18 +39,18 @@ void InterfaceClass::dlgMaintWarning()
     {
         if(i <= 3)
         {
-            if ((ptr_M10INI->StatusData.currentMaintenanceLimits[i] >=
-                    ptr_M10INI->StatusData.MaintenanceLimits[i]) &&
-                    (ptr_M10INI->StatusData.MaintenanceLimits[i] != 0))
+            if ((StatusData.CurrentMaintenanceLimits[i] >=
+                    StatusData.MaintenanceLimits[i]) &&
+                    (StatusData.MaintenanceLimits[i] != 0))
             {
 
             }
 
         }
         else{
-            if ((ptr_M10INI->StatusData.currentMaintenanceLimits[i] >=
-              ptr_M10INI->StatusData.MaintenanceLimits[i]) &&
-                (ptr_M10INI->StatusData.MaintenanceLimits[i] != 0))
+            if ((StatusData.CurrentMaintenanceLimits[i] >=
+              StatusData.MaintenanceLimits[i]) &&
+                (StatusData.MaintenanceLimits[i] != 0))
             {
 
             }
@@ -58,3 +58,8 @@ void InterfaceClass::dlgMaintWarning()
     }
 }
 
+void InterfaceClass::BackupStatusData()
+{
+    M10INI* _M10INI = M10INI::Instance();
+    _M10INI->Save_StatusData();
+}

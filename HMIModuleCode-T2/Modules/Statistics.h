@@ -5,6 +5,7 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "m10definitions.h"
+#include "Interface/SysConfiguration.h"
 using namespace std;
 
 const int M20_Stat_Points = 128;  //The number of data points in the file
@@ -114,7 +115,7 @@ const string Maint_Log = "Maintlog.mnt";
 class Statistics
 {
 public:
-    SoftLimitElement SoftLimitData[SLIEND];
+    SoftLimitElement SoftLimitData[SLI_Size];
     //Public SoftLimitData(0 To 3) As SoftLimitElement
 
     SpliceStatStats SplicePointers;

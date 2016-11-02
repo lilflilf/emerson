@@ -6,6 +6,7 @@
 //#include "stdlib.h"
 //#include "stdio.h"
 #include "M10definitions.h"
+#include "Interface/definition.h"
 using namespace std;
 
 const int MINWIREINDEX = 0;

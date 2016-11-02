@@ -17,12 +17,6 @@ using namespace std;
 //    TubeShrinker_UnknownMessage,
 //};
 
-enum TEACH_MODE_TYPE{
-    Undefined,
-    Standard,
-    Auto,
-    Sigma,
-};
 
 enum M10EXIT_ACTION{
     ShutdownM10exit,
@@ -56,11 +50,6 @@ enum OPERATOR_SCREEN_WELD_INDICATOR{
 //    HistoryScreen = 36,
 //    AboutScreen = 38,
 //};
-
-enum PWSDefinitions{
-    PWSNotDefined,           //Button will not show in menu (CNTRL+Y shows button)
-    PWSAdministrator,        //Administrator at least is required.
-};
 
 enum SpotDataNames{
     SDNEnergy,
@@ -112,80 +101,6 @@ enum ActualIndexer{      //Indexes for Labels on Setup Screen
 
 };
 
-// Quality Range Variables Created (set), defined under InitializeData
-enum QUAL_RANGE_MARKER{
-    TIME_PLRG = 0,
-    TIME_MSRG,
-    POWER_PLRG,
-    POWER_MSRG,
-    PRE_HGT_PLRG,
-    PRE_HGT_MSRG,
-    HEIGHT_PLRG,
-    HEIGHT_MSRG,
-    FORCE_PLRG,
-    FORCE_MSRG,
-    TIME_CONFRG_PL,
-    POWER_CONFRG_PL,
-    PRE_HGT_CONFRG_PL,
-    HEIGHT_CONFRG_PL,
-    TIME_CONFRG_MS,
-    POWER_CONFRG_MS,
-    PRE_HGT_CONFRG_MS,
-    HEIGHT_CONFRG_MS,
-    ENERGY_ADJ,
-    PRESSURE_ADJ,
-    AMPLITUDE_ADJ,
-    WIDTH_ADJ,
-    QUAL_RANGES
-};
-
-enum SCREEN_MODE{
-    No_SCREEN = 0,
-    Splash_SCREEN,           //For Initial Splash Screen
-    About_SCREEN,            //About Software Form Dialog Screen
-    Main_SCREEN,             //Main Menu Screen
-    Error_SCREEN,            //Dialog Errors Screen
-    Auto_Settings_SCREEN,    //Dialog Screen for Quality Settings used in Automatic Setup Mode
-    Setup_SCREEN,            //When user changes Splice Data on the Run Screen
-    IA_SCREEN,               //IA Settings Screen with Width and Height Corrections
-    Jog_SCREEN,              //Maintence Screen the with the I/O Board shown.
-    Run_SCREEN,              //Main Run Screen with File/Run/Actual Columns
-    Graph_SCREEN,            //Weld Graph Dialog
-    Stats_SCREEN,            //Stat's Screen for Time, Power, Pre-Height, Height
-    Library_SCREEN,          //Create Screen (Part File Library)
-    InputBox_SCREEN,         //Used when brought up by Library or Password Screen, KeyBoard Screen is a child of this Form
-    Build_SCREEN,            //Build Screen were all splices are made
-    Password_SCREEN,         //Password Screen Form
-    Comm_SCREEN,             //Comport & BaudRate Screen under the Menu Screen
-    Maintenance_SCREEN,      //Maintenance Log used to make a Log Entry
-    Catalog_SCREEN,          //Catalog Screen used on Menu Screen & Next Button on the Run Screen
-    Equip_SCREEN,            //Equipment Check Screen
-    Keyboard_SCREEN,         //Keyboard Screen, brings up the AmTech Keyboard
-    Login_SCREEN,            //Login Form, used for Password Validation
-    Message_SCREEN,          //Message screen used mostly for E-Stop Warning
-    Splice_Assy_SCREEN,      //Used for Splice Assembly Image Form during Run Mode
-    Splice_Wiz_SCREEN,       //Splice Wizard called from the Library Screen.
-    Splice_History_SCREEN,   //Splice History Screen"
-    Advanced_SCREEN,
-    Invalid_SCREEN,
-    Operator_SCREEN,         //The first screen
-    FileManager_SCREEN,      // New file manager
-    PartsLoader_SCREEN,      // used when user wants to load one of existing sequence files
-    EditWireChart_SCREEN,    //pops up on edit wire screen
-    EditWire_SCREEN,
-    EditSpliceSequence_SCREEN,
-    Configuration_SCREEN,    //New Configuration Screen
-    ShrinkMode_SCREEN,       //Shrink Mode
-    SoftLimits_SCREEN,       //Soft Limits
-    Administrator_SCREEN,    //Admin screen
-    rename_SCREEN,           //rename Aux
-    ErrorsLog_SCREEN,
-    SavePreset_SCREEN,
-    //New Added
-    CreateNew_SCREEN,
-    WorkOrderLibrary_SCREEN
-};
-
 
 
 //#define LISTVIEWTOP        108
@@ -221,30 +136,13 @@ enum SCREEN_MODE{
 #define ShrinkTubeDefTemp10           260
 #define ShrinkTubeDefTime10           30
 
-enum ActuatorType{
-    ACT2020,
-    ACTXL,
-    ACTTERMINATOR,
-    ACTMOD9,
-    ACTMOD10,
-    ACTMOD10HD,
-    ACTULTRA20,
-    ACTULTRA40,
-    ACTST40,
-    ACTGUN40,
-    ACTMTS20,
-    ACT2032,
-    ACTAUTOTERMINATOR,
-    ACTNEWSPLICER,
-};
-
 //Constant used to depict the latest Revision Code
 #define DEFINEDREVCODE       0x04
 
 #define AdminUsername        QObject::tr("ADMIN")
 #define TechUsername         QObject::tr("TECH")
 
-#define AVERSION_NUM_FILE "VersionNum.txt"
+#define AVERSION_NUM_FILE "VersionNum.ini"
 #define TESTVERSION       QObject::tr("-T5")
 #define DESCRIPTION       QObject::tr("TEST VERSION")
 
@@ -335,44 +233,21 @@ struct M10Part{
     bool Unqualitied;
 };
 
-enum SoftLimitsIndex{
-    SLIUpperControlLimit = 0,    //Based on the screen view of the data
-    SLILowerControlLimit = 1,
-    SLITime = 0,
-    SLIPower = 1,
-    SLIPreHeight = 2,
-    SLIHeight = 3,
-    SLIEND = 4,
-};
+#define HWND_TOPMOST   -1
+#define HWND_NOTOPMOST -2
+
+#define SWP_NOACTIVATE 0x10
+#define SWP_SHOWWINDOW 0x40
 
 #define SWP_NOMOVE 0x02
 #define SWP_NOSIZE 0x01
-
-struct VersionList{
-    string SoftVersion;
-    string ControllerVersion;
-};
+#define FLAGS  (SWP_NOMOVE | SWP_NOSIZE)
 
 #define Run_File_Name  "run_file.dat"
 
 //The IA receive interrupt parses these characters out of the data
 #define IAcomfunctionENQ  0x05         //IA returns "U" when it receives ENQ
 
-enum ShrnkTubeIndex{
-    STIunder = -2,   //Marker
-    STInone,         //Indicates no shrink tube
-    STIR1,           //Raychem shrink tube type 1
-    STIR2,
-    STIR3,
-    STIR4,
-    STIR5,
-    STIR6,
-    STIR7,
-    STIR8,
-    STIR9,
-    STIR10,
-    STIover         //Marker
-};
 enum AuxNames{
     Aux1,
     Aux2,
