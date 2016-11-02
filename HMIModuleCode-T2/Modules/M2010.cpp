@@ -24,10 +24,10 @@ M2010::M2010()
 
 }
 
-void M2010::LoadSequenceData(string sSeqName, bool bFailedLoad, bool bIgnoreParts)
-{
+//void M2010::LoadSequenceData(string sSeqName, bool bFailedLoad, bool bIgnoreParts)
+//{
 
-}
+//}
 /******************************FIXED************************************/
 void M2010::GetLastRunRecord()
 {
@@ -56,10 +56,10 @@ void M2010::PutLastRunRecord(int TypeMade, QString PartName)
     ptr_Utility->WriteToBinaryFile(&RunFileRecord, sFilePath);
 }
 
-void M2010::MakeNormalSplice(M10Part ThisSplice)
-{
+//void M2010::MakeNormalSplice(M10Part ThisSplice)
+//{
 
-}
+//}
 
 /****************************************************************************************************/
 /*The first splice the system sees or used when the load files are a problem.                       */
@@ -87,41 +87,39 @@ int M2010::IncPtrCircular(int ptr, int ptrMAX)
     return ((ptr + 1) % (ptrMAX + 1));
 }
 
-void M2010::ConvertGraphData(string GraphData)
+void M2010::ConvertGraphData(QString GraphData)
 {
 
 }
 
-QString M2010::ParseSerialNumber(string SerialCode)
+QString M2010::ParseSerialNumber(QString SerialCode)
 {
     int i, StringLen, temp2;
-    string temp1, temp3, temp4 = "";
-    stringstream StreamStr;
+    QString temp1, temp3, temp4 = "";
     StringLen = SerialCode.length();
     i = 0;
     while (i< StringLen)
     {
-        temp1 = SerialCode.substr(i,2);
-        sscanf(temp1.c_str(),"%x", &temp2);
-        StreamStr << temp2;
-        temp3 = StreamStr.str();
+        temp1 = SerialCode.mid(i,2);
+        bool bResult;
+        temp2 = temp1.toInt(&bResult,16);
+        temp3 = QString::number(temp2);
         temp4 = temp4 + temp3;
         i += 2;
     }
-    QString str = QString::fromStdString(temp4);
-    return str;
+    return temp4;
 }
 
-string M2010::GetResString(long StringNo)
-{
-    string temp;
-    return temp;
-}
+//string M2010::GetResString(long StringNo)
+//{
+//    string temp;
+//    return temp;
+//}
 
-void M2010::NumberOnly(int KeyAscii)
-{
+//void M2010::NumberOnly(int KeyAscii)
+//{
 
-}
+//}
 
 /**********************************************************************************/
 /*This function loads temporary preset or the saved preset in the Splice structure*/
@@ -132,13 +130,13 @@ void M2010::load_splice_file()
     SaveReplace *ptr_SaveReplace = SaveReplace::Instance();
     Statistics  *ptr_Statistics  = Statistics::Instance();
     M10runMode  *ptr_M10runMode  = M10runMode::Instance();
-    M10INI      *ptr_M10INI      = M10INI::Instance();
+//    M10INI      *ptr_M10INI      = M10INI::Instance();
     ModRunSetup *ptr_ModRunSetup = ModRunSetup::Instance();
     UtilityClass* _Utility = UtilityClass::Instance();
 
 
     //This function will load the splice file present in run record.
-    int i = 0;
+//    int i = 0;
 
     if (PresetChanged == true)
        Splice = TempPreset;
@@ -214,7 +212,7 @@ void M2010::UpdateIAfields()
 
 void M2010::ReZeroSpliceData()
 {
-    int i,j;
+//    int i,j;
     MakeDefaultSplice(Splice);
     //Kill the first wire in the default splice
     Splice.Area = 0;
@@ -238,15 +236,15 @@ void M2010::UpdateThisSplice(M10Part ThisSplice)
     int FileNumber;
 }
 
-void M2010::SendNWmsgStruct(ErrMsgStruct MsgStruct[])
-{
+//void M2010::SendNWmsgStruct(ErrMsgStruct MsgStruct[])
+//{
 
-}
+//}
 
-void M2010::SendNWmsg(string sErrPart, string sErr)
-{
+//void M2010::SendNWmsg(string sErrPart, string sErr)
+//{
 
-}
+//}
 
 /*************************************************************************************/
 /* This routine replaces the many, many file accesses in the old program             */

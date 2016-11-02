@@ -36,6 +36,7 @@ public:
     Status_Data tempStatusData;         //Used by routines before an OK or Save
     VersionList PreviousVersions;
     VersionList CurrentVersions;
+    PresetElement CurrentSplice;
 public:
     void cMsgBox(struct BransonMessageBox* MsgBox);
     void dlgMaintWarning();

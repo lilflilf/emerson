@@ -137,12 +137,11 @@ struct System_Configuration{
    bool Mm2Awg;
    int LockAlarm;
    bool Shrink;
-//   Cooling As Boolean
-//   CoolingEnergy As Boolean
    int SequenceError;
    int DoubleClick;
    int CoolingDur;
    int CoolingDel;
+   int CoolingTooling;
    int CoolingMode;
    int Machineflags[4];
    int StartScreen;

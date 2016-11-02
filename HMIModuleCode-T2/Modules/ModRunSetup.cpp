@@ -32,10 +32,9 @@ void ModRunSetup::DeleteStatTempFiles()
 void ModRunSetup::M10initiate(bool bLoadFail)
 {
     //Initialize system
-    int FileNumber, i;
     bool SearchResult;
     M2010  *ptr_M2010  = M2010::Instance();
-    MDefine *ptr_MDefine = MDefine::Instance();
+//    MDefine *ptr_MDefine = MDefine::Instance();
     SaveReplace *ptr_SaveReplace = SaveReplace::Instance();
 
     ptr_M2010->M10Run.Sequence_Done = false;
@@ -123,7 +122,7 @@ void ModRunSetup::M10initiate(bool bLoadFail)
     }
 }
 
-void ModRunSetup::Start_Run(int ModeLabel, int Onlycolorchange)
-{
+//void ModRunSetup::Start_Run(int ModeLabel, int Onlycolorchange)
+//{
 
-}
+//}

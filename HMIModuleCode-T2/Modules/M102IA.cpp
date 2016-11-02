@@ -30,25 +30,25 @@ void M102IA::PackHexRecord()
         delete []RawDataGraph;
 }
 
-void M102IA::SetHighByte(int ByteNo, unsigned short Data)
-{
+//void M102IA::SetHighByte(int ByteNo, unsigned short Data)
+//{
 
-}
+//}
 
-void M102IA::SetLowByte(int ByteNo, unsigned short Data)
-{
+//void M102IA::SetLowByte(int ByteNo, unsigned short Data)
+//{
 
-}
+//}
 
-void M102IA::LittleEndianWord(int HighByte, unsigned short Data)
-{
+//void M102IA::LittleEndianWord(int HighByte, unsigned short Data)
+//{
 
-}
+//}
 
-void M102IA::sndPreset2IA(int PresetNo)
-{
+//void M102IA::sndPreset2IA(int PresetNo)
+//{
 
-}
+//}
 
 
 //Following is the Public Functions
@@ -59,7 +59,7 @@ void M102IA::Generate_Beep(int BeepTime)
     SendIACommand(IAComBeep, BeepTime);
 }
 
-void M102IA::HexLineCheck(string HexLineData, bool &HexLineCheckOK)
+void M102IA::HexLineCheck(QString HexLineData, bool &HexLineCheckOK)
 {
 //    this function will check for the error of receiving data.
 //    If any data lost or corrupted then it will be detected by this function.
@@ -67,16 +67,17 @@ void M102IA::HexLineCheck(string HexLineData, bool &HexLineCheckOK)
     unsigned int datalength;
     int SumCount;
     int i;
-    string strTemp;
+    QString strTemp;
     HexLineCheckOK = true;
-    if (HexLineData.substr(0,1) != ":")
+    if (HexLineData.left(1) != ":")
     {
         HexLineCheckOK = false;
         return;
     }
     SumCount = (HexLineData.length() - 3) / 2;      //Count for sum check (from 0)
     LengthCheck = SumCount - 4;                     //Data count in string
-    sscanf(HexLineData.substr(2,2).c_str(), "%x", &datalength);
+    bool bResult;
+    datalength = HexLineData.mid(2,2).toInt(&bResult, 16);
 
     if (LengthCheck != datalength)
     {
@@ -84,12 +85,10 @@ void M102IA::HexLineCheck(string HexLineData, bool &HexLineCheckOK)
         return;
     }
     DataSum = 0;
-    for(i = 0; i < SumCount; i++)
+    for(i = 0; i <= SumCount; i++)
     {
-       strTemp = HexLineData.substr(2 * i + 2, 2);
-       int tmpInt = 0;
-       sscanf(strTemp.c_str(), "%x", &tmpInt);
-       DataSum = DataSum + tmpInt;
+       strTemp = HexLineData.mid(2 * i + 2, 2);
+       DataSum = DataSum + strTemp.toInt(&bResult, 16);
     }
     if ((DataSum & 0xFF) != 0){
         HexLineCheckOK = false;
@@ -97,12 +96,12 @@ void M102IA::HexLineCheck(string HexLineData, bool &HexLineCheckOK)
     }
 }
 
-void M102IA::HexLineBufferCheck(string InputLine)
+void M102IA::HexLineBufferCheck(QString InputLine)
 {
 //    This function is to force a buffer on the incoming data so it can't be overwritten
     static int DataSignature;          //Needs to be almost global in scope
     static bool HexLineCheckOK;        //Same here
-    string tmpRecord = InputLine.substr(8, 2);
+    QString tmpRecord = InputLine.mid(8, 2);
     if (tmpRecord == "00") //Data record: add to data structure
     {
         if (HexLineCheckOK == true)
@@ -125,19 +124,20 @@ void M102IA::HexLineBufferCheck(string InputLine)
     else if ((tmpRecord == "02") ||   //Not used in our system (extended address record)
         (tmpRecord == "03"))   //Header Record, Initialize the data
     {
-        IAstructure = "";
+        IAstructure.clear();
         HexLineCheck(InputLine, HexLineCheckOK);
         if (HexLineCheckOK == true){
-            string tmpStr = InputLine.substr(12, 2) + InputLine.substr(10, 2);
-            sscanf(tmpStr.c_str(), "%x", &DataSignature);
+            QString tmpStr = InputLine.mid(12, 2) + InputLine.mid(10, 2);
+            bool bResult;
+            DataSignature = tmpStr.toInt(&bResult,16);
         }
     }
 }
 
-int M102IA::MakeHexNibble(int InNumber)
+char M102IA::MakeHexNibble(int InNumber)
 {
     //This function will break the integer to nibbles.
-    int Result = -1;
+    char Result = -1;
     if ((InNumber < 0) || (InNumber > 15))
     {
        Result = -1;
@@ -150,24 +150,20 @@ int M102IA::MakeHexNibble(int InNumber)
     return Result;
 }
 
-string M102IA::MakeHexByte(int InNumber)
+QString M102IA::MakeHexByte(int InNumber)
 {
-    string ResultStr = "";
     InNumber = InNumber & 0xFF;
-    char InChar[2];
-    InChar[0] = MakeHexNibble(InNumber/16);
-    InChar[1] = MakeHexNibble(InNumber % 16);
-    stringstream Stream;
-    Stream << InChar;
-    ResultStr = Stream.str();
-    return ResultStr;
+    QByteArray Buffer(2, 0);
+    Buffer.insert(0, MakeHexNibble(InNumber/16));
+    Buffer.insert(1, MakeHexNibble(InNumber % 16));
+    return Buffer.data();
 }
 
-string M102IA::MakeHexWord(int InNumber)
+QString M102IA::MakeHexWord(int InNumber)
 {
     //Returns "little endian" string from number, Caution: Must be less than 0x10000
     //Handles all numbers as unsigned
-    string ResultStr = "";
+    QString ResultStr = "";
     unsigned short BigFlag, TopByte, BotByte;
     BigFlag = InNumber & 0x8000;     //Check for top bit
     TopByte = (InNumber & 0x7FFF) / 256;
@@ -198,22 +194,22 @@ void M102IA::IACommand(IACommands CommandNumber, int SimNo)
 //New Command has also been implemented which sends parameters related to Amplitude Step
 void M102IA::SendIACommand(IACommands CommandNumber, int CommandData)
 {
-    int SumCheck, datalength, InChar;
-    unsigned int i, length;
-    string strTemp, OutStr;
+    int SumCheck, datalength;
+    int i, length;
+    QString strTemp, OutStr;
     MDefine *ptr_MDefine = MDefine::Instance();
     M2010   *ptr_M2010   = M2010  ::Instance();
     M10INI  *ptr_M10INI  = M10INI ::Instance();
     ModRunSetup *ptr_ModRunSetup = ModRunSetup::Instance();
-    InterfaceClass *_Interface = InterfaceClass::Instance();
+//    InterfaceClass *_Interface = InterfaceClass::Instance();
     IACommandError = 0;
     if ((CommandNumber > IAComEnd) || (CommandNumber < 2))
     {
         IACommandError = -1;
         return;
     }
-    //If OfflineModeEnabled = True Then Exit Sub
-    if ((CommandNumber == IAComSetRunMode) && (CommandData = 0))  EnableAbortButton1 = false;
+    if ((CommandNumber == IAComSetRunMode) && (CommandData = 0))
+        EnableAbortButton1 = false;
     if ((CommandNumber = IAComSetRunMode) && (CommandData = 1) &&
             (ptr_MDefine->ModularSequenceDone == true) &&
             (ptr_MDefine->FlagModularProduction == true))
@@ -241,20 +237,23 @@ void M102IA::SendIACommand(IACommands CommandNumber, int CommandData)
              Data[0] = 0;
         break;
         case IAComSetCooling:
-            length = 4;
+            length = 6;
             switch (ptr_M10INI->TempSysConfig.CoolingMode)
             {
                 case ENERGYMODE:
                    Data[0] = -1;
                    Data[1] = ptr_M10INI->TempSysConfig.CoolingDel;
+                   Data[2] = ptr_M10INI->TempSysConfig.CoolingTooling;
                 break;
                 case OFF:
                    Data[0] = 0;
                    Data[1] = ptr_M10INI->TempSysConfig.CoolingDel;
+                   Data[2] = ptr_M10INI->TempSysConfig.CoolingTooling;
                 break;
                 default:
                    Data[0] = ptr_M10INI->TempSysConfig.CoolingDur;
                    Data[1] = ptr_M10INI->TempSysConfig.CoolingDel;
+                   Data[2] = ptr_M10INI->TempSysConfig.CoolingTooling;
                 break;
 
              }
@@ -311,12 +310,11 @@ void M102IA::SendIACommand(IACommands CommandNumber, int CommandData)
     for (datalength = 1; i <= (length / 2); i++)
         OutStr = OutStr + MakeHexWord(Data[datalength - 1]);
 
-
+    bool bResult;
     for (i = 0; i < (OutStr.length() / 2); i++)
     {
-          strTemp = OutStr.substr(2 * i + 2, 2);
-          sscanf(strTemp.c_str(),"%x",&InChar);
-          SumCheck = SumCheck + InChar;
+          strTemp = OutStr.mid(2 * i + 2, 2);
+          SumCheck = SumCheck + strTemp.toInt(&bResult, 16);
     }
     SumCheck = (0 - SumCheck) & 0xFF;
     OutStr = OutStr + MakeHexByte(SumCheck) + "\n";
@@ -327,7 +325,8 @@ void M102IA::SendIACommand(IACommands CommandNumber, int CommandData)
     #else
         if (ptr_ModRunSetup->OfflineModeEnabled == false)
         {
-            BransonSerial::comIAport->write(OutStr.c_str(), OutStr.length());
+            QByteArray Buffer = OutStr.toLatin1();
+            BransonSerial::comIAport->write(Buffer);
             BransonSerial::comIAport->waitForBytesWritten(-1);
             char Command = 0x11;
             BransonSerial::comIAport->write(&Command,1);
@@ -363,20 +362,21 @@ int M102IA::MakeHexNibbleNumber(char HexNibble)
     return Result;
 }
 
-int M102IA::MakeHexByteNumber(string HexByte)
+int M102IA::MakeHexByteNumber(QString HexByte)
 {
     int Result = 0;
-    Result = 16 * MakeHexNibbleNumber(HexByte[0]) +
-            MakeHexNibbleNumber(HexByte[1]);
+    QByteArray Array = HexByte.toLatin1();
+    Result = 16 * MakeHexNibbleNumber(Array.at(0)) +
+            MakeHexNibbleNumber(Array.at(1));
     return Result;
 }
 
-int M102IA::MakeHexWordNumber(string HexWord)
+int M102IA::MakeHexWordNumber(QString HexWord)
 {
     //Makes the first four hex characters into number (input is little endian)
     int temp1, IntReturn;
-    temp1 = MakeHexByteNumber(HexWord.substr(0, 2)) +
-            256 * MakeHexByteNumber(HexWord.substr(2, 2));
+    temp1 = MakeHexByteNumber(HexWord.mid(0, 2)) +
+            256 * MakeHexByteNumber(HexWord.mid(2, 2));
     temp1 = temp1 & 0xFFFF;
     if ((temp1 & 0x8000) != 0)
     {
@@ -389,16 +389,16 @@ int M102IA::MakeHexWordNumber(string HexWord)
     return IntReturn;
 }
 
-long M102IA::MakeHexWordNumberLong(string HexWord)
+long M102IA::MakeHexWordNumberLong(QString HexWord)
 {
     //Make the first eight characters into a signed long number.
     //Little Endian "67452301" = 0x01234567
     long LSBs, MSBs, Result;
 
     //Collect Least Significant Bytes
-    LSBs = MakeHexByteNumber(HexWord.substr(0,2)) + 0x100 * MakeHexByteNumber(HexWord.substr(2,2));
+    LSBs = MakeHexByteNumber(HexWord.mid(0,2)) + 0x100 * MakeHexByteNumber(HexWord.mid(2,2));
     //Collect Most Significant Bytes
-    MSBs = MakeHexByteNumber(HexWord.substr(4,2)) + 0x100 * MakeHexByteNumber(HexWord.substr(6,2));
+    MSBs = MakeHexByteNumber(HexWord.mid(4,2)) + 0x100 * MakeHexByteNumber(HexWord.mid(6,2));
     //Test for negative numbers
     if ((MSBs & 0x8000) != 0) // Number is negative
     {
@@ -449,15 +449,15 @@ void M102IA::GetCstringFromHex(string InputString, string &OutputString,
     }
 }
 
-long M102IA::GetLongValue(string InputString, int Ref)
+long M102IA::GetLongValue(QString InputString, int Ref)
 {
-   return MakeHexWordNumberLong(InputString.substr(Ref, 8));
+   return MakeHexWordNumberLong(InputString.mid(Ref, 8));
 }
 
 //Retrieves data from the input strings sent by the controller.
 //Depending on the DataSignature respective values are extracted from the received HexString.
 //Amplitude2 value required for Amplitude Stepping is also added
-int M102IA::ParseHexStructure(string HexString, int DataSignature)
+int M102IA::ParseHexStructure(QString HexString, int DataSignature)
 {
     M10INI *ptr_M10INI   = M10INI::Instance();
     M2010  *ptr_M2010    = M2010 ::Instance();
@@ -466,12 +466,13 @@ int M102IA::ParseHexStructure(string HexString, int DataSignature)
     ModRunSetup *ptr_ModRunSetup = ModRunSetup::Instance();
     UtilityClass* _Utility = UtilityClass::Instance();
     InterfaceClass *_Interface = InterfaceClass::Instance();
-    const string Colon = ":";
+    const QString Colon = ":";
 
     int i;
     int Index, temp, Div;
-    string TempString = "";
-    string PowerString;
+    QString TempString = "";
+    QString PowerString;
+    struct BransonMessageBox tmpMsgBox;
     ptr_M10INI->GlobalSignature = DataSignature;
     switch(DataSignature)
     {
@@ -492,31 +493,33 @@ int M102IA::ParseHexStructure(string HexString, int DataSignature)
         //   :0F 9978 00 03 OD01 2500 D300 FAFF 0D01 7301 0000 5C
         //   :01 0000 01 00 FE
         //--First data record
-        IAactual.Energy = MakeHexWordNumber(HexString.substr(25, 4));
-        IAactual.Width = MakeHexWordNumber(HexString.substr(29, 4)); //+ Splice.WidthCorr
-        IAactual.Time = MakeHexWordNumber(HexString.substr(34, 4));
+        IAactual.Energy = MakeHexWordNumber(HexString.mid(26, 4));
+        IAactual.Width = MakeHexWordNumber(HexString.mid(30, 4)); //+ Splice.WidthCorr
+        IAactual.Time = MakeHexWordNumber(HexString.mid(34, 4));
         // This Time value has been divided by 5 in firmware, so we only need to divided it by 2 again.
         // So, this time value is able to reduced 10 times.
         IAactual.Time = IAactual.Time / 2;
         //--Need to piece a together to parts here because of Jim's string
-        TempString = HexString.substr(39, 2) + HexString.substr(52, 2);
+        TempString = HexString.mid(40, 2) + HexString.mid(53, 2);
         IAactual.Power = MakeHexWordNumber(TempString);
         //--Need to use the raw peakpower to do calculation
         Div = (_Interface->StatusData.Soft_Settings.SonicGenWatts / 200);
-        IAactual.Power = MakeHexByteNumber(HexString.substr(37, 2));
+        IAactual.Power = MakeHexByteNumber(HexString.mid(38, 2));
         if (_Interface->StatusData.Soft_Settings.SonicGenWatts > 200)
            IAactual.Power = IAactual.Power * Div;
         else
            IAactual.Power = IAactual.Power * (_Interface->StatusData.Soft_Settings.SonicGenWatts / 200);
         //--Second data record
-        IAactual.Preheight = MakeHexWordNumber(HexString.substr(54, 4));
-        IAactual.Amplitude = MakeHexWordNumber(HexString.substr(58, 4));
-        IAactual.Height = MakeHexWordNumber(HexString.substr(62, 4)); //+ Splice.HeightCorr
-        IAactual.Amplitude2 = MakeHexWordNumber(HexString.substr(66, 4));
-        IAactual.PPHeight = MakeHexWordNumber(HexString.substr(70, 4));
-        IAactual.Force = MakeHexWordNumber(HexString.substr(74, 4));
-        //IAactual.Alarmflags = MakeHexWordNumber(HexString.substr(78, 4));
-        IAactual.Alarmflags = MakeHexWordNumberLong(HexString.substr(78, 8));
+        IAactual.Preheight = MakeHexWordNumber(HexString.mid(55, 4));
+        IAactual.Amplitude = MakeHexWordNumber(HexString.mid(59, 4));
+        IAactual.Height = MakeHexWordNumber(HexString.mid(63, 4)); //+ Splice.HeightCorr
+        IAactual.Amplitude2 = MakeHexWordNumber(HexString.mid(67, 4));
+        IAactual.PPHeight = MakeHexWordNumber(HexString.mid(71, 4));
+        IAactual.Pressure = MakeHexWordNumber(HexString.mid(75, 4));
+        //IAactual.Alarmflags = MakeHexWordNumber(HexString.mid(79, 4));
+        IAactual.Alarmflags = MakeHexWordNumberLong(HexString.mid(83, 8));
+        if ((IAactual.Alarmflags & 0x4000) == 0x4000)
+            IACommand(IAComHostReady, 1);
         //--Set Correct Flag
         ptr_M2010->ReceiveFlags.WELDdata = true;
 //        if (ptr_M2010->Child_Mode == Graph_SCREEN)
@@ -543,15 +546,15 @@ int M102IA::ParseHexStructure(string HexString, int DataSignature)
         PowerString = "";
         StartData = 18;      //First data character
         tmpIndex = 0;
-        Total = MakeHexWordNumber(HexString.substr((tmpIndex + 10), 4));
-        RawDataGraph = new string[Total];
+        Total = MakeHexWordNumber(HexString.mid((tmpIndex + 10), 4));
+        RawDataGraph = new QString[Total];
         for (i = 0; i < StringCount; i++)
         {
  //            PowerString = PowerString & Mid(HexString, StartData, 32)
  //            StartData = StartData + 51
-            Total = MakeHexWordNumber(HexString.substr((tmpIndex + 10), 4));
-            num = MakeHexWordNumber(HexString.substr(tmpIndex + 14, 4));
-            RawDataGraph[num] = HexString.substr(tmpIndex + 1, 51);
+            Total = MakeHexWordNumber(HexString.mid((tmpIndex + 10), 4));
+            num = MakeHexWordNumber(HexString.mid(tmpIndex + 14, 4));
+            RawDataGraph[num] = HexString.mid(tmpIndex + 1, 51);
             tmpIndex = tmpIndex + 51;
         }
 
@@ -559,17 +562,17 @@ int M102IA::ParseHexStructure(string HexString, int DataSignature)
         {
             //Take off the overhead and tack the string onto the Power String
             //PowerString = PowerString & Mid(HexString, StartData, LastString - 19)
-            Total = MakeHexWordNumber(HexString.substr((tmpIndex + 10), 4));
-            num = MakeHexWordNumber(HexString.substr(tmpIndex + 14, 4));
-            Datalen = MakeHexByteNumber(HexString.substr(tmpIndex + 2, 4));
-            RawDataGraph[num] = HexString.substr(tmpIndex + 1, LastString);
+            Total = MakeHexWordNumber(HexString.mid((tmpIndex + 10), 4));
+            num = MakeHexWordNumber(HexString.mid(tmpIndex + 14, 4));
+            Datalen = MakeHexByteNumber(HexString.mid(tmpIndex + 2, 4));
+            RawDataGraph[num] = HexString.mid(tmpIndex + 1, LastString);
             if ((Datalen - 4) != ((LastString - 19) / 2)) num = num - 1;
         }
         if ((num = (Total - 1)) || (_Interface->StatusData.KeepDailyHistory == false))
         {
             for (i = 0; i < StringCount;i++)
-                PowerString = PowerString + RawDataGraph[i].substr(StartData, 32);
-            PowerString = PowerString + RawDataGraph[i].substr(StartData, (RawDataGraph[i].length() - 19));
+                PowerString = PowerString + RawDataGraph[i].mid(StartData, 32);
+            PowerString = PowerString + RawDataGraph[i].mid(StartData, (RawDataGraph[i].length() - 19));
         }
         else
         {
@@ -585,16 +588,17 @@ int M102IA::ParseHexStructure(string HexString, int DataSignature)
         ptr_M2010->ConvertGraphData(PowerString);
         ptr_M2010->ReceiveFlags.PowerData = true;
         ptr_M10INI->PowerDataReady = true;
+        delete [] RawDataGraph;
         break;
     case IASigSerialNumber:
-        SerialNoData = ptr_M2010->ParseSerialNumber(HexString.substr(10, 32));
+        SerialNoData = ptr_M2010->ParseSerialNumber(HexString.mid(10, 32));
         ptr_M2010->ReceiveFlags.SNdata = true;
         break;
     case IASigHeightCal:
-        HeightCalResult = MakeHexWordNumber(HexString.substr(10, 4));
+        HeightCalResult = MakeHexWordNumber(HexString.mid(10, 4));
         if (HeightCalResult == 1)
         {
-            DownSpeed = MakeHexWordNumber(HexString.substr(14, 4));
+            DownSpeed = MakeHexWordNumber(HexString.mid(14, 4));
 //            dlgCalibHeight.UniLabel6.Caption = GetResString(1106) & " = " & Format(DownSpeed / 100, "0.00 mm/sec")
         }
         if (HeightCalResult != 1)  ptr_M2010->ReceiveFlags.CalibrationDone = true;
@@ -609,13 +613,13 @@ int M102IA::ParseHexStructure(string HexString, int DataSignature)
         //                         25           29    33    37   41   45   49
         //   :0E 99BB 00 C7 40 0B 00 00 00 03   00 7C 00 78 00 8A 00 66 00 A5
         //   :01 0000 01 00 FE
-        IOstatus.IO = MakeHexWordNumberLong(HexString.substr(10, 8));
-        IOstatus.AdjHeight = MakeHexWordNumber(HexString.substr(18, 4));
-        IOstatus.AbsHeight = MakeHexWordNumber(HexString.substr(22, 4));
-        IOstatus.ACV = MakeHexWordNumber(HexString.substr(26, 4));
-        IOstatus.ACTap = MakeHexWordNumber(HexString.substr(30, 4));
-        IOstatus.ACmax = MakeHexWordNumber(HexString.substr(34, 4));
-        IOstatus.ACmin = MakeHexWordNumber(HexString.substr(38, 4));
+        IOstatus.IO = MakeHexWordNumberLong(HexString.mid(10, 8));
+        IOstatus.AdjHeight = MakeHexWordNumber(HexString.mid(18, 4));
+        IOstatus.AbsHeight = MakeHexWordNumber(HexString.mid(22, 4));
+        IOstatus.ACV = MakeHexWordNumber(HexString.mid(26, 4));
+        IOstatus.ACTap = MakeHexWordNumber(HexString.mid(30, 4));
+        IOstatus.ACmax = MakeHexWordNumber(HexString.mid(34, 4));
+        IOstatus.ACmin = MakeHexWordNumber(HexString.mid(38, 4));
 
         //--Adjust data fields that are part of another command
         HEIGHTbuffer[0] = IOstatus.AdjHeight;
@@ -624,22 +628,22 @@ int M102IA::ParseHexStructure(string HexString, int DataSignature)
         ptr_M2010->ReceiveFlags.IOdata = true;
         break;
     case IASigSonicHits:
-        SonicHitsStrData[3] = HexString.substr(10, 2);
-        SonicHitsStrData[2] = HexString.substr(12, 2);
-        SonicHitsStrData[1] = HexString.substr(14, 2);
-        SonicHitsStrData[0] = HexString.substr(16, 2);
-        SonicHitsData = "";
+        SonicHitsStrData[3] = HexString.mid(10, 2);
+        SonicHitsStrData[2] = HexString.mid(12, 2);
+        SonicHitsStrData[1] = HexString.mid(14, 2);
+        SonicHitsStrData[0] = HexString.mid(16, 2);
+        SonicHitsData.clear();
         for (i = 0; i< 4; i++)
             SonicHitsData = SonicHitsData + SonicHitsStrData[i];
         ptr_M2010->ReceiveFlags.SonicHitsData = true;
         break;
     case IASigPressure:
-        PressureRead = MakeHexWordNumber(HexString.substr(10, 4));
+        PressureRead = MakeHexWordNumber(HexString.mid(10, 4));
         ptr_M2010->ReceiveFlags.PressureData = true;
         break;
     case IASigIOswitch:
         //--FootSwitch IO data - Data Signature = "09"
-        LastIOSwitchData.IO = MakeHexWordNumberLong(HexString.substr(10, 8));
+        LastIOSwitchData.IO = MakeHexWordNumberLong(HexString.mid(10, 8));
         //LastIOSwitchData.WordData = MakeHexWordNumber(Mid(HexString, 25, 4))
         IOstatus.IO = LastIOSwitchData.IO;
 //        LastIOstatus.IO = CLng(LastIOSwitchData.WordData)
@@ -647,7 +651,7 @@ int M102IA::ParseHexStructure(string HexString, int DataSignature)
 //        CheckIAControl
         break;
     case IASigAbortEnable:
-        temp = MakeHexWordNumber(HexString.substr(10, 4));
+        temp = MakeHexWordNumber(HexString.mid(10, 4));
         if (temp == 1)
             EnableAbortButton1 = true;
         else
@@ -658,9 +662,9 @@ int M102IA::ParseHexStructure(string HexString, int DataSignature)
     case IASigHistoryPar:        //"0B"
     case IASigMemory:            //"0C"
     case IASigHeight:            //"0D"
-        CalibHeight = MakeHexWordNumber(HexString.substr(10, 4));
-        RawHeight = MakeHexWordNumber(HexString.substr(14, 4));
-        OpenChkHeight = MakeHexWordNumber(HexString.substr(18, 4));
+        CalibHeight = MakeHexWordNumber(HexString.mid(10, 4));
+        RawHeight = MakeHexWordNumber(HexString.mid(14, 4));
+        OpenChkHeight = MakeHexWordNumber(HexString.mid(18, 4));
         ptr_M2010->ReceiveFlags.HeightData = true;
         break;
     case IASigWidth:             //"0E"
@@ -673,31 +677,30 @@ int M102IA::ParseHexStructure(string HexString, int DataSignature)
         //        Else
         //            WIDTHbuffer(0) = MakeHexWordNumber(Mid(HexString, 10, 4))
         //        End If
-        WIDTHbuffer[0] = MakeHexWordNumber(HexString.substr(10, 4));
-        WIDTHbuffer[1] = MakeHexWordNumber(HexString.substr(14, 4));
+        WIDTHbuffer[0] = MakeHexWordNumber(HexString.mid(10, 4));
+        WIDTHbuffer[1] = MakeHexWordNumber(HexString.mid(14, 4));
         ptr_M2010->ReceiveFlags.WIDTHdata = true;
         break;
     case IASigPWRrating:         //"0F"
         _Interface->StatusData.Soft_Settings.SonicGenWatts =
-                MakeHexWordNumber(HexString.substr(10, 4));
+                MakeHexWordNumber(HexString.mid(10, 4));
         _Utility->Maxpower = int(1.2 * _Interface->StatusData.Soft_Settings.SonicGenWatts);
         for (Index = 0; Index <= 6; Index++)
         {
              ptr_M10INI->Pwr_Prefix_Data[Index] = Index *
                      int(0.2 * _Interface->StatusData.Soft_Settings.SonicGenWatts);
         }
-//        With Splice
-//        SetTextData DINPowerPl, .power.Plus, .RecData.power.Plus, MINPOWER, _
-//        CLng(Maxpower), 100, 1, "0W"
-//        SetTextData DINPowerMs, .power.Minus, .RecData.power.Minus, MINPOWER, _
-//        CLng(StatusData.Soft_Settings.SonicGenWatts), 100, 1, "0W"
-//        End With
+
+        _Utility->SetTextData(DINPowerPl, _Interface->CurrentSplice.QualitySetting.Power.Plus, MINPOWER,
+                    _Utility->Maxpower, 100, 1, "%dW");
+        _Utility->SetTextData(DINPowerMs, _Interface->CurrentSplice.QualitySetting.Power.Minus, MINPOWER,
+                    _Interface->StatusData.Soft_Settings.SonicGenWatts, 100, 1, "%dW");
         ptr_M2010->ReceiveFlags.POWERrating = true;
         break;
     case IASigSequenceTable:     // Data Signature = "10"
     case IASigHornAmplitude:
 //        --Calibrated Horn Amp. Value - Data Signature = "11"
-        _Interface->StatusData.Soft_Settings.Horn_Calibrate = MakeHexWordNumber(HexString.substr(10, 4));
+        _Interface->StatusData.Soft_Settings.Horn_Calibrate = MakeHexWordNumber(HexString.mid(10, 4));
         ptr_M2010->ReceiveFlags.HORNamplitude = true;
         break;
     case IASigSystemID:          //"12"
@@ -707,9 +710,9 @@ int M102IA::ParseHexStructure(string HexString, int DataSignature)
         break;
     case IASigMaintCount:        //"13"
     case IASigActuator:
-        _Interface->StatusData.MachineType = (enum ActuatorType)MakeHexWordNumber(HexString.substr(10, 4));
-        _Interface->StatusData.ActuatorMode = MakeHexWordNumber(HexString.substr(14, 4));
-        _Interface->StatusData.AntisideSpliceTime = MakeHexWordNumber(HexString.substr(18, 4));
+        _Interface->StatusData.MachineType = (enum ActuatorType)MakeHexWordNumber(HexString.mid(10, 4));
+        _Interface->StatusData.ActuatorMode = MakeHexWordNumber(HexString.mid(14, 4));
+        _Interface->StatusData.AntisideSpliceTime = MakeHexWordNumber(HexString.mid(18, 4));
         switch (_Interface->StatusData.MachineType)
         {
             case ACTULTRA20:
@@ -724,28 +727,29 @@ int M102IA::ParseHexStructure(string HexString, int DataSignature)
         }
         break;
     case IASigWidthZero:
-        ptr_ModRunSetup->tempWidthOffsetVal = MakeHexWordNumber(HexString.substr(10, 4));
+        ptr_ModRunSetup->tempWidthOffsetVal = MakeHexWordNumber(HexString.mid(10, 4));
         ptr_M2010->ReceiveFlags.CalibrationDone = true;
         break;
     case IAsigCooling:
-        _Interface->StatusData.CurrentCoolingDur = MakeHexWordNumber(HexString.substr(10, 4));
-        _Interface->StatusData.CurrentCoolingDel = MakeHexWordNumber(HexString.substr(14, 4));
+        _Interface->StatusData.CurrentCoolingDur = MakeHexWordNumber(HexString.mid(10, 4));
+        _Interface->StatusData.CurrentCoolingDel = MakeHexWordNumber(HexString.mid(14, 4));
+        _Interface->StatusData.CurrentCoolingTooling = MakeHexWordNumber(HexString.mid(18,4));
         break;
     case IASigHeightZero:
-        ptr_ModRunSetup->tempHeightOffsetval = MakeHexWordNumber(HexString.substr(10, 4));
+        ptr_ModRunSetup->tempHeightOffsetval = MakeHexWordNumber(HexString.mid(10, 4));
         break;
     case IASigDataLockOnAlarm:
-         _Interface->StatusData.LockonAlarm = MakeHexWordNumber(HexString.substr(10, 4));
+         _Interface->StatusData.LockonAlarm = MakeHexWordNumber(HexString.mid(10, 4));
         break;
     case IASigRunMode:
-        _Interface->StatusData.RunMode = MakeHexWordNumber(HexString.substr(10, 4));
+        _Interface->StatusData.RunMode = MakeHexWordNumber(HexString.mid(10, 4));
         ptr_M2010->ReceiveFlags.FootPadelDATA = true;
         break;
     case IASigMachineFlags:
-        _Interface->StatusData.Machineflags[0] = MakeHexWordNumber(HexString.substr(10, 4));
-        _Interface->StatusData.Machineflags[1] = MakeHexWordNumber(HexString.substr(14, 4));
-        _Interface->StatusData.Machineflags[2] = MakeHexWordNumber(HexString.substr(18, 4));
-        _Interface->StatusData.Machineflags[3] = MakeHexWordNumber(HexString.substr(22, 4));
+        _Interface->StatusData.Machineflags[0] = MakeHexWordNumber(HexString.mid(10, 4));
+        _Interface->StatusData.Machineflags[1] = MakeHexWordNumber(HexString.mid(14, 4));
+        _Interface->StatusData.Machineflags[2] = MakeHexWordNumber(HexString.mid(18, 4));
+        _Interface->StatusData.Machineflags[3] = MakeHexWordNumber(HexString.mid(22, 4));
         break;
     case IASigDataMaintCntr:
         _Interface->StatusData.CurrentMaintenanceLimits[0] = GetLongValue(HexString, 10);
@@ -762,20 +766,27 @@ int M102IA::ParseHexStructure(string HexString, int DataSignature)
         break;
     case IASigDataCycleCntr:
         _Interface->StatusData.CycleCount = GetLongValue(HexString, 10);
-//        Save_StatusData False
+        ptr_M10INI->Save_StatusData(false);
         break;
     case IASigReadPower:
-        ADPower = MakeHexWordNumber(HexString.substr(10, 4));
+        ADPower = MakeHexWordNumber(HexString.mid(10, 4));
+        break;
+    case IASigCommError:
+        tmpMsgBox.MsgTitle = QObject::tr("ERROR");
+        tmpMsgBox.MsgPrompt = QObject::tr("Communication Error!");
+        tmpMsgBox.TipsMode = Critical;
+        tmpMsgBox.func_ptr = NULL;
+        _Interface->cMsgBox(&tmpMsgBox);
         break;
     case IASigControllerVer:
-        ContollerVersion = ptr_M2010->ParseSerialNumber(HexString.substr(10, 32));
+        ContollerVersion = ptr_M2010->ParseSerialNumber(HexString.mid(10, 32));
         ptr_M2010->ReceiveFlags.ControllerVersionData = true;
         break;
     case IASigDATADOUBLECLICK:
 //        DoubleClickHandler
         break;
     case IASigDownSpeed:
-        DownSpeed = MakeHexWordNumber(HexString.substr(10, 4));
+        DownSpeed = MakeHexWordNumber(HexString.mid(10, 4));
 //         If (DownSpeed < 10) Then
 //            dlgCalibHeight.UniLabel6.Caption = GetResString(1998)
 //         Else
@@ -791,24 +802,24 @@ int M102IA::ParseHexStructure(string HexString, int DataSignature)
         ptr_M2010->ReceiveFlags.HostReadyData = true;
         break;
     case IASigTunePoint:
-        _Interface->StatusData.Soft_Settings.TunePoint = MakeHexWordNumber(HexString.substr(10, 4));
+        _Interface->StatusData.Soft_Settings.TunePoint = MakeHexWordNumber(HexString.mid(10, 4));
         break;
     case IASigCutoff:
-        _Interface->StatusData.CutoffMode = MakeHexWordNumber(HexString.substr(10, 4));
+        _Interface->StatusData.CutoffMode = MakeHexWordNumber(HexString.mid(10, 4));
         break;
     case IASigFrequencyOffset:
-         _Interface->StatusData.Soft_Settings.FrequencyOffset = MakeHexWordNumber(HexString.substr(10, 4));
+         _Interface->StatusData.Soft_Settings.FrequencyOffset = MakeHexWordNumber(HexString.mid(10, 4));
         break;
     case IASigActuatorVer:
-        ActuatorVersion = ptr_M2010->ParseSerialNumber(HexString.substr(10, 32));
+        ActuatorVersion = ptr_M2010->ParseSerialNumber(HexString.mid(10, 32));
         ptr_M2010->ReceiveFlags.ActuatorVersionData = true;
         break;
     case IASigActuatorPartNum:
-        ActuatorPartNum = ptr_M2010->ParseSerialNumber(HexString.substr(10, 32));
+        ActuatorPartNum = ptr_M2010->ParseSerialNumber(HexString.mid(10, 32));
         ptr_M2010->ReceiveFlags.ActuatorPartNumData = true;
         break;
     case IASigActuatorSerialNum:
-        ActuatorSerialNum = ptr_M2010->ParseSerialNumber(HexString.substr(10, 64));
+        ActuatorSerialNum = ptr_M2010->ParseSerialNumber(HexString.mid(10, 64));
         break;
     default:
         break;
@@ -819,33 +830,39 @@ int M102IA::ParseHexStructure(string HexString, int DataSignature)
 void M102IA::SendCommandData(int CommandData)
 {
     int Time, Retries;
-    M2010 *ptr_M2010 = M2010::Instance();
-    ModRunSetup *ptr_ModRunSetup = ModRunSetup::Instance();
-    BransonSerial *ptr_Serial    = BransonSerial::Instance();
+    M2010 *_M2010 = M2010::Instance();
+    ModRunSetup *_ModRunSetup = ModRunSetup::Instance();
+    BransonSerial *_Serial    = BransonSerial::Instance();
+    InterfaceClass *_Interface = InterfaceClass::Instance();
     Retries = 0;
     Time = 500;
     //SendCommandSetRunMode CommandData
-    ptr_M2010->ReceiveFlags.HostReadyData = false;
+    _M2010->ReceiveFlags.HostReadyData = false;
     SendIACommand(IAComHostReady, CommandData);
     if (CommandData == 1) return;
-    ptr_Serial->SetCommandTimer(Time);
-    while (ptr_M2010->ReceiveFlags.HostReadyData == false)
+    _Serial->SetCommandTimer(Time);
+    while (_M2010->ReceiveFlags.HostReadyData == false)
     {
-//        DoEvents ' Wait for response
-        QCoreApplication::processEvents();
-        if (ptr_ModRunSetup->OfflineModeEnabled == true) break;
-        if ((ptr_Serial->IsCommandTimeout() == true) && (Retries < 20))
+        QCoreApplication::processEvents(); //Wait for response
+        if (_ModRunSetup->OfflineModeEnabled == true) break;
+        if ((_Serial->IsCommandTimeout() == true) && (Retries < 20))
         {
             SendIACommand(IAComHostReady, CommandData);
-            ptr_Serial->SetCommandTimer(Time);
+            _Serial->SetCommandTimer(Time);
             Retries = Retries + 1;
         }
         else if (Retries >= 19)
             break;
      }
-    ptr_Serial->ResetCommandTimer();
+    _Serial->ResetCommandTimer();
     if (Retries >= 19)
     {
 //        MsgBox "Can't get Response from controller!"
+        struct BransonMessageBox tmpMsgBox;
+        tmpMsgBox.MsgTitle = QObject::tr("Warning");
+        tmpMsgBox.MsgPrompt = QObject::tr("Can't get Response from controller!");
+        tmpMsgBox.TipsMode = Exclamation;
+        tmpMsgBox.func_ptr = NULL;
+        _Interface->cMsgBox(&tmpMsgBox);
     }
 }

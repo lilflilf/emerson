@@ -14,7 +14,7 @@ private:
     DataShownStructure txtData[DIN_end];
 public:
     int Maxpower;
-private:
+public:
     void SetTextData(enum ScreenShowDataType TypeIndex,int Data, int min, int max,
                      int incrementor, float factor, QString formater);
 public:

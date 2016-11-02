@@ -56,29 +56,29 @@ void M10INI::InitNoNetworkStorage(StoragePathsType PathStruct)
         PathStruct.sCentralSeqPath = "";
 }
 
-string M10INI::MakeNWErrorPath(string CenComp)
-{
-    string tmpStr; //= "\\" & trim(CenComp) & "\A0MsgCtr\";
-    return tmpStr;
-}
+//string M10INI::MakeNWErrorPath(string CenComp)
+//{
+//    string tmpStr; //= "\\" & trim(CenComp) & "\A0MsgCtr\";
+//    return tmpStr;
+//}
 
-string M10INI::MakeNWLocSeqPath(string WrkSta)
-{
-    string tmpStr; //"c:\AmtData\" & Trim(WrkSta) & "\"
-    return tmpStr;
-}
+//string M10INI::MakeNWLocSeqPath(string WrkSta)
+//{
+//    string tmpStr; //"c:\AmtData\" & Trim(WrkSta) & "\"
+//    return tmpStr;
+//}
 
-string M10INI::MakeNWSeqPath(string CenComp, string WrkSta)
-{
-    string tmpStr; //"\\" & Trim(CenComp) & "\AmtData\" & Trim(WrkSta) & "\"
-    return tmpStr;
-}
+//string M10INI::MakeNWSeqPath(string CenComp, string WrkSta)
+//{
+//    string tmpStr; //"\\" & Trim(CenComp) & "\AmtData\" & Trim(WrkSta) & "\"
+//    return tmpStr;
+//}
 
-string M10INI::MakeNWPartPath(string CenComp)
-{
-    string tmpStr; //= "\\" & Trim(CenComp) & "\AmtData\" & StoragePaths.sComputerName & "\"
-    return tmpStr;
-}
+//string M10INI::MakeNWPartPath(string CenComp)
+//{
+//    string tmpStr; //= "\\" & Trim(CenComp) & "\AmtData\" & StoragePaths.sComputerName & "\"
+//    return tmpStr;
+//}
 
 /************************************************************/
 /**************************FIXED*****************************/
@@ -103,10 +103,10 @@ void M10INI::SetLanguageIndexer(long NewLanguage)
     ptr_M2010->LanguageIndexer = 2000 * (ptr_M2010->LanguageNumber - 1);
 }
 
-void M10INI::GenerateSLFlagGroup(long Flaggroup, int Index)
-{
+//void M10INI::GenerateSLFlagGroup(long Flaggroup, int Index)
+//{
 
-}
+//}
 
 void M10INI::Save_LastWeldGraph()
 {

@@ -32,7 +32,7 @@ void Statistics::UpdateSoftLimitData(bool ShowResults)
     double MinLimit, MaxLimit;
     int i;
     M2010 *ptr_M2010 = M2010::Instance();
-    M10INI *ptr_M10INI = M10INI::Instance();
+//    M10INI *ptr_M10INI = M10INI::Instance();
     M102IA *ptr_M102IA = M102IA::Instance();
     InterfaceClass* _Interface = InterfaceClass::Instance();
 
@@ -154,15 +154,15 @@ void Statistics::UpdateSoftLimitData(bool ShowResults)
     }             //SLindexer
 }
 
-void Statistics::RotateOut(StatStats SumStats, int OldData)
-{
+//void Statistics::RotateOut(StatStats SumStats, int OldData)
+//{
 
-}
+//}
 
-void Statistics::RotateIn(StatStats SumStats, string DataEvent, int NewData)
-{
+//void Statistics::RotateIn(StatStats SumStats, string DataEvent, int NewData)
+//{
 
-}
+//}
 
 void Statistics::UpdateSpliceStatStats()
 {
@@ -234,7 +234,7 @@ void Statistics::HistoryEvent()
 
 }
 
-string Statistics::HeaderString()
-{
+//string Statistics::HeaderString()
+//{
 
-}
+//}

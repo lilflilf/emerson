@@ -507,8 +507,8 @@ public:
     void MakeNormalSplice(M10Part ThisSplice);
     int DecPtrCircular(int ptr, int ptrMAX);
     int IncPtrCircular(int ptr, int ptrMAX);
-    void ConvertGraphData(string GraphData);
-    QString ParseSerialNumber(string SerialCode);
+    void ConvertGraphData(QString GraphData);
+    QString ParseSerialNumber(QString SerialCode);
     string GetResString(long StringNo);
     void NumberOnly(int KeyAscii);
     void load_splice_file();

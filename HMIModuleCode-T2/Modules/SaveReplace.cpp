@@ -29,12 +29,16 @@ bool SaveReplace::CheckPartFilesInSeqExist(QString sSeqName, bool bFailedLoad)
 {
     // sSeqName  has name of sequence without extension
    string sTmpName, sTmpLine;
-   int iLen, CharPos;
-   ErrMsgStruct *ErrMsgData;
-   int PartFileIndex, iErrCnt;
-   bool lbQualifiedOn;
-   iErrCnt = 0;
-   PartFileIndex = 0;
+//   int iLen, CharPos;
+//   ErrMsgStruct *ErrMsgData;
+//   int PartFileIndex, iErrCnt;
+//   bool lbQualifiedOn;
+/*   iErrCnt = 0;
+   PartFileIndex = 0*/;
+   if(sSeqName == "TEST" || bFailedLoad == true)
+   {
+       //dosomeDebug()
+   }
 
    return true;
 }
@@ -42,7 +46,8 @@ bool SaveReplace::CheckPartFilesInSeqExist(QString sSeqName, bool bFailedLoad)
 void SaveReplace::CheckIfSeqFileExist(QString SeqNameToCheck)
 {
     QString sTmpName;
-    int sTmpLine, iLen, CharPos;
+//    int sTmpLine,
+    int iLen, CharPos;
     sTmpName = SeqNameToCheck.trimmed().toUpper(); //convert to upper case
     // Check for that NULL character  in the name and remove it
     CharPos = sTmpName.indexOf('0');
@@ -69,15 +74,15 @@ void SaveReplace::CheckIfSeqFileExist(QString SeqNameToCheck)
 
 }
 
-void SaveReplace::Load_EditSequence_Structure(string Sel_Seq)
-{
+//void SaveReplace::Load_EditSequence_Structure(string Sel_Seq)
+//{
 
-}
+//}
 
-void SaveReplace::Load_Seq_File_Structure(string Sel_Seq)
-{
+//void SaveReplace::Load_Seq_File_Structure(string Sel_Seq)
+//{
 
-}
+//}
 
 void SaveReplace::CopySequencerevTwo(Sequence_StructrevTwo SequencervTwo)
 {
@@ -95,7 +100,7 @@ void SaveReplace::CopySequencerevTwo(Sequence_StructrevTwo SequencervTwo)
 
 }
 
-void SaveReplace::CopyEditSequencerevTwo(Sequence_StructrevTwo SequencervTwo)
-{
+//void SaveReplace::CopyEditSequencerevTwo(Sequence_StructrevTwo SequencervTwo)
+//{
 
-}
+//}
