@@ -275,7 +275,7 @@ void MODstart::CheckBransonFolder()
     //the routine checks if the required folders exist in the C drive of
     //the system.If not exist it would be created
     M10INI *ptr_M10INI = M10INI::Instance();
-    ptr_M10INI->ConfigFilesPath = "c:\\Branson\\etc\\";
+    ptr_M10INI->ConfigFilesPath = "c:\\BransonData\\etc\\";
     QDir objDriveSystem;
     if (objDriveSystem.exists("c:\\BransonData\\") == false)
     {
@@ -283,11 +283,11 @@ void MODstart::CheckBransonFolder()
         objDriveSystem.mkdir("c:\\BransonData\\Library\\");
         objDriveSystem.mkdir("c:\\BransonData\\History\\");
     }else{
-        if (objDriveSystem.exists("c:\\AmtData\\History\\") == false)
-           objDriveSystem.mkdir("c:\\AmtData\\History\\");
+        if (objDriveSystem.exists("c:\\BransonData\\History\\") == false)
+           objDriveSystem.mkdir("c:\\BransonData\\History\\");
 
-        if (objDriveSystem.exists("c:\\AmtData\\Library\\") == false)
-           objDriveSystem.mkdir("c:\\AmtData\\Library\\");
+        if (objDriveSystem.exists("c:\\BransonData\\Library\\") == false)
+           objDriveSystem.mkdir("c:\\BransonData\\Library\\");
 
     }
 
@@ -302,12 +302,12 @@ void MODstart::CheckBransonFolder()
         SetFileAttributes(buffer,FILE_ATTRIBUTE_HIDDEN);
         delete []buffer;
     }
-    FilePathQSTR = ptr_M10INI->ConfigFilesPath + Run_File_Name;
-    if (objDriveSystem.exists(FilePathQSTR) == false)
-    {
-       QFile FileNumber(FilePathQSTR);
-       FileNumber.open(QIODevice::ReadWrite);
-    }
+//    FilePathQSTR = ptr_M10INI->ConfigFilesPath + Run_File_Name;
+//    if (objDriveSystem.exists(FilePathQSTR) == false)
+//    {
+//       QFile FileNumber(FilePathQSTR);
+//       FileNumber.open(QIODevice::ReadWrite);
+//    }
 
     //delete temp files
     //if (objDriveSystem.exists("C:\\Documents and Settings\\Administrator\\Local Settings\\Temp\\*.TMP") == true)

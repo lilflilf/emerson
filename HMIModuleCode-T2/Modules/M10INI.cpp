@@ -324,7 +324,7 @@ void M10INI::Init_StatusData()
         _Interface->StatusData.HSDATA.SOFT_LIMIT[i].TypeHS = Percent;
         _Interface->StatusData.HSDATA.SOFT_LIMIT[i].ValueHS = 30;
     }
-    _Interface->StatusData.ComInfo.COMport = 2;
+    _Interface->StatusData.ComInfo.COMport = 1;
     _Interface->StatusData.ComInfo.BaudRate = 1152;
     _Interface->StatusData.MachineType = ACTNEWSPLICER; //Need To Fix
     _Interface->StatusData.MachineDate = "";
@@ -396,30 +396,33 @@ void M10INI::Get_INI_File()
     }
 
     FileName = ConfigFilesPath + BRANSON_LASTWELD_FILE;
-    if (DataCell == NULL)
+    if (dir.exists(FileName) == true)
     {
-        DataCell = new int[_Interface->StatusData.GraphDataLen];
-    }else
-    {
-        delete []DataCell;
-        DataCell = new int[_Interface->StatusData.GraphDataLen];
-    }
-    if(_Utility->ReadFromBinaryFile(FileName,DataCell)== true)
-    {
-        PowerDataReady = true;
-        if (_Password->bErasePasswords == true)
+        if (DataCell == NULL)
         {
-//          cMsgBox GetResString(826)
-            BransonMessageBox tmpMsgBox;
-            tmpMsgBox.MsgPrompt = (QObject::tr("ErasePasswords = TRUE"));
-            tmpMsgBox.MsgTitle = (QObject::tr("Information"));
-            tmpMsgBox.TipsMode = Information;
-            tmpMsgBox.func_ptr = NULL;
-            _Interface->cMsgBox(&tmpMsgBox);
-            ClearPasswordData();
+            DataCell = new int[_Interface->StatusData.GraphDataLen];
+        }else
+        {
+            delete []DataCell;
+            DataCell = new int[_Interface->StatusData.GraphDataLen];
         }
-        else
-            PowerDataReady = false;
+        if(_Utility->ReadFromBinaryFile(FileName,DataCell)== true)
+        {
+            PowerDataReady = true;
+            if (_Password->bErasePasswords == true)
+            {
+    //          cMsgBox GetResString(826)
+                BransonMessageBox tmpMsgBox;
+                tmpMsgBox.MsgPrompt = (QObject::tr("ErasePasswords = TRUE"));
+                tmpMsgBox.MsgTitle = (QObject::tr("Information"));
+                tmpMsgBox.TipsMode = Information;
+                tmpMsgBox.func_ptr = NULL;
+                _Interface->cMsgBox(&tmpMsgBox);
+                ClearPasswordData();
+            }
+            else
+                PowerDataReady = false;
+        }
     }
     switch (_Interface->StatusData.MachineType)
     {
