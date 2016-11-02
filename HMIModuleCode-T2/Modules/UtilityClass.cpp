@@ -1,4 +1,4 @@
-#include "UtilityClass.h"
+ï»¿#include "UtilityClass.h"
 #include <QDir>
 #include <QDataStream>
 #include <QJsonObject>
@@ -15,6 +15,7 @@ UtilityClass* UtilityClass::Instance()
     }
     return _instance;
 }
+
 
 UtilityClass::UtilityClass()
 {
@@ -178,7 +179,7 @@ void UtilityClass::InitializeTextData()
 //    SetTextData(DINForcePl,         0, MINFORCE,        MAXFORCE,        2, PRESS2BARFACTOR, "%.2fB");
 //    SetTextData(DINForceMs,         0, MINFORCE,        MAXFORCE,        2, PRESS2BARFACTOR, "%.2fB");
 
-//    SetTextData(DINAmplitude,         0, MINAMPLITUDE, StatusData.Soft_Settings.Horn_Calibrate), 1, 1, "%dµm");
+//    SetTextData(DINAmplitude,         0, MINAMPLITUDE, StatusData.Soft_Settings.Horn_Calibrate), 1, 1, "%dç¥„");
     SetTextData(DINTimePl, 0, MINTIME, MAXTIME, 2, 0.005, "%.2fs");
     SetTextData(DINTimeMs, 0, MINTIME, MAXTIME, 2, 0.005, "%.2fs");
     SetTextData(DINPowerPl, 0, MINPOWER, Maxpower, 100, 1, "%dW");
@@ -204,7 +205,7 @@ void UtilityClass::InitializeTextData()
     //Amplitude Settings
     //     SetTextData DINAmpStepMode, .FlagAmpStep And &H3, 0, 0, 2, 1, 1, ""
 //    SetTextData(DINAmplitude2, 0, MINAMPLITUDE,
-//       StatusData.Soft_Settings.Horn_Calibrate, 1, 1, "%dµm");
+//       StatusData.Soft_Settings.Horn_Calibrate, 1, 1, "%dç¥„");
     SetTextData(DINEnergy2Step, 0, MINSTEPENERGY, MAXENERGY, 2, 1, "%dJ");
     SetTextData(DINPower2Step, 0, MINPOWER, Maxpower, 100, 1, "%dW");
     SetTextData(DINTime2Step, 0, MINTIME, MAXSTEPTIME, 2, 0.001, "%.2fs");

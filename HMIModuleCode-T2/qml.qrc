@@ -34,6 +34,10 @@
         <file>UI/CProgressBar.qml</file>
         <file>UI/TestSetingDialog.qml</file>
         <file>UI/UserLibrarySetting.qml</file>
+        <file>UI/Calibration.qml</file>
+        <file>UI/ToolChange.qml</file>
+        <file>UI/AdvancedMaintenance.qml</file>
+        <file>UI/MaintenanceCount.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file>images/you.png</file>
