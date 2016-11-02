@@ -65,11 +65,11 @@ void ModRunSetup::M10initiate(bool bLoadFail)
             if (ptr_M2010->PreviousScreen_Prog_mode == No_SCREEN) Seqchanged = true;
             if (Seqchanged == true)
             {
-                if((ptr_MDefine->FlagModularProduction != true) &&
-                    ((ptr_M2010->PreviousScreen_Prog_mode == Operator_SCREEN) ||
-                    (ptr_M2010->PreviousScreen_Prog_mode == Setup_SCREEN) ||
-                    (ptr_M2010->PreviousScreen_Prog_mode == Stats_SCREEN)))
-                    return;
+//                if((ptr_MDefine->FlagModularProduction != true) &&
+//                    ((ptr_M2010->PreviousScreen_Prog_mode == Operator_SCREEN) ||
+//                    (ptr_M2010->PreviousScreen_Prog_mode == Setup_SCREEN) ||
+//                    (ptr_M2010->PreviousScreen_Prog_mode == Stats_SCREEN)))
+//                    return;
                 ptr_SaveReplace->CheckIfSeqFileExist(tmp_QStr);
                 // if Sequence file was not found then load some default splice and exit
                 if (ptr_SaveReplace->Failed_To_Find_Seq_File == true)

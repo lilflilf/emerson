@@ -4,24 +4,15 @@
 #include <string>
 #include "stdio.h"
 #include "stdlib.h"
-#include "M10definitions.h"
+#include "Interface/Definition.h"
 using namespace std;
 
 struct HMISOFTWARE
 {
-    string Major;
-    string Minor;
-    string Revision;
+    QString Major;
+    QString Minor;
+    QString Revision;
 };
-
-#define HWND_TOPMOST   -1
-#define HWND_NOTOPMOST -2
-
-#define SWP_NOACTIVATE 0x10
-#define SWP_SHOWWINDOW 0x40
-
-#define FLAGS  (SWP_NOMOVE | SWP_NOSIZE)
-
 
 class MODstart
 {

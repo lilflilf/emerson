@@ -8,6 +8,7 @@
 #include "stdlib.h"
 #include "M10definitions.h"
 #include "UtilityDefine.h"
+#include "Interface/SysConfiguration.h"
 using namespace std;
 
 enum MACHINE_TYPE{
@@ -495,9 +496,6 @@ public:
 
     SEQUENCE_ENTRY_DATA SequenceEntryData;
 
-    VersionList PreviousVersions;
-    VersionList CurrentVersions;
-
     M10Part OriginalSplice;
     string OldPrtName;
 private:
@@ -510,7 +508,7 @@ public:
     int DecPtrCircular(int ptr, int ptrMAX);
     int IncPtrCircular(int ptr, int ptrMAX);
     void ConvertGraphData(string GraphData);
-    string ParseSerialNumber(string SerialCode);
+    QString ParseSerialNumber(string SerialCode);
     string GetResString(long StringNo);
     void NumberOnly(int KeyAscii);
     void load_splice_file();

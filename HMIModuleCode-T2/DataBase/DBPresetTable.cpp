@@ -259,7 +259,7 @@ bool DBPresetTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
     ((PresetElement*)_obj)->TestSetting.TestMode =
             (enum TESTMODE)query.value("TestMode").toInt();
     ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModeType =
-            (enum TEACHMODETYPE)query.value("TeachModeType").toInt();
+            (enum TEACH_MODE_TYPE)query.value("TeachModeType").toInt();
 
     ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[0] =
             query.value("TimePLRG").toInt();

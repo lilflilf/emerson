@@ -55,150 +55,6 @@ using namespace std;
 #define DefAutoGetNextDelay       3   //3/10 Second
 
 #define PORT_DISABLE              0   //Value represents Port Disable
-#define PASSWORDCOUNT             2   //Does not include Administrator
-#define PASSCOUNT                 4
-
-// Used to set the correct Language Version for the Software
-enum LangSupport{
-    NO_Lang = 0,
-    ENGLISH_lang,
-    FRENCH_Lang,
-    GERMAN_Lang,
-    HUNGARIAN_Lang,
-    PORTUGUESE_Lang,
-    SPANISH_Lang,
-    TURKISH_Lang,
-    ITALIAN_Lang,
-    CHINESE_Lang,
-    JAPANESE_Lang,
-    KOREAN_Lang,
-    END_Lang            //Add above this
-};
-
-// Structure for reading the settings.inf file if one exists
-struct M20_SETTINGS{
-    // Stores bitfields for several options listed below
-    int UnsignedWeldData;
-    // Unsigned WeldtoEnergy  :1   Energy, Height, and Time are mutually exclusive options
-    // Unsigned WeldToHeight  :1   Program will only accept last one
-    // Unsigned WeldToTime    :1
-    // Unsigned AfterBurst    :1
-    // Unsigned Setup_allowed :1
-    int AfterBurstDelay;
-    int AfterBurstDuration;
-    int EnergyWindowPL;
-    int PreBurstIndex;
-};
-
-struct QUALITY_DATA_FILE{
-    struct M20_SETTINGS mod10a_settings;
-    int cust_qual_range[WIDTH_ADJ];
-};
-
-#define MaxWireEntries  20
-
-struct WIRE_ENTRY{
-    int Wire_Area;
-    string Wire_Ref_Ga;
-};
-
-struct BUILD_DATA{
-    int No_of_Wires;
-    WIRE_ENTRY WireEntries[MaxWireEntries];
-};
-
-//Range Markers for the Hard/Soft Usl/Lsl limits
-enum HARD_SOFT_MARKER{
-    TIME_USL,
-    TIME_LSL,
-    POWER_USL,
-    POWER_LSL,
-    PREHEIGHT_USL,
-    PREHEIGHT_LSL,
-    HEIGHT_USL,
-    HEIGHT_LSL
-};
-
-enum WeldSetFormula{
-    WeldFormulaAmtechStandard,
-    WeldFormulaAmtechXL,
-    WeldFormulaCustom,
-};
-
-enum WeldDefaultSettingIndex{
-    WDSIABDelay,
-    WDSIABDuration,
-    WDSISqueezeTime,
-    WDSIHoldTime,
-    WDSIPreBurst,
-};
-
-
-
-enum FormulaRange{
-    EnergyR1,
-    EnergyR2,
-    EnergyR3,
-    WidthR1,
-    WidthR2,
-    WidthR3,
-    PressureR1,
-    PressureR2,
-    PressureR3,
-    AmplitudeR1,
-    AmplitudeR2,
-    AmplitudeR3,
-};
-
-enum PRESSUREUNIT{
-    ToPSI,
-    ToBar,
-    TokPa,
-};
-
-// Structure fo the Hard/Soft Limit Ranges
-struct HARD_SOFT_DATA{
-    int TypeHS;       //Value is either 0 = Sigma OR 1 = Percent
-    int ValueHS;      //Value Depends on the Type Either 1-9 Sigma Or 1%-99%
-};
-
-struct HARD_SOFT_SETTINGS{
-    HARD_SOFT_DATA HARD_LIMIT[HEIGHT_LSL];
-    HARD_SOFT_DATA SOFT_LIMIT[HEIGHT_LSL];
-};
-
-struct CalcWeldSettings4BuildStruct{
-    float Multplier;
-    float Offset;
-    float MinRange;
-    float MaxRange;
-};
-
-//Structure for the Amtech.Bin (Software Settings File)
-struct AMTECH_INI_STRUCT{
-    long Lang_Support;
-    int Horn_Calibrate;
-    int AutoPreburst;
-    bool AutoGetNext;
-    int SonicGenWatts;
-    bool ToolCoverIgnore;
-    int Pressure2Unit;
-    float PWWidth2Height;       //Not used anywhere?
-    int MinAmplitude;
-    int MinPressure;
-    int GotoRunScreen;        //Not used, open for re-use
-    int NoToolCover4SU;
-    long WeldFormula;
-    int RunCount;            //  Number to Run to Qualify the Splice
-    int Teach_Mode;
-    int TunePoint;
-    int FrequencyOffset;
-};
-
-struct PasswordEntry{
-    QString Identifier;
-    string Password;
-};
 
 //Each element of the soft limit check has two flags:
 //Sigma or percent, absence of both flags means the element is off
@@ -233,11 +89,6 @@ struct PasswordEntry{
 //The default will be to Delete or Move the support files but not Copy them
 #define FSFDefaultSet  (FSFMoveIncSupFiles | FSFDeleteIncSupFiles)& (~FSFCopyIncSupFiles);
 
-struct ShrinkTubeData{
-    string Name;
-    int temp;
-    float Time;
-};
 
 struct IAcominfo{
     long COMport;          //Stores the value of the Comm Port
@@ -248,68 +99,6 @@ enum SampleRatio{
     Ratio_1ms = 0,
     Ratio_5ms = 1,
     Ratio_10ms = 2
-};
-
-//A single structure and a single file for the status data
-struct Status_Data{
-    AMTECH_INI_STRUCT Soft_Settings;
-    BUILD_DATA Wire_Info;              //Wire information for building a weld or splice
-    QUALITY_DATA_FILE Cust_Data;
-    HARD_SOFT_SETTINGS HSDATA;         //Not used, held for backwords compatibility
-    IAcominfo ComInfo;
-    int MachineType;
-    string MachineDate;
-    bool KeepDailyHistory;
-    long PasswordStatus;
-    PasswordEntry PasswordData[PASSWORDCOUNT];
-    long AdminOptions;                             //Flag field
-    long PWPermissions;                            //Flag field
-    CalcWeldSettings4BuildStruct WeldSettings4Build[AmplitudeR3];
-    int WeldSettingsDefault4Build[WDSIPreBurst];   //100's of Secs
-    int WeldSettingDefaultWeldMode;
-    int WeldSettingDefaultTrigPress;
-    bool AutoStartLastPart;
-    bool NRGtoHeightMode;                           //Mode 3 not on all machines
-    bool TubeShrinkMode;                            //Tube shrinker not on all machines
-    ShrinkTubeData ShrinkTubeDefaults[STIover];
-    // ShrinkTubeDefaults(0 To 9) As ShrinkTubeData
-    int RemoteRecallport;
-    long SoftLimitsModeFlags;
-    int SoftLimitSampleSize;
-    int SoftLimit[SLILowerControlLimit][SLIHeight];
-    bool QualityLimitsModeFlags;
-    long FileSystemFlags;
-    long AutoGetNextDelay;
-//Network items added 030220
-    bool NetworkingEnabled;
-    string CurrentWrkStaID;
-    string CentralComputerID;
-    //CutterMsgFlag  As Boolean
-    int ActuatorMode;
-    int AntisideSpliceTime;
-    int CurrentCoolingDur;
-    int CurrentCoolingDel;
-    int CurrentCoolingMode;
-    int LockonAlarm;
-    int RunMode;
-    int Machineflags[4];
-    bool Mm2Awg;
-    long CycleCount;
-    long MaintenanceLimits[8];
-    long currentMaintenanceLimits[8];
-    int TubeShrinkerport;
-    bool HistoryGraphData;
-    bool RemoteGraphData;
-    int StartScreen;
-    bool EnableModularFlag;
-    bool Enable2DBarcodeFlag;
-    PasswordEntry ModularPassword[PASSCOUNT];
-    int PowerGraphSampleRatio;
-    long GraphDataLen;
-    float CalHightMaximumGauge;
-    int CutoffMode;
-    bool LockKeyFlag;
-    bool FootPedalFlag;
 };
 
 struct Comm_Settings{
@@ -334,11 +123,6 @@ struct StoragePathsType{
     string sLocalSeqPath;
     string sCentralPartPath;
     string sCentralSeqPath;
-};
-
-enum CoolingMode{
-   ENERGYMODE = -1,
-   OFF = 0
 };
 
 struct System_Configuration{
@@ -367,7 +151,7 @@ struct System_Configuration{
 
 
 
-#define AMTECH_INI_FILE        "Amtech.bin" //StatusData is stored in this file
+#define BRANSON_INI_FILE        "Amtech.bin" //StatusData is stored in this file
 
 #define BRANSON_LASTWELD_FILE  "BransonLastWeld.bin" //Array DataCell() is stored in this file
 
@@ -406,14 +190,18 @@ public:
 
     bool DoAutoStartLastPart;
 
-    Status_Data StatusData;
-    Status_Data tempStatusData;         //Used by routines before an OK or Save
     Maintenance_Configuration TempMaintConfig;
     System_Configuration TempSysConfig;
     StoragePathsType StoragePaths;
     QString ConfigFilesPath;
 private:
     void InitNoNetworkStorage(StoragePathsType PathStruct);
+    void Init_StatusData();
+    void SetSoftLimitDefaults(bool EnableSoftLimits = false);
+    void SetShrinkTubeDefaults();
+    void SetDefaultWeldFormula();
+    void SetDefaultPassword();
+    void ClearPasswordData();
 public:
     string MakeNWErrorPath(string CenComp);
     string MakeNWLocSeqPath(string WrkSta);
@@ -422,15 +210,9 @@ public:
     void SetStoragePaths();
     void SetLanguageIndexer(long NewLanguage = 1);
     void GenerateSLFlagGroup(long Flaggroup, int Index);
-    void Save_StatusData(bool WithUpdate = true);
     void Save_LastWeldGraph();
-    void Init_StatusData();
-    void SetSoftLimitDefaults(bool EnableSoftLimits = false);
-    void SetShrinkTubeDefaults(Status_Data DataStruct);
-    void SetDefaultWeldFormula(Status_Data DataStruct);
-    void SetDefaultPassword();
-    void ClearPasswordData();
     void Get_INI_File();
+    void Save_StatusData(bool WithUpdate = true);
     void HelpFileLoader();
 public:
     static M10INI* Instance();

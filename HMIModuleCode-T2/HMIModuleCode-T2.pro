@@ -16,7 +16,6 @@ SOURCES += main.cpp \
     Modules/ModRunSetup.cpp \
     Modules/Statistics.cpp \
     Modules/SaveReplace.cpp \
-    Interface/interface.cpp \
     Modules/M10RunMode.cpp \
     Modules/UtilityClass.cpp \
     Modules/BransonSerial.cpp \
@@ -29,7 +28,11 @@ SOURCES += main.cpp \
     DataBase/DBWorkOrderTable.cpp \
     UI/tablemodel.cpp \
     DataBase/DBOperatorTable.cpp \
-    TestCase/ScreenShowConvertTest.cpp
+    TestCase/ScreenShowConvertTest.cpp \
+    DataBase/DBWeldResultTable.cpp \
+    DataBase/DBAlarmLogTable.cpp \
+    Interface/SysConfiguration.cpp \
+    Interface/Interface.cpp
 
 RESOURCES += qml.qrc
 
@@ -51,7 +54,6 @@ HEADERS += \
     Modules/Statistics.h \
     Modules/SaveReplace.h \
     Modules/M10definitions.h \
-    Interface/interface.h \
     Modules/M10runMode.h \
     Modules/UtilityClass.h\
     Modules/BransonSerial.h \
@@ -67,7 +69,11 @@ HEADERS += \
     DataBase/DBWorkOrderTable.h \
     UI/tablemodel.h \
     DataBase/DBOperatorTable.h \
-    TestCase/ScreenShowConvertTest.h
+    TestCase/ScreenShowConvertTest.h \
+    DataBase/DBWeldResultTable.h \
+    DataBase/DBAlarmLogTable.h \
+    Interface/SysConfiguration.h \
+    Interface/Interface.h
 
 DISTFILES += \
     UI/displayChinese_zh_CN.qm \

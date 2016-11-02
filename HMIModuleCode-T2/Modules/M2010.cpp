@@ -9,6 +9,7 @@
 #include <QDataStream>
 #include <QFile>
 #include "Modules/UtilityClass.h"
+#include "Interface/Interface.h"
 M2010* M2010::_instance = 0;
 M2010* M2010::Instance()
 {
@@ -91,7 +92,7 @@ void M2010::ConvertGraphData(string GraphData)
 
 }
 
-string M2010::ParseSerialNumber(string SerialCode)
+QString M2010::ParseSerialNumber(string SerialCode)
 {
     int i, StringLen, temp2;
     string temp1, temp3, temp4 = "";
@@ -107,7 +108,8 @@ string M2010::ParseSerialNumber(string SerialCode)
         temp4 = temp4 + temp3;
         i += 2;
     }
-    return temp4;
+    QString str = QString::fromStdString(temp4);
+    return str;
 }
 
 string M2010::GetResString(long StringNo)
@@ -134,6 +136,7 @@ void M2010::load_splice_file()
     ModRunSetup *ptr_ModRunSetup = ModRunSetup::Instance();
     UtilityClass* _Utility = UtilityClass::Instance();
 
+
     //This function will load the splice file present in run record.
     int i = 0;
 
@@ -152,7 +155,8 @@ void M2010::load_splice_file()
     }
 
     ptr_M10runMode->init_m20_data_events();
-    if (ptr_M10INI->StatusData.Soft_Settings.Teach_Mode != Auto)
+    InterfaceClass* _Interface = InterfaceClass::Instance();
+    if (_Interface->StatusData.Soft_Settings.Teach_Mode != AUTO)
     {
         if (M10Run.Auto_Set_Mode == true)          //In all teach mode screens
         {

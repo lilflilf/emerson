@@ -319,12 +319,12 @@ public:
     int PWRpoints;
 
     //String Variable to hold IA Serial #
-    string SerialNoData;                //not used now
+    QString SerialNoData;                //not used now
     int HeightCalResult;
-    string ContollerVersion;            //To store controller's software version no.
-    string ActuatorVersion;
-    string ActuatorPartNum;
-    string ActuatorSerialNum;
+    QString ContollerVersion;            //To store controller's software version no.
+    QString ActuatorVersion;
+    QString ActuatorPartNum;
+    QString ActuatorSerialNum;
 
     IOinfo IOstatus;
     IOinfo LastIOstatus;

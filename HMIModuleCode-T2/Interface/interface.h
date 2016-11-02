@@ -7,6 +7,7 @@
 #include "stdlib.h"
 #include <QObject>
 #include "definition.h"
+#include "sysconfiguration.h"
 
 using namespace std;
 enum TipsScreenMode{
@@ -28,11 +29,13 @@ class InterfaceClass:public QObject
 {
          Q_OBJECT
 public:
-    struct WorkOrderElement WorkOrder;
-public:
-public:
     static InterfaceClass* Instance();
     //Following for the screen showing using signal
+public:
+    Status_Data StatusData;
+    Status_Data tempStatusData;         //Used by routines before an OK or Save
+    VersionList PreviousVersions;
+    VersionList CurrentVersions;
 public:
     void cMsgBox(struct BransonMessageBox* MsgBox);
     void dlgMaintWarning();
@@ -41,6 +44,7 @@ public:
 
     //Following for the screen recall
 
+    void BackupStatusData();
 
     bool SQLQuery(void* _DBObj, QMap<int, QString>* _EntireTableInfo);
     bool SQLQuery(void* _DBObj, int ID, QString Name, void* _DataStructure);

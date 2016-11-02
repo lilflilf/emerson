@@ -8,6 +8,7 @@
 #include "ModRunSetup.h"
 #include <QCoreApplication>
 #include "UtilityClass.h"
+#include "Interface/Interface.h"
 
 M102IA* M102IA::_instance = 0;
 M102IA* M102IA::Instance()
@@ -204,6 +205,7 @@ void M102IA::SendIACommand(IACommands CommandNumber, int CommandData)
     M2010   *ptr_M2010   = M2010  ::Instance();
     M10INI  *ptr_M10INI  = M10INI ::Instance();
     ModRunSetup *ptr_ModRunSetup = ModRunSetup::Instance();
+    InterfaceClass *_Interface = InterfaceClass::Instance();
     IACommandError = 0;
     if ((CommandNumber > IAComEnd) || (CommandNumber < 2))
     {
@@ -292,10 +294,6 @@ void M102IA::SendIACommand(IACommands CommandNumber, int CommandData)
              Data[0] = CommandData;
              Data[1] = ptr_M2010->Shim1Val;
              Data[2] = ptr_M2010->Shim2Val;
-        break;
-        case IAComSetMaximumGauge:
-             length = 2;
-             Data[0] = (int)ptr_M10INI->StatusData.CalHightMaximumGauge;
         break;
         default:
             length = 2;
@@ -467,6 +465,7 @@ int M102IA::ParseHexStructure(string HexString, int DataSignature)
     Statistics *ptr_Statistics = Statistics::Instance();
     ModRunSetup *ptr_ModRunSetup = ModRunSetup::Instance();
     UtilityClass* _Utility = UtilityClass::Instance();
+    InterfaceClass *_Interface = InterfaceClass::Instance();
     const string Colon = ":";
 
     int i;
@@ -503,12 +502,12 @@ int M102IA::ParseHexStructure(string HexString, int DataSignature)
         TempString = HexString.substr(39, 2) + HexString.substr(52, 2);
         IAactual.Power = MakeHexWordNumber(TempString);
         //--Need to use the raw peakpower to do calculation
-        Div = (ptr_M10INI->StatusData.Soft_Settings.SonicGenWatts / 200);
+        Div = (_Interface->StatusData.Soft_Settings.SonicGenWatts / 200);
         IAactual.Power = MakeHexByteNumber(HexString.substr(37, 2));
-        if (ptr_M10INI->StatusData.Soft_Settings.SonicGenWatts > 200)
+        if (_Interface->StatusData.Soft_Settings.SonicGenWatts > 200)
            IAactual.Power = IAactual.Power * Div;
         else
-           IAactual.Power = IAactual.Power * (ptr_M10INI->StatusData.Soft_Settings.SonicGenWatts / 200);
+           IAactual.Power = IAactual.Power * (_Interface->StatusData.Soft_Settings.SonicGenWatts / 200);
         //--Second data record
         IAactual.Preheight = MakeHexWordNumber(HexString.substr(54, 4));
         IAactual.Amplitude = MakeHexWordNumber(HexString.substr(58, 4));
@@ -520,12 +519,12 @@ int M102IA::ParseHexStructure(string HexString, int DataSignature)
         IAactual.Alarmflags = MakeHexWordNumberLong(HexString.substr(78, 8));
         //--Set Correct Flag
         ptr_M2010->ReceiveFlags.WELDdata = true;
-        if (ptr_M2010->Child_Mode == Graph_SCREEN)
-        {
+//        if (ptr_M2010->Child_Mode == Graph_SCREEN)
+//        {
            //Actual Procedure to plot the weld data
 //           frmGraph.GraphOutline
 //           frmGraph.DisplayWeldData
-        }
+//        }
         if (ptr_MDefine->WriteHistoryFlag == true)
         {
            ptr_Statistics->HistoryEvent();
@@ -566,7 +565,7 @@ int M102IA::ParseHexStructure(string HexString, int DataSignature)
             RawDataGraph[num] = HexString.substr(tmpIndex + 1, LastString);
             if ((Datalen - 4) != ((LastString - 19) / 2)) num = num - 1;
         }
-        if ((num = (Total - 1)) || (ptr_M10INI->StatusData.KeepDailyHistory == false))
+        if ((num = (Total - 1)) || (_Interface->StatusData.KeepDailyHistory == false))
         {
             for (i = 0; i < StringCount;i++)
                 PowerString = PowerString + RawDataGraph[i].substr(StartData, 32);
@@ -679,13 +678,13 @@ int M102IA::ParseHexStructure(string HexString, int DataSignature)
         ptr_M2010->ReceiveFlags.WIDTHdata = true;
         break;
     case IASigPWRrating:         //"0F"
-        ptr_M10INI->StatusData.Soft_Settings.SonicGenWatts =
+        _Interface->StatusData.Soft_Settings.SonicGenWatts =
                 MakeHexWordNumber(HexString.substr(10, 4));
-        _Utility->Maxpower = int(1.2 * ptr_M10INI->StatusData.Soft_Settings.SonicGenWatts);
+        _Utility->Maxpower = int(1.2 * _Interface->StatusData.Soft_Settings.SonicGenWatts);
         for (Index = 0; Index <= 6; Index++)
         {
              ptr_M10INI->Pwr_Prefix_Data[Index] = Index *
-                     int(0.2 * ptr_M10INI->StatusData.Soft_Settings.SonicGenWatts);
+                     int(0.2 * _Interface->StatusData.Soft_Settings.SonicGenWatts);
         }
 //        With Splice
 //        SetTextData DINPowerPl, .power.Plus, .RecData.power.Plus, MINPOWER, _
@@ -698,7 +697,7 @@ int M102IA::ParseHexStructure(string HexString, int DataSignature)
     case IASigSequenceTable:     // Data Signature = "10"
     case IASigHornAmplitude:
 //        --Calibrated Horn Amp. Value - Data Signature = "11"
-        ptr_M10INI->StatusData.Soft_Settings.Horn_Calibrate = MakeHexWordNumber(HexString.substr(10, 4));
+        _Interface->StatusData.Soft_Settings.Horn_Calibrate = MakeHexWordNumber(HexString.substr(10, 4));
         ptr_M2010->ReceiveFlags.HORNamplitude = true;
         break;
     case IASigSystemID:          //"12"
@@ -708,10 +707,10 @@ int M102IA::ParseHexStructure(string HexString, int DataSignature)
         break;
     case IASigMaintCount:        //"13"
     case IASigActuator:
-        ptr_M10INI->StatusData.MachineType = MakeHexWordNumber(HexString.substr(10, 4));
-        ptr_M10INI->StatusData.ActuatorMode = MakeHexWordNumber(HexString.substr(14, 4));
-        ptr_M10INI->StatusData.AntisideSpliceTime = MakeHexWordNumber(HexString.substr(18, 4));
-        switch (ptr_M10INI->StatusData.MachineType)
+        _Interface->StatusData.MachineType = (enum ActuatorType)MakeHexWordNumber(HexString.substr(10, 4));
+        _Interface->StatusData.ActuatorMode = MakeHexWordNumber(HexString.substr(14, 4));
+        _Interface->StatusData.AntisideSpliceTime = MakeHexWordNumber(HexString.substr(18, 4));
+        switch (_Interface->StatusData.MachineType)
         {
             case ACTULTRA20:
             case ACTULTRA40:
@@ -729,40 +728,40 @@ int M102IA::ParseHexStructure(string HexString, int DataSignature)
         ptr_M2010->ReceiveFlags.CalibrationDone = true;
         break;
     case IAsigCooling:
-        ptr_M10INI->StatusData.CurrentCoolingDur = MakeHexWordNumber(HexString.substr(10, 4));
-        ptr_M10INI->StatusData.CurrentCoolingDel = MakeHexWordNumber(HexString.substr(14, 4));
+        _Interface->StatusData.CurrentCoolingDur = MakeHexWordNumber(HexString.substr(10, 4));
+        _Interface->StatusData.CurrentCoolingDel = MakeHexWordNumber(HexString.substr(14, 4));
         break;
     case IASigHeightZero:
         ptr_ModRunSetup->tempHeightOffsetval = MakeHexWordNumber(HexString.substr(10, 4));
         break;
     case IASigDataLockOnAlarm:
-         ptr_M10INI->StatusData.LockonAlarm = MakeHexWordNumber(HexString.substr(10, 4));
+         _Interface->StatusData.LockonAlarm = MakeHexWordNumber(HexString.substr(10, 4));
         break;
     case IASigRunMode:
-        ptr_M10INI->StatusData.RunMode = MakeHexWordNumber(HexString.substr(10, 4));
+        _Interface->StatusData.RunMode = MakeHexWordNumber(HexString.substr(10, 4));
         ptr_M2010->ReceiveFlags.FootPadelDATA = true;
         break;
     case IASigMachineFlags:
-        ptr_M10INI->StatusData.Machineflags[0] = MakeHexWordNumber(HexString.substr(10, 4));
-        ptr_M10INI->StatusData.Machineflags[1] = MakeHexWordNumber(HexString.substr(14, 4));
-        ptr_M10INI->StatusData.Machineflags[2] = MakeHexWordNumber(HexString.substr(18, 4));
-        ptr_M10INI->StatusData.Machineflags[3] = MakeHexWordNumber(HexString.substr(22, 4));
+        _Interface->StatusData.Machineflags[0] = MakeHexWordNumber(HexString.substr(10, 4));
+        _Interface->StatusData.Machineflags[1] = MakeHexWordNumber(HexString.substr(14, 4));
+        _Interface->StatusData.Machineflags[2] = MakeHexWordNumber(HexString.substr(18, 4));
+        _Interface->StatusData.Machineflags[3] = MakeHexWordNumber(HexString.substr(22, 4));
         break;
     case IASigDataMaintCntr:
-        ptr_M10INI->StatusData.currentMaintenanceLimits[0] = GetLongValue(HexString, 10);
-        ptr_M10INI->StatusData.currentMaintenanceLimits[1] = GetLongValue(HexString, 18);
-        ptr_M10INI->StatusData.currentMaintenanceLimits[2] = GetLongValue(HexString, 26);
-        ptr_M10INI->StatusData.currentMaintenanceLimits[3] = GetLongValue(HexString, 34);
+        _Interface->StatusData.CurrentMaintenanceLimits[0] = GetLongValue(HexString, 10);
+        _Interface->StatusData.CurrentMaintenanceLimits[1] = GetLongValue(HexString, 18);
+        _Interface->StatusData.CurrentMaintenanceLimits[2] = GetLongValue(HexString, 26);
+        _Interface->StatusData.CurrentMaintenanceLimits[3] = GetLongValue(HexString, 34);
 
-        ptr_M10INI->StatusData.currentMaintenanceLimits[4] = GetLongValue(HexString, 42);
-        ptr_M10INI->StatusData.currentMaintenanceLimits[5] = GetLongValue(HexString, 50);
-        ptr_M10INI->StatusData.currentMaintenanceLimits[6] = GetLongValue(HexString, 58);
-        ptr_M10INI->StatusData.currentMaintenanceLimits[7] = GetLongValue(HexString, 66);
+        _Interface->StatusData.CurrentMaintenanceLimits[4] = GetLongValue(HexString, 42);
+        _Interface->StatusData.CurrentMaintenanceLimits[5] = GetLongValue(HexString, 50);
+        _Interface->StatusData.CurrentMaintenanceLimits[6] = GetLongValue(HexString, 58);
+        _Interface->StatusData.CurrentMaintenanceLimits[7] = GetLongValue(HexString, 66);
         ptr_M2010->ReceiveFlags.MAINTENANCEcounters = true;
 //        Save_StatusData False
         break;
     case IASigDataCycleCntr:
-        ptr_M10INI->StatusData.CycleCount = GetLongValue(HexString, 10);
+        _Interface->StatusData.CycleCount = GetLongValue(HexString, 10);
 //        Save_StatusData False
         break;
     case IASigReadPower:
@@ -783,22 +782,22 @@ int M102IA::ParseHexStructure(string HexString, int DataSignature)
 //           dlgCalibHeight.UniLabel6.Caption = GetResString(1106) & " = " & Format(DownSpeed / 100, "0.00 mm/sec")
 //         End If
         break;
-    case IASigMaximumGauge:
-        CalibHeightMaxGauge = MakeHexWordNumber(HexString.substr(10, 4));
-        ptr_M10INI->StatusData.CalHightMaximumGauge = CalibHeightMaxGauge;
-        ptr_M2010->ReceiveFlags.CalHeightMaxGaugeData = true;
-        break;
+//    case IASigMaximumGauge:
+//        CalibHeightMaxGauge = MakeHexWordNumber(HexString.substr(10, 4));
+//        _Interface->StatusData.CalHightMaximumGauge = CalibHeightMaxGauge;
+//        ptr_M2010->ReceiveFlags.CalHeightMaxGaugeData = true;
+//        break;
     case IASigHostReadyStatus:
         ptr_M2010->ReceiveFlags.HostReadyData = true;
         break;
     case IASigTunePoint:
-        ptr_M10INI->StatusData.Soft_Settings.TunePoint = MakeHexWordNumber(HexString.substr(10, 4));
+        _Interface->StatusData.Soft_Settings.TunePoint = MakeHexWordNumber(HexString.substr(10, 4));
         break;
     case IASigCutoff:
-        ptr_M10INI->StatusData.CutoffMode = MakeHexWordNumber(HexString.substr(10, 4));
+        _Interface->StatusData.CutoffMode = MakeHexWordNumber(HexString.substr(10, 4));
         break;
     case IASigFrequencyOffset:
-         ptr_M10INI->StatusData.Soft_Settings.FrequencyOffset = MakeHexWordNumber(HexString.substr(10, 4));
+         _Interface->StatusData.Soft_Settings.FrequencyOffset = MakeHexWordNumber(HexString.substr(10, 4));
         break;
     case IASigActuatorVer:
         ActuatorVersion = ptr_M2010->ParseSerialNumber(HexString.substr(10, 32));

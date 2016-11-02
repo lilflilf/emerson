@@ -2,7 +2,7 @@
 #define UTILITY_H
 #include <QString>
 #include <QMap>
-#include "Interface/definition.h"
+#include "Interface/Definition.h"
 #include "UtilityDefine.h"
 
 

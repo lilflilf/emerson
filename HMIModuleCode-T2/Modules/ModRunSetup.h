@@ -5,6 +5,7 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "m10definitions.h"
+#include "Interface/SysConfiguration.h"
 using namespace std;
 
 class ModRunSetup
