@@ -25,9 +25,12 @@ Item {
         }
         onSignalAdvanceOk: {
             loader.source = ""
+            testDialog.visible = true
+        }
+        onSignalSaveSplice: {
+            loader.source = ""
         }
     }
-
     ListModel {
         id: listModel
         Component.onCompleted: {
@@ -262,7 +265,7 @@ Item {
             Rectangle {
                 id: backGround
                 anchors.fill: parent
-                color: "#f79428"//"black"
+                color: "black"
                 opacity: 0 //opacityValue
                 RadioButton {
                     id: selectCheck
@@ -316,7 +319,7 @@ Item {
                 return
             backGround.visible = true
             backGround.opacity = 0.5
-            testparameters.visible = true
+            testDialog.visible = true
         }
     }
     Rectangle {
@@ -329,168 +332,19 @@ Item {
             anchors.fill: parent
         }
     }
-    Image {
-        id: testparameters
+    TestSetingDialog {
+        id: testDialog
+        visible: false
         anchors.centerIn: parent
         width: 435
         height: 540
-        visible: false
-        source: "qrc:/images/images/dialogbg.png"
-        Text {
-            id: testTitle
-            anchors.top: parent.top
-            anchors.topMargin: 14
-            anchors.left: parent.left
-            anchors.leftMargin: 14
-            text: qsTr("Test Parameters")
-            color: "white"
-            font.pixelSize: 24
-            font.family: "arial"
-            clip: true
+        onSignalAdvanceSettingStart: {
+            loader.source = "qrc:/UI/AdvanceSetting.qml"
         }
-        Text {
-            id: samplesize
-            anchors.top: testTitle.bottom
-            anchors.topMargin: 46
-            anchors.left: parent.left
-            anchors.leftMargin: 14
-            text: qsTr("Sample Size")
-            color: "white"
-            font.pixelSize: 20
-            font.family: "arial"
-            clip: true
-        }
-        ExclusiveGroup {
-            id: mos
-        }
-        MyRadioButton {
-            id: unButton
-            anchors.left: samplesize.right
-            anchors.leftMargin: 24
-            anchors.top: testTitle.bottom
-            anchors.topMargin: 32
-            height: 57
-            width: 217
-            clip: true
-            buttontext: qsTr("Unconstrained")
-            exclusiveGroup: mos
-            bIsCheck: true
-        }
-        MyRadioButton {
-            id: splices
-            anchors.left: samplesize.right
-            anchors.leftMargin: 24
-            anchors.top: unButton.bottom
-            anchors.topMargin: 7
-            height: 57
-            width: 217
-            clip: true
-            buttontext: qsTr("#of Splices")
-            exclusiveGroup: mos
-            bIsCheck: false
-        }
-        Text {
-            id: teachMode
-            anchors.left: parent.left
-            anchors.leftMargin: 14
-            anchors.verticalCenter: diagram.verticalCenter
-            color: "white"
-            font.pixelSize: 20
-            font.family: "arial"
-            clip: true
-            text: qsTr("Teach Mode")
-        }
-        Switch2 {
-            id: diagram
-            anchors.top: splices.bottom
-            anchors.topMargin: 7
-            anchors.left: teachMode.right
-            anchors.leftMargin: 24
-            backgroundwidth: 200
-            backgroundheight: 47
-            textLeft: qsTr("OFF")
-            textRight: qsTr("ON")
-            state: "left"
-        }
-        ExclusiveGroup {
-            id: mos2
-        }
-        MyRadioButton {
-            id: standard
-            anchors.left: teachMode.right
-            anchors.leftMargin: 24
-            anchors.top: diagram.bottom
-            anchors.topMargin: 7
-            height: 57
-            width: 217
-            visible: diagram.on
-            clip: true
-            buttontext: qsTr("Standard")
-            exclusiveGroup: mos2
-            bIsCheck: true
-        }
-        MyRadioButton {
-            id: auto
-            anchors.left: teachMode.right
-            anchors.leftMargin: 24
-            anchors.top: standard.bottom
-            anchors.topMargin: 7
-            height: 57
-            width: 217
-            clip: true
-            visible: diagram.on
-            buttontext: qsTr("Auto")
-            exclusiveGroup: mos2
-            bIsCheck: false
-        }
-        MyRadioButton {
-            id: sigma
-            anchors.left: teachMode.right
-            anchors.leftMargin: 24
-            anchors.top: auto.bottom
-            anchors.topMargin: 7
-            height: 57
-            width: 217
-            clip: true
-            visible: diagram.on
-            buttontext: qsTr("Sigma")
-            exclusiveGroup: mos2
-            bIsCheck: false
-        }
-        CButton {
-            id: advanceSet
-            anchors.top: sigma.bottom
-            anchors.topMargin: 7
-            anchors.left: parent.left
-            anchors.leftMargin: 14
-            width: 210
-            height: 60
-            text: qsTr("Advanced Setting")
-            textColor: "white"
-            onClicked: {
-                backGround.visible = false
-                backGround.opacity = 0
-                testparameters.visible = false
-                loader.source = ""
-                loader.source = "qrc:/UI/AdvanceSetting.qml"
-            }
-        }
-        CButton {
-            id: start
-            anchors.top: sigma.bottom
-            anchors.topMargin: 7
-            anchors.left: advanceSet.right
-            anchors.leftMargin: 15
-            width: 180
-            height: 60
-            text: qsTr("Start")
-            textColor: "white"
-            onClicked: {
-                backGround.visible = false
-                backGround.opacity = 0
-                testparameters.visible = false
-                loader.source = "qrc:/UI/TestDetail.qml"
-            }
+        onSignalTestStart: {
+            testDialog.visible = false
+            backGround.visible = false
+            loader.source = "qrc:/UI/TestDetail.qml"
         }
     }
 }

@@ -25,6 +25,7 @@ public:
     static DBWorkOrderTable* Instance();
 protected:
     DBWorkOrderTable();
+    bool InsertTestDataIntoTable();
 private:
     static DBWorkOrderTable* _instance;
 public:

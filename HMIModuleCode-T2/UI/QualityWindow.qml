@@ -5,8 +5,9 @@ import QtQuick.Window 2.2
 
 Item {
     id: qualityParent
-    width: Screen.desktopAvailableWidth * 0.43
-    height: Screen.desktopAvailableHeight *0.4
+    width: Screen.width * 0.43
+    height: Screen.height *0.4
+    property var clickType: 0
     Text {
         id: qualityWindowTitle
         text: qsTr("QualityWindow")
@@ -16,8 +17,8 @@ Item {
     }
     Switch2 {
         id: switch2
-        width: Screen.desktopAvailableWidth * 0.12
-        height: Screen.desktopAvailableHeight * 0.04
+        width: Screen.width * 0.12
+        height: Screen.height * 0.04
         anchors.right: parent.right
         textLeft: qsTr("Quality")
         textRight: qsTr("Graph")
@@ -27,11 +28,13 @@ Item {
                 qualityListViewTwo.visible = true
                 myCanvas.visible = false
                 qualityListView.visible = true
+                qualityWindowTitle.text = qsTr("QualityWindow")
             }
             else {
                 myCanvas.visible = true
                 qualityListViewTwo.visible = false
                 qualityListView.visible = false
+                qualityWindowTitle.text = qsTr("GraphWindow")
             }
         }
     }
@@ -40,8 +43,8 @@ Item {
     }
     ListView {
         id: qualityListView
-        width: Screen.desktopAvailableWidth * 0.45
-        height: Screen.desktopAvailableHeight *0.25
+        width: Screen.width * 0.45
+        height: Screen.height *0.25
         orientation: Qt.Horizontal
         interactive: false
         anchors.top: qualityWindowTitle.bottom
@@ -53,11 +56,11 @@ Item {
         id: qualityDelegate
         Item {
             id: name
-            width: Screen.desktopAvailableWidth * 0.1 //qualityParent.width / 4 //
-            height: Screen.desktopAvailableHeight * 0.25 //qualityParent.height / 2 //
+            width: Screen.width * 0.1 //qualityParent.width / 4 //
+            height: Screen.height * 0.25 //qualityParent.height / 2 //
             Rectangle {
                 width: 40
-                height: Screen.desktopAvailableHeight * 0.25
+                height: Screen.height * 0.25
                 anchors.left: parent.left
                 anchors.leftMargin: 10
                 border.color: "white"
@@ -69,6 +72,14 @@ Item {
                     lineColor: "white"
                     width: parent.width
                     height: 2
+                    Text {
+                        id: lineValue
+                        text: qsTr("170")
+                        font.family: "arial"
+                        color: "white"
+                        font.pointSize: 12
+                        anchors.left: parent.right
+                    }
                 }
                 Line {
                     anchors.top: parent.top
@@ -99,12 +110,40 @@ Item {
                     height: 2
                 }
                 Text {
+                    id: bottomText
                     anchors.top: parent.bottom
                     font.family: "arial"
                     color: "white"
-                    font.pointSize: 14
+                    font.pointSize: 12
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: qsTr("POWER")
+                    Component.onCompleted: {
+                        if (index == 0)
+                            bottomText.text = qsTr("POWER")
+                        else if (index == 1)
+                            bottomText.text = qsTr("PRE-HEIGHT")
+                        else if (index == 2)
+                            bottomText.text = qsTr("POST-HEIGHT")
+                        else if (index == 3)
+                            bottomText.text = qsTr("TIME")
+
+                    }
+                }
+            }
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    console.log("clickkkkkk")
+                    if (index == 0)
+                        clickType = 20
+                    else if (index == 1)
+                        clickType = 40
+                    else if (index == 2)
+                        clickType = 60
+                    else if (index == 3)
+                        clickType = 80
+                    qualityListViewTwo.model = 0
+                    qualityListViewTwo.model = 100
                 }
             }
         }
@@ -153,12 +192,12 @@ Item {
 
     ListView {
         id: qualityListViewTwo
-        width: qualityParent.width //Screen.desktopAvailableWidth * 0.35
-        height: Screen.desktopAvailableHeight *0.25
+        width: qualityParent.width //Screen.width * 0.35
+        height: Screen.height *0.25
         orientation: Qt.Horizontal
         interactive: false
         anchors.top: qualityListView.bottom
-        anchors.topMargin: 20
+        anchors.topMargin: 40
         delegate: qualityListViewTwoDelegate
         model: 100
     }
@@ -166,22 +205,26 @@ Item {
         id: qualityListViewTwoDelegate
         Item {
             width: 8
-            height: Screen.desktopAvailableHeight * 0.25
+            height: Screen.height * 0.25
             Rectangle {
+                id: point
                 radius: 100
                 width: 4
                 height: 4
                 anchors.top: parent.top
-                anchors.topMargin: 50
+//                anchors.topMargin: 50
+                Component.onCompleted: {
+                    point.anchors.topMargin = index + clickType
+                }
             }
         }
     }
 
     MyCanvas {
         id: myCanvas
-        width: qualityParent.width //Screen.desktopAvailableWidth * 0.35
-        height: Screen.desktopAvailableHeight * 0.5
+        width: qualityParent.width //Screen.width * 0.35
+        height: Screen.height * 0.5
         anchors.top: qualityWindowTitle.bottom
-        anchors.topMargin: 20
+        anchors.topMargin: 30
     }
 }

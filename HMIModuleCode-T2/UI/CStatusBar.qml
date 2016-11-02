@@ -5,8 +5,8 @@ import QtQuick.Layouts 1.0
 import QtQuick.Window 2.2
 
 Item {
-    width: Screen.desktopAvailableWidth
-    height: Screen.desktopAvailableHeight * 0.03
+    width: Screen.width
+    height: Screen.height * 0.03
     Rectangle {
         anchors.fill: parent
 //        color: "#fac834"
@@ -17,7 +17,7 @@ Item {
             font.pointSize: 12
             color: "white"
             anchors.right: parent.right
-            anchors.rightMargin: Screen.desktopAvailableWidth * 0.05
+            anchors.rightMargin: Screen.width * 0.05
             text: Qt.formatDateTime(new Date(),"hh:mm dd MMMM yyyy")
             //QDate::longMonthName
         }

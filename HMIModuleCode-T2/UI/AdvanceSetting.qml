@@ -10,17 +10,49 @@ Item {
     height: parent.height
     signal signalCancel()
     signal signalAdvanceOk()
-    function setClickColor(index)
+    function setClickColor(index,bIsOk)
     {
         if (standardUpperRepeater.itemAt(index).localbordercolor === "#05f91c") {
             standardUpperRepeater.itemAt(index).localbordercolor = "#f79428"
+            if (bIsOk)
+                standardUpperModel.set(index,{"value":keyNum.inputText+"%"})
         } else if (standardlowerRepeater.itemAt(index).localbordercolor == "#05f91c") {
             standardlowerRepeater.itemAt(index).localbordercolor = "#0079c1"
+            if (bIsOk)
+                standardLowerModel.set(index,{"value":keyNum.inputText+"%"})
         } else if (sigmaUpperRepeater.itemAt(index).localbordercolor == "#05f91c") {
             sigmaUpperRepeater.itemAt(index).localbordercolor = "#f79428"
+            if (bIsOk)
+                sigmaUpperModel.set(index,{"value":keyNum.inputText})
         } else if (sigmaLowerRepeater.itemAt(index).localbordercolor == "#05f91c") {
             sigmaLowerRepeater.itemAt(index).localbordercolor = "#0079c1"
+            if (bIsOk)
+                sigmaLowerModel.set(index,{"value":keyNum.inputText})
         }
+    }
+
+    function setadvancesetingdefalut()
+    {
+        standardUpperModel.clear()
+        standardUpperModel.append({"head":"Time","value":"40%"})
+        standardUpperModel.append({"head":"Power","value":"25%"})
+        standardUpperModel.append({"head":"Pre-Height","value":"15%"})
+        standardUpperModel.append({"head":"Height","value":"10%"})
+        standardLowerModel.clear()
+        standardLowerModel.append({"head":"Time","value":"40%"})
+        standardLowerModel.append({"head":"Power","value":"25%"})
+        standardLowerModel.append({"head":"Pre-Height","value":"15%"})
+        standardLowerModel.append({"head":"Height","value":"10%"})
+        sigmaUpperModel.clear()
+        sigmaUpperModel.append({"head":"Time","value":"4"})
+        sigmaUpperModel.append({"head":"Power","value":"4"})
+        sigmaUpperModel.append({"head":"Pre-Height","value":"4"})
+        sigmaUpperModel.append({"head":"Height","value":"4"})
+        sigmaLowerModel.clear()
+        sigmaLowerModel.append({"head":"Time","value":"4"})
+        sigmaLowerModel.append({"head":"Power","value":"4"})
+        sigmaLowerModel.append({"head":"Pre-Height","value":"4"})
+        sigmaLowerModel.append({"head":"Height","value":"4"})
     }
 
     Image {
@@ -36,7 +68,7 @@ Item {
         font.family: "arial"
         font.pixelSize: 25
         color: "white"
-        text: qsTr("Standard& Auto")
+        text: qsTr("Standard & Auto")
     }
     Text {
         id: sigma
@@ -85,7 +117,7 @@ Item {
     }
     Image {
         id: lower1
-        anchors.top: line2.bottom
+        anchors.bottom: standardLowerrec.top
         anchors.left: standardLowerrec.left
         anchors.leftMargin: -23.5
         width: 192
@@ -117,7 +149,7 @@ Item {
     }
     Image {
         id: lower2
-        anchors.top: line2.bottom
+        anchors.bottom: sigmaLowerrec.top
         anchors.left: sigmaLowerrec.left
         anchors.leftMargin: -23.5
         width: 192
@@ -132,31 +164,56 @@ Item {
         }
     }
     ListModel {
-        id: listModel
+        id: standardUpperModel
+    }
+    ListModel {
+        id: standardLowerModel
+    }
+    ListModel {
+        id: sigmaUpperModel
+    }
+    ListModel {
+        id: sigmaLowerModel
         Component.onCompleted: {
-            listModel.append({"head":"Time","value":"60%"})
-            listModel.append({"head":"Power","value":"60%"})
-            listModel.append({"head":"Pre-Height","value":"60%"})
-            listModel.append({"head":"Height","value":"60%"})
+            standardUpperModel.append({"head":"Time","value":"40%"})
+            standardUpperModel.append({"head":"Power","value":"25%"})
+            standardUpperModel.append({"head":"Pre-Height","value":"15%"})
+            standardUpperModel.append({"head":"Height","value":"10%"})
+
+            standardLowerModel.append({"head":"Time","value":"40%"})
+            standardLowerModel.append({"head":"Power","value":"25%"})
+            standardLowerModel.append({"head":"Pre-Height","value":"15%"})
+            standardLowerModel.append({"head":"Height","value":"10%"})
+
+            sigmaUpperModel.append({"head":"Time","value":"4"})
+            sigmaUpperModel.append({"head":"Power","value":"4"})
+            sigmaUpperModel.append({"head":"Pre-Height","value":"4"})
+            sigmaUpperModel.append({"head":"Height","value":"4"})
+
+            sigmaLowerModel.append({"head":"Time","value":"4"})
+            sigmaLowerModel.append({"head":"Power","value":"4"})
+            sigmaLowerModel.append({"head":"Pre-Height","value":"4"})
+            sigmaLowerModel.append({"head":"Height","value":"4"})
         }
     }
 
-    Grid {
+    Row {
         id: standardupperrec
         anchors.top: upper1.bottom
         anchors.left: parent.left
         anchors.leftMargin: 50
-        width: 300
+        width: 630
         clip: true
-        anchors.bottom: line3.top
-        anchors.bottomMargin: 10
-        columns: 2
-        rows: 2
-        columnSpacing: 10
-        rowSpacing: 15
+        spacing: 10
+//        anchors.bottom: line3.top
+//        anchors.bottomMargin: 10
+//        columns: 2
+//        rows: 2
+//        columnSpacing: 10
+//        rowSpacing: 15
         Repeater {
             id: standardUpperRepeater
-            model: listModel
+            model: standardUpperModel
             delegate: Item {
                 property string localbordercolor: "#f79428"
                 width: 145
@@ -195,31 +252,36 @@ Item {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        setClickColor(advanceset.currentIndex)
+                        setClickColor(advanceset.currentIndex,false)
                         advanceset.currentIndex = index
                         localbordercolor = "#05f91c"
+                        background.visible = true
+                        background.opacity = 0.3
+                        keyNum.visible = true
+                        keyNum.inputText = ""
+                        keyNum.titleText = head
+                        keyNum.currentValue = value
                     }
                 }
             }
         }
     }
 
-    Grid {
+    Row {
         id: standardLowerrec
-        anchors.top: upper1.bottom
-        anchors.left: standardupperrec.right
-        anchors.leftMargin: 10
-        width: 300
+        anchors.top: standardupperrec.bottom
+        anchors.topMargin: 49
+        anchors.left: standardupperrec.left
+        width: 630
         clip: true
-        anchors.bottom: line3.top
-        anchors.bottomMargin: 10
-        columns: 2
-        rows: 2
-        columnSpacing: 10
-        rowSpacing: 15
+        spacing: 10
+//        columns: 2
+//        rows: 2
+//        columnSpacing: 10
+//        rowSpacing: 15
         Repeater {
             id: standardlowerRepeater
-            model: listModel
+            model: standardLowerModel
             delegate: Item {
                 property string localbordercolor: "#0079c1"
                 width: 145
@@ -258,31 +320,38 @@ Item {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        setClickColor(advanceset.currentIndex)
+                        setClickColor(advanceset.currentIndex,false)
                         advanceset.currentIndex = index
                         localbordercolor = "#05f91c"
+                        background.visible = true
+                        background.opacity = 0.3
+                        keyNum.visible = true
+                        keyNum.inputText = ""
+                        keyNum.titleText = head
+                        keyNum.currentValue = value
                     }
                 }
             }
         }
     }
 
-    Grid {
+    Row {
         id: sigmaUpperrec
         anchors.top: upper1.bottom
-        anchors.right: sigmaLowerrec.left
-        anchors.rightMargin: 10
-        width: 300
+        anchors.right: parent.right
+        anchors.rightMargin: 50
+        width: 630
         clip: true
-        anchors.bottom: line3.top
-        anchors.bottomMargin: 10
-        columns: 2
-        rows: 2
-        columnSpacing: 10
-        rowSpacing: 15
+        spacing: 10
+//        anchors.bottom: line3.top
+//        anchors.bottomMargin: 10
+//        columns: 2
+//        rows: 2
+//        columnSpacing: 10
+//        rowSpacing: 15
         Repeater {
             id: sigmaUpperRepeater
-            model: listModel
+            model: sigmaUpperModel
             delegate: Item {
                 property string localbordercolor: "#f79428"
                 width: 145
@@ -321,31 +390,38 @@ Item {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        setClickColor(advanceset.currentIndex)
+                        setClickColor(advanceset.currentIndex,false)
                         advanceset.currentIndex = index
                         localbordercolor = "#05f91c"
+                        background.visible = true
+                        background.opacity = 0.3
+                        keyNum.visible = true
+                        keyNum.inputText = ""
+                        keyNum.titleText = head
+                        keyNum.currentValue = value
                     }
                 }
             }
         }
     }
 
-    Grid {
+    Row {
         id: sigmaLowerrec
-        anchors.top: upper1.bottom
+        anchors.top: sigmaUpperrec.bottom
+        anchors.topMargin: 49
         anchors.right: parent.right
         anchors.rightMargin: 50
-        width: 300
+        width: 630
         clip: true
-        anchors.bottom: line3.top
-        anchors.bottomMargin: 10
-        columns: 2
-        rows: 2
-        columnSpacing: 10
-        rowSpacing: 15
+        spacing: 10
+
+//        columns: 2
+//        rows: 2
+//        columnSpacing: 10
+//        rowSpacing: 15
         Repeater {
             id: sigmaLowerRepeater
-            model: listModel
+            model: sigmaLowerModel
             delegate: Item {
                 property string localbordercolor: "#0079c1"
                 width: 145
@@ -384,9 +460,15 @@ Item {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        setClickColor(advanceset.currentIndex)
+                        setClickColor(advanceset.currentIndex,false)
                         advanceset.currentIndex = index
                         localbordercolor = "#05f91c"
+                        background.visible = true
+                        background.opacity = 0.3
+                        keyNum.visible = true
+                        keyNum.titleText = head
+                        keyNum.inputText = ""
+                        keyNum.currentValue = value
                     }
                 }
             }
@@ -453,6 +535,37 @@ Item {
         text: qsTr("Defalut Setting")
         textColor: "white"
         onClicked: {
+            setadvancesetingdefalut()
+        }
+    }
+    Rectangle {
+        id: background
+        anchors.fill: parent
+        color: "black"
+        visible: false
+        opacity: 0
+        MouseArea {
+            anchors.fill: parent
+        }
+    }
+
+    KeyBoardNum {
+        id: keyNum
+        anchors.centerIn: parent
+        width: 500
+        height: 500
+        visible: false
+        titleText: qsTr("")
+        maxvalue: 12
+        minvalue: 3
+        currentValue: "123"
+        onCurrentClickIndex: {
+            if (index == 14) {
+                background.visible = false
+                background.opacity = 0
+                keyNum.visible = false
+                setClickColor(advanceset.currentIndex,true)
+            }
         }
     }
 }

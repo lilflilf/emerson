@@ -551,7 +551,7 @@ Item {
                 if (dialog.bIsEdit)
                     workOrderModel.updateRecordIntoTable(workOrderModel.getWorkOrderValue(selectIndx, "workOrderId"),dialog.oldWorkOrderName, inputworkId.inputText,selectPart.partId,selectPart.text, inputquantity.inputText )
                 else {
-
+                    workOrderModel.insertRecordIntoTable(inputworkId.inputText,selectPart.partId,selectPart.text,inputquantity.inputText)
                     selectPart.text = "SELECT PART"
                 }
 //                selectIndx = -1
@@ -563,11 +563,11 @@ Item {
     AddExistingSpliceWire {
         id: addExit
         anchors.centerIn: parent
-        width: Screen.desktopAvailableWidth*0.7
-        height: Screen.desktopAvailableHeight*0.6
+        width: Screen.width*0.7
+        height: Screen.height*0.6
         visible: false
-        listModel: testModel
-        titleName: qsTr("Add WORK ORDEAR")
+        listModel: partModel //testModel
+        titleName: qsTr("ADD WORK ORDEAR")
         componentName: qsTr("PART NAME")
         componentData: qsTr("DATE CREATED")
         componentMiddle: qsTr("# OF SPLICE")
@@ -578,6 +578,7 @@ Item {
             addExit.visible = false
         }
         onSignalAddExistSelectClick: {
+            selectPart.partId = partId
             selectPart.text = name
             addExit.visible = false
         }

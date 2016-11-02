@@ -9,8 +9,8 @@ Item {
     id: headBar
     property alias titleText: title.text
     property var selectIndex: 0
-    width: Screen.desktopAvailableWidth
-    height: 97//Screen.desktopAvailableHeight * 0.07
+    width: Screen.width
+    height: 97//Screen.height * 0.07
 //    Rectangle {
 //        id: headBack
 //        anchors.fill: parent
@@ -25,8 +25,8 @@ Item {
     MouseArea {
         z: 9
         visible: btn.isCheck == true ? true : false
-        width: Screen.desktopAvailableWidth
-        height: Screen.desktopAvailableHeight
+        width: Screen.width
+        height: Screen.height
         onClicked: {
             btn.isCheck = false
             creatMenu.visible = false
@@ -228,6 +228,7 @@ Item {
     ListModel {
         id: maintenanceList
         ListElement {menuKey:"Calibration"}
+        ListElement {menuKey:"Tool Change"}
         ListElement {menuKey:"Advanced Maintenance"}
         ListElement {menuKey:"Maintenance counter"}
         ListElement {menuKey:"Maintenance log"}
@@ -243,10 +244,12 @@ Item {
     }
     ListModel {
         id: settingList
-        ListElement {menuKey:"Admin"}
+        ListElement {menuKey:"Permission Setting"}
         ListElement {menuKey:"Weld Defaults"}
-        ListElement {menuKey:"Sequence Defaults"}
+        ListElement {menuKey:"Operator Library"}
         ListElement {menuKey:"Data/Communication"}
+        ListElement {menuKey:"Branson Setting"}
+
     }
 
     Item {
@@ -305,9 +308,13 @@ Item {
                                     root.menuInit(0)
                                     title.text = qsTr("Creat Assembly")
                                 }
-                                if (menuKey == "Edit Existing"){
+                                else if (menuKey == "Edit Existing"){
                                     root.menuInit(1)
                                     title.text = qsTr("Edit Existing")
+                                }
+                                else if (menuKey == "User Library"){
+                                    root.menuInit(16)
+                                    title.text = qsTr("User Library")
                                 }
                             }
                         }

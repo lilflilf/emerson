@@ -8,6 +8,9 @@ Item {
     Rectangle {
         anchors.fill: parent
         color: "#626465"
+        MouseArea {
+            anchors.fill: parent
+        }
     }
 
     Text {
@@ -22,8 +25,8 @@ Item {
         anchors.topMargin: 15
     }
     Switch2 {
-        width: Screen.desktopAvailableWidth * 0.12
-        height: Screen.desktopAvailableHeight * 0.04
+        width: Screen.width * 0.12
+        height: Screen.height * 0.04
         anchors.right: spliceDetailsItem.right
         anchors.top: operateTitle.top
         textLeft: qsTr("Diagram")
@@ -56,8 +59,8 @@ Item {
 
     SpliceDetails {
         id: spliceDetailsItem
-        width: Screen.desktopAvailableWidth * 0.5
-        height: Screen.desktopAvailableHeight *0.45
+        width: Screen.width * 0.5
+        height: Screen.height *0.45
         anchors.top: operateTitle.bottom
         anchors.left: operateTitle.left
         anchors.topMargin: 15
@@ -88,6 +91,19 @@ Item {
         font.family: "arial"
         text: qsTr("TOTAL CROSS SECTION: 2.3mm")
         color: "white"
+    }
+    ListModel {
+        id: testModel
+        Component.onCompleted: {
+            testModel.append({"theNo":1})
+            testModel.append({"theNo":2})
+            testModel.append({"theNo":3})
+            testModel.append({"theNo":4})
+            testModel.append({"theNo":5})
+            testModel.append({"theNo":6})
+            testModel.append({"theNo":7})
+            testModel.append({"theNo":8})
+        }
     }
 
     ListModel {
@@ -143,19 +159,21 @@ Item {
         anchors.top: spliceTips.bottom
         anchors.topMargin: 10
         anchors.left: operateTitle.left
-        width: Screen.desktopAvailableWidth * 0.37
-        height: Screen.desktopAvailableHeight *0.25
+        width: Screen.width * 0.37
+        height: Screen.height *0.25
         columns: 4
         rows: 4
         visible: false
         listModel: treeModel
     }
     SpliceStatusOffLine {
+        id: offline
         anchors.top: spliceTips.bottom
         anchors.topMargin: 10
         anchors.left: operateTitle.left
-        width: Screen.desktopAvailableWidth * 0.37
-        height: Screen.desktopAvailableHeight *0.35
+        width: Screen.width * 0.37
+        height: Screen.height *0.2
+        listModel: testModel
     }
 
     Rectangle {
@@ -231,7 +249,7 @@ Item {
         anchors.left: spliceLocation.right
         anchors.leftMargin: 10
         width: spliceDetailsItem.width-spliceLocation.width-10
-        height: spliceDetailsItem.height/ 4
+        height: spliceDetailsItem.height/ 4.3
         color: "#6d6e71"
         opacity: 1
         Rectangle {
@@ -264,11 +282,33 @@ Item {
         }
     }
     Text {
+        id: partCount2
+        anchors.left: offline.left
+        anchors.top: offline.bottom
+        anchors.topMargin: 10
+        font.pointSize: 13
+        font.family: "arial"
+        text: qsTr("PART COUNTER 68/125")
+        color: "white"
+    }
+    CProgressBar {
+        id: progressBar2
+        anchors.top: partCount2.bottom
+        anchors.topMargin: 10
+        anchors.left: offline.left
+        width: 200
+        height: 10
+        maximum: 125
+        minimum: 1
+        value: 60
+    }
+
+    Text {
         id: progresstracking
         anchors.bottom: workStation.top
         anchors.bottomMargin: 4
         anchors.left: spliceDetailsItem.right
-        anchors.leftMargin: Screen.desktopAvailableWidth*0.1-55
+        anchors.leftMargin: Screen.width*0.1-55
         font.pointSize: 16
         font.family: "arial"
         text: qsTr("Progress and Tracking")
@@ -279,7 +319,7 @@ Item {
         anchors.bottom: progressBar.top
         anchors.bottomMargin: 6
         anchors.left: spliceDetailsItem.right
-        anchors.leftMargin: Screen.desktopAvailableWidth*0.1-55
+        anchors.leftMargin: Screen.width*0.1-55
         font.pointSize: 13
         font.family: "arial"
         text: qsTr("Work Station: B")
@@ -301,7 +341,7 @@ Item {
         anchors.bottom: partCount.top
         anchors.bottomMargin: 20
         anchors.left: spliceDetailsItem.right
-        anchors.leftMargin: Screen.desktopAvailableWidth*0.1-55
+        anchors.leftMargin: Screen.width*0.1-55
         width: 50
         height: 32
         iconSource: "qrc:/images/images/you.png"
@@ -314,11 +354,10 @@ Item {
         anchors.leftMargin: 25
         anchors.bottom: partCount.top
         anchors.bottomMargin: 4
-        width: Screen.desktopAvailableWidth*0.4-150
+        width: Screen.width*0.4-150
         height: 64
         total: 125
     }
-
     CButton {
         id: rightButton
         anchors.bottom: partCount.top
@@ -333,68 +372,53 @@ Item {
         onClicked: {
             progressBar.finishNo++
             progressBar.current++
+            offline.setSatusOffLineNum(testModel.get(testModel.count-1).theNo+1)
         }
     }
     Text {
         id: partCount
         anchors.left: spliceDetailsItem.right
-        anchors.leftMargin: Screen.desktopAvailableWidth*0.1-55
-        anchors.bottom: partProgress.top
+        anchors.leftMargin: Screen.width*0.1-55
+        anchors.bottom: progressBar4.top
         anchors.bottomMargin: 6
         font.pointSize: 13
         font.family: "arial"
         text: qsTr("PART COUNTER 68/125")
         color: "white"
     }
-    Rectangle {
-        id: partProgress
+    CProgressBar {
+        id: progressBar4
         anchors.left: spliceDetailsItem.right
-        anchors.leftMargin: Screen.desktopAvailableWidth*0.1-55
+        anchors.leftMargin: Screen.width*0.1-55
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 20
+        width: Screen.width*0.2
         height: 10
-        width: Screen.desktopAvailableWidth*0.2
-        color: "#9FA1A4"
-    }
-    Rectangle {
-        id: partgrogressing
-        anchors.left: spliceDetailsItem.right
-        anchors.leftMargin: Screen.desktopAvailableWidth*0.1-55
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 20
-        height: 10
-        width: Screen.desktopAvailableWidth*0.1
-        color: "#60BB46"
+        maximum: 125
+        minimum: 1
+        value: 60
     }
     Text {
         id: maintenance
-        anchors.left: partProgress.right
+        anchors.left: progressBar4.right
         anchors.leftMargin: 10
-        anchors.bottom: partProgress.top
+        anchors.bottom: progressBar3.top
         anchors.bottomMargin: 6
         font.pointSize: 13
         font.family: "arial"
         text: qsTr("MAINTENANCE COUNTER 68K/125K")
         color: "white"
     }
-    Rectangle {
-        id: maintenanceProgress
-        anchors.left: partProgress.right
+    CProgressBar {
+        id: progressBar3
+        anchors.left: progressBar4.right
         anchors.leftMargin: 10
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 20
+        width: Screen.width*0.2
         height: 10
-        width: Screen.desktopAvailableWidth*0.2
-        color: "#9FA1A4"
-    }
-    Rectangle {
-        id: maintenancegrogressing
-        anchors.left: partProgress.right
-        anchors.leftMargin: 10
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 20
-        height: 10
-        width: Screen.desktopAvailableWidth*0.1
-        color: "#60BB46"
+        maximum: 125
+        minimum: 1
+        value: 60
     }
 }

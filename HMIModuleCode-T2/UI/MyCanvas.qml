@@ -49,6 +49,44 @@ Item {
         lineColor: "white"
         anchors.bottom: parent.bottom
         anchors.left: parent.left
+        Text {
+            anchors.top: bottomLineRow.bottom
+            anchors.topMargin: 5
+            color: "white"
+            font.pointSize: 12
+            text: qsTr("TIME(sec)")
+            font.family: "arial"
+
+        }
+        Row {
+            id: bottomLineRow
+            spacing: bottomLine.width / 5
+            Text {
+                color: "#adaeae"
+                font.pixelSize: 14
+                text: qsTr("0")
+            }
+            Text {
+                text: qsTr("0.25")
+                color: "#adaeae"
+                font.pixelSize: 14
+            }
+            Text {
+                text: qsTr("0.5")
+                color: "#adaeae"
+                font.pixelSize: 14
+            }
+            Text {
+                text: qsTr("0.75")
+                color: "#adaeae"
+                font.pixelSize: 14
+            }
+            Text {
+                text: qsTr("1.0")
+                color: "#adaeae"
+                font.pixelSize: 14
+            }
+        }
     }
     Line {
         id: leftLine
@@ -86,6 +124,14 @@ Item {
                 font.pixelSize: 14
             }
         }
+        Text {
+            anchors.bottom: leftLine.top
+            anchors.bottomMargin: 5
+            color: "white"
+            font.pointSize: 12
+            text: qsTr("POWER(W)")
+            font.family: "arial"
+        }
     }
     Line {
         id: rightLine
@@ -94,6 +140,15 @@ Item {
         lineColor: "white"
         anchors.bottom: parent.bottom
         anchors.right: parent.right
+        Text {
+            anchors.bottom: rightLine.top
+            anchors.bottomMargin: 5
+            color: "white"
+            font.pointSize: 12
+            text: qsTr("HEIGHT(mm)")
+            font.family: "arial"
+            anchors.right: rightLine.left
+        }
         Column {
             spacing: rightLine.height / 5
             anchors.left: rightLine.right

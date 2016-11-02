@@ -4,8 +4,8 @@ import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
 
 Item {
-    width: Screen.desktopAvailableWidth / 2
-    height: Screen.desktopAvailableHeight / 2
+    width: Screen.width / 2
+    height: Screen.height / 2
     signal signalFileDialogCancel()
     FileDialog {
         id: fileDialog

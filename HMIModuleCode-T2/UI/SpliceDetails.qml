@@ -5,8 +5,8 @@ import QtQuick.Controls 1.4
 
 Item {
     id: detail
-    width: Screen.desktopAvailableWidth * 0.8
-    height: Screen.desktopAvailableHeight *0.5
+    width: Screen.width * 0.8
+    height: Screen.height *0.5
     property alias leftModel: listModelLeft
     property alias rightModel: listModelRight
     property alias centerVisable: centerButton.visible

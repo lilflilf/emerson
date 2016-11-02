@@ -19,10 +19,57 @@ DBPartTable::DBPartTable()
     PartDBObj.setDatabaseName(DatabaseDir + PartDBFile);
     if(PartDBObj.open())
     {
-        if(!PartDBObj.tables().contains("Part"))
+        if(!PartDBObj.tables().contains("Part")) {
             CreateNewTable();
+            InsertTestDataIntoTable();
+        }
     }
     PartDBObj.close();
+}
+
+void DBPartTable::InsertTestDataIntoTable()
+{
+    struct PartElement tmpPart;
+    for (int i = 0; i < 6; i++)
+    {
+        if ( i == 0)
+            tmpPart.PartName = "32117-SHA-0001-00(INSTHARNESSS)";
+        if ( i == 1)
+            tmpPart.PartName = "32200-SGA-2000-01(CABINHARNESS)";
+        if ( i == 2)
+            tmpPart.PartName = "32751-TAA-A190-03(FRDOORHARNESS)";
+        if ( i == 3)
+            tmpPart.PartName = "P5VH006Y0";
+        if ( i == 4)
+            tmpPart.PartName = "P5VH006P0";
+        if ( i == 5)
+            tmpPart.PartName = "P5VH006Z0";
+        tmpPart.CreatedDate = QDateTime::currentDateTime().toTime_t();
+        tmpPart.OperatorID = 2;
+        tmpPart.PartTypeSetting.ProcessMode = BASIC;
+        tmpPart.PartTypeSetting.WorkStations.TotalWorkstation = 20;
+        tmpPart.PartTypeSetting.WorkStations.MaxSplicesPerWorkstation = 30;
+        tmpPart.PartTypeSetting.BoardLayout.Rows = 4;
+        tmpPart.PartTypeSetting.BoardLayout.Columns = 4;
+        tmpPart.PartTypeSetting.BoardLayout.MaxSplicesPerZone = 10;
+
+        struct PARTATTRIBUTE PartAttribute;
+        PartAttribute.SpliceName = "WangYIBIN";
+        PartAttribute.CurrentBoardLayoutZone = 1;
+        PartAttribute.CurrentWorkstation = 2;
+        tmpPart.SpliceIndex.insert(0,PartAttribute);
+        PartAttribute.SpliceName = "JWang";
+        PartAttribute.CurrentBoardLayoutZone = 2;
+        PartAttribute.CurrentWorkstation = 3;
+        tmpPart.SpliceIndex.insert(1,PartAttribute);
+        PartAttribute.SpliceName = "JW";
+        PartAttribute.CurrentBoardLayoutZone = 3;
+        PartAttribute.CurrentWorkstation = 4;
+        tmpPart.SpliceIndex.insert(2,PartAttribute);
+        tmpPart.NoOfSplice = tmpPart.SpliceIndex.size();
+
+        InsertRecordIntoTable(&tmpPart);
+    }
 }
 
 DBPartTable::~DBPartTable()
