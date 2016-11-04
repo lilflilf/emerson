@@ -75,11 +75,14 @@ MODstart::MODstart()
     }
     else
     {
-        _M102IA->SendIACommand(IAComgetActuator, 0);
-        if (_Interface->StatusData.EnableModularFlag == true)
-        {
+//        if (_Interface->StatusData.EnableModularFlag == true)
+//        {
 //            dlgSelectMode.Show vbModal
-        }
+//        }
+        _M102IA->SendIACommand(IAComgetActuator, 0);
+        _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.ActuatorType);
+        if(_M2010->ReceiveFlags.ActuatorType == true)
+           _M2010->ReceiveFlags.ActuatorType = false;
         //Send command to get Controller Version string.
         _M102IA->SendIACommand(IAComGetControllerVer, 0);
         _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.ControllerVersionData);
@@ -174,53 +177,51 @@ void MODstart::Update_from_StatusData_for_commands()
     // Sends status data to the controller at start up
     // Reads status data from status data structure and sends to controller
     int i;
-    M2010 *ptr_M2010 = M2010::Instance();
-    M10INI *ptr_M10INI = M10INI::Instance();
-    M102IA *ptr_M102IA = M102IA::Instance();
-//    BransonSerial *ptr_Serial = BransonSerial::Instance();
-//    ModRunSetup   *ptr_ModRunSetup = ModRunSetup::Instance();
+    M2010 *_M2010 = M2010::Instance();
+    M10INI *_M10INI = M10INI::Instance();
+    M102IA *_M102IA = M102IA::Instance();
     InterfaceClass *_Interface = InterfaceClass::Instance();
-    ptr_M2010->TempActuatorInfo.CurrentActuatorType = _Interface->StatusData.MachineType;
-    ptr_M2010->TempActuatorInfo.CurrentActuatorMode = _Interface->StatusData.ActuatorMode;
-    ptr_M2010->TempActuatorInfo.CurrentAntisideSpliceTime = _Interface->StatusData.AntisideSpliceTime;
+    _M2010->TempActuatorInfo.CurrentActuatorType = _Interface->StatusData.MachineType;
+    _M2010->TempActuatorInfo.CurrentActuatorMode = _Interface->StatusData.ActuatorMode;
+    _M2010->TempActuatorInfo.CurrentAntisideSpliceTime = _Interface->StatusData.AntisideSpliceTime;
 
-    ptr_M10INI->TempSysConfig.CoolingMode = _Interface->StatusData.CurrentCoolingMode;
-    ptr_M10INI->TempSysConfig.CoolingDur = _Interface->StatusData.CurrentCoolingDur;
-    ptr_M10INI->TempSysConfig.CoolingDel = _Interface->StatusData.CurrentCoolingDel;
+    _M10INI->TempSysConfig.CoolingMode = _Interface->StatusData.CurrentCoolingMode;
+    _M10INI->TempSysConfig.CoolingDur = _Interface->StatusData.CurrentCoolingDur;
+    _M10INI->TempSysConfig.CoolingDel = _Interface->StatusData.CurrentCoolingDel;
 
-    ptr_M10INI->TempSysConfig.LockAlarm = _Interface->StatusData.LockonAlarm;
-    ptr_M10INI->TempSysConfig.CutoffMode = _Interface->StatusData.CutoffMode;
-    ptr_M10INI->TempSysConfig.RunMode = _Interface->StatusData.RunMode;
+    _M10INI->TempSysConfig.LockAlarm = _Interface->StatusData.LockonAlarm;
+    _M10INI->TempSysConfig.CutoffMode = _Interface->StatusData.CutoffMode;
+    _M10INI->TempSysConfig.RunMode = _Interface->StatusData.RunMode;
 
-    ptr_M10INI->TempMaintConfig.Amplitude = _Interface->StatusData.Soft_Settings.Horn_Calibrate;
-    ptr_M10INI->TempMaintConfig.GenPower = _Interface->StatusData.Soft_Settings.SonicGenWatts;
-    ptr_M10INI->TempMaintConfig.TunePoint = _Interface->StatusData.Soft_Settings.TunePoint;
-    ptr_M10INI->TempMaintConfig.FrequencyOffset = _Interface->StatusData.Soft_Settings.FrequencyOffset;
+    _M10INI->TempMaintConfig.Amplitude = _Interface->StatusData.Soft_Settings.Horn_Calibrate;
+    _M10INI->TempMaintConfig.GenPower = _Interface->StatusData.Soft_Settings.SonicGenWatts;
+    _M10INI->TempMaintConfig.TunePoint = _Interface->StatusData.Soft_Settings.TunePoint;
+    _M10INI->TempMaintConfig.FrequencyOffset = _Interface->StatusData.Soft_Settings.FrequencyOffset;
 
     for (i = 0; i <= 3; i++)
-        ptr_M10INI->TempSysConfig.Machineflags[i] = _Interface->StatusData.Machineflags[i];
+        _M10INI->TempSysConfig.Machineflags[i] = _Interface->StatusData.Machineflags[i];
 
-    ptr_M102IA->SendIACommand(IAComSetActuator, 0);
-    ptr_M102IA->SendIACommand(IAComSetCooling, 0);
-    ptr_M102IA->SendIACommand(IAComSetLockonAlarm, ptr_M10INI->TempSysConfig.LockAlarm);
-    ptr_M102IA->SendIACommand(IAComSetCutoff, ptr_M10INI->TempSysConfig.CutoffMode);
-    ptr_M102IA->SendIACommand(IAComGetRunModeNew, 0);
-    ptr_M2010->ReceiveFlags.FootPadelDATA = false;
-    ptr_M102IA->WaitForResponseAfterSent(3000, &ptr_M2010->ReceiveFlags.FootPadelDATA);
+    _M102IA->SendIACommand(IAComSetActuator, 0);
+    _M102IA->SendIACommand(IAComSetCooling, 0);
+    _M102IA->SendIACommand(IAComSetLockonAlarm, _M10INI->TempSysConfig.LockAlarm);
+    _M102IA->SendIACommand(IAComSetCutoff, _M10INI->TempSysConfig.CutoffMode);
+    _M102IA->SendIACommand(IAComGetRunModeNew, 0);
+    _M2010->ReceiveFlags.FootPadelDATA = false;
+    _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.FootPadelDATA);
 
-    _Interface->StatusData.RunMode = _Interface->StatusData.RunMode | (ptr_M10INI->TempSysConfig.RunMode & 0x1000);
-    ptr_M102IA->SendIACommand(IAComSetRunModeNew, _Interface->StatusData.RunMode);
-    ptr_M10INI->TempSysConfig.RunMode = _Interface->StatusData.RunMode;
-    ptr_M10INI->Save_StatusData(false);
-    ptr_M102IA->SendIACommand(IAComSetMachineFlags, 0);
-    ptr_M102IA->SendIACommand(IAComSetGenPower, ptr_M10INI->TempMaintConfig.GenPower);
-    ptr_M102IA->SendIACommand(IAComSendHornAmplitude, ptr_M10INI->TempMaintConfig.Amplitude);
-    ptr_M2010->ReceiveFlags.MAINTENANCEcounters = false;
-    ptr_M102IA->SendIACommand(IAComGetMaintCntr, 0);
-    ptr_M102IA->WaitForResponseAfterSent(3000, &ptr_M2010->ReceiveFlags.MAINTENANCEcounters);
-    if(ptr_M2010->ReceiveFlags.MAINTENANCEcounters)
-        ptr_M2010->ReceiveFlags.MAINTENANCEcounters = false;
-    ptr_M102IA->SendIACommand(IAComGetCycleCntr, 0);   
+    _Interface->StatusData.RunMode = _Interface->StatusData.RunMode | (_M10INI->TempSysConfig.RunMode & 0x1000);
+    _M102IA->SendIACommand(IAComSetRunModeNew, _Interface->StatusData.RunMode);
+    _M10INI->TempSysConfig.RunMode = _Interface->StatusData.RunMode;
+    _M10INI->Save_StatusData(false);
+    _M102IA->SendIACommand(IAComSetMachineFlags, 0);
+    _M102IA->SendIACommand(IAComSetGenPower, _M10INI->TempMaintConfig.GenPower);
+    _M102IA->SendIACommand(IAComSendHornAmplitude, _M10INI->TempMaintConfig.Amplitude);
+    _M2010->ReceiveFlags.MAINTENANCEcounters = false;
+    _M102IA->SendIACommand(IAComGetMaintCntr, 0);
+    _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.MAINTENANCEcounters);
+    if(_M2010->ReceiveFlags.MAINTENANCEcounters)
+        _M2010->ReceiveFlags.MAINTENANCEcounters = false;
+    _M102IA->SendIACommand(IAComGetCycleCntr, 0);
 }
 
 void MODstart::GlobalInitM10()
@@ -243,9 +244,9 @@ void MODstart::GlobalInitM10()
     ptr_M2010->M10Run.Select_Seq_file = false;
     ptr_M2010->M10Run.Alarm_found = false;
     ptr_M10INI->Power_to_Watts = _Interface->StatusData.Soft_Settings.SonicGenWatts / 200;
-    _Utility->Maxpower = int(1.2 * _Interface->StatusData.Soft_Settings.SonicGenWatts);
+    _Utility->Maxpower = float(1.20 * _Interface->StatusData.Soft_Settings.SonicGenWatts);
     for (i = 0; i <= 6; i++)
-        ptr_M10INI->Pwr_Prefix_Data[i] = i * int(0.2 * _Interface->StatusData.Soft_Settings.SonicGenWatts);
+        ptr_M10INI->Pwr_Prefix_Data[i] = i * float(0.2 * _Interface->StatusData.Soft_Settings.SonicGenWatts);
 
     //    PowerDataReady = False
     ptr_M10INI->ValidWeldData = false;
@@ -362,9 +363,18 @@ int MODstart::CheckIOStatus()
     }
 
     //--Get back the current I/O data!
+    _M2010->ReceiveFlags.IOdata = false;
     _M102IA->IACommand(IAComSendIOdata);
-    _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.IOdata);
-
+    _Serial->SetCommandTimer(3000);
+    while (_Serial->IsCommandTimeout() == false)
+    {
+        QCoreApplication::processEvents(); // Wait for response
+        if (_M2010->ReceiveFlags.IOdata == true)
+        {
+            break;
+        }
+    }
+    _Serial->ResetCommandTimer();
     //--Check to make sure that the Pressure Rating is O.K.
     if (_M102IA->IOstatus.IO & 0x08)
     {

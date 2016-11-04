@@ -8,8 +8,8 @@
 #include <QTimerEvent>
 #include <QDateTime>
 #include <QCoreApplication>
-BransonSerial* BransonSerial::_instance = 0;
-QSerialPort* BransonSerial::comIAport = 0;
+BransonSerial* BransonSerial::_instance = NULL;
+QSerialPort* BransonSerial::comIAport = NULL;
 BransonSerial* BransonSerial::Instance()
 {
     if(_instance == 0){
@@ -22,7 +22,8 @@ BransonSerial::BransonSerial(QObject *parent)
     :QObject(parent)
 {
     comIAport = new QSerialPort();
-    ResetCommandTimer();
+    m_nCurrentTimer = 0;
+    b_Timeout = false;
 }
 
 BransonSerial::~BransonSerial()
@@ -57,11 +58,10 @@ int BransonSerial::CheckIAportSet(long iBaudRate, long iComm)
     comIAport->setDataBits(QSerialPort::Data8);
     comIAport->setStopBits(QSerialPort::OneStop);
     comIAport->setFlowControl(QSerialPort::NoFlowControl);
-    comIAport->clearError();
-    comIAport->clear();
     connect(comIAport,SIGNAL(readyRead()),this,SLOT(comIAportReadEventSlot()));
     comIAport->open(QIODevice::ReadWrite);
-
+    comIAport->clearError();
+    comIAport->clear();
 
     strCommand = 0x11;
     comIAport->write(&strCommand,1); //XON
@@ -70,7 +70,7 @@ int BransonSerial::CheckIAportSet(long iBaudRate, long iComm)
     strCommand = IAcomfunctionENQ;
     comIAport->write(&strCommand,1);
     comIAport->waitForBytesWritten(-1);
-    SetCommandTimer(2);
+    SetCommandTimer(200);
     while (IsCommandTimeout() == false)
     {
         QCoreApplication::processEvents(); // Wait for response
@@ -92,7 +92,7 @@ int BransonSerial::CheckIAportSet(long iBaudRate, long iComm)
     strCommand = IAcomfunctionENQ;
     comIAport->write(&strCommand,1);
     comIAport->waitForBytesWritten(-1);
-    SetCommandTimer(2);
+    SetCommandTimer(200);
     while (IsCommandTimeout() == false)
     {
         QCoreApplication::processEvents(); // Wait for response
@@ -113,7 +113,6 @@ int BransonSerial::CheckIAportSet(long iBaudRate, long iComm)
 
 void BransonSerial::comIAportReadEventSlot()
 {
-    qDebug()<< "x";
     M2010 *ptr_M2010 = M2010::Instance();
     M102IA *ptr_M102IA = M102IA::Instance();
     int iPos = 0;
@@ -133,6 +132,7 @@ void BransonSerial::comIAportReadEventSlot()
         strBuffer = strBuffer.mid(iPos + 1, strBuffer.length() - iPos -1);
     else
         return;
+    qDebug()<<"Received Data:"<<strBuffer;
     DataBuffer = strBuffer.toLatin1();
     for(int i = 0; i< DataBuffer.length(); i++)
     {

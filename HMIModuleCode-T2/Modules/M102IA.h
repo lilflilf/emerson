@@ -72,7 +72,7 @@ struct WELDSETTINGS{
    int ABDelay;
    int ABDuration;
    int Amplitude2;           // Amplitude2 used for Amp Stepping
-   string PartName;
+   QString PartName;
    int EnergyToStep;         // Energy Step used for Amp Stepping
    int TimeToStep;           // Time Step used for Amp Stepping
    int PowerToStep;          // Power Step used for Amp Stepping
@@ -109,7 +109,7 @@ struct IOinfo{
 
 //Data from the FootPedal
 struct LASTIOSWITCHS{
-   string ByteData[2];
+   QString ByteData[2];
    int WordData;
    long IO;
    long IO2;                 // VELEZ040811
@@ -351,13 +351,13 @@ public:
     double EnergyMaintenanceDue;
     int ADPower;
 
-    string IAdataSignature;
+    QString IAdataSignature;
 
     //Records as they come in
-    string HexLine;
+    QString HexLine;
     QString IAstructure;
 
-    string OutStructure;
+    QString OutStructure;
     INTELhexRECORD hexRecord;
 private:
     void PackHexRecord();
@@ -367,7 +367,7 @@ private:
     void sndPreset2IA(int PresetNo);
 public:
     void Generate_Beep(int BeepTime = 100);
-    void HexLineCheck(QString HexLineData, bool &HexLineCheckOK);
+    void HexLineCheck(QString HexLineData, bool &HexLineFlag);
     void HexLineBufferCheck(QString InputLine);
 
     char MakeHexNibble(int InNumber);
@@ -382,7 +382,7 @@ public:
     void MakeMemoryString(string InputHexString, string &OutputHexString);
     void GetCstringFromHex(string InputString,string &OutputString, int Start, int CharCount);
     long GetLongValue(QString InputString,int Ref);
-    int ParseHexStructure(QString HexString, int DataSignature);
+    int ParseHexStructure(QString HexString, int tmpDataSignature);
     bool SetIAWidth(int WidthSet = -1, bool SettingCheck = true);
     void CheckIAControl();
     void SendCommandData(int CommandData);

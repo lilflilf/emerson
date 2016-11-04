@@ -21,7 +21,41 @@ M2010* M2010::Instance()
 
 M2010::M2010()
 {
-
+    ReceiveFlags.SETUPdata = false;
+    ReceiveFlags.PRESETdata = false;
+    ReceiveFlags.WELDdata = false;
+    ReceiveFlags.PowerData = false;
+    ReceiveFlags.SNdata = false;
+    ReceiveFlags.IOdata = false;
+    ReceiveFlags.SonicHitsData = false;
+    ReceiveFlags.PressureData = false;
+    ReceiveFlags.IOSWITCHdata = false;
+    ReceiveFlags.WELDDOWNLOADPARAMETERdata = false;
+    ReceiveFlags.WELDDOWNLOADdata = false;
+    ReceiveFlags.HeightData = false;
+    ReceiveFlags.WIDTHdata = false;
+    ReceiveFlags.MEMORYdata = false;
+    ReceiveFlags.POWERrating = false;
+    ReceiveFlags.STARTsignal = false;
+    ReceiveFlags.SEQUENCEtable = false;
+    ReceiveFlags.HORNamplitude = false;
+    ReceiveFlags.SYSTEMid = false;
+    ReceiveFlags.MAINTENANCEcounters = false;
+    ReceiveFlags.AVAILABLE = -1;
+    ReceiveFlags.IAFOUNDGOOD = false;
+    ReceiveFlags.TIMEOUTERROR = false;
+    ReceiveFlags.BADCHECKSUM = false;
+    ReceiveFlags.PresetTable = false;
+    ReceiveFlags.WireData = false;
+    ReceiveFlags.FootPadelDATA = false;
+    ReceiveFlags.ControllerVersionData = false;
+    ReceiveFlags.CalibrationDone = false;
+    ReceiveFlags.HostReadyData = false;
+    ReceiveFlags.CalHeightMaxGaugeData = false;
+    ReceiveFlags.ActuatorType = false;
+    ReceiveFlags.ActuatorVersionData = false;
+    ReceiveFlags.ActuatorSerialNumData = false;
+    ReceiveFlags.ActuatorPartNumData= false;
 }
 
 //void M2010::LoadSequenceData(string sSeqName, bool bFailedLoad, bool bIgnoreParts)
@@ -95,7 +129,8 @@ void M2010::ConvertGraphData(QString GraphData)
 QString M2010::ParseSerialNumber(QString SerialCode)
 {
     int i, StringLen, temp2;
-    QString temp1, temp3, temp4 = "";
+    QString temp1;
+    QByteArray bufNumber;
     StringLen = SerialCode.length();
     i = 0;
     while (i< StringLen)
@@ -103,11 +138,10 @@ QString M2010::ParseSerialNumber(QString SerialCode)
         temp1 = SerialCode.mid(i,2);
         bool bResult;
         temp2 = temp1.toInt(&bResult,16);
-        temp3 = QString::number(temp2);
-        temp4 = temp4 + temp3;
+        bufNumber.insert(i/2,(char)temp2);
         i += 2;
     }
-    return temp4;
+    return bufNumber.data();
 }
 
 //string M2010::GetResString(long StringNo)
