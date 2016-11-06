@@ -444,11 +444,9 @@ void M102IA::SendIACommand(IACommands CommandNumber, int CommandData)
         if (_ModRunSetup->OfflineModeEnabled == false)
         {
             QByteArray Buffer = OutStr.toLatin1();
-            BransonSerial::comIAport->write(Buffer);
-            BransonSerial::comIAport->waitForBytesWritten(-1);
+            BransonSerial::IAportSend(Buffer);
             char Command = 0x11;
-            BransonSerial::comIAport->write(&Command,1);
-            BransonSerial::comIAport->waitForBytesWritten(-1);
+            BransonSerial::IAportSend(Command);
         }
     #endif
 }
