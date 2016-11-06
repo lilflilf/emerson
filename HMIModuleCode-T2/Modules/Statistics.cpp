@@ -4,6 +4,7 @@
 #include "M10INI.h"
 #include "M102IA.h"
 #include "M10runMode.h"
+#include "Interface/Interface.h"
 Statistics* Statistics::_instance = 0;
 Statistics* Statistics::Instance()
 {
@@ -31,8 +32,9 @@ void Statistics::UpdateSoftLimitData(bool ShowResults)
     double MinLimit, MaxLimit;
     int i;
     M2010 *ptr_M2010 = M2010::Instance();
-    M10INI *ptr_M10INI = M10INI::Instance();
+//    M10INI *ptr_M10INI = M10INI::Instance();
     M102IA *ptr_M102IA = M102IA::Instance();
+    InterfaceClass* _Interface = InterfaceClass::Instance();
 
     for(i = SLITime; i <= SLIHeight; i++)
         SoftLimitData[i].SoftLimitStatus = SLSTSoftLimitOFF;
@@ -40,9 +42,9 @@ void Statistics::UpdateSoftLimitData(bool ShowResults)
     //Is the soft limit device off or invalid?
     if (ptr_M2010->M10Run.Auto_Set_Mode == true)
         return;
-    if ((ptr_M10INI->StatusData.SoftLimitsModeFlags & SoftLimitEnabledFlag) == 0)
+    if ((_Interface->StatusData.SoftLimitsModeFlags & SoftLimitEnabledFlag) == 0)
         return;
-    SampleSize = ptr_M10INI->StatusData.SoftLimitSampleSize;
+    SampleSize = _Interface->StatusData.SoftLimitSampleSize;
     PartCount = Splice_Stat.prts_count;
     if (PartCount < SampleSize)
         return;
@@ -77,7 +79,7 @@ void Statistics::UpdateSoftLimitData(bool ShowResults)
             MaxLimit = ptr_M102IA->IAsetup.Height.max;
             break;
         }
-        FlagBit = ptr_M10INI->StatusData.SoftLimitsModeFlags & FlagMask;
+        FlagBit = _Interface->StatusData.SoftLimitsModeFlags & FlagMask;
         if (FlagBit != 0)
         {
             SoftLimitData[SLindexer].SoftLimitStatus = SLSTSoftLimitON;
@@ -110,24 +112,24 @@ void Statistics::UpdateSoftLimitData(bool ShowResults)
             {
                 //Calculate the upper soft limit
                 //Convert a percentage to a decimal by half for the upper range
-                SLHrange = ptr_M10INI->StatusData.SoftLimit[SLIUpperControlLimit][SLindexer] / 200;
+                SLHrange = _Interface->StatusData.SoftLimit[SLIUpperControlLimit][SLindexer] / 200;
                 SLHrange = SLHrange * (MaxLimit - MinLimit);
                 //Calculate the lower soft limit
-                SLLrange = ptr_M10INI->StatusData.SoftLimit[SLILowerControlLimit][SLindexer] / 200;
+                SLLrange = _Interface->StatusData.SoftLimit[SLILowerControlLimit][SLindexer] / 200;
                 SLLrange = SLLrange * (MaxLimit - MinLimit);
             }
             else{
                 //Sigma mode
                 Intermediate = (SampleSize * SumSquared - Sum * Sum) / SampleSize;
-                if ((ptr_M10INI->StatusData.SoftLimitsModeFlags & SoftLimitWeightFlag) == 0)
+                if ((_Interface->StatusData.SoftLimitsModeFlags & SoftLimitWeightFlag) == 0)
                     //Bias = N-1
                     Sigma = sqrt(Intermediate / (SampleSize - 1));
                 else
                     //Bias = N
                     Sigma = sqrt(Intermediate / SampleSize);
 
-                SLHrange = Sigma * ptr_M10INI->StatusData.SoftLimit[SLIUpperControlLimit][SLindexer];
-                SLLrange = Sigma * ptr_M10INI->StatusData.SoftLimit[SLILowerControlLimit][SLindexer];
+                SLHrange = Sigma * _Interface->StatusData.SoftLimit[SLIUpperControlLimit][SLindexer];
+                SLLrange = Sigma * _Interface->StatusData.SoftLimit[SLILowerControlLimit][SLindexer];
             }
             SoftLimitData[SLindexer].Average = Average;
             SoftLimitData[SLindexer].HighLimit = Average + SLHrange;
@@ -144,7 +146,7 @@ void Statistics::UpdateSoftLimitData(bool ShowResults)
                     (SoftLimitData[SLindexer].LastData < SoftLimitData[SLindexer].LowLimit))
                 {
 
-                    if ((ptr_M10INI->StatusData.SoftLimitsModeFlags & SoftLimitAudibleFlag) != 0)
+                    if ((_Interface->StatusData.SoftLimitsModeFlags & SoftLimitAudibleFlag) != 0)
                         ptr_M102IA->Generate_Beep();
                 }
             }      //ShowResults
@@ -152,15 +154,15 @@ void Statistics::UpdateSoftLimitData(bool ShowResults)
     }             //SLindexer
 }
 
-void Statistics::RotateOut(StatStats SumStats, int OldData)
-{
+//void Statistics::RotateOut(StatStats SumStats, int OldData)
+//{
 
-}
+//}
 
-void Statistics::RotateIn(StatStats SumStats, string DataEvent, int NewData)
-{
+//void Statistics::RotateIn(StatStats SumStats, string DataEvent, int NewData)
+//{
 
-}
+//}
 
 void Statistics::UpdateSpliceStatStats()
 {
@@ -232,7 +234,7 @@ void Statistics::HistoryEvent()
 
 }
 
-string Statistics::HeaderString()
-{
+//string Statistics::HeaderString()
+//{
 
-}
+//}

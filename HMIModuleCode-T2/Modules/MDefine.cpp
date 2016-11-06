@@ -11,4 +11,7 @@ MDefine* MDefine::Instance()
 
 MDefine::MDefine()
 {
+    ModularSequenceDone = false;
+    FlagModularProduction = false;
+
 }

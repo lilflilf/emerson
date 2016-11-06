@@ -18,7 +18,6 @@ private:
 public:
     static QSerialPort *comIAport;
 public:
-//    bool Timeout;
 public:
     int CheckIAportSet(long iBaudRate, long iComm);
     void FindIAport();

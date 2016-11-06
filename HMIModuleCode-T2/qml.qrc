@@ -39,6 +39,11 @@
         <file>UI/WeldDefalut.qml</file>
         <file>UI/Recsetting.qml</file>
         <file>UI/DataCommunication.qml</file>
+        <file>UI/Calibration.qml</file>
+        <file>UI/ToolChange.qml</file>
+        <file>UI/AdvancedMaintenance.qml</file>
+        <file>UI/MaintenanceCount.qml</file>
+        <file>UI/MaintenanceLog.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file>images/you.png</file>

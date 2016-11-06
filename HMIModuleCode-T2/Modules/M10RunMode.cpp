@@ -5,7 +5,7 @@
 #include "Statistics.h"
 #include "UtilityClass.h"
 #include "MODstart.h"
-#include "Interface/interface.h"
+#include "Interface/Interface.h"
 
 M10runMode* M10runMode::_instance = 0;
 M10runMode* M10runMode::Instance()
@@ -76,7 +76,7 @@ void M10runMode::UpdateMaintenanceData()
     bool tempflag = false;
     M10INI* ptr_M10INI = M10INI::Instance();
     M102IA* ptr_M102IA = M102IA::Instance();
-    InterfaceClass* ptr_InterfaceClass = InterfaceClass::Instance();
+    InterfaceClass* _Interface = InterfaceClass::Instance();
 
     for (i = 0; i< 7;i++)
     {
@@ -84,16 +84,16 @@ void M10runMode::UpdateMaintenanceData()
         {
             if (MODstart::ApplicationFirstStartFlag == false)
             {
-                ptr_M10INI->StatusData.currentMaintenanceLimits[i] =
-                        ptr_M10INI->StatusData.currentMaintenanceLimits[i] +
+                _Interface->StatusData.CurrentMaintenanceLimits[i] =
+                        _Interface->StatusData.CurrentMaintenanceLimits[i] +
                         ptr_M102IA->IAactual.Energy;
             }
-            if (ptr_M10INI->StatusData.MaintenanceLimits[i] != 0)
+            if (_Interface->StatusData.MaintenanceLimits[i] != 0)
             {
                 if (MODstart::Checkmaintenancelimit_EaWeld == true)
                 {
-                    if (ptr_M10INI->StatusData.currentMaintenanceLimits[i] >=
-                            ptr_M10INI->StatusData.MaintenanceLimits[i])
+                    if (_Interface->StatusData.CurrentMaintenanceLimits[i] >=
+                            _Interface->StatusData.MaintenanceLimits[i])
                      //display warning msg
                         tempflag = true;
                 }
@@ -102,14 +102,14 @@ void M10runMode::UpdateMaintenanceData()
         else
         {
             if (MODstart::ApplicationFirstStartFlag == false)
-                ptr_M10INI->StatusData.currentMaintenanceLimits[i] =
-                    ptr_M10INI->StatusData.currentMaintenanceLimits[i] + 1;
-            if (ptr_M10INI->StatusData.MaintenanceLimits[i] != 0)
+                _Interface->StatusData.CurrentMaintenanceLimits[i] =
+                    _Interface->StatusData.CurrentMaintenanceLimits[i] + 1;
+            if (_Interface->StatusData.MaintenanceLimits[i] != 0)
             {
                 if (MODstart::Checkmaintenancelimit_EaWeld == true)
                 {
-                    if (ptr_M10INI->StatusData.currentMaintenanceLimits[i] >=
-                        ptr_M10INI->StatusData.MaintenanceLimits[i])
+                    if (_Interface->StatusData.CurrentMaintenanceLimits[i] >=
+                        _Interface->StatusData.MaintenanceLimits[i])
                         //display warning msg
                         tempflag = true;
                 }
@@ -117,6 +117,6 @@ void M10runMode::UpdateMaintenanceData()
         }
     }
     if ((tempflag == true) && (MODstart::Checkmaintenancelimit_EaWeld == true))
-        ptr_InterfaceClass->dlgMaintWarning();
+        _Interface->dlgMaintWarning();
     ptr_M10INI->Save_StatusData(false);
 }

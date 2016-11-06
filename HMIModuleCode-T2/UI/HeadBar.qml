@@ -230,7 +230,7 @@ Item {
         ListElement {menuKey:"Calibration"}
         ListElement {menuKey:"Tool Change"}
         ListElement {menuKey:"Advanced Maintenance"}
-        ListElement {menuKey:"Maintenance counter"}
+        ListElement {menuKey:"Maintenance Counter"}
         ListElement {menuKey:"Maintenance log"}
     }
     ListModel {
@@ -312,9 +312,25 @@ Item {
                                     root.menuInit(1)
                                     title.text = qsTr("Edit Existing")
                                 }
-                                else if (menuKey == "Operator Library"){
-                                    root.menuInit(16)
-                                    title.text = qsTr("Operator Library")
+                                else if (menuKey == "Calibration"){
+                                    root.menuInit(4)
+                                    title.text = qsTr("Calibration")
+                                }
+                                else if (menuKey == "Tool Change"){
+                                    root.menuInit(5)
+                                    title.text = qsTr("Tool Change")
+                                }
+                                else if (menuKey == "Advanced Maintenance"){
+                                    root.menuInit(6)
+                                    title.text = qsTr("Advanced Maintenance")
+                                }
+                                else if (menuKey == "Maintenance Counter"){
+                                    root.menuInit(7)
+                                    title.text = qsTr("Maintenance Counter")
+                                }
+                                else if (menuKey == "Maintenance log"){
+                                    root.menuInit(8)
+                                    title.text = qsTr("Maintenance log")
                                 }
                                 else if (menuKey == "Permission Setting"){
                                     root.menuInit(14)
@@ -324,10 +340,15 @@ Item {
                                     root.menuInit(15)
                                     title.text = qsTr("Weld Defaults")
                                 }
+                                else if (menuKey == "Operator Library"){
+                                    root.menuInit(16)
+                                    title.text = qsTr("Operator Library")
+                                }
                                 else if (menuKey == "Data/Communication") {
                                     root.menuInit(17)
                                     title.text = qsTr("Data Communication")
                                 }
+
                             }
                         }
                         RadioButton {

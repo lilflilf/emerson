@@ -1,7 +1,7 @@
 import QtQuick 2.7
-import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.0
+import QtQuick.Controls 1.3
 import QtQuick.Window 2.2
 
 MouseArea {
@@ -9,7 +9,7 @@ MouseArea {
 
     implicitWidth: labelItemLoader.implicitWidth + implicitHorizontalPadding
     implicitHeight: labelItemLoader.implicitHeight + implicitVerticalPadding
-    opacity: enabled ? (button.pressed ? 0.2 : 1) : 0.5
+    opacity: button.enabled ? (button.pressed ? 0.2 : 1) : 0.5
 
     /*! 设置默认垂直方向内容区域与边界的距离。如果设置了高度，则此不起作用 */
     property int implicitVerticalPadding: 20

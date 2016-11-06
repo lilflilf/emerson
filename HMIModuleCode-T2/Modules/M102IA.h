@@ -72,25 +72,26 @@ struct WELDSETTINGS{
    int ABDelay;
    int ABDuration;
    int Amplitude2;           // Amplitude2 used for Amp Stepping
-   string PartName;
+   QString PartName;
    int EnergyToStep;         // Energy Step used for Amp Stepping
    int TimeToStep;           // Time Step used for Amp Stepping
    int PowerToStep;          // Power Step used for Amp Stepping
 };
 
 struct WELDdata{
-   string Reserved;          // Internal Data
+   QString Reserved;          // Internal Data
    int Energy;               // Energy in Joules
    int Width;                // Width in 1/100mm's
    int Time;                 // Time in 5 millisecond counts
-   string PeakPowerPer;
+   QString PeakPowerPer;
    int Power;                // Peak power in Watts
    int Preheight;            // Last Preheight that sonics fired
    int Amplitude;            // Amplitude in microns
    int Height;               // Height after weld - Post Height in 1/100mm's
    int Amplitude2;           // Value of Amp 2 received from Controller
    int PPHeight;             // Pre Height before sonics fired
-   int Force;                // Weld Pressure, Uses Transducer if IN
+   int Pressure;             // Weld Pressure, Uses Transducer if IN
+   int TPressure;            // Weld Trigger Pressure.
    long Alarmflags;          // To store errors
 };
 
@@ -108,7 +109,7 @@ struct IOinfo{
 
 //Data from the FootPedal
 struct LASTIOSWITCHS{
-   string ByteData[2];
+   QString ByteData[2];
    int WordData;
    long IO;
    long IO2;                 // VELEZ040811
@@ -300,7 +301,7 @@ public:
     int CalibHeightMaxGauge;
     bool EnableAbortButton1;
 
-    string *RawDataGraph;
+    QString *RawDataGraph;
 
     ACTIONMODE ActDone;
 
@@ -319,12 +320,12 @@ public:
     int PWRpoints;
 
     //String Variable to hold IA Serial #
-    string SerialNoData;                //not used now
+    QString SerialNoData;                //not used now
     int HeightCalResult;
-    string ContollerVersion;            //To store controller's software version no.
-    string ActuatorVersion;
-    string ActuatorPartNum;
-    string ActuatorSerialNum;
+    QString ContollerVersion;            //To store controller's software version no.
+    QString ActuatorVersion;
+    QString ActuatorPartNum;
+    QString ActuatorSerialNum;
 
     IOinfo IOstatus;
     IOinfo LastIOstatus;
@@ -341,8 +342,8 @@ public:
     //WIDTHbuffer[1] = Absolute width (Raw read of encoder)
 
     int PressureRead;
-    string SonicHitsStrData[4];
-    string SonicHitsData;
+    QString SonicHitsStrData[4];
+    QString SonicHitsData;
 
     long MaintenanceCounter;
     long MaintenanceDueCounter;
@@ -350,13 +351,13 @@ public:
     double EnergyMaintenanceDue;
     int ADPower;
 
-    string IAdataSignature;
+    QString IAdataSignature;
 
     //Records as they come in
-    string HexLine;
-    string IAstructure;
+    QString HexLine;
+    QString IAstructure;
 
-    string OutStructure;
+    QString OutStructure;
     INTELhexRECORD hexRecord;
 private:
     void PackHexRecord();
@@ -366,22 +367,22 @@ private:
     void sndPreset2IA(int PresetNo);
 public:
     void Generate_Beep(int BeepTime = 100);
-    void HexLineCheck(string HexLineData, bool &HexLineCheckOK);
-    void HexLineBufferCheck(string InputLine);
+    void HexLineCheck(QString HexLineData, bool &HexLineFlag);
+    void HexLineBufferCheck(QString InputLine);
 
-    int MakeHexNibble(int InNumber);
-    string MakeHexByte(int InNumber);
-    string MakeHexWord(int InNumber);
+    char MakeHexNibble(int InNumber);
+    QString MakeHexByte(int InNumber);
+    QString MakeHexWord(int InNumber);
     void IACommand(IACommands CommandNumber, int SimNo = 0);
     void SendIACommand(IACommands CommandNumber, int CommandData);
     int MakeHexNibbleNumber(char HexNibble);
-    int MakeHexByteNumber(string HexByte);
-    int MakeHexWordNumber(string HexWord);
-    long MakeHexWordNumberLong(string HexWord);
+    int MakeHexByteNumber(QString HexByte);
+    int MakeHexWordNumber(QString HexWord);
+    long MakeHexWordNumberLong(QString HexWord);
     void MakeMemoryString(string InputHexString, string &OutputHexString);
     void GetCstringFromHex(string InputString,string &OutputString, int Start, int CharCount);
-    long GetLongValue(string InputString,int Ref);
-    int ParseHexStructure(string HexString, int DataSignature);
+    long GetLongValue(QString InputString,int Ref);
+    int ParseHexStructure(QString HexString, int tmpDataSignature);
     bool SetIAWidth(int WidthSet = -1, bool SettingCheck = true);
     void CheckIAControl();
     void SendCommandData(int CommandData);

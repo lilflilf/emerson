@@ -39,12 +39,26 @@ Window {
         case 3:
             contentLoader.source = "qrc:/UI/TestSpliceLibrary.qml"
             break;
+        case 4:
+            contentLoader.source = "qrc:/UI/Calibration.qml"
+            break;
+        case 5:
+            contentLoader.source = "qrc:/UI/ToolChange.qml"
+            break;
+        case 6:
+            contentLoader.source = "qrc:/UI/AdvancedMaintenance.qml"
+            break;
+        case 7:
+            contentLoader.source = "qrc:/UI/MaintenanceCount.qml"
+            break;
+        case 8:
+            contentLoader.source = "qrc:/UI/MaintenanceLog.qml"
+            break;
         case 14:
             contentLoader.source = "qrc:/UI/PermissionSetting.qml"
             break;
         case 15:
             contentLoader.source = "qrc:/UI/WeldDefalut.qml"
-            break;
         case 16:
             contentLoader.source = "qrc:/UI/UserLibrarySetting.qml"
             break;

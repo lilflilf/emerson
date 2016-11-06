@@ -1,13 +1,15 @@
 #include "BransonSerial.h"
 #include "M2010.h"
 #include "M102IA.h"
-#include <sstream>
+#include "ModRunSetup.h"
+#include "Interface/Interface.h"
 #include <QtSerialPort/QSerialPort>
 #include <QDebug>
 #include <QTimerEvent>
 #include <QDateTime>
-BransonSerial* BransonSerial::_instance = 0;
-QSerialPort* BransonSerial::comIAport = 0;
+#include <QCoreApplication>
+BransonSerial* BransonSerial::_instance = NULL;
+QSerialPort* BransonSerial::comIAport = NULL;
 BransonSerial* BransonSerial::Instance()
 {
     if(_instance == 0){
@@ -20,47 +22,46 @@ BransonSerial::BransonSerial(QObject *parent)
     :QObject(parent)
 {
     comIAport = new QSerialPort();
+    m_nCurrentTimer = 0;
+    b_Timeout = false;
 }
 
 BransonSerial::~BransonSerial()
 {
     delete comIAport;
+    ResetCommandTimer();
 }
 
 void BransonSerial::FindIAport()
 {
-    int iResult;
-    long BitRate;
-    b_Timeout = false;
-//    iResult =
+    InterfaceClass *_Interface = InterfaceClass::Instance();
+    CheckIAportSet((100 * _Interface->StatusData.ComInfo.BaudRate),
+                             _Interface->StatusData.ComInfo.COMport);
 }
 
 int BransonSerial::CheckIAportSet(long iBaudRate, long iComm)
 {
-    long Timeout;
-    int FeedbackResult = 0;
-    stringstream tmpStr;
-    string CommName;
-    M2010 *ptr_M2010 = M2010::Instance();
+    int iResult = -1;
+    QString CommName;
+    M2010 *_M2010 = M2010::Instance();
+    ModRunSetup *_ModRunSetup = ModRunSetup::Instance();
     char strCommand;
 //    Required to keep computers with different or fewer ports from shutting down program
-    tmpStr << iComm;
-    tmpStr >> CommName;
+    CommName = QString::number(iComm, 10);
     CommName = "COM" + CommName;
-    comIAport->setPortName(QString::fromStdString(CommName));
+    comIAport->setPortName(CommName);
     if (comIAport->isOpen() == true)
         comIAport->close();
-    ptr_M2010->ReceiveFlags.IAFOUNDGOOD = false;
+    _M2010->ReceiveFlags.IAFOUNDGOOD = false;
     comIAport->setBaudRate(iBaudRate);
     comIAport->setParity(QSerialPort::NoParity);
     comIAport->setDataBits(QSerialPort::Data8);
     comIAport->setStopBits(QSerialPort::OneStop);
     comIAport->setFlowControl(QSerialPort::NoFlowControl);
-    comIAport->clearError();
-    comIAport->clear();
     connect(comIAport,SIGNAL(readyRead()),this,SLOT(comIAportReadEventSlot()));
     comIAport->open(QIODevice::ReadWrite);
-
+    comIAport->clearError();
+    comIAport->clear();
 
     strCommand = 0x11;
     comIAport->write(&strCommand,1); //XON
@@ -69,37 +70,77 @@ int BransonSerial::CheckIAportSet(long iBaudRate, long iComm)
     strCommand = IAcomfunctionENQ;
     comIAport->write(&strCommand,1);
     comIAport->waitForBytesWritten(-1);
+    SetCommandTimer(200);
+    while (IsCommandTimeout() == false)
+    {
+        QCoreApplication::processEvents(); // Wait for response
+        if (_M2010->ReceiveFlags.IAFOUNDGOOD == true)
+        {
+            iResult = 1;  //means port was found
+            _ModRunSetup->GlobalOfflineModeEnabled = false;
+            break;
+        }
+    }
+    ResetCommandTimer();
+    if(iResult == 1)
+        return iResult;
 
-    return FeedbackResult;
+    strCommand = 0x11;
+    comIAport->write(&strCommand,1); //XON
+    comIAport->waitForBytesWritten(-1);
+    //ENQuirey, IA sends back "U"
+    strCommand = IAcomfunctionENQ;
+    comIAport->write(&strCommand,1);
+    comIAport->waitForBytesWritten(-1);
+    SetCommandTimer(200);
+    while (IsCommandTimeout() == false)
+    {
+        QCoreApplication::processEvents(); // Wait for response
+        if (_M2010->ReceiveFlags.IAFOUNDGOOD == true)
+        {
+            iResult = 1;  //means port was found
+            _ModRunSetup->GlobalOfflineModeEnabled = false;
+            break;
+        }
+    }
+    ResetCommandTimer();
+    if(iResult == -1)
+    {
+        comIAport->close();
+    }
+    return iResult;
 }
 
 void BransonSerial::comIAportReadEventSlot()
 {
-    qDebug()<< "x";
     M2010 *ptr_M2010 = M2010::Instance();
     M102IA *ptr_M102IA = M102IA::Instance();
     int iPos = 0;
-    QByteArray arr;
-    string strBuffer;
+    QByteArray DataBuffer;
+    QString strBuffer;
     char Command;
-    arr.clear();
-    static string NextLine;
-    arr = comIAport->readAll();
-    strBuffer = arr.toStdString();
-    iPos = strBuffer.find('U');
-    if (iPos > 0){
-        ptr_M2010->ReceiveFlags.IAFOUNDGOOD = true;
-        strBuffer = strBuffer.substr(iPos + 1, strBuffer.length() - iPos -1);
-//        return;
-    }
+    DataBuffer.clear();
+    static QString NextLine;
+    DataBuffer = comIAport->readAll();
+    strBuffer = DataBuffer.data();
 
-    for(unsigned int i = 0; i< strBuffer.length(); i++)
+    iPos = strBuffer.indexOf('U', 0);
+    if (iPos >= 0)
+        ptr_M2010->ReceiveFlags.IAFOUNDGOOD = true;
+
+    if(strBuffer.length() > (iPos + 1))
+        strBuffer = strBuffer.mid(iPos + 1, strBuffer.length() - iPos -1);
+    else
+        return;
+    qDebug()<<"Received Data:"<<strBuffer;
+    DataBuffer = strBuffer.toLatin1();
+    for(int i = 0; i< DataBuffer.length(); i++)
     {
-        char InChar = strBuffer[i];
+        char InChar = DataBuffer.at(i);
         switch(InChar)
         {
         case 13:  //End of a line or blank line
-            if (!NextLine.empty())
+            if (NextLine.isEmpty() == false)
             {
                 ptr_M102IA->HexLineBufferCheck(NextLine);
                 Command = 0x13;
@@ -144,11 +185,13 @@ void BransonSerial::comIAportReadEventSlot()
 
 void BransonSerial::SetCommandTimer(int Time)
 {
-    if(m_nCurrentTimer == 0){
-        qDebug()<<"Utility::start() called";
-        m_nCurrentTimer = startTimer(Time);
-        b_Timeout = false;
+    if(m_nCurrentTimer != 0){
+        killTimer(m_nCurrentTimer);
+        m_nCurrentTimer = 0;
     }
+    qDebug()<<"Utility::start() called";
+    m_nCurrentTimer = startTimer(Time);
+    b_Timeout = false;
 }
 
 void BransonSerial::ResetCommandTimer()
@@ -168,7 +211,7 @@ bool BransonSerial::IsCommandTimeout()
 
 void BransonSerial::timerEvent(QTimerEvent *event)
 {
-    if(event->timerId() == m_nCurrentTimer)
+    if(event->timerId() >= m_nCurrentTimer)
     {
         b_Timeout = true;
     }

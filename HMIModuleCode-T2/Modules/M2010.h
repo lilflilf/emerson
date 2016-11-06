@@ -8,6 +8,7 @@
 #include "stdlib.h"
 #include "M10definitions.h"
 #include "UtilityDefine.h"
+#include "Interface/SysConfiguration.h"
 using namespace std;
 
 enum MACHINE_TYPE{
@@ -168,6 +169,7 @@ struct BitFlag{
     bool ActuatorVersionData;
     bool ActuatorSerialNumData;
     bool ActuatorPartNumData;
+    bool ActuatorType;
 };
 
 enum Last_made{
@@ -495,9 +497,6 @@ public:
 
     SEQUENCE_ENTRY_DATA SequenceEntryData;
 
-    VersionList PreviousVersions;
-    VersionList CurrentVersions;
-
     M10Part OriginalSplice;
     string OldPrtName;
 private:
@@ -509,8 +508,8 @@ public:
     void MakeNormalSplice(M10Part ThisSplice);
     int DecPtrCircular(int ptr, int ptrMAX);
     int IncPtrCircular(int ptr, int ptrMAX);
-    void ConvertGraphData(string GraphData);
-    string ParseSerialNumber(string SerialCode);
+    void ConvertGraphData(QString GraphData);
+    QString ParseSerialNumber(QString SerialCode);
     string GetResString(long StringNo);
     void NumberOnly(int KeyAscii);
     void load_splice_file();

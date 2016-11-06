@@ -1,4 +1,4 @@
-#include "UtilityClass.h"
+ï»¿#include "UtilityClass.h"
 #include <QDir>
 #include <QDataStream>
 #include <QJsonObject>
@@ -6,7 +6,7 @@
 #include <QByteArray>
 #include <QJsonParseError>
 #include <QDebug>
-
+#include "Interface/Interface.h"
 UtilityClass* UtilityClass::_instance = NULL;
 UtilityClass* UtilityClass::Instance()
 {
@@ -164,26 +164,44 @@ bool UtilityClass::StringJsonToMap(QString SourceString, QMap<int, struct PARTAT
 /**************************************************************************************/
 void UtilityClass::InitializeTextData()
 {
+    InterfaceClass* _Interface = InterfaceClass::Instance();
     SetTextData(DINEnergy, 0, MINENERGY, MAXENERGY, 2, 1, "%dJ");
-    SetTextData(DINWidth, 0, MINWIDTH, MAXWIDTH, 2, 0.01, "%.2fmm");
-    SetTextData(DINPressure, 0, MINWELDPRESSURE, MAXWELDPRESSURE, 2, 0.1, "%.1fPsi");
-    SetTextData(DINTriggerPressure, 0, MINTRIGPRESSURE, MAXTRIGPRESSURE, 2, 0.1,  "%.1fPsi");
-    // Force is actually not displayed anywhere
-    SetTextData(DINForcePl, 0, MINFORCE, MAXFORCE, 2, 0.1, "%.1fPsi");
-    SetTextData(DINForceMs, 0, MINFORCE, MAXFORCE, 2, 0.1, "%.1fPsi");
+    if (_Interface->StatusData.MachineType != ACT2032)
+        SetTextData(DINWidth, 0, MINWIDTH, MAXWIDTH, 2, 0.01, "%.2fmm");
+    else
+        SetTextData(DINWidth, 0, MINWIDTH, MAXWIDTH2032, 2, 0.01, "%.2fmm");
+    if (_Interface->StatusData.Soft_Settings.Pressure2Unit == ToBar)
+    {
+        SetTextData(DINPressure,        0, MINWELDPRESSURE, MAXWELDPRESSURE, 1, PRESS2BARFACTOR, "%.2fB");
+        SetTextData(DINTriggerPressure, 0, MINTRIGPRESSURE, MAXTRIGPRESSURE, 1, PRESS2BARFACTOR, "%.2fB");
+        // Force is actually not displayed anywhere
+        SetTextData(DINForcePl,         0, MINFORCE,        MAXFORCE,        2, PRESS2BARFACTOR, "%.2fB");
+        SetTextData(DINForceMs,         0, MINFORCE,        MAXFORCE,        2, PRESS2BARFACTOR, "%.2fB");
+    }
+    else if (_Interface->StatusData.Soft_Settings.Pressure2Unit == TokPa)
+    {
+        SetTextData(DINPressure, 0, MINWELDPRESSURE, MAXWELDPRESSURE, 1, PRESS2KPAFACTOR, "%dkPa");
+        SetTextData(DINTriggerPressure, 0, MINTRIGPRESSURE, MAXTRIGPRESSURE, 1, PRESS2KPAFACTOR,  "%dkPa");
+        // Force is actually not displayed anywhere
+        SetTextData(DINForcePl, 0, MINFORCE, MAXFORCE, 2, PRESS2KPAFACTOR, "%dkPa");
+        SetTextData(DINForceMs, 0, MINFORCE, MAXFORCE, 2, PRESS2KPAFACTOR, "%dkPa");
+    }
+    else
+    {
+        SetTextData(DINPressure, 0, MINWELDPRESSURE, MAXWELDPRESSURE, 2, 0.1, "%.1fPsi");
+        SetTextData(DINTriggerPressure, 0, MINTRIGPRESSURE, MAXTRIGPRESSURE, 2, 0.1,  "%.1fPsi");
+        // Force is actually not displayed anywhere
+        SetTextData(DINForcePl, 0, MINFORCE, MAXFORCE, 2, 0.1, "%.1fPsi");
+        SetTextData(DINForceMs, 0, MINFORCE, MAXFORCE, 2, 0.1, "%.1fPsi");
+    }
 
-//    SetTextData(DINPressure,        0, MINWELDPRESSURE, MAXWELDPRESSURE, 1, PRESS2BARFACTOR, "%.2fB");
-//    SetTextData(DINTriggerPressure, 0, MINTRIGPRESSURE, MAXTRIGPRESSURE, 1, PRESS2BARFACTOR, "%.2fB");
-//    // Force is actually not displayed anywhere
-//    SetTextData(DINForcePl,         0, MINFORCE,        MAXFORCE,        2, PRESS2BARFACTOR, "%.2fB");
-//    SetTextData(DINForceMs,         0, MINFORCE,        MAXFORCE,        2, PRESS2BARFACTOR, "%.2fB");
-
-//    SetTextData(DINAmplitude,         0, MINAMPLITUDE, StatusData.Soft_Settings.Horn_Calibrate), 1, 1, "%dµm");
+    SetTextData(DINAmplitude,0, MINAMPLITUDE,
+                _Interface->StatusData.Soft_Settings.Horn_Calibrate, 1, 1, "%dÎ¼m");
     SetTextData(DINTimePl, 0, MINTIME, MAXTIME, 2, 0.005, "%.2fs");
     SetTextData(DINTimeMs, 0, MINTIME, MAXTIME, 2, 0.005, "%.2fs");
     SetTextData(DINPowerPl, 0, MINPOWER, Maxpower, 100, 1, "%dW");
-//    SetTextData(DINPowerMs, 0, MINPOWER,
-//                StatusData.Soft_Settings.SonicGenWatts, 100, 1, "%dW");
+    SetTextData(DINPowerMs, 0, MINPOWER,
+                _Interface->StatusData.Soft_Settings.SonicGenWatts, 100, 1, "%dW");
     SetTextData(DINPre_HgtPl, 0, MINHEIGHT, MAXHEIGHT, 2, 0.01, "%.2fmm");
     SetTextData(DINPre_HgtMs, 0, MINHEIGHT, MAXHEIGHT, 2, 0.01, "%.2fmm");
     SetTextData(DINHeightPl, 0, MINHEIGHT, MAXHEIGHT, 2, 0.01, "%.2fmm");
@@ -201,10 +219,9 @@ void UtilityClass::InitializeTextData()
 
     SetTextData(DINPreBurst, 0, MINPREBURST, MAXPREBURST, 10, 0.01, "%.2fs");
     SetTextData(DINWeldMode, 0, 0, 2, 1, 1, "");
-    //Amplitude Settings
-    //     SetTextData DINAmpStepMode, .FlagAmpStep And &H3, 0, 0, 2, 1, 1, ""
-//    SetTextData(DINAmplitude2, 0, MINAMPLITUDE,
-//       StatusData.Soft_Settings.Horn_Calibrate, 1, 1, "%dµm");
+
+    SetTextData(DINAmplitude2, 0, MINAMPLITUDE,
+       _Interface->StatusData.Soft_Settings.Horn_Calibrate, 1, 1, "%dÎ¼m");
     SetTextData(DINEnergy2Step, 0, MINSTEPENERGY, MAXENERGY, 2, 1, "%dJ");
     SetTextData(DINPower2Step, 0, MINPOWER, Maxpower, 100, 1, "%dW");
     SetTextData(DINTime2Step, 0, MINTIME, MAXSTEPTIME, 2, 0.001, "%.2fs");
