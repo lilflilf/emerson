@@ -62,7 +62,6 @@ Item {
             clip: true
 //            buttontext: qsTr("#of Splices")
             exclusiveGroup: mos
-            bIsCheck: false
         }
         Rectangle {
             id: lineEdit
@@ -155,7 +154,6 @@ Item {
             visible: diagram.on
             buttontext: qsTr("Auto")
             exclusiveGroup: mos2
-            bIsCheck: false
         }
         MyRadioButton {
             id: sigma
@@ -169,7 +167,6 @@ Item {
             visible: diagram.on
             buttontext: qsTr("Sigma")
             exclusiveGroup: mos2
-            bIsCheck: false
         }
         CButton {
             id: advanceSet

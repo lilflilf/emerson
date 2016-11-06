@@ -34,6 +34,11 @@
         <file>UI/CProgressBar.qml</file>
         <file>UI/TestSetingDialog.qml</file>
         <file>UI/UserLibrarySetting.qml</file>
+        <file>UI/PermissionSetting.qml</file>
+        <file>UI/MyCheckBox.qml</file>
+        <file>UI/WeldDefalut.qml</file>
+        <file>UI/Recsetting.qml</file>
+        <file>UI/DataCommunication.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file>images/you.png</file>
@@ -58,5 +63,7 @@
         <file>images/blue.png</file>
         <file>images/orange.png</file>
         <file>images/wiredemo.jpg</file>
+        <file>images/setting.png</file>
+        <file>images/settingselect.png</file>
     </qresource>
 </RCC>

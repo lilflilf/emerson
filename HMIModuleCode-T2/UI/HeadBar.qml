@@ -312,9 +312,21 @@ Item {
                                     root.menuInit(1)
                                     title.text = qsTr("Edit Existing")
                                 }
-                                else if (menuKey == "User Library"){
+                                else if (menuKey == "Operator Library"){
                                     root.menuInit(16)
-                                    title.text = qsTr("User Library")
+                                    title.text = qsTr("Operator Library")
+                                }
+                                else if (menuKey == "Permission Setting"){
+                                    root.menuInit(14)
+                                    title.text = qsTr("Permission Setting")
+                                }
+                                else if (menuKey == "Weld Defaults") {
+                                    root.menuInit(15)
+                                    title.text = qsTr("Weld Defaults")
+                                }
+                                else if (menuKey == "Data/Communication") {
+                                    root.menuInit(17)
+                                    title.text = qsTr("Data Communication")
                                 }
                             }
                         }

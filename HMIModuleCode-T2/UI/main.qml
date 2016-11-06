@@ -19,6 +19,10 @@ Window {
       2-- Operate
       3-- Test
       4-- maintenance perssion setting
+      14-- settings Permission Setting
+      15-- settings Weld Defaults
+      16-- settings operator library
+      17-- settings Data Communication
       */
     function menuInit(index)
     {
@@ -35,8 +39,17 @@ Window {
         case 3:
             contentLoader.source = "qrc:/UI/TestSpliceLibrary.qml"
             break;
+        case 14:
+            contentLoader.source = "qrc:/UI/PermissionSetting.qml"
+            break;
+        case 15:
+            contentLoader.source = "qrc:/UI/WeldDefalut.qml"
+            break;
         case 16:
             contentLoader.source = "qrc:/UI/UserLibrarySetting.qml"
+            break;
+        case 17:
+            contentLoader.source = "qrc:/UI/DataCommunication.qml"
             break;
         default:
             break;
