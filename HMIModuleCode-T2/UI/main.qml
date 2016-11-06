@@ -49,6 +49,9 @@ Window {
         case 7:
             contentLoader.source = "qrc:/UI/MaintenanceCount.qml"
             break;
+        case 8:
+            contentLoader.source = "qrc:/UI/MaintenanceLog.qml"
+            break;
         case 16:
             contentLoader.source = "qrc:/UI/UserLibrarySetting.qml"
             break;

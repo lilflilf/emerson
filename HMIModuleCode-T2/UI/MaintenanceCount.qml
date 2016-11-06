@@ -22,16 +22,77 @@ Item {
 
     Row {
         id: title
-//        spacing:
+        spacing: 70
+        anchors.left: listView.left
+        Item {
+            width: 370
+            height: 10
+        }
+
+        Text {
+            width: 150
+            height: 79
+            text: qsTr("Counter Limit")
+            color: "white"
+            font.family: "arial"
+            font.pointSize: 14
+            verticalAlignment: Qt.AlignVCenter
+            horizontalAlignment: Qt.AlignHCenter
+        }
+        Text {
+            width: 150
+            height: 79
+            text: qsTr("Current Counter")
+            color: "white"
+            font.family: "arial"
+            font.pointSize: 14
+            verticalAlignment: Qt.AlignVCenter
+            horizontalAlignment: Qt.AlignHCenter
+        }
+        Text {
+            width: 150
+            height: 79
+            text: qsTr("Data Started")
+            color: "white"
+            font.family: "arial"
+            font.pointSize: 14
+            verticalAlignment: Qt.AlignVCenter
+            horizontalAlignment: Qt.AlignHCenter
+        }
+        Text {
+            width: 150
+            height: 79
+            text: qsTr("Reset")
+            color: "white"
+            font.family: "arial"
+            font.pointSize: 14
+            verticalAlignment: Qt.AlignVCenter
+            horizontalAlignment: Qt.AlignHCenter
+        }
+    }
+    Line {
+        id: line
+        width: listView.width
+        height: 2
+        lineColor: "blue"
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.leftMargin: 30
+        anchors.rightMargin: 30
+        anchors.top: title.bottom
     }
 
     ListView {
         id: listView
-        width: parent.width
+        width: line.width
         height: parent.height * 0.7
         model: listModel
         delegate: listLine
         interactive: false
+        anchors.top: line.bottom
+        anchors.topMargin: 10
+        anchors.left: parent.left
+        anchors.leftMargin: 30
     }
     Component {
         id: listLine
@@ -95,6 +156,7 @@ Item {
                     verticalAlignment: Qt.AlignVCenter
                     horizontalAlignment: Qt.AlignHCenter
                 }
+
                 CButton {
                     width: 150
                     height: 79
@@ -105,4 +167,24 @@ Item {
             }
         }
     }
+    Row {
+        anchors.bottom: parent.bottom
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottomMargin: 10
+        spacing: 50
+        Text {
+            text: qsTr("ActuatorPart Number: xxx-xxx\nActuatorSerial Number:xxx-xxx")
+            color: "white"
+            font.family: "arial"
+            font.pointSize: 14
+        }
+        Text {
+            text: qsTr("Software Verson Number: xxx-xxx\nActuatorModule:xxx-xxx")
+            color: "white"
+            font.family: "arial"
+            font.pointSize: 14
+        }
+    }
+
+
 }

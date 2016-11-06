@@ -328,6 +328,10 @@ Item {
                                     root.menuInit(7)
                                     title.text = qsTr("Maintenance Counter")
                                 }
+                                else if (menuKey == "Maintenance log"){
+                                    root.menuInit(8)
+                                    title.text = qsTr("Maintenance log")
+                                }
                                 else if (menuKey == "Operator Library"){
                                     root.menuInit(16)
                                     title.text = qsTr("Operator Library")
