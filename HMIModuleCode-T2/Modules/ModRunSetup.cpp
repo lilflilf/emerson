@@ -20,7 +20,8 @@ ModRunSetup* ModRunSetup::Instance()
 }
 ModRunSetup::ModRunSetup()
 {
-
+    OfflineModeEnabled = false;
+    GlobalOfflineModeEnabled = false;
 }
 
 void ModRunSetup::DeleteStatTempFiles()

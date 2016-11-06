@@ -169,6 +169,7 @@ struct BitFlag{
     bool ActuatorVersionData;
     bool ActuatorSerialNumData;
     bool ActuatorPartNumData;
+    bool ActuatorType;
 };
 
 enum Last_made{

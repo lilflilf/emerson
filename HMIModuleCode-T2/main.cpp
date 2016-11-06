@@ -67,6 +67,7 @@ int main(int argc, char *argv[])
 //    _TestPtr->TestUpdateOneRecordIntoOperatorTable();
 //    _TestPtr->TestQueryOnlyTimeWireTable();
 
+
     QString str = "10";
     int ret = 0;
     bool ok;
