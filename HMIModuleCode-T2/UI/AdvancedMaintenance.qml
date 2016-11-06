@@ -65,7 +65,12 @@ Item {
         CButton {
             height: 79
             width: 250
-            text: qsTr("5-Cooling")
+            text: qsTr("5-Cooling Tooling")
+        }
+        CButton {
+            height: 79
+            width: 250
+            text: qsTr("6-Cooling Converter")
         }
 
     }

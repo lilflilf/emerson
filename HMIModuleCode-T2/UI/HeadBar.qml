@@ -328,9 +328,25 @@ Item {
                                     root.menuInit(7)
                                     title.text = qsTr("Maintenance Counter")
                                 }
+                                else if (menuKey == "Maintenance log"){
+                                    root.menuInit(8)
+                                    title.text = qsTr("Maintenance log")
+                                }
+                                else if (menuKey == "Permission Setting"){
+                                    root.menuInit(14)
+                                    title.text = qsTr("Permission Setting")
+                                }
+                                else if (menuKey == "Weld Defaults") {
+                                    root.menuInit(15)
+                                    title.text = qsTr("Weld Defaults")
+                                }
                                 else if (menuKey == "Operator Library"){
                                     root.menuInit(16)
                                     title.text = qsTr("Operator Library")
+                                }
+                                else if (menuKey == "Data/Communication") {
+                                    root.menuInit(17)
+                                    title.text = qsTr("Data Communication")
                                 }
 
                             }

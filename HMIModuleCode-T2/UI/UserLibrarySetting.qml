@@ -4,6 +4,7 @@ import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 
 Item {
+    property int selectIndx: -1
     Image {
         anchors.fill: parent
         source: "qrc:/images/images/bg.png"
@@ -214,8 +215,8 @@ Item {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: headMiddle.right
                 anchors.leftMargin: 10
-                horizontalAlignment: Qt.AlignLeft
-                width: (parent.width-30)/12
+                horizontalAlignment: Qt.AlignHCenter
+                width: (parent.width-30)/4
                 text: count
                 elide: Text.ElideRight
                 color: "white"
@@ -269,5 +270,213 @@ Item {
         clip: true
         height: 1
         color: "#0d0f11"
+    }
+    CButton {
+        id: deleteButton
+        anchors.right: parent.right
+        anchors.rightMargin: 20
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 40
+        width: 300
+        height: 79
+        text: qsTr("Delete")
+        textColor: "white"
+    }
+    CButton {
+        id: editButton
+        anchors.right: deleteButton.left
+        anchors.rightMargin: 43
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 40
+        width: 300
+        height: 79
+        text: qsTr("Edit")
+        textColor: "white"
+    }
+    CButton {
+        id: addButton
+        anchors.right: editButton.left
+        anchors.rightMargin: 43
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 40
+        width: 300
+        height: 79
+        text: qsTr("Add New")
+        textColor: "white"
+        onClicked: {
+            backGround.visible = true
+            backGround.opacity = 0.5
+            operatorDialog.visible = true
+        }
+    }
+    Rectangle {
+        id: backGround
+        anchors.fill: parent
+        visible: false
+        color: "black"
+        opacity: 0
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+
+            }
+        }
+    }
+    Image {
+        id: operatorDialog
+        anchors.centerIn: parent
+        width: 570
+        height: 480
+        visible: false
+        source: "qrc:/images/images/dialogbg.png"
+        Text {
+            id: title
+            anchors.top: parent.top
+            anchors.topMargin: 10
+            anchors.left: parent.left
+            anchors.leftMargin: 20
+            font.family: "arial"
+            font.pixelSize: 24
+            color: "white"
+            text: qsTr("Add New Operator")
+        }
+        Text {
+            id: operatorName
+            anchors.top: title.bottom
+            anchors.topMargin: 24
+            anchors.right: title.right
+            font.family: "arial"
+            font.pixelSize: 24
+            color: "white"
+            text: qsTr("Operator Name")
+        }
+        MyLineEdit {
+            id: operatorNameInput
+            anchors.left: operatorName.right
+            anchors.leftMargin: 10
+            anchors.verticalCenter: operatorName.verticalCenter
+            width: 300
+            height: 40
+            inputColor: "white"
+            clip: true
+            inputWidth: 290
+            inputHeight: 36
+            horizontalAlignment: Qt.AlignHCenter
+        }
+        Text {
+            id: password
+            anchors.top: operatorName.bottom
+            anchors.topMargin: 24
+            anchors.right: title.right
+            font.family: "arial"
+            font.pixelSize: 24
+            color: "white"
+            text: qsTr("Password")
+        }
+        MyLineEdit {
+            id: passwordInput
+            anchors.left: password.right
+            anchors.leftMargin: 10
+            anchors.verticalCenter: password.verticalCenter
+            width: 300
+            height: 40
+            inputColor: "white"
+            clip: true
+            inputWidth: 290
+            inputHeight: 36
+            horizontalAlignment: Qt.AlignHCenter
+        }
+        Text {
+            id: permission
+            anchors.top: password.bottom
+            anchors.topMargin: 24
+            anchors.right: title.right
+            font.family: "arial"
+            font.pixelSize: 24
+            color: "white"
+            text: qsTr("Permission Level")
+        }
+        ExclusiveGroup {
+            id: mos
+        }
+
+        MyRadioButton {
+            id: administratorRadio
+            anchors.left: permission.right
+            anchors.leftMargin: 10
+            anchors.verticalCenter: permission.verticalCenter
+            width: 300
+            height: 40
+            bIsCheck: true
+            exclusiveGroup: mos
+            buttontext: qsTr("Administrator")
+        }
+        MyRadioButton {
+            id: technicianRadio
+            anchors.left: permission.right
+            anchors.leftMargin: 10
+            anchors.top: administratorRadio.bottom
+            anchors.topMargin: 4
+            width: 300
+            height: 40
+            exclusiveGroup: mos
+            buttontext: qsTr("Technician")
+        }
+        MyRadioButton {
+            id: qualityRadio
+            anchors.left: permission.right
+            anchors.leftMargin: 10
+            anchors.top: technicianRadio.bottom
+            anchors.topMargin: 4
+            width: 300
+            height: 40
+            exclusiveGroup: mos
+            buttontext: qsTr("Quality Control")
+        }
+        MyRadioButton {
+            id: openRadio
+            anchors.left: permission.right
+            anchors.leftMargin: 10
+            anchors.top: qualityRadio.bottom
+            anchors.topMargin: 4
+            width: 300
+            height: 40
+            exclusiveGroup: mos
+            buttontext: qsTr("Open")
+        }
+        CButton {
+            id: cancelButton
+            anchors.top: openRadio.bottom
+            anchors.topMargin: 24
+            anchors.left: parent.left
+            anchors.leftMargin: 20
+            width: (parent.width-60)/2
+            height: 79
+            text: qsTr("Cancel")
+            textColor: "white"
+            iconSource: "qrc:/images/images/cancel.png"
+            onClicked: {
+                backGround.visible = false
+                backGround.opacity = 0
+                operatorDialog.visible = false
+            }
+        }
+        CButton {
+            id: okButton
+            anchors.top: openRadio.bottom
+            anchors.topMargin: 24
+            anchors.left: cancelButton.right
+            anchors.leftMargin: 20
+            width: (parent.width-60)/2
+            height: 79
+            text: qsTr("OK")
+            iconSource: "qrc:/images/images/OK.png"
+            textColor: "white"
+            onClicked: {
+                backGround.visible = false
+                backGround.opacity = 0
+                operatorDialog.visible = false
+            }
+        }
     }
 }

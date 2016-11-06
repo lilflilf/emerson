@@ -18,9 +18,11 @@ Window {
       1-- edit
       2-- Operate
       3-- Test
-      4-- maintenance Calibration
-      5-- ToolChange
-      16-- operator library
+      4-- maintenance perssion setting
+      14-- settings Permission Setting
+      15-- settings Weld Defaults
+      16-- settings operator library
+      17-- settings Data Communication
       */
     function menuInit(index)
     {
@@ -49,8 +51,19 @@ Window {
         case 7:
             contentLoader.source = "qrc:/UI/MaintenanceCount.qml"
             break;
+        case 8:
+            contentLoader.source = "qrc:/UI/MaintenanceLog.qml"
+            break;
+        case 14:
+            contentLoader.source = "qrc:/UI/PermissionSetting.qml"
+            break;
+        case 15:
+            contentLoader.source = "qrc:/UI/WeldDefalut.qml"
         case 16:
             contentLoader.source = "qrc:/UI/UserLibrarySetting.qml"
+            break;
+        case 17:
+            contentLoader.source = "qrc:/UI/DataCommunication.qml"
             break;
         default:
             break;
