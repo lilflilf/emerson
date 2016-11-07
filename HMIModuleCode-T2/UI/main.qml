@@ -59,6 +59,7 @@ Window {
             break;
         case 15:
             contentLoader.source = "qrc:/UI/WeldDefalut.qml"
+            break;
         case 16:
             contentLoader.source = "qrc:/UI/UserLibrarySetting.qml"
             break;
