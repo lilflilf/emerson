@@ -23,6 +23,7 @@ Window {
       15-- settings Weld Defaults
       16-- settings operator library
       17-- settings Data Communication
+      18--settings Branson Setting
       */
     function menuInit(index)
     {
@@ -59,11 +60,15 @@ Window {
             break;
         case 15:
             contentLoader.source = "qrc:/UI/WeldDefalut.qml"
+            break;
         case 16:
             contentLoader.source = "qrc:/UI/UserLibrarySetting.qml"
             break;
         case 17:
             contentLoader.source = "qrc:/UI/DataCommunication.qml"
+            break;
+        case 18:
+            contentLoader.source = "qrc:/UI/BransonSetting.qml"
             break;
         default:
             break;

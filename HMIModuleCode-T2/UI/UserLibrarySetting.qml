@@ -42,7 +42,8 @@ Item {
         width: parent.width - 100
         spacing: 10
         Text {
-            anchors.horizontalCenter: parent
+            anchors.verticalCenter: headTitle.verticalCenter
+            horizontalAlignment: Qt.AlignHCenter
             width: (parent.width-30)/4
             color: "white"
             clip: true
@@ -51,7 +52,8 @@ Item {
             text: qsTr("User Name")
         }
         Text {
-            anchors.horizontalCenter: parent
+            anchors.verticalCenter: headTitle.verticalCenter
+            horizontalAlignment: Qt.AlignHCenter
             width: (parent.width-30)/4
             color: "white"
             clip: true
@@ -60,7 +62,8 @@ Item {
             text: qsTr("Date Created")
         }
         Text {
-            anchors.horizontalCenter: parent
+            anchors.verticalCenter: headTitle.verticalCenter
+            horizontalAlignment: Qt.AlignHCenter
             width: (parent.width-30)/4
             color: "white"
             clip: true
@@ -69,7 +72,8 @@ Item {
             text: qsTr("Password")
         }
         Text {
-            anchors.horizontalCenter: parent
+            anchors.verticalCenter: headTitle.verticalCenter
+            horizontalAlignment: Qt.AlignHCenter
             width: (parent.width-30)/4
             text: qsTr("Permission Level")
             color: "white"

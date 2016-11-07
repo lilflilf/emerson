@@ -44,6 +44,7 @@
         <file>UI/AdvancedMaintenance.qml</file>
         <file>UI/MaintenanceCount.qml</file>
         <file>UI/MaintenanceLog.qml</file>
+        <file>UI/BransonSetting.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file>images/you.png</file>
