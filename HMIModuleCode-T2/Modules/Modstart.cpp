@@ -49,15 +49,10 @@ MODstart::MODstart()
     _MDefine->MessageFlag.DataGraphComplete = true;
     _MDefine->MessageFlag.EmergencyStopMessage = false;
     CheckBransonFolder(); //the routine checks whether Amtech folder exists on system drive or not
-
     _M10INI->Get_INI_File();
-
     CheckIOStatus();
-
     GlobalInitM10();
-
 //    ptr_Statistics->start_data_structures();   //Initializes the stats bell curve only
-
     if (_Interface->StatusData.ComInfo.COMport == -1)
         check_result = 1;
     else
@@ -71,7 +66,6 @@ MODstart::MODstart()
         tmpMsgBox.TipsMode = (OKCancel + Exclamation);
         tmpMsgBox.func_ptr = MODstart::OfflineInitialization;
         _Interface->cMsgBox(&tmpMsgBox);
-
     }
     else
     {
@@ -116,23 +110,18 @@ MODstart::MODstart()
                     _Interface->StatusData.Soft_Settings.SonicGenWatts);
             }
         }
-
         _M102IA->IACommand(IAComSendHornAmplitude);
         _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.HORNamplitude);
         if(_M2010->ReceiveFlags.HORNamplitude == true)
             _M2010->ReceiveFlags.HORNamplitude = false;
-
-
         _M102IA->IACommand(IAComSendSonicHits);    //Always make this last, it terminates the watch loop
         _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.SonicHitsData);
         if (_M2010->ReceiveFlags.SonicHitsData)
             _M2010->ReceiveFlags.SonicHitsData = false;
-
         _M102IA->IACommand(IAComSendWeldData);
         _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.WELDdata);
         if (_M2010->ReceiveFlags.WELDdata)
             _M2010->ReceiveFlags.WELDdata = false;
-
         //Prepare Current VersaGraphics Version String.
         _Interface->CurrentVersions.SoftwareVersion = App.Major + "." + App.Minor + "." + App.Revision;
 
@@ -141,7 +130,6 @@ MODstart::MODstart()
         _Interface->CurrentVersions.ActuatorVersion = _M102IA->ActuatorVersion;
         //Check for any version mismatch.
         CheckVersionFile(_Interface->CurrentVersions);
-
         _M102IA->IACommand(IAComSetM10Mode);
         _ModRunSetup->OfflineModeEnabled = false;
 

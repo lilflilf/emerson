@@ -17,18 +17,20 @@ BransonSerial* BransonSerial::Instance()
     }
     return _instance;
 }
-
+QMutex* BransonSerial::_Mutex = NULL;
 BransonSerial::BransonSerial(QObject *parent)
     :QObject(parent)
 {
     comIAport = new QSerialPort();
     m_nCurrentTimer = 0;
     b_Timeout = false;
+    _Mutex = new QMutex(QMutex::NonRecursive);
 }
 
 BransonSerial::~BransonSerial()
 {
     delete comIAport;
+    delete _Mutex;
     ResetCommandTimer();
 }
 
@@ -64,12 +66,10 @@ int BransonSerial::CheckIAportSet(long iBaudRate, long iComm)
     comIAport->clear();
 
     strCommand = 0x11;
-    comIAport->write(&strCommand,1); //XON
-    comIAport->waitForBytesWritten(-1);
+    IAportSend(strCommand);
     //ENQuirey, IA sends back "U"
     strCommand = IAcomfunctionENQ;
-    comIAport->write(&strCommand,1);
-    comIAport->waitForBytesWritten(-1);
+    IAportSend(strCommand);
     SetCommandTimer(200);
     while (IsCommandTimeout() == false)
     {
@@ -86,12 +86,10 @@ int BransonSerial::CheckIAportSet(long iBaudRate, long iComm)
         return iResult;
 
     strCommand = 0x11;
-    comIAport->write(&strCommand,1); //XON
-    comIAport->waitForBytesWritten(-1);
+    IAportSend(strCommand);
     //ENQuirey, IA sends back "U"
     strCommand = IAcomfunctionENQ;
-    comIAport->write(&strCommand,1);
-    comIAport->waitForBytesWritten(-1);
+    IAportSend(strCommand);
     SetCommandTimer(200);
     while (IsCommandTimeout() == false)
     {
@@ -144,15 +142,12 @@ void BransonSerial::comIAportReadEventSlot()
             {
                 ptr_M102IA->HexLineBufferCheck(NextLine);
                 Command = 0x13;
-                comIAport->write(&Command,1); //XOFF
-                comIAport->waitForBytesWritten(-1);
+                IAportSend(Command);
                 NextLine.clear();
                 Command = 0x11;
-                comIAport->write(&Command,1); //XON
-                comIAport->waitForBytesWritten(-1);
+                IAportSend(Command);
                 Command = 0x06;
-                comIAport->write(&Command,1); //ACK
-                comIAport->waitForBytesWritten(-1);
+                IAportSend(Command);
             }
             break;
         case 10:
@@ -181,7 +176,6 @@ void BransonSerial::comIAportReadEventSlot()
 
 
 }
-
 
 void BransonSerial::SetCommandTimer(int Time)
 {
@@ -219,4 +213,34 @@ void BransonSerial::timerEvent(QTimerEvent *event)
     {
         QObject::timerEvent(event);
     }
+}
+
+bool BransonSerial::IAportSend(char data)
+{
+    _Mutex->lock();
+    char tmpData = data;
+    bool bResult = false;
+    int iResult = comIAport->write(&tmpData,1); //XON
+    if(iResult == -1)
+        bResult = false;
+    else
+        bResult = true;
+    bResult = comIAport->waitForBytesWritten(-1);
+    _Mutex->unlock();
+    return bResult;
+}
+
+bool BransonSerial::IAportSend(QByteArray data)
+{
+    _Mutex->lock();
+    QByteArray tmpBuffer = data;
+    bool bResult = false;
+    int iResult = comIAport->write(tmpBuffer);
+    if(iResult == -1)
+        bResult = false;
+    else
+        bResult = true;
+    bResult = comIAport->waitForBytesWritten(-1);
+    _Mutex->unlock();
+    return bResult;
 }

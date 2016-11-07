@@ -348,7 +348,10 @@ Item {
                                     root.menuInit(17)
                                     title.text = qsTr("Data Communication")
                                 }
-
+                                else if (menuKey == "Branson Setting") {
+                                    root.menuInit(18)
+                                    title.text = qsTr("Branson Setting")
+                                }
                             }
                         }
                         RadioButton {

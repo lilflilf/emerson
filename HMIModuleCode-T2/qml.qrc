@@ -51,6 +51,7 @@
         <file>UI/ViewError.qml</file>
         <file>UI/ViewLibrary.qml</file>
         <file>UI/ViewVersion.qml</file>
+        <file>UI/BransonSetting.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file>images/you.png</file>

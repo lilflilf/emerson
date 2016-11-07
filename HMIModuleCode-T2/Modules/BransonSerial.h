@@ -6,6 +6,7 @@
 #include "stdlib.h"
 #include <QObject>
 #include <QtSerialPort/QSerialPort>
+#include <QMutex>
 //#include "m10definitions.h"
 using namespace std;
 
@@ -15,9 +16,9 @@ class BransonSerial:public QObject
 private:
     int m_nCurrentTimer;
     bool b_Timeout;
+    static QMutex* _Mutex;
 public:
     static QSerialPort *comIAport;
-public:
 public:
     int CheckIAportSet(long iBaudRate, long iComm);
     void FindIAport();
@@ -28,7 +29,9 @@ public:
 
 public slots:
     static void comIAportReadEventSlot();
-
+public:
+    static bool IAportSend(char data);
+    static bool IAportSend(QByteArray data);
 public:
     static BransonSerial* Instance();
 protected:
