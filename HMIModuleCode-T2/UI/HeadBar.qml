@@ -332,6 +332,10 @@ Item {
                                     root.menuInit(8)
                                     title.text = qsTr("Maintenance log")
                                 }
+                                else if (menuKey == "Word Order History"){
+                                    root.menuInit(9)
+                                    title.text = qsTr("Word Order History")
+                                }
                                 else if (menuKey == "Permission Setting"){
                                     root.menuInit(14)
                                     title.text = qsTr("Permission Setting")

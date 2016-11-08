@@ -16,7 +16,7 @@ Item {
         ListElement {key1:"Gather";   key2:"3"; key3:"400,000"; key4:"25111"; key5:"10/20/2016"; key6:"Reset"}
         ListElement {key1:"AnvilGuide"; key2:"3"; key3:"400,000"; key4:"35222"; key5:"10/20/2016"; key6:"Reset"}
         ListElement {key1:"Converter";  key2:"3"; key3:"400,000"; key4:"35224"; key5:"10/20/2016"; key6:"Reset"}
-        ListElement {key1:"Converter";  key2:"-"; key3:"-"; key4:"35224"; key5:"10/20/2016"; key6:"-"}
+        ListElement {key1:"Actuator";  key2:"-"; key3:"-"; key4:"35224"; key5:"10/20/2016"; key6:"-"}
 
     }
 
@@ -99,9 +99,14 @@ Item {
         Item {
             id: line
             width: listView.width
-            height: 80
+            height: index == 5 ? 200 : 80
+            Component.onCompleted: {
+                console.log("sdfffffffffff",line.height)
+            }
+
             Row {
                 spacing: 70
+                anchors.verticalCenter: parent.verticalCenter
                 Text {
                     width: 150
                     height: 79

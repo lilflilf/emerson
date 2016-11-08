@@ -112,7 +112,7 @@ Item {
         anchors.bottom: line3.top
         clip: true
         delegate: listDelegate
-        model: testModel
+        model: operatorModel //testModel
     }
     Image {
         id: scrollUp
