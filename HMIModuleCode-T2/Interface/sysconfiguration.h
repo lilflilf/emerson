@@ -328,6 +328,15 @@ enum PWSDefinitions{
     PWSAdministrator,        //Administrator at least is required.
 };
 
+enum ACTUATORMODE{
+    ANTISIDESPLICEOFF = -1,
+    ANTISIDESPLICE = 0,
+    WIDTHPLUS2,
+    WIDTHPLUS25PERCENT,
+    DOUBLEHITMODE,
+    USESTARTHANDLE,
+};
+
 //A single structure and a single file for the status data
 class Status_Data
 {
@@ -364,7 +373,7 @@ public:
     long NetworkingEnabled;
     QString CurrentWrkStaID;
     QString CentralComputerID;
-    int ActuatorMode;
+    enum ACTUATORMODE ActuatorMode;
     int AntisideSpliceTime;
     int CurrentCoolingDur;
     int CurrentCoolingDel;

@@ -828,7 +828,7 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
     case IASigMaintCount:        //"13"
     case IASigActuator:
         _Interface->StatusData.MachineType = (enum ActuatorType)MakeHexWordNumber(HexString.mid(9, 4));
-        _Interface->StatusData.ActuatorMode = MakeHexWordNumber(HexString.mid(13, 4));
+        _Interface->StatusData.ActuatorMode = (enum ACTUATORMODE)MakeHexWordNumber(HexString.mid(13, 4));
         _Interface->StatusData.AntisideSpliceTime = MakeHexWordNumber(HexString.mid(17, 4));
         switch (_Interface->StatusData.MachineType)
         {

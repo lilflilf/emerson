@@ -32,7 +32,8 @@ SOURCES += main.cpp \
     DataBase/DBWeldResultTable.cpp \
     DataBase/DBAlarmLogTable.cpp \
     Interface/SysConfiguration.cpp \
-    Interface/Interface.cpp
+    Interface/Interface.cpp \
+    Interface/Maintenance.cpp
 
 RESOURCES += qml.qrc
 
@@ -73,7 +74,8 @@ HEADERS += \
     DataBase/DBWeldResultTable.h \
     DataBase/DBAlarmLogTable.h \
     Interface/SysConfiguration.h \
-    Interface/Interface.h
+    Interface/Interface.h \
+    Interface/Maintenance.h
 
 DISTFILES += \
     UI/displayChinese_zh_CN.qm \

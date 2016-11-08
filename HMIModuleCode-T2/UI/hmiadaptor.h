@@ -1,7 +1,7 @@
 #ifndef HMIADAPTOR_H
 #define HMIADAPTOR_H
 
-#include<QMetaType>
+#include <QMetaType>
 #include <QObject>
 #include "tablemodel.h"
 

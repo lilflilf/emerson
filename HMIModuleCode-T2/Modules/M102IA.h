@@ -97,7 +97,7 @@ struct WELDdata{
 
 
 struct IOinfo{
-   long IO;                  // Inputs / Outputs  bitflag structure shown above
+   unsigned long IO;                  // Inputs / Outputs  bitflag structure shown above
    long IO2;                 // VELEZ040811
    int AdjHeight;            // Height with zero and pressure adjustments
    int AbsHeight;            // Height encoder reading, no adjustments
@@ -208,7 +208,7 @@ enum IACommands{
    IAComSendPowerGraph        = 12,
    IAComSetACtap              = 14,
    IAComSendIOdata            = 16,
-   IAComHornopen              = 18,
+   IAComHornOpen              = 18,
    IAComHornClose             = 20,
    IAComAux1Open              = 22,
    IAComAux1Close             = 24,
