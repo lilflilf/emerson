@@ -27,7 +27,7 @@ Item {
             font.family: "arial"
             text: qsTr("Function Name")
         }
-        Text {
+        TextEdit {
             anchors.verticalCenter: parent.verticalCenter
             horizontalAlignment: Qt.AlignHCenter
             width: (parent.width-40)/5
@@ -37,7 +37,7 @@ Item {
             font.family: "arial"
             text: qsTr("1.Administrator")
         }
-        Text {
+        TextEdit {
             anchors.verticalCenter: parent.verticalCenter
             horizontalAlignment: Qt.AlignHCenter
             width: (parent.width-40)/5
@@ -47,7 +47,7 @@ Item {
             font.family: "arial"
             text: qsTr("2.Technician")
         }
-        Text {
+        TextEdit {
             anchors.verticalCenter: parent.verticalCenter
             horizontalAlignment: Qt.AlignHCenter
             width: (parent.width-40)/5
@@ -57,7 +57,7 @@ Item {
             font.family: "arial"
             text: qsTr("3.Quality Control")
         }
-        Text {
+        TextEdit {
             anchors.verticalCenter: parent.verticalCenter
             horizontalAlignment: Qt.AlignHCenter
             width: (parent.width-40)/5
@@ -93,19 +93,15 @@ Item {
         id: listModel
         Component.onCompleted: {
             listModel.append({name:"Create New"})
-            listModel.append({name:"Create New"})
-            listModel.append({name:"Create New"})
-            listModel.append({name:"Create New"})
-            listModel.append({name:"Create New"})
-            listModel.append({name:"Create New"})
-            listModel.append({name:"Create New"})
-            listModel.append({name:"Create New"})
-            listModel.append({name:"Create New"})
-            listModel.append({name:"Create New"})
-            listModel.append({name:"Create New"})
-            listModel.append({name:"Create New"})
-            listModel.append({name:"Create New"})
-            listModel.append({name:"Create New"})
+            listModel.append({name:"Edit Existing"})
+            listModel.append({name:"Manage Libraries"})
+            listModel.append({name:"Edit Splice"})
+            listModel.append({name:"Teach Mode"})
+            listModel.append({name:"Maintenance"})
+            listModel.append({name:"View Data"})
+            listModel.append({name:"Weld Default"})
+            listModel.append({name:"Data Communication"})
+            listModel.append({name:"Lock On Alarm"})
         }
     }
 
