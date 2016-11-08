@@ -92,6 +92,8 @@ Item {
                 onClicked: {
                     if (button2.text == "Back")
                         calibration.currentIndex--
+                    else if (button2.text == "Save")
+                        root.menuInit(0)
                 }
             }
             Connections {
@@ -109,6 +111,8 @@ Item {
                     }
                     else if (calibration.currentIndex == 3)
                     {
+                        title.text = qsTr("Calibration - Amplitude")
+                        content.text = qsTr("This process calibrates the Amplitude. Please set an Amplitude measuring instrument and press and hold the start button on this screen to run Ultrasonic. Then, please enter the Amplitude value.")
                         button1.text = qsTr("Start")
                         button2.text = qsTr("Cancel")
                     }

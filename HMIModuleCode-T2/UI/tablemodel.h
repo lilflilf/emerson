@@ -6,6 +6,8 @@
 #include "DataBase/DBWorkOrderTable.h"
 #include "DataBase/DBPresetTable.h"
 #include "DataBase/DBPartTable.h"
+#include "DataBase/DBOperatorTable.h"
+#include "DataBase/DBAlarmLogTable.h"
 
 class WorkOrderModel : public QAbstractTableModel
 {
@@ -79,6 +81,7 @@ private:
     QHash<int, QByteArray> m_roleNames;
 };
 
+
 class PartModel : public QAbstractTableModel
 {
     Q_OBJECT
@@ -115,5 +118,67 @@ public slots:
 private:
     QHash<int, QByteArray> m_roleNames;
 };
+
+
+class OperatorModel : public QAbstractTableModel
+{
+    Q_OBJECT
+public:
+    explicit OperatorModel(QObject *parent = 0);
+    void setModelList(unsigned int time_from, unsigned int time_to);
+    void setModelList();
+
+    QStringList m_idList;
+    DBOperatorTable *m_operatorAdaptor;
+    QMap<int, QString> *operators;
+
+protected:
+    int rowCount(const QModelIndex &parent) const;
+    int columnCount(const QModelIndex &parent) const;
+    QVariant data(const QModelIndex &index, int role) const;
+    QVariant headerData(int section, Qt::Orientation orientation, int role) const;
+    QHash<int, QByteArray> roleNames() const;
+
+//signals:
+
+
+public slots:
+    void setRoles(const QStringList &names);
+    Q_INVOKABLE QVariant getOperatorValue(int index, QString key);
+    Q_INVOKABLE int count();
+private:
+    QHash<int, QByteArray> m_roleNames;
+};
+
+class AlarmModel : public QAbstractTableModel
+{
+    Q_OBJECT
+public:
+    explicit AlarmModel(QObject *parent = 0);
+    void setModelList(unsigned int time_from, unsigned int time_to);
+    void setModelList();
+
+    QStringList m_idList;
+    DBAlarmLogTable *m_alarmAdaptor;
+    QMap<int, QString> *alarms;
+
+protected:
+    int rowCount(const QModelIndex &parent) const;
+    int columnCount(const QModelIndex &parent) const;
+    QVariant data(const QModelIndex &index, int role) const;
+    QVariant headerData(int section, Qt::Orientation orientation, int role) const;
+    QHash<int, QByteArray> roleNames() const;
+
+//signals:
+
+
+public slots:
+    void setRoles(const QStringList &names);
+    Q_INVOKABLE QVariant getAlarmValue(int index, QString key);
+    Q_INVOKABLE int count();
+private:
+    QHash<int, QByteArray> m_roleNames;
+};
+
 
 #endif // TABLEMODEL_H

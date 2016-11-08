@@ -61,6 +61,8 @@ Window {
             break;
         case 13:
             contentLoader.source = "qrc:/UI/ViewVersion.qml"
+        case 9:
+            contentLoader.source = "qrc:/UI/ViewWorkOrder.qml"
             break;
         case 14:
             contentLoader.source = "qrc:/UI/PermissionSetting.qml"
