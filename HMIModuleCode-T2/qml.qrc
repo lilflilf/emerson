@@ -44,6 +44,14 @@
         <file>UI/AdvancedMaintenance.qml</file>
         <file>UI/MaintenanceCount.qml</file>
         <file>UI/MaintenanceLog.qml</file>
+        <file>UI/MyCalendar.qml</file>
+        <file>UI/MyTimeSelect.qml</file>
+        <file>UI/ViewWorkOrder.qml</file>
+        <file>UI/ViewTrend.qml</file>
+        <file>UI/ViewError.qml</file>
+        <file>UI/ViewLibrary.qml</file>
+        <file>UI/ViewVersion.qml</file>
+        <file>UI/BransonSetting.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file>images/you.png</file>
@@ -70,5 +78,7 @@
         <file>images/wiredemo.jpg</file>
         <file>images/setting.png</file>
         <file>images/settingselect.png</file>
+        <file>images/left.png</file>
+        <file>images/right.png</file>
     </qresource>
 </RCC>

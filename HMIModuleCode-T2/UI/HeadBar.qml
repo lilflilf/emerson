@@ -332,6 +332,18 @@ Item {
                                     root.menuInit(8)
                                     title.text = qsTr("Maintenance log")
                                 }
+                                else if (menuKey == "Library") {
+                                    root.menuInit(12)
+                                    title.text = qsTr("Library")
+                                }
+                                else if (menuKey == "Version Information") {
+                                    root.menuInit(13)
+                                    title.text = qsTr("Version Information")
+                                }
+                                else if (menuKey == "Word Order History"){
+                                    root.menuInit(9)
+                                    title.text = qsTr("Word Order History")
+                                }
                                 else if (menuKey == "Permission Setting"){
                                     root.menuInit(14)
                                     title.text = qsTr("Permission Setting")
@@ -348,7 +360,10 @@ Item {
                                     root.menuInit(17)
                                     title.text = qsTr("Data Communication")
                                 }
-
+                                else if (menuKey == "Branson Setting") {
+                                    root.menuInit(18)
+                                    title.text = qsTr("Branson Setting")
+                                }
                             }
                         }
                         RadioButton {

@@ -19,10 +19,12 @@ Window {
       2-- Operate
       3-- Test
       4-- maintenance perssion setting
+      13-- view data version information
       14-- settings Permission Setting
       15-- settings Weld Defaults
       16-- settings operator library
       17-- settings Data Communication
+      18--settings Branson Setting
       */
     function menuInit(index)
     {
@@ -54,16 +56,28 @@ Window {
         case 8:
             contentLoader.source = "qrc:/UI/MaintenanceLog.qml"
             break;
+        case 12:
+            contentLoader.source = "qrc:/UI/ViewLibrary.qml"
+            break;
+        case 13:
+            contentLoader.source = "qrc:/UI/ViewVersion.qml"
+        case 9:
+            contentLoader.source = "qrc:/UI/ViewWorkOrder.qml"
+            break;
         case 14:
             contentLoader.source = "qrc:/UI/PermissionSetting.qml"
             break;
         case 15:
             contentLoader.source = "qrc:/UI/WeldDefalut.qml"
+            break;
         case 16:
             contentLoader.source = "qrc:/UI/UserLibrarySetting.qml"
             break;
         case 17:
             contentLoader.source = "qrc:/UI/DataCommunication.qml"
+            break;
+        case 18:
+            contentLoader.source = "qrc:/UI/BransonSetting.qml"
             break;
         default:
             break;

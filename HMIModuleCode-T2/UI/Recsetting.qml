@@ -18,7 +18,7 @@ Item {
     Rectangle {
         id: backGround
         width: parent.width
-        height: parent.height-4
+        height: parent.height-9
         border.color: localbordercolor
         border.width: 2
         color: Qt.rgba(0,0,0,0)

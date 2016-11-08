@@ -35,6 +35,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("workOrderModel",hmiAdaptor->workOrderModel);
     engine.rootContext()->setContextProperty("spliceModel",hmiAdaptor->spliceModel);
     engine.rootContext()->setContextProperty("partModel",hmiAdaptor->partModel);
+    engine.rootContext()->setContextProperty("operatorModel",hmiAdaptor->operatorModel);
 
 //    DataBaseTest *_TestPtr = new DataBaseTest();
 //    _TestPtr->TestMapJsonToString();

@@ -136,7 +136,7 @@ Item {
         anchors.verticalCenter: remoteText.verticalCenter
         width: 250
         height: 50
-        state: "right"
+        state: "left"
         textLeft: qsTr("off")
         textRight: qsTr("on")
         clip: true
@@ -145,12 +145,13 @@ Item {
         id: graphText
         anchors.top: remoteText.bottom
         anchors.topMargin: 10
-        anchors.left: networkText.left
+        anchors.right: remoteText.right
         height: 50
         verticalAlignment: Qt.AlignVCenter
         font.family: "arial"
         font.pixelSize: 20
         color: "white"
+        visible: remoteSwitch.on
         text: qsTr("Graph Data")
     }
     Switch2 {
@@ -159,9 +160,10 @@ Item {
         anchors.verticalCenter: graphText.verticalCenter
         width: 250
         height: 50
-        state: "right"
+        state: "left"
         textLeft: qsTr("off")
         textRight: qsTr("on")
+        visible: remoteSwitch.on
         clip: true
     }
     Text {
@@ -205,7 +207,7 @@ Item {
             width: columnButton.width
         }
         CButton {
-            iconSource: "qrc:/Images/Images/cancel.png"
+            iconSource: "qrc:/images/images/cancel.png"
             text: qsTr("Cancel")
             textColor: "white"
             clip: true
@@ -213,8 +215,8 @@ Item {
             width: columnButton.width
         }
         CButton {
-            iconSource: "qrc:/Images/Images/OK.png"
-            text: qsTr("Defalut Setting")
+            iconSource: "qrc:/images/images/OK.png"
+            text: qsTr("OK")
             textColor: "white"
             clip: true
             height: (columnButton.height-20)/3

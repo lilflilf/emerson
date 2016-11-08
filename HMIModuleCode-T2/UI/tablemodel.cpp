@@ -324,7 +324,7 @@ QVariant SpliceModel::getSpliceValue(int index, QString key)
         return SpliceModelHash.value(key);
     }
 }
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/****************************PartModel**************************/
 PartModel::PartModel(QObject *parent) :
     QAbstractTableModel(parent)
 {
@@ -458,5 +458,295 @@ QVariant PartModel::getPartValue(int index, QString key)
     }
 }
 
+/*******************************OperaTorModel*****************************/
 
+
+OperatorModel::OperatorModel(QObject *parent) :
+    QAbstractTableModel(parent)
+{
+    m_operatorAdaptor = DBOperatorTable::Instance();
+    operators = new QMap<int, QString>();
+}
+
+QVariant OperatorModel::data(const QModelIndex &index, int role) const
+{
+    QVariant value;
+    if(role < Qt::UserRole)
+    {
+        qDebug() << "OperatorModel::data(const QModelIndex &index, int role) const";
+    }
+    else
+    {
+        int columnIdx = role - Qt::UserRole - 1;
+        int rowId;
+        QMap<int,QString>::iterator it; //遍历map
+        int i = 0;
+        for ( it = operators->begin(); it != operators->end(); ++it ) {
+            if (i == index.row()){
+                rowId = it.key();
+                break;
+            }
+            else {
+                i++;
+            }
+        }
+        OperatorElement myOperator;
+        m_operatorAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myOperator);
+        if (columnIdx == 0)
+            value = QVariant::fromValue(myOperator.OperatorID);
+        else if (columnIdx == 1)
+            value = QVariant::fromValue(myOperator.OperatorName);
+        else if (columnIdx == 2)
+            value = QVariant::fromValue(QDateTime::fromTime_t(myOperator.CreatedDate).toString("MM/dd/yyyy hh:mm"));
+        else if (columnIdx == 3)
+            value = QVariant::fromValue(myOperator.Password);
+        else if (columnIdx == 4) {
+            QString level = "";
+            if (myOperator.PermissionLevel == PASSWORDCONTROL::SUPERUSER)
+                level = "SUPERUSER";
+            else if (myOperator.PermissionLevel == PASSWORDCONTROL::ADMINISTRATOR)
+                level = "ADMINISTRATOR";
+            else if (myOperator.PermissionLevel == PASSWORDCONTROL::TECHNICIAN)
+                level = "TECHNICIAN";
+            else if (myOperator.PermissionLevel == PASSWORDCONTROL::QUALITYCONTROL)
+                level = "QUALITYCONTROL";
+            else if (myOperator.PermissionLevel == PASSWORDCONTROL::OPEN)
+                level = "OPEN";
+            value = QVariant::fromValue(level);
+        }
+    }
+    return value;
+}
+
+void OperatorModel::setModelList(unsigned int time_from, unsigned int time_to)
+{
+    beginResetModel();
+    operators->clear();
+    if (m_operatorAdaptor->QueryOnlyUseTime(time_from,time_to,operators))
+        qDebug( )<< "OperatorModel " << operators->count();
+    endResetModel();
+}
+
+void OperatorModel::setModelList()
+{
+    beginResetModel();
+    operators->clear();
+    if (m_operatorAdaptor->QueryEntireTable(operators))
+        qDebug( )<< "OperatorModel" << operators->count();
+    endResetModel();
+}
+
+
+int OperatorModel::rowCount(const QModelIndex & parent) const
+{
+    return operators->count();
+}
+
+
+int OperatorModel::count()
+{
+    return operators->count();
+}
+
+
+int OperatorModel::columnCount(const QModelIndex &parent) const
+{
+    return 1;
+}
+
+QVariant OperatorModel::headerData(int section, Qt::Orientation orientation, int role) const
+{
+    return QVariant();
+}
+
+void OperatorModel::setRoles(const QStringList &names)
+{
+    m_roleNames.clear();
+    for(int idx=0; idx<names.count(); idx++)
+    {
+        m_roleNames[Qt::UserRole + idx + 1] = names[idx].toLocal8Bit();
+    }
+
+}
+
+QHash<int, QByteArray> OperatorModel::roleNames() const
+{
+    return m_roleNames;
+}
+
+
+QVariant OperatorModel::getOperatorValue(int index, QString key)
+{
+    QMap<int,QString>::iterator it; //遍历map
+    int i = 0;
+    int orderId;
+    for ( it = operators->begin(); it != operators->end(); ++it ) {
+        if (i == index){
+            orderId = it.key();
+            break;
+        }
+        else {
+            i++;
+        }
+    }
+    OperatorElement myOperator;
+    m_operatorAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myOperator);
+    QHash<QString, QVariant> OperatorModelHash;
+    OperatorModelHash.insert("operatorId",myOperator.OperatorID);
+    OperatorModelHash.insert("name",myOperator.OperatorName);
+    OperatorModelHash.insert("date",QDateTime::fromTime_t(myOperator.CreatedDate).toString("MM/dd/yyyy hh:mm"));
+    OperatorModelHash.insert("middle",myOperator.Password);
+    QString level = "";
+    if (myOperator.PermissionLevel == PASSWORDCONTROL::SUPERUSER)
+        level = "SUPERUSER";
+    else if (myOperator.PermissionLevel == PASSWORDCONTROL::ADMINISTRATOR)
+        level = "ADMINISTRATOR";
+    else if (myOperator.PermissionLevel == PASSWORDCONTROL::TECHNICIAN)
+        level = "TECHNICIAN";
+    else if (myOperator.PermissionLevel == PASSWORDCONTROL::QUALITYCONTROL)
+        level = "QUALITYCONTROL";
+    else if (myOperator.PermissionLevel == PASSWORDCONTROL::OPEN)
+        level = "OPEN";
+    OperatorModelHash.insert("count",level);//myOperator.PermissionLevel;
+    //list << "name" << "date" << "middle" << "count";
+    if (key == "") {
+        return OperatorModelHash;
+    } else {
+        return OperatorModelHash.value(key);
+    }
+}
+
+/****************************************AlarmLog****************************************/
+
+AlarmModel::AlarmModel(QObject *parent) :
+    QAbstractTableModel(parent)
+{
+    m_alarmAdaptor = DBAlarmLogTable::Instance();
+    alarms = new QMap<int, QString>();
+}
+
+QVariant AlarmModel::data(const QModelIndex &index, int role) const
+{
+    QVariant value;
+    if(role < Qt::UserRole)
+    {
+        qDebug() << "AlarmModel::data(const QModelIndex &index, int role) const";
+    }
+    else
+    {
+        int columnIdx = role - Qt::UserRole - 1;
+        int rowId;
+        QMap<int,QString>::iterator it; //遍历map
+        int i = 0;
+        for ( it = alarms->begin(); it != alarms->end(); ++it ) {
+            if (i == index.row()){
+                rowId = it.key();
+                break;
+            }
+            else {
+                i++;
+            }
+        }
+        AlarmElement myAlarm;
+        m_alarmAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myAlarm);
+        if (columnIdx == 0)
+            value = QVariant::fromValue(myAlarm.AlarmID);
+        else if (columnIdx == 1)
+            value = QVariant::fromValue(myAlarm.AlarmMsg);
+        else if (columnIdx == 2)
+            value = QVariant::fromValue(QDateTime::fromTime_t(myAlarm.CreatedDate).toString("MM/dd/yyyy hh:mm"));
+        else if (columnIdx == 3)
+            value = QVariant::fromValue(myAlarm.AlarmType);
+        else if (columnIdx == 4) {
+            value = QVariant::fromValue(myAlarm.WeldResultID);
+        }
+    }
+    return value;
+}
+
+void AlarmModel::setModelList(unsigned int time_from, unsigned int time_to)
+{
+    beginResetModel();
+    alarms->clear();
+    if (m_alarmAdaptor->QueryOnlyUseTime(time_from,time_to,alarms))
+        qDebug( )<< "AlarmModel " << alarms->count();
+    endResetModel();
+}
+
+void AlarmModel::setModelList()
+{
+    beginResetModel();
+    alarms->clear();
+    if (m_alarmAdaptor->QueryEntireTable(alarms))
+        qDebug( )<< "AlarmModel" << alarms->count();
+    endResetModel();
+}
+
+
+int AlarmModel::rowCount(const QModelIndex & parent) const
+{
+    return alarms->count();
+}
+
+
+int AlarmModel::count()
+{
+    return alarms->count();
+}
+
+
+int AlarmModel::columnCount(const QModelIndex &parent) const
+{
+    return 1;
+}
+
+QVariant AlarmModel::headerData(int section, Qt::Orientation orientation, int role) const
+{
+    return QVariant();
+}
+
+void AlarmModel::setRoles(const QStringList &names)
+{
+    m_roleNames.clear();
+    for(int idx=0; idx<names.count(); idx++)
+    {
+        m_roleNames[Qt::UserRole + idx + 1] = names[idx].toLocal8Bit();
+    }
+
+}
+
+QHash<int, QByteArray> AlarmModel::roleNames() const
+{
+    return m_roleNames;
+}
+
+
+QVariant AlarmModel::getAlarmValue(int index, QString key)
+{
+    QMap<int,QString>::iterator it; //遍历map
+    int i = 0;
+    int orderId;
+    for ( it = alarms->begin(); it != alarms->end(); ++it ) {
+        if (i == index){
+            orderId = it.key();
+            break;
+        }
+        else {
+            i++;
+        }
+    }
+    AlarmElement myAlarm;
+    m_alarmAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myAlarm);
+    QHash<QString, QVariant> AlarmModelHash;
+    AlarmModelHash.insert("alarmId",myAlarm.AlarmID);
+    AlarmModelHash.insert("message",myAlarm.AlarmMsg);
+    AlarmModelHash.insert("date",QDateTime::fromTime_t(myAlarm.CreatedDate).toString("MM/dd/yyyy hh:mm"));
+    AlarmModelHash.insert("type",myAlarm.AlarmType);
+    AlarmModelHash.insert("splice",myAlarm.WeldResultID);//myOperator.PermissionLevel;
+    if (key == "") {
+        return AlarmModelHash;
+    } else {
+        return AlarmModelHash.value(key);
+    }
+}
 

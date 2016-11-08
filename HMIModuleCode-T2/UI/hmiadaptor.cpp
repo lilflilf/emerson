@@ -23,6 +23,11 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
     partModel->setRoles(list);
     partModel->setModelList();
 
+    operatorModel = new OperatorModel(this);
+    list.clear();;
+    list << "operatorId" << "name" << "date" << "middle" << "count";
+    operatorModel->setRoles(list);
+    operatorModel->setModelList();
 
     QSqlDatabase db;
     db = QSqlDatabase::addDatabase("QSQLITE", "hmiconnect");
