@@ -11,7 +11,7 @@
 #include "TestCase/databasetest.h"
 #include "UI/alpainteditem.h"
 #include "UI/hmiadaptor.h"
-#include "Interface/Maintenance.h"
+#include "Interface/Maintenance/AdvancedMaintenance.h"
 
 int main(int argc, char *argv[])
 {
@@ -68,9 +68,8 @@ int main(int argc, char *argv[])
 //    _TestPtr->TestUpdateOneRecordIntoWorkOrderTable();
 //    _TestPtr->TestUpdateOneRecordIntoOperatorTable();
 //    _TestPtr->TestQueryOnlyTimeWireTable();
-//    Maintenance* _Maintenance = new Maintenance();
-//    _Maintenance->AdvancedMaintenanceStart();
-//    _Maintenance->AdvancedMaintenanceStop();
+    Maintenance *_Maintenance = new AdvancedMaintenance();
+    _Maintenance->_start();
 
     QString str = "10";
     int ret = 0;

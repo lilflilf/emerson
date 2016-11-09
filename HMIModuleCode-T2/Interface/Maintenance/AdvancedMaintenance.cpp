@@ -1,32 +1,75 @@
-#include "Maintenance.h"
+#include "AdvancedMaintenance.h"
 #include "Modules/M2010.h"
 #include "Modules/M102IA.h"
-#include "Interface.h"
-#include "SysConfiguration.h"
-#include "Modules/UtilityClass.h"
+#include "Interface/Interface.h"
 #include <QDebug>
-bool Maintenance::HornTest = false;
-bool Maintenance::GatherTest = false;
-bool Maintenance::AnvilTest = false;
-bool Maintenance::Aux3Test = false;
-bool Maintenance::Aux4Test = false;
-bool Maintenance::Aux5Test = false;
-bool Maintenance::ConverterCoolingTest = false;
-bool Maintenance::ToolingCoolingTest = false;
-unsigned long Maintenance::PreviousIO = 0;
 
-Maintenance::Maintenance(QObject *parent)
-    :QObject(parent)
+bool AdvancedMaintenance::HornTest = false;
+bool AdvancedMaintenance::GatherTest = false;
+bool AdvancedMaintenance::AnvilTest = false;
+bool AdvancedMaintenance::Aux3Test = false;
+bool AdvancedMaintenance::Aux4Test = false;
+bool AdvancedMaintenance::Aux5Test = false;
+bool AdvancedMaintenance::ConverterCoolingTest = false;
+bool AdvancedMaintenance::ToolingCoolingTest = false;
+unsigned long AdvancedMaintenance::PreviousIO = 0;
+
+AdvancedMaintenance::AdvancedMaintenance()
 {
     m_Thread = NULL;
 }
 
-Maintenance::~Maintenance()
+void AdvancedMaintenance::_start()
 {
+    m_Thread = new ThreadClass(0, (void*)(AdvancedMaintenance::AdvancedMaintenanceHandle), this);
+    m_Thread->setStopEnabled(false);
+    m_Thread->setSuspendEnabled(false);
+    m_Thread->start();
+}
+
+void AdvancedMaintenance::_stop()
+{
+    m_Thread->setSuspendEnabled(true);
+    m_Thread->setStopEnabled(true);
+    qDebug()<<"Thread stop"<<m_Thread->wait();
+    delete m_Thread;
     m_Thread = NULL;
 }
 
-void Maintenance::AnvilArm_Click()
+void AdvancedMaintenance::_execute(int funCode)
+{
+    switch(funCode)
+    {
+    case ANVILARMCLICK:
+        AnvilArm_Click();
+        break;
+    case ANVILCLICK:
+        Anvil_Click();
+        break;
+    case GATHERCLICK:
+        Gather_Click();
+        break;
+    case CUTTERCLICK:
+        Cutter_Click();
+        break;
+    case CRASHCLICK:
+        Crash_Click();
+        break;
+    case SAFETYCLICK:
+        Safety_Click();
+        break;
+    case CONVERTERCOOLINGCLICK:
+        ConverterCooling_Click();
+        break;
+    case TOOLINGCOOLINGCLICK:
+        ToolingCooling_click();
+        break;
+    default:
+        break;
+    }
+}
+
+void AdvancedMaintenance::AnvilArm_Click()
 {
 //Procedure to bring the Horn Up/Down for the Mod 9 & Mod 10
 //    OR to bring the Anvil Up/Sown for the M2020 & M2030
@@ -57,7 +100,7 @@ void Maintenance::AnvilArm_Click()
     m_Thread->setSuspendEnabled(false);
 }
 
-void Maintenance::Anvil_Click()
+void AdvancedMaintenance::Anvil_Click()
 {
 //Procedure to Clamp/UnClamp the Anvil Block, used only by the Mod 9 & Mod 10
     M2010* _M2010 = M2010::Instance();
@@ -78,7 +121,7 @@ void Maintenance::Anvil_Click()
     m_Thread->setSuspendEnabled(false);
 }
 
-void Maintenance::Crash_Click()
+void AdvancedMaintenance::Crash_Click()
 {
     M2010* _M2010 = M2010::Instance();
     M102IA* _M102IA = M102IA::Instance();
@@ -98,7 +141,7 @@ void Maintenance::Crash_Click()
     m_Thread->setSuspendEnabled(false);
 }
 
-void Maintenance::Cutter_Click()
+void AdvancedMaintenance::Cutter_Click()
 {
     M2010* _M2010 = M2010::Instance();
     M102IA* _M102IA = M102IA::Instance();
@@ -117,7 +160,7 @@ void Maintenance::Cutter_Click()
     m_Thread->setSuspendEnabled(false);
 }
 
-void Maintenance::Gather_Click()
+void AdvancedMaintenance::Gather_Click()
 {
 //Procedure to Open/Close the Gather for the Mod 9 & Mod 10
 //    OR Open/Close the Anvil for the M2020 & M2030
@@ -140,7 +183,7 @@ void Maintenance::Gather_Click()
     m_Thread->setSuspendEnabled(false);
 }
 
-void Maintenance::Safety_Click()
+void AdvancedMaintenance::Safety_Click()
 {
     int CommandON = 0;
     int CommandOFF = 0;
@@ -171,7 +214,7 @@ void Maintenance::Safety_Click()
     m_Thread->setSuspendEnabled(false);
 }
 
-void Maintenance::ConverterCooling_Click()
+void AdvancedMaintenance::ConverterCooling_Click()
 {
     M2010* _M2010 = M2010::Instance();
     M102IA* _M102IA = M102IA::Instance();
@@ -190,7 +233,7 @@ void Maintenance::ConverterCooling_Click()
     m_Thread->setSuspendEnabled(false);
 }
 
-void Maintenance::ToolingCooling_click()
+void AdvancedMaintenance::ToolingCooling_click()
 {
     M2010* _M2010 = M2010::Instance();
     M102IA* _M102IA = M102IA::Instance();
@@ -209,7 +252,7 @@ void Maintenance::ToolingCooling_click()
     m_Thread->setSuspendEnabled(false);
 }
 
-void Maintenance::AdvancedMaintenanceHandle(void* _obj)
+void AdvancedMaintenance::AdvancedMaintenanceHandle(void* _obj)
 {
     M102IA* _M102IA = M102IA::Instance();
     M2010* _M2010 = M2010::Instance();
@@ -219,7 +262,7 @@ void Maintenance::AdvancedMaintenanceHandle(void* _obj)
     {
         if(_M102IA->IOstatus.IO != PreviousIO)
         {
-            PreviousIO = _M102IA->IOstatus.IO;           
+            PreviousIO = _M102IA->IOstatus.IO;
             UpdateAnvilArm();
             UpdateAnvil();
             UpdateGather();
@@ -229,7 +272,7 @@ void Maintenance::AdvancedMaintenanceHandle(void* _obj)
             UpdateCrash();
             UpdateCutter();
             UpdateToolingCooling();
-            emit ((Maintenance*)_obj)->IOstatusFeedback(PreviousIO);
+            emit ((AdvancedMaintenance*)_obj)->IOstatusFeedback(PreviousIO);
         }
        _M2010->ReceiveFlags.IOdata = false;
     }
@@ -237,26 +280,7 @@ void Maintenance::AdvancedMaintenanceHandle(void* _obj)
     qDebug()<<"Advanced Maintenace processing";
 }
 
-void Maintenance::AdvancedMaintenanceStart()
-{
-    m_Thread = new ThreadClass(0, (void*)(Maintenance::AdvancedMaintenanceHandle), this);
-    m_Thread->setStopEnabled(false);
-    m_Thread->setSuspendEnabled(false);
-    m_Thread->start();
-
-
-}
-
-void Maintenance::AdvancedMaintenanceStop()
-{
-    m_Thread->setSuspendEnabled(true);
-    m_Thread->setStopEnabled(true);
-    qDebug()<<"Thread stop"<<m_Thread->wait();
-    delete m_Thread;
-    m_Thread = NULL;
-}
-
-void Maintenance::UpdateAnvil()
+void AdvancedMaintenance::UpdateAnvil()
 {
     M2010* _M2010 = M2010::Instance();
     if((PreviousIO & CLAMP_ON) == CLAMP_ON)
@@ -269,7 +293,7 @@ void Maintenance::UpdateAnvil()
     }
 }
 
-void Maintenance::UpdateAnvilArm()
+void AdvancedMaintenance::UpdateAnvilArm()
 {
     M2010* _M2010 = M2010::Instance();
     if((PreviousIO & HORN_ON) == HORN_ON)
@@ -282,7 +306,7 @@ void Maintenance::UpdateAnvilArm()
     }
 }
 
-void Maintenance::UpdateGather()
+void AdvancedMaintenance::UpdateGather()
 {
     M2010* _M2010 = M2010::Instance();
     InterfaceClass* _Interface = InterfaceClass::Instance();
@@ -308,7 +332,7 @@ void Maintenance::UpdateGather()
     }
 }
 
-void Maintenance::UpdateConverterCooling()
+void AdvancedMaintenance::UpdateConverterCooling()
 {
     M2010* _M2010 = M2010::Instance();
     if((PreviousIO & CONVERTERCOOL_ON) == CONVERTERCOOL_ON)
@@ -321,7 +345,7 @@ void Maintenance::UpdateConverterCooling()
     }
 }
 
-void Maintenance::UpdateCrash()
+void AdvancedMaintenance::UpdateCrash()
 {
     M2010* _M2010 = M2010::Instance();
     if((PreviousIO & CRASH_ON) == CRASH_ON)
@@ -335,7 +359,7 @@ void Maintenance::UpdateCrash()
     }
 }
 
-void Maintenance::UpdateCutter()
+void AdvancedMaintenance::UpdateCutter()
 {
     M2010* _M2010 = M2010::Instance();
     if((PreviousIO & CUTTER_ON) == CUTTER_ON)
@@ -349,7 +373,7 @@ void Maintenance::UpdateCutter()
     }
 }
 
-void Maintenance::UpdateIN2()
+void AdvancedMaintenance::UpdateIN2()
 {
     M2010* _M2010 = M2010::Instance();
     InterfaceClass* _Interface = InterfaceClass::Instance();
@@ -367,7 +391,7 @@ void Maintenance::UpdateIN2()
     }
 }
 
-void Maintenance::UpdateSafety()
+void AdvancedMaintenance::UpdateSafety()
 {
     M2010* _M2010 = M2010::Instance();
     InterfaceClass* _Interface = InterfaceClass::Instance();
@@ -384,7 +408,7 @@ void Maintenance::UpdateSafety()
     }
 }
 
-void Maintenance::UpdateToolingCooling()
+void AdvancedMaintenance::UpdateToolingCooling()
 {
     M2010* _M2010 = M2010::Instance();
     if((PreviousIO & TOOLINGCOOL_ON) == TOOLINGCOOL_ON)
