@@ -56,6 +56,33 @@ M2010::M2010()
     ReceiveFlags.ActuatorVersionData = false;
     ReceiveFlags.ActuatorSerialNumData = false;
     ReceiveFlags.ActuatorPartNumData= false;
+
+    M10Run.Sequence_Done = false;
+    M10Run.Pre_Hght_Error = false;
+    M10Run.Alarm_found = false;
+    M10Run.Save_Data = false;
+    M10Run.Auto_Set_Mode = false;
+    M10Run.BarcodeFlash = false;
+    M10Run.SafetyFailed = false;
+    M10Run.Sequence_Line = -1;
+    M10Run.Part_Count = -1;
+    M10Run.Run_Splice.clear();
+    M10Run.Seq_File_Name.clear();
+    M10Run.Select_Part_file = false;
+    M10Run.Select_Seq_file = false;
+    M10Run.Load_From_Lib = false;
+    M10Run.Initial_Startup = false;
+    M10Run.Run_Splice_Stat.clear();
+    M10Run.GotoRun = false;
+    M10Run.E_Stop_Signal = false;
+    M10Run.Horn_Close = false;
+    M10Run.Gather_Close = false;
+    M10Run.Anvil_Clamped = false;
+    M10Run.Aux3On = false;
+    M10Run.Aux4On = false;
+    M10Run.Aux5On = false;
+    M10Run.CoolingOn = false;
+    M10Run.ToolingCoolingOn = false;
 }
 
 //void M2010::LoadSequenceData(string sSeqName, bool bFailedLoad, bool bIgnoreParts)

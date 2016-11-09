@@ -366,6 +366,25 @@ QVariant PartModel::data(const QModelIndex &index, int role) const
             value = QVariant::fromValue(myPart.NoOfSplice);
         else if (columnIdx == 4)
             value = QVariant::fromValue(myPart.OperatorID);
+        else if (columnIdx == 5)
+            value = QVariant::fromValue(myPart.OperatorID);
+        QString processModel;
+        if (myPart.PartTypeSetting.ProcessMode == BASIC)
+            processModel = "BASIC";
+        else if (myPart.PartTypeSetting.ProcessMode == ADVANCE)
+            processModel = "ADVANCE";
+        else if (columnIdx == 6)
+            value = QVariant::fromValue(processModel);
+        else if (columnIdx == 7)
+            value = QVariant::fromValue(myPart.PartTypeSetting.WorkStations.TotalWorkstation);
+        else if (columnIdx == 8)
+            value = QVariant::fromValue(myPart.NoOfSplice);
+        else if (columnIdx == 9)
+            value = QVariant::fromValue(myPart.PartTypeSetting.BoardLayout.Rows);
+        else if (columnIdx == 10)
+            value = QVariant::fromValue(myPart.PartTypeSetting.BoardLayout.Columns);
+        else if (columnIdx == 11)
+            value = QVariant::fromValue(myPart.PartTypeSetting.WorkStations.MaxSplicesPerWorkstation);
     }
     return value;
 }
@@ -430,6 +449,7 @@ QHash<int, QByteArray> PartModel::roleNames() const
 
 QVariant PartModel::getPartValue(int index, QString key)
 {
+
     QMap<int,QString>::iterator it; //遍历map
     int i = 0;
     int orderId;
@@ -442,15 +462,27 @@ QVariant PartModel::getPartValue(int index, QString key)
             i++;
         }
     }
+    //    list << "partId" << "name" << "date" << "totalSplices" << "type" << "operatorName" << "processMode" << "ofWorkstation" << "ofSplicesperWorkstation" << "rows" << "columns" << "maxSplicesPerZone";
     PartElement myPart;
     m_partAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myPart);
     QHash<QString, QVariant> PartModelHash;
     PartModelHash.insert("partId",myPart.PartID);
     PartModelHash.insert("name",myPart.PartName);
     PartModelHash.insert("date",QDateTime::fromTime_t(myPart.CreatedDate).toString("MM/dd/yyyy hh:mm"));
-    PartModelHash.insert("middle",myPart.NoOfSplice);
+    PartModelHash.insert("totalSplices",myPart.NoOfSplice);
     PartModelHash.insert("type","YES");
-    //list << "name" << "date" << "middle" << "count";
+    PartModelHash.insert("type",myPart.OperatorID);
+    QString processModel;
+    if (myPart.PartTypeSetting.ProcessMode == BASIC)
+        processModel = "BASIC";
+    else if (myPart.PartTypeSetting.ProcessMode == ADVANCE)
+        processModel = "ADVANCE";
+    PartModelHash.insert("type",processModel);
+    PartModelHash.insert("type",myPart.PartTypeSetting.WorkStations.TotalWorkstation);
+    PartModelHash.insert("type",myPart.NoOfSplice);
+    PartModelHash.insert("type",myPart.PartTypeSetting.BoardLayout.Rows);
+    PartModelHash.insert("type",myPart.PartTypeSetting.BoardLayout.Columns);
+    PartModelHash.insert("type",myPart.PartTypeSetting.WorkStations.MaxSplicesPerWorkstation);
     if (key == "") {
         return PartModelHash;
     } else {
@@ -750,3 +782,208 @@ QVariant AlarmModel::getAlarmValue(int index, QString key)
     }
 }
 
+/*****************WorkOrderHistory************************/
+/*
+WeldHistoryModel::WeldHistoryModel(QObject *parent) :
+    QAbstractTableModel(parent)
+{
+    m_weldHistoryAdaptor = DBWeldResultTable::Instance();
+    historys = new QMap<int, QString>();
+}
+
+QVariant WeldHistoryModel::data(const QModelIndex &index, int role) const
+{
+    QVariant value;
+    if(role < Qt::UserRole)
+    {
+        qDebug() << "WeldHistoryModel::data(const QModelIndex &index, int role) const";
+    }
+    else
+    {
+        int columnIdx = role - Qt::UserRole - 1;
+        int rowId;
+        QMap<int,QString>::iterator it; //遍历map
+        int i = 0;
+        for ( it = historys->begin(); it != historys->end(); ++it ) {
+            if (i == index.row()){
+                rowId = it.key();
+                break;
+            }
+            else {
+                i++;
+            }
+        }
+
+//        ListElement {key:"Work Order Name"}
+//        ListElement {key:"Part Name"}
+//        ListElement {key:"Splice Name"}
+//        ListElement {key:"Operator Name"}
+//        ListElement {key:"Date Created"}
+//        ListElement {key:"Cross Section"}
+//        ListElement {key:"Weld Mode"}
+//        ListElement {key:"Energy"}
+//        ListElement {key:"Amplitude"}
+//        ListElement {key:"Width"}
+//        ListElement {key:"Trigger Pressure"}
+//        ListElement {key:"Weld Pressure"}
+//        ListElement {key:"Time+"}
+//        ListElement {key:"Timer-"}
+//        ListElement {key:"Time"}
+//        ListElement {key:"Power+"}
+//        ListElement {key:"Power-"}
+//        ListElement {key:"Power"}
+//        ListElement {key:"Pre-Height+"}
+//        ListElement {key:"Pre-Height-"}
+//        ListElement {key:"Pre-Height"}
+//        ListElement {key:"Height+"}
+//        ListElement {key:"Height-"}
+//        ListElement {key:"Height"}
+//        ListElement {key:"Alarm"}
+//        ListElement {key:"Sample Ratio"}
+//        ListElement {key:"Graph Data"}
+        WeldResultElement myHistory;
+        m_weldHistoryAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myHistory);
+        if (columnIdx == 0)
+            value = QVariant::fromValue(myHistory.CurrentWorkOrder.WorkOrderName);
+        else if (columnIdx == 1)
+            value = QVariant::fromValue(myHistory.CurrentPart.PartName);
+        else if (columnIdx == 2)
+            value = QVariant::fromValue(myHistory.CurrentSplice.SpliceName);
+        else if (columnIdx == 3)
+            value = QVariant::fromValue(myHistory.OperatorName);
+        else if (columnIdx == 4)
+            value = QVariant::fromValue(QDateTime::fromTime_t(myHistory.CreatedDate).toString("MM/dd/yyyy hh:mm"));
+        else if (columnIdx == 5)
+            value = QVariant::fromValue(myHistory.PartCount);
+        else if (columnIdx == 6)
+            value = QVariant::fromValue(myHistory.WeldCount);
+        else if (columnIdx == 7)
+            value = QVariant::fromValue(myHistory.ActualResult.ActualEnergy);
+        else if (columnIdx == 8)
+            value = QVariant::fromValue(myHistory.ActualResult.ActualAmplitude);
+        else if (columnIdx == 9)
+            value = QVariant::fromValue(myHistory.ActualResult.ActualWidth);
+        else if (columnIdx == 10)
+            value = QVariant::fromValue(myHistory.ActualResult.ActualTPressure);
+        else if (columnIdx == 11)
+            value = QVariant::fromValue(myHistory.ActualResult.ActualPressure);
+        else if (columnIdx == 12)
+            value = QVariant::fromValue(myHistory.ActualResult.ActualTime);
+        else if (columnIdx == 13)
+            value = QVariant::fromValue(myHistory.ActualResult.ActualTime);
+        else if (columnIdx == 14)
+            value = QVariant::fromValue(myHistory.ActualResult.ActualTime);
+        else if (columnIdx == 15)
+            value = QVariant::fromValue(myHistory.ActualResult.ActualPeakPower);
+        else if (columnIdx == 16)
+            value = QVariant::fromValue(myHistory.ActualResult.ActualPeakPower);
+        else if (columnIdx == 17)
+            value = QVariant::fromValue(myHistory.ActualResult.ActualPeakPower);
+        else if (columnIdx == 18)
+            value = QVariant::fromValue(myHistory.ActualResult.ActualPreheight);
+        else if (columnIdx == 19)
+            value = QVariant::fromValue(myHistory.ActualResult.ActualPreheight);
+        else if (columnIdx == 20)
+            value = QVariant::fromValue(myHistory.ActualResult.ActualPreheight);
+        else if (columnIdx == 21)
+            value = QVariant::fromValue(myHistory.ActualResult.ActualPostheight);
+        else if (columnIdx == 22)
+            value = QVariant::fromValue(myHistory.ActualResult.ActualPostheight);
+        else if (columnIdx == 23)
+            value = QVariant::fromValue(myHistory.ActualResult.ActualPostheight);
+        else if (columnIdx == 24)
+            value = QVariant::fromValue(myHistory.ActualResult.ActualPostheight);
+        else if (columnIdx == 25)
+            value = QVariant::fromValue(myHistory.SampleRatio);
+        else if (columnIdx == 26)
+            value = QVariant::fromValue(myHistory.ActualResult.ActualPostheight);
+    }
+    return value;
+}
+
+void WeldHistoryModel::setModelList(unsigned int time_from, unsigned int time_to)
+{
+    beginResetModel();
+    historys->clear();
+    if (m_weldHistoryAdaptor->QueryOnlyUseTime(time_from,time_to,historys))
+        qDebug( )<< "WeldHistoryModel " << historys->count();
+    endResetModel();
+}
+
+void WeldHistoryModel::setModelList()
+{
+    beginResetModel();
+    historys->clear();
+    if (m_weldHistoryAdaptor->QueryEntireTable(historys))
+        qDebug( )<< "WeldHistoryModel" << historys->count();
+    endResetModel();
+}
+
+
+int WeldHistoryModel::rowCount(const QModelIndex & parent) const
+{
+    return historys->count();
+}
+
+
+int WeldHistoryModel::count()
+{
+    return historys->count();
+}
+
+
+int WeldHistoryModel::columnCount(const QModelIndex &parent) const
+{
+    return 1;
+}
+
+QVariant WeldHistoryModel::headerData(int section, Qt::Orientation orientation, int role) const
+{
+    return QVariant();
+}
+
+void WeldHistoryModel::setRoles(const QStringList &names)
+{
+    m_roleNames.clear();
+    for(int idx=0; idx<names.count(); idx++)
+    {
+        m_roleNames[Qt::UserRole + idx + 1] = names[idx].toLocal8Bit();
+    }
+
+}
+
+QHash<int, QByteArray> AlarmModel::roleNames() const
+{
+    return m_roleNames;
+}
+
+
+QVariant WeldHistoryModel::getWeldHistoryValue(int index, QString key)
+{
+    QMap<int,QString>::iterator it; //遍历map
+    int i = 0;
+    int orderId;
+    for ( it = historys->begin(); it != historys->end(); ++it ) {
+        if (i == index){
+            orderId = it.key();
+            break;
+        }
+        else {
+            i++;
+        }
+    }
+    WeldResultElement myHistory;
+    m_weldHistoryAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myHistory);
+    QHash<QString, QVariant> WeldHistoryModelHash;
+    WeldHistoryModelHash.insert("alarmId",myHistory.AlarmID);
+    WeldHistoryModelHash.insert("message",myHistory.AlarmMsg);
+    WeldHistoryModelHash.insert("date",QDateTime::fromTime_t(myHistory.CreatedDate).toString("MM/dd/yyyy hh:mm"));
+    WeldHistoryModelHash.insert("type",myHistory.AlarmType);
+    WeldHistoryModelHash.insert("splice",myHistory.WeldResultID);//myOperator.PermissionLevel;
+    if (key == "") {
+        return WeldHistoryModelHash;
+    } else {
+        return WeldHistoryModelHash.value(key);
+    }
+}
+*/

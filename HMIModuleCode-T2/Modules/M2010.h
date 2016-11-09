@@ -17,15 +17,6 @@ enum MACHINE_TYPE{
     WireSplicer,
 };
 
-enum ActuatorMode{
-    ANTISIDESPLICEOFF = -1,
-    ANTISIDESPLICE = 0,
-    WIDTHPLUS2,
-    WIDTHPLUS25PERCENT,
-    DOUBLEHITMODE,
-    USESTARTHANDLE,
-};
-
 struct ActuatorInfo{
     int CurrentActuatorType;
     int CurrentActuatorMode;
@@ -91,6 +82,7 @@ struct M20_run{
     bool Aux4On;
     bool Aux5On;
     bool CoolingOn;
+    bool ToolingCoolingOn;
 };
 
 struct M20Build{

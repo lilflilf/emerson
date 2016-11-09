@@ -62,7 +62,7 @@ MODstart::MODstart()
         BransonMessageBox tmpMsgBox;
         tmpMsgBox.MsgPrompt = QObject::tr("Currently there is no New Wire Splicer Controller Online\n "
                                           "Do you want to work offline?");
-        tmpMsgBox.MsgTitle = "Warning";
+        tmpMsgBox.MsgTitle = QObject::tr("Warning");
         tmpMsgBox.TipsMode = (OKCancel + Exclamation);
         tmpMsgBox.func_ptr = MODstart::OfflineInitialization;
         _Interface->cMsgBox(&tmpMsgBox);

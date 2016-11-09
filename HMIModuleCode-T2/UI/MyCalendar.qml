@@ -16,6 +16,7 @@ Button
         anchors.top: parent.bottom
         visible: false
         activeFocusOnTab: true
+        z: 10
         onReleased: {
             timeSelect.text = date;
             timeSelect.text = timeSelect.text.substr(0, 10);
