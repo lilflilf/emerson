@@ -2,8 +2,9 @@ import QtQuick 2.0
 import QtQuick.Controls 1.2
 
 Item {
+    id: viewLib
     property int selectIndx: -1
-    property var listModel: partModel
+    property int count: partTitleModel.count
     Column {
         id: column
         anchors.top: parent.top
@@ -20,8 +21,8 @@ Item {
             textColor: "white"
             text: qsTr("Part")
             onClicked: {
-                headRepeater.model = partModel
-                listModel = partModel
+                headRepeater.model = partTitleModel
+                viewLib.count = partTitleModel.count
             }
         }
         CButton {
@@ -30,8 +31,8 @@ Item {
             textColor: "white"
             text: qsTr("Splice")
             onClicked: {
-                headRepeater.model = spliceModel
-                listModel = spliceModel
+                headRepeater.model = spliceTitleModel
+                viewLib.count = spliceTitleModel.count
             }
         }
         CButton {
@@ -40,63 +41,63 @@ Item {
             textColor: "white"
             text: qsTr("Wire")
             onClicked: {
-                headRepeater.model = wireModel
-                listModel = wireModel
+                headRepeater.model = wireTitleModel
+                viewLib.count = wireTitleModel.count
             }
         }
     }
     ListModel {
-        id: partModel
+        id: partTitleModel
     }
     ListModel {
-        id: spliceModel
+        id: spliceTitleModel
     }
     ListModel {
-        id: wireModel
+        id: wireTitleModel
         Component.onCompleted: {
-            partModel.append({"title":"Part Name"})
-            partModel.append({"title":"Date Created"})
-            partModel.append({"title":"Operator Name"})
-            partModel.append({"title":"Total Splices"})
-            partModel.append({"title":"Process Mode"})
-            partModel.append({"title":"# of Workstation"})
-            partModel.append({"title":"# of Splices per Workstation"})
-            partModel.append({"title":"Rows"})
-            partModel.append({"title":"Columns"})
-            partModel.append({"title":"Max Splices Per Zone"})
+            partTitleModel.append({"title":"Part Name"})
+            partTitleModel.append({"title":"Date Created"})
+            partTitleModel.append({"title":"Operator Name"})
+            partTitleModel.append({"title":"Total Splices"})
+            partTitleModel.append({"title":"Process Mode"})
+            partTitleModel.append({"title":"# of Workstation"})
+            partTitleModel.append({"title":"# of Splices per Workstation"})
+            partTitleModel.append({"title":"Rows"})
+            partTitleModel.append({"title":"Columns"})
+            partTitleModel.append({"title":"Max Splices Per Zone"})
 
-            spliceModel.append({"title":"Splice Name"})
-            spliceModel.append({"title":"Date Created"})
-            spliceModel.append({"title":"Operator Name"})
-            spliceModel.append({"title":"Cross Section"})
-            spliceModel.append({"title":"Total Wires"})
-            spliceModel.append({"title":"Verified"})
-            spliceModel.append({"title":"Weld Mode"})
-            spliceModel.append({"title":"Energy"})
-            spliceModel.append({"title":"Amplitude"})
-            spliceModel.append({"title":"Width"})
-            spliceModel.append({"title":"Trigger Pressure"})
-            spliceModel.append({"title":"Weld Pressure"})
-            spliceModel.append({"title":"Time+"})
-            spliceModel.append({"title":"Time-"})
-            spliceModel.append({"title":"Power+"})
-            spliceModel.append({"title":"Power-"})
-            spliceModel.append({"title":"Pre-Height+"})
-            spliceModel.append({"title":"Pre-Height-"})
-            spliceModel.append({"title":"Height+"})
-            spliceModel.append({"title":"Height-"})
+            spliceTitleModel.append({"title":"Splice Name"})
+            spliceTitleModel.append({"title":"Date Created"})
+            spliceTitleModel.append({"title":"Operator Name"})
+            spliceTitleModel.append({"title":"Cross Section"})
+            spliceTitleModel.append({"title":"Total Wires"})
+            spliceTitleModel.append({"title":"Verified"})
+            spliceTitleModel.append({"title":"Weld Mode"})
+            spliceTitleModel.append({"title":"Energy"})
+            spliceTitleModel.append({"title":"Amplitude"})
+            spliceTitleModel.append({"title":"Width"})
+            spliceTitleModel.append({"title":"Trigger Pressure"})
+            spliceTitleModel.append({"title":"Weld Pressure"})
+            spliceTitleModel.append({"title":"Time+"})
+            spliceTitleModel.append({"title":"Time-"})
+            spliceTitleModel.append({"title":"Power+"})
+            spliceTitleModel.append({"title":"Power-"})
+            spliceTitleModel.append({"title":"Pre-Height+"})
+            spliceTitleModel.append({"title":"Pre-Height-"})
+            spliceTitleModel.append({"title":"Height+"})
+            spliceTitleModel.append({"title":"Height-"})
 
-            wireModel.append({"title":"Wire Name"})
-            wireModel.append({"title":"Date Created"})
-            wireModel.append({"title":"Operator Name"})
-            wireModel.append({"title":"Color"})
-            wireModel.append({"title":"StripeType"})
-            wireModel.append({"title":"Stripe Color"})
-            wireModel.append({"title":"Gauge"})
-            wireModel.append({"title":"Metal Type"})
-            wireModel.append({"title":"Horizontal Location"})
-            wireModel.append({"title":"Vertical Location"})
-            wireModel.append({"title":"Vertical Position"})
+            wireTitleModel.append({"title":"Wire Name"})
+            wireTitleModel.append({"title":"Date Created"})
+            wireTitleModel.append({"title":"Operator Name"})
+            wireTitleModel.append({"title":"Color"})
+            wireTitleModel.append({"title":"StripeType"})
+            wireTitleModel.append({"title":"Stripe Color"})
+            wireTitleModel.append({"title":"Gauge"})
+            wireTitleModel.append({"title":"Metal Type"})
+            wireTitleModel.append({"title":"Horizontal Location"})
+            wireTitleModel.append({"title":"Vertical Location"})
+            wireTitleModel.append({"title":"Vertical Position"})
         }
     }
 
@@ -110,7 +111,7 @@ Item {
         clip: true
         Repeater {
             id: headRepeater
-            model: partModel
+            model: partTitleModel
             delegate:  Text {
                 verticalAlignment: Qt.AlignVCenter
                 width: 200
@@ -155,7 +156,7 @@ Item {
         anchors.leftMargin: 20
         width: headTitle.width
         clip: true
-        model: listModel
+        model: partModel
         delegate: listDelegate
     }
     Image {
@@ -234,7 +235,7 @@ Item {
                 clip: true
                 Repeater {
                     id: listRepeater
-                    model: listModel
+                    model: viewLib.count
                     delegate:  Text {
                         anchors.verticalCenter: parent.verticalCenter
                         width: 200
@@ -243,10 +244,7 @@ Item {
                         color: "white"
                         clip: true
                         elide: Text.ElideRight
-                        text: qsTr(title)
-                        onTextChanged: {
-                            console.log("222222222222222222",listView.model.get(index).title,title,index)
-                        }
+                        text: "11111"//partModel.getPartValue(index,partTitleModel.get(index).title)
                     }
                 }
             }

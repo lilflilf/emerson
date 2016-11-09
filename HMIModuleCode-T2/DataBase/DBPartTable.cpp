@@ -218,7 +218,7 @@ bool DBPartTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
     ((PartElement*)_obj)->PartTypeSetting.BoardLayout.Rows = query.value("Rows").toInt();
     ((PartElement*)_obj)->PartTypeSetting.BoardLayout.Columns = query.value("Columns").toInt();
     ((PartElement*)_obj)->PartTypeSetting.BoardLayout.MaxSplicesPerZone =
-            query.value("MaxSplicePerZone").toInt();
+            query.value("MaxSplicesPerZone").toInt();
     QString tmpStr = query.value("JSONSplice").toString();
     _Utility->StringJsonToMap(tmpStr, &((PartElement*)_obj)->SpliceIndex);
 
