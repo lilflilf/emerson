@@ -17,7 +17,7 @@ Item {
         anchors.right: parent.right
         anchors.top: parent.top
         anchors.bottom: parent.bottom
-        anchors.leftMargin: 10
+        anchors.leftMargin: 20
         anchors.rightMargin: 10
         anchors.bottomMargin: 150
 
@@ -27,18 +27,13 @@ Item {
             anchors.top: headRows.bottom
             anchors.topMargin: 20
             anchors.bottom: parent.bottom
-            anchors.leftMargin: 10
             model: workOrderModel
             delegate: listDelegate
-            width: headModel.count * 250
+            width: headModel.count * 200 + (headModel.count - 1) * 30
             clip: true
         }
         ListModel {
             id: headModel
-//            ListElement {key:"Date"}
-//            ListElement {key:"Work Order ID"}
-//            ListElement {key:"Part#"}
-//            ListElement {key:"Splice#"}
             ListElement {key:"Work Order Name"}
             ListElement {key:"Part Name"}
             ListElement {key:"Splice Name"}
@@ -67,19 +62,17 @@ Item {
             ListElement {key:"Sample Ratio"}
             ListElement {key:"Graph Data"}
 
-
-
         }
 
         Row {
             id: headRows
             anchors.left: listView.left
-            anchors.leftMargin: listView.leftMargin + 48
+            spacing: 30
             Repeater {
                 delegate: Text {
                     id: headName
-                    width: 250 //(parent.width-96)/4
-                    horizontalAlignment: Qt.AlignHCenter
+                    width: 200
+                    horizontalAlignment: Qt.AlignLeft
                     verticalAlignment: Qt.AlignVCenter
                     elide: Text.ElideRight
                     text: key
@@ -102,7 +95,7 @@ Item {
 
     CButton {
         id: exportData
-        width: 300
+        width: 250
         height: 79
         anchors.right: rightItem.right
         anchors.top: rightItem.bottom
@@ -111,18 +104,19 @@ Item {
     }
 
     Image {
-        width: parent.width * 0.3
+        id: back
+        width: 300
         height: parent.height
         source: "qrc:/images/images/bg.png"
     }
 
-    Rectangle {
-        id: back
-        width: parent.width * 0.3
-        height: parent.height
-        color: "black"
-        opacity: 0.3
-    }
+//    Rectangle {
+//        id: back
+//        width: 300//parent.width * 0.25
+//        height: parent.height
+//        color: "black"
+//        opacity: 0.3
+//    }
     Text {
         id: seach
         text: qsTr("Seach")
@@ -145,59 +139,12 @@ Item {
         anchors.topMargin: 10
     }
 
-    ExclusiveGroup {
-        id: checkGroup1
-    }
-    Item {
-        id: item1
-        anchors.top: title2.bottom
-        anchors.topMargin: 10
-        anchors.left: title2.left
-        CheckBox {
-            id: check1
-            scale: 2
-            exclusiveGroup: checkGroup1
-            anchors.verticalCenter: parent.verticalCenter
-        }
-        Text {
-            text: qsTr("All")
-            font.family: "arial"
-            color: "white"
-            font.pointSize: 14
-            anchors.left: parent.right
-            anchors.leftMargin: 20
-            anchors.verticalCenter: parent.verticalCenter
-        }
-    }
-
-    Item {
-        id: item2
-        anchors.top: item1.bottom
-        anchors.topMargin: 30
-        anchors.left: item1.left
-        CheckBox {
-            id: check2
-            scale: 2
-            exclusiveGroup: checkGroup1
-            anchors.verticalCenter: parent.verticalCenter
-        }
-        Text {
-            text: qsTr("Select")
-            font.family: "arial"
-            color: "white"
-            font.pointSize: 14
-            anchors.left: parent.right
-            anchors.leftMargin: 20
-            anchors.verticalCenter: parent.verticalCenter
-        }
-    }
-
     ComboBox {
         id: nameComboBox
-        width: 300
+        width: 250
         height: 30
         anchors.left: title2.left
-        anchors.top: item2.bottom
+        anchors.top: title2.bottom
         anchors.topMargin: 20
         model: ["First", "Second", "Third"]
     }
@@ -213,77 +160,30 @@ Item {
         anchors.leftMargin: 20
         anchors.topMargin: 10
     }
-
-    ExclusiveGroup {
-        id: checkGroup2
-    }
-    Item {
-        id: item3
-        anchors.top: date.bottom
-        anchors.topMargin: 10
-        anchors.left: title2.left
-        CheckBox {
-            id: check3
-            scale: 2
-            exclusiveGroup: checkGroup2
-            anchors.verticalCenter: parent.verticalCenter
-        }
-        Text {
-            text: qsTr("All")
-            font.family: "arial"
-            color: "white"
-            font.pointSize: 14
-            anchors.left: parent.right
-            anchors.leftMargin: 20
-            anchors.verticalCenter: parent.verticalCenter
-        }
-    }
-
-    Item {
-        id: item4
-        anchors.top: item3.bottom
-        anchors.topMargin: 30
-        anchors.left: item1.left
-        CheckBox {
-            id: check4
-            scale: 2
-            exclusiveGroup: checkGroup2
-            anchors.verticalCenter: parent.verticalCenter
-        }
-        Text {
-            text: qsTr("Select")
-            font.family: "arial"
-            color: "white"
-            font.pointSize: 14
-            anchors.left: parent.right
-            anchors.leftMargin: 20
-            anchors.verticalCenter: parent.verticalCenter
-        }
-    }
     Text {
         id: from
         text: qsTr("From:")
         font.family: "arial"
         color: "white"
         font.pointSize: 16
-        anchors.top: item4.bottom
+        anchors.top: date.bottom
         anchors.left: parent.left
         anchors.leftMargin: 20
         anchors.topMargin: 10
     }
     MyCalendar {
         id: mycalendar
-        anchors.left: item1.left
+        anchors.left: from.left
         anchors.top: from.bottom
-        width: 150
+        width: 125
         z: 10
     }
     MyTimeSelect {
-        width: 150
+        width: 125
         anchors.top: mycalendar.top
         anchors.left: mycalendar.right
         anchors.leftMargin: 20
-        z: 10
+        z: 11
 
     }
     Text {
@@ -299,18 +199,17 @@ Item {
     }
     MyCalendar {
         id: mycalendar2
-        anchors.left: item1.left
+        anchors.left: from.left
         anchors.top: to.bottom
-        width: 150
+        width: 125
         z: 10
     }
     MyTimeSelect {
-        width: 150
+        width: 125
         anchors.top: mycalendar2.top
         anchors.left: mycalendar2.right
         anchors.leftMargin: 20
         z: 10
-
     }
 
     Text {
@@ -324,59 +223,12 @@ Item {
         anchors.topMargin: 10
     }
 
-    ExclusiveGroup {
-        id: checkGroup3
-    }
-    Item {
-        id: item5
-        anchors.top: title3.bottom
-        anchors.topMargin: 10
-        anchors.left: title3.left
-        CheckBox {
-            id: check5
-            scale: 2
-            exclusiveGroup: checkGroup3
-            anchors.verticalCenter: parent.verticalCenter
-        }
-        Text {
-            text: qsTr("All")
-            font.family: "arial"
-            color: "white"
-            font.pointSize: 14
-            anchors.left: parent.right
-            anchors.leftMargin: 20
-            anchors.verticalCenter: parent.verticalCenter
-        }
-    }
-
-    Item {
-        id: item6
-        anchors.top: item5.bottom
-        anchors.topMargin: 30
-        anchors.left: item5.left
-        CheckBox {
-            id: check6
-            scale: 2
-            exclusiveGroup: checkGroup3
-            anchors.verticalCenter: parent.verticalCenter
-        }
-        Text {
-            text: qsTr("Select")
-            font.family: "arial"
-            color: "white"
-            font.pointSize: 14
-            anchors.left: parent.right
-            anchors.leftMargin: 20
-            anchors.verticalCenter: parent.verticalCenter
-        }
-    }
-
     ComboBox {
         id: spliceComboBox
-        width: 300
+        width: 250
         height: 30
         anchors.left: title3.left
-        anchors.top: item6.bottom
+        anchors.top: title3.bottom
         anchors.topMargin: 20
         model: ["First", "Second", "Third"]
     }
@@ -388,14 +240,14 @@ Item {
         spacing: 10
         CButton {
             id: applyButton
-            width: 300
-            height: 70
+            width: 250
+            height: 79
             text: qsTr("APPLY")
         }
         CButton {
             id: backButton
-            width: 300
-            height: 70
+            width: 250
+            height: 79
             text: qsTr("Back")
         }
     }
@@ -537,58 +389,25 @@ Item {
             width: listView.width
             height: 50
             clip: true
-            Text {
-                id: headName
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: parent.left
-                anchors.leftMargin: 48
-                width: 250 //(parent.width-96)/4
-                horizontalAlignment: Qt.AlignHCenter
-                elide: Text.ElideRight
-                text: name
-                clip: true
-                color: "white"
-                font.pointSize: 14
-                font.family: "arial"
-            }
-            Text {
-                id: headData
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: headName.right
-                width: 250 //(parent.width-96)/4
-                horizontalAlignment: Qt.AlignHCenter
-                text: date
-                clip: true
-                color: "white"
-                font.pointSize: 14
-                font.family: "arial"
-            }
-            Text {
-                id: headMiddle
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: headData.right
-                width: 250 //(parent.width-96)/4
-                horizontalAlignment: Qt.AlignHCenter
-                text: middle
-                elide: Text.ElideRight
-                clip: true
-                color: "white"
-                font.pointSize: 14
-                font.family: "arial"
-            }
-            Text {
-                id: headCount
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: headMiddle.right
-                //anchors.leftMargin: 100 //(parent.width-96)/12
-                horizontalAlignment: Qt.AlignHCenter
-                width: 250 //(parent.width-96)/12
-                text: count
-                elide: Text.ElideRight
-                color: "white"
-                clip: true
-                font.pointSize: 14
-                font.family: "arial"
+            Row {
+                spacing: 30
+                Repeater {
+                    id: repeater
+                    delegate: Text {
+                        id: headName
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: parent.left
+                        width: 200 //(parent.width-96)/4
+                        horizontalAlignment: Qt.AlignLeft
+                        elide: Text.ElideRight
+                        text: name
+                        clip: true
+                        color: "white"
+                        font.pointSize: 14
+                        font.family: "arial"
+                    }
+                    model: headModel
+                }
             }
             MouseArea {
                 anchors.fill: parent
