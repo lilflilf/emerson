@@ -24,15 +24,90 @@ Item {
         ListView {
             id: listView
             anchors.left: parent.left
-            anchors.top: parent.top
+            anchors.top: headRows.bottom
+            anchors.topMargin: 20
             anchors.bottom: parent.bottom
             anchors.leftMargin: 10
             model: workOrderModel
             delegate: listDelegate
-            width: 3000
+            width: headModel.count * 250
             clip: true
+        }
+        ListModel {
+            id: headModel
+//            ListElement {key:"Date"}
+//            ListElement {key:"Work Order ID"}
+//            ListElement {key:"Part#"}
+//            ListElement {key:"Splice#"}
+            ListElement {key:"Work Order Name"}
+            ListElement {key:"Part Name"}
+            ListElement {key:"Splice Name"}
+            ListElement {key:"Operator Name"}
+            ListElement {key:"Date Created"}
+            ListElement {key:"Cross Section"}
+            ListElement {key:"Weld Mode"}
+            ListElement {key:"Energy"}
+            ListElement {key:"Amplitude"}
+            ListElement {key:"Width"}
+            ListElement {key:"Trigger Pressure"}
+            ListElement {key:"Weld Pressure"}
+            ListElement {key:"Time+"}
+            ListElement {key:"Timer-"}
+            ListElement {key:"Time"}
+            ListElement {key:"Power+"}
+            ListElement {key:"Power-"}
+            ListElement {key:"Power"}
+            ListElement {key:"Pre-Height+"}
+            ListElement {key:"Pre-Height-"}
+            ListElement {key:"Pre-Height"}
+            ListElement {key:"Height+"}
+            ListElement {key:"Height-"}
+            ListElement {key:"Height"}
+            ListElement {key:"Alarm"}
+            ListElement {key:"Sample Ratio"}
+            ListElement {key:"Graph Data"}
+
+
 
         }
+
+        Row {
+            id: headRows
+            anchors.left: listView.left
+            anchors.leftMargin: listView.leftMargin + 48
+            Repeater {
+                delegate: Text {
+                    id: headName
+                    width: 250 //(parent.width-96)/4
+                    horizontalAlignment: Qt.AlignHCenter
+                    verticalAlignment: Qt.AlignVCenter
+                    elide: Text.ElideRight
+                    text: key
+                    clip: true
+                    color: "white"
+                    font.pointSize: 20
+                    font.family: "arial"
+                }
+                model: headModel
+            }
+        }
+        Line {
+            width: listView.width
+            anchors.left: headRows.left
+            anchors.top: headRows.bottom
+            height: 2
+            lineColor: "white"
+        }
+    }
+
+    CButton {
+        id: exportData
+        width: 300
+        height: 79
+        anchors.right: rightItem.right
+        anchors.top: rightItem.bottom
+        anchors.topMargin: 50
+        text: qsTr("Export Data")
     }
 
     Image {
@@ -201,12 +276,15 @@ Item {
         anchors.left: item1.left
         anchors.top: from.bottom
         width: 150
+        z: 10
     }
     MyTimeSelect {
         width: 150
         anchors.top: mycalendar.top
         anchors.left: mycalendar.right
         anchors.leftMargin: 20
+        z: 10
+
     }
     Text {
         id: to
@@ -224,12 +302,15 @@ Item {
         anchors.left: item1.left
         anchors.top: to.bottom
         width: 150
+        z: 10
     }
     MyTimeSelect {
         width: 150
         anchors.top: mycalendar2.top
         anchors.left: mycalendar2.right
         anchors.leftMargin: 20
+        z: 10
+
     }
 
     Text {
@@ -397,7 +478,6 @@ Item {
         height: 17
         visible: true //listView.contentHeight > listView.height ? true : false
         source: "qrc:/images/images/left.png"
-        z: 10
     }
     Image {
         id: scrollRight
@@ -407,7 +487,6 @@ Item {
         height: 17
         visible: true //listView.contentHeight > listView.height ? true : false
         source: "qrc:/images/images/right.png"
-        z: 10
     }
     Rectangle {
         id: scrollbar2
@@ -439,7 +518,8 @@ Item {
                 drag.maximumX: scrollbar2.width - button2.width
             }
             onXChanged: {
-                listView.anchors.leftMargin = -button2.x
+
+                listView.anchors.leftMargin = -button2.x / scrollbar2.width * listView.width
                 console.log(button2.x)
             }
         }
@@ -462,8 +542,8 @@ Item {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
                 anchors.leftMargin: 48
-                width: (parent.width-96)/4
-                horizontalAlignment: Qt.AlignLeft
+                width: 250 //(parent.width-96)/4
+                horizontalAlignment: Qt.AlignHCenter
                 elide: Text.ElideRight
                 text: name
                 clip: true
@@ -475,8 +555,8 @@ Item {
                 id: headData
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: headName.right
-                width: (parent.width-96)/4
-                horizontalAlignment: Qt.AlignCenter
+                width: 250 //(parent.width-96)/4
+                horizontalAlignment: Qt.AlignHCenter
                 text: date
                 clip: true
                 color: "white"
@@ -487,8 +567,8 @@ Item {
                 id: headMiddle
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: headData.right
-                width: (parent.width-96)/4
-                horizontalAlignment: Qt.AlignLeft
+                width: 250 //(parent.width-96)/4
+                horizontalAlignment: Qt.AlignHCenter
                 text: middle
                 elide: Text.ElideRight
                 clip: true
@@ -500,9 +580,9 @@ Item {
                 id: headCount
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: headMiddle.right
-                anchors.leftMargin: (parent.width-96)/12
-                horizontalAlignment: Qt.AlignLeft
-                width: (parent.width-96)/12
+                //anchors.leftMargin: 100 //(parent.width-96)/12
+                horizontalAlignment: Qt.AlignHCenter
+                width: 250 //(parent.width-96)/12
                 text: count
                 elide: Text.ElideRight
                 color: "white"

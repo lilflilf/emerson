@@ -21,12 +21,14 @@ Item {
         Image {
             width: 280
             height: 280
-            source: "file:///c:/ToolChangeImage/group2/wiredemo.jpg"
+            source: "qrc:/images/images/maintenance-5.png"
+//            source: "file:///c:/ToolChangeImage/group2/wiredemo.jpg"
         }
         Image {
             width: 280
             height: 280
-            source: "file:///c:/ToolChangeImage/group2/wiredemo.jpg"
+            source: "qrc:/images/images/maintenance-6.png"
+//            source: "file:///c:/ToolChangeImage/group2/wiredemo.jpg"
         }
     }
 

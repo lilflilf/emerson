@@ -750,3 +750,136 @@ QVariant AlarmModel::getAlarmValue(int index, QString key)
     }
 }
 
+/*****************WorkOrderHistory************************/
+
+//WeldHistoryModel::WeldHistoryModel(QObject *parent) :
+//    QAbstractTableModel(parent)
+//{
+//    m_weldHistoryAdaptor = DBWeldResultTable::Instance();
+//    historys = new QMap<int, QString>();
+//}
+
+//QVariant WeldHistoryModel::data(const QModelIndex &index, int role) const
+//{
+//    QVariant value;
+//    if(role < Qt::UserRole)
+//    {
+//        qDebug() << "WeldHistoryModel::data(const QModelIndex &index, int role) const";
+//    }
+//    else
+//    {
+//        int columnIdx = role - Qt::UserRole - 1;
+//        int rowId;
+//        QMap<int,QString>::iterator it; //遍历map
+//        int i = 0;
+//        for ( it = historys->begin(); it != historys->end(); ++it ) {
+//            if (i == index.row()){
+//                rowId = it.key();
+//                break;
+//            }
+//            else {
+//                i++;
+//            }
+//        }
+//        WeldResultElement myHistory;
+//        m_weldHistoryAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myHistory);
+//        if (columnIdx == 0)
+//            value = QVariant::fromValue(myHistory.AlarmID);
+//        else if (columnIdx == 1)
+//            value = QVariant::fromValue(myHistory.AlarmMsg);
+//        else if (columnIdx == 2)
+//            value = QVariant::fromValue(QDateTime::fromTime_t(myHistory.CreatedDate).toString("MM/dd/yyyy hh:mm"));
+//        else if (columnIdx == 3)
+//            value = QVariant::fromValue(myHistory.AlarmType);
+//        else if (columnIdx == 4) {
+//            value = QVariant::fromValue(myHistory.WeldResultID);
+//        }
+//    }
+//    return value;
+//}
+
+//void WeldHistoryModel::setModelList(unsigned int time_from, unsigned int time_to)
+//{
+//    beginResetModel();
+//    historys->clear();
+//    if (m_weldHistoryAdaptor->QueryOnlyUseTime(time_from,time_to,historys))
+//        qDebug( )<< "WeldHistoryModel " << historys->count();
+//    endResetModel();
+//}
+
+//void WeldHistoryModel::setModelList()
+//{
+//    beginResetModel();
+//    historys->clear();
+//    if (m_weldHistoryAdaptor->QueryEntireTable(historys))
+//        qDebug( )<< "WeldHistoryModel" << historys->count();
+//    endResetModel();
+//}
+
+
+//int WeldHistoryModel::rowCount(const QModelIndex & parent) const
+//{
+//    return historys->count();
+//}
+
+
+//int WeldHistoryModel::count()
+//{
+//    return historys->count();
+//}
+
+
+//int WeldHistoryModel::columnCount(const QModelIndex &parent) const
+//{
+//    return 1;
+//}
+
+//QVariant WeldHistoryModel::headerData(int section, Qt::Orientation orientation, int role) const
+//{
+//    return QVariant();
+//}
+
+//void WeldHistoryModel::setRoles(const QStringList &names)
+//{
+//    m_roleNames.clear();
+//    for(int idx=0; idx<names.count(); idx++)
+//    {
+//        m_roleNames[Qt::UserRole + idx + 1] = names[idx].toLocal8Bit();
+//    }
+
+//}
+
+//QHash<int, QByteArray> AlarmModel::roleNames() const
+//{
+//    return m_roleNames;
+//}
+
+
+//QVariant WeldHistoryModel::getWeldHistoryValue(int index, QString key)
+//{
+//    QMap<int,QString>::iterator it; //遍历map
+//    int i = 0;
+//    int orderId;
+//    for ( it = historys->begin(); it != historys->end(); ++it ) {
+//        if (i == index){
+//            orderId = it.key();
+//            break;
+//        }
+//        else {
+//            i++;
+//        }
+//    }
+//    WeldResultElement myHistory;
+//    m_weldHistoryAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myHistory);
+//    QHash<QString, QVariant> WeldHistoryModelHash;
+//    WeldHistoryModelHash.insert("alarmId",myHistory.AlarmID);
+//    WeldHistoryModelHash.insert("message",myHistory.AlarmMsg);
+//    WeldHistoryModelHash.insert("date",QDateTime::fromTime_t(myHistory.CreatedDate).toString("MM/dd/yyyy hh:mm"));
+//    WeldHistoryModelHash.insert("type",myHistory.AlarmType);
+//    WeldHistoryModelHash.insert("splice",myHistory.WeldResultID);//myOperator.PermissionLevel;
+//    if (key == "") {
+//        return WeldHistoryModelHash;
+//    } else {
+//        return WeldHistoryModelHash.value(key);
+//    }
+//}

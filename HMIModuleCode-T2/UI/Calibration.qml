@@ -51,7 +51,7 @@ Item {
 
         Image {
             id: image
-            source: "qrc:/images/images/wiredemo.jpg"
+            source: "qrc:/images/images/maintenance-1.png"
             width: parent.width * 0.4
             height: parent.height * 0.5
             anchors.top: content.bottom
@@ -115,6 +115,8 @@ Item {
                         content.text = qsTr("This process calibrates the Amplitude. Please set an Amplitude measuring instrument and press and hold the start button on this screen to run Ultrasonic. Then, please enter the Amplitude value.")
                         button1.text = qsTr("Start")
                         button2.text = qsTr("Cancel")
+                        image.source = "qrc:/images/images/maintenance-2.png"
+
                     }
                     else if (calibration.currentIndex == 4)
                     {

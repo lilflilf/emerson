@@ -336,6 +336,14 @@ Item {
                                     root.menuInit(9)
                                     title.text = qsTr("Word Order History")
                                 }
+                                else if (menuKey == "Statistical Trend"){
+                                    root.menuInit(10)
+                                    title.text = qsTr("Statistical Trend")
+                                }
+                                else if (menuKey == "Error/Alarm Log"){
+                                    root.menuInit(11)
+                                    title.text = qsTr("Error/Alarm Log")
+                                }
                                 else if (menuKey == "Permission Setting"){
                                     root.menuInit(14)
                                     title.text = qsTr("Permission Setting")

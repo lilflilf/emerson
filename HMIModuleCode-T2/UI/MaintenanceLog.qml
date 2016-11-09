@@ -29,7 +29,7 @@ Item {
     }
     Text {
         id: title2
-        text: qsTr("Maintenance type")
+        text: qsTr("Worder Order ID")
         font.family: "arial"
         color: "white"
         font.pointSize: 16

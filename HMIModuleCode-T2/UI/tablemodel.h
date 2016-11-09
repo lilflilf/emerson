@@ -8,6 +8,7 @@
 #include "DataBase/DBPartTable.h"
 #include "DataBase/DBOperatorTable.h"
 #include "DataBase/DBAlarmLogTable.h"
+#include "DataBase/DBWeldResultTable.h"
 
 class WorkOrderModel : public QAbstractTableModel
 {
@@ -179,6 +180,37 @@ public slots:
 private:
     QHash<int, QByteArray> m_roleNames;
 };
+
+
+//class WeldHistoryModel : public QAbstractTableModel
+//{
+//    Q_OBJECT
+//public:
+//    explicit WeldHistoryModel(QObject *parent = 0);
+//    void setModelList(unsigned int time_from, unsigned int time_to);
+//    void setModelList();
+
+//    QStringList m_idList;
+//    DBWeldResultTable *m_weldHistoryAdaptor;
+//    QMap<int, QString> *historys;
+
+//protected:
+//    int rowCount(const QModelIndex &parent) const;
+//    int columnCount(const QModelIndex &parent) const;
+//    QVariant data(const QModelIndex &index, int role) const;
+//    QVariant headerData(int section, Qt::Orientation orientation, int role) const;
+//    QHash<int, QByteArray> roleNames() const;
+
+////signals:
+
+
+//public slots:
+//    void setRoles(const QStringList &names);
+//    Q_INVOKABLE QVariant getWeldHistoryValue(int index, QString key);
+//    Q_INVOKABLE int count();
+//private:
+//    QHash<int, QByteArray> m_roleNames;
+//};
 
 
 #endif // TABLEMODEL_H
