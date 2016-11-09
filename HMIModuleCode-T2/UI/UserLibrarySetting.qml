@@ -296,6 +296,11 @@ Item {
         height: 79
         text: qsTr("Edit")
         textColor: "white"
+        onClicked: {
+            backGround.visible = true
+            backGround.opacity = 0.5
+            operatorDialog.visible = true
+        }
     }
     CButton {
         id: addButton

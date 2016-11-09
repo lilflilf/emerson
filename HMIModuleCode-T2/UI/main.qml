@@ -19,6 +19,7 @@ Window {
       2-- Operate
       3-- Test
       4-- maintenance perssion setting
+      13-- view data version information
       14-- settings Permission Setting
       15-- settings Weld Defaults
       16-- settings operator library
@@ -55,6 +56,11 @@ Window {
         case 8:
             contentLoader.source = "qrc:/UI/MaintenanceLog.qml"
             break;
+        case 12:
+            contentLoader.source = "qrc:/UI/ViewLibrary.qml"
+            break;
+        case 13:
+            contentLoader.source = "qrc:/UI/ViewVersion.qml"
         case 9:
             contentLoader.source = "qrc:/UI/ViewWorkOrder.qml"
             break;
