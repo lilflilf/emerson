@@ -204,7 +204,62 @@ Item {
         visible: true
         source: "qrc:/images/images/right.png"
     }
-
+    Image {
+        id: scrollUp
+        anchors.top: tipsRec2.bottom
+        anchors.topMargin: 2
+        anchors.right: parent.right
+        anchors.rightMargin: 6
+        width: 17
+        height: 10
+        visible: listView.contentHeight > listView.height ? true : false
+        source: "qrc:/images/images/up.png"
+    }
+    Image {
+        id: scrollDown
+        anchors.bottom: scrollbar2.top
+        anchors.bottomMargin: 2
+        anchors.right: parent.right
+        anchors.rightMargin: 6
+        width: 17
+        height: 10
+        visible: listView.contentHeight > listView.height ? true : false
+        source: "qrc:/images/images/down.png"
+    }
+    Rectangle {
+        id: scrollbar
+        width: 10
+        height: listView.height-24
+        anchors.top: scrollUp.bottom
+        anchors.right: parent.right
+        anchors.rightMargin: 8
+        color: "#585858"
+        radius: 10
+        visible: listView.contentHeight > listView.height ? true : false
+        Rectangle {
+            id: button
+            anchors.left: parent.left
+            y: (listView.visibleArea.yPosition < 0 ) ? 0 : (listView.contentY+listView.height>listView.contentHeight) ?
+                scrollbar.height - button.height : listView.visibleArea.yPosition * scrollbar.height
+            width: 10
+            height: listView.visibleArea.heightRatio * scrollbar.height;
+            color: "#ccbfbf"
+            radius: 10
+            // 鼠标区域
+            MouseArea {
+                id: mouseArea
+                anchors.fill: button
+                drag.target: button
+                drag.axis: Drag.YAxis
+                drag.minimumY: 0
+                drag.maximumY: scrollbar.height - button.height
+                // 拖动
+                onMouseYChanged: {
+                    listView.contentY = button.y / scrollbar.height * listView.contentHeight
+                }
+            }
+        }
+    }
     Rectangle {
         id: scrollbar2
         anchors.left: tipsRec2.left
