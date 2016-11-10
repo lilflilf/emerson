@@ -183,7 +183,7 @@ Item {
                         font.pixelSize: 16
                         color: "white"
                         elide: Text.ElideRight
-                        text: qsTr(name)
+                        text:  qsTr(name)
                     }
                     MouseArea {
                         anchors.fill: parent

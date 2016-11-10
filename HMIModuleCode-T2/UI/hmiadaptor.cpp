@@ -47,7 +47,7 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
 
     alarmModel = new AlarmModel(this);
     list.clear();
-    list << "CreatedDate" << "Alarm/ErrorType" << "Alarm/ErrorLevel" << "Message" << "SpliceName";
+    list << "AlarmId" <<"CreatedDate" << "Alarm/ErrorType" << "Alarm/ErrorLevel" << "Message" << "SpliceName";
     alarmModel->setRoles(list);
     alarmModel->setModelList();
 
