@@ -148,6 +148,7 @@ Item {
     Item {
         id: searchArea
         property int selectNum: -1
+        property int buttonIndex: -1
         anchors.left: seach.left
         width: 280
         anchors.top: seach.bottom
@@ -222,7 +223,7 @@ Item {
             onClicked: {
                 if (searchArea.selectNum != -1) {
                     searchArea.visible = false
-                    switch(searchButton.buttonIndex) {
+                    switch(searchArea.buttonIndex) {
                     case 1:
                         workOrderName.text = testModel.get(searchArea.selectNum).name
                         break;
@@ -239,68 +240,28 @@ Item {
             }
         }
     }
-
-    Column {
-        id: searchButton
-        property int buttonIndex: -1
-        anchors.left: parent.left
-        anchors.leftMargin: 20
-        anchors.top: seach.bottom
-        anchors.bottomMargin: 10
-        spacing: 10
-        clip: true
-        CButton {
-            id: workOrderName
-            width: 250
-            height: 60
-            text: qsTr("Work Order Name")
-            clip: true
-            onClicked: {
-                searchButton.buttonIndex = 1
-                searchArea.visible = true
-            }
-        }
-        CButton {
-            id: partName
-            width: 250
-            height: 60
-            text: qsTr("Part Name")
-            clip: true
-            onClicked: {
-                searchButton.buttonIndex = 2
-                searchArea.visible = true
-            }
-        }
-        CButton {
-            id: spliceName
-            width: 250
-            height: 60
-            text: qsTr("Splice Number")
-            clip: true
-            onClicked: {
-                searchButton.buttonIndex = 3
-                searchArea.visible = true
-            }
-        }
-    }
     Text {
         id: title2
-        text: qsTr("Maintenance type")
+        text: qsTr("Work Order ID")
         font.family: "arial"
         color: "white"
         font.pointSize: 16
-        anchors.top: searchButton.bottom
+        anchors.top: seach.bottom
         anchors.topMargin: 15
         anchors.left: seach.left
     }
-
-    ComboBox {
-        id: nameComboBox
-        width: 250
-        height: 30
+    CButton {
+        id: workOrderName
         anchors.left: title2.left
         anchors.top: title2.bottom
-        model: ["First", "Second", "Third"]
+        width: 250
+        height: 50
+        text: qsTr("Work Order Name")
+        clip: true
+        onClicked: {
+            searchArea.buttonIndex = 1
+            searchArea.visible = true
+        }
     }
 
     Text {
@@ -309,7 +270,7 @@ Item {
         font.family: "arial"
         color: "white"
         font.pointSize: 16
-        anchors.top: nameComboBox.bottom
+        anchors.top: workOrderName.bottom
         anchors.left: parent.left
         anchors.leftMargin: 20
         anchors.topMargin: 15
@@ -374,30 +335,48 @@ Item {
         anchors.left: seach.left
         anchors.topMargin: 15
     }
-    ComboBox {
-        id: spliceComboBox
-        width: 250
-        height: 30
+    CButton {
+        id: partName
         anchors.left: title3.left
         anchors.top: title3.bottom
-        model: ["First", "Second", "Third"]
+        width: 250
+        height: 50
+        text: qsTr("Part Name")
+        clip: true
+        onClicked: {
+            searchArea.buttonIndex = 2
+            searchArea.visible = true
+        }
     }
-
+    CButton {
+        id: spliceName
+        anchors.left: title3.left
+        anchors.top: partName.bottom
+        width: 250
+        height: 50
+        text: qsTr("Splice Number")
+        clip: true
+        onClicked: {
+            searchArea.buttonIndex = 3
+            searchArea.visible = true
+        }
+    }
     Column {
         anchors.bottom: parent.bottom
+        anchors.bottomMargin: 10
         anchors.left: parent.left
         anchors.leftMargin: 20
         spacing: 10
         CButton {
             id: applyButton
             width: 250
-            height: 60
+            height: 79
             text: qsTr("APPLY")
         }
         CButton {
             id: backButton
             width: 250
-            height: 60
+            height: 79
             text: qsTr("Back")
         }
     }
