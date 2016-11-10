@@ -110,13 +110,6 @@ Item {
         source: "qrc:/images/images/bg.png"
     }
 
-//    Rectangle {
-//        id: back
-//        width: 300//parent.width * 0.25
-//        height: parent.height
-//        color: "black"
-//        opacity: 0.3
-//    }
     Text {
         id: seach
         text: qsTr("Seach")
@@ -128,15 +121,177 @@ Item {
         anchors.leftMargin: 20
         anchors.topMargin: 10
     }
+    ListModel {
+        id: testModel
+        Component.onCompleted: {
+            testModel.append({"name":"test name A"})
+            testModel.append({"name":"test name A"})
+            testModel.append({"name":"test name A"})
+            testModel.append({"name":"test name A"})
+            testModel.append({"name":"test name A"})
+            testModel.append({"name":"test name A"})
+            testModel.append({"name":"test name A"})
+            testModel.append({"name":"test name A"})
+            testModel.append({"name":"test name A"})
+            testModel.append({"name":"test name A"})
+            testModel.append({"name":"test name A"})
+            testModel.append({"name":"test name A"})
+            testModel.append({"name":"test name A"})
+            testModel.append({"name":"test name A"})
+            testModel.append({"name":"test name A"})
+            testModel.append({"name":"test name A"})
+            testModel.append({"name":"test name A"})
+            testModel.append({"name":"test name A"})
+            testModel.append({"name":"test name A"})
+        }
+    }
+    Item {
+        id: searchArea
+        property int selectNum: -1
+        anchors.left: seach.left
+        width: 280
+        anchors.top: seach.bottom
+        anchors.bottom: parent.bottom
+        z: 12
+        visible: false
+        Image {
+            anchors.fill: parent
+            source: "qrc:/images/images/bg.png"
+        }
+        ExclusiveGroup {
+            id: searchMos
+        }
+        ListView {
+            id: searchList
+            anchors.top: parent.top
+            anchors.left: parent.left
+            width: parent.width
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 100
+            clip: true
+            model: testModel
+            delegate: Component {
+                id: seachComponent
+                Item {
+                    width: searchList.width
+                    height: 40
+                    Text {
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: parent.left
+                        anchors.leftMargin: 6
+                        font.family: "arial"
+                        font.pixelSize: 16
+                        color: "white"
+                        elide: Text.ElideRight
+                        text: qsTr(name)
+                    }
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            searchArea.selectNum = index
+                            selectCheck.checked = !selectCheck.checked
+                        }
+                    }
+                    Rectangle {
+                        id: backGround
+                        anchors.fill: parent
+                        color: "black"
+                        opacity: 0//opacityValue
+                        RadioButton {
+                            id: selectCheck
+                            exclusiveGroup: searchMos
+                            visible: false
+                            onCheckedChanged: {
+                                if (checked)
+                                    backGround.opacity = 0.3
+                                else
+                                    backGround.opacity = 0
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        CButton {
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 10
+            width: parent.width
+            height: 79
+            text: qsTr("OK")
+            iconSource: "qrc:/images/images/OK.png"
+            onClicked: {
+                if (searchArea.selectNum != -1) {
+                    searchArea.visible = false
+                    switch(searchButton.buttonIndex) {
+                    case 1:
+                        workOrderName.text = testModel.get(searchArea.selectNum).name
+                        break;
+                    case 2:
+                        partName.text = testModel.get(searchArea.selectNum).name
+                        break;
+                    case 3:
+                        spliceName.text = testModel.get(searchArea.selectNum).name
+                        break;
+                    default:
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    Column {
+        id: searchButton
+        property int buttonIndex: -1
+        anchors.left: parent.left
+        anchors.leftMargin: 20
+        anchors.top: seach.bottom
+        anchors.bottomMargin: 10
+        spacing: 10
+        clip: true
+        CButton {
+            id: workOrderName
+            width: 250
+            height: 60
+            text: qsTr("Work Order Name")
+            clip: true
+            onClicked: {
+                searchButton.buttonIndex = 1
+                searchArea.visible = true
+            }
+        }
+        CButton {
+            id: partName
+            width: 250
+            height: 60
+            text: qsTr("Part Name")
+            clip: true
+            onClicked: {
+                searchButton.buttonIndex = 2
+                searchArea.visible = true
+            }
+        }
+        CButton {
+            id: spliceName
+            width: 250
+            height: 60
+            text: qsTr("Splice Number")
+            clip: true
+            onClicked: {
+                searchButton.buttonIndex = 3
+                searchArea.visible = true
+            }
+        }
+    }
     Text {
         id: title2
         text: qsTr("Maintenance type")
         font.family: "arial"
         color: "white"
         font.pointSize: 16
-        anchors.top: seach.bottom
+        anchors.top: searchButton.bottom
+        anchors.topMargin: 15
         anchors.left: seach.left
-        anchors.topMargin: 10
     }
 
     ComboBox {
@@ -145,7 +300,6 @@ Item {
         height: 30
         anchors.left: title2.left
         anchors.top: title2.bottom
-        anchors.topMargin: 20
         model: ["First", "Second", "Third"]
     }
 
@@ -158,7 +312,7 @@ Item {
         anchors.top: nameComboBox.bottom
         anchors.left: parent.left
         anchors.leftMargin: 20
-        anchors.topMargin: 10
+        anchors.topMargin: 15
     }
     Text {
         id: from
@@ -169,7 +323,6 @@ Item {
         anchors.top: date.bottom
         anchors.left: parent.left
         anchors.leftMargin: 20
-        anchors.topMargin: 10
     }
     MyCalendar {
         id: mycalendar
@@ -195,7 +348,6 @@ Item {
         anchors.top: mycalendar.bottom
         anchors.left: parent.left
         anchors.leftMargin: 20
-        anchors.topMargin: 10
     }
     MyCalendar {
         id: mycalendar2
@@ -220,16 +372,14 @@ Item {
         font.pointSize: 16
         anchors.top: mycalendar2.bottom
         anchors.left: seach.left
-        anchors.topMargin: 10
+        anchors.topMargin: 15
     }
-
     ComboBox {
         id: spliceComboBox
         width: 250
         height: 30
         anchors.left: title3.left
         anchors.top: title3.bottom
-        anchors.topMargin: 20
         model: ["First", "Second", "Third"]
     }
 
@@ -241,13 +391,13 @@ Item {
         CButton {
             id: applyButton
             width: 250
-            height: 79
+            height: 60
             text: qsTr("APPLY")
         }
         CButton {
             id: backButton
             width: 250
-            height: 79
+            height: 60
             text: qsTr("Back")
         }
     }
