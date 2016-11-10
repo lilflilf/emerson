@@ -23,6 +23,7 @@ Item {
             onClicked: {
                 headRepeater.model = partTitleModel
                 viewLib.count = partTitleModel.count
+                listView.model = partModel
             }
         }
         CButton {
@@ -33,6 +34,7 @@ Item {
             onClicked: {
                 headRepeater.model = spliceTitleModel
                 viewLib.count = spliceTitleModel.count
+                listView.model = spliceModel
             }
         }
         CButton {
@@ -43,8 +45,12 @@ Item {
             onClicked: {
                 headRepeater.model = wireTitleModel
                 viewLib.count = wireTitleModel.count
+                listView.model = wireModel
             }
         }
+    }
+    ListModel {
+        id: partKeyModel
     }
     ListModel {
         id: partTitleModel
@@ -54,30 +60,44 @@ Item {
     }
     ListModel {
         id: wireTitleModel
+//        list << "partId" << "name" << "date" << "totalSplices" << "type" << "operatorName" << "processMode" << "ofWorkstation" << "ofSplicesperWorkstation" << "rows" << "columns" << "maxSplicesPerZone";
+
         Component.onCompleted: {
-            partTitleModel.append({"title":"Part Name"})
-            partTitleModel.append({"title":"Date Created"})
-            partTitleModel.append({"title":"Operator Name"})
-            partTitleModel.append({"title":"Total Splices"})
-            partTitleModel.append({"title":"Process Mode"})
-            partTitleModel.append({"title":"# of Workstation"})
-            partTitleModel.append({"title":"# of Splices per Workstation"})
+            partKeyModel.append({"title":"name"})
+            partKeyModel.append({"title":"date"})
+            partKeyModel.append({"title":"totalSplices"})
+            partKeyModel.append({"title":"type"})
+            partKeyModel.append({"title":"operatorName"})
+            partKeyModel.append({"title":"processMode"})
+            partKeyModel.append({"title":"ofWorkstation"})
+            partKeyModel.append({"title":"ofSplicesperWorkstation"})
+            partKeyModel.append({"title":"rows"})
+            partKeyModel.append({"title":"columns"})
+            partKeyModel.append({"title":"maxSplicesPerZone"})
+
+            partTitleModel.append({"title":"PartName"})
+            partTitleModel.append({"title":"DateCreated"})
+            partTitleModel.append({"title":"OperatorName"})
+            partTitleModel.append({"title":"TotalSplices"})
+            partTitleModel.append({"title":"ProcessMode"})
+            partTitleModel.append({"title":"#ofWorkstation"})
+            partTitleModel.append({"title":"#ofSplicesperWorkstation"})
             partTitleModel.append({"title":"Rows"})
             partTitleModel.append({"title":"Columns"})
-            partTitleModel.append({"title":"Max Splices Per Zone"})
+            partTitleModel.append({"title":"MaxSplicesPerZone"})
 
-            spliceTitleModel.append({"title":"Splice Name"})
-            spliceTitleModel.append({"title":"Date Created"})
-            spliceTitleModel.append({"title":"Operator Name"})
-            spliceTitleModel.append({"title":"Cross Section"})
-            spliceTitleModel.append({"title":"Total Wires"})
+            spliceTitleModel.append({"title":"SpliceName"})
+            spliceTitleModel.append({"title":"DateCreated"})
+            spliceTitleModel.append({"title":"OperatorName"})
+            spliceTitleModel.append({"title":"CrossSection"})
+            spliceTitleModel.append({"title":"TotalWires"})
             spliceTitleModel.append({"title":"Verified"})
-            spliceTitleModel.append({"title":"Weld Mode"})
+            spliceTitleModel.append({"title":"WeldMode"})
             spliceTitleModel.append({"title":"Energy"})
             spliceTitleModel.append({"title":"Amplitude"})
             spliceTitleModel.append({"title":"Width"})
-            spliceTitleModel.append({"title":"Trigger Pressure"})
-            spliceTitleModel.append({"title":"Weld Pressure"})
+            spliceTitleModel.append({"title":"TriggerPressure"})
+            spliceTitleModel.append({"title":"WeldPressure"})
             spliceTitleModel.append({"title":"Time+"})
             spliceTitleModel.append({"title":"Time-"})
             spliceTitleModel.append({"title":"Power+"})
@@ -87,17 +107,18 @@ Item {
             spliceTitleModel.append({"title":"Height+"})
             spliceTitleModel.append({"title":"Height-"})
 
-            wireTitleModel.append({"title":"Wire Name"})
-            wireTitleModel.append({"title":"Date Created"})
-            wireTitleModel.append({"title":"Operator Name"})
+//            list <<"WireId"<< "WireName" << "DateCreated" << "OperatorName" << "Color" << "StripeType" << "StripeColor" << "Gauge" << "MetalType" << "HorizontalLocation" << "VerticalLocation" << "VerticalPosition";
+            wireTitleModel.append({"title":"WireName"})
+            wireTitleModel.append({"title":"DateCreated"})
+            wireTitleModel.append({"title":"OperatorName"})
             wireTitleModel.append({"title":"Color"})
             wireTitleModel.append({"title":"StripeType"})
-            wireTitleModel.append({"title":"Stripe Color"})
+            wireTitleModel.append({"title":"StripeColor"})
             wireTitleModel.append({"title":"Gauge"})
-            wireTitleModel.append({"title":"Metal Type"})
-            wireTitleModel.append({"title":"Horizontal Location"})
-            wireTitleModel.append({"title":"Vertical Location"})
-            wireTitleModel.append({"title":"Vertical Position"})
+            wireTitleModel.append({"title":"MetalType"})
+            wireTitleModel.append({"title":"HorizontalLocation"})
+            wireTitleModel.append({"title":"VerticalLocation"})
+            wireTitleModel.append({"title":"VerticalPosition"})
         }
     }
 
@@ -215,7 +236,6 @@ Item {
             onXChanged: {
                 listView.anchors.leftMargin = -button2.x*1.1
                 headTitle.anchors.leftMargin = -button2.x*1.1
-                console.log(button2.x)
             }
         }
     }
@@ -228,6 +248,11 @@ Item {
             width: listView.width
             height: 50
             clip: true
+            property var listIndex: 0
+            Component.onCompleted: {
+                listIndex = index
+            }
+
             Row {
                 width: parent.width
                 height: parent.height
@@ -244,7 +269,7 @@ Item {
                         color: "white"
                         clip: true
                         elide: Text.ElideRight
-                        text: "11111"//partModel.getPartValue(index,partTitleModel.get(index).title)
+                        text: listView.model.getValue(listIndex,headRepeater.model.get(index).title)
                     }
                 }
             }

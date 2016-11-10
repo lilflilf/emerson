@@ -27,24 +27,24 @@ Item {
             anchors.top: headRows.bottom
             anchors.topMargin: 20
             anchors.bottom: parent.bottom
-            model: workOrderModel
+            model: weldHistoryModel
             delegate: listDelegate
             width: headModel.count * 200 + (headModel.count - 1) * 30
             clip: true
         }
         ListModel {
             id: headModel
-            ListElement {key:"Work Order Name"}
-            ListElement {key:"Part Name"}
-            ListElement {key:"Splice Name"}
-            ListElement {key:"Operator Name"}
-            ListElement {key:"Date Created"}
-            ListElement {key:"Cross Section"}
-            ListElement {key:"Weld Mode"}
+            ListElement {key:"WorkOrde Name"}
+            ListElement {key:"PartName"}
+            ListElement {key:"SpliceName"}
+            ListElement {key:"OperatorName"}
+            ListElement {key:"DateCreated"}
+            ListElement {key:"Cross ection"}
+            ListElement {key:"WeldMode"}
             ListElement {key:"Energy"}
             ListElement {key:"Amplitude"}
             ListElement {key:"Width"}
-            ListElement {key:"Trigger Pressure"}
+            ListElement {key:"TriggerPressure"}
             ListElement {key:"Weld Pressure"}
             ListElement {key:"Time+"}
             ListElement {key:"Timer-"}
@@ -59,8 +59,8 @@ Item {
             ListElement {key:"Height-"}
             ListElement {key:"Height"}
             ListElement {key:"Alarm"}
-            ListElement {key:"Sample Ratio"}
-            ListElement {key:"Graph Data"}
+            ListElement {key:"SampleRatio"}
+            ListElement {key:"GraphData"}
 
         }
 
@@ -292,7 +292,7 @@ Item {
         height: listView.height-24
         anchors.top: scrollUp.bottom
         anchors.left: rightItem.right
-        anchors.leftMargin: 4
+        anchors.leftMargin: -10
         color: "#585858"
         radius: 10
         visible: listView.contentHeight > listView.height ? true : false
@@ -389,24 +389,29 @@ Item {
             width: listView.width
             height: 50
             clip: true
+            property var listIndex: 0
+            Component.onCompleted: {
+                listIndex = index
+            }
+
             Row {
+                width: parent.width
+                height: parent.height
                 spacing: 30
+                clip: true
                 Repeater {
-                    id: repeater
-                    delegate: Text {
-                        id: headName
+                    id: listRepeater
+                    model: 10
+                    delegate:  Text {
                         anchors.verticalCenter: parent.verticalCenter
-                        anchors.left: parent.left
-                        width: 200 //(parent.width-96)/4
-                        horizontalAlignment: Qt.AlignLeft
-                        elide: Text.ElideRight
-                        text: name
-                        clip: true
-                        color: "white"
-                        font.pointSize: 14
+                        width: 200
                         font.family: "arial"
+                        font.pixelSize: 20
+                        color: "white"
+                        clip: true
+                        elide: Text.ElideRight
+                        text: listView.model.getValue(listIndex,headModel.get(index).title)
                     }
-                    model: headModel
                 }
             }
             MouseArea {
