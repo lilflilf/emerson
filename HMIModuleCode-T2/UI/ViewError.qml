@@ -78,6 +78,7 @@ Item {
         Item {
             id: searchArea
             property int selectNum: -1
+            property int buttonIndex: -1
             anchors.left: seach.left
             width: 280
             anchors.top: seach.bottom
@@ -152,100 +153,45 @@ Item {
                 onClicked: {
                     if (searchArea.selectNum != -1) {
                         searchArea.visible = false
-                        switch(searchButton.buttonIndex) {
-                        case 1:
-                            workOrderName.text = testModel.get(searchArea.selectNum).name
-                            break;
-                        case 2:
-                            partName.text = testModel.get(searchArea.selectNum).name
-                            break;
-                        case 3:
-                            spliceName.text = testModel.get(searchArea.selectNum).name
-                            break;
-                        default:
-                            break;
-                        }
+                        workOrderName.text = testModel.get(searchArea.selectNum).name
                     }
                 }
             }
         }
 
-        Column {
-            id: searchButton
-            property int buttonIndex: -1
-            anchors.left: parent.left
-            anchors.leftMargin: 20
-            anchors.top: seach.bottom
-            anchors.bottomMargin: 10
-            spacing: 10
-            clip: true
-            CButton {
-                id: workOrderName
-                width: 250
-                height: 60
-                text: qsTr("Work Order Name")
-                clip: true
-                onClicked: {
-                    searchButton.buttonIndex = 1
-                    searchArea.visible = true
-                }
-            }
-            CButton {
-                id: partName
-                width: 250
-                height: 60
-                text: qsTr("Part Name")
-                clip: true
-                onClicked: {
-                    searchButton.buttonIndex = 2
-                    searchArea.visible = true
-                }
-            }
-            CButton {
-                id: spliceName
-                width: 250
-                height: 60
-                text: qsTr("Splice Number")
-                clip: true
-                onClicked: {
-                    searchButton.buttonIndex = 3
-                    searchArea.visible = true
-                }
-            }
-        }
         Text {
             id: title2
-            text: qsTr("Maintenance type")
+            text: qsTr("Alarm/ErrorType")
             font.family: "arial"
             color: "white"
             font.pointSize: 16
-            anchors.top: searchButton.bottom
+            anchors.top: seach.bottom
             anchors.topMargin: 15
             anchors.left: seach.left
         }
-
-        ComboBox {
-            id: nameComboBox
-            width: 200
-            height: 30
+        CButton {
+            id: workOrderName
             anchors.left: title2.left
             anchors.top: title2.bottom
-            anchors.topMargin: 20
-            model: ["First", "Second", "Third"]
+            width: 250
+            height: 50
+            text: qsTr("Alarm/ErrorType")
+            clip: true
+            onClicked: {
+                searchArea.visible = true
+            }
         }
-
         Text {
             id: date
             text: qsTr("Date and Time")
             font.family: "arial"
             color: "white"
             font.pointSize: 16
-            anchors.top: nameComboBox.bottom
+            anchors.top: workOrderName.bottom
             anchors.left: parent.left
             anchors.leftMargin: 20
             anchors.topMargin: 10
         }
-
         Text {
             id: from
             text: qsTr("From:")
@@ -295,41 +241,22 @@ Item {
             anchors.leftMargin: 20
             z: 10
         }
-
-        Text {
-            id: title3
-            text: qsTr("Splice Part Number")
-            font.family: "arial"
-            color: "white"
-            font.pointSize: 16
-            anchors.top: mycalendar2.bottom
-            anchors.left: to.left
-            anchors.topMargin: 15
-        }
-        ComboBox {
-            id: spliceComboBox
-            width: 250
-            height: 30
-            anchors.left: title3.left
-            anchors.top: title3.bottom
-            model: ["First", "Second", "Third"]
-        }
-
         Column {
             anchors.bottom: parent.bottom
+            anchors.bottomMargin: 10
             anchors.left: parent.left
             anchors.leftMargin: 20
             spacing: 10
             CButton {
                 id: applyButton
                 width: 250
-                height: 70
+                height: 79
                 text: qsTr("APPLY")
             }
             CButton {
                 id: backButton
                 width: 250
-                height: 70
+                height: 79
                 text: qsTr("Back")
             }
         }

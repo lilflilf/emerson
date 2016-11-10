@@ -74,7 +74,7 @@ Item {
         id: powerText
         anchors.left: testSetting.left
         anchors.top: test2.bottom
-        anchors.topMargin: 80
+        anchors.topMargin: 50
         verticalAlignment: Qt.AlignVCenter
         height: 40
         font.family: "arial"
@@ -82,6 +82,36 @@ Item {
         color: "white"
         text: qsTr("power")
     }
+    Row {
+        anchors.bottom: progressBar.top
+        anchors.bottomMargin: 2
+        spacing: (progressBar.width-2*14)/13
+        anchors.left: progressBar.left
+        Repeater {
+            model: 14
+            delegate: Item {
+                width: 2
+                height: 30
+                Text {
+                    id: num
+                    anchors.top: parent.top
+                    anchors.horizontalCenter:line.horizontalCenter
+                    font.pixelSize: 10
+                    font.family: "arial"
+                    color: "white"
+                    text: index*10
+                }
+                Rectangle {
+                    id: line
+                    anchors.top: num.bottom
+                    width: 2
+                    height: 10
+                    color: "blue"
+                }
+            }
+        }
+    }
+
     CProgressBar {
         id: progressBar
         anchors.verticalCenter: powerText.verticalCenter
