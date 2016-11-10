@@ -2,7 +2,6 @@
 #include <qdebug.h>
 #include <QSqlQuery>
 #include <QSqlError>
-
 HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
 {
     workOrderModel = new WorkOrderModel(this);
@@ -13,21 +12,44 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
 
     spliceModel = new SpliceModel(this);
     list.clear();
-    list << "spliceId" << "name" << "date" << "middle" << "count";
+    list << "spliceId" << "name" << "date" << "middle" << "count" << "SpliceName" << "DateCreated" << "OperatorName" << "CrossSection" << "TotalWires" << "Verified" << "WeldMode" << "Energy" << "Amplitude"
+         << "Width" << "TriggerPressure" << "WeldPressure" << "Time+" << "Time-" << "Power+" << "Power-" << "Pre-Height+" << "Pre-Height-" << "Height+" << "Height-";
     spliceModel->setRoles(list);
     spliceModel->setModelList();
 
     partModel = new PartModel(this);
     list.clear();
-    list << "partId" << "name" << "date" << "middle" << "type";
+    list << "PartId" << "PartName" << "DateCreated" << "OperatorName" << "TotalSplices" << "ProcessMode" << "#ofWorkstation" << "#ofSplicesperWorkstation" << "Rows" << "Columns" << "MaxSplicesPerZone";
     partModel->setRoles(list);
     partModel->setModelList();
+
+    wireModel = new WireModel(this);
+    list.clear();
+    list <<"WireId"<< "WireName" << "DateCreated" << "OperatorName" << "Color" << "StripeType" << "StripeColor" << "Gauge" << "MetalType" << "HorizontalLocation" << "VerticalLocation" << "VerticalPosition";
+    wireModel->setRoles(list);
+    wireModel->setModelList();
 
     operatorModel = new OperatorModel(this);
     list.clear();;
     list << "operatorId" << "name" << "date" << "middle" << "count";
     operatorModel->setRoles(list);
     operatorModel->setModelList();
+
+    weldHistoryModel = new WeldHistoryModel(this);
+    list.clear();
+    list << "WeldHistoryId" << "WorkOrderName" << "PartName" << "SpliceName" << "OperatorName" << "DateCreated"
+         << "CrossSection" << "WeldMode" << "Energy" << "Amplitude" << "Width" << "TriggerPressure" << "WeldPressure"
+         << "Time+" << "Timer-" << "Time" << "Power+" << "Power-" << "Power" << "Pre-Height+" << "Pre-Height-"
+         << "Pre-Height" << "Height+" << "Height-" << "Height" << "Alarm" << "SampleRatio" <<"GraphData";
+
+    weldHistoryModel->setRoles(list);
+    weldHistoryModel->setModelList();
+
+    alarmModel = new AlarmModel(this);
+    list.clear();
+    list << "AlarmId" <<"CreatedDate" << "Alarm/ErrorType" << "Alarm/ErrorLevel" << "Message" << "SpliceName";
+    alarmModel->setRoles(list);
+    alarmModel->setModelList();
 
     QSqlDatabase db;
     db = QSqlDatabase::addDatabase("QSQLITE", "hmiconnect");

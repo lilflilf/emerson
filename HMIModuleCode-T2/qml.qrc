@@ -80,5 +80,11 @@
         <file>images/settingselect.png</file>
         <file>images/left.png</file>
         <file>images/right.png</file>
+        <file>images/maintenance-1.png</file>
+        <file>images/maintenance-2.png</file>
+        <file>images/maintenance-3.png</file>
+        <file>images/maintenance-4.png</file>
+        <file>images/maintenance-5.png</file>
+        <file>images/maintenance-6.png</file>
     </qresource>
 </RCC>

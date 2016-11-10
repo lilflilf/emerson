@@ -175,7 +175,7 @@ Item {
                     anchors.leftMargin: 14
                     horizontalAlignment: Qt.AlignCenter
                     width: parent.width/7
-                    text: middle
+                    text: totalSplices
                     clip: true
                     color: "white"
                     font.pointSize: 10
