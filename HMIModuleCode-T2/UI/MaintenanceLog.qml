@@ -219,8 +219,40 @@ Item {
         }
     }
 
-    ListView {
-        id:maintenanceLog
+    ListModel {
+        id: headModel
+        ListElement {key:"CreatedDate"}
+        ListElement {key:"OperatorName"}
+        ListElement {key:"Maintenance Type"}
+        ListElement {key:"Maintenance Message"}
+    }
+
+    Row {
+        id: headRows
+        anchors.left: back.right
+        spacing: 30
+        Repeater {
+            delegate: Text {
+                id: headName
+                width: 200
+                horizontalAlignment: Qt.AlignLeft
+                verticalAlignment: Qt.AlignVCenter
+                elide: Text.ElideRight
+                text: key
+                clip: true
+                color: "white"
+                font.pointSize: 16
+                font.family: "arial"
+            }
+            model: headModel
+        }
+    }
+    Line {
+        width: headRows.width
+        anchors.left: headRows.left
+        anchors.top: headRows.bottom
+        height: 2
+        lineColor: "white"
     }
 
 

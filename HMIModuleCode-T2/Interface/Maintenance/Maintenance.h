@@ -58,9 +58,9 @@ public:
 class Maintenance : public QObject
 {
 public:
-    virtual void _start() = 0;
-    virtual void _stop() = 0;
-    virtual void _execute(int funCode) = 0;
+    virtual bool _start() = 0;
+    virtual bool _stop() = 0;
+    virtual bool _execute(int funCode) = 0;
 };
 
 #endif // MAINTENANCE_H

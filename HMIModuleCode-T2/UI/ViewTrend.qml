@@ -285,4 +285,131 @@ Item {
             text: qsTr("Back")
         }
     }
+
+    Rectangle {
+        anchors.fill: qualityListViewTwo
+        color: "#6d6e71"
+        visible: qualityListViewTwo.visible
+        Line {
+            anchors.top: parent.top
+            anchors.topMargin: parent.height / 2
+            lineColor: "white"
+            width: parent.width
+            height: 2
+        }
+        Line {
+            anchors.top: parent.top
+            anchors.topMargin: parent.height * 0.1
+            lineColor: "red"
+            width: parent.width
+            height: 2
+        }
+        Line {
+            anchors.top: parent.top
+            anchors.topMargin: parent.height * 0.2
+            lineColor: "yellow"
+            width: parent.width
+            height: 2
+        }
+        Line {
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: parent.height * 0.2
+            lineColor: "yellow"
+            width: parent.width
+            height: 2
+        }
+        Line {
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: parent.height * 0.1
+            lineColor: "red"
+            width: parent.width
+            height: 2
+        }
+    }
+
+    ListView {
+        id: qualityListViewTwo
+        anchors.left: back.right
+        anchors.leftMargin: 20
+//        width: 700
+        anchors.right: parent.right
+        anchors.rightMargin: 30
+        height: Screen.height *0.35
+        orientation: Qt.Horizontal
+        interactive: false
+        anchors.top: parent.top
+        anchors.topMargin: 20
+        delegate: qualityListViewTwoDelegate
+        model: 100
+    }
+    Component {
+        id: qualityListViewTwoDelegate
+        Item {
+            width: 8
+            height: Screen.height * 0.25
+            Rectangle {
+                id: point
+                radius: 100
+                width: 4
+                height: 4
+                anchors.top: parent.top
+                anchors.topMargin: 50
+                Component.onCompleted: {
+                    point.anchors.topMargin = index + 50
+                }
+            }
+        }
+    }
+
+    Row {
+        id: selectButton
+        anchors.left: back.right
+        anchors.leftMargin: 20
+        anchors.top: qualityListViewTwo.bottom
+        anchors.topMargin: 20
+        spacing: 30
+        CButton {
+            width: (qualityListViewTwo.width - 90) / 4
+            height: 79
+            text: "Time"
+        }
+        CButton {
+            width: (qualityListViewTwo.width - 90) / 4
+            height: 79
+            text: "Pre-Height"
+        }
+        CButton {
+            width: (qualityListViewTwo.width - 90) / 4
+            height: 79
+            text: "Post-Hight"
+        }
+        CButton {
+            width: (qualityListViewTwo.width - 90) / 4
+            height: 79
+            text: "Peak Power"
+        }
+    }
+    Text {
+        id: bottomText
+        anchors.left: qualityListViewTwo.left
+        anchors.top: selectButton.bottom
+        anchors.topMargin: 10
+        font.family: "arial"
+        font.pointSize: 16
+        color: "white"
+        text: qsTr("Weld Parameter\n\nCross section\nEnergy\nTime\nPressure\nAmplitude\nWidth\nPre-Height\nPost-Height")
+    }
+    Text {
+        id: bottomText2
+        anchors.left: qualityListViewTwo.left
+        anchors.leftMargin: qualityListViewTwo.width / 2
+        anchors.top: selectButton.bottom
+        anchors.topMargin: 10
+        font.family: "arial"
+        font.pointSize: 16
+        color: "white"
+        text: qsTr("Statistics\n\nSample Size\nMean\nMedian\nSigma\nCPK")
+    }
+
+
 }

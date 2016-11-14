@@ -11,11 +11,13 @@
 
 using namespace std;
 enum TipsScreenMode{
-    OKOnly   = 0, //only show Okay button 2^0
-    OKCancel = 1, //show Okay and cancel buttons 2^1 0x01 0000 0001
-    Critical = 16,//show Error sign 0x10 0001 0000
-    Exclamation = 32,//show Warning sign 0x20 0010 0000
-    Information = 64,//show Information sign 0x40 0100 0000
+    OKOnly      = 0x00, //only show Okay button
+    OKCancel    = 0x01, //show Okay and cancel buttons
+    RESETCancel = 0x02, //show Reset and cancel buttons
+    Critical    = 0x10, //show Error sign
+    Exclamation = 0x20, //show Warning sign
+    Information = 0x40, //show Information sign
+    Alarm       = 0x80, //show Alarm sign
 };
 struct BransonMessageBox{
     QString MsgTitle;

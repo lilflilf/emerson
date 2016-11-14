@@ -393,7 +393,7 @@ Item {
             width: 250
             height: 79
             textColor: "white"
-            text: qsTr("View Details")
+            text: qsTr("Edit Details")
         }
         CButton {
             width: 250

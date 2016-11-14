@@ -635,6 +635,18 @@ int OperatorModel::count()
     return operators->count();
 }
 
+void OperatorModel::insertValue(QString name, QString passwd)
+{
+    qDebug() << "insertValue----------" << name << passwd;
+    OperatorElement myOperator;
+    myOperator.OperatorName = name;
+    myOperator.Password = passwd;
+    myOperator.PermissionLevel = PASSWORDCONTROL::OPEN;
+    myOperator.CreatedDate = QDateTime::currentDateTime().toTime_t();
+
+    m_operatorAdaptor->InsertRecordIntoTable(&myOperator);
+}
+
 
 int OperatorModel::columnCount(const QModelIndex &parent) const
 {
@@ -1018,14 +1030,15 @@ QVariant WeldHistoryModel::getValue(int index, QString key)
     WeldHistoryModelHash.insert("SpliceName",myHistory.CurrentSplice.SpliceName);
     WeldHistoryModelHash.insert("OperatorName",myHistory.OperatorName);
     WeldHistoryModelHash.insert("DateCreated",QDateTime::fromTime_t(myHistory.CreatedDate).toString("MM/dd/yyyy hh:mm"));
-    WeldHistoryModelHash.insert("CrossSection",myHistory.PartCount);
-    WeldHistoryModelHash.insert("WeldMode",myHistory.PartCount);
+
+    WeldHistoryModelHash.insert("CrossSection",myHistory.PartCount); //contain in splice
+    WeldHistoryModelHash.insert("WeldMode",myHistory.PartCount);     //contain in splice
     WeldHistoryModelHash.insert("Energy",myHistory.ActualResult.ActualEnergy);
     WeldHistoryModelHash.insert("Amplitude",myHistory.ActualResult.ActualAmplitude);
     WeldHistoryModelHash.insert("Width",myHistory.ActualResult.ActualWidth);
     WeldHistoryModelHash.insert("TriggerPressure",myHistory.ActualResult.ActualTPressure);
     WeldHistoryModelHash.insert("WeldPressure",myHistory.ActualResult.ActualPressure);
-    WeldHistoryModelHash.insert("Time+",myHistory.ActualResult.ActualTime);
+    WeldHistoryModelHash.insert("Time+",myHistory.ActualResult.ActualTime); //contain in splice QUALITYWINDONSETTING
     WeldHistoryModelHash.insert("Timer-",myHistory.ActualResult.ActualTime);
     WeldHistoryModelHash.insert("Time",myHistory.ActualResult.ActualTime);
     WeldHistoryModelHash.insert("Power+",myHistory.ActualResult.ActualPeakPower);
@@ -1037,7 +1050,7 @@ QVariant WeldHistoryModel::getValue(int index, QString key)
     WeldHistoryModelHash.insert("Height+",myHistory.ActualResult.ActualPostheight);
     WeldHistoryModelHash.insert("Height-",myHistory.ActualResult.ActualPostheight);
     WeldHistoryModelHash.insert("Height",myHistory.ActualResult.ActualPostheight);
-    WeldHistoryModelHash.insert("Alarm",(int)myHistory.SampleRatio);
+    WeldHistoryModelHash.insert("Alarm",(int)myHistory.SampleRatio); //myHistory.ActualResult.ActualAlarmflags
     WeldHistoryModelHash.insert("SampleRatio",(int)myHistory.SampleRatio);
     WeldHistoryModelHash.insert("GraphData","GraphData");
     if (key == "") {

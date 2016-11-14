@@ -58,7 +58,7 @@ Item {
             ListElement {key:"Height+"}
             ListElement {key:"Height-"}
             ListElement {key:"Height"}
-            ListElement {key:"Alarm"}
+            ListElement {key:"AlarmType"}
             ListElement {key:"SampleRatio"}
             ListElement {key:"GraphData"}
 

@@ -19,25 +19,28 @@ AdvancedMaintenance::AdvancedMaintenance()
     m_Thread = NULL;
 }
 
-void AdvancedMaintenance::_start()
+bool AdvancedMaintenance::_start()
 {
     m_Thread = new ThreadClass(0, (void*)(AdvancedMaintenance::AdvancedMaintenanceHandle), this);
     m_Thread->setStopEnabled(false);
     m_Thread->setSuspendEnabled(false);
     m_Thread->start();
+    return true;
 }
 
-void AdvancedMaintenance::_stop()
+bool AdvancedMaintenance::_stop()
 {
     m_Thread->setSuspendEnabled(true);
     m_Thread->setStopEnabled(true);
     qDebug()<<"Thread stop"<<m_Thread->wait();
     delete m_Thread;
     m_Thread = NULL;
+    return true;
 }
 
-void AdvancedMaintenance::_execute(int funCode)
+bool AdvancedMaintenance::_execute(int funCode)
 {
+    bool bResult = true;
     switch(funCode)
     {
     case ANVILARMCLICK:
@@ -65,8 +68,10 @@ void AdvancedMaintenance::_execute(int funCode)
         ToolingCooling_click();
         break;
     default:
+        bResult = false;
         break;
     }
+    return bResult;
 }
 
 void AdvancedMaintenance::AnvilArm_Click()
@@ -256,6 +261,7 @@ void AdvancedMaintenance::AdvancedMaintenanceHandle(void* _obj)
 {
     M102IA* _M102IA = M102IA::Instance();
     M2010* _M2010 = M2010::Instance();
+    InterfaceClass* _Interface = InterfaceClass::Instance();
     _M102IA->IACommand(IAComSendIOdata);
     _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.IOdata);
     if(_M2010->ReceiveFlags.IOdata == true)
@@ -275,6 +281,13 @@ void AdvancedMaintenance::AdvancedMaintenanceHandle(void* _obj)
             emit ((AdvancedMaintenance*)_obj)->IOstatusFeedback(PreviousIO);
         }
        _M2010->ReceiveFlags.IOdata = false;
+    }else{
+        struct BransonMessageBox tmpMsgBox;
+        tmpMsgBox.MsgTitle = QObject::tr("Warning");
+        tmpMsgBox.MsgPrompt = QObject::tr("Can't get any Response from controller!");
+        tmpMsgBox.TipsMode = Exclamation;
+        tmpMsgBox.func_ptr = NULL;
+        _Interface->cMsgBox(&tmpMsgBox);
     }
 
     qDebug()<<"Advanced Maintenace processing";

@@ -485,6 +485,8 @@ Item {
                 backGround.visible = false
                 backGround.opacity = 0
                 operatorDialog.visible = false
+
+                operatorModel.insertValue(operatorNameInput.inputText,passwordInput.inputText);
             }
         }
     }

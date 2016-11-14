@@ -148,6 +148,7 @@ public slots:
     void setRoles(const QStringList &names);
     Q_INVOKABLE QVariant getOperatorValue(int index, QString key);
     Q_INVOKABLE int count();
+    Q_INVOKABLE void insertValue(QString name, QString passwd);
 private:
     QHash<int, QByteArray> m_roleNames;
 };
