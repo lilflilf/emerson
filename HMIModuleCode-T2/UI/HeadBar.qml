@@ -412,4 +412,242 @@ Item {
         anchors.left: btn.right
         anchors.verticalCenter: parent.verticalCenter
     }
+    Image {
+        id: personButton
+        anchors.top: parent.top
+        anchors.topMargin: 6
+        anchors.right: parent.right
+        anchors.rightMargin: 20
+        width: 70
+        height: parent.height-16
+        z: 14
+        source: "qrc:/images/images/person.png"
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                background.visible = true
+                dialog.visible = true
+                okButton.visible = false
+                helpTitle.visible = true
+                helpTitle.text = "Current User: Jerry Wang"
+                personColumn.visible = true
+                background.opacity = 0.5
+            }
+            onPressed: {
+                personButton.opacity = 0.5
+            }
+            onReleased: {
+                personButton.opacity = 1
+            }
+        }
+    }
+    Image {
+        id: helpButton
+        anchors.top: parent.top
+        anchors.topMargin: 6
+        anchors.right: personButton.left
+        anchors.rightMargin: 20
+        width: 70
+        height: parent.height-16
+        z: 14
+        source: "qrc:/images/images/help.png"
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                background.visible = true
+                dialog.visible = true
+                helpTitle.visible = true
+                helpTitle.text = "Create Part:"
+                helpValue.visible = true
+                okButton.visible = true
+                background.opacity = 0.5
+            }
+            onPressed: {
+                helpButton.opacity = 0.5
+            }
+            onReleased: {
+                helpButton.opacity = 1
+            }
+        }
+    }
+    Image {
+        id: languageButton
+        anchors.top: parent.top
+        anchors.topMargin: 6
+        anchors.right: helpButton.left
+        anchors.rightMargin: 20
+        width: 70
+        height: parent.height-16
+        z: 14
+        source: "qrc:/images/images/guo1.png"
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                background.visible = true
+                dialog.visible = true
+                language.visible = true
+                okButton.visible = true
+                background.opacity = 0.5
+            }
+            onPressed: {
+                languageButton.opacity = 0.5
+            }
+            onReleased: {
+                languageButton.opacity = 1
+            }
+        }
+    }
+    Rectangle {
+        id: background
+        z: 18
+        visible: false
+        width: Screen.width
+        height: Screen.height
+        color: "black"
+        opacity: 0
+        MouseArea {
+            anchors.fill: parent
+        }
+    }
+    Rectangle {
+        id: dialog
+        visible: false
+        anchors.top: parent.top
+        anchors.topMargin: Screen.height/4
+        anchors.left: parent.left
+        anchors.leftMargin: Screen.width/3
+        width: Screen.width/3
+        height: Screen.height/2+30
+        color: "#404041"
+        z: background.z+1
+        Grid {
+            id: language
+            property int selectIndex: -1
+            visible: false
+            anchors.top: parent.top
+            anchors.topMargin: 10
+            anchors.left: parent.left
+            anchors.leftMargin: 8
+            spacing: 10
+            columns: 6
+            rows: 5
+            Repeater {
+                id: languageRep
+                model: 26
+                delegate: Rectangle {
+                    property string borderColor: "#404041"
+                    width: 65
+                    height: 55
+                    color: "#404041"
+                    border.width: 1
+                    border.color: borderColor
+                    Image {
+                        anchors.centerIn: parent
+                        width: 59
+                        height: 49
+                        source: "qrc:/images/images/guo2.png"
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: {
+                                if (language.selectIndex == -1) {
+                                    languageRep.itemAt(index).borderColor = "yellow"
+                                    language.selectIndex = index
+                                } else {
+                                    languageRep.itemAt(language.selectIndex).borderColor = "#404041"
+                                    language.selectIndex = index
+                                    languageRep.itemAt(index).borderColor = "yellow"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        Text {
+            id: helpTitle
+            visible: false
+            anchors.top: parent.top
+            anchors.topMargin: 20
+            anchors.left: parent.left
+            anchors.leftMargin: 20
+            font.pixelSize: 20
+            font.family: "arial"
+            color: "white"
+            text: qsTr("Create Part:")
+        }
+        Text {
+            id: helpValue
+            visible: false
+            anchors.top: helpTitle.bottom
+            anchors.topMargin: 30
+            anchors.left: helpTitle.left
+            width: parent.width - 40
+            font.pixelSize: 20
+            font.family: "arial"
+            color: "white"
+            wrapMode: Text.WordWrap
+            text: qsTr("-Add New Splice: add new splice\n-Add Existing Splice: add existing splice from the splice library")
+        }
+        Column {
+            id: personColumn
+            visible: false
+            anchors.top: helpTitle.bottom
+            anchors.topMargin: 10
+            anchors.left: parent.left
+            anchors.leftMargin: 40
+            width: parent.width-80
+            spacing: 10
+            CButton {
+                width: parent.width
+                height: 79
+                textColor: "white"
+                text: qsTr("Switch User")
+            }
+            CButton {
+                width: parent.width
+                height: 79
+                textColor: "white"
+                text: qsTr("Log Off")
+            }
+            CButton {
+                width: parent.width
+                height: 79
+                textColor: "white"
+                text: qsTr("Shut Down")
+            }
+            CButton {
+                width: parent.width
+                height: 79
+                textColor: "white"
+                text: qsTr("Cancel")
+                onClicked: {
+                    personColumn.visible = false
+                    background.visible = false
+                    helpTitle.visible = false
+                    background.opacity = 0
+                    dialog.visible = false
+                }
+            }
+        }
+
+        CButton {
+            id: okButton
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 12
+            anchors.right: parent.right
+            anchors.rightMargin: 20
+            width: 200
+            height: 60
+            iconSource: "qrc:/images/images/OK.png"
+            text: qsTr("OK")
+            onClicked: {
+                dialog.visible = false
+                background.visible = false
+                language.visible = false
+                helpTitle.visible = false
+                helpValue.visible = false
+                background.opacity = 0
+            }
+        }
+    }
 }

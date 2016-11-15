@@ -287,7 +287,6 @@ Item {
                 text: qsTr("Back")
             }
         }
-
     }
 
 
