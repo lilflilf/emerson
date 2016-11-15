@@ -85,7 +85,7 @@ Item {
                         anchors.centerIn: parent
                         font.family: "arial"
                         color: "black"
-                        text: index
+                        text: index + 1
                         font.pointSize: 14
                     }
                     Component.onCompleted: {
