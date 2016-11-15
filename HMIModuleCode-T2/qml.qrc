@@ -86,5 +86,9 @@
         <file>images/maintenance-4.png</file>
         <file>images/maintenance-5.png</file>
         <file>images/maintenance-6.png</file>
+        <file>images/guo1.png</file>
+        <file>images/guo2.png</file>
+        <file>images/help.png</file>
+        <file>images/person.png</file>
     </qresource>
 </RCC>
