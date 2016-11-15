@@ -39,6 +39,7 @@ public:
     VersionList PreviousVersions;
     VersionList CurrentVersions;
     PresetElement CurrentSplice;
+    OperatorElement CurrentOperator;
 public:
     void cMsgBox(struct BransonMessageBox* MsgBox);
     void dlgMaintWarning();
