@@ -655,7 +655,7 @@ Item {
                 pointSize: 12
                 anchors.bottom: parent.bottom
                 width: parent.width * 0.5
-                height: parent.height * 0.05
+                height: 79
                 anchors.bottomMargin: 100
                 anchors.right: parent.right
                 anchors.rightMargin: 30
@@ -677,9 +677,9 @@ Item {
                 id: settingsModel
                 Component.onCompleted: {
                     settingsModel.append({"topText":"Energy","bottomText":"30J"})
-                    settingsModel.append({"topText":"Trigger\npressure","bottomText":"50PSI"})
+                    settingsModel.append({"topText":"Trigger Pressure","bottomText":"50PSI"})
                     settingsModel.append({"topText":"Amplitu","bottomText":"25um"})
-                    settingsModel.append({"topText":"Weld\nPressure","bottomText":"50PSI"})
+                    settingsModel.append({"topText":"Weld Pressure","bottomText":"50PSI"})
                     settingsModel.append({"topText":"Width","bottomText":"12.5mm"})
                 }
             }
@@ -692,8 +692,8 @@ Item {
                     settingsModel2.append({"topText":"Power","bottomText":"0W"})
                     settingsModel2.append({"topText":"Pre-Height","bottomText":"15.00mm"})
                     settingsModel2.append({"topText":"Pre-Height","bottomText":"0.00mm"})
-                    settingsModel2.append({"topText":"Height","bottomText":"15.00mm"})
-                    settingsModel2.append({"topText":"Height","bottomText":"0.00mm"})
+                    settingsModel2.append({"topText":"Post-Height","bottomText":"15.00mm"})
+                    settingsModel2.append({"topText":"Post-Height","bottomText":"0.00mm"})
 
 
                 }
@@ -731,69 +731,75 @@ Item {
                 rows: 4
                 columns: 2
                 width: 220
-                height: 380
-                columnSpacing: 50
+                height: 340
+                columnSpacing: 30
                 rowSpacing: 20
                 Repeater {
                     id: repeater
                     model: settingsModel
-                    CButton {
-                        width: 150
-                        height: 120
-                        backgroundComponent: Item {
-                            Rectangle {
-                                anchors.centerIn: parent
-                                anchors.fill: parent
-                                radius: 3
-                                color: "#000000"
-                                Rectangle{
-                                    anchors.fill: parent
-                                    anchors.margins: 1
-                                    radius: 3
-                                    anchors.centerIn: parent
-                                    color: "#000000"
-                                }
-                            }
-                        }
-                        Text {
-                            id: buttonTop
-                            text: qsTr(topText)
-                            anchors.top: parent.top
-                            anchors.topMargin: 3
-                            anchors.left: parent.left
-                            anchors.leftMargin: 3
-                            font.pointSize: 12
-                            font.family: "arial"
-                            color: "white"
-                            opacity: 0.5
-                        }
-                        Text {
-                            anchors.centerIn: parent
-                            text: qsTr(bottomText)
-//                            anchors.top: buttonTop.bottom
+                    Recsetting {
+                        headTitle: qsTr(topText)
+                        centervalue: qsTr(bottomText)
+                        width: 160
+                        height: 110
+                    }
+
+//                    CButton {
+//                        width: 150
+//                        height: 120
+//                        backgroundComponent: Item {
+//                            Rectangle {
+//                                anchors.centerIn: parent
+//                                anchors.fill: parent
+//                                radius: 3
+//                                color: "#000000"
+//                                Rectangle{
+//                                    anchors.fill: parent
+//                                    anchors.margins: 1
+//                                    radius: 3
+//                                    anchors.centerIn: parent
+//                                    color: "#000000"
+//                                }
+//                            }
+//                        }
+//                        Text {
+//                            id: buttonTop
+//                            text: qsTr(topText)
+//                            anchors.top: parent.top
 //                            anchors.topMargin: 3
 //                            anchors.left: parent.left
 //                            anchors.leftMargin: 3
-                            font.pointSize: 16
-                            font.family: "arial"
-                            color: "white"
+//                            font.pointSize: 12
+//                            font.family: "arial"
+//                            color: "white"
+//                            opacity: 0.5
+//                        }
+//                        Text {
+//                            anchors.centerIn: parent
+//                            text: qsTr(bottomText)
+////                            anchors.top: buttonTop.bottom
+////                            anchors.topMargin: 3
+////                            anchors.left: parent.left
+////                            anchors.leftMargin: 3
+//                            font.pointSize: 16
+//                            font.family: "arial"
+//                            color: "white"
 
-                        }
-                    }
+//                        }
+//                    }
                 }
             }
             Row {
                 anchors.bottom: parent.bottom
-                anchors.bottomMargin: 100
                 anchors.left: parent.left
                 anchors.leftMargin: 15
                 spacing: 20
-                height: 50
+                height: 79
                 width: parent.width
                 CButton {
                     pointSize: 14
                     width: parent.width * 0.45
-                    height: 50
+                    height: 79
                     text: qsTr("QUALITY WINDOW\nSETTINGS")
                     onClicked: {
                         if (repeater.model == settingsModel){
@@ -812,7 +818,7 @@ Item {
                     pointSize: 14
                     text: qsTr("ADVANCED WELD\nSETTINGS")
                     width: parent.width * 0.45
-                    height: 50
+                    height: 79
                     onClicked: {
                         settingRightArea.visible = true
                     }
@@ -827,63 +833,54 @@ Item {
         id: tabBar
         currentIndex: swipeView.currentIndex
         anchors.top: parent.top
+        height: 64
         TabButton {
-            font.family: "arial"
-            font.pointSize: 16
-            text: qsTr("WIRE BUILDER")
-            opacity: 0.33
+            height: parent.height
+            Rectangle {
+                anchors.fill: parent
+                color:  "#052a40"  //tabBar.currentIndex == 0 ? "black" : "#48484a"
+            }
+            Text {
+                anchors.centerIn: parent
+                font.family: "arial"
+                font.pointSize: 17.5
+                text: qsTr("WIRE BUILDER")
+                color: tabBar.currentIndex == 0 ? "white" : "#969ea5"
+            }
+            Rectangle {
+                width: parent.width
+                height: 6
+                color:  "#F79428"
+                anchors.bottom: parent.bottom
+                visible: tabBar.currentIndex == 0 ? true : false
+            }
+
             onClicked: {
                 settingRightArea.visible = false
             }
         }
         TabButton {
-            font.family: "arial"
-            font.pointSize: 16
-            text: qsTr("WELD SETTINGS")
-            opacity: 0.33
+            height: parent.height
+            Rectangle {
+                anchors.fill: parent
+                color:  "#052a40"  //tabBar.currentIndex == 0 ? "black" : "#48484a"
+            }
+            Text {
+                anchors.centerIn: parent
+                font.family: "arial"
+                font.pointSize: 17.5
+                text: qsTr("WELD SETTINGS")
+                color: tabBar.currentIndex == 1 ? "white" : "#969ea5"
+            }
+            Rectangle {
+                width: parent.width
+                height: 6
+                color:  "#F79428"
+                anchors.bottom: parent.bottom
+                visible: tabBar.currentIndex == 1 ? true : false
+            }
         }
     }
-
-    //    TabBar {
-    //        id: tabBar
-    //        currentIndex: swipeView.currentIndex
-    //        anchors.top: parent.top
-    //        width: Screen.width * 0.3
-    //        TabButton {
-    //            Rectangle {
-    //                anchors.fill: parent
-    //                color: tabBar.currentIndex == 0 ? "black" : "#48484a"
-    //                Text {
-    //                    anchors.centerIn: parent
-    //                    font.family: "arial"
-    //                    font.pointSize: 14
-    //                    color: "white"
-    //                    text: qsTr("WIRE BUILDER")
-    //                    opacity: 0.5
-    //                    width: parent.width
-    //                    clip: true
-    //                }
-    //            }
-
-    //        }
-    //        TabButton {
-    //            Rectangle {
-    //                anchors.fill: parent
-    //                color: tabBar.currentIndex == 1 ? "black" : "#48484a"
-    //                Text {
-    //                    anchors.centerIn: parent
-    //                    font.family: "arial"
-    //                    font.pointSize: 14
-    //                    color: "white"
-    //                    text: qsTr("WELD SETTINGS")
-    //                    opacity: 0.5
-    //                    width: parent.width
-    //                    clip: true
-    //                }
-    //            }
-    //        }
-    //    }
-
     Item {
         id: rightArea
         anchors.left: swipeView.right
@@ -945,6 +942,8 @@ Item {
             height: Screen.height *0.5
             anchors.top: spliceDetailsTips.bottom
             anchors.topMargin: 10
+            anchors.bottom: addWire.top
+            anchors.bottomMargin: 10
             anchors.left: spliceDetails.left
             anchors.right: parent.right
             anchors.rightMargin: 40
@@ -955,10 +954,12 @@ Item {
             id: addWire
             pointSize: 14
             width: 200
-            height: 50
+            height: 79
             anchors.left: spliceDetailsItem.left
-            anchors.top: spliceDetailsItem.bottom
-            anchors.topMargin: 20
+//            anchors.top: spliceDetailsItem.bottom
+//            anchors.topMargin: 20
+            anchors.bottom: wirelibrary.top
+//            anchors.bottomMargin: 10
             text: qsTr("ADD WIRE")
         }
 
@@ -966,10 +967,12 @@ Item {
             id: wirelibrary
             pointSize: 14
             width: 200
-            height: 50
+            height: 79
             anchors.left: spliceDetailsItem.left
-            anchors.top: addWire.bottom
-            anchors.topMargin: 10
+//            anchors.top: addWire.bottom
+//            anchors.topMargin: 10
+            anchors.bottom: parent.bottom
+//            anchors.bottomMargin: 10
             text: qsTr("WIRE LIBRARY")
         }
 
@@ -977,9 +980,10 @@ Item {
             id: saveSplice
             pointSize: 14
             width: 200
-            height: 50
+            height: 79
             anchors.right: spliceDetailsItem.right
-            anchors.bottom: wirelibrary.bottom
+            anchors.bottom: parent.bottom
+//            anchors.bottomMargin: 10
             text: qsTr("SAVE SPLICE")
             onClicked: {
                 signalSaveSplice()

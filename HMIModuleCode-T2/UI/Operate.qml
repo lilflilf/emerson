@@ -313,13 +313,13 @@ Item {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 43
         anchors.left: parent.left
-        anchors.leftMargin: 20
+        anchors.leftMargin: 15
         height: 79
-        width: (parent.width-314)/3
+        width: (parent.width-230)/4
         spacing: 10
         iconSource: "qrc:/images/images/Add.png"
         text: qsTr("ADD NEW WORK ORDEAR")
-        pixelSize: 20
+        pixelSize: 16
         clip: true
         textColor: "white"
         onClicked: {
@@ -334,13 +334,13 @@ Item {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 43
         anchors.left: addnewOrder.right
-        anchors.leftMargin: 48
+        anchors.leftMargin: 15
         height: 79
-        width: (parent.width-314)/3
+        width: (parent.width-230)/4
         spacing: 10
         iconSource: "qrc:/images/images/stting.png"
         text: qsTr("EDIT EXISTING WORK ORDER")
-        pixelSize: 20
+        pixelSize: 16
         clip: true
         textColor: "white"
         onClicked: {
@@ -354,17 +354,34 @@ Item {
         }
     }
     CButton {
-        id: importOrder
+        id: deleOrder
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 43
         anchors.left: editExistingOrder.right
-        anchors.leftMargin: 48
+        anchors.leftMargin: 15
         height: 79
-        width: (parent.width-314)/3
+        width: (parent.width-230)/4
+        spacing: 10
+//        iconSource: "qrc:/images/images/import.png"
+        text: qsTr("DELETE WORK ORDER")
+        pixelSize: 16
+        clip: true
+        textColor: "white"
+        onClicked: {
+        }
+    }
+    CButton {
+        id: importOrder
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 43
+        anchors.left: deleOrder.right
+        anchors.leftMargin: 15
+        height: 79
+        width: (parent.width-230)/4
         spacing: 10
         iconSource: "qrc:/images/images/import.png"
         text: qsTr("IMPORT WORK ORDER")
-        pixelSize: 20
+        pixelSize: 16
         clip: true
         textColor: "white"
         onClicked: {
@@ -382,7 +399,7 @@ Item {
         spacing: 10
         iconSource: "qrc:/images/images/OK.png"
         text: qsTr("OK")
-        pixelSize: 20
+        pixelSize: 16
         clip: true
         textColor: "white"
         onClicked: {
