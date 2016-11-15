@@ -6,10 +6,11 @@
 #include "BransonSerial.h"
 #include "Statistics.h"
 #include "ModRunSetup.h"
-#include <QCoreApplication>
-#include <QDebug>
+#include "M10runMode.h"
 #include "UtilityClass.h"
 #include "Interface/Interface.h"
+#include <QCoreApplication>
+#include <QDebug>
 
 M102IA* M102IA::_instance = NULL;
 M102IA* M102IA::Instance()
@@ -456,6 +457,7 @@ bool M102IA::WaitForResponseAfterSent(int TimeOut, bool *CheckResponseFlag)
     BransonSerial *_Serial = BransonSerial::Instance();
     ModRunSetup *_ModRunSetup = ModRunSetup::Instance();
     _Serial->SetCommandTimer(TimeOut);
+    *CheckResponseFlag = false;
     while (*CheckResponseFlag == false)
     {
         QCoreApplication::processEvents(); // Wait for response
@@ -984,4 +986,64 @@ void M102IA::SendCommandData(int CommandData)
         tmpMsgBox.func_ptr = NULL;
         _Interface->cMsgBox(&tmpMsgBox);
     }
+}
+
+bool M102IA::SetIAWidth(int WidthSet, bool SettingCheck)
+{
+    //This function sends the width for calibration.
+    //Called during loading a preset or when Width alibration is done.
+    //Returns error status
+    bool Done = false;
+    bool bResult = false;            //Assume failure
+    M2010* _M2010 = M2010::Instance();
+    M10runMode* _M10runMode = M10runMode::Instance();
+    ModRunSetup* _ModRunSetup = ModRunSetup::Instance();
+    BransonSerial* _SerialPort = BransonSerial::Instance();
+    InterfaceClass* _Interface = InterfaceClass::Instance();
+    //This command is ignored if the safety cover does not exist
+    //Aux Motion Control, Close Safety Cover
+
+    if (_M2010->Machine == Welder)
+    {
+          bResult = true;
+          return bResult;
+    }
+    //If Not StatusData.Soft_Settings.NoToolCover4SU Then _
+    //        SendIACommand IAComAuxMotion, DO_CLOSE_SAFETY
+
+    if (WidthSet == -1) WidthSet = _Interface->CurrentSplice.WeldSetting.Width;
+    _M2010->ReceiveFlags.WIDTHdata = false;
+    _M10runMode->WidthError = true;
+    SendIACommand(IAComSetWidth, WidthSet);
+    if (WidthSet == 0) SettingCheck = false;
+
+    //Wait for width data
+    Done = false;
+    _SerialPort->SetCommandTimer(3000);
+    while (Done == false)
+    {
+        QCoreApplication::processEvents(); // Wait for response
+        if (_M2010->ReceiveFlags.WIDTHdata == true) Done = true;
+        if(_SerialPort->IsCommandTimeout() == true) Done = true;
+        if(_ModRunSetup->OfflineModeEnabled == true) break;
+    }
+    _SerialPort->ResetCommandTimer();
+    //Aux Motion Control, Open Safety Cover
+    //SendIACommand IAComAuxMotion, DO_OPEN_SAFETY
+
+    if (_M2010->ReceiveFlags.WIDTHdata == false)
+    {
+        return bResult;    //Did not make it
+    }else{
+        _M2010->ReceiveFlags.WIDTHdata = false;
+    }
+
+    if (SettingCheck == true)
+    {
+          if ((WidthSet - WIDTHbuffer[0]) > M10_WIDTH_TOL) return bResult;
+          if ((WIDTHbuffer[0] - WidthSet) > M10_WIDTH_TOL) return bResult;
+    }
+    _M10runMode->WidthError = false;
+    bResult = true;
+    return bResult;
 }

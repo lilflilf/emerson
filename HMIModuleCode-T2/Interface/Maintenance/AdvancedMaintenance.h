@@ -62,7 +62,6 @@ class AdvancedMaintenance : public Maintenance
 {
     Q_OBJECT
 private:
-    static bool HornTest;
     static bool GatherTest;
     static bool AnvilTest;
     static bool Aux3Test;
@@ -72,6 +71,8 @@ private:
     static bool ToolingCoolingTest;
     static unsigned long PreviousIO;
     ThreadClass* m_Thread;
+public:
+    static bool HornTest;
 private:
     static void UpdateAnvilArm();
     static void UpdateAnvil();
