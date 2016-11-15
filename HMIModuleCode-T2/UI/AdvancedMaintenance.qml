@@ -56,7 +56,7 @@ Item {
     Column {
         anchors.left:column1.right
         anchors.top: column1.top
-        anchors.topMargin: 330
+        anchors.topMargin: 280
         anchors.leftMargin: 60
         spacing: 10
         CButton {
@@ -73,6 +73,11 @@ Item {
             height: 79
             width: 250
             text: qsTr("6-Cooling Converter")
+        }
+        CButton {
+            height: 79
+            width: 250
+            text: qsTr("7-Crash")
         }
 
     }

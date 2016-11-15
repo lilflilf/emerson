@@ -74,10 +74,45 @@ Item {
             Item {
                 width: listView.width
                 height: index == currentDir ? (dirName.height + 10 + fileNameColumn.height) : dirName.height + 10
+                Rectangle {
+                    id: rect1
+                    radius: 100
+                    width: 30
+                    height: 30
+                    color: "white"
+                    opacity: 0.5
+                    Text {
+                        anchors.centerIn: parent
+                        font.family: "arial"
+                        color: "black"
+                        text: index
+                        font.pointSize: 14
+                    }
+                    Component.onCompleted: {
+                        if (index == currentDir)
+                            rect1.opacity = 1
+                    }
+
+                }
+                Line {
+                    id: line
+                    width: 2
+                    height: parent.height - 30
+                    lineColor: "white"
+                    anchors.top: rect1.bottom
+                    anchors.horizontalCenter: rect1.horizontalCenter
+                    Component.onCompleted: {
+                        if (index == (dirModel.count - 1))
+                            line.visible = false
+                    }
+                }
+
                 Text {
                     id: dirName
                     text: fileName //qsTr("dir1")
                     color: "white"
+                    anchors.left: rect1.right
+                    anchors.leftMargin: 20
                     font.pointSize: 16
                     anchors.top: parent.top
                     font.family: "arial"
@@ -148,6 +183,11 @@ Item {
                     currentDir ++
                     currentFile = 0
                 }
+                else {
+                    currentDir = 0
+                    currentFile = 0
+                }
+
             }
         }
         CButton {
