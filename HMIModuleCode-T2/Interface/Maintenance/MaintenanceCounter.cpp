@@ -5,17 +5,17 @@ MaintenanceCounter::MaintenanceCounter()
 
 }
 
-void MaintenanceCounter::_start()
+bool MaintenanceCounter::_start()
 {
-
+    return true;
 }
 
-void MaintenanceCounter::_stop()
+bool MaintenanceCounter::_stop()
 {
-
+    return true;
 }
 
-void MaintenanceCounter::_execute(int funCode)
+bool MaintenanceCounter::_execute(int funCode)
 {
-
+    return true;
 }

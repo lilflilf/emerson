@@ -16,33 +16,58 @@ Item {
         spacing: 10
         z: 10
         CButton {
+            id: part
             width: column.width
             height: 79
             textColor: "white"
             text: qsTr("Part")
+            opacity: 0.2
             onClicked: {
+                if (splice.opacity == 0.2) {
+                    splice.opacity = 1
+                    part.opacity = 0.2
+                } else if (wire.opacity == 0.2) {
+                    wire.opacity = 1
+                    part.opacity = 0.2
+                }
                 headRepeater.model = partTitleModel
                 viewLib.count = partTitleModel.count
                 listView.model = partModel
             }
         }
         CButton {
+            id: splice
             width: column.width
             height: 79
             textColor: "white"
             text: qsTr("Splice")
             onClicked: {
+                if (part.opacity == 0.2) {
+                    part.opacity = 1
+                    splice.opacity = 0.2
+                } else if (wire.opacity == 0.2) {
+                    wire.opacity = 1
+                    splice.opacity = 0.2
+                }
                 headRepeater.model = spliceTitleModel
                 viewLib.count = spliceTitleModel.count
                 listView.model = spliceModel
             }
         }
         CButton {
+            id: wire
             width: column.width
             height: 79
             textColor: "white"
             text: qsTr("Wire")
             onClicked: {
+                if (part.opacity == 0.2) {
+                    part.opacity = 1
+                    wire.opacity = 0.2
+                } else if (splice.opacity == 0.2) {
+                    splice.opacity = 1
+                    wire.opacity = 0.2
+                }
                 headRepeater.model = wireTitleModel
                 viewLib.count = wireTitleModel.count
                 listView.model = wireModel

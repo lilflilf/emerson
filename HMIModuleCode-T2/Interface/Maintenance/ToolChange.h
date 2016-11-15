@@ -5,9 +5,9 @@
 class ToolChange : public Maintenance
 {
 public:
-    virtual void _start();
-    virtual void _stop();
-    virtual void _execute(int funCode);
+    virtual bool _start();
+    virtual bool _stop();
+    virtual bool _execute(int funCode);
 public:
     ToolChange();
 };

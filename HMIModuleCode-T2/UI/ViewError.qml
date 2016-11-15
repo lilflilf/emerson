@@ -92,9 +92,55 @@ Item {
             ExclusiveGroup {
                 id: searchMos
             }
+            Text {
+                id: allText
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.leftMargin: 6
+                font.family: "arial"
+                font.pixelSize: 16
+                verticalAlignment: Qt.AlignVCenter
+                width: 280
+                height: 40
+                color: "white"
+                text: qsTr("all")
+                MouseArea {
+                    anchors.top: parent.top
+                    anchors.left: parent.left
+                    anchors.leftMargin: -6
+                    width: parent.width
+                    height: parent.height
+                    onClicked: {
+                        searchArea.selectNum = -2
+                        selectCheck.checked = !selectCheck.checked
+                    }
+                }
+                Rectangle {
+                    id: backGround
+                    anchors.top: parent.top
+                    anchors.left: parent.left
+                    anchors.leftMargin: -6
+                    width: parent.width
+                    height: parent.height
+                    color: "black"
+                    opacity: 0//opacityValue
+                    RadioButton {
+                        id: selectCheck
+                        exclusiveGroup: searchMos
+                        visible: false
+                        onCheckedChanged: {
+                            if (checked)
+                                backGround.opacity = 0.3
+                            else
+                                backGround.opacity = 0
+                        }
+                    }
+                }
+            }
+
             ListView {
                 id: searchList
-                anchors.top: parent.top
+                anchors.top: allText.bottom
                 anchors.left: parent.left
                 width: parent.width
                 anchors.bottom: parent.bottom
@@ -154,6 +200,9 @@ Item {
                     if (searchArea.selectNum != -1) {
                         searchArea.visible = false
                         workOrderName.text = testModel.get(searchArea.selectNum).name
+                    } else if (searchArea.selectNum == -2) {
+                        searchArea.visible = false
+                        workOrderName.text = "All"
                     }
                 }
             }
@@ -175,7 +224,7 @@ Item {
             anchors.top: title2.bottom
             width: 250
             height: 50
-            text: qsTr("Alarm/ErrorType")
+            text: qsTr("All")
             clip: true
             onClicked: {
                 searchArea.visible = true

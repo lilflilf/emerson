@@ -2,6 +2,14 @@
 #define CALIBRATION_H
 
 #include "Maintenance.h"
+#define SAFETYOPEN 0x02
+enum CALIBRATE
+{
+    WIDTH_CALIBRATE,
+    HEIGHT_CALIBRATE,
+    AMPLITUDE_CALIBRATE,
+};
+
 class Calibration : public Maintenance
 {
     Q_OBJECT
@@ -10,9 +18,9 @@ private:
     void HeightCalibration();
     void HornCalibration();
 public:
-    virtual void _start();
-    virtual void _stop();
-    virtual void _execute(int funCode);
+    virtual bool _start();
+    virtual bool _stop();
+    virtual bool _execute(int funCode);
 public:
     explicit Calibration();
 

@@ -5,17 +5,17 @@ ToolChange::ToolChange()
 
 }
 
-void ToolChange::_start()
+bool ToolChange::_start()
 {
-
+    return true;
 }
 
-void ToolChange::_stop()
+bool ToolChange::_stop()
 {
-
+    return true;
 }
 
-void ToolChange::_execute(int funCode)
+bool ToolChange::_execute(int funCode)
 {
-
+    return true;
 }
