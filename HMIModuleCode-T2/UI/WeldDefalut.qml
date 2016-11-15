@@ -112,7 +112,7 @@ Item {
         anchors.topMargin: 20
         anchors.left: parent.left
         anchors.leftMargin: 20
-        font.family: "arail"
+        font.family: "arial"
         font.pixelSize: 20
         color: "white"
         text: qsTr("Unit Conversion")
@@ -125,7 +125,7 @@ Item {
         font.family: "arial"
         font.pixelSize: 16
         color: "white"
-        text: qsTr("-Cross Section\n-Psi/Bar\n-Imperical/Metric")
+        text: qsTr("-Cross Section\n-Psi/Bar\n-Inch/mm²")
     }
     Switch2 {
         id: awg
@@ -133,8 +133,8 @@ Item {
         anchors.top: conversion.bottom
         width: (parent.width-40)/6+40
         height: 50
-        textLeft: qsTr("AWG")
-        textRight: qsTr("MM2")
+        textLeft: qsTr("Imperical")
+        textRight: qsTr("Metric")
         state: "right"
         clip: true
     }
