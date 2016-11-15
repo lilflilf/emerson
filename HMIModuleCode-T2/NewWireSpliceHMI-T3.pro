@@ -36,7 +36,8 @@ SOURCES += main.cpp \
     Interface/Maintenance/ToolChange.cpp \
     Interface/Maintenance/AdvancedMaintenance.cpp \
     Interface/Maintenance/Calibration.cpp \
-    Interface/Maintenance/MaintenanceCounter.cpp
+    Interface/Maintenance/MaintenanceCounter.cpp \
+    DataBase/DBMaintenanceLogTable.cpp
 
 RESOURCES += qml.qrc
 
@@ -82,7 +83,9 @@ HEADERS += \
     Interface/Maintenance/AdvancedMaintenance.h \
     Interface/Maintenance/Calibration.h \
     Interface/Maintenance/MaintenanceCounter.h \
-    Interface/Maintenance/Maintenance.h
+    Interface/Maintenance/Maintenance.h \
+    Interface/Maintenance/MaintenanceLog.h \
+    DataBase/DBMaintenanceLogTable.h
 
 DISTFILES += \
     UI/displayChinese_zh_CN.qm \

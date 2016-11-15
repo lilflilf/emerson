@@ -85,8 +85,8 @@ Item {
     Item {
         id: mainMenu
         property alias mainModel: mainModel.model
-        width: 150
-        height: 240
+        width: 232
+        height: 300
         anchors.top: btn.bottom
         anchors.left: btn.left
         visible: btn.isCheck ? true : false
@@ -118,7 +118,7 @@ Item {
                 Item {
                     id: item
                     width: parent.width
-                    height: 40
+                    height: 50
                     property bool check: false
                     property alias background: rec.opacity
                     Item {
@@ -126,7 +126,7 @@ Item {
                         Rectangle {
                             id: rec
                             anchors.fill: parent
-                            color: "black"
+                            color: "#12648d"
                             opacity: 0
                             RadioButton {
                                 id: mainMenuCheck
@@ -139,26 +139,26 @@ Item {
                                             creatMenu.visible = true
                                             creatMenu.childModel = null
                                             creatMenu.childModel = creatMenuList
-                                            creatMenu.height = creatMenuList.count * 40
+                                            creatMenu.height = creatMenuList.count * 50
                                         }
                                         else if (index == 3) {
                                             creatMenu.visible = true
                                             creatMenu.childModel = null
                                             creatMenu.childModel = maintenanceList
-                                            creatMenu.height = maintenanceList.count * 40
+                                            creatMenu.height = maintenanceList.count * 50
 
                                         }
                                         else if (index == 4) {
                                             creatMenu.visible = true
                                             creatMenu.childModel = null
                                             creatMenu.childModel = viewDataList
-                                            creatMenu.height = viewDataList.count * 40
+                                            creatMenu.height = viewDataList.count * 50
                                         }
                                         else if (index == 5) {
                                             creatMenu.visible = true
                                             creatMenu.childModel = null
                                             creatMenu.childModel = settingList
-                                            creatMenu.height = settingList.count * 40
+                                            creatMenu.height = settingList.count * 50
                                         }
 //                                        else if (index == 1) {
 //                                            btn.isCheck = false
@@ -192,7 +192,7 @@ Item {
                             anchors.centerIn: parent
                             text: qsTr(menuName)//qsTr("Creat/Edit")
                             color: "white"
-                            font.pointSize: 14
+                            font.pointSize: 20
                             font.family: "arial"
                         }
                         MouseArea {
@@ -254,8 +254,8 @@ Item {
 
     Item {
         id: creatMenu
-        width: 200
-        height: 80
+        width: 240
+        height: 100
         anchors.top: btn.bottom
         anchors.left: mainMenu.right
         anchors.leftMargin: 5
@@ -278,7 +278,7 @@ Item {
                 Item {
                     id: itemChild
                     width: parent.width
-                    height: 40
+                    height: 50
                     property bool check: false
                     property alias background: childRec.opacity
                     Item {
@@ -286,14 +286,14 @@ Item {
                         Rectangle {
                             id: childRec
                             anchors.fill: parent
-                            color: "black"
+                            color: "#12648d"
                             opacity: 0
                         }
                         Text {
                             anchors.centerIn: parent
                             text: menuKey //qsTr("Creat New")//qsTr("Creat/Edit")
                             color: "white"
-                            font.pointSize: 14
+                            font.pointSize: 18
                             font.family: "arial"
                         }
                         MouseArea {

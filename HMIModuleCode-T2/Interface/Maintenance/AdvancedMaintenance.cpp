@@ -2,6 +2,8 @@
 #include "Modules/M2010.h"
 #include "Modules/M102IA.h"
 #include "Interface/Interface.h"
+#include "Interface/Maintenance/MaintenanceLog.h"
+#include "DataBase/DBMaintenanceLogTable.h"
 #include <QDebug>
 
 bool AdvancedMaintenance::HornTest = false;
@@ -41,25 +43,44 @@ bool AdvancedMaintenance::_stop()
 bool AdvancedMaintenance::_execute(int funCode)
 {
     bool bResult = true;
+    DBMaintenanceLogTable* _MaintenanceLog =
+            DBMaintenanceLogTable::Instance();
+    MaintenanceLogElement MaintenanceLog;
+    InterfaceClass* _Interface = InterfaceClass::Instance();
+    MaintenanceLog.MaintenanceType = MaintenanceTypeString[ADVMAINTAIN];
+    MaintenanceLog.OperatorID = _Interface->CurrentOperator.OperatorID;
+    MaintenanceLog.CreatedDate = QDateTime::currentDateTime().toTime_t();
     switch(funCode)
     {
     case ANVILARMCLICK:
         AnvilArm_Click();
+        MaintenanceLog.MaintenanceMsg = MaintenanceMessageString[ANVILARM_MOVE];
+        _MaintenanceLog->InsertRecordIntoTable(&MaintenanceLog);
         break;
     case ANVILCLICK:
         Anvil_Click();
+        MaintenanceLog.MaintenanceMsg = MaintenanceMessageString[ANVIL_MOVE];
+        _MaintenanceLog->InsertRecordIntoTable(&MaintenanceLog);
         break;
     case GATHERCLICK:
         Gather_Click();
+        MaintenanceLog.MaintenanceMsg = MaintenanceMessageString[GATHER_MOVE];
+        _MaintenanceLog->InsertRecordIntoTable(&MaintenanceLog);
         break;
     case CUTTERCLICK:
         Cutter_Click();
+        MaintenanceLog.MaintenanceMsg = MaintenanceMessageString[CUTTER_MOVE];
+        _MaintenanceLog->InsertRecordIntoTable(&MaintenanceLog);
         break;
     case CRASHCLICK:
         Crash_Click();
+        MaintenanceLog.MaintenanceMsg = MaintenanceMessageString[CRASH_MOVE];
+        _MaintenanceLog->InsertRecordIntoTable(&MaintenanceLog);
         break;
     case SAFETYCLICK:
         Safety_Click();
+        MaintenanceLog.MaintenanceMsg = MaintenanceMessageString[SAFETY_MOVE];
+        _MaintenanceLog->InsertRecordIntoTable(&MaintenanceLog);
         break;
     case CONVERTERCOOLINGCLICK:
         ConverterCooling_Click();
