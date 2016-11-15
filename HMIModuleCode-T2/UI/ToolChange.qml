@@ -148,6 +148,11 @@ Item {
                     currentDir ++
                     currentFile = 0
                 }
+                else {
+                    currentDir = 0
+                    currentFile = 0
+                }
+
             }
         }
         CButton {

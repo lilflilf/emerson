@@ -130,6 +130,8 @@ Item {
             clip: true
             delegate: listDelegate
         }
+//        list << "PartId" << "PartName" << "DateCreated" << "OperatorName" << "TotalSplices" << "ProcessMode" << "#ofWorkstation" << "#ofSplicesperWorkstation" << "Rows" << "Columns" << "MaxSplicesPerZone";
+
         Component {
             id: listDelegate
             Item {
@@ -144,7 +146,7 @@ Item {
                     horizontalAlignment: Qt.AlignLeft
                     width: parent.width/4
                     elide: Text.ElideRight
-                    text: name
+                    text: PartName
                     clip: true
                     color: "white"
                     font.pointSize: 10
@@ -161,7 +163,7 @@ Item {
                     anchors.leftMargin: 6
                     horizontalAlignment: Qt.AlignCenter
                     width: parent.width/4
-                    text: date
+                    text: DateCreated
                     clip: true
                     color: "white"
                     font.pointSize: 10
@@ -175,7 +177,7 @@ Item {
                     anchors.leftMargin: 14
                     horizontalAlignment: Qt.AlignCenter
                     width: parent.width/7
-                    text: totalSplices
+                    text: TotalSplices
                     clip: true
                     color: "white"
                     font.pointSize: 10
@@ -189,7 +191,7 @@ Item {
                     anchors.leftMargin: 14
                     horizontalAlignment: Qt.AlignCenter
                     width: parent.width/7
-                    text: type
+                    text: ProcessMode
                     color: "white"
                     clip: true
                     font.pointSize: 10
@@ -203,7 +205,7 @@ Item {
                     anchors.leftMargin: 18
                     horizontalAlignment: Qt.AlignCenter
                     width: parent.width/7
-                    text: count
+                    text: ProcessMode
                     color: "white"
                     clip: true
                     font.pointSize: 10
@@ -270,7 +272,7 @@ Item {
             textColor: "white"
             onClicked: {
                 if (selectIndex != -1)
-                    signalAddExistSelectClick(listModel.getPartValue(selectIndex,"partId"),listModel.getPartValue(selectIndex,"name"))
+                    signalAddExistSelectClick(listModel.getValue(selectIndex,"PartId"),listModel.getValue(selectIndex,"PartName"))
             }
         }
 

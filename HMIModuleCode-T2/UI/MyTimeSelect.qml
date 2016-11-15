@@ -2,10 +2,10 @@ import QtQuick 2.0
 import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles 1.4
 
-Button {
+CButton {
     id: timeSelect
     text: "00:00:00"
-
+    height: 40
     onClicked: {
         time.visible = !time.visible
         mint.visible = !mint.visible
@@ -57,6 +57,7 @@ Button {
         highlightRangeMode: ListView.StrictlyEnforceRange;
         preferredHighlightBegin: height / 3;
         preferredHighlightEnd: height / 3;
+        clip: true;
         delegate: Text {
             id: modelRect2
             height: 30

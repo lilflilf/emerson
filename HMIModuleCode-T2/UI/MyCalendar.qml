@@ -1,19 +1,23 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles 1.4
-
-Button
+import QtQuick.Layouts 1.0
+import QtQuick.Window 2.2
+CButton
 {
     id: timeSelect
     property string dateValue
     onClicked: calendar.visible = !calendar.visible
+    height: 40
 
     Calendar{
         id: calendar
         width: 500
         height: 500
-        anchors.topMargin: 0
-        anchors.top: parent.bottom
+        x: (Screen.width - 500) / 2
+        y: 0
+//        anchors.topMargin: 0
+//        anchors.top: parent.bottom
         visible: false
         activeFocusOnTab: true
         z: 10
@@ -61,15 +65,74 @@ Button
                     anchors.right: parent.right
                 }
             }
-//            dayOfWeekDelegate: Rectangle {
+//            background: Rectangle {
+//                color: "#555"
 //                anchors.fill: parent
-//                color: "black"
-//                Label {
-//                    text: styleData.date.getDate()
-//                    anchors.centerIn: parent
-//                    color: styleData.valid ? "white" : "grey"
-//                }
 //            }
+
+            dayOfWeekDelegate: Item {
+                width: 50
+                height: 30
+                Rectangle {
+                    anchors.fill: parent
+                    color: "#555"
+                }
+
+                Label {
+                    text: control.__locale.dayName(styleData.dayOfWeek, control.dayOfWeekFormat) //styleData.dayOfWeek.getDate() //styleData.date.getDate()
+                    anchors.centerIn: parent
+                    color: "white"
+                }
+            }
+            navigationBar: Rectangle {
+                height: 33//Math.round(TextSingleton.implicitHeight * 2.73)
+                color: "#555"
+
+                Rectangle {
+                    color: Qt.rgba(1,1,1,0.6)
+                    height: 1
+                    width: parent.width
+                }
+
+                Rectangle {
+                    anchors.bottom: parent.bottom
+                    height: 1
+                    width: parent.width
+                    color: "#ddd"
+                }
+                Button {
+                    id: previousMonth
+                    width: 51 //parent.height
+                    height: 33 //width
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.left: parent.left
+                    iconSource: "qrc:/images/images/you.png" //"images/leftanglearrow.png"
+                    onClicked: control.showPreviousMonth()
+                }
+                Label {
+                    id: dateText
+                    text: styleData.title
+                    elide: Text.ElideRight
+                    horizontalAlignment: Text.AlignHCenter
+                    font.pixelSize: 20
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.left: previousMonth.right
+                    anchors.leftMargin: 2
+                    anchors.right: nextMonth.left
+                    anchors.rightMargin: 2
+                    color: "white"
+                    font.family: "arial"
+                }
+                Button {
+                    id: nextMonth
+                    width: 51 //parent.height
+                    height: 33 //width
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                    iconSource: "qrc:/images/images/zuo.png" //"images/rightanglearrow.png"
+                    onClicked: control.showNextMonth()
+                }
+            }
         }
     }
     onDateValueChanged: {

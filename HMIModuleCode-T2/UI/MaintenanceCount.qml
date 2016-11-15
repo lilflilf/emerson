@@ -120,7 +120,7 @@ Item {
                 Image {
                     width: 150
                     height: 60
-                    source: "file:///c:/ToolChangeImage/group2/wiredemo.jpg"
+                    //source: "file:///c:/ToolChangeImage/group2/wiredemo.jpg"
                 }
                 MyLineEdit {
                     width: 150

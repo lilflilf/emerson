@@ -369,6 +369,9 @@ Item {
             height: 79
             textColor: "white"
             text: qsTr("Edit Details")
+            onClicked: {
+                root.menuInit(0)
+            }
         }
         CButton {
             width: 250
