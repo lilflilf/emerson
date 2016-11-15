@@ -387,7 +387,7 @@ Item {
         anchors.bottomMargin: 30
         anchors.right: parent.right
         anchors.rightMargin: 20
-        spacing: 20
+        spacing: 18
         height: 79
         CButton {
             width: 250
@@ -396,6 +396,14 @@ Item {
             text: qsTr("Edit Details")
             onClicked: {
                 root.menuInit(0)
+            }
+        }
+        CButton {
+            width: 250
+            height: 79
+            textColor: "white"
+            text: qsTr("Delete")
+            onClicked: {
             }
         }
         CButton {

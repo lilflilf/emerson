@@ -12,6 +12,10 @@ Item {
     signal titleTextChanged(var myTitleText)
     width: Screen.width
     height: Screen.height
+    Image {
+        anchors.fill: parent
+        source: "qrc:/images/images/bg.png"
+    }
     Connections {
         target: loader.item
         onSignalSaveSplice: {
@@ -80,7 +84,7 @@ Item {
             id: splice
             Rectangle {
                 anchors.fill: parent
-                color: "#48484A"
+                color: "#052a40"
             }
             Label {
                 id: listname
@@ -115,7 +119,7 @@ Item {
                 anchors.top: workname.bottom
                 anchors.topMargin: 4
                 width: parent.width
-                height: 10
+                height: 2
                 color: "#585858"
             }
             SpliceListView {
@@ -123,6 +127,7 @@ Item {
                 listModel: bIsEdit ? listModel : listModel2
                 anchors.top: tipsRec.bottom
                 anchors.topMargin: 6
+                anchors.bottom: tipsRec2.top
                 bIsWorkShow: !bIsBasic
                 onCurrentSelecte: {
                     listModel.set(index,{"nameValue":"gggggggg"})
@@ -136,22 +141,26 @@ Item {
             }
             Rectangle {
                 id: tipsRec2
-                anchors.top: spliceList.bottom
-                anchors.topMargin: 4
+//                anchors.top: spliceList.bottom
+//                anchors.topMargin: 4
+                anchors.bottom: addNewSplice.top
+                anchors.bottomMargin: 5
                 width: parent.width
-                height: 10
+                height: 2
                 color: "#585858"
             }
             CButton {
                 id: addNewSplice
-                anchors.top: tipsRec2.bottom
-                anchors.topMargin: 10
+//                anchors.top: tipsRec2.bottom
+//                anchors.topMargin: 10
+                anchors.bottom: addExitSplice.top
+//                anchors.bottomMargin: 5
                 anchors.left: parent.left
                 anchors.leftMargin: 6
                 text: "+ ADD NEW SPLICE"
                 textColor: "white"
                 width: parent.width - 12
-                height: 30
+                height: 79
                 pointSize: 16
                 onClicked: {
                     loader.source = "qrc:/UI/CreatWire.qml"
@@ -161,14 +170,16 @@ Item {
 
             CButton {
                 id: addExitSplice
-                anchors.top: addNewSplice.bottom
-                anchors.topMargin: 10
+//                anchors.top: addNewSplice.bottom
+//                anchors.topMargin: 10
+                anchors.bottom: upload.top
+//                anchors.bottomMargin: 5
                 anchors.left: parent.left
                 anchors.leftMargin: 6
                 text: "+ ADD EXITING SPLICE"
                 textColor: "white"
                 width: parent.width - 12
-                height: 30
+                height: 79
                 pointSize: 16
                 onClicked: {
                     backGround.visible = true
@@ -178,28 +189,32 @@ Item {
             }
             CButton {
                 id: upload
-                anchors.top: addExitSplice.bottom
-                anchors.topMargin: 10
+//                anchors.top: addExitSplice.bottom
+//                anchors.topMargin: 10
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: 5
                 anchors.left: parent.left
                 anchors.leftMargin: 6
                 text: "IMPORT SPLICE"
                 textColor: "white"
-                width: parent.width - 12
-                height: 30
+                width: parent.width / 2 - 12
+                height: 79
                 pointSize: 16
                 onClicked: {
                 }
             }
             CButton {
                 id: save
-                anchors.top: upload.bottom
-                anchors.topMargin: 10
-                anchors.left: parent.left
-                anchors.leftMargin: 6
+//                anchors.top: upload.bottom
+//                anchors.topMargin: 10
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: 5
+                anchors.right: parent.right
+                anchors.rightMargin: 6
                 text: "SAVE PART"
                 textColor: "white"
-                width: parent.width - 12
-                height: 30
+                width: parent.width / 2 - 12
+                height: 79
                 pointSize: 16
                 onClicked: {
                 }
@@ -210,7 +225,7 @@ Item {
             id: settting
             Rectangle {
                 anchors.fill: parent
-                color: "#48484a"
+                color: "#052a40"
             }
             Label {
                 id: processMode
@@ -419,17 +434,50 @@ Item {
         id: tabBar
         currentIndex: swipeView.currentIndex
         anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.leftMargin: 10
+        height: 64
         TabButton {
-            font.family: "arial"
-            font.pointSize: 16
-            text: qsTr("SPLICE")
-            opacity: 0.33
+            height: parent.height
+            Rectangle {
+                anchors.fill: parent
+                color:  "#052a40"  //tabBar.currentIndex == 0 ? "black" : "#48484a"
+            }
+            Text {
+                anchors.centerIn: parent
+                font.family: "arial"
+                font.pointSize: 17.5
+                text: qsTr("SPLICE")
+                color: tabBar.currentIndex == 0 ? "white" : "#969ea5"
+            }
+            Rectangle {
+                width: parent.width
+                height: 6
+                color:  "#F79428"
+                anchors.bottom: parent.bottom
+                visible: tabBar.currentIndex == 0 ? true : false
+            }
         }
         TabButton {
-            font.family: "arial"
-            font.pointSize: 16
-            text: qsTr("SETTINGS")
-            opacity: 0.33
+            height: parent.height
+            Rectangle {
+                anchors.fill: parent
+                color:  "#052a40"
+            }
+            Text {
+                anchors.centerIn: parent
+                font.family: "arial"
+                font.pointSize: 17.5
+                text: qsTr("SETTINGS")
+                color: tabBar.currentIndex == 1 ? "white" : "#969ea5"
+            }
+            Rectangle {
+                width: parent.width
+                height: 6
+                color:  "#F79428"
+                anchors.bottom: parent.bottom
+                visible: tabBar.currentIndex == 1 ? true : false
+            }
         }
     }
 
@@ -447,9 +495,9 @@ Item {
         ListModel {
             id: workModel
         }
-        Rectangle {
+        Image {
             anchors.fill: parent
-            color: "#686a6c"
+            source: "qrc:/images/images/bg.png"
         }
         MyLineEdit {
             id: edit6
@@ -635,12 +683,12 @@ Item {
         CButton {
             id: editSplice
             anchors.top: boardlayout.bottom
-            anchors.topMargin: parent.height/10-24
+            anchors.topMargin: parent.height/10-64
             anchors.right: boardlayout.right
             text: "EDIT SPLICE"
             textColor: "white"
             width: 200
-            height: 45
+            height: 79
             pointSize: 16
             onClicked: {
             }
@@ -648,12 +696,12 @@ Item {
         CButton {
             id: testSplice
             anchors.top: editSplice.bottom
-            anchors.topMargin: 18
+            anchors.topMargin: 5
             anchors.right: boardlayout.right
             text: "TEST SPLICE"
             textColor: "white"
             width: 200
-            height: 45
+            height: 79
             pointSize: 16
             onClicked: {
             }

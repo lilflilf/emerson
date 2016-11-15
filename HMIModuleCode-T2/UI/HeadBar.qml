@@ -215,6 +215,20 @@ Item {
                             }
                         }
                     }
+                    Image {
+                        source: "qrc:/images/images/right.png"
+                        anchors.right: parent.right
+                        anchors.rightMargin: 20
+                        anchors.verticalCenter: parent.verticalCenter
+                        visible: index == 1 || index == 2 ? false : true
+                    }
+                    Line {
+                        width: parent.width
+                        height: 2
+                        anchors.bottom: parent.bottom
+                        lineColor: "#12648d"
+                        opacity: 0.3
+                    }
                 }
             }
         }
@@ -385,6 +399,13 @@ Item {
                                     childRec.opacity = 0
                             }
                         }
+                    }
+                    Line {
+                        width: parent.width
+                        height: 2
+                        anchors.bottom: parent.bottom
+                        lineColor: "#12648d"
+                        opacity: 0.3
                     }
                 }
             }
