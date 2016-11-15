@@ -147,7 +147,7 @@ Item {
     }
     Item {
         id: searchArea
-        property int selectNum: -1
+        property int selectNum: -2
         property int buttonIndex: -1
         anchors.left: seach.left
         width: 280
@@ -173,7 +173,7 @@ Item {
             width: 280
             height: 40
             color: "white"
-            text: qsTr("all")
+            text: qsTr("All")
             MouseArea {
                 anchors.top: parent.top
                 anchors.left: parent.left
@@ -193,10 +193,11 @@ Item {
                 width: parent.width
                 height: parent.height
                 color: "black"
-                opacity: 0//opacityValue
+                opacity: 0.3//opacityValue
                 RadioButton {
                     id: selectCheck
                     exclusiveGroup: searchMos
+                    checked: true
                     visible: false
                     onCheckedChanged: {
                         if (checked)
@@ -266,7 +267,7 @@ Item {
             text: qsTr("OK")
             iconSource: "qrc:/images/images/OK.png"
             onClicked: {
-                if (searchArea.selectNum != -1) {
+                if (searchArea.selectNum != -2) {
                     searchArea.visible = false
                     switch(searchArea.buttonIndex) {
                     case 1:
@@ -281,7 +282,7 @@ Item {
                     default:
                         break;
                     }
-                } else if (searchArea.selectNum == -2) {
+                } else {
                     switch(searchArea.buttonIndex) {
                     case 1:
                         workOrderName.text = "All"
@@ -295,6 +296,7 @@ Item {
                     default:
                         break;
                     }
+                    searchArea.visible = false
                 }
             }
         }

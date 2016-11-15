@@ -77,7 +77,7 @@ Item {
         }
         Item {
             id: searchArea
-            property int selectNum: -1
+            property int selectNum: -2
             property int buttonIndex: -1
             anchors.left: seach.left
             width: 280
@@ -103,7 +103,7 @@ Item {
                 width: 280
                 height: 40
                 color: "white"
-                text: qsTr("all")
+                text: qsTr("All")
                 MouseArea {
                     anchors.top: parent.top
                     anchors.left: parent.left
@@ -123,11 +123,12 @@ Item {
                     width: parent.width
                     height: parent.height
                     color: "black"
-                    opacity: 0//opacityValue
+                    opacity: 0.3//opacityValue
                     RadioButton {
                         id: selectCheck
                         exclusiveGroup: searchMos
                         visible: false
+                        checked: true
                         onCheckedChanged: {
                             if (checked)
                                 backGround.opacity = 0.3
@@ -197,10 +198,10 @@ Item {
                 text: qsTr("OK")
                 iconSource: "qrc:/images/images/OK.png"
                 onClicked: {
-                    if (searchArea.selectNum != -1) {
+                    if (searchArea.selectNum != -2) {
                         searchArea.visible = false
                         workOrderName.text = testModel.get(searchArea.selectNum).name
-                    } else if (searchArea.selectNum == -2) {
+                    } else {
                         searchArea.visible = false
                         workOrderName.text = "All"
                     }
