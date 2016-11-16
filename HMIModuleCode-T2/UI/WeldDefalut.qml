@@ -298,6 +298,8 @@ Item {
                     if (index == 1 || index == 5 || index == 9) {
                         localbordercolor = Qt.rgba(0,0,0,0)
                         recBackGround = Qt.rgba(0,0,0,0)
+                    } else {
+                        localbordercolor = "#05f91c"
                     }
                 }
 
