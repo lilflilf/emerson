@@ -40,6 +40,8 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("weldHistoryModel",hmiAdaptor->weldHistoryModel);
     engine.rootContext()->setContextProperty("alarmModel",hmiAdaptor->alarmModel);
 
+
+
 //    DataBaseTest *_TestPtr = new DataBaseTest();
 //    _TestPtr->TestMapJsonToString();
 //    _TestPtr->TestStringJsonToMap();
@@ -73,11 +75,5 @@ int main(int argc, char *argv[])
 //    _TestPtr->TestQueryOnlyTimeWireTable();
     Maintenance *_Maintenance = new AdvancedMaintenance();
     _Maintenance->_start();
-
-    QString str = "10";
-    int ret = 0;
-    bool ok;
-    ret = str.toInt(&ok,16);
-    qDebug() << "xcvvvvv" << ret;
     return app.exec();
 }

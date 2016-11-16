@@ -388,7 +388,7 @@ Item {
 
     Text {
         id: title3
-        text: qsTr("Splice Part Number")
+        text: qsTr("Part Number")
         font.family: "arial"
         color: "white"
         font.pointSize: 16
@@ -409,10 +409,20 @@ Item {
             searchArea.visible = true
         }
     }
+    Text {
+        id: title99
+        text: qsTr("Splice Number")
+        font.family: "arial"
+        color: "white"
+        font.pointSize: 16
+        anchors.top: partName.bottom
+        anchors.left: seach.left
+        anchors.topMargin: 15
+    }
     CButton {
         id: spliceName
         anchors.left: title3.left
-        anchors.top: partName.bottom
+        anchors.top: title99.bottom
         width: 250
         height: 50
         text: qsTr("All")

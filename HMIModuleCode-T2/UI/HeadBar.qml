@@ -450,7 +450,7 @@ Item {
                 dialog.visible = true
                 okButton.visible = false
                 helpTitle.visible = true
-                helpTitle.text = "Current User: Jerry Wang"
+                helpTitle.text = "Current Operator: Jerry Wang"
                 personColumn.visible = true
                 background.opacity = 0.5
             }
