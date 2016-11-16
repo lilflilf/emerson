@@ -288,6 +288,7 @@ Item {
                 height: (formulaSetting.height-20)/3
                 headTitle: qsTr(formulaHead)
                 centervalue: qsTr(formulaValue)
+                localbordercolor : (index == 1 || index == 5 || index == 9) ? Qt.rgba(0,0,0,0) : "#0079c1"
                 onMouseAreaClick: {
                     if (index != 1 && index != 5 && index != 9) {
                         localbordercolor = "#05f91c"

@@ -4,12 +4,9 @@ import QtQuick.Layouts 1.0
 import QtQuick.Window 2.2
 import ALPaintedItem 1.0
 
-//ApplicationWindow {
 Window {
     id: root
     visible: true
-//    width: Screen.width
-//    height: Screen.height
     title: qsTr("NewWireSplice")
     flags: Qt.FramelessWindowHint|Qt.Window
 
@@ -99,26 +96,21 @@ Window {
         root.showFullScreen()
 
     }
-//    Rectangle {
-//        anchors.fill: parent
-//        color: "#626465"
-//    }
+
     Image {
         anchors.fill: parent
         source: "qrc:/images/images/bg.png"
     }
-
+    Loader {
+        id: welcome
+        anchors.fill: parent
+        source: "qrc:/UI/Welcome.qml"
+    }
     CStatusBar {
         id: statusBar
+        visible: false
         height: 25//Screen.height * 0.03
     }
-
-//    Content {
-//        z:3
-//        anchors.top: headBar.bottom
-//        width: Screen.width
-//        height: Screen.height
-//    }
 
     Loader {
         id: contentLoader
@@ -138,58 +130,20 @@ Window {
             headBar.titleText = myTitleText
         }
     }
+    Connections {
+        target: welcome.item
+        onPassWordInputOk: {
+            headBar.visible = true
+            statusBar.visible = true
+            welcome.source = ""
+        }
+    }
 
     HeadBar {
         id: headBar
-        height: 79//Screen.height * 0.07
+        visible: false
+        height: 79
         anchors.top: statusBar.bottom
         z: 10
     }
-
-//    CButton {
-//        id: testButton
-//        width: 300
-//        height: 100
-//        onClicked: {
-//            //alpaint.clear()
-//            alpaint.draw()
-//        }
-//    }
-
-//    Canvas {
-//        id: mycanvas
-//        width: Screen.width
-//        height: Screen.height
-//        onPaint: {
-//            var ctx = getContext("2d");
-//            ctx.fillStyle = Qt.rgba(1, 0, 0, 1);
-//            ctx.fillRect(0, 0, width, height);
-//        }
-//    }
-
-//    Rectangle {
-//        id:photoMarkedRoot
-//        color: "transparent"
-//        property alias painter: painter
-//        anchors.top: testButton.bottom
-//        width: Screen.width
-//        height: Screen.height
-//        Component.onCompleted: {
-//            painter.penWidth = 2//initHeight/647.0*3
-//            painter.penColor = "red"
-//            painter.init()
-//        }
-
-//        ALPaintedItem {
-//            id: painter;
-//            width: photoMarkedRoot.width
-//            height: photoMarkedRoot.height
-//            onWidthChanged: {
-//                painter.init()
-//            }
-//            onHeightChanged: {
-//                painter.init()
-//            }
-//        }
-//    }
 }
