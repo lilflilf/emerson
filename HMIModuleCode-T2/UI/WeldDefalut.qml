@@ -288,11 +288,19 @@ Item {
                 height: (formulaSetting.height-20)/3
                 headTitle: qsTr(formulaHead)
                 centervalue: qsTr(formulaValue)
-                onMouseAreaClick: {
-                    if (index != 1 && index != 5 && index != 9) {
-                        localbordercolor = "#05f91c"
+                Component.onCompleted: {
+                    if (index == 1 || index == 5 || index == 9) {
+                        localbordercolor = Qt.rgba(0,0,0,0)
+                        recBackGround = Qt.rgba(0,0,0,0)
                     }
                 }
+                onMouseAreaClick: {
+                    if (index == 1 || index == 5 || index == 9) {
+                        localbordercolor = Qt.rgba(0,0,0,0)
+                        recBackGround = Qt.rgba(0,0,0,0)
+                    }
+                }
+
             }
         }
     }

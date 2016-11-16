@@ -5,6 +5,13 @@
 #include <QObject>
 #include "tablemodel.h"
 #include "Interface/definition.h"
+#include "Interface/Maintenance/AdvancedMaintenance.h"
+#include "Interface/Maintenance/Calibration.h"
+#include "Interface/Maintenance/Maintenance.h"
+#include "Interface/Maintenance/MaintenanceCounter.h"
+#include "Interface/Maintenance/MaintenanceLog.h"
+#include "Interface/Maintenance/ToolChange.h"
+#include "Interface/interface.h"
 
 #define HMI_PRINT (qDebug() <<"HMI adapter:" << __FILE__ << __FUNCTION__ << __LINE__ << ": ")
 
@@ -16,9 +23,17 @@ class HmiAdaptor : public QObject
     Q_ENUMS(HorizontalLocation)
     Q_ENUMS(VerticalLocation)
     Q_ENUMS(VerticalPosition)
+    Q_ENUMS(BUTTONCLICK)
 public:
     explicit HmiAdaptor(QObject *parent = 0);
     Q_INVOKABLE void openFileDialog();
+    Q_INVOKABLE void advancedMaintenanceExecute(int code);
+    Q_INVOKABLE void maintenanceStart(int page);
+    Q_INVOKABLE void maintenanceStop(int page);
+    Q_INVOKABLE bool login(QString passwd);
+
+
+    InterfaceClass *interfaceClass;
 
     WorkOrderModel *workOrderModel;
     SpliceModel *spliceModel;
@@ -28,6 +43,12 @@ public:
     WeldHistoryModel *weldHistoryModel;
     AlarmModel *alarmModel;
 
+    /********Maintenance**************/
+    AdvancedMaintenance * advanceMaintenance;
+    Calibration * calibration;
+    MaintenanceCounter *maintenanceCount;
+    MaintenanceLogElement *maintenanceLog;
+    ToolChange *toolChange;
 signals:
 
 public slots:

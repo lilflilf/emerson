@@ -149,6 +149,7 @@ public slots:
     Q_INVOKABLE QVariant getOperatorValue(int index, QString key);
     Q_INVOKABLE int count();
     Q_INVOKABLE void insertValue(QString name, QString passwd);
+    Q_INVOKABLE bool login(QString passwd, OperatorElement *operatot);
 private:
     QHash<int, QByteArray> m_roleNames;
 };
