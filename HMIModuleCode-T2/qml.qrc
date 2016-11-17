@@ -93,5 +93,6 @@
         <file>images/person.png</file>
         <file>images/welcome.png</file>
         <file>images/loginbackground.png</file>
+        <file>images/close.png</file>
     </qresource>
 </RCC>

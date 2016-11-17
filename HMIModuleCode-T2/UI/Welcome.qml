@@ -63,7 +63,8 @@ Item {
                     } else {
                         mima.text += modelData
                         if (mima.text.length == 4) {
-                            passWordInputOk()
+                            if (hmiAdaptor.login(mima.text))
+                                passWordInputOk()
                         }
                     }
                 }

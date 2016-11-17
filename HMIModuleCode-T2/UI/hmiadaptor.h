@@ -25,6 +25,7 @@ class HmiAdaptor : public QObject
     Q_ENUMS(VerticalPosition)
     Q_ENUMS(BUTTONCLICK)
 public:
+
     explicit HmiAdaptor(QObject *parent = 0);
     Q_INVOKABLE void openFileDialog();
     Q_INVOKABLE void advancedMaintenanceExecute(int code);
