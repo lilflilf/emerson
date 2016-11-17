@@ -45,7 +45,6 @@ Item {
     MouseArea {
         anchors.fill: parent
         onClicked: {
-            localbordercolor = "#05f91c"
             mouseAreaClick()
         }
     }

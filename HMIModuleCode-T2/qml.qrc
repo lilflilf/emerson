@@ -52,6 +52,7 @@
         <file>UI/ViewLibrary.qml</file>
         <file>UI/ViewVersion.qml</file>
         <file>UI/BransonSetting.qml</file>
+        <file>UI/Welcome.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file>images/you.png</file>
@@ -91,5 +92,8 @@
         <file>images/help.png</file>
         <file>images/person.png</file>
         <file>images/loading.gif</file>
+        <file>images/welcome.png</file>
+        <file>images/loginbackground.png</file>
+        <file>images/close.png</file>
     </qresource>
 </RCC>

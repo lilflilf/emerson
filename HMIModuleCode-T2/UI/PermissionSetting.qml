@@ -16,16 +16,20 @@ Item {
         anchors.left: parent.left
         anchors.leftMargin: 55
         width: parent.width - 100
+        height: 50
         spacing: 10
-        Text {
+        CButton {
             anchors.verticalCenter: parent.verticalCenter
-            horizontalAlignment: Qt.AlignHCenter
             width: (parent.width-40)/5
-            color: "white"
             clip: true
             font.pointSize: 20
             font.family: "arial"
+            height: 50
             text: qsTr("Function Name")
+            onClicked: {
+                menuBackGround.visible = true
+                menuSelect.visible = true
+            }
         }
 
         MyLineEdit {
@@ -100,19 +104,104 @@ Item {
     }
     ListModel {
         id: listModel
+    }
+
+    ListModel {
+        id: menuModel
         Component.onCompleted: {
-            listModel.append({name:"Create New"})
-            listModel.append({name:"Edit Existing"})
-            listModel.append({name:"Manage Libraries"})
-            listModel.append({name:"Edit Splice"})
-            listModel.append({name:"Teach Mode"})
-            listModel.append({name:"Maintenance"})
-            listModel.append({name:"View Data"})
-            listModel.append({name:"Weld Default"})
-            listModel.append({name:"Data Communication"})
-            listModel.append({name:"Lock On Alarm"})
+            menuModel.append({name:"Create New",opacityValue:0})
+            menuModel.append({name:"Edit Existing",opacityValue:0})
+            menuModel.append({name:"Operate",opacityValue:0})
+            menuModel.append({name:"Test",opacityValue:0})
+            menuModel.append({name:"Calibration",opacityValue:0})
+            menuModel.append({name:"Tool Change",opacityValue:0})
+            menuModel.append({name:"Advanced Maintenance",opacityValue:0})
+            menuModel.append({name:"Maintenance Counter",opacityValue:0})
+            menuModel.append({name:"Maintenance log",opacityValue:0})
+            menuModel.append({name:"Word Order History",opacityValue:0})
+            menuModel.append({name:"Statistical Trend",opacityValue:0})
+            menuModel.append({name:"Error/Alarm Log",opacityValue:0})
+            menuModel.append({name:"Library",opacityValue:0})
+            menuModel.append({name:"Version Information",opacityValue:0})
+            menuModel.append({name:"Permission Setting",opacityValue:0})
+            menuModel.append({name:"Weld Defaults",opacityValue:0})
+            menuModel.append({name:"Operator Library",opacityValue:0})
+            menuModel.append({name:"Data/Communication",opacityValue:0})
+            menuModel.append({name:"Branson Setting",opacityValue:0})
         }
     }
+    Image {
+        id: menuSelect
+        anchors.top: tipsRec2.bottom
+        anchors.left: parent.left
+        anchors.leftMargin: 55
+        width: 300
+        clip: true
+        visible: false
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 24
+        source: "qrc:/images/images/bg.png"
+        z: 10
+        CButton {
+            id: sureButton
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 16
+            anchors.right: parent.right
+            width: parent.width-80
+            height: 79
+            iconSource: "qrc:/images/images/OK.png"
+            text: qsTr("OK")
+            onClicked: {
+                menuBackGround.visible = false
+                menuSelect.visible = false
+                listModel.clear()
+                for (var i = 0; i < menuModel.count; i++) {
+                    if (menuModel.get(i).opacityValue == 0.5) {
+                        listModel.append({name:menuModel.get(i).name})
+                    }
+                }
+            }
+        }
+        ListView {
+            id: menuView
+            anchors.top: parent.top
+            width: parent.width
+            clip: true
+            anchors.bottom: sureButton.top
+            anchors.bottomMargin: 24
+            model: menuModel
+            delegate: Item {
+                width: menuView.width
+                height: 40
+                Text {
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.left: parent.left
+                    anchors.leftMargin: 40
+                    font.family: "arial"
+                    font.pixelSize: 20
+                    color: "white"
+                    text: qsTr(name)
+                }
+                Rectangle {
+                    id: back
+                    anchors.fill: parent
+                    color: "black"
+                    opacity: opacityValue
+                }
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        if (menuModel.get(index).opacityValue == 0) {
+                           menuModel.set(index,{opacityValue:0.5})
+                        } else {
+                            menuModel.set(index,{opacityValue:0})
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 
     ListView {
         id: listView
@@ -292,6 +381,16 @@ Item {
         textColor: "white"
         iconSource: "qrc:/images/images/cancel.png"
         onClicked: {
+        }
+    }
+    Rectangle {
+        id: menuBackGround
+        anchors.fill: parent
+        color: "black"
+        visible: false
+        opacity: 0.5
+        MouseArea {
+            anchors.fill: parent
         }
     }
 }

@@ -2,6 +2,8 @@ import QtQuick 2.0
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.0
 import QtQuick.Window 2.2
+import QtQuick.Controls 1.4
+import QtQuick.Dialogs 1.2
 
 Item {
     id: content
@@ -217,6 +219,11 @@ Item {
 //                height: 79
                 pointSize: 16
                 onClicked: {
+                    if (edit6.inputText.length == 0) {
+                        dialog.visible = true
+                        backGround.visible = true
+                        backGround.opacity = 0.5
+                    }
                 }
             }
         }
@@ -402,31 +409,6 @@ Item {
                 onTextChange: {
                 }
             }
-//            Label {
-//                id: lab3
-//                color: "white"
-//                anchors.top: edit5.bottom
-//                anchors.topMargin: 6
-//                anchors.left: parent.left
-//                anchors.leftMargin: 6
-//                text: qsTr("UNITS")
-//                font.family: "arial"
-//                font.pointSize: 16
-//                opacity: 0.5
-//            }
-//            Switch2 {
-//                id: unitSwitch
-//                anchors.top: lab3.bottom
-//                anchors.topMargin: 12
-//                anchors.left: parent.left
-//                anchors.leftMargin: 6
-//                height: parent.height * 0.04
-//                width: parent.width * 0.6
-//                textLeft: qsTr("Imperial")
-//                textRight: qsTr("Metric")
-//                state: "left"
-//                opacity: 0.8
-//            }
         }
     }
     TabBar {
@@ -507,7 +489,7 @@ Item {
             anchors.left: boardlayout.left
 //            anchors.leftMargin: boardlayout
             width: parent.width * 0.62
-            height: 45
+            height: 43
             inputWidth: parent.width * 0.62
             inputHeight: parent.height * 0.05
             horizontalAlignment: Qt.AlignHCenter
@@ -529,36 +511,23 @@ Item {
                 anchors.fill: parent
                 color: "black"
             }
-            width: 200
+            anchors.left: edit6.right
+            anchors.leftMargin: 20
             height: 45
             pointSize: 16
             onClicked: {
+                backGround.visible = true
+                backGround.opacity = 0.5
+                template2.visible = true
             }
         }
-//        MyLineEdit {
-//            id: edit7
-//            anchors.top: edit6.bottom
-//            anchors.topMargin: 2
-//            anchors.left: parent.left
-//            anchors.leftMargin: 50
-//            width: parent.width * 0.62
-//            height: 45
-//            inputWidth: parent.width * 0.62
-//            inputHeight: parent.height * 0.05
-//            horizontalAlignment: Qt.AlignHCenter
-//            defaultText: qsTr("WORK ORDER ID")
-//            //regExp: RegExpValidator{regExp: /^[1-9]{1,2}$/}
-//            maxSize: 60
-//            clip: true
-//            onTextChange: {
-//            }
-//        }
         Text {
             id: boardText
             anchors.top: edit6.bottom
             anchors.topMargin: 24
             anchors.left: boardlayout.left
 //            anchors.leftMargin: 50
+
             color: "white"
             opacity: 0.5
             width: 100
@@ -570,7 +539,7 @@ Item {
         Text {
             id: tempText
             anchors.top:  edit6.bottom
-            anchors.topMargin: 24
+            anchors.topMargin: 14
             anchors.right: boardlayout.right
             color: "white"
             opacity: 0.5
@@ -586,6 +555,8 @@ Item {
             anchors.leftMargin: 20
             anchors.right: parent.right
             anchors.rightMargin: 20
+
+            height: Screen.height*0.53
             visible: !bIsBasic
             columns: 0
             rows: 0
@@ -746,6 +717,37 @@ Item {
             }
         }
     }
+    Image {
+        id: dialog
+        anchors.centerIn: parent
+        width: 639
+        height: 390
+        visible: false
+        source: "qrc:/images/images/dialogbg.png"
+        Text {
+            anchors.centerIn: parent
+            anchors.verticalCenterOffset: -30
+            font.family: "arial"
+            font.pixelSize: 24
+            color: "white"
+            text: qsTr("Please Input Part Name")
+        }
+        CButton {
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 15
+            anchors.horizontalCenter: parent.horizontalCenter
+            height: 60
+            width: parent.width/3
+            iconSource: "qrc:/images/images/OK.png"
+            text: qsTr("OK")
+            onClicked: {
+                dialog.visible = false
+                backGround.visible = false
+                backGround.opacity = 0
+            }
+        }
+    }
+
     Rectangle {
         id: backGround2
         anchors.fill: parent
@@ -829,6 +831,190 @@ Item {
             backGround.visible = false
             backGround.opacity = 0
             addExit.visible = false
+        }
+    }
+    Item {
+        id: template2
+        anchors.top: parent.top
+        anchors.topMargin: 50
+        anchors.right: parent.right
+        anchors.rightMargin: 10
+        width: template.width
+        height: parent.height*0.5
+        visible: false
+        Image {
+            anchors.fill: parent
+            source: "qrc:/images/images/dialogbg.png"
+        }
+        Text {
+            id: addNew
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.leftMargin: 20
+            verticalAlignment: Qt.AlignVCenter
+            height: 40
+            width: parent.width-30
+            font.pixelSize: 20
+            font.family: "arial"
+            color: "white"
+            text: qsTr("Add New")
+        }
+        Rectangle {
+            id: addNewBack
+            anchors.top: parent.top
+            anchors.left: parent.left
+            width: parent.width-30
+            height: 40
+            color: "black"
+            opacity: 0
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    addNewBack.opacity = 0.5
+                    addnewBlack.visible = true
+                    dialog.visible = true
+                }
+            }
+        }
+        ListModel {
+            id: templateModel
+            Component.onCompleted: {
+                templateModel.append({name:"GM"})
+                templateModel.append({name:"Toyota"})
+                templateModel.append({name:"Volks Wagen"})
+                templateModel.append({name:"BYD"})
+                templateModel.append({name:"BYD"})
+                templateModel.append({name:"BYD"})
+                templateModel.append({name:"BYD"})
+                templateModel.append({name:"BYD"})
+                templateModel.append({name:"BYD"})
+                templateModel.append({name:"BYD"})
+                templateModel.append({name:"BYD"})
+            }
+        }
+        Image {
+            id: scrollUp
+            anchors.top: parent.top
+            anchors.topMargin: 4
+            anchors.left: templateView.right
+            width: 17
+            height: 10
+            visible: templateView.contentHeight > templateView.height ? true : false
+            source: "qrc:/images/images/up.png"
+        }
+        Image {
+            id: scrollDown
+            anchors.bottom: templateView.bottom
+            anchors.bottomMargin: 4
+            anchors.left: templateView.right
+            width: 17
+            height: 10
+            visible: templateView.contentHeight > templateView.height ? true : false
+            source: "qrc:/images/images/down.png"
+        }
+        Rectangle {
+            id: scrollbar
+            width: 10
+            anchors.bottom: scrollDown.top
+            anchors.top: scrollUp.bottom
+            anchors.left: templateView.right
+            anchors.leftMargin: 4
+            color: "#585858"
+            radius: 10
+            visible: templateView.contentHeight > templateView.height ? true : false
+            Rectangle {
+                id: button
+                anchors.left: parent.left
+                y: (templateView.visibleArea.yPosition < 0 ) ? 0 : (templateView.contentY+templateView.height>templateView.contentHeight) ?
+                    scrollbar.height - button.height : templateView.visibleArea.yPosition * scrollbar.height
+                width: 10
+                height: templateView.visibleArea.heightRatio * scrollbar.height;
+                color: "#ccbfbf"
+                radius: 10
+                // 鼠标区域
+                MouseArea {
+                    id: mouseArea
+                    anchors.fill: button
+                    drag.target: button
+                    drag.axis: Drag.YAxis
+                    drag.minimumY: 0
+                    drag.maximumY: scrollbar.height - button.height
+                    // 拖动
+                    onMouseYChanged: {
+                        templateView.contentY = button.y / scrollbar.height * templateView.contentHeight
+                    }
+                }
+            }
+        }
+        ListView {
+            id: templateView
+            anchors.top: addNew.bottom
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 10
+            width: parent.width-30
+            height: parent.height-40
+            model: templateModel
+            clip: true
+            delegate: Item {
+                width: parent.width
+                height: 40
+                Text {
+                    id: temPlateName
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.left: parent.left
+                    anchors.leftMargin: 20
+                    anchors.right: close.left
+                    anchors.rightMargin: 6
+                    text: qsTr(name)
+                    font.pixelSize: 20
+                    font.family: "arial"
+                    color: "white"
+                    elide: Text.ElideRight
+                }
+                Rectangle {
+                    id: back
+                    anchors.fill: parent
+                    color: "black"
+                    opacity: 0
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            backGround.visible = false
+                            backGround.opacity = 0
+                            template2.visible = false
+                            template.text = temPlateName.text
+                        }
+                        onPressed: {
+                            back.opacity = 0.5
+                        }
+                        onReleased: {
+                            back.opacity = 0
+                        }
+                    }
+                }
+                Image {
+                    id: close
+                    anchors.right: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
+                    source: "qrc:/images/images/close.png"
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+
+                        }
+                    }
+                }
+            }
+        }
+        Rectangle {
+            id: addnewBlack
+            anchors.fill: parent
+            color: "black"
+            opacity: 0.5
+            visible: false
+            MouseArea {
+                anchors.fill: parent
+            }
         }
     }
 }

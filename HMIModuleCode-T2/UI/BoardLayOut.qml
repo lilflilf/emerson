@@ -5,8 +5,8 @@ import QtQuick.Dialogs 1.2
 
 Item {
     id: boardLayout
-    width: Screen.width * 0.6
-    height: Screen.height*0.53
+    width: parent.width
+    height: parent.height
     property int columns: 0
     property int rows: 0
     property int theIndex: 0

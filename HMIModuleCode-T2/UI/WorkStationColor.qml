@@ -29,7 +29,7 @@ Item {
         anchors.left: parent.left
         width: 50
         height: 50
-        iconSource: "qrc:/images/images/you.png"
+        iconSource: "qrc:/images/images/left.png"
         backgroundEnabled: false
         clip: true
         visible: false
@@ -56,7 +56,7 @@ Item {
         clip: true
         width: 50
         height: 50
-        iconSource: "qrc:/images/images/zuo.png"
+        iconSource: "qrc:/images/images/right.png"
         backgroundEnabled: false
         visible: allWorkTotal > 7 ? true : false
         onClicked: {

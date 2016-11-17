@@ -47,6 +47,7 @@ public:
         TOOLINGCOOLINGCLICK,
     };
 
+
     explicit HmiAdaptor(QObject *parent = 0);
     Q_INVOKABLE void openFileDialog();
     Q_INVOKABLE void advancedMaintenanceExecute(int code);
