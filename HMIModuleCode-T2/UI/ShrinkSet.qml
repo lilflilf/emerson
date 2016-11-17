@@ -189,7 +189,7 @@ Item {
             anchors.leftMargin: parent.width/8
             width: parent.width/6
             height: 40
-            text: qsTr("Enter")
+            text: qsTr("OK")
             onClicked: {
                 shrink.visible = false
             }
@@ -202,7 +202,7 @@ Item {
             anchors.leftMargin: 40
             width: parent.width/6
             height: 40
-            text: qsTr("Esc")
+            text: qsTr("Cancel")
             onClicked: {
                 shrink.visible = false
             }

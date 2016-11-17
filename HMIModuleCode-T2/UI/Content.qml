@@ -20,7 +20,7 @@ Item {
         target: loader.item
         onSignalSaveSplice: {
             loader.source = ""
-            titleTextChanged("Creat Assembly")
+            titleTextChanged("Create Assembly")
         }
     }
 
@@ -160,7 +160,7 @@ Item {
                 text: "+ ADD NEW SPLICE"
                 textColor: "white"
                 width: parent.width - 12
-                height: 79
+//                height: 79
                 pointSize: 16
                 onClicked: {
                     loader.source = "qrc:/UI/CreatWire.qml"
@@ -179,7 +179,7 @@ Item {
                 text: "+ ADD EXITING SPLICE"
                 textColor: "white"
                 width: parent.width - 12
-                height: 79
+//                height: 79
                 pointSize: 16
                 onClicked: {
                     backGround.visible = true
@@ -198,7 +198,7 @@ Item {
                 text: "IMPORT SPLICE"
                 textColor: "white"
                 width: parent.width / 2 - 12
-                height: 79
+//                height: 79
                 pointSize: 16
                 onClicked: {
                 }
@@ -214,7 +214,7 @@ Item {
                 text: "SAVE PART"
                 textColor: "white"
                 width: parent.width / 2 - 12
-                height: 79
+//                height: 79
                 pointSize: 16
                 onClicked: {
                 }
@@ -435,8 +435,8 @@ Item {
         currentIndex: swipeView.currentIndex
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: 10
-        height: 64
+//        anchors.leftMargin: 10
+        height: Screen.height * 0.08
         TabButton {
             height: parent.height
             Rectangle {
@@ -484,7 +484,8 @@ Item {
     Item {
         id: rightArea
         anchors.left: swipeView.right
-        width: Screen.width * 0.7
+        //width: Screen.width * 0.7
+        anchors.right: parent.right
         height: parent.height
         MouseArea {
             anchors.fill: parent
@@ -503,8 +504,8 @@ Item {
             id: edit6
             anchors.top: parent.top
             anchors.topMargin: 4
-            anchors.left: parent.left
-            anchors.leftMargin: 50
+            anchors.left: boardlayout.left
+//            anchors.leftMargin: boardlayout
             width: parent.width * 0.62
             height: 45
             inputWidth: parent.width * 0.62
@@ -556,8 +557,8 @@ Item {
             id: boardText
             anchors.top: edit6.bottom
             anchors.topMargin: 24
-            anchors.left: parent.left
-            anchors.leftMargin: 50
+            anchors.left: boardlayout.left
+//            anchors.leftMargin: 50
             color: "white"
             opacity: 0.5
             width: 100
@@ -582,7 +583,9 @@ Item {
             anchors.top: boardText.bottom
             anchors.topMargin: 10
             anchors.left: parent.left
-            anchors.leftMargin: 50
+            anchors.leftMargin: 20
+            anchors.right: parent.right
+            anchors.rightMargin: 20
             visible: !bIsBasic
             columns: 0
             rows: 0
@@ -688,7 +691,7 @@ Item {
             text: "EDIT SPLICE"
             textColor: "white"
             width: 200
-            height: 79
+//            height: 79
             pointSize: 16
             onClicked: {
             }
@@ -701,7 +704,7 @@ Item {
             text: "TEST SPLICE"
             textColor: "white"
             width: 200
-            height: 79
+//            height: 79
             pointSize: 16
             onClicked: {
             }
@@ -709,7 +712,7 @@ Item {
         Text {
             id: workStation
             anchors.top: boardlayout.bottom
-            anchors.topMargin: 10
+            anchors.topMargin: 5
             anchors.left: boardlayout.left
             visible: !bIsBasic
             text: qsTr("WORKSTATIONS")
@@ -723,7 +726,7 @@ Item {
             id: workStationcolor
             visible: !bIsBasic
             anchors.top: workStation.bottom
-            anchors.topMargin: 4
+//            anchors.topMargin: 4
             anchors.left: boardlayout.left
             listModel: colorModel
             allWorkTotal: 0

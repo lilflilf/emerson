@@ -305,10 +305,9 @@ Item {
     CButton {
         id: okButton
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 35
+        anchors.bottomMargin: 20
         anchors.right: parent.right
         anchors.rightMargin: 20
-        height: 79
         width: 300
         pixelSize: 25
         iconSource: "qrc:/images/images/OK.png"

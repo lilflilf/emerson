@@ -98,7 +98,7 @@ Item {
         ListModel {
             id: listMainMenu
             Component.onCompleted: {
-                listMainMenu.append({"menuName":"Creat/Edit"})
+                listMainMenu.append({"menuName":"Create/Edit"})
                 listMainMenu.append({"menuName":"Operate"})
                 listMainMenu.append({"menuName":"Test"})
                 listMainMenu.append({"menuName":"Maintenance"})
@@ -177,7 +177,7 @@ Item {
 //                                            console.log("4444444444444444")
 //                                        }
                                         headBar.selectIndex = index
-                                        creatMenu.anchors.topMargin = index * 40
+                                        creatMenu.anchors.topMargin = index * 50
 
                                     }
                                     else {
@@ -189,7 +189,10 @@ Item {
                             }
                         }
                         Text {
-                            anchors.centerIn: parent
+//                            anchors.centerIn: parent
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.left: parent.left
+                            anchors.leftMargin: 5
                             text: qsTr(menuName)//qsTr("Creat/Edit")
                             color: "white"
                             font.pointSize: 20
@@ -268,7 +271,7 @@ Item {
 
     Item {
         id: creatMenu
-        width: 240
+        width: 310
         height: 100
         anchors.top: btn.bottom
         anchors.left: mainMenu.right
@@ -304,10 +307,13 @@ Item {
                             opacity: 0
                         }
                         Text {
-                            anchors.centerIn: parent
+//                            anchors.centerIn: parent
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.left: parent.left
+                            anchors.leftMargin: 5
                             text: menuKey //qsTr("Creat New")//qsTr("Creat/Edit")
                             color: "white"
-                            font.pointSize: 18
+                            font.pointSize: 20
                             font.family: "arial"
                         }
                         MouseArea {
@@ -320,7 +326,7 @@ Item {
                                 btnBack.visible = false
                                 if (menuKey == "Create New"){
                                     root.menuInit(0)
-                                    title.text = qsTr("Creat Assembly")
+                                    title.text = qsTr("Create Assembly")
                                 }
                                 else if (menuKey == "Edit Existing"){
                                     root.menuInit(1)
@@ -413,14 +419,14 @@ Item {
         }
     }
 
-    CButton {
-        anchors.right: btn.left
-        width: 40
-        height: parent.height
-        onClicked: {
-            Qt.quit()
-        }
-    }
+//    CButton {
+//        anchors.right: btn.left
+//        width: 40
+//        height: parent.height
+//        onClicked: {
+//            Qt.quit()
+//        }
+//    }
 
 
     Text {
@@ -429,7 +435,7 @@ Item {
         font.family: "arial"
         font.pointSize: 36
         color: "white"
-        text: qsTr("Creat Assembly")
+        text: qsTr("Create Assembly")
         anchors.left: btn.right
         anchors.verticalCenter: parent.verticalCenter
     }
@@ -613,32 +619,31 @@ Item {
             id: personColumn
             visible: false
             anchors.top: helpTitle.bottom
-            anchors.topMargin: 10
+            anchors.topMargin: 30
             anchors.left: parent.left
             anchors.leftMargin: 40
             width: parent.width-80
             spacing: 10
             CButton {
                 width: parent.width
-                height: 79
                 textColor: "white"
                 text: qsTr("Switch User")
             }
             CButton {
                 width: parent.width
-                height: 79
                 textColor: "white"
                 text: qsTr("Log Off")
             }
             CButton {
                 width: parent.width
-                height: 79
                 textColor: "white"
                 text: qsTr("Shut Down")
+                onClicked: {
+                    Qt.quit()
+                }
             }
             CButton {
                 width: parent.width
-                height: 79
                 textColor: "white"
                 text: qsTr("Cancel")
                 onClicked: {

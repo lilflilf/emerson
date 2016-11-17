@@ -23,49 +23,58 @@ Item {
             width: (parent.width-40)/5
             color: "white"
             clip: true
-            font.pointSize: 25
+            font.pointSize: 20
             font.family: "arial"
             text: qsTr("Function Name")
         }
-        TextEdit {
+
+        MyLineEdit {
             anchors.verticalCenter: parent.verticalCenter
             horizontalAlignment: Qt.AlignHCenter
             width: (parent.width-40)/5
-            color: "white"
+            inputWidth: (parent.width-40)/5
+            inputHeight: Screen.height * 0.08
+            height: Screen.height * 0.08
             clip: true
-            font.pointSize: 25
-            font.family: "arial"
-            text: qsTr("1.Administrator")
+            inputSize: 20
+            inputColor: "white"
+            inputText: qsTr("1.Administrator")
         }
-        TextEdit {
+        MyLineEdit {
             anchors.verticalCenter: parent.verticalCenter
             horizontalAlignment: Qt.AlignHCenter
             width: (parent.width-40)/5
-            color: "white"
+            inputWidth: (parent.width-40)/5
+            inputHeight: Screen.height * 0.08
+            height: Screen.height * 0.08
             clip: true
-            font.pointSize: 25
-            font.family: "arial"
-            text: qsTr("2.Technician")
+            inputSize: 20
+            inputColor: "white"
+            inputText: qsTr("2.Technician")
         }
-        TextEdit {
+        MyLineEdit {
             anchors.verticalCenter: parent.verticalCenter
             horizontalAlignment: Qt.AlignHCenter
             width: (parent.width-40)/5
-            color: "white"
+            inputWidth: (parent.width-40)/5
+            inputHeight: Screen.height * 0.08
+            height: Screen.height * 0.08
             clip: true
-            font.pointSize: 25
-            font.family: "arial"
-            text: qsTr("3.Quality Control")
+            inputSize: 20
+            inputColor: "white"
+            inputText: qsTr("3.Quality Control")
         }
-        TextEdit {
+        MyLineEdit {
             anchors.verticalCenter: parent.verticalCenter
             horizontalAlignment: Qt.AlignHCenter
             width: (parent.width-40)/5
-            color: "white"
+            inputWidth: (parent.width-40)/5
+            inputHeight: Screen.height * 0.08
+            height: Screen.height * 0.08
             clip: true
-            font.pointSize: 25
-            font.family: "arial"
-            text: qsTr("4.Open")
+            inputSize: 20
+            inputColor: "white"
+            inputText: qsTr("4.Open")
         }
     }
     Rectangle {
@@ -138,6 +147,7 @@ Item {
                 color: "white"
                 text: qsTr(name)
             }
+
             MyCheckBox {
                 id: check1
                 anchors.verticalCenter: parent.verticalCenter
@@ -243,8 +253,8 @@ Item {
     }
     Rectangle {
         id: line4
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 150
+        anchors.bottom: initialButton.top
+        anchors.bottomMargin: 20
         anchors.left: parent.left
         anchors.leftMargin: 20
         width: parent.width-40
@@ -257,9 +267,8 @@ Item {
         anchors.left: parent.left
         anchors.leftMargin: 20
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 40
+        anchors.bottomMargin: 20
         width: 300
-        height: 79
         text: qsTr("Initial Fram")
         textColor: "white"
     }
@@ -267,10 +276,8 @@ Item {
         id: okButton
         anchors.right: parent.right
         anchors.rightMargin: 20
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 40
+        anchors.bottom: initialButton.bottom
         width: 300
-        height: 79
         text: qsTr("OK")
         iconSource: "qrc:/images/images/OK.png"
         textColor: "white"
@@ -279,10 +286,8 @@ Item {
         id: cancelButton
         anchors.right: okButton.left
         anchors.rightMargin: 43
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 40
+        anchors.bottom: initialButton.bottom
         width: 300
-        height: 79
         text: qsTr("Cancel")
         textColor: "white"
         iconSource: "qrc:/images/images/cancel.png"

@@ -58,7 +58,6 @@ Item {
         anchors.topMargin: 20
         text: qsTr("Run Sonics")
         width: testSetting.width/2-10
-        height: 79
     }
     CButton {
         id: test2
@@ -68,7 +67,6 @@ Item {
         anchors.topMargin: 20
         text: qsTr("Run Sonics 100%")
         width: testSetting.width/2-10
-        height: 79
     }
     Text {
         id: powerText
@@ -139,7 +137,6 @@ Item {
         anchors.rightMargin: 20
         text: qsTr("Shrink Tube Test")
         width: parent.width*0.3
-        height: 60
     }
     Text {
         id: ipsetText
@@ -159,7 +156,6 @@ Item {
         anchors.rightMargin: 20
         text: qsTr("Client IP Setting")
         width: parent.width*0.3
-        height: 60
     }
     CButton {
         id: pingButton
@@ -169,7 +165,6 @@ Item {
         anchors.rightMargin: 20
         text: qsTr("Ping Test")
         width: parent.width*0.3
-        height: 60
     }
     CButton {
         id: reset
@@ -189,7 +184,6 @@ Item {
         anchors.rightMargin: 20
         text: qsTr("Default Setting")
         width: parent.width*0.3
-        height: 60
     }
     CButton {
         id: cancelButton
@@ -200,7 +194,6 @@ Item {
         iconSource: "qrc:/images/images/cancel.png"
         text: qsTr("Cancel")
         width: parent.width*0.3
-        height: 60
     }
     CButton {
         id: okButton
@@ -211,6 +204,5 @@ Item {
         iconSource: "qrc:/images/images/OK.png"
         text: qsTr("OK")
         width: parent.width*0.3
-        height: 60
     }
 }

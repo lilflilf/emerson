@@ -11,7 +11,7 @@ Item {
     height: Screen.height*0.6
     Image {
         id: back
-        width: 300 //parent.width * 0.3
+        width: parent.width * 0.3
         height: parent.height
         source: "qrc:/images/images/bg.png"
         z: 10
@@ -57,7 +57,7 @@ Item {
             property int selectNum: -2
             property int buttonIndex: -1
             anchors.left: seach.left
-            width: 280
+            width: Screen.width * 0.3 - 20
             anchors.top: seach.bottom
             anchors.bottom: parent.bottom
             z: 12
@@ -77,7 +77,7 @@ Item {
                 font.family: "arial"
                 font.pixelSize: 16
                 verticalAlignment: Qt.AlignVCenter
-                width: 280
+                width: Screen.width * 0.3 - 20
                 height: 40
                 color: "white"
                 text: qsTr("All")
@@ -171,9 +171,9 @@ Item {
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: 10
                 width: parent.width
-                height: 79
                 text: qsTr("OK")
                 iconSource: "qrc:/images/images/OK.png"
+
                 onClicked: {
                     if (searchArea.selectNum != -2) {
                         searchArea.visible = false
@@ -200,10 +200,17 @@ Item {
             id: workOrderName
             anchors.left: title2.left
             anchors.top: title2.bottom
-            width: 250
-            height: 50
+//            width: 250
             text: qsTr("All")
             clip: true
+            height: mytimeSelect.height
+            anchors.right: mytimeSelect.right
+            backgroundComponent: Rectangle {
+                anchors.fill: parent
+                color: "black"
+                border.color: "#1987ab"
+                border.width: 2
+            }
             onClicked: {
                 searchArea.visible = true
             }
@@ -233,11 +240,12 @@ Item {
             id: mycalendar
             anchors.left: from.left
             anchors.top: from.bottom
-            width: 125
+            width: 170
             z: 10
         }
         MyTimeSelect {
-            width: 125
+            id: mytimeSelect
+            width: 170
             anchors.top: mycalendar.top
             anchors.left: mycalendar.right
             anchors.leftMargin: 20
@@ -258,11 +266,11 @@ Item {
             id: mycalendar2
             anchors.left: from.left
             anchors.top: to.bottom
-            width: 125
+            width: 170
             z: 10
         }
         MyTimeSelect {
-            width: 125
+            width: 170
             anchors.top: mycalendar2.top
             anchors.left: mycalendar2.right
             anchors.leftMargin: 20
@@ -276,14 +284,12 @@ Item {
             spacing: 10
             CButton {
                 id: applyButton
-                width: 250
-                height: 79
+                width: workOrderName.width
                 text: qsTr("APPLY")
             }
             CButton {
                 id: backButton
-                width: 250
-                height: 79
+                width: workOrderName.width
                 text: qsTr("Back")
             }
         }

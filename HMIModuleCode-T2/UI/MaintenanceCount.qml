@@ -9,9 +9,16 @@ Item {
     width: Screen.width*0.7
     height: Screen.height*0.6
 
+//    Component.onCompleted: {
+//        hmiAdaptor.maintenanceStart(3);
+//    }
+//    Component.onDestruction: {
+//        hmiAdaptor.maintenanceStop(3);
+//    }
+
     ListModel {
         id: listModel
-        ListElement {key1:"Home";     key2:"3"; key3:"200,000"; key4:"105009"; key5:"10/20/2016"; key6:"Reset"}
+        ListElement {key1:"Horn";     key2:"3"; key3:"200,000"; key4:"105009"; key5:"10/20/2016"; key6:"Reset"}
         ListElement {key1:"AnvilTip"; key2:"3"; key3:"400,000"; key4:"15001"; key5:"10/20/2016"; key6:"Reset"}
         ListElement {key1:"Gather";   key2:"3"; key3:"400,000"; key4:"25111"; key5:"10/20/2016"; key6:"Reset"}
         ListElement {key1:"AnvilGuide"; key2:"3"; key3:"400,000"; key4:"35222"; key5:"10/20/2016"; key6:"Reset"}
@@ -35,7 +42,7 @@ Item {
             text: qsTr("Counter Limit")
             color: "white"
             font.family: "arial"
-            font.pointSize: 14
+            font.pointSize: 16
             verticalAlignment: Qt.AlignVCenter
             horizontalAlignment: Qt.AlignHCenter
         }
@@ -45,7 +52,7 @@ Item {
             text: qsTr("Current Counter")
             color: "white"
             font.family: "arial"
-            font.pointSize: 14
+            font.pointSize: 16
             verticalAlignment: Qt.AlignVCenter
             horizontalAlignment: Qt.AlignHCenter
         }
@@ -55,7 +62,7 @@ Item {
             text: qsTr("Data Started")
             color: "white"
             font.family: "arial"
-            font.pointSize: 14
+            font.pointSize: 16
             verticalAlignment: Qt.AlignVCenter
             horizontalAlignment: Qt.AlignHCenter
         }
@@ -65,7 +72,7 @@ Item {
             text: qsTr("Reset")
             color: "white"
             font.family: "arial"
-            font.pointSize: 14
+            font.pointSize: 16
             verticalAlignment: Qt.AlignVCenter
             horizontalAlignment: Qt.AlignHCenter
         }
@@ -74,7 +81,7 @@ Item {
         id: line
         width: listView.width
         height: 2
-        lineColor: "blue"
+        lineColor: "white"
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.leftMargin: 30
@@ -99,10 +106,8 @@ Item {
         Item {
             id: line
             width: listView.width
-            height: index == 5 ? 200 : 80
-            Component.onCompleted: {
-                console.log("sdfffffffffff",line.height)
-            }
+            height: index == 5 ? 100 : 80
+
 
             Row {
                 spacing: 70
@@ -164,7 +169,6 @@ Item {
 
                 CButton {
                     width: 150
-                    height: 79
                     text: key6
                     visible: index == 5 ? false : true
 
@@ -175,16 +179,16 @@ Item {
     Row {
         anchors.bottom: parent.bottom
         anchors.horizontalCenter: parent.horizontalCenter
-        anchors.bottomMargin: 10
+        anchors.bottomMargin: 20
         spacing: 50
         Text {
-            text: qsTr("ActuatorPart Number: xxx-xxx\nActuatorSerial Number:xxx-xxx")
+            text: qsTr("ActuatorPart Number: xxx-xxx\n\nActuatorSerial Number:xxx-xxx")
             color: "white"
             font.family: "arial"
             font.pointSize: 14
         }
         Text {
-            text: qsTr("Software Verson Number: xxx-xxx\nActuatorModule:xxx-xxx")
+            text: qsTr("Software Verson Number: xxx-xxx\n\nActuatorModule:xxx-xxx")
             color: "white"
             font.family: "arial"
             font.pointSize: 14

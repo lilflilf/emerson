@@ -90,5 +90,6 @@
         <file>images/guo2.png</file>
         <file>images/help.png</file>
         <file>images/person.png</file>
+        <file>images/loading.gif</file>
     </qresource>
 </RCC>

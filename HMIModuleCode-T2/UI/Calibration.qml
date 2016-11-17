@@ -9,6 +9,32 @@ Item {
     width: Screen.width*0.7
     height: Screen.height*0.6
     property var currentIndex: 1
+
+//    Component.onCompleted: {
+//        hmiAdaptor.maintenanceStart(0);
+//    }
+//    Component.onDestruction: {
+//        hmiAdaptor.maintenanceStop(0);
+//    }
+
+    Connections {
+        target: hmiAdaptor
+        onWidthCalibrationFinish: {
+            if (_Result && calibration.currentIndex == 1)
+            {
+                hmiAdaptor.calibrationMaintenanceExecute(hmiAdaptor.HEIGHT_CALIBRATE)
+            }
+        }
+        onHeightCalibrationFinish: {
+            if (_Result && calibration.currentIndex == 1)
+            {
+                calibration.currentIndex++
+                button1.enabled = true
+                animated.visible = false
+            }
+        }
+    }
+
     Image {
         anchors.fill: parent
         source: "qrc:/images/images/bg.png"
@@ -59,34 +85,60 @@ Item {
             anchors.left: parent.left
             anchors.leftMargin: 20
         }
+        AnimatedImage {
+            id: animated
+            source: "qrc:/images/images/loading.gif";
+            anchors.bottom: column.top
+            anchors.bottomMargin: 20
+            anchors.horizontalCenter: column.horizontalCenter
+            visible: false
+        }
 
         Column {
+            id: column
             spacing: 20
             anchors.verticalCenter: image.verticalCenter
             anchors.left: image.right
             anchors.leftMargin: 100
             CButton {
                 id: button1
-                height: 79
                 width: 200
                 text: qsTr("Start")
                 onClicked: {
-                    calibration.currentIndex++
+                    if (calibration.currentIndex == 1) {
+                        //hmiAdaptor.calibrationMaintenanceExecute(hmiAdaptor.WIDTH_CALIBRATE)
+                        button1.enabled = false
+                        animated.visible = true
+                    }
+                    else if (calibration.currentIndex == 2)
+                        calibration.currentIndex++
                 }
+                onPressed: {
+                    if (calibration.currentIndex == 3)
+                        hmiAdaptor.calibrationMaintenanceExecute(hmiAdaptor.AMPLITUDE_CALIBRATE_PRESS)
+                }
+                onReleased: {
+                    if (calibration.currentIndex == 3) {
+                        hmiAdaptor.calibrationMaintenanceExecute(hmiAdaptor.AMPLITUDE_CALIBRATE_UPPRESS)
+                        calibration.currentIndex++
+                    }
+
+                }
+
             }
             MyLineEdit {
                 id: line1
                 height: 79
                 width: 200
                 inputWidth: 200
-                inputHeight: 79
+                inputHeight: button1.height
                 visible: false
                 defaultText: qsTr("enter value here")
             }
 
+
             CButton {
                 id: button2
-                height: 79
                 width: 200
                 text: qsTr("Cancel")
                 onClicked: {

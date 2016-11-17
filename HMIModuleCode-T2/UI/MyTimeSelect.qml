@@ -6,6 +6,12 @@ CButton {
     id: timeSelect
     text: "00:00:00"
     height: 40
+    backgroundComponent: Rectangle {
+        anchors.fill: parent
+        color: "black"
+        border.color: "#1987ab"
+        border.width: 2
+    }
     onClicked: {
         time.visible = !time.visible
         mint.visible = !mint.visible

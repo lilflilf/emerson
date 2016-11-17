@@ -24,14 +24,36 @@ class HmiAdaptor : public QObject
     Q_ENUMS(VerticalLocation)
     Q_ENUMS(VerticalPosition)
     Q_ENUMS(BUTTONCLICK)
+    Q_ENUMS(CALIBRATE)
+
 public:
+    enum CALIBRATE
+    {
+        WIDTH_CALIBRATE,
+        HEIGHT_CALIBRATE,
+        AMPLITUDE_CALIBRATE_PRESS,
+        AMPLITUDE_CALIBRATE_UPPRESS,
+    };
+
+    enum BUTTONCLICK
+    {
+        ANVILARMCLICK,
+        ANVILCLICK,
+        GATHERCLICK,
+        CUTTERCLICK,
+        CRASHCLICK,
+        SAFETYCLICK,
+        CONVERTERCOOLINGCLICK,
+        TOOLINGCOOLINGCLICK,
+    };
+
     explicit HmiAdaptor(QObject *parent = 0);
     Q_INVOKABLE void openFileDialog();
     Q_INVOKABLE void advancedMaintenanceExecute(int code);
     Q_INVOKABLE void maintenanceStart(int page);
     Q_INVOKABLE void maintenanceStop(int page);
     Q_INVOKABLE bool login(QString passwd);
-
+    Q_INVOKABLE void calibrationMaintenanceExecute(int code);
 
     InterfaceClass *interfaceClass;
 
@@ -50,7 +72,8 @@ public:
     MaintenanceLogElement *maintenanceLog;
     ToolChange *toolChange;
 signals:
-
+    void widthCalibrationFinish(const bool &_Result);
+    void heightCalibrationFinish(const bool &_Result);
 public slots:
 };
 

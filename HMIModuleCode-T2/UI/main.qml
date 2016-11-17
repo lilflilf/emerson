@@ -34,7 +34,7 @@ Window {
         case 0:
         case 1:
             contentLoader.source = "qrc:/UI/Content.qml"
-            headBar.titleText = qsTr("Creat Assembly")
+            headBar.titleText = qsTr("Create Assembly")
             break;
         case 2:
             contentLoader.source = "qrc:/UI/Operate.qml"

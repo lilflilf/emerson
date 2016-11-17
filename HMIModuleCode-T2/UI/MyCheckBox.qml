@@ -6,8 +6,8 @@ import QtQuick.Window 2.2
 
 Item {
     id: myCheck
-    property string checkIcon: "qrc:/images/images/settingselect.png"
-    property string unCheckIcon: "qrc:/images/images/setting.png"
+    property string checkIcon: "qrc:/images/images/check-click.png"
+    property string unCheckIcon: "qrc:/images/images/check-bg.png"
     property bool checked: false
     property ExclusiveGroup exclusiveGroup: null
     width: parent.width
@@ -20,8 +20,8 @@ Item {
         anchors.fill: parent
         Image {
             anchors.centerIn: parent
-            width: 22
-            height: 22
+            width: 30
+            height: 30
             fillMode: Image.PreserveAspectFit
             source: myCheck.checked ? checkIcon : unCheckIcon
         }
