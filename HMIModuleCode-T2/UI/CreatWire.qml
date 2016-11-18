@@ -47,17 +47,17 @@ Item {
             Rectangle {
                 anchors.top: parent.top
                 anchors.fill: parent
-                color: "#48484a"
+                color: "#052a40"
             }
             Rectangle {
                 id: forground
                 anchors.top: parent.top
                 anchors.fill: parent
-                color: "#48484a"
+                color: "#052a40"
                 z:10
                 Label {
                     id: nowire
-                    color: "white"
+                    color: "#8295a0"
                     text: qsTr("No Wires Selected")
                     anchors.top: parent.top
                     anchors.topMargin: tabBar.height + 15
@@ -80,7 +80,7 @@ Item {
             }
             Label {
                 id: properties
-                color: "white"
+                color: "#8295a0"
                 text: qsTr("PROPERTIES")
                 anchors.top: wireName.bottom
                 font.family: "arial"
@@ -98,7 +98,7 @@ Item {
                 property alias color: rectcolor.color
                 Label {
                     id: labelColor
-                    color: "white"
+                    color: "#8295a0"
                     text: qsTr("Color")
                     font.family: "arial"
                     font.pointSize: 14
@@ -242,7 +242,7 @@ Item {
                 anchors.topMargin: 10
                 Label {
                     id: labelStripe
-                    color: "white"
+                    color: "#8295a0"
                     text: qsTr("Stripe")
                     font.family: "arial"
                     font.pointSize: 14
@@ -423,7 +423,7 @@ Item {
                 anchors.topMargin: 10
                 Label {
                     id: labelGauge
-                    color: "white"
+                    color: "#8295a0"
                     text: qsTr("Gauge")
                     font.family: "arial"
                     font.pointSize: 14
@@ -456,7 +456,7 @@ Item {
                 anchors.topMargin: 15
                 Label {
                     id: labelType
-                    color: "white"
+                    color: "#8295a0"
                     text: qsTr("Type of Wire")
                     font.family: "arial"
                     font.pointSize: 14
@@ -477,7 +477,7 @@ Item {
             }
             Label {
                 id: position
-                color: "white"
+                color: "#8295a0"
                 text: qsTr("POSITION")
                 anchors.top: itemType.bottom
                 font.family: "arial"
@@ -494,7 +494,7 @@ Item {
                 anchors.topMargin: 15
                 Label {
                     id: labelSide
-                    color: "white"
+                    color: "#8295a0"
                     text: qsTr("Side")
                     font.family: "arial"
                     font.pointSize: 14
@@ -528,7 +528,7 @@ Item {
                 anchors.topMargin: 15
                 Label {
                     id: labelLocation
-                    color: "white"
+                    color: "#8295a0"
                     text: qsTr("LOCATION") //VERTICAL
                     font.family: "arial"
                     font.pointSize: 14
@@ -578,7 +578,7 @@ Item {
                         text: qsTr("Top")
                         font.pointSize: 14
                         font.family: "arial"
-                        color: "white"
+                        color: "#8295a0"
                         anchors.right: parent.right
                         anchors.rightMargin: 175
                     }
@@ -606,7 +606,7 @@ Item {
                         text: qsTr("Middle")
                         font.pointSize: 14
                         font.family: "arial"
-                        color: "white"
+                        color: "#8295a0"
                         anchors.right: parent.right
                         anchors.rightMargin: 175
                     }
@@ -632,7 +632,7 @@ Item {
                         text: qsTr("Bottom")
                         font.pointSize: 14
                         font.family: "arial"
-                        color: "white"
+                        color: "#8295a0"
                         anchors.right: parent.right
                         anchors.rightMargin: 175
                     }
@@ -951,39 +951,36 @@ Item {
         }
 
         CButton {
-            id: addWire
-            pointSize: 14
-            width: 200
-            height: 79
-            anchors.left: spliceDetailsItem.left
-//            anchors.top: spliceDetailsItem.bottom
-//            anchors.topMargin: 20
-            anchors.bottom: wirelibrary.top
-//            anchors.bottomMargin: 10
-            text: qsTr("ADD WIRE")
-        }
-
-        CButton {
             id: wirelibrary
             pointSize: 14
-            width: 200
             height: 79
-            anchors.left: spliceDetailsItem.left
-//            anchors.top: addWire.bottom
-//            anchors.topMargin: 10
+            width: (spliceDetailsItem.width-48)/3
+            anchors.right: addWire.left
+            anchors.rightMargin: 24
             anchors.bottom: parent.bottom
-//            anchors.bottomMargin: 10
+            anchors.bottomMargin: 14
             text: qsTr("WIRE LIBRARY")
+        }
+        CButton {
+            id: addWire
+            pointSize: 14
+            width: (spliceDetailsItem.width-48)/3
+            height: 79
+            anchors.right: saveSplice.left
+            anchors.rightMargin: 24
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 14
+            text: qsTr("ADD WIRE")
         }
 
         CButton {
             id: saveSplice
             pointSize: 14
-            width: 200
-            height: 79
             anchors.right: spliceDetailsItem.right
             anchors.bottom: parent.bottom
-//            anchors.bottomMargin: 10
+            anchors.bottomMargin: 14
+            height: 79
+            width: (spliceDetailsItem.width-48)/3
             text: qsTr("SAVE SPLICE")
             onClicked: {
                 signalSaveSplice()
