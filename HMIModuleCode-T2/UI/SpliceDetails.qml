@@ -293,7 +293,7 @@ Item {
             property alias myText: mytext.text
             property var position: "leftList"
             width: middle.width / 2 + 40
-            height: 40
+            height: listModelLeft.count <= 5 ? detail.height * 0.1 + 10 : 30
             Rectangle {
                 id: leftLine
                 width: myLineLength
@@ -304,7 +304,7 @@ Item {
             Rectangle {
                 id: leftRec
                 width: 60
-                height: 20
+                height: listModelLeft.count <= 5 ? detail.height * 0.1 : 20 //20
                 color: mycolor
                 anchors.right: leftLine.left
                 anchors.verticalCenter: parent.verticalCenter
@@ -319,6 +319,7 @@ Item {
                     anchors.centerIn: parent
                     text: qsTr(linetext)
                     font.family: "arial"
+                    font.pointSize: 16
                     color: "white"
                 }
             }
@@ -380,7 +381,7 @@ Item {
             property var position: "rightList"
             id: rightItem
             width: 300
-            height: 30
+            height: listModelLeft.count <= 5 ? detail.height * 0.1 + 10 : 30
             Rectangle {
                 id: rightLine
                 width: myLineLength
@@ -391,7 +392,7 @@ Item {
             Rectangle {
                 id: rightRec
                 width: 60
-                height: 20
+                height: listModelRight.count <= 5 ? detail.height * 0.1 : 20
                 color: mycolor
                 anchors.left: rightLine.right
                 anchors.verticalCenter: parent.verticalCenter
@@ -406,6 +407,7 @@ Item {
                     anchors.centerIn: parent
                     text: qsTr(linetext)
                     font.family: "arial"
+                    font.pointSize: 16
                     color: "white"
                 }
 

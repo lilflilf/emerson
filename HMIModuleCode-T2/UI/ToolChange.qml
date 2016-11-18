@@ -13,15 +13,21 @@ Item {
 
     property color hightlightColor: "#d0d0d0"     // 高亮行背景色
     property var fileFilter : ["*.qml"]           // 文件过滤器
-    property string initFolder: "file:///c:/ToolChangeImage"             // 初始目录
+    property string initFolder: "file:///c:/BransonData/ToolChangeImage"             // 初始目录
     property string rootFolder : '../'            // 限制根目录，不可再往上查找
-    property string initFolder2: "file:///c:/ToolChangeImage/group1"             // 初始目录
+    property string initFolder2: "file:///c:/BransonData/ToolChangeImage/group1"             // 初始目录
 
     property var dirCount: dirModel.count
     property var fileCount: fileModel.count
     property var currentDir: 0
     property var currentFile: 0
 
+//    Component.onCompleted: {
+//        hmiAdaptor.maintenanceStart(2);
+//    }
+//    Component.onDestruction: {
+//        hmiAdaptor.maintenanceStop(2);
+//    }
     Image {
         anchors.fill: parent
         source: "qrc:/images/images/bg.png"
@@ -69,6 +75,8 @@ Item {
         anchors.left: back.left
         anchors.topMargin: 20
         anchors.leftMargin: 20
+        anchors.bottom: row.top
+        clip: true
         model: dirModel
         delegate: Component {
             Item {
@@ -85,7 +93,7 @@ Item {
                         anchors.centerIn: parent
                         font.family: "arial"
                         color: "black"
-                        text: index
+                        text: index + 1
                         font.pointSize: 14
                     }
                     Component.onCompleted: {
@@ -165,14 +173,15 @@ Item {
         }
     }
 
-    Column {
+    Row {
+        id: row
         anchors.bottom: back.bottom
-        anchors.right: back.right
+//        anchors.right: back.right
         anchors.bottomMargin: 20
-        anchors.rightMargin: 20
-        spacing: 20
+//        anchors.rightMargin: 20
+        anchors.horizontalCenter: back.horizontalCenter
+        spacing: 5
         CButton {
-            height: 79
             width: 200
             text: "NEXT STEP"
             onClicked: {
@@ -191,7 +200,6 @@ Item {
             }
         }
         CButton {
-            height: 79
             width: 200
             text: "BACK"
             onPressed: {

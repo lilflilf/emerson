@@ -43,7 +43,7 @@ Item {
         spacing: 10
         Text {
             anchors.verticalCenter: headTitle.verticalCenter
-            horizontalAlignment: Qt.AlignHCenter
+            //horizontalAlignment: Qt.AlignHCenter
             width: (parent.width-30)/4
             color: "white"
             clip: true
@@ -53,7 +53,7 @@ Item {
         }
         Text {
             anchors.verticalCenter: headTitle.verticalCenter
-            horizontalAlignment: Qt.AlignHCenter
+            //horizontalAlignment: Qt.AlignHCenter
             width: (parent.width-30)/4
             color: "white"
             clip: true
@@ -63,7 +63,7 @@ Item {
         }
         Text {
             anchors.verticalCenter: headTitle.verticalCenter
-            horizontalAlignment: Qt.AlignHCenter
+            //horizontalAlignment: Qt.AlignHCenter
             width: (parent.width-30)/4
             color: "white"
             clip: true
@@ -73,7 +73,7 @@ Item {
         }
         Text {
             anchors.verticalCenter: headTitle.verticalCenter
-            horizontalAlignment: Qt.AlignHCenter
+            //horizontalAlignment: Qt.AlignHCenter
             width: (parent.width-30)/4
             text: qsTr("Permission Level")
             color: "white"
@@ -177,7 +177,7 @@ Item {
                 id: headName
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
-                width: (parent.width-30)/4-30
+                width: (parent.width-30)/4
                 horizontalAlignment: Qt.AlignLeft
                 elide: Text.ElideRight
                 text: name
@@ -190,7 +190,7 @@ Item {
                 id: headData
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: headName.right
-                anchors.leftMargin: 40
+                anchors.leftMargin: 10
                 width: (parent.width-30)/4
                 horizontalAlignment: Qt.AlignLeft
                 text: date
@@ -206,7 +206,6 @@ Item {
                 anchors.left: headData.right
                 anchors.leftMargin: 10
                 width: (parent.width-30)/4
-                horizontalAlignment: Qt.AlignLeft
                 text: middle
                 elide: Text.ElideRight
                 clip: true
@@ -266,8 +265,8 @@ Item {
     }
     Rectangle {
         id: line4
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 150
+        anchors.bottom: deleteButton.top
+        anchors.bottomMargin: 20
         anchors.left: parent.left
         anchors.leftMargin: 20
         width: parent.width-40
@@ -280,9 +279,8 @@ Item {
         anchors.right: parent.right
         anchors.rightMargin: 20
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 40
+        anchors.bottomMargin: 20
         width: 300
-        height: 79
         text: qsTr("Delete")
         textColor: "white"
     }
@@ -290,10 +288,9 @@ Item {
         id: editButton
         anchors.right: deleteButton.left
         anchors.rightMargin: 43
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 40
+        anchors.bottom: deleteButton.bottom
+//        anchors.bottomMargin: 40
         width: 300
-        height: 79
         text: qsTr("Edit")
         textColor: "white"
         onClicked: {
@@ -306,10 +303,9 @@ Item {
         id: addButton
         anchors.right: editButton.left
         anchors.rightMargin: 43
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 40
+        anchors.bottom: deleteButton.bottom
+//        anchors.bottomMargin: 40
         width: 300
-        height: 79
         text: qsTr("Add New")
         textColor: "white"
         onClicked: {
@@ -460,7 +456,6 @@ Item {
             anchors.left: parent.left
             anchors.leftMargin: 20
             width: (parent.width-60)/2
-            height: 79
             text: qsTr("Cancel")
             textColor: "white"
             iconSource: "qrc:/images/images/cancel.png"
@@ -477,7 +472,6 @@ Item {
             anchors.left: cancelButton.right
             anchors.leftMargin: 20
             width: (parent.width-60)/2
-            height: 79
             text: qsTr("OK")
             iconSource: "qrc:/images/images/OK.png"
             textColor: "white"

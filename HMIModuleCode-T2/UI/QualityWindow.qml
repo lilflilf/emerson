@@ -56,7 +56,7 @@ Item {
         id: qualityDelegate
         Item {
             id: name
-            width: Screen.width * 0.1 //qualityParent.width / 4 //
+            width: Screen.width * 0.12 //qualityParent.width / 4 //
             height: Screen.height * 0.25 //qualityParent.height / 2 //
             Rectangle {
                 width: 40

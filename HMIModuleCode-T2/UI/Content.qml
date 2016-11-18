@@ -2,6 +2,8 @@ import QtQuick 2.0
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.0
 import QtQuick.Window 2.2
+import QtQuick.Controls 1.4
+import QtQuick.Dialogs 1.2
 
 Item {
     id: content
@@ -12,11 +14,15 @@ Item {
     signal titleTextChanged(var myTitleText)
     width: Screen.width
     height: Screen.height
+    Image {
+        anchors.fill: parent
+        source: "qrc:/images/images/bg.png"
+    }
     Connections {
         target: loader.item
         onSignalSaveSplice: {
             loader.source = ""
-            titleTextChanged("Creat Assembly")
+            titleTextChanged("Create Assembly")
         }
     }
 
@@ -80,7 +86,7 @@ Item {
             id: splice
             Rectangle {
                 anchors.fill: parent
-                color: "#48484A"
+                color: "#052a40"
             }
             Label {
                 id: listname
@@ -115,7 +121,7 @@ Item {
                 anchors.top: workname.bottom
                 anchors.topMargin: 4
                 width: parent.width
-                height: 10
+                height: 2
                 color: "#585858"
             }
             SpliceListView {
@@ -123,6 +129,7 @@ Item {
                 listModel: bIsEdit ? listModel : listModel2
                 anchors.top: tipsRec.bottom
                 anchors.topMargin: 6
+                anchors.bottom: tipsRec2.top
                 bIsWorkShow: !bIsBasic
                 onCurrentSelecte: {
                     listModel.set(index,{"nameValue":"gggggggg"})
@@ -136,22 +143,26 @@ Item {
             }
             Rectangle {
                 id: tipsRec2
-                anchors.top: spliceList.bottom
-                anchors.topMargin: 4
+//                anchors.top: spliceList.bottom
+//                anchors.topMargin: 4
+                anchors.bottom: addNewSplice.top
+                anchors.bottomMargin: 5
                 width: parent.width
-                height: 10
+                height: 2
                 color: "#585858"
             }
             CButton {
                 id: addNewSplice
-                anchors.top: tipsRec2.bottom
-                anchors.topMargin: 10
+//                anchors.top: tipsRec2.bottom
+//                anchors.topMargin: 10
+                anchors.bottom: addExitSplice.top
+//                anchors.bottomMargin: 5
                 anchors.left: parent.left
                 anchors.leftMargin: 6
                 text: "+ ADD NEW SPLICE"
                 textColor: "white"
                 width: parent.width - 12
-                height: 30
+//                height: 79
                 pointSize: 16
                 onClicked: {
                     loader.source = "qrc:/UI/CreatWire.qml"
@@ -161,14 +172,16 @@ Item {
 
             CButton {
                 id: addExitSplice
-                anchors.top: addNewSplice.bottom
-                anchors.topMargin: 10
+//                anchors.top: addNewSplice.bottom
+//                anchors.topMargin: 10
+                anchors.bottom: upload.top
+//                anchors.bottomMargin: 5
                 anchors.left: parent.left
                 anchors.leftMargin: 6
                 text: "+ ADD EXITING SPLICE"
                 textColor: "white"
                 width: parent.width - 12
-                height: 30
+//                height: 79
                 pointSize: 16
                 onClicked: {
                     backGround.visible = true
@@ -178,30 +191,39 @@ Item {
             }
             CButton {
                 id: upload
-                anchors.top: addExitSplice.bottom
-                anchors.topMargin: 10
+//                anchors.top: addExitSplice.bottom
+//                anchors.topMargin: 10
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: 5
                 anchors.left: parent.left
                 anchors.leftMargin: 6
                 text: "IMPORT SPLICE"
                 textColor: "white"
-                width: parent.width - 12
-                height: 30
+                width: parent.width / 2 - 12
+//                height: 79
                 pointSize: 16
                 onClicked: {
                 }
             }
             CButton {
                 id: save
-                anchors.top: upload.bottom
-                anchors.topMargin: 10
-                anchors.left: parent.left
-                anchors.leftMargin: 6
+//                anchors.top: upload.bottom
+//                anchors.topMargin: 10
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: 5
+                anchors.right: parent.right
+                anchors.rightMargin: 6
                 text: "SAVE PART"
                 textColor: "white"
-                width: parent.width - 12
-                height: 30
+                width: parent.width / 2 - 12
+//                height: 79
                 pointSize: 16
                 onClicked: {
+                    if (edit6.inputText.length == 0) {
+                        dialog.visible = true
+                        backGround.visible = true
+                        backGround.opacity = 0.5
+                    }
                 }
             }
         }
@@ -210,7 +232,7 @@ Item {
             id: settting
             Rectangle {
                 anchors.fill: parent
-                color: "#48484a"
+                color: "#052a40"
             }
             Label {
                 id: processMode
@@ -387,31 +409,6 @@ Item {
                 onTextChange: {
                 }
             }
-//            Label {
-//                id: lab3
-//                color: "white"
-//                anchors.top: edit5.bottom
-//                anchors.topMargin: 6
-//                anchors.left: parent.left
-//                anchors.leftMargin: 6
-//                text: qsTr("UNITS")
-//                font.family: "arial"
-//                font.pointSize: 16
-//                opacity: 0.5
-//            }
-//            Switch2 {
-//                id: unitSwitch
-//                anchors.top: lab3.bottom
-//                anchors.topMargin: 12
-//                anchors.left: parent.left
-//                anchors.leftMargin: 6
-//                height: parent.height * 0.04
-//                width: parent.width * 0.6
-//                textLeft: qsTr("Imperial")
-//                textRight: qsTr("Metric")
-//                state: "left"
-//                opacity: 0.8
-//            }
         }
     }
     TabBar {
@@ -419,24 +416,58 @@ Item {
         id: tabBar
         currentIndex: swipeView.currentIndex
         anchors.top: parent.top
+        anchors.left: parent.left
+//        anchors.leftMargin: 10
+        height: Screen.height * 0.08
         TabButton {
-            font.family: "arial"
-            font.pointSize: 16
-            text: qsTr("SPLICE")
-            opacity: 0.33
+            height: parent.height
+            Rectangle {
+                anchors.fill: parent
+                color:  "#052a40"  //tabBar.currentIndex == 0 ? "black" : "#48484a"
+            }
+            Text {
+                anchors.centerIn: parent
+                font.family: "arial"
+                font.pointSize: 17.5
+                text: qsTr("SPLICE")
+                color: tabBar.currentIndex == 0 ? "white" : "#969ea5"
+            }
+            Rectangle {
+                width: parent.width
+                height: 6
+                color:  "#F79428"
+                anchors.bottom: parent.bottom
+                visible: tabBar.currentIndex == 0 ? true : false
+            }
         }
         TabButton {
-            font.family: "arial"
-            font.pointSize: 16
-            text: qsTr("SETTINGS")
-            opacity: 0.33
+            height: parent.height
+            Rectangle {
+                anchors.fill: parent
+                color:  "#052a40"
+            }
+            Text {
+                anchors.centerIn: parent
+                font.family: "arial"
+                font.pointSize: 17.5
+                text: qsTr("SETTINGS")
+                color: tabBar.currentIndex == 1 ? "white" : "#969ea5"
+            }
+            Rectangle {
+                width: parent.width
+                height: 6
+                color:  "#F79428"
+                anchors.bottom: parent.bottom
+                visible: tabBar.currentIndex == 1 ? true : false
+            }
         }
     }
 
     Item {
         id: rightArea
         anchors.left: swipeView.right
-        width: Screen.width * 0.7
+        //width: Screen.width * 0.7
+        anchors.right: parent.right
         height: parent.height
         MouseArea {
             anchors.fill: parent
@@ -447,18 +478,18 @@ Item {
         ListModel {
             id: workModel
         }
-        Rectangle {
+        Image {
             anchors.fill: parent
-            color: "#686a6c"
+            source: "qrc:/images/images/bg.png"
         }
         MyLineEdit {
             id: edit6
             anchors.top: parent.top
             anchors.topMargin: 4
-            anchors.left: parent.left
-            anchors.leftMargin: 50
+            anchors.left: boardlayout.left
+//            anchors.leftMargin: boardlayout
             width: parent.width * 0.62
-            height: 45
+            height: 43
             inputWidth: parent.width * 0.62
             inputHeight: parent.height * 0.05
             horizontalAlignment: Qt.AlignHCenter
@@ -480,36 +511,23 @@ Item {
                 anchors.fill: parent
                 color: "black"
             }
-            width: 200
+            anchors.left: edit6.right
+            anchors.leftMargin: 20
             height: 45
             pointSize: 16
             onClicked: {
+                backGround.visible = true
+                backGround.opacity = 0.5
+                template2.visible = true
             }
         }
-//        MyLineEdit {
-//            id: edit7
-//            anchors.top: edit6.bottom
-//            anchors.topMargin: 2
-//            anchors.left: parent.left
-//            anchors.leftMargin: 50
-//            width: parent.width * 0.62
-//            height: 45
-//            inputWidth: parent.width * 0.62
-//            inputHeight: parent.height * 0.05
-//            horizontalAlignment: Qt.AlignHCenter
-//            defaultText: qsTr("WORK ORDER ID")
-//            //regExp: RegExpValidator{regExp: /^[1-9]{1,2}$/}
-//            maxSize: 60
-//            clip: true
-//            onTextChange: {
-//            }
-//        }
         Text {
             id: boardText
             anchors.top: edit6.bottom
             anchors.topMargin: 24
-            anchors.left: parent.left
-            anchors.leftMargin: 50
+            anchors.left: boardlayout.left
+//            anchors.leftMargin: 50
+
             color: "white"
             opacity: 0.5
             width: 100
@@ -521,7 +539,7 @@ Item {
         Text {
             id: tempText
             anchors.top:  edit6.bottom
-            anchors.topMargin: 24
+            anchors.topMargin: 14
             anchors.right: boardlayout.right
             color: "white"
             opacity: 0.5
@@ -534,7 +552,11 @@ Item {
             anchors.top: boardText.bottom
             anchors.topMargin: 10
             anchors.left: parent.left
-            anchors.leftMargin: 50
+            anchors.leftMargin: 20
+            anchors.right: parent.right
+            anchors.rightMargin: 20
+
+            height: Screen.height*0.53
             visible: !bIsBasic
             columns: 0
             rows: 0
@@ -635,12 +657,12 @@ Item {
         CButton {
             id: editSplice
             anchors.top: boardlayout.bottom
-            anchors.topMargin: parent.height/10-24
+            anchors.topMargin: parent.height/10-64
             anchors.right: boardlayout.right
             text: "EDIT SPLICE"
             textColor: "white"
             width: 200
-            height: 45
+//            height: 79
             pointSize: 16
             onClicked: {
             }
@@ -648,12 +670,12 @@ Item {
         CButton {
             id: testSplice
             anchors.top: editSplice.bottom
-            anchors.topMargin: 18
+            anchors.topMargin: 5
             anchors.right: boardlayout.right
             text: "TEST SPLICE"
             textColor: "white"
             width: 200
-            height: 45
+//            height: 79
             pointSize: 16
             onClicked: {
             }
@@ -661,7 +683,7 @@ Item {
         Text {
             id: workStation
             anchors.top: boardlayout.bottom
-            anchors.topMargin: 10
+            anchors.topMargin: 5
             anchors.left: boardlayout.left
             visible: !bIsBasic
             text: qsTr("WORKSTATIONS")
@@ -675,7 +697,7 @@ Item {
             id: workStationcolor
             visible: !bIsBasic
             anchors.top: workStation.bottom
-            anchors.topMargin: 4
+//            anchors.topMargin: 4
             anchors.left: boardlayout.left
             listModel: colorModel
             allWorkTotal: 0
@@ -695,6 +717,37 @@ Item {
             }
         }
     }
+    Image {
+        id: dialog
+        anchors.centerIn: parent
+        width: 639
+        height: 390
+        visible: false
+        source: "qrc:/images/images/dialogbg.png"
+        Text {
+            anchors.centerIn: parent
+            anchors.verticalCenterOffset: -30
+            font.family: "arial"
+            font.pixelSize: 24
+            color: "white"
+            text: qsTr("Please Input Part Name")
+        }
+        CButton {
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 15
+            anchors.horizontalCenter: parent.horizontalCenter
+            height: 60
+            width: parent.width/3
+            iconSource: "qrc:/images/images/OK.png"
+            text: qsTr("OK")
+            onClicked: {
+                dialog.visible = false
+                backGround.visible = false
+                backGround.opacity = 0
+            }
+        }
+    }
+
     Rectangle {
         id: backGround2
         anchors.fill: parent
@@ -778,6 +831,190 @@ Item {
             backGround.visible = false
             backGround.opacity = 0
             addExit.visible = false
+        }
+    }
+    Item {
+        id: template2
+        anchors.top: parent.top
+        anchors.topMargin: 50
+        anchors.right: parent.right
+        anchors.rightMargin: 10
+        width: template.width
+        height: parent.height*0.5
+        visible: false
+        Image {
+            anchors.fill: parent
+            source: "qrc:/images/images/dialogbg.png"
+        }
+        Text {
+            id: addNew
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.leftMargin: 20
+            verticalAlignment: Qt.AlignVCenter
+            height: 40
+            width: parent.width-30
+            font.pixelSize: 20
+            font.family: "arial"
+            color: "white"
+            text: qsTr("Add New")
+        }
+        Rectangle {
+            id: addNewBack
+            anchors.top: parent.top
+            anchors.left: parent.left
+            width: parent.width-30
+            height: 40
+            color: "black"
+            opacity: 0
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    addNewBack.opacity = 0.5
+                    addnewBlack.visible = true
+                    dialog.visible = true
+                }
+            }
+        }
+        ListModel {
+            id: templateModel
+            Component.onCompleted: {
+                templateModel.append({name:"GM"})
+                templateModel.append({name:"Toyota"})
+                templateModel.append({name:"Volks Wagen"})
+                templateModel.append({name:"BYD"})
+                templateModel.append({name:"BYD"})
+                templateModel.append({name:"BYD"})
+                templateModel.append({name:"BYD"})
+                templateModel.append({name:"BYD"})
+                templateModel.append({name:"BYD"})
+                templateModel.append({name:"BYD"})
+                templateModel.append({name:"BYD"})
+            }
+        }
+        Image {
+            id: scrollUp
+            anchors.top: parent.top
+            anchors.topMargin: 4
+            anchors.left: templateView.right
+            width: 17
+            height: 10
+            visible: templateView.contentHeight > templateView.height ? true : false
+            source: "qrc:/images/images/up.png"
+        }
+        Image {
+            id: scrollDown
+            anchors.bottom: templateView.bottom
+            anchors.bottomMargin: 4
+            anchors.left: templateView.right
+            width: 17
+            height: 10
+            visible: templateView.contentHeight > templateView.height ? true : false
+            source: "qrc:/images/images/down.png"
+        }
+        Rectangle {
+            id: scrollbar
+            width: 10
+            anchors.bottom: scrollDown.top
+            anchors.top: scrollUp.bottom
+            anchors.left: templateView.right
+            anchors.leftMargin: 4
+            color: "#585858"
+            radius: 10
+            visible: templateView.contentHeight > templateView.height ? true : false
+            Rectangle {
+                id: button
+                anchors.left: parent.left
+                y: (templateView.visibleArea.yPosition < 0 ) ? 0 : (templateView.contentY+templateView.height>templateView.contentHeight) ?
+                    scrollbar.height - button.height : templateView.visibleArea.yPosition * scrollbar.height
+                width: 10
+                height: templateView.visibleArea.heightRatio * scrollbar.height;
+                color: "#ccbfbf"
+                radius: 10
+                // 鼠标区域
+                MouseArea {
+                    id: mouseArea
+                    anchors.fill: button
+                    drag.target: button
+                    drag.axis: Drag.YAxis
+                    drag.minimumY: 0
+                    drag.maximumY: scrollbar.height - button.height
+                    // 拖动
+                    onMouseYChanged: {
+                        templateView.contentY = button.y / scrollbar.height * templateView.contentHeight
+                    }
+                }
+            }
+        }
+        ListView {
+            id: templateView
+            anchors.top: addNew.bottom
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 10
+            width: parent.width-30
+            height: parent.height-40
+            model: templateModel
+            clip: true
+            delegate: Item {
+                width: parent.width
+                height: 40
+                Text {
+                    id: temPlateName
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.left: parent.left
+                    anchors.leftMargin: 20
+                    anchors.right: close.left
+                    anchors.rightMargin: 6
+                    text: qsTr(name)
+                    font.pixelSize: 20
+                    font.family: "arial"
+                    color: "white"
+                    elide: Text.ElideRight
+                }
+                Rectangle {
+                    id: back
+                    anchors.fill: parent
+                    color: "black"
+                    opacity: 0
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            backGround.visible = false
+                            backGround.opacity = 0
+                            template2.visible = false
+                            template.text = temPlateName.text
+                        }
+                        onPressed: {
+                            back.opacity = 0.5
+                        }
+                        onReleased: {
+                            back.opacity = 0
+                        }
+                    }
+                }
+                Image {
+                    id: close
+                    anchors.right: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
+                    source: "qrc:/images/images/close.png"
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+
+                        }
+                    }
+                }
+            }
+        }
+        Rectangle {
+            id: addnewBlack
+            anchors.fill: parent
+            color: "black"
+            opacity: 0.5
+            visible: false
+            MouseArea {
+                anchors.fill: parent
+            }
         }
     }
 }

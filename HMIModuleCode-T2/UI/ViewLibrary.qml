@@ -18,7 +18,6 @@ Item {
         CButton {
             id: part
             width: column.width
-            height: 79
             textColor: "white"
             text: qsTr("Part")
             opacity: 0.2
@@ -38,7 +37,6 @@ Item {
         CButton {
             id: splice
             width: column.width
-            height: 79
             textColor: "white"
             text: qsTr("Splice")
             onClicked: {
@@ -57,7 +55,6 @@ Item {
         CButton {
             id: wire
             width: column.width
-            height: 79
             textColor: "white"
             text: qsTr("Wire")
             onClicked: {
@@ -384,14 +381,12 @@ Item {
     Row {
         id: rowButton
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 30
+        anchors.bottomMargin: 20
         anchors.right: parent.right
         anchors.rightMargin: 20
-        spacing: 20
-        height: 79
+        spacing: 18
         CButton {
             width: 250
-            height: 79
             textColor: "white"
             text: qsTr("Edit Details")
             onClicked: {
@@ -400,13 +395,18 @@ Item {
         }
         CButton {
             width: 250
-            height: 79
+            textColor: "white"
+            text: qsTr("Delete")
+            onClicked: {
+            }
+        }
+        CButton {
+            width: 250
             textColor: "white"
             text: qsTr("Export")
         }
         CButton {
             width: 250
-            height: 79
             textColor: "white"
             text: qsTr("Back")
         }

@@ -32,6 +32,8 @@ int main(int argc, char *argv[])
     ALPaintedItem *alpaint = new ALPaintedItem;
     engine.rootContext()->setContextProperty("alpaint",alpaint);
     HmiAdaptor *hmiAdaptor = new HmiAdaptor;
+//    qmlRegisterType<HmiAdaptor>("HmiAdaptor",1,0,"HmiAdaptor");
+
     engine.rootContext()->setContextProperty("hmiAdaptor",hmiAdaptor);
     engine.rootContext()->setContextProperty("workOrderModel",hmiAdaptor->workOrderModel);
     engine.rootContext()->setContextProperty("spliceModel",hmiAdaptor->spliceModel);

@@ -29,7 +29,7 @@ Item {
             repeaterModel.append({"headTitle":"Width Encoder","leftText":"off","righttext":"on"})
             repeaterModel.append({"headTitle":"Height Encoder","leftText":"off","righttext":"on"})
             repeaterModel.append({"headTitle":"Foot Pedal Abort","leftText":"off","righttext":"on"})
-            repeaterModel.append({"headTitle":"Cooling","leftText":"Cooling","righttext":"cooling(100j/s)"})
+            repeaterModel.append({"headTitle":"cooling(1sec/100J)","leftText":"off","righttext":"on"})
             graphModel.append({"graphText":"1MS"})
             graphModel.append({"graphText":"5MS"})
             graphModel.append({"graphText":"10MS"})
@@ -112,7 +112,7 @@ Item {
         anchors.topMargin: 20
         anchors.left: parent.left
         anchors.leftMargin: 20
-        font.family: "arail"
+        font.family: "arial"
         font.pixelSize: 20
         color: "white"
         text: qsTr("Unit Conversion")
@@ -125,7 +125,7 @@ Item {
         font.family: "arial"
         font.pixelSize: 16
         color: "white"
-        text: qsTr("-Cross Section\n-Psi/Bar\n-Imperical/Metric")
+        text: qsTr("-AWG/mm²\n-Psi/Bar\n-Inch/mm")
     }
     Switch2 {
         id: awg
@@ -133,8 +133,8 @@ Item {
         anchors.top: conversion.bottom
         width: (parent.width-40)/6+40
         height: 50
-        textLeft: qsTr("AWG")
-        textRight: qsTr("MM2")
+        textLeft: qsTr("Imperical")
+        textRight: qsTr("Metric")
         state: "right"
         clip: true
     }
@@ -247,8 +247,8 @@ Item {
         anchors.top: radioButton.bottom
         anchors.left: formula.left
         width: (radioButton.width-30)/4
-        height: 10
-        color: "#0079c1"
+        height: 6
+        color: "#F79428" //"#0079c1"
     }
     Rectangle {
         id: centerTips
@@ -288,6 +288,21 @@ Item {
                 height: (formulaSetting.height-20)/3
                 headTitle: qsTr(formulaHead)
                 centervalue: qsTr(formulaValue)
+                Component.onCompleted: {
+                    if (index == 1 || index == 5 || index == 9) {
+                        localbordercolor = Qt.rgba(0,0,0,0)
+                        recBackGround = Qt.rgba(0,0,0,0)
+                    }
+                }
+                onMouseAreaClick: {
+                    if (index == 1 || index == 5 || index == 9) {
+                        localbordercolor = Qt.rgba(0,0,0,0)
+                        recBackGround = Qt.rgba(0,0,0,0)
+                    } else {
+                        localbordercolor = "#05f91c"
+                    }
+                }
+
             }
         }
     }

@@ -114,7 +114,6 @@ Item {
         anchors.topMargin: 10
         anchors.left: networkText.left
         anchors.right: networkSwitch.right
-        height: 50
         textColor: "white"
         text: qsTr("IP Configuration")
     }
@@ -203,7 +202,6 @@ Item {
             text: qsTr("Defalut Setting")
             textColor: "white"
             clip: true
-            height: (columnButton.height-20)/3
             width: columnButton.width
         }
         CButton {
@@ -211,7 +209,6 @@ Item {
             text: qsTr("Cancel")
             textColor: "white"
             clip: true
-            height: (columnButton.height-20)/3
             width: columnButton.width
         }
         CButton {
@@ -219,7 +216,6 @@ Item {
             text: qsTr("OK")
             textColor: "white"
             clip: true
-            height: (columnButton.height-20)/3
             width: columnButton.width
         }
     }

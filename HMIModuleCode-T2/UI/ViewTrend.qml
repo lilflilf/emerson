@@ -11,7 +11,7 @@ Item {
     height: Screen.height*0.6
     Rectangle {
         id: back
-        width: 300
+        width: Screen.width * 0.3
         height: parent.height
         color: "black"
         opacity: 0.3
@@ -55,7 +55,7 @@ Item {
         id: searchArea
         property int selectNum: -2
         anchors.left: seach.left
-        width: 280
+        width: Screen.width * 0.3 - 20
         anchors.top: seach.bottom
         anchors.bottom: parent.bottom
         z: 12
@@ -75,7 +75,7 @@ Item {
             font.family: "arial"
             font.pixelSize: 16
             verticalAlignment: Qt.AlignVCenter
-            width: 280
+            width: Screen.width * 0.3 - 20
             height: 40
             color: "white"
             text: qsTr("All")
@@ -168,7 +168,6 @@ Item {
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 10
             width: parent.width
-            height: 79
             text: qsTr("OK")
             iconSource: "qrc:/images/images/OK.png"
             onClicked: {
@@ -196,12 +195,21 @@ Item {
 
     CButton {
         id: searchInfo
-        width: 250
-        height: 50
+//        width: 250
         anchors.left: title2.left
         anchors.top: title2.bottom
         clip: true
         text: qsTr("All")
+        height: mytimeSelect.height
+        anchors.right: mytimeSelect.right
+        backgroundComponent: Rectangle {
+            anchors.fill: parent
+            color: "black"
+            border.color: "#1987ab"
+            border.width: 2
+        }
+
+
         onClicked: {
             searchArea.visible = true
         }
@@ -232,11 +240,12 @@ Item {
         id: mycalendar
         anchors.left: from.left
         anchors.top: from.bottom
-        width: 125
+        width: 170
         z: 10
     }
     MyTimeSelect {
-        width: 125
+        id: mytimeSelect
+        width: 170
         anchors.top: mycalendar.top
         anchors.left: mycalendar.right
         anchors.leftMargin: 20
@@ -257,11 +266,11 @@ Item {
         id: mycalendar2
         anchors.left: from.left
         anchors.top: to.bottom
-        width: 125
+        width: 170
         z: 10
     }
     MyTimeSelect {
-        width: 125
+        width: 170
         anchors.top: mycalendar2.top
         anchors.left: mycalendar2.right
         anchors.leftMargin: 20
@@ -275,14 +284,12 @@ Item {
         spacing: 10
         CButton {
             id: applyButton
-            width: 250
-            height: 79
+            width: searchInfo.width
             text: qsTr("APPLY")
         }
         CButton {
             id: backButton
-            width: 250
-            height: 79
+            width: searchInfo.width
             text: qsTr("Back")
         }
     }
@@ -371,22 +378,18 @@ Item {
         spacing: 30
         CButton {
             width: (qualityListViewTwo.width - 90) / 4
-            height: 79
             text: "Time"
         }
         CButton {
             width: (qualityListViewTwo.width - 90) / 4
-            height: 79
             text: "Pre-Height"
         }
         CButton {
             width: (qualityListViewTwo.width - 90) / 4
-            height: 79
             text: "Post-Hight"
         }
         CButton {
             width: (qualityListViewTwo.width - 90) / 4
-            height: 79
             text: "Peak Power"
         }
     }

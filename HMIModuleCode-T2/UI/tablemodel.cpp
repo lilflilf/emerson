@@ -647,6 +647,20 @@ void OperatorModel::insertValue(QString name, QString passwd)
     m_operatorAdaptor->InsertRecordIntoTable(&myOperator);
 }
 
+bool OperatorModel::login(QString passwd, OperatorElement *operatot)
+{
+    QMap<int,QString>::iterator it; //遍历map
+    OperatorElement myOperator;
+    for ( it = operators->begin(); it != operators->end(); ++it ) {
+        m_operatorAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myOperator);
+        if (myOperator.Password == passwd) {
+            operatot = &myOperator;
+            return true;
+        }
+    }
+    return false;
+}
+
 
 int OperatorModel::columnCount(const QModelIndex &parent) const
 {

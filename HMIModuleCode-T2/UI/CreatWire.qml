@@ -655,8 +655,8 @@ Item {
                 pointSize: 12
                 anchors.bottom: parent.bottom
                 width: parent.width * 0.5
-                height: parent.height * 0.05
-                anchors.bottomMargin: 100
+//                height: 79
+//                anchors.bottomMargin: 100
                 anchors.right: parent.right
                 anchors.rightMargin: 30
                 onClicked: {
@@ -677,23 +677,23 @@ Item {
                 id: settingsModel
                 Component.onCompleted: {
                     settingsModel.append({"topText":"Energy","bottomText":"30J"})
-                    settingsModel.append({"topText":"Trigger\npressure","bottomText":"50PSI"})
-                    settingsModel.append({"topText":"Amplitu","bottomText":"25um"})
-                    settingsModel.append({"topText":"Weld\nPressure","bottomText":"50PSI"})
+                    settingsModel.append({"topText":"Trigger Pressure","bottomText":"50PSI"})
+                    settingsModel.append({"topText":"Amplitude","bottomText":"25um"})
+                    settingsModel.append({"topText":"Weld Pressure","bottomText":"50PSI"})
                     settingsModel.append({"topText":"Width","bottomText":"12.5mm"})
                 }
             }
             ListModel {
                 id: settingsModel2
                 Component.onCompleted: {
-                    settingsModel2.append({"topText":"Time","bottomText":"5.00s"})
                     settingsModel2.append({"topText":"Time","bottomText":"0.00s"})
-                    settingsModel2.append({"topText":"Power","bottomText":"3960W"})
+                    settingsModel2.append({"topText":"Time","bottomText":"5.00s"})
                     settingsModel2.append({"topText":"Power","bottomText":"0W"})
-                    settingsModel2.append({"topText":"Pre-Height","bottomText":"15.00mm"})
+                    settingsModel2.append({"topText":"Power","bottomText":"3960W"})
                     settingsModel2.append({"topText":"Pre-Height","bottomText":"0.00mm"})
-                    settingsModel2.append({"topText":"Height","bottomText":"15.00mm"})
-                    settingsModel2.append({"topText":"Height","bottomText":"0.00mm"})
+                    settingsModel2.append({"topText":"Pre-Height","bottomText":"15.00mm"})
+                    settingsModel2.append({"topText":"Post-Height","bottomText":"0.00mm"})
+                    settingsModel2.append({"topText":"Post-Height","bottomText":"15.00mm"})
 
 
                 }
@@ -707,7 +707,7 @@ Item {
                 anchors.leftMargin: 60
                 visible: false
                 Text {
-                    text: qsTr("Upper Limit")
+                    text: qsTr("Lower Limit")
                     font.pointSize: 14
                     font.family: "arial"
                     color: "white"
@@ -717,7 +717,7 @@ Item {
                     font.pointSize: 14
                     font.family: "arial"
                     color: "white"
-                    text: qsTr("Lower Limit")
+                    text: qsTr("Upper Limit")
                     opacity: 0.5
                 }
             }
@@ -731,70 +731,50 @@ Item {
                 rows: 4
                 columns: 2
                 width: 220
-                height: 380
-                columnSpacing: 50
+                height: 340
+                columnSpacing: 30
                 rowSpacing: 20
                 Repeater {
                     id: repeater
                     model: settingsModel
-                    CButton {
-                        width: 150
-                        height: 120
-                        backgroundComponent: Item {
-                            Rectangle {
-                                anchors.centerIn: parent
-                                anchors.fill: parent
-                                radius: 3
-                                color: "#000000"
-                                Rectangle{
-                                    anchors.fill: parent
-                                    anchors.margins: 1
-                                    radius: 3
-                                    anchors.centerIn: parent
-                                    color: "#000000"
-                                }
-                            }
-                        }
-                        Text {
-                            id: buttonTop
-                            text: qsTr(topText)
-                            anchors.top: parent.top
-                            anchors.topMargin: 3
-                            anchors.left: parent.left
-                            anchors.leftMargin: 3
-                            font.pointSize: 12
-                            font.family: "arial"
-                            color: "white"
-                            opacity: 0.5
-                        }
-                        Text {
-                            anchors.centerIn: parent
-                            text: qsTr(bottomText)
-//                            anchors.top: buttonTop.bottom
-//                            anchors.topMargin: 3
-//                            anchors.left: parent.left
-//                            anchors.leftMargin: 3
-                            font.pointSize: 16
-                            font.family: "arial"
-                            color: "white"
-
-                        }
+                    Recsetting {
+                        headTitle: qsTr(topText)
+                        centervalue: qsTr(bottomText)
+                        width: 160
+                        height: 110
                     }
                 }
             }
             Row {
                 anchors.bottom: parent.bottom
-                anchors.bottomMargin: 100
                 anchors.left: parent.left
-                anchors.leftMargin: 15
-                spacing: 20
-                height: 50
+                anchors.leftMargin: 5
+                anchors.horizontalCenter: parent.horizontalCenter
+                spacing: 10
+                height: 61
                 width: parent.width
                 CButton {
                     pointSize: 14
-                    width: parent.width * 0.45
-                    height: 50
-                    text: qsTr("QUALITY WINDOW\nSETTINGS")
+                    width: parent.width * 0.45 + 13
+//                    height: 79
+//                    text: qsTr("QUALITY WINDOW")
+                    Column {
+                        anchors.centerIn: parent
+                        Text {
+                            text: qsTr("QUALITY")
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            font.family: "arial"
+                            font.pointSize: 14
+                            color: "white"
+                        }
+                        Text {
+                            text: qsTr("WINDOW")
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            font.family: "arial"
+                            font.pointSize: 14
+                            color: "white"
+                        }
+                    }
                     onClicked: {
                         if (repeater.model == settingsModel){
                             repeater.model = settingsModel2
@@ -802,7 +782,7 @@ Item {
                             upper.visible = true
                         }
                         else {
-                            text = "QUALITY WINDOW\nSETTINGS"
+                            text = "QUALITY WINDOW"
                             repeater.model = settingsModel
                             upper.visible = false
                         }
@@ -810,9 +790,26 @@ Item {
                 }
                 CButton {
                     pointSize: 14
-                    text: qsTr("ADVANCED WELD\nSETTINGS")
-                    width: parent.width * 0.45
-                    height: 50
+                    Column {
+                        anchors.centerIn: parent
+                        Text {
+                            text: qsTr("ADVANCED")
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            font.family: "arial"
+                            font.pointSize: 14
+                            color: "white"
+                        }
+                        Text {
+                            text: qsTr("SETTING")
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            font.family: "arial"
+                            font.pointSize: 14
+                            color: "white"
+                        }
+                    }
+
+                    width: parent.width * 0.45 + 13
+//                    height: 79
                     onClicked: {
                         settingRightArea.visible = true
                     }
@@ -827,63 +824,54 @@ Item {
         id: tabBar
         currentIndex: swipeView.currentIndex
         anchors.top: parent.top
+        height: Screen.height * 0.08
         TabButton {
-            font.family: "arial"
-            font.pointSize: 16
-            text: qsTr("WIRE BUILDER")
-            opacity: 0.33
+            height: parent.height
+            Rectangle {
+                anchors.fill: parent
+                color:  "#052a40"  //tabBar.currentIndex == 0 ? "black" : "#48484a"
+            }
+            Text {
+                anchors.centerIn: parent
+                font.family: "arial"
+                font.pointSize: 17.5
+                text: qsTr("WIRE BUILDER")
+                color: tabBar.currentIndex == 0 ? "white" : "#969ea5"
+            }
+            Rectangle {
+                width: parent.width
+                height: 6
+                color:  "#F79428"
+                anchors.bottom: parent.bottom
+                visible: tabBar.currentIndex == 0 ? true : false
+            }
+
             onClicked: {
                 settingRightArea.visible = false
             }
         }
         TabButton {
-            font.family: "arial"
-            font.pointSize: 16
-            text: qsTr("WELD SETTINGS")
-            opacity: 0.33
+            height: parent.height
+            Rectangle {
+                anchors.fill: parent
+                color:  "#052a40"  //tabBar.currentIndex == 0 ? "black" : "#48484a"
+            }
+            Text {
+                anchors.centerIn: parent
+                font.family: "arial"
+                font.pointSize: 17.5
+                text: qsTr("WELD SETTINGS")
+                color: tabBar.currentIndex == 1 ? "white" : "#969ea5"
+            }
+            Rectangle {
+                width: parent.width
+                height: 6
+                color:  "#F79428"
+                anchors.bottom: parent.bottom
+                visible: tabBar.currentIndex == 1 ? true : false
+            }
         }
     }
-
-    //    TabBar {
-    //        id: tabBar
-    //        currentIndex: swipeView.currentIndex
-    //        anchors.top: parent.top
-    //        width: Screen.width * 0.3
-    //        TabButton {
-    //            Rectangle {
-    //                anchors.fill: parent
-    //                color: tabBar.currentIndex == 0 ? "black" : "#48484a"
-    //                Text {
-    //                    anchors.centerIn: parent
-    //                    font.family: "arial"
-    //                    font.pointSize: 14
-    //                    color: "white"
-    //                    text: qsTr("WIRE BUILDER")
-    //                    opacity: 0.5
-    //                    width: parent.width
-    //                    clip: true
-    //                }
-    //            }
-
-    //        }
-    //        TabButton {
-    //            Rectangle {
-    //                anchors.fill: parent
-    //                color: tabBar.currentIndex == 1 ? "black" : "#48484a"
-    //                Text {
-    //                    anchors.centerIn: parent
-    //                    font.family: "arial"
-    //                    font.pointSize: 14
-    //                    color: "white"
-    //                    text: qsTr("WELD SETTINGS")
-    //                    opacity: 0.5
-    //                    width: parent.width
-    //                    clip: true
-    //                }
-    //            }
-    //        }
-    //    }
-
     Item {
         id: rightArea
         anchors.left: swipeView.right
@@ -945,9 +933,11 @@ Item {
             height: Screen.height *0.5
             anchors.top: spliceDetailsTips.bottom
             anchors.topMargin: 10
+            anchors.bottom: addWire.top
+            anchors.bottomMargin: 10
             anchors.left: spliceDetails.left
             anchors.right: parent.right
-            anchors.rightMargin: 40
+            anchors.rightMargin: 20
 
         }
 
@@ -955,21 +945,20 @@ Item {
             id: addWire
             pointSize: 14
             width: 200
-            height: 50
-            anchors.left: spliceDetailsItem.left
-            anchors.top: spliceDetailsItem.bottom
-            anchors.topMargin: 20
+//            height: 79
+            anchors.left: wirelibrary.right
+            anchors.bottom: parent.bottom
             text: qsTr("ADD WIRE")
+            anchors.leftMargin: 10
         }
 
         CButton {
             id: wirelibrary
             pointSize: 14
             width: 200
-            height: 50
+//            height: 79
             anchors.left: spliceDetailsItem.left
-            anchors.top: addWire.bottom
-            anchors.topMargin: 10
+            anchors.bottom: parent.bottom
             text: qsTr("WIRE LIBRARY")
         }
 
@@ -977,9 +966,10 @@ Item {
             id: saveSplice
             pointSize: 14
             width: 200
-            height: 50
+//            height: 79
             anchors.right: spliceDetailsItem.right
-            anchors.bottom: wirelibrary.bottom
+            anchors.bottom: parent.bottom
+//            anchors.bottomMargin: 10
             text: qsTr("SAVE SPLICE")
             onClicked: {
                 signalSaveSplice()
@@ -992,14 +982,14 @@ Item {
         width: Screen.width * 0.7
         height: parent.height // * 0.5
         visible: false
-        Rectangle {
+        Image {
             anchors.fill: parent
-            color: "#6d6e71"
+            source: "qrc:/images/images/bg.png"
             MouseArea {
                 anchors.fill: parent
             }
         }
-        Rectangle {
+        Item {
             id: rect1
             anchors.left: parent.left
             anchors.top: parent.top
@@ -1028,13 +1018,13 @@ Item {
             border.width: 2
             height: 4
         }
-        Rectangle {
+        Item {
             id: rect2
             anchors.top: line1.bottom
             anchors.topMargin: 10
             anchors.left: rect1.left
             anchors.right: parent.right
-            color: Qt.rgba(255,255,255,0.1)
+//            color: Qt.rgba(255,255,255,0.1)
             height: 170
             Text {
                 id: weldModel
@@ -1140,13 +1130,13 @@ Item {
             }
         }
 
-        Rectangle {
+        Item {
             id: rect3
             anchors.top: rect2.bottom
             anchors.topMargin: 10
             anchors.left: rect1.left
             anchors.right: parent.right
-            color: Qt.rgba(255,255,255,0.1)
+//            color: Qt.rgba(255,255,255,0.1)
             height: 350
             clip: true
             Text {
@@ -1208,9 +1198,9 @@ Item {
                             height: 40
                             inputWidth: parent.width/2
                             inputHeight: 40
-                            inputColor: "black"
+                            inputColor: "white"
                             clip: true
-                            backgroundcolor: "white"
+                            backgroundcolor: "black"
                             inputText: qsTr(textValue)
                         }
                     }
@@ -1272,9 +1262,9 @@ Item {
                             height: 40
                             inputWidth: parent.width/2
                             inputHeight: 40
-                            inputColor: "black"
+                            inputColor: "white"
                             clip: true
-                            backgroundcolor: "white"
+                            backgroundcolor: "black"
                             inputText: qsTr(textValue)
                         }
                     }
@@ -1330,7 +1320,7 @@ Item {
         Rectangle {
             id: line2
             anchors.top: rect3.bottom
-            anchors.topMargin: 10
+            anchors.topMargin: -20
             anchors.left: rect1.left
             anchors.right: rect1.right
             border.color: "white"
@@ -1347,7 +1337,7 @@ Item {
             anchors.bottomMargin: 30
             CButton {
                 width: 200
-                height: 50
+//                height: 50
                 text: qsTr("Back")
                 textColor: "white"
 //                backgroundComponent: Component {
@@ -1367,7 +1357,7 @@ Item {
             }
             CButton {
                 width: 200
-                height: 50
+//                height: 50
                 text: qsTr("Save")
                 textColor: "white"
 //                backgroundComponent: Component {

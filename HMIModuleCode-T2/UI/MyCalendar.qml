@@ -10,6 +10,12 @@ CButton
     onClicked: calendar.visible = !calendar.visible
     height: 40
 
+    backgroundComponent: Rectangle {
+        anchors.fill: parent
+        color: "black"
+        border.color: "#1987ab"
+        border.width: 2
+    }
     Calendar{
         id: calendar
         width: 500

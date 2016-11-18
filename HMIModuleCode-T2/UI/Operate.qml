@@ -311,15 +311,15 @@ Item {
     CButton {
         id: addnewOrder
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 43
+        anchors.bottomMargin: 10
         anchors.left: parent.left
-        anchors.leftMargin: 20
-        height: 79
-        width: (parent.width-314)/3
+        anchors.leftMargin: 15
+//        height: 79
+        width: (parent.width-230)/4
         spacing: 10
         iconSource: "qrc:/images/images/Add.png"
-        text: qsTr("ADD NEW WORK ORDEAR")
-        pixelSize: 20
+        text: qsTr("ADD NEW")
+        pointSize: 20
         clip: true
         textColor: "white"
         onClicked: {
@@ -331,16 +331,16 @@ Item {
     }
     CButton {
         id: editExistingOrder
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 43
+        anchors.bottom: addnewOrder.bottom
+//        anchors.bottomMargin: 43
         anchors.left: addnewOrder.right
-        anchors.leftMargin: 48
-        height: 79
-        width: (parent.width-314)/3
+        anchors.leftMargin: 15
+//        height: 79
+        width: (parent.width-230)/4
         spacing: 10
         iconSource: "qrc:/images/images/stting.png"
-        text: qsTr("EDIT EXISTING WORK ORDER")
-        pixelSize: 20
+        text: qsTr("EDIT EXISTING")
+        pointSize: 20
         clip: true
         textColor: "white"
         onClicked: {
@@ -354,17 +354,34 @@ Item {
         }
     }
     CButton {
-        id: importOrder
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 43
+        id: deleOrder
+        anchors.bottom: addnewOrder.bottom
+//        anchors.bottomMargin: 43
         anchors.left: editExistingOrder.right
-        anchors.leftMargin: 48
-        height: 79
-        width: (parent.width-314)/3
+        anchors.leftMargin: 15
+//        height: 79
+        width: (parent.width-230)/4
+        spacing: 10
+//        iconSource: "qrc:/images/images/import.png"
+        text: qsTr("DELETE WORK ORDER")
+        pointSize: 20
+        clip: true
+        textColor: "white"
+        onClicked: {
+        }
+    }
+    CButton {
+        id: importOrder
+        anchors.bottom: addnewOrder.bottom
+//        anchors.bottomMargin: 43
+        anchors.left: deleOrder.right
+        anchors.leftMargin: 15
+//        height: 79
+        width: (parent.width-230)/4
         spacing: 10
         iconSource: "qrc:/images/images/import.png"
         text: qsTr("IMPORT WORK ORDER")
-        pixelSize: 20
+        pointSize: 20
         clip: true
         textColor: "white"
         onClicked: {
@@ -373,16 +390,16 @@ Item {
     }
     CButton {
         id: selectOk
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 43
+        anchors.bottom: addnewOrder.bottom
+//        anchors.bottomMargin: 43
         anchors.right: parent.right
         anchors.rightMargin: 20
-        height: 79
+//        height: 79
         width: 130
         spacing: 10
         iconSource: "qrc:/images/images/OK.png"
         text: qsTr("OK")
-        pixelSize: 20
+        pointSize: 20
         clip: true
         textColor: "white"
         onClicked: {
@@ -518,7 +535,6 @@ Item {
             anchors.top: quantity.bottom
             anchors.topMargin: 16
             width: 180
-            height: 79
             text: qsTr("CANCEL")
             textColor: "white"
             iconSource: "qrc:/images/images/cancel.png"
@@ -540,7 +556,6 @@ Item {
             anchors.top: quantity.bottom
             anchors.topMargin: 16
             width: 180
-            height: 79
             text: qsTr("OK")
             textColor: "white"
             iconSource: "qrc:/images/images/OK.png"
