@@ -633,6 +633,15 @@ Item {
                 width: parent.width
                 textColor: "white"
                 text: qsTr("Log Off")
+                onClicked: {
+                    root.logoff()
+
+                    personColumn.visible = false
+                    background.visible = false
+                    helpTitle.visible = false
+                    background.opacity = 0
+                    dialog.visible = false
+                }
             }
             CButton {
                 width: parent.width

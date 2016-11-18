@@ -28,7 +28,7 @@ Item {
         color: "white"
         font.family: "arial"
         font.pixelSize: 24
-        text: qsTr("Scan ID Or Enter Passcode")
+        text: qsTr("Scan Or Enter ID")
     }
     TextInput {
         id: mima

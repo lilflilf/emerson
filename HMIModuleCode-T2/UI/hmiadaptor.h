@@ -5,9 +5,7 @@
 #include <QObject>
 #include "tablemodel.h"
 #include "Interface/definition.h"
-<<<<<<< HEAD
 #include "Interface/Settings/OperatorLibrary.h"
-=======
 #include "Interface/Maintenance/AdvancedMaintenance.h"
 #include "Interface/Maintenance/Calibration.h"
 #include "Interface/Maintenance/Maintenance.h"
@@ -15,7 +13,6 @@
 #include "Interface/Maintenance/MaintenanceLog.h"
 #include "Interface/Maintenance/ToolChange.h"
 #include "Interface/interface.h"
->>>>>>> 9e97e1fdd9ed2b5e88c7530ba1c32131474b4988
 
 #define HMI_PRINT (qDebug() <<"HMI adapter:" << __FILE__ << __FUNCTION__ << __LINE__ << ": ")
 

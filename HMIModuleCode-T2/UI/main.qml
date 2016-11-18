@@ -88,6 +88,14 @@ Window {
             break;
         }
     }
+    function logoff()
+    {
+        headBar.visible = false
+        statusBar.visible = false
+        contentLoader.source = ""
+        welcome.source = "qrc:/UI/Welcome.qml"
+    }
+
     Component.onCompleted: {
         console.log(width,height)
         //root.showMaximized()

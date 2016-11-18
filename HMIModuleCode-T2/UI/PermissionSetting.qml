@@ -157,7 +157,7 @@ Item {
             id: bottomRow
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 16
-            anchors.horizontalCenter: parent.horizontalAlignment
+            anchors.horizontalCenter: parent.horizontalCenter
             spacing: 5
             CButton {
                 width: (parent.parent.width-10) / 2
