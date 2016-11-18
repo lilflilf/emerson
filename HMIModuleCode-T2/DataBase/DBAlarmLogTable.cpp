@@ -60,11 +60,11 @@ bool DBAlarmLogTable::InsertRecordIntoTable(void *_obj)
 
 //    query.prepare(SQLSentence[INSERT_OPERATOR_TABLE]);
     query.addBindValue(((AlarmElement*)_obj)->AlarmMsg);
-    QDateTime TimeLabel = QDateTime::fromTime_t(((OperatorElement*)_obj)->CreatedDate);
+    QDateTime TimeLabel = QDateTime::fromTime_t(((AlarmElement*)_obj)->CreatedDate);
     query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
     query.addBindValue(((AlarmElement*)_obj)->AlarmType);
     query.addBindValue(((AlarmElement*)_obj)->WeldResultID);
-    query.addBindValue(((OperatorElement*)_obj)->OperatorID);
+    query.addBindValue(((AlarmElement*)_obj)->OperatorID);
 
     bResult = query.exec();
     if (bResult == false)   //run SQL
@@ -145,7 +145,7 @@ bool DBAlarmLogTable::QueryOneRecordFromTable(int ID, QString AlarmMsg, void *_o
     ((AlarmElement*)_obj)->CreatedDate = TimeLabel.toTime_t();
     ((AlarmElement*)_obj)->AlarmType = query.value("AlarmType").toInt();
     ((AlarmElement*)_obj)->WeldResultID = query.value("WeldResultID").toInt();
-    ((AlarmElement*)_obj)->OperaterID = query.value("OperaterID").toInt();
+    ((AlarmElement*)_obj)->OperatorID = query.value("OperaterID").toInt();
     AlarmLogDBObj.close();
     return bResult;
 }
@@ -212,7 +212,7 @@ bool DBAlarmLogTable::UpdateRecordIntoTable(void *_obj)
     query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
     query.addBindValue(((AlarmElement*)_obj)->AlarmType);
     query.addBindValue(((AlarmElement*)_obj)->WeldResultID);
-    query.addBindValue(((AlarmElement*)_obj)->OperaterID);
+    query.addBindValue(((AlarmElement*)_obj)->OperatorID);
 
     bResult = query.exec();
     if(bResult == false)

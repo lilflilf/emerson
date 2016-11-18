@@ -2,6 +2,7 @@
 #include "Password.h"
 #include "M2010.h"
 #include "Interface/Interface.h"
+#include "Interface/Settings/SysConfiguration.h"
 #include "UtilityClass.h"
 #include <QDir>
 #include <QFile>
@@ -113,7 +114,7 @@ void M10INI::Save_LastWeldGraph()
 
 }
 
-void M10INI::SetDefaultWeldFormula()
+void M10INI::SetDefaultWeldFormula(Status_Data* _DataStruct)
 {
     InterfaceClass* _Interface = InterfaceClass::Instance();
     //This function will set the weld seeting formulas to default values for the very 1st time.
@@ -128,83 +129,88 @@ void M10INI::SetDefaultWeldFormula()
         switch (i)
         {
             case 0:
-                _Interface->StatusData.WeldSettings4Build[i].Multplier = Defmm2EnergyMult0;
-                _Interface->StatusData.WeldSettings4Build[i].Offset = Defmm2EnergyOffset0;
+                _DataStruct->WeldSettings4Build[i].Multplier = Defmm2EnergyMult0;
+                _DataStruct->WeldSettings4Build[i].Offset = Defmm2EnergyOffset0;
             break;
             case 1:
-                _Interface->StatusData.WeldSettings4Build[i].Multplier = Defmm2EnergyMult1;
-                _Interface->StatusData.WeldSettings4Build[i].Offset = Defmm2EnergyOffset1;
+                _DataStruct->WeldSettings4Build[i].Multplier = Defmm2EnergyMult1;
+                _DataStruct->WeldSettings4Build[i].Offset = Defmm2EnergyOffset1;
             break;
             case 2:
-                _Interface->StatusData.WeldSettings4Build[i].Multplier = Defmm2EnergyMult2;
-                _Interface->StatusData.WeldSettings4Build[i].Offset = Defmm2EnergyOffset2;
+                _DataStruct->WeldSettings4Build[i].Multplier = Defmm2EnergyMult2;
+                _DataStruct->WeldSettings4Build[i].Offset = Defmm2EnergyOffset2;
             break;
             case 3:
-                _Interface->StatusData.WeldSettings4Build[i].Multplier = Defmm2WidthAreaRatio0;
-                _Interface->StatusData.WeldSettings4Build[i].Offset = 0;            //Not used
+                _DataStruct->WeldSettings4Build[i].Multplier = Defmm2WidthAreaRatio0;
+                _DataStruct->WeldSettings4Build[i].Offset = 0;            //Not used
             break;
             case 4:
-                _Interface->StatusData.WeldSettings4Build[i].Multplier = Defmm2WidthAreaRatio1;
-                _Interface->StatusData.WeldSettings4Build[i].Offset = 0;            //Not used
+                _DataStruct->WeldSettings4Build[i].Multplier = Defmm2WidthAreaRatio1;
+                _DataStruct->WeldSettings4Build[i].Offset = 0;            //Not used
             break;
             case 5:
-                _Interface->StatusData.WeldSettings4Build[i].Multplier = Defmm2WidthAreaRatio2;
-                _Interface->StatusData.WeldSettings4Build[i].Offset = 0;            //Not used
+                _DataStruct->WeldSettings4Build[i].Multplier = Defmm2WidthAreaRatio2;
+                _DataStruct->WeldSettings4Build[i].Offset = 0;            //Not used
             break;
             case 6:
-                _Interface->StatusData.WeldSettings4Build[i].Multplier = Defmm2PressMult0;
-                _Interface->StatusData.WeldSettings4Build[i].Offset = Defmm2PressOffset0;
+                _DataStruct->WeldSettings4Build[i].Multplier = Defmm2PressMult0;
+                _DataStruct->WeldSettings4Build[i].Offset = Defmm2PressOffset0;
             break;
             case 7:
-                _Interface->StatusData.WeldSettings4Build[i].Multplier = Defmm2PressMult1;
-                _Interface->StatusData.WeldSettings4Build[i].Offset = Defmm2PressOffset1;
+                _DataStruct->WeldSettings4Build[i].Multplier = Defmm2PressMult1;
+                _DataStruct->WeldSettings4Build[i].Offset = Defmm2PressOffset1;
             break;
             case 8:
-                _Interface->StatusData.WeldSettings4Build[i].Multplier = Defmm2PressMult2;
-                _Interface->StatusData.WeldSettings4Build[i].Offset = Defmm2PressOffset2;
+                _DataStruct->WeldSettings4Build[i].Multplier = Defmm2PressMult2;
+                _DataStruct->WeldSettings4Build[i].Offset = Defmm2PressOffset2;
             break;
             case 9:
-                _Interface->StatusData.WeldSettings4Build[i].Multplier = Defmm2AmplitudeMult0;
-                _Interface->StatusData.WeldSettings4Build[i].Offset = Defmm2AmplitudeOffset0;
+                _DataStruct->WeldSettings4Build[i].Multplier = Defmm2AmplitudeMult0;
+                _DataStruct->WeldSettings4Build[i].Offset = Defmm2AmplitudeOffset0;
             break;
             case 10:
-                _Interface->StatusData.WeldSettings4Build[i].Multplier = Defmm2AmplitudeMult1;
-                _Interface->StatusData.WeldSettings4Build[i].Offset = Defmm2AmplitudeOffset1;
+                _DataStruct->WeldSettings4Build[i].Multplier = Defmm2AmplitudeMult1;
+                _DataStruct->WeldSettings4Build[i].Offset = Defmm2AmplitudeOffset1;
             break;
             case 11:
-                _Interface->StatusData.WeldSettings4Build[i].Multplier = Defmm2AmplitudeMult2;
-                _Interface->StatusData.WeldSettings4Build[i].Offset = Defmm2AmplitudeOffset2;
+                _DataStruct->WeldSettings4Build[i].Multplier = Defmm2AmplitudeMult2;
+                _DataStruct->WeldSettings4Build[i].Offset = Defmm2AmplitudeOffset2;
             break;
         };
     }
-    _Interface->StatusData.WeldSettings4Build[0].MinRange = MinRange1;
-    _Interface->StatusData.WeldSettings4Build[0].MaxRange = MaxRange1;
-    _Interface->StatusData.WeldSettings4Build[1].MinRange = MinRange2;
-    _Interface->StatusData.WeldSettings4Build[1].MaxRange = MaxRange2;
-    _Interface->StatusData.WeldSettings4Build[2].MinRange = MinRange3;
-    _Interface->StatusData.WeldSettings4Build[2].MaxRange = MaxRange3;
+    _DataStruct->WeldSettings4Build[0].MinRange = MinRange1;
+    _DataStruct->WeldSettings4Build[0].MaxRange = MaxRange1;
+    _DataStruct->WeldSettings4Build[1].MinRange = MinRange2;
+    _DataStruct->WeldSettings4Build[1].MaxRange = MaxRange2;
+    _DataStruct->WeldSettings4Build[2].MinRange = MinRange3;
+    _DataStruct->WeldSettings4Build[2].MaxRange = MaxRange3;
 }
 
 void M10INI::SetDefaultPassword()
 {
     InterfaceClass* _Interface = InterfaceClass::Instance();
     _Interface->StatusData.EnableModularFlag = false;
-    _Interface->StatusData.PasswordStatus = PWSNotDefined;
-    _Interface->StatusData.PasswordData[0].Identifier = AdminUsername;
-    _Interface->StatusData.PasswordData[0].Password = "ADMIN";
-    _Interface->StatusData.PasswordData[1].Identifier = TechUsername;
-    _Interface->StatusData.PasswordData[1].Password = "USER";
-    _Interface->StatusData.PasswordData[2].Identifier = QCtlUsername;
-    _Interface->StatusData.PasswordData[2].Password = "QTCL";
-    _Interface->StatusData.ModularPassword[0].Identifier = "ENABLEKSK";
-    _Interface->StatusData.ModularPassword[0].Password = "ENKSK01";
-    _Interface->StatusData.ModularPassword[1].Identifier = "DISABLEKSK";
-    _Interface->StatusData.ModularPassword[1].Password = "DSKSK01";
-    _Interface->StatusData.ModularPassword[2].Identifier = "ENABLEKSK2D";
-    _Interface->StatusData.ModularPassword[2].Password = "ENKSK2D";
-    _Interface->StatusData.PWPermissions = 0x22;
-    _Interface->StatusData.AdminOptions =
-            (_Interface->StatusData.AdminOptions | ADMINOPWrequired);
+    _Interface->StatusData.PasswordData[0].Identifier = QObject::tr("Switch Key");
+    _Interface->StatusData.PasswordData[0].Password.clear();
+    _Interface->StatusData.PasswordData[0].PWPermissions = 0xFFFFFFFF;
+    _Interface->StatusData.PasswordData[1].Identifier = QObject::tr("Level 1");
+    _Interface->StatusData.PasswordData[1].Password.clear();
+    _Interface->StatusData.PasswordData[1].PWPermissions = 0;
+    _Interface->StatusData.PasswordData[2].Identifier = QObject::tr("Level 2");
+    _Interface->StatusData.PasswordData[2].Password.clear();
+    _Interface->StatusData.PasswordData[2].PWPermissions = 0;
+    _Interface->StatusData.PasswordData[3].Identifier = QObject::tr("Level 3");
+    _Interface->StatusData.PasswordData[3].Password.clear();
+    _Interface->StatusData.PasswordData[3].PWPermissions = 0;
+    _Interface->StatusData.PasswordData[4].Identifier = QObject::tr("Level 4");
+    _Interface->StatusData.PasswordData[4].Password.clear();
+    _Interface->StatusData.PasswordData[4].PWPermissions = 0;
+    _Interface->StatusData.ModularPassword[0].Identifier = QObject::tr("ENABLEKSK");
+    _Interface->StatusData.ModularPassword[0].Password = QObject::tr("ENKSK01");
+    _Interface->StatusData.ModularPassword[1].Identifier = QObject::tr("DISABLEKSK");
+    _Interface->StatusData.ModularPassword[1].Password = QObject::tr("DSKSK01");
+    _Interface->StatusData.ModularPassword[2].Identifier = QObject::tr("ENABLEKSK2D");
+    _Interface->StatusData.ModularPassword[2].Password = QObject::tr("ENKSK2D");
 }
 
 void M10INI::SetShrinkTubeDefaults()
@@ -258,14 +264,21 @@ void M10INI::SetSoftLimitDefaults(bool EnableSoftLimits)
 void M10INI::ClearPasswordData()
 {
     InterfaceClass* _Interface = InterfaceClass::Instance();
-    _Interface->StatusData.PasswordStatus = PWSNotDefined;
-    _Interface->StatusData.PasswordData[0].Identifier = AdminUsername;
-    _Interface->StatusData.PasswordData[0].Password = "";
-    _Interface->StatusData.PasswordData[1].Identifier = TechUsername;
-    _Interface->StatusData.PasswordData[1].Password = "";
-    _Interface->StatusData.PasswordData[2].Identifier = QCtlUsername;
-    _Interface->StatusData.PasswordData[2].Password = "";
-    _Interface->StatusData.PWPermissions = 0x00;
+    _Interface->StatusData.PasswordData[0].Identifier = QObject::tr("Switch Key");
+    _Interface->StatusData.PasswordData[0].Password.clear();
+    _Interface->StatusData.PasswordData[0].PWPermissions = 0xFFFFFFFF;
+    _Interface->StatusData.PasswordData[1].Identifier = QObject::tr("Level 1");
+    _Interface->StatusData.PasswordData[1].Password.clear();
+    _Interface->StatusData.PasswordData[1].PWPermissions = 0;
+    _Interface->StatusData.PasswordData[2].Identifier = QObject::tr("Level 2");
+    _Interface->StatusData.PasswordData[2].Password.clear();
+    _Interface->StatusData.PasswordData[2].PWPermissions = 0;
+    _Interface->StatusData.PasswordData[3].Identifier = QObject::tr("Level 3");
+    _Interface->StatusData.PasswordData[3].Password.clear();
+    _Interface->StatusData.PasswordData[3].PWPermissions = 0;
+    _Interface->StatusData.PasswordData[4].Identifier = QObject::tr("Level 4");
+    _Interface->StatusData.PasswordData[4].Password.clear();
+    _Interface->StatusData.PasswordData[4].PWPermissions = 0;
 }
 
 void M10INI::Init_StatusData()
@@ -277,10 +290,10 @@ void M10INI::Init_StatusData()
     _Interface->StatusData.Soft_Settings.Lang_Support = ENGLISH_lang;
     _Interface->StatusData.Soft_Settings.Horn_Calibrate = MAXAMPLITUDE;
     _Interface->StatusData.Soft_Settings.AutoPreburst = 0;
-    _Interface->StatusData.Soft_Settings.AutoGetNext = true;
+//    _Interface->StatusData.Soft_Settings.AutoGetNext = true;
     _Interface->StatusData.Soft_Settings.SonicGenWatts = 4000; // newsplicer 4000w, others we can set 3300w
     _Interface->StatusData.Soft_Settings.ToolCoverIgnore  = true;
-    _Interface->StatusData.Soft_Settings.NoToolCover4SU = true;
+//    _Interface->StatusData.Soft_Settings.NoToolCover4SU = true;
     _Interface->StatusData.Soft_Settings.Pressure2Unit = ToPSI;
     _Interface->StatusData.Soft_Settings.Mm2Awg = false;
     _Interface->StatusData.Soft_Settings.PWWidth2Height = 0;
@@ -328,15 +341,15 @@ void M10INI::Init_StatusData()
     _Interface->StatusData.ComInfo.BaudRate = 1152;
     _Interface->StatusData.MachineType = ACTNEWSPLICER; //Need To Fix
     _Interface->StatusData.MachineDate = "";
-    _Interface->StatusData.Machineflags[0] = 0;
+    _Interface->StatusData.Machineflags.Word[0] = 0;
     _Interface->StatusData.KeepDailyHistory = true;
 
     _Interface->StatusData.LockonAlarm = 0;
-    _Interface->StatusData.RunMode = 0;
-    _Interface->StatusData.AdminOptions = 0x00;
-    _Interface->StatusData.WeldSettingDefaultWeldMode = 0;
-    _Interface->StatusData.WeldSettingDefaultTrigPress = -1;
-    _Interface->StatusData.AutoStartLastPart = false;
+    _Interface->StatusData.RunMode.Word = 0;
+//    _Interface->StatusData.AdminOptions = 0x00;
+//    _Interface->StatusData.WeldSettingDefaultWeldMode = 0;
+//    _Interface->StatusData.WeldSettingDefaultTrigPress = -1;
+//    _Interface->StatusData.AutoStartLastPart = false;
     _Interface->StatusData.NRGtoHeightMode = false;
     _Interface->StatusData.TubeShrinkMode = false;
     _Interface->StatusData.FileSystemFlags = FSFDefaultSet;
@@ -350,7 +363,7 @@ void M10INI::Init_StatusData()
     _Interface->StatusData.CycleCount = 0;
     _Interface->StatusData.HistoryGraphData = true;
     _Interface->StatusData.RemoteGraphData = false;
-    _Interface->StatusData.AntisideSpliceTime = DEFAULTUNLOADTIME; //Default Unload time should be 1.5s
+//    _Interface->StatusData.AntisideSpliceTime = DEFAULTUNLOADTIME; //Default Unload time should be 1.5s
 
     for(int i = 0; i<= 7; i++)
     {
@@ -358,7 +371,7 @@ void M10INI::Init_StatusData()
         _Interface->StatusData.CurrentMaintenanceLimits[i] = 0;
     }
 
-    SetDefaultWeldFormula();
+    SetDefaultWeldFormula(&_Interface->StatusData);
     SetDefaultPassword();
     SetShrinkTubeDefaults();
     SetSoftLimitDefaults();

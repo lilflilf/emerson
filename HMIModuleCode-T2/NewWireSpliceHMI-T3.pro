@@ -31,13 +31,16 @@ SOURCES += main.cpp \
     TestCase/ScreenShowConvertTest.cpp \
     DataBase/DBWeldResultTable.cpp \
     DataBase/DBAlarmLogTable.cpp \
-    Interface/SysConfiguration.cpp \
     Interface/Interface.cpp \
     Interface/Maintenance/ToolChange.cpp \
     Interface/Maintenance/AdvancedMaintenance.cpp \
     Interface/Maintenance/Calibration.cpp \
     Interface/Maintenance/MaintenanceCounter.cpp \
-    DataBase/DBMaintenanceLogTable.cpp
+    DataBase/DBMaintenanceLogTable.cpp \
+    Interface/Settings/WeldDefaults.cpp \
+    Interface/Settings/DataCommunication.cpp \
+    Interface/Settings/PermissionSetting.cpp \
+    Interface/Settings/SysConfiguration.cpp
 
 RESOURCES += qml.qrc
 
@@ -77,7 +80,6 @@ HEADERS += \
     TestCase/ScreenShowConvertTest.h \
     DataBase/DBWeldResultTable.h \
     DataBase/DBAlarmLogTable.h \
-    Interface/SysConfiguration.h \
     Interface/Interface.h \
     Interface/Maintenance/ToolChange.h \
     Interface/Maintenance/AdvancedMaintenance.h \
@@ -85,7 +87,12 @@ HEADERS += \
     Interface/Maintenance/MaintenanceCounter.h \
     Interface/Maintenance/Maintenance.h \
     Interface/Maintenance/MaintenanceLog.h \
-    DataBase/DBMaintenanceLogTable.h
+    DataBase/DBMaintenanceLogTable.h \
+    Interface/Settings/WeldDefaults.h \
+    Interface/Settings/OperatorLibrary.h \
+    Interface/Settings/DataCommunication.h \
+    Interface/Settings/PermissionSetting.h \
+    Interface/Settings/SysConfiguration.h
 
 DISTFILES += \
     UI/displayChinese_zh_CN.qm \

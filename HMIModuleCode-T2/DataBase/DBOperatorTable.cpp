@@ -1,4 +1,5 @@
 #include "DBOperatorTable.h"
+#include "Interface/Settings/OperatorLibrary.h"
 #include <QDebug>
 
 DBOperatorTable* DBOperatorTable::_instance = NULL;

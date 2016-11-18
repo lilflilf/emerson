@@ -2,13 +2,14 @@
 #define SYSCONFIGURATION_H
 #include <QString>
 #include <QObject>
-#include "definition.h"
+#include "Interface/Definition.h"
 
 #define MaxWireEntries 20
 
 #define PORT_DISABLE              0   //Value represents Port Disable
 #define PASSWORDCOUNT             3   //Does not include Administrator
 #define PASSCOUNT                 3
+#define PERMISSIONLEVEL           5   // Switch Key, level1, level2, level3, level4,
 
 //File System Flags, 3 groups of 8 bits (Most not used)
 //First Flag in each group is Include Support Files in operation
@@ -94,7 +95,11 @@
 #define ShrinkTubeDefTemp10           260
 #define ShrinkTubeDefTime10           30
 
+#define ADMINNOButton        0x01
+#define ADMINNOShutdown      0x02
 #define ADMINOPWrequired     0x04
+#define ADMINOShowMaintData  0x08
+#define ADMINOQualifiedOnly  0x10
 
 #define SoftLimitDefaultSampleSize 5
 #define SoftLimitSigmaDefault      3
@@ -104,10 +109,27 @@
 #define BRANSON_LASTWELD_FILE  "BransonLastWeld.bin" //Array DataCell() is stored in this file
 
 enum SCREEN_MODE{
-    No_SCREEN = 0,
-    CreateNew_SCREEN,
+    No_SCREEN = -1,
+    CreateNew_SCREEN = 0,
+    EditExisting_SCREEN,
     Operate_SCREEN,
     Test_SCREEN,
+    TeachMode_SCREEN,
+    Calibration_SCREEN,
+    ToolChange_SCREEN,
+    AdvancedMaintenance_SCREEN,
+    MaintenanceCounter_SCREEN,
+    MaintenanceLog_SCREEN,
+    WorkOrderHistory_SCREEN,
+    StatisticalTrend_SCREEN,
+    ErrorAlarmLog_SCREEN,
+    Library_SCREEN,
+    VersionInformation_SCREEN,
+    PermissionSetting_SCREEN,
+    WeldDefaults_SCREEN,
+    OperatorLibrary_SCREEN,
+    DataCommunication_SCREEN,
+    LockOnAlarm_SCREEN,
 };
 
 // Used to set the correct Language Version for the Software
@@ -145,16 +167,17 @@ struct BRANSON_INI_STRUCT
     enum LangSupport Lang_Support;
     int Horn_Calibrate;
     int AutoPreburst;
-    bool AutoGetNext;
+//    bool AutoGetNext;
     int SonicGenWatts;
     bool ToolCoverIgnore;
     enum PRESSUREUNIT Pressure2Unit;
     bool Mm2Awg;
+    bool Mm2Inch;
     float PWWidth2Height;       //Not used anywhere?
     int MinAmplitude;
     int MinPressure;
-    int GotoRunScreen;         //Not used, open for re-use
-    int NoToolCover4SU;
+//    int GotoRunScreen;         //Not used, open for re-use
+//    int NoToolCover4SU;
     enum WeldSetFormula WeldFormula;
     int RunCount;              //  Number to Run to Qualify the Splice
     enum TEACH_MODE_TYPE Teach_Mode;
@@ -245,6 +268,7 @@ struct PasswordEntry
 {
     QString Identifier;
     QString Password;
+    unsigned long PWPermissions;         //Flag field
 };
 
 enum FormulaRange
@@ -320,7 +344,8 @@ enum SoftLimitsIndex
 
 enum CoolingMode{
    ENERGYMODE = -1,
-   OFF = 0
+   OFF = 0,
+    ON = 1,
 };
 
 enum PWSDefinitions{
@@ -337,6 +362,45 @@ enum ACTUATORMODE{
     USESTARTHANDLE,
 };
 
+union MACHINEFLAGS	{	/* union MACHINEFLAGS MachineFlags */
+    struct	{
+        unsigned    Unused           :1;
+        unsigned    ANVILRetractFunc :1;     /* Extract Gather for 2mm before Anvil only if this flag is set. */
+        unsigned    BarcodeResponse  :1;      /* Send Barcode response only if this flag is set. */
+        unsigned	NoSettingHdr	 :1;		/* Don't print header data on each page/change */
+        unsigned	MntScanEaWld	 :1;		/* Maint. counters scanned after each weld or seq. */
+        unsigned	Prnt2SerPort	 :1;		/* Print line data to serial port */
+        unsigned	AirOn4Weld		 :1;		/* Air will not be turn off during weld */
+        unsigned	PHgtSearchOn	 :1;		/* Pre-Height search mode used on MTS20; Note: Changed from PHgtSearchOff, Reversed logic to default to OFF KBoria 5/2010 */
+        unsigned	PrnLegacyBrd	 :1;		/* Legacy PCB w/programmed strobe */
+        unsigned	Seq2StrtOnErr	 :1;		/* Automatic reset to first on error */
+        unsigned	SeqDblClk2Strt	 :1;		/* Double click to first instead of next */
+        unsigned	SeqDblClkOff	 :1;		/* Double click to skip step */
+        unsigned	SeekOff			 :1;
+        /* Sequence and Double click reset options */
+        unsigned	PrTransducerOff	 :1;		/* Standard condition now */
+        unsigned	WdthEncoderOff	 :1;
+        unsigned	HgtEncoderOff	 :1;		/* When these flags are set the device is missing */
+    } Flag;
+    unsigned short Word[4]; /* Room for 64 flags initialized to 0 (or?) */
+};
+
+union RUNMODE	{
+    /*There is a big endian for struct bit field alignment for IAR */
+    struct	{
+        unsigned Unused :11;
+
+        unsigned Mod10Mode          :1; /* Moved here into BBR from RAM */
+        unsigned DefeatWeldAbort	:1;
+        unsigned TeachModeOn		:1;
+/* Set this flag to defeat the footpedal monitor during the weld cycle */
+        unsigned SequenceRunning	:1;
+        unsigned SequenceOn			:1;
+
+    } ModeFlag;
+    unsigned short Word;
+};
+
 //A single structure and a single file for the status data
 class Status_Data
 {
@@ -344,22 +408,34 @@ public:
     int RevCode;
     QString CreatedDate;
     QString OperatorName;
-    BRANSON_INI_STRUCT Soft_Settings;
+
     QUALITY_DATA_FILE Cust_Data;
     HARD_SOFT_SETTINGS HSDATA;     //Not used, held for backwords compatibility
     IAComElement ComInfo;
     enum ActuatorType MachineType;
     QString MachineDate;
+
+
+    enum SCREEN_MODE StartScreen;
+/*Setting->Premission Setting*/
+    PasswordEntry PasswordData[PERMISSIONLEVEL];
+    QList<enum SCREEN_MODE> FunctionNameList;
+/*Weld Default*/
+    union MACHINEFLAGS Machineflags;
+    union RUNMODE RunMode;
+    enum CoolingMode CurrentCoolingMode;
+    bool CurrentCoolingTooling;
+    int CurrentCoolingDur;
+    int CurrentCoolingDel;
+    BRANSON_INI_STRUCT Soft_Settings;
     bool KeepDailyHistory;
-    enum PWSDefinitions PasswordStatus;
-    PasswordEntry PasswordData[PASSWORDCOUNT];
-    long AdminOptions;        //Flag field
-    long PWPermissions;       //Flag field
+    enum SAMPLERATIO PowerGraphSampleRatio;
+
     CalcWeldSettings4BuildStruct WeldSettings4Build[FormulaRangSize];
-    int WeldSettingsDefault4Build[WDSI_SIZE];  //100's of Secs
-    int WeldSettingDefaultWeldMode;
-    int WeldSettingDefaultTrigPress;
-    bool AutoStartLastPart;
+//    int WeldSettingsDefault4Build[WDSI_SIZE];  //100's of Secs
+//    int WeldSettingDefaultWeldMode;
+//    int WeldSettingDefaultTrigPress;
+//    bool AutoStartLastPart;
     bool NRGtoHeightMode;      //Mode 3 not on all machines
     bool TubeShrinkMode;       //Tube shrinker not on all machines
     ShrinkTubeData ShrinkTubeDefaults[STI_SIZE];
@@ -367,7 +443,7 @@ public:
     long SoftLimitsModeFlags;
     int SoftLimitSampleSize;
     int SoftLimit[SLIControlLimitSize][SLI_Size];
-    bool QualityLimitsModeFlags;
+//    bool QualityLimitsModeFlags;
     long FileSystemFlags;
     long AutoGetNextDelay;
     long NetworkingEnabled;
@@ -375,13 +451,12 @@ public:
     QString CentralComputerID;
     enum ACTUATORMODE ActuatorMode;
     int AntisideSpliceTime;
-    int CurrentCoolingDur;
-    int CurrentCoolingDel;
-    enum CoolingMode CurrentCoolingMode;
-    int CurrentCoolingTooling;
+
+
+
     int LockonAlarm;
-    int RunMode;
-    int Machineflags[4];
+
+
 
     long CycleCount;
     long MaintenanceLimits[8];
@@ -389,10 +464,10 @@ public:
     int TubeShrinkerport;
     bool HistoryGraphData;
     bool RemoteGraphData;
-    enum SCREEN_MODE StartScreen;
+//    enum SCREEN_MODE StartScreen;
     bool EnableModularFlag;
     PasswordEntry ModularPassword[PASSCOUNT];
-    int PowerGraphSampleRatio;
+
     long GraphDataLen;
     int CutoffMode;
     bool LockKeyFlag;

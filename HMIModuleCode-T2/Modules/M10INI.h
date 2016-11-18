@@ -7,6 +7,7 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "M10definitions.h"
+#include "Interface/Settings/SysConfiguration.h"
 using namespace std;
 
 #define Minmm2EnergyMult          25
@@ -143,7 +144,7 @@ struct System_Configuration{
    int CoolingDel;
    int CoolingTooling;
    int CoolingMode;
-   int Machineflags[4];
+   unsigned short Machineflags[4];
    int StartScreen;
    int CutoffMode;
 };
@@ -198,10 +199,10 @@ private:
     void Init_StatusData();
     void SetSoftLimitDefaults(bool EnableSoftLimits = false);
     void SetShrinkTubeDefaults();
-    void SetDefaultWeldFormula();
     void SetDefaultPassword();
     void ClearPasswordData();
 public:
+    void SetDefaultWeldFormula(Status_Data* _DataStruct);
     string MakeNWErrorPath(string CenComp);
     string MakeNWLocSeqPath(string WrkSta);
     string MakeNWSeqPath(string CenComp, string WrkSta);
