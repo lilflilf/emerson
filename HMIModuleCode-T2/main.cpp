@@ -12,6 +12,7 @@
 #include "UI/alpainteditem.h"
 #include "UI/hmiadaptor.h"
 #include "Interface/Maintenance/AdvancedMaintenance.h"
+#include "Interface/Interface.h"
 
 int main(int argc, char *argv[])
 {
@@ -71,8 +72,13 @@ int main(int argc, char *argv[])
 //    _TestPtr->TestUpdateOneRecordIntoWorkOrderTable();
 //    _TestPtr->TestUpdateOneRecordIntoOperatorTable();
 //    _TestPtr->TestQueryOnlyTimeWireTable();
-    Maintenance *_Maintenance = new AdvancedMaintenance();
-    _Maintenance->_start();
+//    Maintenance *_Maintenance = new AdvancedMaintenance();
+//    _Maintenance->_start();
+//    InterfaceClass* _Interface = InterfaceClass::Instance();
+//    memset(_Interface->StatusData.Machineflags.Word,0,8);
+//    _Interface->StatusData.Machineflags.Flag.WdthEncoderOff = 1;
+//    unsigned short tmp = _Interface->StatusData.Machineflags.Word[0];
+//    tmp = _Interface->StatusData.Machineflags.Word[3];
 
     QString str = "10";
     int ret = 0;

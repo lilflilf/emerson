@@ -10,6 +10,8 @@
 #include "DataBase/DBAlarmLogTable.h"
 #include "DataBase/DBWeldResultTable.h"
 #include "DataBase/DBWireTable.h"
+#include "Interface/Definition.h"
+#include "Interface/Settings/OperatorLibrary.h"
 
 class WorkOrderModel : public QAbstractTableModel
 {

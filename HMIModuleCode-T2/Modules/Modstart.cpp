@@ -179,7 +179,7 @@ void MODstart::Update_from_StatusData_for_commands()
 
     _M10INI->TempSysConfig.LockAlarm = _Interface->StatusData.LockonAlarm;
     _M10INI->TempSysConfig.CutoffMode = _Interface->StatusData.CutoffMode;
-    _M10INI->TempSysConfig.RunMode = _Interface->StatusData.RunMode;
+    _M10INI->TempSysConfig.RunMode = _Interface->StatusData.RunMode.Word;
 
     _M10INI->TempMaintConfig.Amplitude = _Interface->StatusData.Soft_Settings.Horn_Calibrate;
     _M10INI->TempMaintConfig.GenPower = _Interface->StatusData.Soft_Settings.SonicGenWatts;
@@ -187,7 +187,7 @@ void MODstart::Update_from_StatusData_for_commands()
     _M10INI->TempMaintConfig.FrequencyOffset = _Interface->StatusData.Soft_Settings.FrequencyOffset;
 
     for (i = 0; i <= 3; i++)
-        _M10INI->TempSysConfig.Machineflags[i] = _Interface->StatusData.Machineflags[i];
+        _M10INI->TempSysConfig.Machineflags[i] = _Interface->StatusData.Machineflags.Word[i];
 
     _M102IA->SendIACommand(IAComSetActuator, 0);
     _M102IA->SendIACommand(IAComSetCooling, 0);
@@ -197,9 +197,10 @@ void MODstart::Update_from_StatusData_for_commands()
     _M2010->ReceiveFlags.FootPadelDATA = false;
     _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.FootPadelDATA);
 
-    _Interface->StatusData.RunMode = _Interface->StatusData.RunMode | (_M10INI->TempSysConfig.RunMode & 0x1000);
-    _M102IA->SendIACommand(IAComSetRunModeNew, _Interface->StatusData.RunMode);
-    _M10INI->TempSysConfig.RunMode = _Interface->StatusData.RunMode;
+    _Interface->StatusData.RunMode.Word =
+            _Interface->StatusData.RunMode.Word | (_M10INI->TempSysConfig.RunMode & 0x1000);
+    _M102IA->SendIACommand(IAComSetRunModeNew, _Interface->StatusData.RunMode.Word);
+    _M10INI->TempSysConfig.RunMode = _Interface->StatusData.RunMode.Word;
     _M10INI->Save_StatusData(false);
     _M102IA->SendIACommand(IAComSetMachineFlags, 0);
     _M102IA->SendIACommand(IAComSetGenPower, _M10INI->TempMaintConfig.GenPower);

@@ -5,6 +5,7 @@
 #include <QObject>
 #include "tablemodel.h"
 #include "Interface/definition.h"
+#include "Interface/Settings/OperatorLibrary.h"
 
 #define HMI_PRINT (qDebug() <<"HMI adapter:" << __FILE__ << __FUNCTION__ << __LINE__ << ": ")
 
