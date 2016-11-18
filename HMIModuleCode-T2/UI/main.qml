@@ -31,7 +31,7 @@ Window {
         case 0:
         case 1:
             contentLoader.source = "qrc:/UI/Content.qml"
-            headBar.titleText = qsTr("Creat Assembly")
+            headBar.titleText = qsTr("Create Assembly")
             break;
         case 2:
             contentLoader.source = "qrc:/UI/Operate.qml"
@@ -88,6 +88,14 @@ Window {
             break;
         }
     }
+    function logoff()
+    {
+        headBar.visible = false
+        statusBar.visible = false
+        contentLoader.source = ""
+        welcome.source = "qrc:/UI/Welcome.qml"
+    }
+
     Component.onCompleted: {
         console.log(width,height)
         //root.showMaximized()

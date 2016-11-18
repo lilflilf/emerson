@@ -862,14 +862,14 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
          _Interface->StatusData.LockonAlarm = MakeHexWordNumber(HexString.mid(9, 4));
         break;
     case IASigRunMode:
-        _Interface->StatusData.RunMode = MakeHexWordNumber(HexString.mid(9, 4));
+        _Interface->StatusData.RunMode.Word = MakeHexWordNumber(HexString.mid(9, 4));
         _M2010->ReceiveFlags.FootPadelDATA = true;
         break;
     case IASigMachineFlags:
-        _Interface->StatusData.Machineflags[0] = MakeHexWordNumber(HexString.mid(9, 4));
-        _Interface->StatusData.Machineflags[1] = MakeHexWordNumber(HexString.mid(13, 4));
-        _Interface->StatusData.Machineflags[2] = MakeHexWordNumber(HexString.mid(17, 4));
-        _Interface->StatusData.Machineflags[3] = MakeHexWordNumber(HexString.mid(21, 4));
+        _Interface->StatusData.Machineflags.Word[0] = MakeHexWordNumber(HexString.mid(9, 4));
+        _Interface->StatusData.Machineflags.Word[1] = MakeHexWordNumber(HexString.mid(13, 4));
+        _Interface->StatusData.Machineflags.Word[2] = MakeHexWordNumber(HexString.mid(17, 4));
+        _Interface->StatusData.Machineflags.Word[3] = MakeHexWordNumber(HexString.mid(21, 4));
         break;
     case IASigDataMaintCntr:
         _Interface->StatusData.CurrentMaintenanceLimits[0] = GetLongValue(HexString, 10);

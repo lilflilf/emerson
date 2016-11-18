@@ -22,56 +22,64 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
             width: (parent.width-40)/5
             clip: true
-            height: 50
+            pointSize: 20
+//            font.pointSize: 20
+//            font.family: "arial"
+//            height: 50
             text: qsTr("Function Name")
             onClicked: {
                 menuBackGround.visible = true
                 menuSelect.visible = true
             }
         }
-        TextEdit {
+
+        MyLineEdit {
             anchors.verticalCenter: parent.verticalCenter
             horizontalAlignment: Qt.AlignHCenter
             width: (parent.width-40)/5
-            color: "white"
+            inputWidth: (parent.width-40)/5
+            inputHeight: Screen.height * 0.08
+            height: Screen.height * 0.08
             clip: true
-            height: 50
-            font.pointSize: 25
-            font.family: "arial"
-            text: qsTr("1.Administrator")
+            inputSize: 20
+            inputColor: "white"
+            inputText: qsTr("1.Administrator")
         }
-        TextEdit {
+        MyLineEdit {
             anchors.verticalCenter: parent.verticalCenter
             horizontalAlignment: Qt.AlignHCenter
             width: (parent.width-40)/5
-            color: "white"
+            inputWidth: (parent.width-40)/5
+            inputHeight: Screen.height * 0.08
+            height: Screen.height * 0.08
             clip: true
-            height: 50
-            font.pointSize: 25
-            font.family: "arial"
-            text: qsTr("2.Technician")
+            inputSize: 20
+            inputColor: "white"
+            inputText: qsTr("2.Technician")
         }
-        TextEdit {
+        MyLineEdit {
             anchors.verticalCenter: parent.verticalCenter
             horizontalAlignment: Qt.AlignHCenter
             width: (parent.width-40)/5
-            color: "white"
+            inputWidth: (parent.width-40)/5
+            inputHeight: Screen.height * 0.08
+            height: Screen.height * 0.08
             clip: true
-            height: 50
-            font.pointSize: 25
-            font.family: "arial"
-            text: qsTr("3.Quality Control")
+            inputSize: 20
+            inputColor: "white"
+            inputText: qsTr("3.Quality Control")
         }
-        TextEdit {
+        MyLineEdit {
             anchors.verticalCenter: parent.verticalCenter
             horizontalAlignment: Qt.AlignHCenter
             width: (parent.width-40)/5
-            color: "white"
+            inputWidth: (parent.width-40)/5
+            inputHeight: Screen.height * 0.08
+            height: Screen.height * 0.08
             clip: true
-            height: 50
-            font.pointSize: 25
-            font.family: "arial"
-            text: qsTr("4.Open")
+            inputSize: 20
+            inputColor: "white"
+            inputText: qsTr("4.Open")
         }
     }
     Rectangle {
@@ -97,6 +105,16 @@ Item {
     }
     ListModel {
         id: listModel
+        Component.onCompleted: {
+            listModel.append({name:"Create New",opacityValue:0})
+            listModel.append({name:"Edit Existing",opacityValue:0})
+            listModel.append({name:"Operate",opacityValue:0})
+            listModel.append({name:"Test",opacityValue:0})
+            listModel.append({name:"Calibration",opacityValue:0})
+            listModel.append({name:"Tool Change",opacityValue:0})
+            listModel.append({name:"Advanced Maintenance",opacityValue:0})
+            listModel.append({name:"Maintenance Counter",opacityValue:0})
+        }
     }
 
     ListModel {
@@ -135,33 +153,66 @@ Item {
         anchors.bottomMargin: 24
         source: "qrc:/images/images/bg.png"
         z: 10
-        CButton {
-            id: sureButton
+        Row {
+            id: bottomRow
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 16
-            anchors.right: parent.right
-            width: parent.width-80
-            height: 79
-            iconSource: "qrc:/images/images/OK.png"
-            text: qsTr("OK")
-            onClicked: {
-                menuBackGround.visible = false
-                menuSelect.visible = false
-                listModel.clear()
-                for (var i = 0; i < menuModel.count; i++) {
-                    if (menuModel.get(i).opacityValue == 0.5) {
-                        listModel.append({name:menuModel.get(i).name})
+            anchors.horizontalCenter: parent.horizontalCenter
+            spacing: 5
+            CButton {
+                width: (parent.parent.width-10) / 2
+                iconSource: "qrc:/images/images/cancel.png"
+                text: qsTr("CANCEL")
+                onClicked: {
+                    menuBackGround.visible = false
+                    menuSelect.visible = false
+                    listModel.clear()
+                }
+            }
+            CButton {
+                id: sureButton
+                width: (parent.parent.width-10) / 2
+                iconSource: "qrc:/images/images/OK.png"
+                text: qsTr("OK")
+                onClicked: {
+                    menuBackGround.visible = false
+                    menuSelect.visible = false
+                    listModel.clear()
+                    for (var i = 0; i < menuModel.count; i++) {
+                        if (menuModel.get(i).opacityValue == 0.5) {
+                            listModel.append({name:menuModel.get(i).name})
+                        }
                     }
                 }
             }
         }
+
+//        CButton {
+//            id: sureButton
+//            anchors.bottom: parent.bottom
+//            anchors.bottomMargin: 16
+//            anchors.horizontalCenter: parent.horizontalAlignment
+//            width: parent.width-80
+//            iconSource: "qrc:/images/images/OK.png"
+//            text: qsTr("OK")
+//            onClicked: {
+//                menuBackGround.visible = false
+//                menuSelect.visible = false
+//                listModel.clear()
+//                for (var i = 0; i < menuModel.count; i++) {
+//                    if (menuModel.get(i).opacityValue == 0.5) {
+//                        listModel.append({name:menuModel.get(i).name})
+//                    }
+//                }
+//            }
+//        }
         ListView {
             id: menuView
             anchors.top: parent.top
             width: parent.width
             clip: true
-            anchors.bottom: sureButton.top
-            anchors.bottomMargin: 24
+            anchors.bottom: bottomRow.top
+            anchors.bottomMargin: 20
             model: menuModel
             delegate: Item {
                 width: menuView.width
@@ -229,6 +280,7 @@ Item {
                 color: "white"
                 text: qsTr(name)
             }
+
             MyCheckBox {
                 id: check1
                 anchors.verticalCenter: parent.verticalCenter
@@ -334,8 +386,8 @@ Item {
     }
     Rectangle {
         id: line4
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 150
+        anchors.bottom: initialButton.top
+        anchors.bottomMargin: 20
         anchors.left: parent.left
         anchors.leftMargin: 20
         width: parent.width-40
@@ -348,9 +400,8 @@ Item {
         anchors.left: parent.left
         anchors.leftMargin: 20
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 40
+        anchors.bottomMargin: 20
         width: 300
-        height: 79
         text: qsTr("Initial Fram")
         textColor: "white"
     }
@@ -358,10 +409,8 @@ Item {
         id: okButton
         anchors.right: parent.right
         anchors.rightMargin: 20
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 40
+        anchors.bottom: initialButton.bottom
         width: 300
-        height: 79
         text: qsTr("OK")
         iconSource: "qrc:/images/images/OK.png"
         textColor: "white"
@@ -370,10 +419,8 @@ Item {
         id: cancelButton
         anchors.right: okButton.left
         anchors.rightMargin: 43
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 40
+        anchors.bottom: initialButton.bottom
         width: 300
-        height: 79
         text: qsTr("Cancel")
         textColor: "white"
         iconSource: "qrc:/images/images/cancel.png"

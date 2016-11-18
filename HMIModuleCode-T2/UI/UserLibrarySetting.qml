@@ -265,8 +265,8 @@ Item {
     }
     Rectangle {
         id: line4
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 150
+        anchors.bottom: deleteButton.top
+        anchors.bottomMargin: 20
         anchors.left: parent.left
         anchors.leftMargin: 20
         width: parent.width-40
@@ -279,9 +279,8 @@ Item {
         anchors.right: parent.right
         anchors.rightMargin: 20
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 40
+        anchors.bottomMargin: 20
         width: 300
-        height: 79
         text: qsTr("Delete")
         textColor: "white"
     }
@@ -289,10 +288,9 @@ Item {
         id: editButton
         anchors.right: deleteButton.left
         anchors.rightMargin: 43
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 40
+        anchors.bottom: deleteButton.bottom
+//        anchors.bottomMargin: 40
         width: 300
-        height: 79
         text: qsTr("Edit")
         textColor: "white"
         onClicked: {
@@ -305,10 +303,9 @@ Item {
         id: addButton
         anchors.right: editButton.left
         anchors.rightMargin: 43
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 40
+        anchors.bottom: deleteButton.bottom
+//        anchors.bottomMargin: 40
         width: 300
-        height: 79
         text: qsTr("Add New")
         textColor: "white"
         onClicked: {
@@ -459,7 +456,6 @@ Item {
             anchors.left: parent.left
             anchors.leftMargin: 20
             width: (parent.width-60)/2
-            height: 79
             text: qsTr("Cancel")
             textColor: "white"
             iconSource: "qrc:/images/images/cancel.png"
@@ -476,7 +472,6 @@ Item {
             anchors.left: cancelButton.right
             anchors.leftMargin: 20
             width: (parent.width-60)/2
-            height: 79
             text: qsTr("OK")
             iconSource: "qrc:/images/images/OK.png"
             textColor: "white"

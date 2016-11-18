@@ -17,7 +17,7 @@ Item {
             font.pointSize: 12
             color: "white"
             anchors.right: parent.right
-            anchors.rightMargin: Screen.width * 0.05
+            anchors.rightMargin: 20
             text: Qt.formatDateTime(new Date(),"hh:mm dd MMMM yyyy")
             //QDate::longMonthName
         }

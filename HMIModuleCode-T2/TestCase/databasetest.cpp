@@ -9,6 +9,7 @@
 #include <QDebug>
 #include <QDateTime>
 #include "Interface/definition.h"
+#include "Interface/Settings/OperatorLibrary.h"
 #include "Modules/UtilityClass.h"
 DataBaseTest::DataBaseTest()
 {

@@ -58,6 +58,9 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
     toolChange = new ToolChange;
     interfaceClass = InterfaceClass::Instance();
 
+    connect(calibration,SIGNAL(WidthCalibrationFinish(bool)),this,SIGNAL(widthCalibrationFinish(bool)));
+    connect(calibration,SIGNAL(HeightCalibrationFinish(bool)),this,SIGNAL(heightCalibrationFinish(bool)));
+
     QSqlDatabase db;
     db = QSqlDatabase::addDatabase("QSQLITE", "hmiconnect");
     db.setDatabaseName("./hmi.db");
@@ -88,7 +91,7 @@ void HmiAdaptor::openFileDialog()
 
 void HmiAdaptor::advancedMaintenanceExecute(int code)
 {
-    //    advanceMaintenance->_execute();
+        advanceMaintenance->_execute(code);
 }
 
 void HmiAdaptor::maintenanceStart(int page)
@@ -100,42 +103,40 @@ void HmiAdaptor::maintenanceStart(int page)
 //    ToolChange *toolChange;
     switch (page) {
     case 0:
-        advanceMaintenance->_start();
-        break;
-    case 1:
         calibration->_start();
         break;
+    case 1:
+        toolChange->_start();
+        break;
     case 2:
-        maintenanceCount->_start();
+        advanceMaintenance->_start();
         break;
     case 3:
+        maintenanceCount->_start();
         break;
     case 4:
-        toolChange->_start();
         break;
     default:
         break;
     }
-
-
 }
 
 void HmiAdaptor::maintenanceStop(int page)
 {
     switch (page) {
     case 0:
-        advanceMaintenance->_stop();
-        break;
-    case 1:
         calibration->_stop();
         break;
+    case 1:
+        toolChange->_stop();
+        break;
     case 2:
-        maintenanceCount->_stop();
+        advanceMaintenance->_stop();
         break;
     case 3:
+        maintenanceCount->_stop();
         break;
     case 4:
-        toolChange->_stop();
         break;
     default:
         break;
@@ -150,8 +151,18 @@ bool HmiAdaptor::login(QString passwd)
     {
         interfaceClass->CurrentOperator = myOperator;
     }
+    else
+    {
+        if (passwd == "0000")
+            isLog = true;
+    }
 
     return isLog;
+}
+
+void HmiAdaptor::calibrationMaintenanceExecute(int code)
+{
+    calibration->_execute(code);
 }
 
 

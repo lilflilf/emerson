@@ -6,7 +6,7 @@
 #include <QtSql/QSqlError>
 #include <QtSql/QSqlDriver>
 #include <QDateTime>
-#include "Interface/definition.h"
+#include "Interface/Definition.h"
 #include "sqlsentence.h"
 
 class SQLITCLASS

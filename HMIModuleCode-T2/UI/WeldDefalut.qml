@@ -29,7 +29,7 @@ Item {
             repeaterModel.append({"headTitle":"Width Encoder","leftText":"off","righttext":"on"})
             repeaterModel.append({"headTitle":"Height Encoder","leftText":"off","righttext":"on"})
             repeaterModel.append({"headTitle":"Foot Pedal Abort","leftText":"off","righttext":"on"})
-            repeaterModel.append({"headTitle":"Cooling","leftText":"Cooling","righttext":"cooling(100j/s)"})
+            repeaterModel.append({"headTitle":"cooling(1sec/100J)","leftText":"off","righttext":"on"})
             graphModel.append({"graphText":"1MS"})
             graphModel.append({"graphText":"5MS"})
             graphModel.append({"graphText":"10MS"})
@@ -125,7 +125,7 @@ Item {
         font.family: "arial"
         font.pixelSize: 16
         color: "white"
-        text: qsTr("-Cross Section\n-Psi/Bar\n-Inch/mm²")
+        text: qsTr("-AWG/mm²\n-Psi/Bar\n-Inch/mm")
     }
     Switch2 {
         id: awg
@@ -247,8 +247,8 @@ Item {
         anchors.top: radioButton.bottom
         anchors.left: formula.left
         width: (radioButton.width-30)/4
-        height: 10
-        color: "#0079c1"
+        height: 6
+        color: "#F79428" //"#0079c1"
     }
     Rectangle {
         id: centerTips

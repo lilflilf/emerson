@@ -5,7 +5,7 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "m10definitions.h"
-#include "Interface/SysConfiguration.h"
+#include "Interface/Settings/SysConfiguration.h"
 using namespace std;
 
 const int M20_Stat_Points = 128;  //The number of data points in the file

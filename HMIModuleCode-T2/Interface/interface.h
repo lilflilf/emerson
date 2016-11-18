@@ -7,7 +7,8 @@
 #include "stdlib.h"
 #include <QObject>
 #include "definition.h"
-#include "sysconfiguration.h"
+#include "Settings/SysConfiguration.h"
+#include "Settings/OperatorLibrary.h"
 
 using namespace std;
 enum TipsScreenMode{
@@ -36,6 +37,7 @@ public:
 public:
     Status_Data StatusData;
     Status_Data tempStatusData;         //Used by routines before an OK or Save
+    Status_Data DefaultStatusData;
     VersionList PreviousVersions;
     VersionList CurrentVersions;
     PresetElement CurrentSplice;

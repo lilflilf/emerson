@@ -9,7 +9,7 @@ Status_Data Status_Data::operator=(const Status_Data &StatusDataObj) const
     Obj.Soft_Settings.Lang_Support = StatusDataObj.Soft_Settings.Lang_Support;
     Obj.Soft_Settings.Horn_Calibrate = StatusDataObj.Soft_Settings.Horn_Calibrate;
     Obj.Soft_Settings.AutoPreburst = StatusDataObj.Soft_Settings.AutoPreburst;
-    Obj.Soft_Settings.AutoGetNext = StatusDataObj.Soft_Settings.AutoGetNext;
+//    Obj.Soft_Settings.AutoGetNext = StatusDataObj.Soft_Settings.AutoGetNext;
     Obj.Soft_Settings.SonicGenWatts = StatusDataObj.Soft_Settings.SonicGenWatts;
     Obj.Soft_Settings.ToolCoverIgnore = StatusDataObj.Soft_Settings.ToolCoverIgnore;
     Obj.Soft_Settings.Pressure2Unit = StatusDataObj.Soft_Settings.Pressure2Unit;
@@ -17,8 +17,8 @@ Status_Data Status_Data::operator=(const Status_Data &StatusDataObj) const
     Obj.Soft_Settings.PWWidth2Height = StatusDataObj.Soft_Settings.PWWidth2Height;
     Obj.Soft_Settings.MinAmplitude = StatusDataObj.Soft_Settings.MinAmplitude;
     Obj.Soft_Settings.MinPressure = StatusDataObj.Soft_Settings.MinPressure;
-    Obj.Soft_Settings.GotoRunScreen = StatusDataObj.Soft_Settings.GotoRunScreen;
-    Obj.Soft_Settings.NoToolCover4SU = StatusDataObj.Soft_Settings.NoToolCover4SU;
+//    Obj.Soft_Settings.GotoRunScreen = StatusDataObj.Soft_Settings.GotoRunScreen;
+//    Obj.Soft_Settings.NoToolCover4SU = StatusDataObj.Soft_Settings.NoToolCover4SU;
     Obj.Soft_Settings.WeldFormula = StatusDataObj.Soft_Settings.WeldFormula;
     Obj.Soft_Settings.RunCount = StatusDataObj.Soft_Settings.RunCount;
     Obj.Soft_Settings.Teach_Mode = StatusDataObj.Soft_Settings.Teach_Mode;
@@ -56,14 +56,13 @@ Status_Data Status_Data::operator=(const Status_Data &StatusDataObj) const
     Obj.MachineType = StatusDataObj.MachineType;
     Obj.MachineDate = StatusDataObj.MachineDate;
     Obj.KeepDailyHistory = StatusDataObj.KeepDailyHistory;
-    Obj.PasswordStatus = StatusDataObj.PasswordStatus;
-    for (int i = 0; i< PASSWORDCOUNT; i++)
+
+    for (int i = 0; i< PERMISSIONLEVEL; i++)
     {
         Obj.PasswordData[i].Identifier = StatusDataObj.PasswordData[i].Identifier;
         Obj.PasswordData[i].Password = StatusDataObj.PasswordData[i].Password;
+        Obj.PasswordData[i].PWPermissions = StatusDataObj.PasswordData[i].PWPermissions;
     }
-    Obj.AdminOptions = StatusDataObj.AdminOptions;
-    Obj.PWPermissions = StatusDataObj.PWPermissions;
 
     for (int i = 0; i< FormulaRangSize; i++)
     {
@@ -73,11 +72,11 @@ Status_Data Status_Data::operator=(const Status_Data &StatusDataObj) const
         Obj.WeldSettings4Build[i].Offset = StatusDataObj.WeldSettings4Build[i].Offset;
     }
 
-    for (int i = 0; i< WDSI_SIZE; i++)
-        Obj.WeldSettingsDefault4Build[i] = StatusDataObj.WeldSettingsDefault4Build[i];
-    Obj.WeldSettingDefaultWeldMode = StatusDataObj.WeldSettingDefaultWeldMode;
-    Obj.WeldSettingDefaultTrigPress = StatusDataObj.WeldSettingDefaultTrigPress;
-    Obj.AutoStartLastPart = StatusDataObj.AutoStartLastPart;
+//    for (int i = 0; i< WDSI_SIZE; i++)
+//        Obj.WeldSettingsDefault4Build[i] = StatusDataObj.WeldSettingsDefault4Build[i];
+//    Obj.WeldSettingDefaultWeldMode = StatusDataObj.WeldSettingDefaultWeldMode;
+//    Obj.WeldSettingDefaultTrigPress = StatusDataObj.WeldSettingDefaultTrigPress;
+//    Obj.AutoStartLastPart = StatusDataObj.AutoStartLastPart;
     Obj.NRGtoHeightMode = StatusDataObj.NRGtoHeightMode;
     Obj.TubeShrinkMode = StatusDataObj.TubeShrinkMode;
     ShrinkTubeData ShrinkTubeDefaults[STI_SIZE];
@@ -95,7 +94,7 @@ Status_Data Status_Data::operator=(const Status_Data &StatusDataObj) const
         for(int j = 0; j < SLI_Size; j++)
             Obj.SoftLimit[i][j] = StatusDataObj.SoftLimit[i][j];
 
-    Obj.QualityLimitsModeFlags = StatusDataObj.QualityLimitsModeFlags;
+//    Obj.QualityLimitsModeFlags = StatusDataObj.QualityLimitsModeFlags;
     Obj.FileSystemFlags = StatusDataObj.FileSystemFlags;
     Obj.AutoGetNextDelay = StatusDataObj.AutoGetNextDelay;
     Obj.NetworkingEnabled = StatusDataObj.NetworkingEnabled;
@@ -110,7 +109,7 @@ Status_Data Status_Data::operator=(const Status_Data &StatusDataObj) const
     Obj.LockonAlarm = StatusDataObj.LockonAlarm;
     Obj.RunMode = StatusDataObj.RunMode;
     for(int i = 0; i< 4; i++)
-        Obj.Machineflags[i] = StatusDataObj.Machineflags[i];
+        Obj.Machineflags.Word[i] = StatusDataObj.Machineflags.Word[i];
 
     Obj.CycleCount = StatusDataObj.CycleCount;
     for(int i = 0; i< 8; i++)
