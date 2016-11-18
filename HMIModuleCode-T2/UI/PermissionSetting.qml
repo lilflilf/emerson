@@ -22,9 +22,10 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
             width: (parent.width-40)/5
             clip: true
-            font.pointSize: 20
-            font.family: "arial"
-            height: 50
+            pointSize: 20
+//            font.pointSize: 20
+//            font.family: "arial"
+//            height: 50
             text: qsTr("Function Name")
             onClicked: {
                 menuBackGround.visible = true
@@ -104,6 +105,16 @@ Item {
     }
     ListModel {
         id: listModel
+        Component.onCompleted: {
+            listModel.append({name:"Create New",opacityValue:0})
+            listModel.append({name:"Edit Existing",opacityValue:0})
+            listModel.append({name:"Operate",opacityValue:0})
+            listModel.append({name:"Test",opacityValue:0})
+            listModel.append({name:"Calibration",opacityValue:0})
+            listModel.append({name:"Tool Change",opacityValue:0})
+            listModel.append({name:"Advanced Maintenance",opacityValue:0})
+            listModel.append({name:"Maintenance Counter",opacityValue:0})
+        }
     }
 
     ListModel {
@@ -142,33 +153,66 @@ Item {
         anchors.bottomMargin: 24
         source: "qrc:/images/images/bg.png"
         z: 10
-        CButton {
-            id: sureButton
+        Row {
+            id: bottomRow
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 16
-            anchors.right: parent.right
-            width: parent.width-80
-            height: 79
-            iconSource: "qrc:/images/images/OK.png"
-            text: qsTr("OK")
-            onClicked: {
-                menuBackGround.visible = false
-                menuSelect.visible = false
-                listModel.clear()
-                for (var i = 0; i < menuModel.count; i++) {
-                    if (menuModel.get(i).opacityValue == 0.5) {
-                        listModel.append({name:menuModel.get(i).name})
+            anchors.horizontalCenter: parent.horizontalAlignment
+            spacing: 5
+            CButton {
+                width: (parent.parent.width-10) / 2
+                iconSource: "qrc:/images/images/cancel.png"
+                text: qsTr("CANCEL")
+                onClicked: {
+                    menuBackGround.visible = false
+                    menuSelect.visible = false
+                    listModel.clear()
+                }
+            }
+            CButton {
+                id: sureButton
+                width: (parent.parent.width-10) / 2
+                iconSource: "qrc:/images/images/OK.png"
+                text: qsTr("OK")
+                onClicked: {
+                    menuBackGround.visible = false
+                    menuSelect.visible = false
+                    listModel.clear()
+                    for (var i = 0; i < menuModel.count; i++) {
+                        if (menuModel.get(i).opacityValue == 0.5) {
+                            listModel.append({name:menuModel.get(i).name})
+                        }
                     }
                 }
             }
         }
+
+//        CButton {
+//            id: sureButton
+//            anchors.bottom: parent.bottom
+//            anchors.bottomMargin: 16
+//            anchors.horizontalCenter: parent.horizontalAlignment
+//            width: parent.width-80
+//            iconSource: "qrc:/images/images/OK.png"
+//            text: qsTr("OK")
+//            onClicked: {
+//                menuBackGround.visible = false
+//                menuSelect.visible = false
+//                listModel.clear()
+//                for (var i = 0; i < menuModel.count; i++) {
+//                    if (menuModel.get(i).opacityValue == 0.5) {
+//                        listModel.append({name:menuModel.get(i).name})
+//                    }
+//                }
+//            }
+//        }
         ListView {
             id: menuView
             anchors.top: parent.top
             width: parent.width
             clip: true
-            anchors.bottom: sureButton.top
-            anchors.bottomMargin: 24
+            anchors.bottom: bottomRow.top
+            anchors.bottomMargin: 20
             model: menuModel
             delegate: Item {
                 width: menuView.width
