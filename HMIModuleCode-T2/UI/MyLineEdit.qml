@@ -1,5 +1,8 @@
-import QtQuick 2.0
+import QtQuick 2.7
+import QtQuick.Window 2.2
 //import QtQuick.VirtualKeyboard 2.0
+import QtQuick.Enterprise.VirtualKeyboard 2.0
+
 Item {
     width: parent.width
     height: parent.height
