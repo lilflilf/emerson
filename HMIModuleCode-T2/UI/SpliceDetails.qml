@@ -23,7 +23,6 @@ Item {
     onSelectLocationChanged: {
         if (selectDirection == "left" && selectLocation == "middle")
         {
-            console.log("leftList")
             if (selectPosition == "topLeft" || selectPosition == "bottomLeft")
             {
                 selectPosition = "leftList"
@@ -35,7 +34,6 @@ Item {
         }
         else if (selectDirection == "left" && selectLocation == "top")
         {
-            console.log("topLeft",selectPosition)
             if (selectPosition == "leftList")
             {
                 selectPosition = "topLeft"
@@ -62,7 +60,6 @@ Item {
     }
 
     onSelectColorChanged: {
-        console.log("onSelectColorChanged",detail.selectPosition)
         if (detail.selectPosition == "rightList"){
             listModelRight.set(detail.selectIndex,{"mycolor":selectColor.toString()})
         }
@@ -74,7 +71,6 @@ Item {
             topRight.item.myColor = selectColor
     }
     onSelectDirectionChanged: {
-        console.log("selectDirection selectPosition",selectDirection,selectPosition)
         if (detail.selectPosition == "rightList" && selectDirection != "right"){
             listModelLeft.append(listModelRight.get(detail.selectIndex))
             listModelRight.remove(detail.selectIndex, 1)
@@ -311,7 +307,7 @@ Item {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        radioButton.checked = true
+                        radioButton.checked = !radioButton.checked
                     }
                 }
                 Text {
@@ -326,7 +322,7 @@ Item {
 
             RadioButton {
                 id: radioButton
-                checked: false
+                checked: isCheck
                 exclusiveGroup: wirePositionGroup
                 visible: false
                 onCheckedChanged: {
@@ -357,6 +353,8 @@ Item {
                     {
                         listModelLeft.set(index,{"isCheck":checked})
                     }
+                    name.visible = radioButton.checked
+
                 }
 
             }
@@ -414,7 +412,7 @@ Item {
             }
             RadioButton {
                 id: radioButton
-                checked: false
+                checked: isCheck
                 exclusiveGroup: wirePositionGroup
                 visible: false
                 onCheckedChanged: {
@@ -441,6 +439,7 @@ Item {
                     {
                         listModelRight.set(index,{"isCheck":checked})
                     }
+                    name.visible = radioButton.checked
                 }
             }
             Rectangle {

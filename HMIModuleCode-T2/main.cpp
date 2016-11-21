@@ -16,7 +16,8 @@
 
 int main(int argc, char *argv[])
 {
-    //qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
+
+    qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
     qmlRegisterType<ALPaintedItem>("ALPaintedItem", 1, 0, "ALPaintedItem");
 
     QGuiApplication app(argc, argv);
@@ -42,6 +43,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("wireModel",hmiAdaptor->wireModel);
     engine.rootContext()->setContextProperty("weldHistoryModel",hmiAdaptor->weldHistoryModel);
     engine.rootContext()->setContextProperty("alarmModel",hmiAdaptor->alarmModel);
+
 
 //    DataBaseTest *_TestPtr = new DataBaseTest();
 //    _TestPtr->TestMapJsonToString();
@@ -82,10 +84,5 @@ int main(int argc, char *argv[])
 //    unsigned short tmp = _Interface->StatusData.Machineflags.Word[0];
 //    tmp = _Interface->StatusData.Machineflags.Word[3];
 
-    QString str = "10";
-    int ret = 0;
-    bool ok;
-    ret = str.toInt(&ok,16);
-    qDebug() << "xcvvvvv" << ret;
     return app.exec();
 }
