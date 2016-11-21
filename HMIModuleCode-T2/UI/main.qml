@@ -8,7 +8,7 @@ Window {
     id: root
     visible: true
     title: qsTr("NewWireSplice")
-    flags: Qt.FramelessWindowHint //|Qt.Window | Qt.WindowSystemMenuHint | 0x00800000 | Qt.WindowFullscreenButtonHint
+    flags: Qt.FramelessWindowHint |Qt.Window //| Qt.WindowSystemMenuHint | 0x00800000 | Qt.WindowFullscreenButtonHint
 //     flags: Qt.Window | 0x00800000
     property var initIndex: 0
     /*0-- create

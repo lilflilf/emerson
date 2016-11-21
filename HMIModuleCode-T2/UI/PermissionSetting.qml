@@ -5,19 +5,26 @@ import QtQuick.Layouts 1.0
 import QtQuick.Window 2.2
 
 Item {
-    property var levelName1: ""
-    property var levelName2: ""
-    property var levelName3: ""
-    property var levelName4: ""
     property var fourLevelIdentifier: ""
     property var currentIdentifier: ""
 
     Component.onCompleted: {
+        var i = 0;
         var list = new Array();
-        list = hmiAdaptor.permissionsettingGetValue("AllFunctionNameList")
-        for (var i = 0;i < list.length; i++)
+        list = hmiAdaptor.permissionsettingGetValue("CurrentIdentifier")
+        currentIdentifier = list;
+        for (i = 0;i < list.length; i++)
         {
-            menuModel.append({name:list[i],opacityValue:0})
+            listModel.append({name:list[i],level1:hmiAdaptor.permissionsettingGetChecked(list[i],1),level2:hmiAdaptor.permissionsettingGetChecked(list[i],2),level3:hmiAdaptor.permissionsettingGetChecked(list[i],3),level4:hmiAdaptor.permissionsettingGetChecked(list[i],4)})
+        }
+
+        list = hmiAdaptor.permissionsettingGetValue("AllFunctionNameList")
+        for (i = 0;i < list.length; i++)
+        {
+            if (currentIdentifier.indexOf(list[i]) == -1)
+                menuModel.append({name:list[i],opacityValue:0})
+            else
+                menuModel.append({name:list[i],opacityValue:0.5})
         }
         fourLevelIdentifier = hmiAdaptor.permissionsettingGetValue("FourLevelIdentifier")
 
@@ -181,7 +188,7 @@ Item {
                 onClicked: {
                     menuBackGround.visible = false
                     menuSelect.visible = false
-                    listModel.clear()
+//                    listModel.clear()
                 }
             }
             CButton {
@@ -195,7 +202,8 @@ Item {
                     listModel.clear()
                     for (var i = 0; i < menuModel.count; i++) {
                         if (menuModel.get(i).opacityValue == 0.5) {
-                            listModel.append({name:menuModel.get(i).name})
+                            listModel.append({name:menuModel.get(i).name,level1:hmiAdaptor.permissionsettingGetChecked(menuModel.get(i).name,1),level2:hmiAdaptor.permissionsettingGetChecked(menuModel.get(i).name,2),level3:hmiAdaptor.permissionsettingGetChecked(menuModel.get(i).name,3),level4:hmiAdaptor.permissionsettingGetChecked(menuModel.get(i).name,4)})
+//                            listModel.append({name:menuModel.get(i).name,level1:false,level2:false,level3:false,level4:false})
                         }
                     }
                 }
@@ -305,6 +313,10 @@ Item {
                 height: parent.height
                 exclusiveGroup: listviewPositionGroup
                 checked: level1
+                onCheckedChanged: {
+                    if (listModel.get(index).level1 != checked)
+                        listModel.set(index,{level1:checked})
+                }
             }
             MyCheckBox {
                 id: check2
@@ -314,6 +326,11 @@ Item {
                 width: (parent.width-100)/5
                 height: parent.height
                 exclusiveGroup: listviewPositionGroup
+                checked: level2
+                onCheckedChanged: {
+                    if (listModel.get(index).level2 != checked)
+                        listModel.set(index,{level2:checked})
+                }
             }
             MyCheckBox {
                 id: check3
@@ -323,6 +340,11 @@ Item {
                 width: (parent.width-100)/5
                 height: parent.height
                 exclusiveGroup: listviewPositionGroup
+                checked: level3
+                onCheckedChanged: {
+                    if (listModel.get(index).level3 != checked)
+                        listModel.set(index,{level3:checked})
+                }
             }
             MyCheckBox {
                 id: chec4
@@ -332,6 +354,11 @@ Item {
                 width: (parent.width-100)/5
                 height: parent.height
                 exclusiveGroup: listviewPositionGroup
+                checked: level4
+                onCheckedChanged: {
+                    if (listModel.get(index).level4 != checked)
+                        listModel.set(index,{level4:checked})
+                }
             }
         }
     }
@@ -430,6 +457,14 @@ Item {
         text: qsTr("OK")
         iconSource: "qrc:/images/images/OK.png"
         textColor: "white"
+        onClicked: {
+            hmiAdaptor.permissionsettingExecute("_Clear")
+            for (var i = 0; i < listModel.count; i ++)
+            {
+                hmiAdaptor.permissionsettingSetValue(listModel.get(i).name,listModel.get(i).level1,listModel.get(i).level2,listModel.get(i).level3,listModel.get(i).level4)
+            }
+            hmiAdaptor.permissionsettingExecute("_Set")
+        }
     }
     CButton {
         id: cancelButton

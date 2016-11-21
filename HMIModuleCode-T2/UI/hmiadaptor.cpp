@@ -173,11 +173,13 @@ bool HmiAdaptor::permissionsettingExecute(QString code)
 {
     if (code == "_Recall")
         return permissionSetting->_Recall();
-    else if (code == "_Set")
+    else if (code == "_Set") {
         return permissionSetting->_Set();
+    }
     else if (code == "_Default")
         permissionSetting->_Default();
-
+    else if (code == "_Clear")
+        permissionSetting->CurrentPermissionList.clear();
     return true;
 }
 
@@ -191,11 +193,55 @@ QStringList HmiAdaptor::permissionsettingGetValue(QString code)
         QStringList currentIdentifier;
         for (int i = 0; i < permissionSetting->CurrentPermissionList.count(); i++)
         {
-
+            currentIdentifier << permissionSetting->CurrentPermissionList.at(i).Identifier;
         }
         return currentIdentifier;
     }
 
+}
+
+bool HmiAdaptor::permissionsettingGetChecked(QString stringIndex, int level)
+{
+    bool reb = false;
+    int index = -1;
+    for (int i = 0; i < permissionSetting->CurrentPermissionList.count(); i++)
+    {
+        if (stringIndex == permissionSetting->CurrentPermissionList.at(i).Identifier)
+        {
+            index = i;
+            break;
+        }
+    }
+    if (index == -1)
+        return reb;
+    switch (level) {
+    case 1:
+        reb = permissionSetting->CurrentPermissionList.at(index).Level1;
+        break;
+    case 2:
+        reb = permissionSetting->CurrentPermissionList.at(index).Level2;
+        break;
+    case 3:
+        reb = permissionSetting->CurrentPermissionList.at(index).Level3;
+        break;
+    case 4:
+        reb = permissionSetting->CurrentPermissionList.at(index).Level4;
+        break;
+    default:
+        break;
+    }
+    return reb;
+}
+
+bool HmiAdaptor::permissionsettingSetValue(QString name, bool level1, bool level2, bool level3, bool level4)
+{
+    PermissionSettingForScreen temp;
+    temp.Identifier = name;
+    temp.Level1 = level1;
+    temp.Level2 = level2;
+    temp.Level3 = level3;
+    temp.Level4 = level4;
+    permissionSetting->CurrentPermissionList.append(temp);
 }
 
 
