@@ -1,5 +1,6 @@
 #ifndef WELDDEFAULTS_H
 #define WELDDEFAULTS_H
+#include <QObject>
 #include "Interface/Settings/SysConfiguration.h"
 #include "Interface/Definition.h"
 
@@ -43,18 +44,26 @@ struct WeldSettingInfo
     QString OffsetFormat;
 };
 
-class WeldDefaults
+class WeldDefaults : public QObject
 {
+    Q_OBJECT
 private:
     struct WeldSettingInfo WeldSettingsInfo[4];
 private:
     void InitWeldSettings();
 public:
-    void _Recall(void*);
-    void _Set(void*);
+    static struct WeldSettingForScreen CurrentWeldSettings;
+public:
+    bool _Recall();
+    bool _Set();
     void _Default();
 public:
-    WeldDefaults();
+    explicit WeldDefaults(QObject *parent = 0);
+
+signals:
+
+public slots:
+
 };
 
 #endif // WELDDEFAULTS_H

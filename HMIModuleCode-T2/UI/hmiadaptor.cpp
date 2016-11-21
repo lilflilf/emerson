@@ -172,7 +172,7 @@ void HmiAdaptor::calibrationMaintenanceExecute(int code)
 bool HmiAdaptor::permissionsettingExecute(QString code)
 {
     if (code == "_Recall")
-        return permissionSetting->_Recall(NULL);
+        return permissionSetting->_Recall();
     else if (code == "_Set")
         return permissionSetting->_Set();
     else if (code == "_Default")

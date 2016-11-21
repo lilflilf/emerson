@@ -225,7 +225,9 @@ void UtilityClass::InitializeTextData()
     SetTextData(DINEnergy2Step, 0, MINSTEPENERGY, MAXENERGY, 2, 1, "%dJ");
     SetTextData(DINPower2Step, 0, MINPOWER, Maxpower, 100, 1, "%dW");
     SetTextData(DINTime2Step, 0, MINTIME, MAXSTEPTIME, 2, 0.001, "%.2fs");
-
+    SetTextData(DINCoolDur, 0, MINCOOLDUR, MAXCOOLDUR, 1, 0.01, "%.2fs");
+    SetTextData(DINCoolDel, 0, MINCOOLDEL, MAXCOOLDEL, 1, 0.01, "%.2fs");
+    SetTextData(DINFormulaArea, 0, MINFORMULAAREA, MAXFORMULAAREA, 1, 1, "%.2fmm²");
 }
 
 void UtilityClass::SetTextData(ScreenShowDataType TypeIndex,int Data,int min, int max,
