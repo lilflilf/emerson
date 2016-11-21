@@ -58,29 +58,32 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
     toolChange = new ToolChange;
     interfaceClass = InterfaceClass::Instance();
 
+
+    permissionSetting = new PermissionSetting(this);
+
     connect(calibration,SIGNAL(WidthCalibrationFinish(bool)),this,SIGNAL(widthCalibrationFinish(bool)));
     connect(calibration,SIGNAL(HeightCalibrationFinish(bool)),this,SIGNAL(heightCalibrationFinish(bool)));
 
-    QSqlDatabase db;
-    db = QSqlDatabase::addDatabase("QSQLITE", "hmiconnect");
-    db.setDatabaseName("./hmi.db");
-    if (!db.open())
-    {
-        qDebug() << "Cannot open contact database" << db.lastError().text();
-    }
+//    QSqlDatabase db;
+//    db = QSqlDatabase::addDatabase("QSQLITE", "hmiconnect");
+//    db.setDatabaseName("./hmi.db");
+//    if (!db.open())
+//    {
+//        qDebug() << "Cannot open contact database" << db.lastError().text();
+//    }
 
-    QSqlQuery query(db);
-    if(!db.tables().contains("wire"))
-    {
-        query.exec("create table wire (id INTEGER PRIMARY KEY AUTOINCREMENT, surname varchar(20))");
-    }
-    qDebug() << query.lastError();
+//    QSqlQuery query(db);
+//    if(!db.tables().contains("wire"))
+//    {
+//        query.exec("create table wire (id INTEGER PRIMARY KEY AUTOINCREMENT, surname varchar(20))");
+//    }
+//    qDebug() << query.lastError();
 
-    query.prepare("INSERT INTO wire (surname) VALUES (?)");
-    query.addBindValue("zhangjy");
-    query.exec();
-    qDebug() << query.lastError();
-    db.close();
+//    query.prepare("INSERT INTO wire (surname) VALUES (?)");
+//    query.addBindValue("zhangjy");
+//    query.exec();
+//    qDebug() << query.lastError();
+//    db.close();
 }
 
 void HmiAdaptor::openFileDialog()
@@ -163,6 +166,19 @@ bool HmiAdaptor::login(QString passwd)
 void HmiAdaptor::calibrationMaintenanceExecute(int code)
 {
     calibration->_execute(code);
+}
+
+
+bool HmiAdaptor::permissionsettingExecute(QString code)
+{
+    if (code == "_Recall")
+        return permissionSetting->_Recall(NULL);
+    else if (code == "_Set")
+        return permissionSetting->_Set();
+    else if (code == "_Default")
+        permissionSetting->_Default();
+
+    return true;
 }
 
 

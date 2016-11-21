@@ -13,6 +13,7 @@
 #include "Interface/Maintenance/MaintenanceLog.h"
 #include "Interface/Maintenance/ToolChange.h"
 #include "Interface/interface.h"
+#include "Interface/Settings/PermissionSetting.h"
 
 #define HMI_PRINT (qDebug() <<"HMI adapter:" << __FILE__ << __FUNCTION__ << __LINE__ << ": ")
 
@@ -56,6 +57,8 @@ public:
     Q_INVOKABLE void maintenanceStop(int page);
     Q_INVOKABLE bool login(QString passwd);
     Q_INVOKABLE void calibrationMaintenanceExecute(int code);
+    Q_INVOKABLE bool permissionsettingExecute(QString code);
+
 
     InterfaceClass *interfaceClass;
 
@@ -73,6 +76,9 @@ public:
     MaintenanceCounter *maintenanceCount;
     MaintenanceLogElement *maintenanceLog;
     ToolChange *toolChange;
+
+    /*********Setting*****************/
+    PermissionSetting *permissionSetting;
 signals:
     void widthCalibrationFinish(const bool &_Result);
     void heightCalibrationFinish(const bool &_Result);
