@@ -1,5 +1,6 @@
 #include "PermissionSetting.h"
 #include "Interface/Interface.h"
+#include <QDebug>
 QStringList PermissionSetting::AllFunctionNameList;
 QStringList PermissionSetting::FourLevelIdentifier;
 PermissionSetting::PermissionSetting(QObject *parent) : QObject(parent)
@@ -74,11 +75,19 @@ bool PermissionSetting::_Recall()
             tmpStruct.Level4 = false;
         CurrentPermissionList.insert(i,tmpStruct);
     }
+    for(int i = 0; i< CurrentPermissionList.size();i++)
+    {
+        qDebug() << "xxxxxxxxxxxxx " << CurrentPermissionList.at(i).Level1 << CurrentPermissionList.at(i).Level2 <<CurrentPermissionList.at(i).Level3 << CurrentPermissionList.at(i).Level4;
+    }
     return true;
 }
 
 bool PermissionSetting::_Set()
 {
+    for(int i = 0; i< CurrentPermissionList.size();i++)
+    {
+        qDebug() << "cccccccccccc " << CurrentPermissionList.at(i).Level1 << CurrentPermissionList.at(i).Level2 <<CurrentPermissionList.at(i).Level3 << CurrentPermissionList.at(i).Level4;
+    }
     InterfaceClass* _interface = InterfaceClass::Instance();
     if(CurrentPermissionList.empty() == true)
         return false;
