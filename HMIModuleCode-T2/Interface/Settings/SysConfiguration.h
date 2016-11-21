@@ -419,6 +419,7 @@ public:
     enum SCREEN_MODE StartScreen;
 /*Setting->Premission Setting*/
     PasswordEntry PasswordData[PERMISSIONLEVEL];
+    QList<int> CurrentFunIndex;
 /*Weld Default*/
     union MACHINEFLAGS Machineflags;
     union RUNMODE RunMode;
