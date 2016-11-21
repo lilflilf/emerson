@@ -50,8 +50,8 @@ class PermissionSetting : public QObject
 private:
     QList<struct PermissionSettingForScreen> CurrentPermissionList;
 public:
-    static QStringList FunctionNameList;
-    static QStringList LevelIdentifier;
+    static QStringList AllFunctionNameList;
+    static QStringList FourLevelIdentifier;
 public:
     void InitializeFRAM();
     void LockOnAlarm();
@@ -63,7 +63,7 @@ public:
 //        _Interface->StatusData.PasswordData[currentLevel].PWPermissions
 //                |= 2 ^ currentScreen;
 //    }
-    bool _Recall(void*);
+    bool _Recall();
     bool _Set();
     void _Default();
 public:
