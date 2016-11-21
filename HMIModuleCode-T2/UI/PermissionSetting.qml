@@ -23,9 +23,6 @@ Item {
             width: (parent.width-40)/5
             clip: true
             pointSize: 20
-//            font.pointSize: 20
-//            font.family: "arial"
-//            height: 50
             text: qsTr("Function Name")
             onClicked: {
                 menuBackGround.visible = true
@@ -106,14 +103,14 @@ Item {
     ListModel {
         id: listModel
         Component.onCompleted: {
-            listModel.append({name:"Create New",opacityValue:0})
-            listModel.append({name:"Edit Existing",opacityValue:0})
-            listModel.append({name:"Operate",opacityValue:0})
-            listModel.append({name:"Test",opacityValue:0})
-            listModel.append({name:"Calibration",opacityValue:0})
-            listModel.append({name:"Tool Change",opacityValue:0})
-            listModel.append({name:"Advanced Maintenance",opacityValue:0})
-            listModel.append({name:"Maintenance Counter",opacityValue:0})
+            listModel.append({name:"Create New",level1:false,level2:false,level3:false,level4:false})
+            listModel.append({name:"Edit Existing",level1:false,level2:false,level3:false,level4:false})
+            listModel.append({name:"Operate",level1:false,level2:false,level3:false,level4:false})
+            listModel.append({name:"Test",level1:false,level2:false,level3:false,level4:false})
+            listModel.append({name:"Calibration",level1:false,level2:false,level3:false,level4:false})
+            listModel.append({name:"Tool Change",level1:false,level2:false,level3:false,level4:false})
+            listModel.append({name:"Advanced Maintenance",level1:false,level2:false,level3:false,level4:false})
+            listModel.append({name:"Maintenance Counter",level1:false,level2:false,level3:false,level4:false})
         }
     }
 

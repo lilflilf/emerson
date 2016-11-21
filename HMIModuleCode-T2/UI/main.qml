@@ -8,7 +8,7 @@ Window {
     id: root
     visible: true
     title: qsTr("NewWireSplice")
-//    flags: Qt.FramelessWindowHint|Qt.Window | Qt.WindowSystemMenuHint | 0x00800000 | Qt.WindowFullscreenButtonHint
+    flags: Qt.FramelessWindowHint //|Qt.Window | Qt.WindowSystemMenuHint | 0x00800000 | Qt.WindowFullscreenButtonHint
 //     flags: Qt.Window | 0x00800000
     property var initIndex: 0
     /*0-- create
@@ -70,6 +70,7 @@ Window {
             contentLoader.source = "qrc:/UI/ViewVersion.qml"
             break
         case 14:
+            hmiAdaptor.permissionsettingExecute("_Recall");
             contentLoader.source = "qrc:/UI/PermissionSetting.qml"
             break;
         case 15:
@@ -97,11 +98,10 @@ Window {
     }
 
     Component.onCompleted: {
-        console.log(width,height)
-        root.showMaximized()
+//        root.showMaximized()
         //w.setWindowFlags(w.windowFlags()& ~Qt::WindowMaximizeButtonHint&  ~Qt::WindowMinimizeButtonHint);
 //        w.showMaximized();
-//        root.showFullScreen()
+        root.showFullScreen()
 
     }
 
