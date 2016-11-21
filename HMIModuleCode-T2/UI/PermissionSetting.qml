@@ -5,6 +5,24 @@ import QtQuick.Layouts 1.0
 import QtQuick.Window 2.2
 
 Item {
+    property var levelName1: ""
+    property var levelName2: ""
+    property var levelName3: ""
+    property var levelName4: ""
+    property var fourLevelIdentifier: ""
+    property var currentIdentifier: ""
+
+    Component.onCompleted: {
+        var list = new Array();
+        list = hmiAdaptor.permissionsettingGetValue("AllFunctionNameList")
+        for (var i = 0;i < list.length; i++)
+        {
+            menuModel.append({name:list[i],opacityValue:0})
+        }
+        fourLevelIdentifier = hmiAdaptor.permissionsettingGetValue("FourLevelIdentifier")
+
+    }
+
     Image {
         anchors.fill: parent
         source: "qrc:/images/images/bg.png"
@@ -40,7 +58,7 @@ Item {
             clip: true
             inputSize: 20
             inputColor: "white"
-            inputText: qsTr("1.Administrator")
+            inputText: qsTr(fourLevelIdentifier[0]) //qsTr("1.Administrator")
         }
         MyLineEdit {
             anchors.verticalCenter: parent.verticalCenter
@@ -52,7 +70,7 @@ Item {
             clip: true
             inputSize: 20
             inputColor: "white"
-            inputText: qsTr("2.Technician")
+            inputText: qsTr(fourLevelIdentifier[1]) //qsTr("2.Technician")
         }
         MyLineEdit {
             anchors.verticalCenter: parent.verticalCenter
@@ -64,7 +82,7 @@ Item {
             clip: true
             inputSize: 20
             inputColor: "white"
-            inputText: qsTr("3.Quality Control")
+            inputText: qsTr(fourLevelIdentifier[2]) //qsTr("3.Quality Control")
         }
         MyLineEdit {
             anchors.verticalCenter: parent.verticalCenter
@@ -76,7 +94,7 @@ Item {
             clip: true
             inputSize: 20
             inputColor: "white"
-            inputText: qsTr("4.Open")
+            inputText: qsTr(fourLevelIdentifier[3]) //qsTr("4.Open")
         }
     }
     Rectangle {
@@ -102,41 +120,41 @@ Item {
     }
     ListModel {
         id: listModel
-        Component.onCompleted: {
-            listModel.append({name:"Create New",level1:false,level2:false,level3:false,level4:false})
-            listModel.append({name:"Edit Existing",level1:false,level2:false,level3:false,level4:false})
-            listModel.append({name:"Operate",level1:false,level2:false,level3:false,level4:false})
-            listModel.append({name:"Test",level1:false,level2:false,level3:false,level4:false})
-            listModel.append({name:"Calibration",level1:false,level2:false,level3:false,level4:false})
-            listModel.append({name:"Tool Change",level1:false,level2:false,level3:false,level4:false})
-            listModel.append({name:"Advanced Maintenance",level1:false,level2:false,level3:false,level4:false})
-            listModel.append({name:"Maintenance Counter",level1:false,level2:false,level3:false,level4:false})
-        }
+//        Component.onCompleted: {
+//            listModel.append({name:"Create New",level1:true,level2:false,level3:false,level4:false})
+//            listModel.append({name:"Edit Existing",level1:false,level2:false,level3:false,level4:false})
+//            listModel.append({name:"Operate",level1:false,level2:false,level3:false,level4:false})
+//            listModel.append({name:"Test",level1:false,level2:false,level3:false,level4:false})
+//            listModel.append({name:"Calibration",level1:false,level2:false,level3:false,level4:false})
+//            listModel.append({name:"Tool Change",level1:true,level2:false,level3:false,level4:false})
+//            listModel.append({name:"Advanced Maintenance",level1:false,level2:false,level3:false,level4:false})
+//            listModel.append({name:"Maintenance Counter",level1:false,level2:false,level3:false,level4:false})
+//        }
     }
 
     ListModel {
         id: menuModel
-        Component.onCompleted: {
-            menuModel.append({name:"Create New",opacityValue:0})
-            menuModel.append({name:"Edit Existing",opacityValue:0})
-            menuModel.append({name:"Operate",opacityValue:0})
-            menuModel.append({name:"Test",opacityValue:0})
-            menuModel.append({name:"Calibration",opacityValue:0})
-            menuModel.append({name:"Tool Change",opacityValue:0})
-            menuModel.append({name:"Advanced Maintenance",opacityValue:0})
-            menuModel.append({name:"Maintenance Counter",opacityValue:0})
-            menuModel.append({name:"Maintenance log",opacityValue:0})
-            menuModel.append({name:"Word Order History",opacityValue:0})
-            menuModel.append({name:"Statistical Trend",opacityValue:0})
-            menuModel.append({name:"Error/Alarm Log",opacityValue:0})
-            menuModel.append({name:"Library",opacityValue:0})
-            menuModel.append({name:"Version Information",opacityValue:0})
-            menuModel.append({name:"Permission Setting",opacityValue:0})
-            menuModel.append({name:"Weld Defaults",opacityValue:0})
-            menuModel.append({name:"Operator Library",opacityValue:0})
-            menuModel.append({name:"Data/Communication",opacityValue:0})
-            menuModel.append({name:"Branson Setting",opacityValue:0})
-        }
+//        Component.onCompleted: {
+//            menuModel.append({name:"Create New",opacityValue:0})
+//            menuModel.append({name:"Edit Existing",opacityValue:0})
+//            menuModel.append({name:"Operate",opacityValue:0})
+//            menuModel.append({name:"Test",opacityValue:0})
+//            menuModel.append({name:"Calibration",opacityValue:0})
+//            menuModel.append({name:"Tool Change",opacityValue:0})
+//            menuModel.append({name:"Advanced Maintenance",opacityValue:0})
+//            menuModel.append({name:"Maintenance Counter",opacityValue:0})
+//            menuModel.append({name:"Maintenance log",opacityValue:0})
+//            menuModel.append({name:"Word Order History",opacityValue:0})
+//            menuModel.append({name:"Statistical Trend",opacityValue:0})
+//            menuModel.append({name:"Error/Alarm Log",opacityValue:0})
+//            menuModel.append({name:"Library",opacityValue:0})
+//            menuModel.append({name:"Version Information",opacityValue:0})
+//            menuModel.append({name:"Permission Setting",opacityValue:0})
+//            menuModel.append({name:"Weld Defaults",opacityValue:0})
+//            menuModel.append({name:"Operator Library",opacityValue:0})
+//            menuModel.append({name:"Data/Communication",opacityValue:0})
+//            menuModel.append({name:"Branson Setting",opacityValue:0})
+//        }
     }
     Image {
         id: menuSelect
@@ -286,6 +304,7 @@ Item {
                 width: (parent.width-100)/5
                 height: parent.height
                 exclusiveGroup: listviewPositionGroup
+                checked: level1
             }
             MyCheckBox {
                 id: check2

@@ -172,13 +172,30 @@ void HmiAdaptor::calibrationMaintenanceExecute(int code)
 bool HmiAdaptor::permissionsettingExecute(QString code)
 {
     if (code == "_Recall")
-        return permissionSetting->_Recall(NULL);
+        return permissionSetting->_Recall();
     else if (code == "_Set")
         return permissionSetting->_Set();
     else if (code == "_Default")
         permissionSetting->_Default();
 
     return true;
+}
+
+QStringList HmiAdaptor::permissionsettingGetValue(QString code)
+{
+    if (code == "AllFunctionNameList")
+        return permissionSetting->AllFunctionNameList;
+    else if (code == "FourLevelIdentifier")
+        return permissionSetting->FourLevelIdentifier;
+    else if (code == "CurrentIdentifier"){
+        QStringList currentIdentifier;
+        for (int i = 0; i < permissionSetting->CurrentPermissionList.count(); i++)
+        {
+
+        }
+        return currentIdentifier;
+    }
+
 }
 
 

@@ -58,6 +58,7 @@ public:
     Q_INVOKABLE bool login(QString passwd);
     Q_INVOKABLE void calibrationMaintenanceExecute(int code);
     Q_INVOKABLE bool permissionsettingExecute(QString code);
+    Q_INVOKABLE QStringList permissionsettingGetValue(QString code);
 
 
     InterfaceClass *interfaceClass;
