@@ -129,7 +129,7 @@ Status_Data Status_Data::operator=(const Status_Data &StatusDataObj) const
         Obj.ModularPassword[i].Password = StatusDataObj.ModularPassword[i].Password;
     }
 
-    Obj.PowerGraphSampleRatio = StatusDataObj.PowerGraphSampleRatio;
+    Obj.GraphSampleRatio = StatusDataObj.GraphSampleRatio;
     Obj.GraphDataLen = StatusDataObj.GraphDataLen;
     Obj.CutoffMode = StatusDataObj.CutoffMode;
     Obj.LockKeyFlag = StatusDataObj.LockKeyFlag;

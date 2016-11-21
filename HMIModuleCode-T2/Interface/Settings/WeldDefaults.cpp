@@ -52,7 +52,19 @@ void WeldDefaults::InitWeldSettings()
     WeldSettingsInfo[SDNAmplitude].OffsetMin = Minmm2AmplitudeOffset;
     WeldSettingsInfo[SDNAmplitude].OffsetMax = Maxmm2AmplitudeOffset;
     WeldSettingsInfo[SDNAmplitude].OffsetFormat = "%.2f";
+}
 
+void WeldDefaults::_Default()
+{
 
+}
+
+void WeldDefaults::_Recall(void *)
+{
+
+}
+
+void WeldDefaults::_Set(void *)
+{
 
 }

@@ -554,9 +554,8 @@ Item {
             anchors.left: parent.left
             anchors.leftMargin: 20
             anchors.right: parent.right
-            anchors.rightMargin: 20
-
-            height: Screen.height*0.53
+            anchors.rightMargin: 10
+            anchors.bottom: editSplice.top
             visible: !bIsBasic
             columns: 0
             rows: 0
@@ -656,26 +655,26 @@ Item {
         }
         CButton {
             id: editSplice
-            anchors.top: boardlayout.bottom
-            anchors.topMargin: parent.height/10-64
+            anchors.bottom: testSplice.top
+            anchors.bottomMargin: 24
             anchors.right: boardlayout.right
             text: "EDIT SPLICE"
             textColor: "white"
-            width: 200
-//            height: 79
+            width: 250
+            height: 60
             pointSize: 16
             onClicked: {
             }
         }
         CButton {
             id: testSplice
-            anchors.top: editSplice.bottom
-            anchors.topMargin: 5
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 24
             anchors.right: boardlayout.right
             text: "TEST SPLICE"
             textColor: "white"
-            width: 200
-//            height: 79
+            width: 250
+            height: 60
             pointSize: 16
             onClicked: {
             }
@@ -872,7 +871,7 @@ Item {
                 onClicked: {
                     addNewBack.opacity = 0.5
                     addnewBlack.visible = true
-                    dialog.visible = true
+                    temPlateDialog.visible = true
                 }
             }
         }
@@ -1014,6 +1013,98 @@ Item {
             visible: false
             MouseArea {
                 anchors.fill: parent
+            }
+        }
+    }
+    Image {
+        id: temPlateDialog
+        anchors.centerIn: parent
+        width: 462
+        height: 524
+        visible: false
+        source: "qrc:/images/images/dialogbg.png"
+        Text {
+            id: titleHead
+            anchors.top: parent.top
+            anchors.topMargin: 22
+            anchors.left: parent.left
+            anchors.leftMargin: 15
+            font.pixelSize: 20
+            font.family: "arial"
+            color: "white"
+            text: qsTr("Part Number Template -Add New")
+        }
+        Text {
+            id: lineHead
+            anchors.top: titleHead.bottom
+            anchors.topMargin: 50
+            anchors.left: titleHead.left
+            font.pixelSize: 20
+            font.family: "arial"
+            color: "white"
+            text: qsTr("Template Name")
+        }
+        MyLineEdit {
+            id: templateNameInput
+            anchors.left: titleHead.left
+            height: 70
+            width: parent.width-30
+            anchors.top: lineHead.bottom
+            anchors.topMargin: 8
+            inputColor: "white"
+            inputWidth: parent.width-36
+            inputHeight: 68
+            horizontalAlignment: Qt.AlignHCenter
+            clip: true
+        }
+        Text {
+            id: lineHead2
+            anchors.top: templateNameInput.bottom
+            anchors.topMargin: 20
+            anchors.left: titleHead.left
+            font.pixelSize: 20
+            font.family: "arial"
+            color: "white"
+            text: qsTr("Part Number")
+        }
+        MyLineEdit {
+            id: partNumberInput
+            anchors.left: titleHead.left
+            height: 70
+            width: parent.width-30
+            anchors.top: lineHead2.bottom
+            anchors.topMargin: 8
+            inputColor: "white"
+            inputWidth: parent.width-36
+            inputHeight: 68
+            horizontalAlignment: Qt.AlignHCenter
+            clip: true
+        }
+        CButton {
+            id: saveButton
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 24
+            anchors.right: parent.right
+            anchors.rightMargin: 36
+            height: 79
+            width: (parent.width-36*3)/2
+            text: qsTr("Save")
+            textColor: "white"
+        }
+        CButton {
+            id: cancelButton
+            anchors.bottom: saveButton.bottom
+            anchors.right: saveButton.left
+            anchors.rightMargin: 36
+            height: 79
+            width: (parent.width-36*3)/2
+            text: qsTr("Cancel")
+            textColor: "white"
+            onClicked: {
+                backGround.visible = false
+                backGround.opacity = 0
+                addnewBlack.visible = false
+                temPlateDialog.visible = false
             }
         }
     }

@@ -27,28 +27,6 @@ enum PWPMasks
     PWPDataCommMask         = 0x040000,  //Bit 18
     PWPLockOnAlarmMask      = 0x080000,  //Bit 19
 };
-const QString FunctionNameList[] = {
-    QObject::tr("Create New"),                //Bit 0
-    QObject::tr("Edit Existing"),             //Bit 1
-    QObject::tr("Operate"),                   //Bit 2
-    QObject::tr("Test"),                      //Bit 3
-    QObject::tr("Teach Mode"),                //Bit 4
-    QObject::tr("Calibration"),               //Bit 5
-    QObject::tr("Tool Change"),               //Bit 6
-    QObject::tr("Advanced Maintenance"),      //Bit 7
-    QObject::tr("Maintenance Counter"),       //Bit 8
-    QObject::tr("Maintenance Log"),           //Bit 9
-    QObject::tr("Work Order History"),        //Bit 10
-    QObject::tr("Statistical Trend"),         //Bit 11
-    QObject::tr("Error/Alarm Log"),           //Bit 12
-    QObject::tr("Library"),                   //Bit 13
-    QObject::tr("Version Information"),       //Bit 14
-    QObject::tr("Permission Setting"),        //Bit 15
-    QObject::tr("Weld Defaults"),             //Bit 16
-    QObject::tr("Operator Library"),          //Bit 17
-    QObject::tr("Data/Communication"),        //Bit 18
-    QObject::tr("Lock On Alarm"),             //Bit 19
-};
 
 enum PermissionLevel
 {
@@ -57,11 +35,23 @@ enum PermissionLevel
     Level3 = 3,
     Level4 = 4,
 };
-
+struct PermissionSettingForScreen
+{
+    QString Identifier;
+    bool Level1;
+    bool Level2;
+    bool Level3;
+    bool Level4;
+};
 
 class PermissionSetting : public QObject
 {
     Q_OBJECT
+private:
+    QList<struct PermissionSettingForScreen> CurrentPermissionList;
+public:
+    static QStringList FunctionNameList;
+    static QStringList LevelIdentifier;
 public:
     void InitializeFRAM();
     void LockOnAlarm();
@@ -73,7 +63,9 @@ public:
 //        _Interface->StatusData.PasswordData[currentLevel].PWPermissions
 //                |= 2 ^ currentScreen;
 //    }
-
+    bool _Recall(void*);
+    bool _Set();
+    void _Default();
 public:
     explicit PermissionSetting(QObject *parent = 0);
 

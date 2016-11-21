@@ -3,6 +3,13 @@
 #include <QString>
 #include <QMap>
 
+struct BRANSONDATA
+{
+    QString Maximum;
+    QString Minimum;
+    QString Current;
+};
+
 struct VersionList{
     QString SoftwareVersion;
     QString ControllerVersion;
@@ -208,7 +215,7 @@ public:
     int RevCode;              //Amtech Revision Code for possible future use
     int SpliceID;
     QString SpliceName;       //Customer's Part Number
-    unsigned int CreatedDate;       //Date of last rev, seconds from Jan 1, 1980
+    unsigned int CreatedDate; //Date of last rev, seconds from Jan 1, 1980
     int OperatorID;
 
     int CrossSection;         //Area of part in mm*mm/100
@@ -380,6 +387,7 @@ enum PROCESSMODE
     BASIC,
     ADVANCE,
 };
+
 struct WORKSTATIONS
 {
     int TotalWorkstation;
