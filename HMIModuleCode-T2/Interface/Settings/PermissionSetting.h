@@ -47,9 +47,8 @@ struct PermissionSettingForScreen
 class PermissionSetting : public QObject
 {
     Q_OBJECT
-private:
-    QList<struct PermissionSettingForScreen> CurrentPermissionList;
 public:
+    QList<struct PermissionSettingForScreen> CurrentPermissionList;
     static QStringList AllFunctionNameList;
     static QStringList FourLevelIdentifier;
 public:
