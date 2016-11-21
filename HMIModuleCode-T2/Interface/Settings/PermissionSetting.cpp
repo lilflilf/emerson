@@ -1,6 +1,7 @@
 #include "PermissionSetting.h"
 #include "Interface/Interface.h"
 #include <QDebug>
+#include <QtMath>
 QStringList PermissionSetting::AllFunctionNameList;
 QStringList PermissionSetting::FourLevelIdentifier;
 PermissionSetting::PermissionSetting(QObject *parent) : QObject(parent)
@@ -53,23 +54,23 @@ bool PermissionSetting::_Recall()
     {
         unsigned int FunIndex = _interface->StatusData.CurrentFunIndex.at(i);
         tmpStruct.Identifier = AllFunctionNameList.at(FunIndex);
-        if((_interface->StatusData.PasswordData[1].PWPermissions & (2 ^ FunIndex))
-            == (2 ^ FunIndex))
+        if((_interface->StatusData.PasswordData[1].PWPermissions & (0x01 << FunIndex))
+            == (0x01 << FunIndex))
             tmpStruct.Level1 = true;
         else
             tmpStruct.Level1 = false;
-        if((_interface->StatusData.PasswordData[2].PWPermissions & (2 ^ FunIndex))
-            == (2 ^ FunIndex))
+        if((_interface->StatusData.PasswordData[2].PWPermissions & (0x01 << FunIndex))
+            == (0x01 << FunIndex))
             tmpStruct.Level2 = true;
         else
             tmpStruct.Level2 = false;
-        if((_interface->StatusData.PasswordData[3].PWPermissions & (2 ^ FunIndex))
-            == (2 ^ FunIndex))
+        if((_interface->StatusData.PasswordData[3].PWPermissions & (0x01 << FunIndex))
+            == (0x01 << FunIndex))
             tmpStruct.Level3 = true;
         else
             tmpStruct.Level3 = false;
-        if((_interface->StatusData.PasswordData[4].PWPermissions & (2 ^ FunIndex))
-            == (2 ^ FunIndex))
+        if((_interface->StatusData.PasswordData[4].PWPermissions & (0x01 << FunIndex))
+            == (0x01 << FunIndex))
             tmpStruct.Level4 = true;
         else
             tmpStruct.Level4 = false;
@@ -104,28 +105,28 @@ bool PermissionSetting::_Set()
         _interface->StatusData.CurrentFunIndex.insert(i, FunIndex);
         if(CurrentPermissionList.at(i).Level1 == true)
             _interface->StatusData.PasswordData[1].PWPermissions
-                    |= (2 ^ FunIndex);
+                    |= (0x01 << FunIndex);
         else
             _interface->StatusData.PasswordData[1].PWPermissions
-                    &= ~(2 ^ FunIndex);
+                    &= ~(0x01 << FunIndex);
         if(CurrentPermissionList.at(i).Level2 == true)
             _interface->StatusData.PasswordData[2].PWPermissions
-                    |= (2 ^ FunIndex);
+                    |= (0x01 << FunIndex);
         else
             _interface->StatusData.PasswordData[2].PWPermissions
-                    &= ~(2 ^ FunIndex);
+                    &= ~(0x01 << FunIndex);
         if(CurrentPermissionList.at(i).Level3 == true)
             _interface->StatusData.PasswordData[3].PWPermissions
-                    |= (2 ^ FunIndex);
+                    |= (0x01 << FunIndex);
         else
             _interface->StatusData.PasswordData[3].PWPermissions
-                    &= ~(2 ^ FunIndex);
+                    &= ~(0x01 << FunIndex);
         if(CurrentPermissionList.at(i).Level4 == true)
             _interface->StatusData.PasswordData[4].PWPermissions
-                    |= (2 ^ FunIndex);
+                    |= (0x01 << FunIndex);
         else
             _interface->StatusData.PasswordData[4].PWPermissions
-                    &= ~(2 ^ FunIndex);
+                    &= ~(0x01 << FunIndex);
 
     }
     return true;
