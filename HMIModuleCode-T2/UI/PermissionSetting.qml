@@ -56,6 +56,7 @@ Item {
         }
 
         MyLineEdit {
+            id: levelText1
             anchors.verticalCenter: parent.verticalCenter
             horizontalAlignment: Qt.AlignHCenter
             width: (parent.width-40)/5
@@ -68,6 +69,7 @@ Item {
             inputText: qsTr(fourLevelIdentifier[0]) //qsTr("1.Administrator")
         }
         MyLineEdit {
+            id: levelText2
             anchors.verticalCenter: parent.verticalCenter
             horizontalAlignment: Qt.AlignHCenter
             width: (parent.width-40)/5
@@ -80,6 +82,7 @@ Item {
             inputText: qsTr(fourLevelIdentifier[1]) //qsTr("2.Technician")
         }
         MyLineEdit {
+            id: levelText3
             anchors.verticalCenter: parent.verticalCenter
             horizontalAlignment: Qt.AlignHCenter
             width: (parent.width-40)/5
@@ -92,6 +95,7 @@ Item {
             inputText: qsTr(fourLevelIdentifier[2]) //qsTr("3.Quality Control")
         }
         MyLineEdit {
+            id: levelText4
             anchors.verticalCenter: parent.verticalCenter
             horizontalAlignment: Qt.AlignHCenter
             width: (parent.width-40)/5
@@ -311,7 +315,7 @@ Item {
                 anchors.leftMargin: 10
                 width: (parent.width-100)/5
                 height: parent.height
-                exclusiveGroup: listviewPositionGroup
+//                exclusiveGroup: listviewPositionGroup
                 checked: level1
                 onCheckedChanged: {
                     if (listModel.get(index).level1 != checked)
@@ -325,7 +329,7 @@ Item {
                 anchors.leftMargin: 10
                 width: (parent.width-100)/5
                 height: parent.height
-                exclusiveGroup: listviewPositionGroup
+//                exclusiveGroup: listviewPositionGroup
                 checked: level2
                 onCheckedChanged: {
                     if (listModel.get(index).level2 != checked)
@@ -339,7 +343,7 @@ Item {
                 anchors.leftMargin: 10
                 width: (parent.width-100)/5
                 height: parent.height
-                exclusiveGroup: listviewPositionGroup
+//                exclusiveGroup: listviewPositionGroup
                 checked: level3
                 onCheckedChanged: {
                     if (listModel.get(index).level3 != checked)
@@ -353,7 +357,7 @@ Item {
                 anchors.leftMargin: 10
                 width: (parent.width-100)/5
                 height: parent.height
-                exclusiveGroup: listviewPositionGroup
+//                exclusiveGroup: listviewPositionGroup
                 checked: level4
                 onCheckedChanged: {
                     if (listModel.get(index).level4 != checked)
@@ -463,6 +467,12 @@ Item {
             {
                 hmiAdaptor.permissionsettingSetValue(listModel.get(i).name,listModel.get(i).level1,listModel.get(i).level2,listModel.get(i).level3,listModel.get(i).level4)
             }
+            fourLevelIdentifier[0] = levelText1.inputText
+            fourLevelIdentifier[1] = levelText2.inputText
+            fourLevelIdentifier[2] = levelText3.inputText
+            fourLevelIdentifier[3] = levelText4.inputText
+
+            hmiAdaptor.permissionsettingSetFourValue(fourLevelIdentifier)
             hmiAdaptor.permissionsettingExecute("_Set")
         }
     }

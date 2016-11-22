@@ -243,3 +243,11 @@ bool HmiAdaptor::permissionsettingSetValue(QString name, bool level1, bool level
     temp.Level4 = level4;
     permissionSetting->CurrentPermissionList.append(temp);
 }
+
+bool HmiAdaptor::permissionsettingSetFourValue(QStringList fourName)
+{
+    qDebug() << "ccccccccccccccccccc" << fourName;
+    permissionSetting->FourLevelIdentifier = fourName;
+    qDebug() << permissionSetting->FourLevelIdentifier;
+    return true;
+}
