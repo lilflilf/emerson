@@ -119,8 +119,8 @@ Item {
             anchors.topMargin: 7
             anchors.left: teachMode.right
             anchors.leftMargin: 24
-            backgroundwidth: 200
-            backgroundheight: 47
+            anchors.right: parent.right
+            anchors.rightMargin: 10
             textLeft: qsTr("OFF")
             textRight: qsTr("ON")
             state: "left"

@@ -552,15 +552,15 @@ Item {
     KeyBoardNum {
         id: keyNum
         anchors.centerIn: parent
-        width: 500
-        height: 500
+        width: 962
+        height: 526
         visible: false
         titleText: qsTr("")
         maxvalue: 12
         minvalue: 3
         currentValue: "123"
         onCurrentClickIndex: {
-            if (index == 14) {
+            if (index == 15) {
                 background.visible = false
                 background.opacity = 0
                 keyNum.visible = false

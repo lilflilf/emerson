@@ -75,7 +75,6 @@ Item {
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
                     width: parent.width/2+40
-                    height: parent.height
                     textLeft: qsTr(leftText)
                     textRight: qsTr(righttext)
                     state: "right"

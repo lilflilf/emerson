@@ -9,17 +9,17 @@ Item {
     property string textLeft: ""
     property string textRight: ""
     property bool on: false
-    width: backgroundwidth
-    height: backgroundheight
+    width: parent.width
+    height: 50
     function toggle() {
         if (toggleswitch.state == "right") {
             toggleswitch.state = "left";
-            leftSwitch.color = "black"
-            rightSwitch.color = "white"
+//            leftSwitch.color = "black"
+//            rightSwitch.color = "white"
         } else {
             toggleswitch.state = "right";
-            leftSwitch.color = "white"
-            rightSwitch.color = "black"
+//            leftSwitch.color = "white"
+//            rightSwitch.color = "black"
         }
     }
 
@@ -39,7 +39,7 @@ Item {
         height: parent.height
         radius: 5
         color: "black"
-        MouseArea { anchors.fill: parent; onClicked: toggle() }
+        MouseArea { anchors.fill: parent; onClicked: toggle()}
     }
 
     Rectangle {
@@ -75,7 +75,7 @@ Item {
         verticalAlignment: Qt.AlignVCenter
         horizontalAlignment: Qt.AlignHCenter
         text: textRight
-        color: "black"
+        color: "white"
         font.family: "arial"
         font.pointSize: 14
     }
@@ -85,15 +85,15 @@ Item {
             name: "right"
             PropertyChanges { target: knob; x: toggleswitch.width/2 }
             PropertyChanges { target: toggleswitch; on: true }
-            PropertyChanges { target: leftSwitch; color: "white" }
-            PropertyChanges { target: rightSwitch; color: "black" }
+//            PropertyChanges { target: leftSwitch; color: "white" }
+//            PropertyChanges { target: rightSwitch; color: "black" }
         },
         State {
             name: "left"
             PropertyChanges { target: knob; x: 1 }
             PropertyChanges { target: toggleswitch; on: false }
-            PropertyChanges { target: leftSwitch; color: "black" }
-            PropertyChanges { target: rightSwitch; color: "white" }
+//            PropertyChanges { target: leftSwitch; color: "black" }
+//            PropertyChanges { target: rightSwitch; color: "white" }
 
         }
     ]

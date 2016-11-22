@@ -5,8 +5,6 @@ import QtQuick.Dialogs 1.2
 
 Item {
     id: addExistSpliceOrWire
-//    width: Screen.width*0.7
-//    height: Screen.height*0.6
     property string titleName: ""
     property string componentName: ""
     property string componentData: ""
@@ -20,46 +18,46 @@ Item {
     signal signalAddExistSelectClick(var partId, var name)
     signal signalAddExistCancel()
     Rectangle {
-        width: parent.width //Screen.width*0.7
-        height: parent.height //Screen.height*0.6
+        width: parent.width
+        height: parent.height
         color: "#6d6e71"
         Text {
             id: title
             anchors.top: parent.top
             anchors.topMargin: 10
             anchors.left: parent.left
-            anchors.leftMargin: 10
+            anchors.leftMargin: 50
             width: parent.width/4
             color: "white"
             clip: true
-            font.pointSize: 16
+            font.pixelSize: 27
             font.family: "arial"
             text: qsTr(titleName)
         }
         Text {
             id: head1
             anchors.top: title.bottom
-            anchors.topMargin: 10
+            anchors.topMargin: 20
             anchors.left: parent.left
-            anchors.leftMargin: 10
-            width: parent.width/4
+            anchors.leftMargin: 50
+            width: (parent.width-120)/5
             color: "white"
-            font.pointSize: 10
-            horizontalAlignment: Qt.AlignHCenter
+            font.pixelSize: 18
             clip: true
+            elide: Text.ElideRight
             font.family: "arial"
             text: qsTr(componentName)
         }
         Text {
             id: head2
             anchors.top: title.bottom
-            anchors.topMargin: 10
+            anchors.topMargin: 20
             anchors.left: head1.right
             anchors.leftMargin: 10
-            width: parent.width/4
+            width: (parent.width-120)/5
             color: "white"
-            font.pointSize: 10
-            horizontalAlignment: Qt.AlignHCenter
+            font.pixelSize: 18
+            elide: Text.ElideRight
             clip: true
             font.family: "arial"
             text: qsTr(componentData)
@@ -67,13 +65,13 @@ Item {
         Text {
             id: head3
             anchors.top: title.bottom
-            anchors.topMargin: 10
+            anchors.topMargin: 20
             anchors.left: head2.right
             anchors.leftMargin: 10
-            width: parent.width/7
-            horizontalAlignment: Qt.AlignHCenter
+            width: (parent.width-120)/5
             color: "white"
-            font.pointSize: 10
+            elide: Text.ElideRight
+            font.pixelSize: 18
             clip: true
             font.family: "arial"
             text: qsTr(componentMiddle)
@@ -81,13 +79,13 @@ Item {
         Text {
             id: head4
             anchors.top: title.bottom
-            anchors.topMargin: 10
+            anchors.topMargin: 20
             anchors.left: head3.right
             anchors.leftMargin: 10
-            width: parent.width/7
+            width: (parent.width-120)/5
             color: "white"
-            horizontalAlignment: Qt.AlignHCenter
-            font.pointSize: 10
+            font.pixelSize: 18
+            elide: Text.ElideRight
             font.family: "arial"
             clip: true
             text: qsTr(componenttype)
@@ -95,38 +93,44 @@ Item {
         Text {
             id: head5
             anchors.top: title.bottom
-            anchors.topMargin: 10
+            anchors.topMargin: 20
             anchors.left: head4.right
             anchors.leftMargin: 10
-            width: parent.width/7
+            width: (parent.width-120)/5
             color: "white"
-            horizontalAlignment: Qt.AlignHCenter
             clip: true
-            font.pointSize: 10
+            elide: Text.ElideRight
+            font.pixelSize: 18
             font.family: "arial"
             text: componentCount
         }
         Rectangle {
-            id: tipsRec
+            id: tipsRec1
             anchors.top: head5.bottom
             anchors.topMargin: 4
             width: parent.width
-            height: 10
-            color: "#585858"
+            height: 1
+            color: "white"
+        }
+        Rectangle {
+            id: tipsRec2
+            anchors.top: tipsRec1.bottom
+            width: parent.width
+            height: 1
+            color: "#0d0f11"
         }
         ExclusiveGroup{
             id: mos
         }
         ListView {
             id: listView
-            anchors.top: tipsRec.bottom
+            anchors.top: tipsRec2.bottom
             anchors.topMargin: 10
             anchors.left: parent.left
-            anchors.leftMargin: 24
+            anchors.leftMargin: 50
             anchors.right: parent.right
-            anchors.rightMargin: 24
-//            width: parent.width - 48
-            height: parent.height- 170
+            anchors.rightMargin: 30
+            anchors.bottom: bottomTip1.top
             clip: true
             delegate: listDelegate
         }
@@ -142,31 +146,26 @@ Item {
                     anchors.top: parent.top
                     anchors.topMargin: 10
                     anchors.left: parent.left
-                    anchors.leftMargin: 10
-                    horizontalAlignment: Qt.AlignLeft
-                    width: parent.width/4
+                    width: (parent.width-40)/5
                     elide: Text.ElideRight
                     text: PartName
                     clip: true
                     color: "white"
-                    font.pointSize: 10
+                    font.pixelSize: 14
                     font.family: "arial"
-                    Component.onCompleted: {
-                        console.log("headData width== ", headData.width)
-                    }
                 }
                 Text {
                     id: headData
                     anchors.top: parent.top
                     anchors.topMargin: 10
                     anchors.left: headName.right
-                    anchors.leftMargin: 6
-                    horizontalAlignment: Qt.AlignCenter
-                    width: parent.width/4
+                    anchors.leftMargin: 10
+                    elide: Text.ElideRight
+                    width: (parent.width-40)/5
                     text: DateCreated
                     clip: true
                     color: "white"
-                    font.pointSize: 10
+                    font.pixelSize: 14
                     font.family: "arial"
                 }
                 Text {
@@ -174,13 +173,13 @@ Item {
                     anchors.top: parent.top
                     anchors.topMargin: 10
                     anchors.left: headData.right
-                    anchors.leftMargin: 14
-                    horizontalAlignment: Qt.AlignCenter
-                    width: parent.width/7
+                    anchors.leftMargin: 10
+                    width: (parent.width-40)/5
+                    elide: Text.ElideRight
                     text: TotalSplices
                     clip: true
                     color: "white"
-                    font.pointSize: 10
+                    font.pixelSize: 14
                     font.family: "arial"
                 }
                 Text {
@@ -188,13 +187,13 @@ Item {
                     anchors.top: parent.top
                     anchors.topMargin: 10
                     anchors.left: headMiddle.right
-                    anchors.leftMargin: 14
-                    horizontalAlignment: Qt.AlignCenter
-                    width: parent.width/7
+                    anchors.leftMargin: 10
+                    elide: Text.ElideRight
+                    width: (parent.width-40)/5
                     text: ProcessMode
                     color: "white"
                     clip: true
-                    font.pointSize: 10
+                    font.pixelSize: 14
                     font.family: "arial"
                 }
                 Text {
@@ -202,13 +201,14 @@ Item {
                     anchors.top: parent.top
                     anchors.topMargin: 10
                     anchors.left: headType.right
-                    anchors.leftMargin: 18
-                    horizontalAlignment: Qt.AlignCenter
-                    width: parent.width/7
+                    anchors.leftMargin: 10
+                    width: (parent.width-40)/5
+                    elide: Text.ElideRight
                     text: ProcessMode
                     color: "white"
                     clip: true
-                    font.pointSize: 10
+                    font.pixelSize: 14
+                    visible: componentCount != "" ? true : false
                     font.family: "arial"
                 }
                 MouseArea {
@@ -250,21 +250,86 @@ Item {
                 }
             }
         }
+        Image {
+            id: scrollUp
+            anchors.top: tipsRec2.bottom
+            anchors.topMargin: 2
+            anchors.left: listView.right
+            anchors.leftMargin: 4
+            width: 17
+            height: 10
+            visible: listView.contentHeight > listView.height ? true : false
+            source: "qrc:/images/images/up.png"
+        }
+        Image {
+            id: scrollDown
+            anchors.bottom: bottomTip1.top
+            anchors.bottomMargin: 2
+            anchors.left: listView.right
+            anchors.leftMargin: 4
+            width: 17
+            height: 10
+            visible: listView.contentHeight > listView.height ? true : false
+            source: "qrc:/images/images/down.png"
+        }
         Rectangle {
-            id: bottomTip
-            anchors.top: listView.bottom
-            anchors.topMargin: 4
+            id: scrollbar
+            width: 10
+            height: listView.height-24
+            anchors.top: scrollUp.bottom
+            anchors.left: listView.right
+            anchors.leftMargin: 4
+            color: "#585858"
+            radius: 10
+            visible: listView.contentHeight > listView.height ? true : false
+            Rectangle {
+                id: button
+                anchors.left: parent.left
+                y: (listView.visibleArea.yPosition < 0 ) ? 0 : (listView.contentY+listView.height>listView.contentHeight) ?
+                    scrollbar.height - button.height : listView.visibleArea.yPosition * scrollbar.height
+                width: 10
+                height: listView.visibleArea.heightRatio * scrollbar.height;
+                color: "#ccbfbf"
+                radius: 10
+                // 鼠标区域
+                MouseArea {
+                    id: mouseArea
+                    anchors.fill: button
+                    drag.target: button
+                    drag.axis: Drag.YAxis
+                    drag.minimumY: 0
+                    drag.maximumY: scrollbar.height - button.height
+                    // 拖动
+                    onMouseYChanged: {
+                        listView.contentY = button.y / scrollbar.height * listView.contentHeight
+                    }
+                }
+            }
+        }
+
+        Rectangle {
+            id: bottomTip1
+            anchors.bottom: bottomTip2.top
             width: parent.width
             clip: true
-            height: 10
-            color: "#585858"
+            height: 1
+            color: "white"
+        }
+        Rectangle {
+            id: bottomTip2
+            anchors.bottom: select.top
+            anchors.bottomMargin: 20
+            width: parent.width
+            clip: true
+            height: 1
+            color: "#0d0f11"
         }
         CButton {
             id: select
-            anchors.top: bottomTip.bottom
-            anchors.topMargin: 10
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 10
             anchors.right: parent.right
-            anchors.rightMargin: 24
+            anchors.rightMargin: 20
             width: 200
             height: 50
             clip: true
@@ -278,10 +343,10 @@ Item {
 
         CButton {
             id: cancel
-            anchors.top: bottomTip.bottom
-            anchors.topMargin: 10
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 10
             anchors.right: select.left
-            anchors.rightMargin: 24
+            anchors.rightMargin: 25
             width: 200
             height: 50
             text: qsTr("Cancel")

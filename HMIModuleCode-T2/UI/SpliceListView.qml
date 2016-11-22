@@ -105,7 +105,7 @@ Item {
                 height: 28
                 font.pointSize: 14
                 font.family: "arial"
-                text: qsTr(nameValue)
+                text: qsTr(name)
                 elide: Text.ElideRight
                 color: "white"
                 clip: true
@@ -146,12 +146,7 @@ Item {
                 clip: true
                 width: 28
                 height: 28
-                backgroundComponent: Rectangle {
-                    anchors.fill: parent
-                    color: "red"
-                }
-                text: "X"
-                textColor: "black"
+                iconSource: "qrc:/images/images/close.png"
                 onClicked: {
 
                 }

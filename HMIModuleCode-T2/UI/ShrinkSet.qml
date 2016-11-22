@@ -156,35 +156,35 @@ Item {
             inputWidth: parent.width/7
             inputHeight: 38
         }
-        Text {
-            id: shrinkTube
-            anchors.top: tempSet.bottom
-            anchors.topMargin: 24
-            anchors.left: contArea.right
-            anchors.leftMargin: 24
-            text: qsTr("Shrink Tube:")
-            color: "white"
-            width: parent.width/6
-            font.pointSize: 16
-            font.family: "arial"
-        }
-        Switch2 {
-            id: onoroff
-            anchors.top: tempSet.bottom
-            anchors.topMargin: 18
-            anchors.left: shrinkTube.right
-            anchors.leftMargin: 24
-            height: 40
-            width: parent.width/6
-            textLeft: qsTr("ON")
-            textRight: qsTr("OFF")
-            state: "right"
-            opacity: 0.8
-        }
+//        Text {
+//            id: shrinkTube
+//            anchors.top: tempSet.bottom
+//            anchors.topMargin: 24
+//            anchors.left: contArea.right
+//            anchors.leftMargin: 24
+//            text: qsTr("Shrink Tube:")
+//            color: "white"
+//            width: parent.width/6
+//            font.pointSize: 16
+//            font.family: "arial"
+//        }
+//        Switch2 {
+//            id: onoroff
+//            anchors.top: tempSet.bottom
+//            anchors.topMargin: 18
+//            anchors.left: shrinkTube.right
+//            anchors.leftMargin: 24
+//            height: 40
+//            width: parent.width/6
+//            textLeft: qsTr("ON")
+//            textRight: qsTr("OFF")
+//            state: "right"
+//            opacity: 0.8
+//        }
         CButton {
             id: enterButton
-            anchors.top: onoroff.bottom
-            anchors.topMargin: 24
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 24
             anchors.left: contArea.right
             anchors.leftMargin: parent.width/8
             width: parent.width/6
@@ -196,8 +196,8 @@ Item {
         }
         CButton {
             id: escButton
-            anchors.top: onoroff.bottom
-            anchors.topMargin: 24
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 24
             anchors.left: enterButton.right
             anchors.leftMargin: 40
             width: parent.width/6

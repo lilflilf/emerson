@@ -120,15 +120,24 @@ Window {
         height: 25//Screen.height * 0.03
     }
 
+    HeadBar {
+        id: headBar
+        visible: false
+        height: 79
+        z: 10
+        anchors.top: statusBar.bottom
+    }
+
     Loader {
         id: contentLoader
-        z:3
         anchors.top: headBar.bottom
         width: Screen.width
         height: Screen.height - 104
+        z: 3
         onLoaded: {
-            if (initIndex == 1)
+            if (initIndex == 1) {
                 contentLoader.item.bIsEdit = true
+            }
         }
     }
     Connections {
@@ -145,13 +154,5 @@ Window {
             statusBar.visible = true
             welcome.source = ""
         }
-    }
-
-    HeadBar {
-        id: headBar
-        visible: false
-        height: 79
-        anchors.top: statusBar.bottom
-        z: 10
     }
 }

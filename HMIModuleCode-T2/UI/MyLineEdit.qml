@@ -10,6 +10,7 @@ Item {
     property alias tipsText: inputTips.text
     property alias maxSize: textInput.maximumLength
     property alias backgroundcolor: back.color
+    property string borderColor: back.border.color
     property int inputWidth: 0
     property alias tipsWidth: inputTips.width
     property alias inputHeight: textInput.height
@@ -29,7 +30,7 @@ Item {
         height: parent.height
         border.color: "#1987ab"
         border.width: 2
-        color: "black"
+        color: "#052a40"
     }
 
 
@@ -72,6 +73,7 @@ Item {
         color: "white"
         font.family: "arial"
         font.pointSize: 10
+        clip: true
         anchors.verticalCenter: textInput.verticalCenter
     }
 }
