@@ -95,5 +95,8 @@
         <file>images/welcome.png</file>
         <file>images/loginbackground.png</file>
         <file>images/close.png</file>
+        <file>images/timeSelectbg.png</file>
+        <file>images/timeSlidDown.png</file>
+        <file>images/timeSlidUp.png</file>
     </qresource>
 </RCC>

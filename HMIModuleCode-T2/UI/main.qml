@@ -74,6 +74,7 @@ Window {
             contentLoader.source = "qrc:/UI/PermissionSetting.qml"
             break;
         case 15:
+            hmiAdaptor.weldDefaultsExecute("_Recall");
             contentLoader.source = "qrc:/UI/WeldDefalut.qml"
             break;
         case 16:
@@ -102,7 +103,6 @@ Window {
         //w.setWindowFlags(w.windowFlags()& ~Qt::WindowMaximizeButtonHint&  ~Qt::WindowMinimizeButtonHint);
 //        w.showMaximized();
         root.showFullScreen()
-
     }
 
     Image {
@@ -154,16 +154,16 @@ Window {
         anchors.top: statusBar.bottom
         z: 10
     }
-    TextInput {
-        id: input
-        width: 300
-        height: 80
+//    TextInput {
+//        id: input
+//        width: 300
+//        height: 80
 
-        anchors.centerIn: parent
-        //inputMethodHints: Qt.ImhDialableCharactersOnly
-        Component.onCompleted:
-        {
-//            VirtualKeyboardSettings.styleName = "retro"
-        }
-    }
+//        anchors.centerIn: parent
+//        //inputMethodHints: Qt.ImhDialableCharactersOnly
+//        Component.onCompleted:
+//        {
+////            VirtualKeyboardSettings.styleName = "retro"
+//        }
+//    }
 }

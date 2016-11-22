@@ -14,6 +14,7 @@
 #include "Interface/Maintenance/ToolChange.h"
 #include "Interface/interface.h"
 #include "Interface/Settings/PermissionSetting.h"
+#include "Interface/Settings/WeldDefaults.h"
 
 #define HMI_PRINT (qDebug() <<"HMI adapter:" << __FILE__ << __FUNCTION__ << __LINE__ << ": ")
 
@@ -58,11 +59,16 @@ public:
     Q_INVOKABLE bool login(QString passwd);
     Q_INVOKABLE void calibrationMaintenanceExecute(int code);
 
+    /********permissionsetting func**************/
     Q_INVOKABLE bool permissionsettingExecute(QString code);
     Q_INVOKABLE QStringList permissionsettingGetValue(QString code);
     Q_INVOKABLE bool permissionsettingGetChecked(QString stringIndex, int level);
     Q_INVOKABLE bool permissionsettingSetValue(QString name,bool level1,bool level2,bool level3,bool level4);
     Q_INVOKABLE bool permissionsettingSetFourValue(QStringList fourName);
+
+    /********weldDefaults func**************/
+    Q_INVOKABLE bool weldDefaultsExecute(QString code);
+    Q_INVOKABLE bool weldDefaultsGetSwitch(QString index);
 
     InterfaceClass *interfaceClass;
 
@@ -83,6 +89,7 @@ public:
 
     /*********Setting*****************/
     PermissionSetting *permissionSetting;
+    WeldDefaults *weldDefaults;
 signals:
     void widthCalibrationFinish(const bool &_Result);
     void heightCalibrationFinish(const bool &_Result);

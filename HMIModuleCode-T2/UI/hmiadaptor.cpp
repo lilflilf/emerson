@@ -60,6 +60,7 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
 
 
     permissionSetting = new PermissionSetting(this);
+    weldDefaults = new WeldDefaults(this);
 
     connect(calibration,SIGNAL(WidthCalibrationFinish(bool)),this,SIGNAL(widthCalibrationFinish(bool)));
     connect(calibration,SIGNAL(HeightCalibrationFinish(bool)),this,SIGNAL(heightCalibrationFinish(bool)));
@@ -246,8 +247,43 @@ bool HmiAdaptor::permissionsettingSetValue(QString name, bool level1, bool level
 
 bool HmiAdaptor::permissionsettingSetFourValue(QStringList fourName)
 {
-    qDebug() << "ccccccccccccccccccc" << fourName;
     permissionSetting->FourLevelIdentifier = fourName;
-    qDebug() << permissionSetting->FourLevelIdentifier;
     return true;
+}
+
+bool HmiAdaptor::weldDefaultsExecute(QString code)
+{
+    if (code == "_Recall")
+        return permissionSetting->_Recall();
+    else if (code == "_Set") {
+        return permissionSetting->_Set();
+    }
+    else if (code == "_Default")
+        permissionSetting->_Default();
+    return true;
+}
+
+bool HmiAdaptor::weldDefaultsGetSwitch(QString index)
+{
+    bool reb = false;
+    if (index == "Width Encoder")
+        reb = weldDefaults->CurrentWeldSettings.WidthEncoder;
+    else if (index == "Height Encoder")
+        reb = weldDefaults->CurrentWeldSettings.HeightEncoder;
+    else if (index == "Foot Pedal Abort")
+        reb = weldDefaults->CurrentWeldSettings.FootPedalAbort;
+    else if (index == "Cooling" || index == "cooling(1sec/100J)") {
+        if (weldDefaults->CurrentWeldSettings.CurrentCoolingMode == CoolingMode::ENERGYMODE)
+            reb = true;
+        else if (weldDefaults->CurrentWeldSettings.CurrentCoolingMode == CoolingMode::OFF)
+            reb = false;
+        else if (weldDefaults->CurrentWeldSettings.CurrentCoolingMode == CoolingMode::ON)
+            reb = true;
+    }
+    else if (index == "Cooling Tooling")
+        reb = weldDefaults->CurrentWeldSettings.CoolingForTooling;
+    else if (index == "Unit Conversion")
+        reb = weldDefaults->CurrentWeldSettings.Imperical2Metric;
+
+    return reb;
 }

@@ -5,8 +5,7 @@ import QtQuick.Layouts 1.0
 import QtQuick.Window 2.2
 
 Item {
-    width: parent.width
-    height: parent.height
+
     Image {
         anchors.fill: parent
         source: "qrc:/images/images/bg.png"
