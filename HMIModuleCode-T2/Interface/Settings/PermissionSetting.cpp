@@ -90,8 +90,8 @@ bool PermissionSetting::_Set()
         qDebug() << "cccccccccccc " << CurrentPermissionList.at(i).Level1 << CurrentPermissionList.at(i).Level2 <<CurrentPermissionList.at(i).Level3 << CurrentPermissionList.at(i).Level4;
     }
     InterfaceClass* _interface = InterfaceClass::Instance();
-    if(CurrentPermissionList.empty() == true)
-        return false;
+//    if(CurrentPermissionList.empty() == true)
+//        return false;
     _interface->StatusData.CurrentFunIndex.clear();
     for(int i = 1; i < 5; i++)
     {
