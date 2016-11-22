@@ -97,8 +97,8 @@ Item {
                     property string centerColor: ""
                     property int centerNum: 0
                     property var centerRec: centerWork
-                    width: parent.width/layout.columns
-                    height: parent.height/layout.rows
+                    width: (parent.width-layout.columns+1)/layout.columns
+                    height: (parent.height-layout.rows+1)/layout.rows
                     Rectangle {
                         anchors.fill: parent
                         color: "#6d6e71"

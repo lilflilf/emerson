@@ -5,9 +5,9 @@ import QtQuick.Window 2.2
 
 Item {
     id: operateDetail
+    signal signalSaveSplice()
     width: Screen.width
     height: Screen.height * 0.8
-    signal signalSaveSplice()
     Rectangle {
         anchors.fill: parent
         color: "#626465"

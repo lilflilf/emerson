@@ -37,9 +37,6 @@ Item {
     ListModel {
         id: testModel
     }
-    ListModel{
-        id: listModel2
-    }
     Component.onCompleted: {
         listModel.append({"nameValue":"Splice1 test title hellow word! welcome ","stationColor":"white","station":"?"})
         listModel.append({"nameValue":"Splice2 test title hellow word! welcome ","stationColor":"white","station":"?"})
@@ -120,13 +117,15 @@ Item {
                 id: tipsRec
                 anchors.top: workname.bottom
                 anchors.topMargin: 4
-                width: parent.width
-                height: 2
-                color: "#585858"
+                anchors.left: parent.left
+                anchors.leftMargin: 10
+                width: parent.width -20
+                height: 1
+                color: "#375566"
             }
             SpliceListView {
                 id: spliceList
-                listModel: bIsEdit ? listModel : listModel2
+                listModel: ""
                 anchors.top: tipsRec.bottom
                 anchors.topMargin: 6
                 anchors.bottom: tipsRec2.top
@@ -143,26 +142,22 @@ Item {
             }
             Rectangle {
                 id: tipsRec2
-//                anchors.top: spliceList.bottom
-//                anchors.topMargin: 4
                 anchors.bottom: addNewSplice.top
                 anchors.bottomMargin: 5
-                width: parent.width
-                height: 2
-                color: "#585858"
+                anchors.left: parent.left
+                anchors.leftMargin: 10
+                width: parent.width -20
+                height: 1
+                color: "#375566"
             }
             CButton {
                 id: addNewSplice
-//                anchors.top: tipsRec2.bottom
-//                anchors.topMargin: 10
                 anchors.bottom: addExitSplice.top
-//                anchors.bottomMargin: 5
                 anchors.left: parent.left
-                anchors.leftMargin: 6
+                anchors.leftMargin: 10
                 text: "+ ADD NEW SPLICE"
                 textColor: "white"
-                width: parent.width - 12
-//                height: 79
+                width: parent.width - 20
                 pointSize: 16
                 onClicked: {
                     loader.source = "qrc:/UI/CreatWire.qml"
@@ -172,16 +167,12 @@ Item {
 
             CButton {
                 id: addExitSplice
-//                anchors.top: addNewSplice.bottom
-//                anchors.topMargin: 10
                 anchors.bottom: upload.top
-//                anchors.bottomMargin: 5
                 anchors.left: parent.left
-                anchors.leftMargin: 6
+                anchors.leftMargin: 10
                 text: "+ ADD EXITING SPLICE"
                 textColor: "white"
-                width: parent.width - 12
-//                height: 79
+                width: parent.width - 20
                 pointSize: 16
                 onClicked: {
                     backGround.visible = true
@@ -191,32 +182,26 @@ Item {
             }
             CButton {
                 id: upload
-//                anchors.top: addExitSplice.bottom
-//                anchors.topMargin: 10
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: 5
                 anchors.left: parent.left
-                anchors.leftMargin: 6
+                anchors.leftMargin: 10
                 text: "IMPORT SPLICE"
                 textColor: "white"
-                width: parent.width / 2 - 12
-//                height: 79
+                width: (parent.width-20) / 2 - 12
                 pointSize: 16
                 onClicked: {
                 }
             }
             CButton {
                 id: save
-//                anchors.top: upload.bottom
-//                anchors.topMargin: 10
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: 5
                 anchors.right: parent.right
-                anchors.rightMargin: 6
+                anchors.rightMargin: 10
                 text: "SAVE PART"
                 textColor: "white"
-                width: parent.width / 2 - 12
-//                height: 79
+                width: (parent.width-20) / 2 - 12
                 pointSize: 16
                 onClicked: {
                     if (edit6.inputText.length == 0) {
@@ -239,12 +224,9 @@ Item {
                 anchors.top: parent.top
                 anchors.topMargin: tabBar.height+12
                 anchors.left: parent.left
-                anchors.leftMargin: 6
-                color: "white"
-                opacity: 0.5
+                anchors.leftMargin: 10
+                color: "#8295a0"
                 text: qsTr("PROCESS MODE")
-                //                height: parent.height * 0.1
-                //                width: parent.width * 0.5
                 font.family: "arial"
                 font.pointSize: 16
             }
@@ -254,8 +236,7 @@ Item {
                 anchors.top: processMode.bottom
                 anchors.topMargin: 12
                 anchors.left: parent.left
-                anchors.leftMargin: 6
-                height: parent.height * 0.04
+                anchors.leftMargin: 10
                 width: parent.width * 0.6
                 textLeft: qsTr("Basic")
                 textRight: qsTr("Adv")
@@ -272,13 +253,12 @@ Item {
             }
             Label {
                 id: lab1
-                color: "white"
+                color: "#8295a0"
                 visible: !bIsBasic
                 anchors.top: basicSwitch.bottom
                 anchors.topMargin: 24
                 anchors.left: parent.left
-                anchors.leftMargin: 6
-                opacity: 0.5
+                anchors.leftMargin: 10
                 text: qsTr("WORKSTATIONS")
                 font.family: "arial"
                 font.pointSize: 16
@@ -289,11 +269,12 @@ Item {
                 anchors.top: lab1.bottom
                 anchors.topMargin: 12
                 anchors.left: parent.left
-                anchors.leftMargin: 6
-                width: 300
+                anchors.leftMargin: 10
+                width: parent.width-20
                 height: 50
-                inputWidth: parent.width * 0.3
-                inputHeight: parent.height * 0.05
+                inputWidth: edit1.width/3
+                inputHeight: 45
+                borderColor: "#375566"
                 horizontalAlignment: Qt.AlignHCenter
                 tipsText: qsTr("#of Workstations")
                 maxSize: 20
@@ -311,11 +292,12 @@ Item {
                 anchors.top: edit1.bottom
                 anchors.topMargin: 12
                 anchors.left: parent.left
-                anchors.leftMargin: 6
-                width: 300
+                anchors.leftMargin: 10
+                width: parent.width-20
+                borderColor: "#375566"
                 height: 50
-                inputWidth: parent.width * 0.3
-                inputHeight: parent.height * 0.05
+                inputWidth: edit2.width/3
+                inputHeight: 45
                 horizontalAlignment: Qt.AlignHCenter
                 tipsText: qsTr("#of Splices per Workstations")
                 maxSize: 20
@@ -332,12 +314,11 @@ Item {
                 anchors.top: edit2.bottom
                 anchors.topMargin: 6
                 anchors.left: parent.left
-                anchors.leftMargin: 6
-                color: "white"
+                anchors.leftMargin: 10
+                color: "#8295a0"
                 text: qsTr("BOARD LAYOUT")
                 font.family: "arial"
                 font.pointSize: 16
-                opacity: 0.5
             }
             MyLineEdit {
                 id: edit3
@@ -345,12 +326,13 @@ Item {
                 anchors.top: lab2.bottom
                 anchors.topMargin: 12
                 anchors.left: parent.left
-                anchors.leftMargin: 6
-                width: parent.width*0.5
+                anchors.leftMargin: 10
+                width: (parent.width-30)/2
+                borderColor: "#375566"
                 height: 50
                 horizontalAlignment: Qt.AlignHCenter
-                inputWidth: parent.width * 0.3
-                inputHeight: parent.height * 0.05
+                inputWidth: edit3.width/2
+                inputHeight: 45
                 tipsText: qsTr("Rows")
                 regExp: RegExpValidator{regExp: /^[1-4]{1}$/}
                 maxSize: 20
@@ -370,12 +352,13 @@ Item {
                 anchors.top: lab2.bottom
                 anchors.topMargin: 12
                 anchors.left: edit3.right
-                anchors.leftMargin: -10
+                anchors.leftMargin: 10
                 horizontalAlignment: Qt.AlignHCenter
-                width: 300
+                width: (parent.width-30)/2
                 height: 50
-                inputWidth: parent.width * 0.3
-                inputHeight: parent.height * 0.05
+                borderColor: "#375566"
+                inputWidth: edit4.width/2
+                inputHeight: 45
                 tipsText: qsTr("Columns")
                 regExp: RegExpValidator{regExp: /^[1-4]{1}$/}
                 maxSize: 20
@@ -395,11 +378,12 @@ Item {
                 anchors.top: edit4.bottom
                 anchors.topMargin: 12
                 anchors.left: parent.left
-                anchors.leftMargin: 6
-                width: 300
+                anchors.leftMargin: 10
+                width: parent.width-20
                 height: 50
-                inputWidth: parent.width * 0.3
-                inputHeight: parent.height * 0.05
+                borderColor: "#375566"
+                inputWidth: edit5.width/3
+                inputHeight: 45
                 horizontalAlignment: Qt.AlignHCenter
                 tipsText: qsTr("Max Splice Per Zone")
                 regExp: RegExpValidator{regExp: /([1-9]|1[0-2])/}
@@ -416,8 +400,7 @@ Item {
         id: tabBar
         currentIndex: swipeView.currentIndex
         anchors.top: parent.top
-        anchors.left: parent.left
-//        anchors.leftMargin: 10
+        anchors.leftMargin: 10
         height: Screen.height * 0.08
         TabButton {
             height: parent.height
@@ -433,7 +416,9 @@ Item {
                 color: tabBar.currentIndex == 0 ? "white" : "#969ea5"
             }
             Rectangle {
-                width: parent.width
+                anchors.left: parent.left
+                anchors.leftMargin: 10
+                width: parent.width - 10
                 height: 6
                 color:  "#F79428"
                 anchors.bottom: parent.bottom
@@ -454,7 +439,7 @@ Item {
                 color: tabBar.currentIndex == 1 ? "white" : "#969ea5"
             }
             Rectangle {
-                width: parent.width
+                width: parent.width-10
                 height: 6
                 color:  "#F79428"
                 anchors.bottom: parent.bottom
@@ -487,11 +472,10 @@ Item {
             anchors.top: parent.top
             anchors.topMargin: 4
             anchors.left: boardlayout.left
-//            anchors.leftMargin: boardlayout
-            width: parent.width * 0.62
+            width: boardlayout.width*0.6
             height: 43
-            inputWidth: parent.width * 0.62
-            inputHeight: parent.height * 0.05
+            inputWidth: boardlayout.width*0.6
+            inputHeight: 40
             horizontalAlignment: Qt.AlignHCenter
             defaultText: qsTr("PART NAME")
             //regExp: RegExpValidator{regExp: /^[1-9]{1,2}$/}
@@ -500,25 +484,39 @@ Item {
             onTextChange: {
             }
         }
-        CButton {
+        Rectangle {
             id: template
+            property alias text: name.text
             anchors.top: parent.top
             anchors.topMargin: 4
             anchors.right: boardlayout.right
-            text: qsTr("Template")
-            textColor: "white"
-            backgroundComponent: Rectangle {
-                anchors.fill: parent
-                color: "black"
-            }
             anchors.left: edit6.right
-            anchors.leftMargin: 20
-            height: 45
-            pointSize: 16
-            onClicked: {
-                backGround.visible = true
-                backGround.opacity = 0.5
-                template2.visible = true
+            color: "#052a40"
+            height: 43
+            Text {
+                id: name
+                anchors.left: parent.left
+                anchors.leftMargin: 10
+                width: parent.width-40
+                anchors.verticalCenter: parent.verticalCenter
+                horizontalAlignment: Qt.AlignHCenter
+                text: qsTr("Template")
+                font.family: "arial"
+                font.pixelSize: 16
+                color: "#969ea5"
+            }
+            Image {
+                anchors.left: name.right
+                anchors.verticalCenter: parent.verticalCenter
+                source: "qrc:/images/images/down.png"
+            }
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    backGround.visible = true
+                    backGround.opacity = 0.5
+                    template2.visible = true
+                }
             }
         }
         Text {
@@ -526,8 +524,6 @@ Item {
             anchors.top: edit6.bottom
             anchors.topMargin: 24
             anchors.left: boardlayout.left
-//            anchors.leftMargin: 50
-
             color: "white"
             opacity: 0.5
             width: 100
@@ -554,8 +550,9 @@ Item {
             anchors.left: parent.left
             anchors.leftMargin: 20
             anchors.right: parent.right
-            anchors.rightMargin: 10
+            anchors.rightMargin: 20
             anchors.bottom: editSplice.top
+            anchors.bottomMargin: 10
             visible: !bIsBasic
             columns: 0
             rows: 0
@@ -656,12 +653,11 @@ Item {
         CButton {
             id: editSplice
             anchors.bottom: testSplice.top
-            anchors.bottomMargin: 24
+            anchors.bottomMargin: 14
             anchors.right: boardlayout.right
             text: "EDIT SPLICE"
             textColor: "white"
             width: 250
-            height: 60
             pointSize: 16
             onClicked: {
             }
@@ -669,12 +665,11 @@ Item {
         CButton {
             id: testSplice
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: 24
+            anchors.bottomMargin: 14
             anchors.right: boardlayout.right
             text: "TEST SPLICE"
             textColor: "white"
             width: 250
-            height: 60
             pointSize: 16
             onClicked: {
             }
@@ -707,8 +702,8 @@ Item {
         id: backGround
         anchors.fill: parent
         color: "black"
-        opacity: 0
-        visible: false
+        opacity: 0.7
+        visible: content.bIsEdit ? true : false
         MouseArea {
             anchors.fill: parent
             onClicked: {
@@ -735,7 +730,6 @@ Item {
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 15
             anchors.horizontalCenter: parent.horizontalCenter
-            height: 60
             width: parent.width/3
             iconSource: "qrc:/images/images/OK.png"
             text: qsTr("OK")
@@ -811,25 +805,29 @@ Item {
     AddExistingSpliceWire {
         id: addExit
         anchors.centerIn: parent
-        width: Screen.width*0.7
-        height: Screen.height*0.6
-        visible: false
-        listModel: testModel
-        titleName: qsTr("Add Existing Splice")
-        componentName: qsTr("SPLICE NAME")
+        width: parent.width*0.9
+        height: parent.width*0.4
+        visible: content.bIsEdit ? true : false
+        listModel: content.bIsEdit ? partModel : testModel
+        titleName: content.bIsEdit ? qsTr("Add Part") : qsTr("Add Existing Splice")
+        componentName: content.bIsEdit ? qsTr("Part Name") : qsTr("SPLICE NAME")
         componentData: qsTr("DATE CREATED")
-        componentMiddle: qsTr("# OF WIRES")
+        componentMiddle: content.bIsEdit ? qsTr("# OF SPLICE") : qsTr("# OF WIRES")
         componenttype: qsTr("CROSS SECTION")
-        componentCount: qsTr("COUNT")
+        componentCount: content.bIsEdit ? "" : qsTr("COUNT")
+        bIsOnlyOne: content.bIsEdit
         onSignalAddExistCancel: {
             backGround.visible = false
             backGround.opacity = 0
             addExit.visible = false
+            content.bIsEdit = false
         }
         onSignalAddExistSelectClick: {
             backGround.visible = false
             backGround.opacity = 0
             addExit.visible = false
+            content.bIsEdit = false
+            spliceList.listModel = spliceModel
         }
     }
     Item {
@@ -1084,20 +1082,17 @@ Item {
             id: saveButton
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 24
-            anchors.right: parent.right
-            anchors.rightMargin: 36
-            height: 79
-            width: (parent.width-36*3)/2
+            anchors.left: cancelButton.right
+            anchors.leftMargin: 14
+            width: (partNumberInput.width-20)/2
             text: qsTr("Save")
             textColor: "white"
         }
         CButton {
             id: cancelButton
             anchors.bottom: saveButton.bottom
-            anchors.right: saveButton.left
-            anchors.rightMargin: 36
-            height: 79
-            width: (parent.width-36*3)/2
+            anchors.left: titleHead.left
+            width: (partNumberInput.width-20)/2
             text: qsTr("Cancel")
             textColor: "white"
             onClicked: {
@@ -1105,6 +1100,7 @@ Item {
                 backGround.opacity = 0
                 addnewBlack.visible = false
                 temPlateDialog.visible = false
+                addNewBack.opacity = 0
             }
         }
     }

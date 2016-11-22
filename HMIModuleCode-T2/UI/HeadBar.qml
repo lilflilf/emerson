@@ -11,16 +11,16 @@ Item {
     property var selectIndex: 0
     width: Screen.width
     height: 97//Screen.height * 0.07
-//    Rectangle {
-//        id: headBack
-//        anchors.fill: parent
-//        color: "#f79428"
-//    }
-    Image {
+    Rectangle {
         id: headBack
         anchors.fill: parent
-        source: "qrc:/images/images/headbg.png"
+        color: (title.text == "Test" || title.text == "Create Assembly" || title.text == "Edit Existing") ? "#f79428" : "#0079c1"
     }
+//    Image {
+//        id: headBack
+//        anchors.fill: parent
+//        source: "qrc:/images/images/headbg.png"
+//    }
 
     MouseArea {
         z: 9
