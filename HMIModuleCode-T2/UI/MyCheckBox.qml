@@ -26,7 +26,6 @@ Item {
             source: myCheck.checked ? checkIcon : unCheckIcon
         }
         onClicked: {
-            console.log("2222222222222222222")
             if (!myCheck.checked)
                 myCheck.checked = !myCheck.checked
         }

@@ -343,8 +343,8 @@ enum SoftLimitsIndex
 };
 
 enum CoolingMode{
-   ENERGYMODE = -1,
-   OFF = 0,
+    ENERGYMODE = -1,
+    OFF = 0,
     ON = 1,
 };
 
@@ -419,7 +419,7 @@ public:
     enum SCREEN_MODE StartScreen;
 /*Setting->Premission Setting*/
     PasswordEntry PasswordData[PERMISSIONLEVEL];
-    QList<enum SCREEN_MODE> FunctionNameList;
+    QList<int> CurrentFunIndex;
 /*Weld Default*/
     union MACHINEFLAGS Machineflags;
     union RUNMODE RunMode;
@@ -429,7 +429,7 @@ public:
     int CurrentCoolingDel;
     BRANSON_INI_STRUCT Soft_Settings;
     bool KeepDailyHistory;
-    enum SAMPLERATIO PowerGraphSampleRatio;
+    enum SAMPLERATIO GraphSampleRatio;
 
     CalcWeldSettings4BuildStruct WeldSettings4Build[FormulaRangSize];
 //    int WeldSettingsDefault4Build[WDSI_SIZE];  //100's of Secs

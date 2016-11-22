@@ -619,20 +619,15 @@ Item {
             id: personColumn
             visible: false
             anchors.top: helpTitle.bottom
-            anchors.topMargin: 30
+            anchors.topMargin: 50
             anchors.left: parent.left
             anchors.leftMargin: 40
             width: parent.width-80
-            spacing: 10
+            spacing: 30
             CButton {
                 width: parent.width
                 textColor: "white"
                 text: qsTr("Switch User")
-            }
-            CButton {
-                width: parent.width
-                textColor: "white"
-                text: qsTr("Log Off")
                 onClicked: {
                     root.logoff()
 
@@ -643,6 +638,20 @@ Item {
                     dialog.visible = false
                 }
             }
+//            CButton {
+//                width: parent.width
+//                textColor: "white"
+//                text: qsTr("Log Off")
+//                onClicked: {
+//                    root.logoff()
+
+//                    personColumn.visible = false
+//                    background.visible = false
+//                    helpTitle.visible = false
+//                    background.opacity = 0
+//                    dialog.visible = false
+//                }
+//            }
             CButton {
                 width: parent.width
                 textColor: "white"

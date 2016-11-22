@@ -16,7 +16,8 @@
 
 int main(int argc, char *argv[])
 {
-    //qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
+
+//    qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
     qmlRegisterType<ALPaintedItem>("ALPaintedItem", 1, 0, "ALPaintedItem");
 
     QGuiApplication app(argc, argv);
@@ -31,9 +32,8 @@ int main(int argc, char *argv[])
     engine.load(QUrl(QStringLiteral("qrc:/UI/main.qml")));
     ALPaintedItem *alpaint = new ALPaintedItem;
     engine.rootContext()->setContextProperty("alpaint",alpaint);
-    HmiAdaptor *hmiAdaptor = new HmiAdaptor;
-//    qmlRegisterType<HmiAdaptor>("HmiAdaptor",1,0,"HmiAdaptor");
 
+    HmiAdaptor *hmiAdaptor = new HmiAdaptor;
     engine.rootContext()->setContextProperty("hmiAdaptor",hmiAdaptor);
     engine.rootContext()->setContextProperty("workOrderModel",hmiAdaptor->workOrderModel);
     engine.rootContext()->setContextProperty("spliceModel",hmiAdaptor->spliceModel);
@@ -82,10 +82,5 @@ int main(int argc, char *argv[])
 //    unsigned short tmp = _Interface->StatusData.Machineflags.Word[0];
 //    tmp = _Interface->StatusData.Machineflags.Word[3];
 
-    QString str = "10";
-    int ret = 0;
-    bool ok;
-    ret = str.toInt(&ok,16);
-    qDebug() << "xcvvvvv" << ret;
     return app.exec();
 }

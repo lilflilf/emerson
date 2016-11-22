@@ -3,7 +3,9 @@
 #include "Interface/Settings/SysConfiguration.h"
 #include "Modules/M10INI.h"
 #include "Modules/M10definitions.h"
-WeldDefaults::WeldDefaults()
+#include "Modules/UtilityClass.h"
+struct WeldSettingForScreen WeldDefaults::CurrentWeldSettings;
+WeldDefaults::WeldDefaults(QObject *parent) : QObject(parent)
 {
     InitWeldSettings();
 }
@@ -52,7 +54,78 @@ void WeldDefaults::InitWeldSettings()
     WeldSettingsInfo[SDNAmplitude].OffsetMin = Minmm2AmplitudeOffset;
     WeldSettingsInfo[SDNAmplitude].OffsetMax = Maxmm2AmplitudeOffset;
     WeldSettingsInfo[SDNAmplitude].OffsetFormat = "%.2f";
+}
 
+void WeldDefaults::_Default()
+{
 
+}
 
+bool WeldDefaults::_Recall()
+{
+
+}
+
+bool WeldDefaults::_Set()
+{
+    InterfaceClass* _Interface = InterfaceClass::Instance();
+    UtilityClass* _Utility = UtilityClass::Instance();
+    if(CurrentWeldSettings.Imperical2Metric == true)
+    {
+        _Interface->StatusData.Soft_Settings.Mm2Awg = false;
+        _Interface->StatusData.Soft_Settings.Mm2Inch = false;
+        _Interface->StatusData.Soft_Settings.Pressure2Unit = ToBar;
+    }else
+    {
+        _Interface->StatusData.Soft_Settings.Mm2Awg = true;
+        _Interface->StatusData.Soft_Settings.Mm2Inch = true;
+        _Interface->StatusData.Soft_Settings.Pressure2Unit = ToPSI;
+    }
+    _Utility->InitializeTextData();
+
+    if(CurrentWeldSettings.WidthEncoder == true)
+        _Interface->StatusData.Machineflags.Flag.WdthEncoderOff = 0;
+    else
+        _Interface->StatusData.Machineflags.Flag.WdthEncoderOff = 1;
+
+    if(CurrentWeldSettings.HeightEncoder == true)
+        _Interface->StatusData.Machineflags.Flag.HgtEncoderOff = 0;
+    else
+        _Interface->StatusData.Machineflags.Flag.HgtEncoderOff = 1;
+
+    if(CurrentWeldSettings.FootPedalAbort == true)
+        _Interface->StatusData.RunMode.ModeFlag.DefeatWeldAbort = 1;
+    else
+        _Interface->StatusData.RunMode.ModeFlag.DefeatWeldAbort = 0;
+
+    _Interface->StatusData.CurrentCoolingMode =
+            CurrentWeldSettings.CurrentCoolingMode;
+    _Interface->StatusData.CurrentCoolingTooling =
+            CurrentWeldSettings.CoolingForTooling;
+    int tmpValue = _Utility->StringToFormatedData(DINCoolDur,
+        CurrentWeldSettings.CurrentCoolingDur.Current);
+    if(tmpValue != -1)
+        _Interface->StatusData.CurrentCoolingDur = tmpValue;
+    else
+        _Interface->StatusData.CurrentCoolingDur = 0;
+    tmpValue = _Utility->StringToFormatedData(DINCoolDel,
+        CurrentWeldSettings.CurrentCoolingDel.Current);
+    if(tmpValue != -1)
+        _Interface->StatusData.CurrentCoolingDel = tmpValue;
+    else
+        _Interface->StatusData.CurrentCoolingDel = 0;
+
+    _Interface->StatusData.KeepDailyHistory = true;
+    _Interface->StatusData.GraphSampleRatio
+            = CurrentWeldSettings.SampleRatio;
+    for(int i = EnergyR1; i < FormulaRangSize; i++)
+    {
+        tmpValue = _Utility->StringToFormatedData(DINFormulaArea,
+            CurrentWeldSettings.WeldSettingFormula[i].Range.Current);
+        if(tmpValue != -1)
+            _Interface->StatusData.WeldSettings4Build[i].MinRange = tmpValue;
+        else
+            _Interface->StatusData.WeldSettings4Build[i].MinRange = 0;
+    }
+    return true;
 }

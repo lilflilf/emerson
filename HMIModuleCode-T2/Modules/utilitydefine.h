@@ -22,6 +22,10 @@
 #define MINHOLDTIME      0
 #define MINPREBURST      0
 #define MINFORCE         0
+#define MINCOOLDUR       100
+#define MAXCOOLDUR       6000
+#define MINCOOLDEL       0
+#define MAXCOOLDEL       500
 #define MAXENERGY        10000              //Joules
 #define MAXWIDTH         800                //mm * 100
 #define MAXWIDTH2032     980                //mm * 100
@@ -88,6 +92,8 @@ enum ScreenShowDataType{
     DINStopCounter,
     DINSqueezeTime,
     DINHoldTime,
+    DINCoolDur,
+    DINCoolDel,
     DINFlagBits,
     DINHeightCalibration,
     DINWidthCalibration,
@@ -101,6 +107,7 @@ enum ScreenShowDataType{
     DINEnergy2Step,
     DINTime2Step,
     DINPower2Step,
+    DINFormulaArea,
 
     DIN_end,
 };

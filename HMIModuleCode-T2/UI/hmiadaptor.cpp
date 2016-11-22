@@ -58,29 +58,32 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
     toolChange = new ToolChange;
     interfaceClass = InterfaceClass::Instance();
 
+
+    permissionSetting = new PermissionSetting(this);
+
     connect(calibration,SIGNAL(WidthCalibrationFinish(bool)),this,SIGNAL(widthCalibrationFinish(bool)));
     connect(calibration,SIGNAL(HeightCalibrationFinish(bool)),this,SIGNAL(heightCalibrationFinish(bool)));
 
-    QSqlDatabase db;
-    db = QSqlDatabase::addDatabase("QSQLITE", "hmiconnect");
-    db.setDatabaseName("./hmi.db");
-    if (!db.open())
-    {
-        qDebug() << "Cannot open contact database" << db.lastError().text();
-    }
+//    QSqlDatabase db;
+//    db = QSqlDatabase::addDatabase("QSQLITE", "hmiconnect");
+//    db.setDatabaseName("./hmi.db");
+//    if (!db.open())
+//    {
+//        qDebug() << "Cannot open contact database" << db.lastError().text();
+//    }
 
-    QSqlQuery query(db);
-    if(!db.tables().contains("wire"))
-    {
-        query.exec("create table wire (id INTEGER PRIMARY KEY AUTOINCREMENT, surname varchar(20))");
-    }
-    qDebug() << query.lastError();
+//    QSqlQuery query(db);
+//    if(!db.tables().contains("wire"))
+//    {
+//        query.exec("create table wire (id INTEGER PRIMARY KEY AUTOINCREMENT, surname varchar(20))");
+//    }
+//    qDebug() << query.lastError();
 
-    query.prepare("INSERT INTO wire (surname) VALUES (?)");
-    query.addBindValue("zhangjy");
-    query.exec();
-    qDebug() << query.lastError();
-    db.close();
+//    query.prepare("INSERT INTO wire (surname) VALUES (?)");
+//    query.addBindValue("zhangjy");
+//    query.exec();
+//    qDebug() << query.lastError();
+//    db.close();
 }
 
 void HmiAdaptor::openFileDialog()
@@ -166,3 +169,85 @@ void HmiAdaptor::calibrationMaintenanceExecute(int code)
 }
 
 
+bool HmiAdaptor::permissionsettingExecute(QString code)
+{
+    if (code == "_Recall")
+        return permissionSetting->_Recall();
+    else if (code == "_Set") {
+        return permissionSetting->_Set();
+    }
+    else if (code == "_Default")
+        permissionSetting->_Default();
+    else if (code == "_Clear")
+        permissionSetting->CurrentPermissionList.clear();
+    return true;
+}
+
+QStringList HmiAdaptor::permissionsettingGetValue(QString code)
+{
+    if (code == "AllFunctionNameList")
+        return permissionSetting->AllFunctionNameList;
+    else if (code == "FourLevelIdentifier")
+        return permissionSetting->FourLevelIdentifier;
+    else if (code == "CurrentIdentifier"){
+        QStringList currentIdentifier;
+        for (int i = 0; i < permissionSetting->CurrentPermissionList.count(); i++)
+        {
+            currentIdentifier << permissionSetting->CurrentPermissionList.at(i).Identifier;
+        }
+        return currentIdentifier;
+    }
+
+}
+
+bool HmiAdaptor::permissionsettingGetChecked(QString stringIndex, int level)
+{
+    bool reb = false;
+    int index = -1;
+    for (int i = 0; i < permissionSetting->CurrentPermissionList.count(); i++)
+    {
+        if (stringIndex == permissionSetting->CurrentPermissionList.at(i).Identifier)
+        {
+            index = i;
+            break;
+        }
+    }
+    if (index == -1)
+        return reb;
+    switch (level) {
+    case 1:
+        reb = permissionSetting->CurrentPermissionList.at(index).Level1;
+        break;
+    case 2:
+        reb = permissionSetting->CurrentPermissionList.at(index).Level2;
+        break;
+    case 3:
+        reb = permissionSetting->CurrentPermissionList.at(index).Level3;
+        break;
+    case 4:
+        reb = permissionSetting->CurrentPermissionList.at(index).Level4;
+        break;
+    default:
+        break;
+    }
+    return reb;
+}
+
+bool HmiAdaptor::permissionsettingSetValue(QString name, bool level1, bool level2, bool level3, bool level4)
+{
+    PermissionSettingForScreen temp;
+    temp.Identifier = name;
+    temp.Level1 = level1;
+    temp.Level2 = level2;
+    temp.Level3 = level3;
+    temp.Level4 = level4;
+    permissionSetting->CurrentPermissionList.append(temp);
+}
+
+bool HmiAdaptor::permissionsettingSetFourValue(QStringList fourName)
+{
+    qDebug() << "ccccccccccccccccccc" << fourName;
+    permissionSetting->FourLevelIdentifier = fourName;
+    qDebug() << permissionSetting->FourLevelIdentifier;
+    return true;
+}
