@@ -77,14 +77,16 @@ Status_Data Status_Data::operator=(const Status_Data &StatusDataObj) const
 //    Obj.WeldSettingDefaultWeldMode = StatusDataObj.WeldSettingDefaultWeldMode;
 //    Obj.WeldSettingDefaultTrigPress = StatusDataObj.WeldSettingDefaultTrigPress;
 //    Obj.AutoStartLastPart = StatusDataObj.AutoStartLastPart;
-    Obj.NRGtoHeightMode = StatusDataObj.NRGtoHeightMode;
-    Obj.TubeShrinkMode = StatusDataObj.TubeShrinkMode;
-    ShrinkTubeData ShrinkTubeDefaults[STI_SIZE];
-    for(int i = 0; i < STI_SIZE; i++)
+//    Obj.NRGtoHeightMode = StatusDataObj.NRGtoHeightMode;
+    Obj.ShrinkTubeMode = StatusDataObj.ShrinkTubeMode;
+    ShrinkTubeData tmpShrinkTube;
+    Obj.ShrinkTubeDefaults.clear();
+    for(int i = 0; i < StatusDataObj.ShrinkTubeDefaults.size(); i++)
     {
-        Obj.ShrinkTubeDefaults[i].Name = StatusDataObj.ShrinkTubeDefaults[i].Name;
-        Obj.ShrinkTubeDefaults[i].temp = StatusDataObj.ShrinkTubeDefaults[i].temp;
-        Obj.ShrinkTubeDefaults[i].Time = StatusDataObj.ShrinkTubeDefaults[i].Time;
+        tmpShrinkTube.Name = StatusDataObj.ShrinkTubeDefaults[i].Name;
+        tmpShrinkTube.temp = StatusDataObj.ShrinkTubeDefaults[i].temp;
+        tmpShrinkTube.Time = StatusDataObj.ShrinkTubeDefaults[i].Time;
+        Obj.ShrinkTubeDefaults.insert(i, tmpShrinkTube);
     }
 
     Obj.RemoteRecallport = StatusDataObj.RemoteRecallport;

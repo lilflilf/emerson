@@ -228,6 +228,29 @@ void UtilityClass::InitializeTextData()
     SetTextData(DINCoolDur, 0, MINCOOLDUR, MAXCOOLDUR, 1, 0.01, "%.2fs");
     SetTextData(DINCoolDel, 0, MINCOOLDEL, MAXCOOLDEL, 1, 0.01, "%.2fs");
     SetTextData(DINFormulaArea, 0, MINFORMULAAREA, MAXFORMULAAREA, 1, 1, "%.2fmm²");
+    SetTextData(DINFormulaEnergyOffset, 0, Minmm2EnergyOffset, Maxmm2EnergyOffset, 1, 1, "%.2fJ");
+    SetTextData(DINFormulaEnergyMult, 0, Minmm2EnergyMult, Maxmm2EnergyMult, 1, 1, "%.2fJ" );
+    SetTextData(DINFormulaWidthOffset, 0, 0, 0, 1, 1, "%dmm");
+    SetTextData(DINFormulaWidthMult, 0, Minmm2WidthAreaRatio, Maxmm2WidthAreaRatio, 1, 1, "%.2f");
+    if (_Interface->StatusData.Soft_Settings.Pressure2Unit == ToBar)
+    {
+        SetTextData(DINFormulaPressureOffset, 0, Minmm2PressOffset, Maxmm2PressOffset, 1, PSItoBARfactor, "%.2fB");
+        SetTextData(DINFormulaPressureMult, 0, Minmm2PressMult, Maxmm2PressMult, 1, PSItoBARfactor, "%.2f");
+    }
+    else if (_Interface->StatusData.Soft_Settings.Pressure2Unit == TokPa)
+    {
+        SetTextData(DINFormulaPressureOffset, 0, Minmm2PressOffset, Maxmm2PressOffset, 1, PSItoKPAfactor, "%dkPa");
+        SetTextData(DINFormulaPressureMult, 0, Minmm2PressMult, Maxmm2PressMult, 1, PSItoKPAfactor, "%d");
+    }else{
+        SetTextData(DINFormulaPressureOffset, 0, Minmm2PressOffset, Maxmm2PressOffset, 1, 1, "%.1fPSI");
+        SetTextData(DINFormulaPressureMult, 0, Minmm2PressMult, Maxmm2PressMult, 1, 1, "%.2f");
+    }
+    SetTextData(DINFormulaAmplitudeOffset, 0, Minmm2AmplitudeOffset, Maxmm2AmplitudeOffset, 1, 1, "%.2fμm");
+    SetTextData(DINFormulaAmplitudeMult, 0, Minmm2AmplitudeMult, Maxmm2AmplitudeMult, 1, 1, "%.2f");
+
+    SetTextData(DINShrinkTubeTemperature, 0, ShrinkTubeMinTemp, ShrinkTubeMaxTemp, 1, 1, "%d℃");
+    SetTextData(DINShrinkTubeTime, 0, ShrinkTubeMinTime, ShrinkTubeMaxTime, 1, 1, "%.1fs");
+    SetTextData(DINServerPortNumber, 0, MINSERVER_PORT_NUMBER, MAXSERVER_PORT_NUMBER, 1, 1, "%d");
 }
 
 void UtilityClass::SetTextData(ScreenShowDataType TypeIndex,int Data,int min, int max,
@@ -253,6 +276,18 @@ QString UtilityClass::FormatedDataToString(ScreenShowDataType TypeIndex, int Dat
     return tmpStr;
 }
 
+QString UtilityClass::FormatedDataToString(ScreenShowDataType TypeIndex, float Data)
+{
+    QString tmpStr;
+    if(txtData[TypeIndex].Format.contains("d") == true)
+        tmpStr.sprintf(txtData[TypeIndex].Format.toLatin1().data(),(float)(Data * txtData[TypeIndex].Factor));
+    else if(txtData[TypeIndex].Format.contains("f") == true)
+        tmpStr.sprintf(txtData[TypeIndex].Format.toLatin1().data(),(float)(Data * txtData[TypeIndex].Factor));
+    else
+        tmpStr.clear();
+    return tmpStr;
+}
+
 float UtilityClass::FormatedDataToFloat(ScreenShowDataType TypeIndex, int Data)
 {
     if(txtData[TypeIndex].Format.contains("f") == true)
@@ -269,7 +304,7 @@ int UtilityClass::FormatedDataToInteger(ScreenShowDataType TypeIndex, int Data)
         return -1;
 }
 
-int UtilityClass::StringToFormatedData(ScreenShowDataType TypeIndex, QString ShownData)
+float UtilityClass::StringToFormatedData(ScreenShowDataType TypeIndex, QString ShownData)
 {
     ShownData.trimmed();
     if(ShownData.isEmpty() == true)
@@ -287,7 +322,7 @@ int UtilityClass::StringToFormatedData(ScreenShowDataType TypeIndex, QString Sho
 
     double tmpValue = ShownData.toDouble();
     tmpValue /= txtData[TypeIndex].Factor;
-    return (int)tmpValue;
+    return (float)tmpValue;
 }
 
 
