@@ -443,7 +443,6 @@ public:
 /*Data Communication*/
     bool ShrinkTubeMode;       //Tube shrinker not on all machines
     QList<ShrinkTubeData> ShrinkTubeDefaults;
-    IAComElement ShrinkTubeComInfo;
 
     bool NetworkingEnabled;
     bool RemoteDataLogging;

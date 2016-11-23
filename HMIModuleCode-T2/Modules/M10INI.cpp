@@ -217,9 +217,12 @@ void M10INI::SetShrinkTubeDefaults()
 {
     InterfaceClass* _Interface = InterfaceClass::Instance();
     //This function will set the shrink tube values to default values for the very 1st time.
+    struct ShrinkTubeData tmpShrinkTube;
     for (int i = STIR1;  i <= STIR10; i++)
-        _Interface->StatusData.ShrinkTubeDefaults[i].Name = QString::number(i+1);
-
+    {
+        tmpShrinkTube.Name = QString::number(i + 1);
+        _Interface->StatusData.ShrinkTubeDefaults.insert(i, tmpShrinkTube);
+    }
     _Interface->StatusData.ShrinkTubeDefaults[STIR1].temp = ShrinkTubeDefTemp1;
     _Interface->StatusData.ShrinkTubeDefaults[STIR1].Time = ShrinkTubeDefTime1;
     _Interface->StatusData.ShrinkTubeDefaults[STIR2].temp = ShrinkTubeDefTemp2;
