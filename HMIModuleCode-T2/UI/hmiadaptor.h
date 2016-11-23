@@ -28,6 +28,7 @@ class HmiAdaptor : public QObject
     Q_ENUMS(VerticalPosition)
     Q_ENUMS(BUTTONCLICK)
     Q_ENUMS(CALIBRATE)
+    Q_ENUMS(FormulaRange)
 
 public:
     enum CALIBRATE
@@ -49,6 +50,22 @@ public:
         CONVERTERCOOLINGCLICK,
         TOOLINGCOOLINGCLICK,
     };
+    enum FormulaRange
+    {
+        EnergyR1,
+        EnergyR2,
+        EnergyR3,
+        WidthR1,
+        WidthR2,
+        WidthR3,
+        PressureR1,
+        PressureR2,
+        PressureR3,
+        AmplitudeR1,
+        AmplitudeR2,
+        AmplitudeR3,
+        FormulaRangSize,
+    };
 
 
     explicit HmiAdaptor(QObject *parent = 0);
@@ -69,6 +86,7 @@ public:
     /********weldDefaults func**************/
     Q_INVOKABLE bool weldDefaultsExecute(QString code);
     Q_INVOKABLE bool weldDefaultsGetSwitch(QString index);
+    Q_INVOKABLE QStringList weldDefaultsGetValue(FormulaRange index);
 
     InterfaceClass *interfaceClass;
 

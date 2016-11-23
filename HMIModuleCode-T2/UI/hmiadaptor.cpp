@@ -284,6 +284,29 @@ bool HmiAdaptor::weldDefaultsGetSwitch(QString index)
         reb = weldDefaults->CurrentWeldSettings.CoolingForTooling;
     else if (index == "Unit Conversion")
         reb = weldDefaults->CurrentWeldSettings.Imperical2Metric;
-
+    else if (index == "Graph Data Sampling 1ms")
+        reb = weldDefaults->CurrentWeldSettings.SampleRatio == SampleWith1ms ? true : false;
+    else if (index == "Graph Data Sampling 5ms")
+        reb = weldDefaults->CurrentWeldSettings.SampleRatio == SampleWith5ms ? true : false;
+    else if (index == "Graph Data Sampling 10ms")
+        reb = weldDefaults->CurrentWeldSettings.SampleRatio == SampleWith10ms ? true : false;
+    else if (index == "Graph Data Sampling 20ms")
+        reb = weldDefaults->CurrentWeldSettings.SampleRatio == SampleWith20ms ? true : false;
     return reb;
+}
+
+QStringList HmiAdaptor::weldDefaultsGetValue(HmiAdaptor::FormulaRange index)
+{
+    QStringList list;
+    list << weldDefaults->CurrentWeldSettings.WeldSettingFormula[index].Range.Maximum
+         << weldDefaults->CurrentWeldSettings.WeldSettingFormula[index].Range.Current
+         << weldDefaults->CurrentWeldSettings.WeldSettingFormula[index].Range.Minimum
+         << weldDefaults->CurrentWeldSettings.WeldSettingFormula[index].Offset.Maximum
+         << weldDefaults->CurrentWeldSettings.WeldSettingFormula[index].Offset.Current
+         << weldDefaults->CurrentWeldSettings.WeldSettingFormula[index].Offset.Minimum
+         << weldDefaults->CurrentWeldSettings.WeldSettingFormula[index].Multiplier.Maximum
+         << weldDefaults->CurrentWeldSettings.WeldSettingFormula[index].Multiplier.Current
+         << weldDefaults->CurrentWeldSettings.WeldSettingFormula[index].Multiplier.Minimum;
+    qDebug() << "ccccccccccccc" << list;
+    return list;
 }

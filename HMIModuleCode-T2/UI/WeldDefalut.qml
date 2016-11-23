@@ -24,6 +24,16 @@ Item {
         id: formulaModel
     }
     ListModel {
+        id: widthModel
+    }
+    ListModel {
+        id: pressureModel
+    }
+    ListModel {
+        id: amplitudeModel
+    }
+
+    ListModel {
         id: repeaterModel
         Component.onCompleted: {
             repeaterModel.append({"headTitle":"Width Encoder","leftText":"off","righttext":"on","switchState":hmiAdaptor.weldDefaultsGetSwitch("Width Encoder")})
@@ -35,23 +45,32 @@ Item {
 //            repeaterModel.append({"headTitle":"cooling Tooling","leftText":"off","righttext":"on"})
 
 
-            graphModel.append({"graphText":"1MS"})
-            graphModel.append({"graphText":"5MS"})
-            graphModel.append({"graphText":"10MS"})
-            graphModel.append({"graphText":"20MS"})
+            graphModel.append({"graphText":"1MS","isSelect":hmiAdaptor.weldDefaultsGetSwitch("Graph Data Sampling 1ms")})
+            graphModel.append({"graphText":"5MS","isSelect":hmiAdaptor.weldDefaultsGetSwitch("Graph Data Sampling 5ms")})
+            graphModel.append({"graphText":"10MS","isSelect":hmiAdaptor.weldDefaultsGetSwitch("Graph Data Sampling 10ms")})
+            graphModel.append({"graphText":"20MS","isSelect":hmiAdaptor.weldDefaultsGetSwitch("Graph Data Sampling 20ms")})
 
-            formulaModel.append({"formulaHead":"Range","formulaValue":"0.00mm²"})
-            formulaModel.append({"formulaHead":"","formulaValue":"to 6.99"})
-            formulaModel.append({"formulaHead":"Offset","formulaValue":"17.00J"})
-            formulaModel.append({"formulaHead":"Multiplier","formulaValue":"88.00J"})
-            formulaModel.append({"formulaHead":"Range","formulaValue":"7.00mm²"})
-            formulaModel.append({"formulaHead":"","formulaValue":"to 14.99"})
-            formulaModel.append({"formulaHead":"Offset","formulaValue":"18.70J"})
-            formulaModel.append({"formulaHead":"Multiplier","formulaValue":"97.80J"})
-            formulaModel.append({"formulaHead":"Range","formulaValue":"15.00mm²"})
-            formulaModel.append({"formulaHead":"","formulaValue":"to 40.00"})
-            formulaModel.append({"formulaHead":"Offset","formulaValue":"20.57J"})
-            formulaModel.append({"formulaHead":"Multiplier","formulaValue":"106.48J"})
+
+            var list = new Array();
+            list = hmiAdaptor.weldDefaultsGetValue(hmiAdaptor.EnergyR1)
+            formulaModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2]})  //"formulaValue":"0.00mm²"
+            formulaModel.append({"formulaHead":"","maxValue":"","currenValue":list[1],"minValue":""})
+            formulaModel.append({"formulaHead":"Offset","maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
+            formulaModel.append({"formulaHead":"Multiplier","maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
+
+            list = hmiAdaptor.weldDefaultsGetValue(hmiAdaptor.EnergyR2)
+            formulaModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2]})  //"formulaValue":"0.00mm²"
+            formulaModel.append({"formulaHead":"","maxValue":"","currenValue":list[1],"minValue":""})
+            formulaModel.append({"formulaHead":"Offset","maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
+            formulaModel.append({"formulaHead":"Multiplier","maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
+
+            list = hmiAdaptor.weldDefaultsGetValue(hmiAdaptor.EnergyR3)
+            formulaModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2]})  //"formulaValue":"0.00mm²"
+            formulaModel.append({"formulaHead":"","maxValue":"","currenValue":list[1],"minValue":""})
+            formulaModel.append({"formulaHead":"Offset","maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
+            formulaModel.append({"formulaHead":"Multiplier","maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
+
+
         }
     }
 
@@ -240,8 +259,11 @@ Item {
                 MyRadioButton {
                     anchors.fill: parent
                     buttontext: qsTr(graphText)
-                    bIsCheck: index == 0 ? true : false
+                    bIsCheck: isSelect //index == 0 ? true : false
                     exclusiveGroup: mos
+                    onBIsCheckChanged: {
+                        graphModel.set(index,{"isSelect":bIsCheck})
+                    }
                 }
             }
         }
@@ -364,7 +386,7 @@ Item {
                 width: (radioButton.width-30)/4
                 height: (formulaSetting.height-20)/3
                 headTitle: qsTr(formulaHead)
-                centervalue: qsTr(formulaValue)
+                centervalue: qsTr(currenValue)
                 Component.onCompleted: {
                     if (index == 1 || index == 5 || index == 9) {
                         localbordercolor = Qt.rgba(0,0,0,0)
