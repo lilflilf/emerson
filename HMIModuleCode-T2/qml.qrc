@@ -95,5 +95,26 @@
         <file>images/welcome.png</file>
         <file>images/loginbackground.png</file>
         <file>images/close.png</file>
+        <file>images/timeSelectbg.png</file>
+        <file>images/timeSlidDown.png</file>
+        <file>images/timeSlidUp.png</file>
+        <file>images/keyboard0.png</file>
+        <file>images/keyboard2.png</file>
+        <file>images/keyboard3.png</file>
+        <file>images/keyboard4.png</file>
+        <file>images/keyboard5.png</file>
+        <file>images/keyboard6.png</file>
+        <file>images/keyboard7.png</file>
+        <file>images/keyboard8.png</file>
+        <file>images/keyboard9.png</file>
+        <file>images/keyBoardbg.png</file>
+        <file>images/keyboardcancel.png</file>
+        <file>images/keyboardclear.png</file>
+        <file>images/keyboardclose.png</file>
+        <file>images/keyboarddel.png</file>
+        <file>images/keyboarddian.png</file>
+        <file>images/keyboarddone.png</file>
+        <file>images/keyBoardxing.png</file>
+        <file>images/keyboard1.png</file>
     </qresource>
 </RCC>

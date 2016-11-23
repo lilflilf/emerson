@@ -307,8 +307,7 @@ Item {
         id: progresstracking
         anchors.bottom: workStation.top
         anchors.bottomMargin: 4
-        anchors.left: spliceDetailsItem.right
-        anchors.leftMargin: Screen.width*0.1-55
+        anchors.left: qualityWindow.left
         font.pointSize: 16
         font.family: "arial"
         text: qsTr("Progress and Tracking")
@@ -318,8 +317,7 @@ Item {
         id: workStation
         anchors.bottom: progressBar.top
         anchors.bottomMargin: 6
-        anchors.left: spliceDetailsItem.right
-        anchors.leftMargin: Screen.width*0.1-55
+        anchors.left: qualityWindow.left
         font.pointSize: 13
         font.family: "arial"
         text: qsTr("Work Station: B")
@@ -340,8 +338,7 @@ Item {
         id: leftButton
         anchors.bottom: partCount.top
         anchors.bottomMargin: 20
-        anchors.left: spliceDetailsItem.right
-        anchors.leftMargin: Screen.width*0.1-55
+        anchors.left: qualityWindow.left
         width: 50
         height: 32
         iconSource: "qrc:/images/images/you.png"
@@ -352,6 +349,8 @@ Item {
         id: progressBar
         anchors.left: leftButton.right
         anchors.leftMargin: 25
+        anchors.right: rightButton.left
+        anchors.rightMargin: 25
         anchors.bottom: partCount.top
         anchors.bottomMargin: 4
         width: Screen.width*0.4-150
@@ -362,8 +361,7 @@ Item {
         id: rightButton
         anchors.bottom: partCount.top
         anchors.bottomMargin: 20
-        anchors.left: progressBar.right
-        anchors.leftMargin: 25
+        anchors.right: qualityWindow.right
         width: 50
         height: 32
         iconSource: "qrc:/images/images/zuo.png"
@@ -377,8 +375,7 @@ Item {
     }
     Text {
         id: partCount
-        anchors.left: spliceDetailsItem.right
-        anchors.leftMargin: Screen.width*0.1-55
+        anchors.left: qualityWindow.left
         anchors.bottom: progressBar4.top
         anchors.bottomMargin: 6
         font.pointSize: 13
@@ -388,8 +385,7 @@ Item {
     }
     CProgressBar {
         id: progressBar4
-        anchors.left: spliceDetailsItem.right
-        anchors.leftMargin: Screen.width*0.1-55
+        anchors.left: qualityWindow.left
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 20
         width: Screen.width*0.2
@@ -400,8 +396,7 @@ Item {
     }
     Text {
         id: maintenance
-        anchors.left: progressBar4.right
-        anchors.leftMargin: 10
+        anchors.right: qualityWindow.right
         anchors.bottom: progressBar3.top
         anchors.bottomMargin: 6
         font.pointSize: 13
@@ -411,8 +406,7 @@ Item {
     }
     CProgressBar {
         id: progressBar3
-        anchors.left: progressBar4.right
-        anchors.leftMargin: 10
+        anchors.right: qualityWindow.right
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 20
         width: Screen.width*0.2

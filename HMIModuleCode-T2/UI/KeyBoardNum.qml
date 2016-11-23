@@ -13,46 +13,57 @@ Item {
     signal currentClickIndex(int index)
     width: parent.width
     height: parent.height
-    Rectangle {
+    Image {
         anchors.fill: parent
-        color: "#6d6e71"
+        source: "qrc:/images/images/keyBoardbg.png"
     }
 
     Text {
         id: title
         anchors.top: parent.top
-        anchors.topMargin: 24
+        anchors.topMargin: 20
         anchors.left: parent.left
-        anchors.leftMargin: 24
+        anchors.leftMargin: 20
         font.family: "arial"
-        font.pointSize: 24
+        font.pixelSize: 27
         color: "white"
         text: qsTr("text")
     }
     Text {
         id: currentText
         anchors.top: title.bottom
-        anchors.topMargin: 24
+        anchors.topMargin: 44
         anchors.left: title.left
         font.family: "arial"
         font.pixelSize: 24
-        color: "white"
+        color: "#aeb4b9"
         text: qsTr("Current Value")
     }
-    Text {
-        id: currenvalue
+    Rectangle {
+        id: rec1
         anchors.top: currentText.bottom
         anchors.topMargin: 24
         anchors.left: title.left
-        font.family: "arial"
-        font.pixelSize: 24
-        color: "white"
-        text: qsTr("Current Value")
+        width: 300
+        height: 50
+        border.width: 1
+        border.color: "#0079C1"
+        color: Qt.rgba(0,0,0,0)
+        Text {
+            id: currenvalue
+            anchors.centerIn: parent
+            horizontalAlignment: Qt.AlignHCenter
+            font.family: "arial"
+            font.pixelSize: 21
+            color: "white"
+            elide: Text.ElideRight
+            text: qsTr("Current Value")
+        }
     }
     Text {
         id: newText
-        anchors.top: currenvalue.bottom
-        anchors.topMargin: 24
+        anchors.top: rec1.bottom
+        anchors.topMargin: 20
         anchors.left: title.left
         font.family: "arial"
         font.pixelSize: 24
@@ -60,31 +71,30 @@ Item {
         text: qsTr("New Value")
     }
     Rectangle {
-        id: newvalueBack
+        id: rec2
         anchors.top: newText.bottom
         anchors.topMargin: 24
         anchors.left: title.left
-        width: parent.width/3
-        height: 30
-        border.color: "#1987ab"
-        border.width: 2
-        color: "black"
-    }
-    Text {
-        id: newvalue
-        anchors.fill: newvalueBack
-        font.family: "arial"
-        font.pixelSize: 22
-        horizontalAlignment: Qt.AlignHCenter
-        verticalAlignment: Qt.AlignVCenter
-        color: "white"
-        elide: Text.ElideRight
-        text: qsTr(inputText)
+        width: 300
+        height: 50
+        border.width: 1
+        border.color: "#0079C1"
+        color: Qt.rgba(0,0,0,0)
+        Text {
+            id: newvalue
+            anchors.centerIn: parent
+            horizontalAlignment: Qt.AlignHCenter
+            font.family: "arial"
+            font.pixelSize: 21
+            elide: Text.ElideRight
+            color: "white"
+            text: qsTr(inputText)
+        }
     }
     Text {
         id: minValue
-        anchors.top: newvalue.bottom
-        anchors.topMargin: 24
+        anchors.top: rec2.bottom
+        anchors.topMargin: 34
         anchors.left: title.left
         font.family: "arial"
         font.pixelSize: 24
@@ -101,25 +111,81 @@ Item {
         color: "white"
         text: qsTr("Max Value ")+maxvalue
     }
-    Grid {
-        anchors.top: title.bottom
+    Image {
+        id: close
+        anchors.top: parent.top
         anchors.right: parent.right
-        width: parent.width/2
-        height: parent.height
-        spacing: 30
-        columns: 3
+        source: "qrc:/images/images/keyboardclose.png"
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                keyBoardnum.visible = false
+                currentClickIndex(15)
+            }
+        }
+    }
+    ListModel {
+        id: listModel
+        Component.onCompleted: {
+            listModel.append({"iconsource":"qrc:/images/images/keyboard1.png","value":"1"})
+            listModel.append({"iconsource":"qrc:/images/images/keyboard2.png","value":"2"})
+            listModel.append({"iconsource":"qrc:/images/images/keyboard3.png","value":"3"})
+            listModel.append({"iconsource":"qrc:/images/images/keyboarddel.png","value":""})
+            listModel.append({"iconsource":"qrc:/images/images/keyboard4.png","value":"4"})
+            listModel.append({"iconsource":"qrc:/images/images/keyboard5.png","value":"5"})
+            listModel.append({"iconsource":"qrc:/images/images/keyboard6.png","value":"6"})
+            listModel.append({"iconsource":"qrc:/images/images/keyboardclear.png","value":""})
+            listModel.append({"iconsource":"qrc:/images/images/keyboard7.png","value":"7"})
+            listModel.append({"iconsource":"qrc:/images/images/keyboard8.png","value":"8"})
+            listModel.append({"iconsource":"qrc:/images/images/keyboard9.png","value":"9"})
+            listModel.append({"iconsource":"qrc:/images/images/keyboardcancel.png","value":""})
+            listModel.append({"iconsource":"qrc:/images/images/keyBoardxing.png","value":"*"})
+            listModel.append({"iconsource":"qrc:/images/images/keyboard0.png","value":"0"})
+            listModel.append({"iconsource":"qrc:/images/images/keyboarddian.png","value":"."})
+            listModel.append({"iconsource":"qrc:/images/images/keyboarddone.png","value":""})
+        }
+    }
+    Grid {
+        anchors.top: close.bottom
+        anchors.topMargin: 34
+        anchors.left: rec2.right
+        anchors.leftMargin: 40
+        anchors.right: parent.right
+        anchors.rightMargin: 17
+        columnSpacing: 34
+        rowSpacing: 5
+        columns: 4
+        rows: 4
         Repeater {
-            model: ["1","2","3","4","5","6","7","8","9","INC","0","C","ESC",".","OK"]
-            delegate: CButton {
-                width: 50
-                height: 50
-                text: modelData
-                textColor: "white"
-                onClicked: {
-                    if (index < 11 && index != 9) {
-                        inputText += modelData
+            model: listModel
+            delegate: Image {
+                id: num
+                source: iconsource
+                MouseArea {
+                    anchors.fill: parent
+                    onPressed: {
+                        num.opacity = 0.5
                     }
-                    currentClickIndex(index)
+                    onReleased: {
+                        num.opacity = 1
+                    }
+                    onClicked: {
+                        if (index == 3) {
+                            var TempSTring = ""
+                            for (var i = 0; i < inputText.length-1;i++) {
+                                TempSTring += inputText.charAt(i)
+                            }
+                            inputText = TempSTring
+                        } else if (index == 7) {
+                            inputText = ""
+                        } else if (index == 11) {
+                            currentClickIndex(index)
+                        } else if (index == 15) {
+                            currentClickIndex(index)
+                        } else {
+                            inputText += listModel.get(index).value
+                        }
+                    }
                 }
             }
         }

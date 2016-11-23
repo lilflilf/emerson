@@ -89,11 +89,11 @@ MouseArea {
         Text {
             id: text
             anchors.verticalCenter: parent.verticalCenter
+            horizontalAlignment: Qt.AlignHCenter
             font.pixelSize: button.pixelSize
             color: button.textColor
             text: qsTr(button.text)
             font.family: "arial"
-
         }
     }
 
@@ -113,3 +113,4 @@ MouseArea {
         anchors.verticalCenterOffset: button.labelVerticalOffset
     }
 }
+

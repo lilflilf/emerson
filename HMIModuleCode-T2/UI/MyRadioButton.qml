@@ -5,6 +5,7 @@ import QtQuick.Layouts 1.0
 import QtQuick.Window 2.2
 
 Item {
+    id: weldDefalut
     property alias exclusiveGroup: checkBox.exclusiveGroup
     property alias buttontext: buttonText.text
     property alias fontSize: buttonText.font.pixelSize
