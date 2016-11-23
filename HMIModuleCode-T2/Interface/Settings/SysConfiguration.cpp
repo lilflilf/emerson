@@ -77,8 +77,8 @@ Status_Data Status_Data::operator=(const Status_Data &StatusDataObj) const
 //    Obj.WeldSettingDefaultWeldMode = StatusDataObj.WeldSettingDefaultWeldMode;
 //    Obj.WeldSettingDefaultTrigPress = StatusDataObj.WeldSettingDefaultTrigPress;
 //    Obj.AutoStartLastPart = StatusDataObj.AutoStartLastPart;
-    Obj.NRGtoHeightMode = StatusDataObj.NRGtoHeightMode;
-    Obj.TubeShrinkMode = StatusDataObj.TubeShrinkMode;
+//    Obj.NRGtoHeightMode = StatusDataObj.NRGtoHeightMode;
+    Obj.ShrinkTubeMode = StatusDataObj.ShrinkTubeMode;
     ShrinkTubeData ShrinkTubeDefaults[STI_SIZE];
     for(int i = 0; i < STI_SIZE; i++)
     {

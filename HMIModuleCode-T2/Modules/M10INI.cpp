@@ -350,8 +350,8 @@ void M10INI::Init_StatusData()
 //    _Interface->StatusData.WeldSettingDefaultWeldMode = 0;
 //    _Interface->StatusData.WeldSettingDefaultTrigPress = -1;
 //    _Interface->StatusData.AutoStartLastPart = false;
-    _Interface->StatusData.NRGtoHeightMode = false;
-    _Interface->StatusData.TubeShrinkMode = false;
+//    _Interface->StatusData.NRGtoHeightMode = false;
+    _Interface->StatusData.ShrinkTubeMode = false;
     _Interface->StatusData.FileSystemFlags = FSFDefaultSet;
     _Interface->StatusData.AutoGetNextDelay = DefAutoGetNextDelay;
     _Interface->StatusData.NetworkingEnabled = false;

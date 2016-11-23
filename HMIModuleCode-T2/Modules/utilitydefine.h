@@ -63,8 +63,8 @@
 //Used by the program to consistently change from PSI to BAR
 #define PRESS2BARFACTOR  (0.1 / 14.5)
 #define PRESS2KPAFACTOR  (0.1 / 0.145)
-#define PSItoBARfactor   (14.5)
-#define PSItoKPAfactor   (0.145)
+#define PSItoBARfactor   (1 / 14.5)
+#define PSItoKPAfactor   (1 / 0.145)
 
 enum ScreenShowDataType{
 // Data Index Numbers
@@ -108,7 +108,17 @@ enum ScreenShowDataType{
     DINTime2Step,
     DINPower2Step,
     DINFormulaArea,
-
+    DINFormulaEnergyOffset,
+    DINFormulaWidthOffset,
+    DINFormulaPressureOffset,
+    DINFormulaAmplitudeOffset,
+    DINFormulaEnergyMult,
+    DINFormulaWidthMult,
+    DINFormulaPressureMult,
+    DINFormulaAmplitudeMult,
+    DINShrinkTubeTemperature,
+    DINShrinkTubeTime,
+    DINServerPortNumber,
     DIN_end,
 };
 
