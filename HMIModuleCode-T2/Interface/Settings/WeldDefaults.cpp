@@ -281,6 +281,7 @@ bool WeldDefaults::_Set()
         _Interface->StatusData.CurrentCoolingDel = 0;
 
     _Interface->StatusData.KeepDailyHistory = true;
+    _Interface->StatusData.HistoryGraphData = true;
     _Interface->StatusData.GraphSampleRatio
             = CurrentWeldSettings.SampleRatio;
     float area = 0;

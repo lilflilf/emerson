@@ -432,6 +432,7 @@ public:
     int CurrentCoolingDel;
     BRANSON_INI_STRUCT Soft_Settings;
     bool KeepDailyHistory;
+    bool HistoryGraphData;
     enum SAMPLERATIO GraphSampleRatio;
 
     CalcWeldSettings4BuildStruct WeldSettings4Build[FormulaRangSize];
@@ -443,6 +444,7 @@ public:
 /*Data Communication*/
     bool ShrinkTubeMode;       //Tube shrinker not on all machines
     QList<ShrinkTubeData> ShrinkTubeDefaults;
+    int TubeShrinkerport;
 
     bool NetworkingEnabled;
     bool RemoteDataLogging;
@@ -451,8 +453,9 @@ public:
     int ServerPort;
     bool ModularProductionEnabled;
 
-
     int RemoteRecallport;
+
+
     long SoftLimitsModeFlags;
     int SoftLimitSampleSize;
     int SoftLimit[SLIControlLimitSize][SLI_Size];
@@ -462,6 +465,7 @@ public:
 
     QString CurrentWrkStaID;
     QString CentralComputerID;
+
     enum ACTUATORMODE ActuatorMode;
     int AntisideSpliceTime;
 
@@ -474,8 +478,8 @@ public:
     long CycleCount;
     long MaintenanceLimits[8];
     long CurrentMaintenanceLimits[8];
-    int TubeShrinkerport;
-    bool HistoryGraphData;
+
+
 
 //    enum SCREEN_MODE StartScreen;
     bool EnableModularFlag;
