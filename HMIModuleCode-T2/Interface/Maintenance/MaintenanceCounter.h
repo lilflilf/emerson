@@ -1,6 +1,7 @@
 #ifndef MAINTENANCECOUNTER_H
 #define MAINTENANCECOUNTER_H
 #include "Maintenance.h"
+#include "Interface/Definition.h"
 enum TOOLINGCOUNT
 {
     HORNCHANGE,
@@ -13,6 +14,31 @@ enum TOOLINGCOUNT
     ANVILGUIDERESET,
     CONVERTERCHANGE,
     CONVERTERRESET,
+    ACTUATOR,
+};
+struct MaintenanceCounterForScreen
+{
+    BRANSONDATA HornCounterLimit;
+    QString HornCurrentCount;
+    QString HornDateStarted;
+    BRANSONDATA AnvilTipCounterLimit;
+    QString AnvilTipCurrentCount;
+    QString AnvilTipDateStarted;
+    BRANSONDATA GatherCounterLimit;
+    QString GatherCurrentCount;
+    QString GatherDateStarted;
+    BRANSONDATA AnvilGuideCounterLimit;
+    QString AnvilGuideCurrentCount;
+    QString AnvilGuideDateStarted;
+    BRANSONDATA ConverterCounterLimit;
+    QString ConverterCurrentCount;
+    QString ConverterDateStarted;
+    QString ActuatorCurrentCount;
+    QString ActuatorDateStarted;
+    QString ActuatorSoftwareVersion;
+    QString ActuatorPartNumber;
+    QString ActuatorSerialNumber;
+    QString ActuatorModuleNumber;
 };
 
 class MaintenanceCounter : public Maintenance
@@ -29,6 +55,9 @@ private:
     void ChangeConverterCounterLimit();
     void ResetConverterCurrentCount();
 public:
+    struct MaintenanceCounterForScreen CurrentMaintenanceCounter;
+public:
+    bool _recall();
     virtual bool _start();
     virtual bool _stop();
     virtual bool _execute(int funCode);

@@ -22,7 +22,8 @@ public:
 public:
 
     void InitializeTextData();
-    QString FormatedDataToString(enum ScreenShowDataType TypeIndex, int Data);
+    QString FormatedDataToString(ScreenShowDataType TypeIndex, int Data);
+    QString FormatedDataToString(enum ScreenShowDataType TypeIndex, long Data);
     QString FormatedDataToString(enum ScreenShowDataType TypeIndex, float Data);
     float FormatedDataToFloat(enum ScreenShowDataType TypeIndex, int Data);
     int FormatedDataToInteger(enum ScreenShowDataType TypeIndex, int Data);

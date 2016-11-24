@@ -251,6 +251,14 @@ void UtilityClass::InitializeTextData()
     SetTextData(DINShrinkTubeTemperature, 0, ShrinkTubeMinTemp, ShrinkTubeMaxTemp, 1, 1, "%d℃");
     SetTextData(DINShrinkTubeTime, 0, ShrinkTubeMinTime, ShrinkTubeMaxTime, 1, 1, "%.1fs");
     SetTextData(DINServerPortNumber, 0, MINSERVER_PORT_NUMBER, MAXSERVER_PORT_NUMBER, 1, 1, "%d");
+    SetTextData(DINHornLimit, 0, MINHORNLIMIT, MAXHORNLIMIT, 1, 1, "%d");
+    SetTextData(DINAnvilTipLimit, 0, MINANVILTIPLIMIT, MAXANVILTIPLIMIT, 1, 1, "%d");
+    SetTextData(DINGatherLimit, 0, MINGATHERLIMIT, MAXGATHERLIMIT, 1, 1, "%d");
+    SetTextData(DINAnvilGuideLimit, 0, MINANVILGUIDELIMIT, MAXANVILGUIDELIMIT, 1, 1, "%d");
+    SetTextData(DINConverterLimit, 0, MINCONVERTERLIMIT, MAXCONVERTERLIMIT, 1, 1, "%d");
+
+
+
 }
 
 void UtilityClass::SetTextData(ScreenShowDataType TypeIndex,int Data,int min, int max,
@@ -269,6 +277,18 @@ QString UtilityClass::FormatedDataToString(ScreenShowDataType TypeIndex, int Dat
     QString tmpStr;
     if(txtData[TypeIndex].Format.contains("d") == true)
         tmpStr.sprintf(txtData[TypeIndex].Format.toLatin1().data(),(int)(Data * txtData[TypeIndex].Factor));
+    else if(txtData[TypeIndex].Format.contains("f") == true)
+        tmpStr.sprintf(txtData[TypeIndex].Format.toLatin1().data(),(float)(Data * txtData[TypeIndex].Factor));
+    else
+        tmpStr.clear();
+    return tmpStr;
+}
+
+QString UtilityClass::FormatedDataToString(ScreenShowDataType TypeIndex, long Data)
+{
+    QString tmpStr;
+    if(txtData[TypeIndex].Format.contains("d") == true)
+        tmpStr.sprintf(txtData[TypeIndex].Format.toLatin1().data(),(long)(Data * txtData[TypeIndex].Factor));
     else if(txtData[TypeIndex].Format.contains("f") == true)
         tmpStr.sprintf(txtData[TypeIndex].Format.toLatin1().data(),(float)(Data * txtData[TypeIndex].Factor));
     else

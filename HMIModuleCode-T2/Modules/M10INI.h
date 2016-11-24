@@ -197,9 +197,9 @@ public:
 private:
     void InitNoNetworkStorage(StoragePathsType PathStruct);
     void Init_StatusData();
-    void SetSoftLimitDefaults(bool EnableSoftLimits = false);
-    void SetShrinkTubeDefaults();
-    void SetDefaultPassword();
+    void SetSoftLimitDefaults(Status_Data* _DataStruct, bool EnableSoftLimits = false);
+    void SetShrinkTubeDefaults(Status_Data* _DataStruct);
+    void SetDefaultPassword(Status_Data* _DataStruct);
     void ClearPasswordData();
 public:
     void SetDefaultWeldFormula(Status_Data* _DataStruct);

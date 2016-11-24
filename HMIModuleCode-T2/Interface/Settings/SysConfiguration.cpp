@@ -63,6 +63,11 @@ Status_Data Status_Data::operator=(const Status_Data &StatusDataObj) const
         Obj.PasswordData[i].Password = StatusDataObj.PasswordData[i].Password;
         Obj.PasswordData[i].PWPermissions = StatusDataObj.PasswordData[i].PWPermissions;
     }
+    Obj.CurrentFunIndex.clear();
+    for(int i = 0; i < CurrentFunIndex.size(); i++)
+    {
+        Obj.CurrentFunIndex.insert(i, StatusDataObj.CurrentFunIndex.at(i));
+    }
 
     for (int i = 0; i< FormulaRangSize; i++)
     {
@@ -100,6 +105,7 @@ Status_Data Status_Data::operator=(const Status_Data &StatusDataObj) const
     Obj.FileSystemFlags = StatusDataObj.FileSystemFlags;
     Obj.AutoGetNextDelay = StatusDataObj.AutoGetNextDelay;
     Obj.NetworkingEnabled = StatusDataObj.NetworkingEnabled;
+    Obj.RemoteDataLogging = StatusDataObj.RemoteDataLogging;
     Obj.CurrentWrkStaID = StatusDataObj.CurrentWrkStaID;
     Obj.CentralComputerID = StatusDataObj.CentralComputerID;
     Obj.ActuatorMode = StatusDataObj.ActuatorMode;
@@ -118,13 +124,13 @@ Status_Data Status_Data::operator=(const Status_Data &StatusDataObj) const
     {
         Obj.MaintenanceLimits[i] = StatusDataObj.MaintenanceLimits[i];
         Obj.CurrentMaintenanceLimits[i] = StatusDataObj.CurrentMaintenanceLimits[i];
+        Obj.MaintenanceDateStarted[i] = StatusDataObj.MaintenanceDateStarted[i];
     }
     Obj.TubeShrinkerport = StatusDataObj.TubeShrinkerport;
     Obj.HistoryGraphData = StatusDataObj.HistoryGraphData;
     Obj.RemoteGraphData = StatusDataObj.RemoteGraphData;
     Obj.StartScreen = StatusDataObj.StartScreen;
     Obj.EnableModularFlag = StatusDataObj.EnableModularFlag;
-    PasswordEntry ModularPassword[PASSCOUNT];
     for(int i = 0; i< PASSCOUNT; i++)
     {
         Obj.ModularPassword[i].Identifier = StatusDataObj.ModularPassword[i].Identifier;
@@ -136,6 +142,14 @@ Status_Data Status_Data::operator=(const Status_Data &StatusDataObj) const
     Obj.CutoffMode = StatusDataObj.CutoffMode;
     Obj.LockKeyFlag = StatusDataObj.LockKeyFlag;
     Obj.FootPedalFlag = StatusDataObj.FootPedalFlag;
+    Obj.ServerPort = StatusDataObj.ServerPort;
+    Obj.ModularProductionEnabled = StatusDataObj.ModularProductionEnabled;
+
+    Obj.ActuatorModuleNumber = StatusDataObj.ActuatorModuleNumber;
+    Obj.ActuatorPartNumber = StatusDataObj.ActuatorPartNumber;
+    Obj.ActuatorSerialNumber = StatusDataObj.ActuatorSerialNumber;
+    Obj.ActuatorVersion = StatusDataObj.ActuatorVersion;
+
     return Obj;
 }
 

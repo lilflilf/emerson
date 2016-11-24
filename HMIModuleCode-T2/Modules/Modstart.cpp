@@ -128,6 +128,10 @@ MODstart::MODstart()
         //Current Version string of Controller code.
         _Interface->CurrentVersions.ControllerVersion = _M102IA->ContollerVersion;
         _Interface->CurrentVersions.ActuatorVersion = _M102IA->ActuatorVersion;
+
+        _Interface->StatusData.ActuatorVersion = _M102IA->ActuatorVersion;
+        _Interface->StatusData.ActuatorPartNumber = _M102IA->ActuatorPartNum;
+        _Interface->StatusData.ActuatorSerialNumber = _M102IA->ActuatorSerialNum;
         //Check for any version mismatch.
         CheckVersionFile(_Interface->CurrentVersions);
         _M102IA->IACommand(IAComSetM10Mode);
