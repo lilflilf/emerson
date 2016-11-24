@@ -112,19 +112,6 @@ Item {
         color: "white"
         text: qsTr("Max Value ")+maxvalue
     }
-    Image {
-        id: close
-        anchors.top: parent.top
-        anchors.right: parent.right
-        source: "qrc:/images/images/keyboardclose.png"
-        MouseArea {
-            anchors.fill: parent
-            onClicked: {
-                keyBoardnum.visible = false
-                currentClickIndex(15)
-            }
-        }
-    }
     ListModel {
         id: listModel
         Component.onCompleted: {
@@ -147,8 +134,8 @@ Item {
         }
     }
     Grid {
-        anchors.top: close.bottom
-        anchors.topMargin: 34
+        anchors.top: parent.top
+        anchors.topMargin: 94
         anchors.left: rec2.right
         anchors.leftMargin: 40
         anchors.right: parent.right
@@ -179,14 +166,23 @@ Item {
                             inputText = TempSTring
                         } else if (index == 7) {
                             inputText = ""
+                            tempValue = ""
                         } else if (index == 11) {
-                            currentClickIndex(index)
+                            keyBoardnum.visible = false
+                            inputText = keyBoardnum.currentValue
+                            currentClickIndex(11)
                         } else if (index == 15) {
                             currentClickIndex(index)
                         } else {
                             tempValue += listModel.get(index).value
                             if (hmiAdaptor.keyNumStringMatch(keyBoardnum.minvalue,keyBoardnum.maxvalue,keyBoardnum.tempValue)) {
-                                inputText = tempValue
+                                inputText = tempValue + hmiAdaptor.getStringUnit(keyBoardnum.minvalue)
+                            } else {
+                                var Temp = ""
+                                for (var j = 0; j < tempValue.length-1;j++) {
+                                    Temp += tempValue.charAt(j)
+                                }
+                                tempValue = Temp
                             }
                         }
                     }
