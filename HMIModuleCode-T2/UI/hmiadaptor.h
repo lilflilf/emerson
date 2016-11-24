@@ -96,8 +96,8 @@ public:
     /********DataCommunication func**************/
     Q_INVOKABLE bool dataCommunicationExecute(QString code);
     Q_INVOKABLE bool dataCommunicationGetSwitch(QString index);
-//    Q_INVOKABLE QStringList dataCommunicationGetValue(QString index);
-
+    Q_INVOKABLE QStringList dataCommunicationGetValue(QString index);
+    Q_INVOKABLE bool dataCommunicationSetValue(QList<bool> boolList, QStringList strList, QString ip, QString port);
 
     InterfaceClass *interfaceClass;
 

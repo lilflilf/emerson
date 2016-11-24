@@ -33,6 +33,7 @@ QVariant WorkOrderModel::data(const QModelIndex &index, int role) const
         }
         WorkOrderElement myWorkOrder;
         m_workOrderAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myWorkOrder);
+
         if (columnIdx == 0)
             value = QVariant::fromValue(myWorkOrder.WorkOrderID);
         else if (columnIdx == 1)

@@ -412,7 +412,66 @@ bool HmiAdaptor::dataCommunicationExecute(QString code)
 
 bool HmiAdaptor::dataCommunicationGetSwitch(QString index)
 {
-    return true;
+    bool reb = false;
+    if (index == "Network(Ethernet)")
+        reb = dataCommunication->CurrentDataCommunication.EthernetMode;
+    else if (index == "Remote Data Logging")
+        reb = dataCommunication->CurrentDataCommunication.RemoteDataLogging;
+    else if (index == "Graph Data")
+        reb = dataCommunication->CurrentDataCommunication.RemoteGraphData;
+    else if (index == "Modular Producation Mode")
+        reb = dataCommunication->CurrentDataCommunication.ModularProduction;
+    return reb;
+}
+
+QStringList HmiAdaptor::dataCommunicationGetValue(QString index)
+{
+    QStringList list;
+    if (index == "IpPort")
+    {
+        list << dataCommunication->CurrentDataCommunication.IPConfiguration
+             << dataCommunication->CurrentDataCommunication.ServerPort.Maximum
+             << dataCommunication->CurrentDataCommunication.ServerPort.Current
+             << dataCommunication->CurrentDataCommunication.ServerPort.Minimum;
+    }
+    else if (index == "shrinkData")
+    {
+        for (int i = 0; i < dataCommunication->CurrentDataCommunication.ShrinkTubeDefault.size();i++)
+        {
+            list << dataCommunication->CurrentDataCommunication.ShrinkTubeDefault.at(i).Name
+                 << dataCommunication->CurrentDataCommunication.ShrinkTubeDefault.at(i).Temp
+                 << dataCommunication->CurrentDataCommunication.ShrinkTubeDefault.at(i).Time;
+        }
+        qDebug() << "shrinkData" << list;
+    }
+    else if (index == "shrinkLimit")
+    {
+        list << dataCommunication->CurrentDataCommunication.MaxmmTemp
+             << dataCommunication->CurrentDataCommunication.MinmmTemp
+             << dataCommunication->CurrentDataCommunication.MaxmmTime
+             << dataCommunication->CurrentDataCommunication.MinmmTime;
+    }
+    return list;
+}
+
+bool HmiAdaptor::dataCommunicationSetValue(QList<bool> boolList, QStringList strList, QString ip, QString port)
+{
+//    boolList.push(networkSwitch.state == "right")
+//    boolList.push(remoteSwitch.state == "right")
+//    boolList.push(graphSwitch.state == "right")
+//    boolList.push(modularSwitch.state == "right")
+    dataCommunication->CurrentDataCommunication.EthernetMode = boolList[0];
+    dataCommunication->CurrentDataCommunication.RemoteDataLogging = boolList[1];
+    dataCommunication->CurrentDataCommunication.RemoteGraphData = boolList[2];
+    dataCommunication->CurrentDataCommunication.ModularProduction = boolList[3];
+    dataCommunication->CurrentDataCommunication.IPConfiguration = ip;
+    dataCommunication->CurrentDataCommunication.ServerPort.Current = port;
+    for (int i = 0;i < strList.count() / 3; i++)
+    {
+        dataCommunication->CurrentDataCommunication.ShrinkTubeDefault[i].Name = strList[i*3];
+        dataCommunication->CurrentDataCommunication.ShrinkTubeDefault[i].Temp = strList[i*3+1];
+        dataCommunication->CurrentDataCommunication.ShrinkTubeDefault[i].Time = strList[i*3+2];
+    }
 }
 
 bool HmiAdaptor::stringRegexMatch(QString exp, QString value)
