@@ -12,9 +12,9 @@ Item {
 
     Component.onCompleted: {
         initPage()
-        titleModel.append({title:"Shrink Tube Id"})
-        titleModel.append({title:"Temp(℃)"})
-        titleModel.append({title:"Time(S)"})
+        titleModel.append({title:qsTr("Shrink Tube Id")})
+        titleModel.append({title:qsTr("Temp(℃)")})
+        titleModel.append({title:qsTr("Time(S)")})
     }
 
     function initPage()
@@ -328,6 +328,7 @@ Item {
                         color: "white"
                         elide: Text.ElideRight
                         text: qsTr(temperature)
+                        renderType : Text.NativeRendering
                     }
                     Text {
                         id: time

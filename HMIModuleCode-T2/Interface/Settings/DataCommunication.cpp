@@ -1,6 +1,7 @@
 #include "DataCommunication.h"
 #include "Interface/Interface.h"
 #include "Modules/UtilityClass.h"
+#include <QDebug>
 DataCommunication::DataCommunication()
 {
 
@@ -30,6 +31,7 @@ bool DataCommunication::_Recall()
         tmperature = _Interface->StatusData.ShrinkTubeDefaults.at(i).temp;
         str = _Utility->FormatedDataToString(DINShrinkTubeTemperature,tmperature);
         tmpShrinkTube.Temp = str;
+        qDebug() << "xxxxxxxxxxxxxxxxx" << "℃";
         time = _Interface->StatusData.ShrinkTubeDefaults.at(i).Time;
         str = _Utility->FormatedDataToString(DINShrinkTubeTime, time);
         tmpShrinkTube.Time = str;
