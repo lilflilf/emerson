@@ -234,7 +234,6 @@ bool WeldDefaults::_Recall()
 
 bool WeldDefaults::_Set()
 {
-    qDebug() << "WeldDefaults set srart";
     InterfaceClass* _Interface = InterfaceClass::Instance();
     UtilityClass* _Utility = UtilityClass::Instance();
 
@@ -368,6 +367,5 @@ bool WeldDefaults::_Set()
         _Interface->StatusData.WeldSettings4Build[i].Multplier = multiplier;
 
     }
-    qDebug() << "WeldDefaults set end";
     return true;
 }
