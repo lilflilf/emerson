@@ -106,6 +106,9 @@
 #define SoftLimitEnabledFlag    0x200
 #define DefAutoGetNextDelay       3   //3/10 Second
 
+#define MINSERVER_PORT_NUMBER     1
+#define MAXSERVER_PORT_NUMBER     65535
+
 #define BRANSON_LASTWELD_FILE  "BransonLastWeld.bin" //Array DataCell() is stored in this file
 
 enum SCREEN_MODE{
@@ -411,10 +414,10 @@ public:
 
     QUALITY_DATA_FILE Cust_Data;
     HARD_SOFT_SETTINGS HSDATA;     //Not used, held for backwords compatibility
-    IAComElement ComInfo;
+
     enum ActuatorType MachineType;
     QString MachineDate;
-
+    IAComElement ComInfo;
 
     enum SCREEN_MODE StartScreen;
 /*Setting->Premission Setting*/
@@ -429,6 +432,7 @@ public:
     int CurrentCoolingDel;
     BRANSON_INI_STRUCT Soft_Settings;
     bool KeepDailyHistory;
+    bool HistoryGraphData;
     enum SAMPLERATIO GraphSampleRatio;
 
     CalcWeldSettings4BuildStruct WeldSettings4Build[FormulaRangSize];
@@ -436,19 +440,32 @@ public:
 //    int WeldSettingDefaultWeldMode;
 //    int WeldSettingDefaultTrigPress;
 //    bool AutoStartLastPart;
-    bool NRGtoHeightMode;      //Mode 3 not on all machines
-    bool TubeShrinkMode;       //Tube shrinker not on all machines
-    ShrinkTubeData ShrinkTubeDefaults[STI_SIZE];
+//    bool NRGtoHeightMode;      //Mode 3 not on all machines
+/*Data Communication*/
+    bool ShrinkTubeMode;       //Tube shrinker not on all machines
+    QList<ShrinkTubeData> ShrinkTubeDefaults;
+    int TubeShrinkerport;
+
+    bool NetworkingEnabled;
+    bool RemoteDataLogging;
+    bool RemoteGraphData;
+
+    int ServerPort;
+    bool ModularProductionEnabled;
+
     int RemoteRecallport;
+
+
     long SoftLimitsModeFlags;
     int SoftLimitSampleSize;
     int SoftLimit[SLIControlLimitSize][SLI_Size];
 //    bool QualityLimitsModeFlags;
     long FileSystemFlags;
     long AutoGetNextDelay;
-    long NetworkingEnabled;
+
     QString CurrentWrkStaID;
     QString CentralComputerID;
+
     enum ACTUATORMODE ActuatorMode;
     int AntisideSpliceTime;
 
@@ -461,9 +478,9 @@ public:
     long CycleCount;
     long MaintenanceLimits[8];
     long CurrentMaintenanceLimits[8];
-    int TubeShrinkerport;
-    bool HistoryGraphData;
-    bool RemoteGraphData;
+
+
+
 //    enum SCREEN_MODE StartScreen;
     bool EnableModularFlag;
     PasswordEntry ModularPassword[PASSCOUNT];

@@ -4,16 +4,20 @@ import QtQuick.Layouts 1.0
 import QtQuick.Window 2.2
 
 Item {
+    id: recsetting
     property string localbordercolor: "#0079c1"
-    property string recBackGround: "qrc:/images/images/advancesetting-bg1.png"
+    property alias recBackGround: bg.source
     property string headTitle: ""
     property string centervalue: ""
+    property alias bgvisable: bg.visible
     signal mouseAreaClick()
     width: parent.width
     height: parent.height
+
     Image {
+        id: bg
         anchors.fill: parent
-        source: recBackGround
+        source: "qrc:/images/images/advancesetting-bg1.png"
     }
     Rectangle {
         id: backGround

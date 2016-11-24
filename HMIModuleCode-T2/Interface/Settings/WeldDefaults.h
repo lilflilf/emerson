@@ -52,7 +52,7 @@ private:
 private:
     void InitWeldSettings();
 public:
-    static struct WeldSettingForScreen CurrentWeldSettings;
+    struct WeldSettingForScreen CurrentWeldSettings;
 public:
     bool _Recall();
     bool _Set();

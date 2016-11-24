@@ -11,6 +11,12 @@ Item {
     width: Screen.width*0.7
     height: Screen.height*0.6
 
+    MyTimeSelect {
+        id: newCalendar
+        anchors.centerIn: parent
+        z: 12
+        visible: false
+    }
     Item {
         id: rightItem
         anchors.left: back.right
@@ -359,56 +365,113 @@ Item {
             anchors.leftMargin: 20
             anchors.topMargin: 10
         }
-        Text {
-            id: from
-            text: qsTr("From:")
-            font.family: "arial"
-            color: "white"
-            font.pointSize: 16
-            anchors.top: date.bottom
-            anchors.left: parent.left
-            anchors.leftMargin: 20
-        }
-        MyCalendar {
-            id: mycalendar
+    }
+
+    Text {
+        id: date
+        text: qsTr("Date and Time")
+        font.family: "arial"
+        color: "white"
+        font.pointSize: 16
+        anchors.top: workOrderName.bottom
+        anchors.left: parent.left
+        anchors.leftMargin: 20
+        anchors.topMargin: 15
+    }
+    Text {
+        id: from
+        text: qsTr("From:")
+        font.family: "arial"
+        color: "white"
+        font.pointSize: 16
+        anchors.top: date.bottom
+        anchors.left: parent.left
+        anchors.leftMargin: 20
+    }
+    CButton {
+        id: mycalendar
             anchors.left: from.left
             anchors.top: from.bottom
             width: (parent.width-88)/2
-            z: 10
+        z: 10
+        text: Qt.formatDateTime(new Date(), "yyyy-MM-dd")
+        height: 40
+        backgroundComponent: Rectangle {
+            anchors.fill: parent
+            color: "black"
+            border.color: "#1987ab"
+            border.width: 2
         }
-        MyTimeSelect {
-            width: (parent.width-88)/2
-            anchors.top: mycalendar.top
-            anchors.left: mycalendar.right
-            anchors.leftMargin: 20
-            z: 11
+        onClicked: {
+            newCalendar.visible = !newCalendar.visible
+        }
+    }
+    CButton {
+        width: 170
+        anchors.top: mycalendar.top
+        anchors.left: mycalendar.right
+        anchors.leftMargin: 20
+        z: 11
+        text: Qt.formatDateTime(new Date(), "hh:mm:ss")
+        height: 40
+        backgroundComponent: Rectangle {
+            anchors.fill: parent
+            color: "black"
+            border.color: "#1987ab"
+            border.width: 2
+        }
+        onClicked: {
+            newCalendar.visible = !newCalendar.visible
+        }
+    }
+    Text {
+        id: to
+        text: qsTr("To:")
+        font.family: "arial"
+        color: "white"
+        font.pointSize: 16
+        anchors.top: mycalendar.bottom
+        anchors.left: parent.left
+        anchors.leftMargin: 20
+    }
+    CButton {
+        id: mycalendar2
+        anchors.left: from.left
+        anchors.top: to.bottom
+        width: 170
+        z: 10
+        height: 40
+        text: Qt.formatDateTime(new Date(), "yyyy-MM-dd")
+        backgroundComponent: Rectangle {
+            anchors.fill: parent
+            color: "black"
+            border.color: "#1987ab"
+            border.width: 2
+        }
+        onClicked: {
+            newCalendar.visible = !newCalendar.visible
+        }
+    }
+    CButton {
+        id: mytimeSelect
+        width: 170
+        anchors.top: mycalendar2.top
+        anchors.left: mycalendar2.right
+        anchors.leftMargin: 20
+        z: 10
+        text: Qt.formatDateTime(new Date(), "hh:mm:ss")
+        height: 40
+        backgroundComponent: Rectangle {
+            anchors.fill: parent
+            color: "black"
+            border.color: "#1987ab"
+            border.width: 2
+        }
+        onClicked: {
+            newCalendar.visible = !newCalendar.visible
+        }
+    }
 
-        }
-        Text {
-            id: to
-            text: qsTr("To:")
-            font.family: "arial"
-            color: "white"
-            font.pointSize: 16
-            anchors.top: mycalendar.bottom
-            anchors.left: parent.left
-            anchors.leftMargin: 20
-        }
-        MyCalendar {
-            id: mycalendar2
-            anchors.left: from.left
-            anchors.top: to.bottom
-            width: (parent.width-88)/2
-            z: 10
-        }
-        MyTimeSelect {
-            id: mytimeSelect
-            width: (parent.width-88)/2
-            anchors.top: mycalendar2.top
-            anchors.left: mycalendar2.right
-            anchors.leftMargin: 20
-            z: 10
-        }
         Line {
             id: line3
             anchors.left: parent.left

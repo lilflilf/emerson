@@ -23,9 +23,10 @@ public:
 
     void InitializeTextData();
     QString FormatedDataToString(enum ScreenShowDataType TypeIndex, int Data);
+    QString FormatedDataToString(enum ScreenShowDataType TypeIndex, float Data);
     float FormatedDataToFloat(enum ScreenShowDataType TypeIndex, int Data);
     int FormatedDataToInteger(enum ScreenShowDataType TypeIndex, int Data);
-    int StringToFormatedData(enum ScreenShowDataType TypeIndex, QString ShownData);
+    float StringToFormatedData(enum ScreenShowDataType TypeIndex, QString ShownData);
 
     bool ReadFromBinaryFile(QString SourcDirectory, void* DestStruct);
     bool WriteToBinaryFile(void* SourceStruct, QString DestDirectory);

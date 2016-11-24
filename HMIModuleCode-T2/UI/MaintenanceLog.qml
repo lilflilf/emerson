@@ -9,6 +9,13 @@ Item {
     id: toolChange
     width: Screen.width*0.7
     height: Screen.height*0.6
+
+    MyTimeSelect {
+        id: newCalendar
+        anchors.centerIn: parent
+        z: 12
+        visible: false
+    }
     Rectangle {
         id: back
         width: parent.width * 0.3
@@ -257,20 +264,42 @@ Item {
             anchors.left: parent.left
             anchors.leftMargin: 20
         }
-        MyCalendar {
+        CButton {
             id: mycalendar
             anchors.left: from.left
             anchors.top: from.bottom
             width: (parent.width-88)/2
             z: 10
+            text: Qt.formatDateTime(new Date(), "yyyy-MM-dd")
+            height: 40
+            backgroundComponent: Rectangle {
+                anchors.fill: parent
+                color: "black"
+                border.color: "#1987ab"
+                border.width: 2
+            }
+            onClicked: {
+                newCalendar.visible = !newCalendar.visible
+            }
         }
-        MyTimeSelect {
+        CButton {
             id: mytimeSelect
             width: (parent.width-88)/2
             anchors.top: mycalendar.top
             anchors.left: mycalendar.right
             anchors.leftMargin: 20
             z: 11
+            text: Qt.formatDateTime(new Date(), "hh:mm:ss")
+            height: 40
+            backgroundComponent: Rectangle {
+                anchors.fill: parent
+                color: "black"
+                border.color: "#1987ab"
+                border.width: 2
+            }
+            onClicked: {
+                newCalendar.visible = !newCalendar.visible
+            }
 
         }
         Text {
@@ -283,12 +312,23 @@ Item {
             anchors.left: parent.left
             anchors.leftMargin: 20
         }
-        MyCalendar {
+        CButton {
             id: mycalendar2
             anchors.left: from.left
             anchors.top: to.bottom
             width: (parent.width-88)/2
             z: 10
+            text: Qt.formatDateTime(new Date(), "yyyy-MM-dd")
+            height: 40
+            backgroundComponent: Rectangle {
+                anchors.fill: parent
+                color: "black"
+                border.color: "#1987ab"
+                border.width: 2
+            }
+            onClicked: {
+                newCalendar.visible = !newCalendar.visible
+            }
         }
         MyTimeSelect {
             id: timeSet
@@ -297,6 +337,17 @@ Item {
             anchors.left: mycalendar2.right
             anchors.leftMargin: 20
             z: 10
+            text: Qt.formatDateTime(new Date(), "hh:mm:ss")
+            height: 40
+            backgroundComponent: Rectangle {
+                anchors.fill: parent
+                color: "black"
+                border.color: "#1987ab"
+                border.width: 2
+            }
+            onClicked: {
+                newCalendar.visible = !newCalendar.visible
+            }
         }
         Line {
             id: line3

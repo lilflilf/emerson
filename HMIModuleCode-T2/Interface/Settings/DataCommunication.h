@@ -4,16 +4,20 @@
 struct ShrinkTubeReference
 {
     QString Name;
-    BRANSONDATA Temp;
-    BRANSONDATA Time;
+    QString Temp;
+    QString Time;
 };
 
 struct DataCommunicationForScreen
 {
     bool GlobalShrinkTubeMode;
-    struct ShrinkTubeReference ShrinkTubeDefault[4];
+    QList<struct ShrinkTubeReference> ShrinkTubeDefault;
+    QString MaxmmTemp;
+    QString MinmmTemp;
+    QString MaxmmTime;
+    QString MinmmTime;
     bool EthernetMode;
-    QString ServerPort;
+    BRANSONDATA ServerPort;
     QString IPConfiguration;
     bool RemoteDataLogging; //bool NetworkingEnabled;
     bool RemoteGraphData;
@@ -23,8 +27,10 @@ struct DataCommunicationForScreen
 class DataCommunication
 {
 public:
-    void _Recall(void*);
-    void _Set(void*);
+    struct DataCommunicationForScreen CurrentDataCommunication;
+public:
+    bool _Recall();
+    bool _Set();
     void _Default();
 public:
     DataCommunication();

@@ -15,6 +15,8 @@
 #include "Interface/Maintenance/ToolChange.h"
 #include "Interface/interface.h"
 #include "Interface/Settings/PermissionSetting.h"
+#include "Interface/Settings/WeldDefaults.h"
+#include "Interface/Settings/DataCommunication.h"
 
 #define HMI_PRINT (qDebug() <<"HMI adapter:" << __FILE__ << __FUNCTION__ << __LINE__ << ": ")
 
@@ -28,6 +30,7 @@ class HmiAdaptor : public QObject
     Q_ENUMS(VerticalPosition)
     Q_ENUMS(BUTTONCLICK)
     Q_ENUMS(CALIBRATE)
+    Q_ENUMS(FormulaRange)
 
 public:
     enum CALIBRATE
@@ -49,6 +52,22 @@ public:
         CONVERTERCOOLINGCLICK,
         TOOLINGCOOLINGCLICK,
     };
+    enum FormulaRange
+    {
+        EnergyR1,
+        EnergyR2,
+        EnergyR3,
+        WidthR1,
+        WidthR2,
+        WidthR3,
+        PressureR1,
+        PressureR2,
+        PressureR3,
+        AmplitudeR1,
+        AmplitudeR2,
+        AmplitudeR3,
+        FormulaRangSize,
+    };
 
 
     explicit HmiAdaptor(QObject *parent = 0);
@@ -59,6 +78,7 @@ public:
     Q_INVOKABLE bool login(QString passwd);
     Q_INVOKABLE void calibrationMaintenanceExecute(int code);
 
+    /********permissionsetting func**************/
     Q_INVOKABLE bool permissionsettingExecute(QString code);
     Q_INVOKABLE QStringList permissionsettingGetValue(QString code);
     Q_INVOKABLE bool permissionsettingGetChecked(QString stringIndex, int level);
@@ -66,6 +86,17 @@ public:
     Q_INVOKABLE bool permissionsettingSetFourValue(QStringList fourName);
     Q_INVOKABLE bool stringRegexMatch(QString exp, QString value);
     Q_INVOKABLE bool keyNumStringMatch(QString minValue, QString maxValue, QString value);
+
+    /********weldDefaults func**************/
+    Q_INVOKABLE bool weldDefaultsExecute(QString code);
+    Q_INVOKABLE bool weldDefaultsGetSwitch(QString index);
+    Q_INVOKABLE QStringList weldDefaultsGetValue(FormulaRange index);
+    Q_INVOKABLE bool weldDefaultsSetValue(QList<bool> boolList, QStringList strList, int sampleIndex, QString coolingDur, QString coolingDel);
+
+    /********DataCommunication func**************/
+    Q_INVOKABLE bool dataCommunicationExecute(QString code);
+
+
 
     InterfaceClass *interfaceClass;
 
@@ -86,6 +117,8 @@ public:
 
     /*********Setting*****************/
     PermissionSetting *permissionSetting;
+    WeldDefaults *weldDefaults;
+    DataCommunication *dataCommunication;
 signals:
     void widthCalibrationFinish(const bool &_Result);
     void heightCalibrationFinish(const bool &_Result);

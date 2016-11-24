@@ -183,24 +183,6 @@ Item {
         spacing: 5
         CButton {
             width: 200
-            text: "NEXT STEP"
-            onClicked: {
-                if (dirCount > 0 && fileCount > 0 && currentFile < fileCount - 1)
-                    currentFile++
-                else if (dirCount > 0 && currentDir < (dirCount - 1) && fileCount > 0 && currentFile == (fileCount - 1))
-                {
-                    currentDir ++
-                    currentFile = 0
-                }
-                else {
-                    currentDir = 0
-                    currentFile = 0
-                }
-
-            }
-        }
-        CButton {
-            width: 200
             text: "BACK"
             onPressed: {
                 if ((currentFile == 0 || currentFile == -1) && currentDir > 0){
@@ -215,6 +197,25 @@ Item {
                         currentFile = fileCount - 1
 
                 }
+            }
+        }
+
+        CButton {
+            width: 200
+            text: "NEXT STEP"
+            onClicked: {
+                if (dirCount > 0 && fileCount > 0 && currentFile < fileCount - 1)
+                    currentFile++
+                else if (dirCount > 0 && currentDir < (dirCount - 1) && fileCount > 0 && currentFile == (fileCount - 1))
+                {
+                    currentDir ++
+                    currentFile = 0
+                }
+                else {
+                    currentDir = 0
+                    currentFile = 0
+                }
+
             }
         }
     }
