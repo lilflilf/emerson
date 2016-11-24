@@ -478,6 +478,7 @@ public:
     long CycleCount;
     long MaintenanceLimits[8];
     long CurrentMaintenanceLimits[8];
+    unsigned int MaintenanceDateStarted[8];
 
 
 

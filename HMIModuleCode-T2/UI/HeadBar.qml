@@ -16,11 +16,11 @@ Item {
         anchors.fill: parent
         color: (title.text == "Test" || title.text == "Create Assembly" || title.text == "Edit Existing") ? "#f79428" : "#0079c1"
     }
-//    Image {
-//        id: headBack
-//        anchors.fill: parent
-//        source: "qrc:/images/images/headbg.png"
-//    }
+    //    Image {
+    //        id: headBack
+    //        anchors.fill: parent
+    //        source: "qrc:/images/images/headbg.png"
+    //    }
 
     MouseArea {
         z: 9
@@ -55,15 +55,6 @@ Item {
             width: 60//parent.width*0.68
             source: "qrc:/images/images/menu.png"
         }
-//        Text {
-//            id: menu
-//            anchors.top: backGround.bottom
-//            anchors.horizontalCenter: parent.horizontalCenter
-//            text: qsTr("MENU")
-//            color: "white"
-//            font.pointSize: 12
-//            font.family: "arial"
-//        }
         MouseArea {
             anchors.fill: parent
             onClicked: {
@@ -121,20 +112,23 @@ Item {
                     height: 50
                     property bool check: false
                     property alias background: rec.opacity
+                    Image {
+                        anchors.fill: parent
+                        source: "qrc:/images/images/menubg1.png"
+                    }
                     Item {
                         anchors.fill: parent
                         Rectangle {
                             id: rec
                             anchors.fill: parent
-                            color: "#12648d"
                             opacity: 0
+                            color: "#12648d"
                             RadioButton {
                                 id: mainMenuCheck
                                 visible: false
                                 exclusiveGroup: wirePositionGroup
                                 onCheckedChanged: {
                                     if (mainMenuCheck.checked) {
-                                        item.background = 0.5
                                         if (index == 0) {
                                             creatMenu.visible = true
                                             creatMenu.childModel = null
@@ -160,28 +154,12 @@ Item {
                                             creatMenu.childModel = settingList
                                             creatMenu.height = settingList.count * 50
                                         }
-//                                        else if (index == 1) {
-//                                            btn.isCheck = false
-//                                            creatMenu.visible = false
-//                                            btnBack.visible = false
-//                                            root.menuInit(2)
-//                                            console.log("3333333333333333333")
-//                                            title.text = qsTr("Operate")
-////                                            headBack.color = "blue"
-//                                        }
-//                                        else if (index == 2) {
-//                                            btn.isCheck = false
-//                                            creatMenu.visible = false
-//                                            btnBack.visible = false
-//                                            root.menuInit(3)
-//                                            console.log("4444444444444444")
-//                                        }
                                         headBar.selectIndex = index
                                         creatMenu.anchors.topMargin = index * 50
 
                                     }
                                     else {
-                                        item.background = 0
+                                        rec.opacity = 0
                                         if (headBar.selectIndex == index)
                                             creatMenu.visible = false
                                     }
@@ -189,7 +167,6 @@ Item {
                             }
                         }
                         Text {
-//                            anchors.centerIn: parent
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.left: parent.left
                             anchors.leftMargin: 5
@@ -200,8 +177,16 @@ Item {
                         }
                         MouseArea {
                             anchors.fill: parent
-                            onClicked: {
+                            onPressed:  {
                                 mainMenuCheck.checked = !mainMenuCheck.checked
+                                rec.opacity = 1
+                            }
+                            onReleased: {
+                                if (index == 1 || index == 2 ) {
+                                    rec.opacity = 0
+                                }
+                            }
+                            onClicked: {
                                 if (index == 1) {
                                     btn.isCheck = false
                                     creatMenu.visible = false
@@ -224,13 +209,6 @@ Item {
                         anchors.rightMargin: 20
                         anchors.verticalCenter: parent.verticalCenter
                         visible: index == 1 || index == 2 ? false : true
-                    }
-                    Line {
-                        width: parent.width
-                        height: 2
-                        anchors.bottom: parent.bottom
-                        lineColor: "#12648d"
-                        opacity: 0.3
                     }
                 }
             }
@@ -279,10 +257,6 @@ Item {
         visible: false
         z: 11
         property alias childModel: childMenu.model
-        Rectangle {
-            anchors.fill: parent
-            color: "#58585a"
-        }
         ExclusiveGroup {
             id: childPositionGroup;
         }
@@ -291,36 +265,44 @@ Item {
             Repeater {
                 id: childMenu
                 model: creatMenuList
-
                 Item {
                     id: itemChild
+                    property bool check: false
                     width: parent.width
                     height: 50
-                    property bool check: false
-                    property alias background: childRec.opacity
-                    Item {
+                    Image {
                         anchors.fill: parent
+                        source: "qrc:/images/images/menubg1.png"
                         Rectangle {
-                            id: childRec
+                            id: rec2
                             anchors.fill: parent
                             color: "#12648d"
                             opacity: 0
+                            RadioButton {
+                                id: childMenuCheck
+                                visible: false
+                                exclusiveGroup: childPositionGroup
+                            }
                         }
                         Text {
-//                            anchors.centerIn: parent
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.left: parent.left
                             anchors.leftMargin: 5
-                            text: menuKey //qsTr("Creat New")//qsTr("Creat/Edit")
+                            text: menuKey
                             color: "white"
                             font.pointSize: 20
                             font.family: "arial"
                         }
                         MouseArea {
                             anchors.fill: parent
+                            onPressed: {
+                                rec2.opacity = 1
+                            }
+                            onReleased: {
+                                rec2.opacity = 0
+                            }
                             onClicked: {
                                 childMenuCheck.checked = !childMenuCheck.checked
-                                //mainMenu.visible = false
                                 btn.isCheck = false
                                 creatMenu.visible = false
                                 btnBack.visible = false
@@ -394,39 +376,20 @@ Item {
                                 }
                             }
                         }
-                        RadioButton {
-                            id: childMenuCheck
-                            visible: false
-                            exclusiveGroup: childPositionGroup
-                            onCheckedChanged: {
-                                if (childMenuCheck.checked)
-                                    childRec.opacity = 0.5
-                                else
-                                    childRec.opacity = 0
-                            }
-                        }
-                    }
-                    Line {
-                        width: parent.width
-                        height: 2
-                        anchors.bottom: parent.bottom
-                        lineColor: "#12648d"
-                        opacity: 0.3
                     }
                 }
             }
-
         }
     }
 
-//    CButton {
-//        anchors.right: btn.left
-//        width: 40
-//        height: parent.height
-//        onClicked: {
-//            Qt.quit()
-//        }
-//    }
+    //    CButton {
+    //        anchors.right: btn.left
+    //        width: 40
+    //        height: parent.height
+    //        onClicked: {
+    //            Qt.quit()
+    //        }
+    //    }
 
 
     Text {
@@ -638,20 +601,20 @@ Item {
                     dialog.visible = false
                 }
             }
-//            CButton {
-//                width: parent.width
-//                textColor: "white"
-//                text: qsTr("Log Off")
-//                onClicked: {
-//                    root.logoff()
+            //            CButton {
+            //                width: parent.width
+            //                textColor: "white"
+            //                text: qsTr("Log Off")
+            //                onClicked: {
+            //                    root.logoff()
 
-//                    personColumn.visible = false
-//                    background.visible = false
-//                    helpTitle.visible = false
-//                    background.opacity = 0
-//                    dialog.visible = false
-//                }
-//            }
+            //                    personColumn.visible = false
+            //                    background.visible = false
+            //                    helpTitle.visible = false
+            //                    background.opacity = 0
+            //                    dialog.visible = false
+            //                }
+            //            }
             CButton {
                 width: parent.width
                 textColor: "white"

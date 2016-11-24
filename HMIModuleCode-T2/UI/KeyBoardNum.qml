@@ -7,9 +7,10 @@ Item {
     id: keyBoardnum
     property alias titleText: title.text
     property alias currentValue: currenvalue.text
-    property int minvalue: 0
+    property string minvalue: "0"
     property string inputText: ""
-    property int maxvalue: 0
+    property string maxvalue: "0"
+    property string tempValue: ""
     signal currentClickIndex(int index)
     width: parent.width
     height: parent.height
@@ -183,7 +184,10 @@ Item {
                         } else if (index == 15) {
                             currentClickIndex(index)
                         } else {
-                            inputText += listModel.get(index).value
+                            tempValue += listModel.get(index).value
+                            if (hmiAdaptor.keyNumStringMatch(keyBoardnum.minvalue,keyBoardnum.maxvalue,keyBoardnum.tempValue)) {
+                                inputText = tempValue
+                            }
                         }
                     }
                 }

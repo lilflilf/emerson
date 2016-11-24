@@ -227,7 +227,7 @@ Item {
                     verticalAlignment: Qt.AlignVCenter
                     width: (headTitle.width-80)/3
                     font.family: "arial"
-                    font.pixelSize: 20
+                    font.pixelSize: 25
                     color: "white"
                     clip: true
                     text: qsTr(title)

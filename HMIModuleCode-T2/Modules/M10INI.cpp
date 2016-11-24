@@ -186,82 +186,79 @@ void M10INI::SetDefaultWeldFormula(Status_Data* _DataStruct)
     _DataStruct->WeldSettings4Build[2].MaxRange = MaxRange3;
 }
 
-void M10INI::SetDefaultPassword()
+void M10INI::SetDefaultPassword(Status_Data* _DataStruct)
 {
-    InterfaceClass* _Interface = InterfaceClass::Instance();
-    _Interface->StatusData.EnableModularFlag = false;
-    _Interface->StatusData.PasswordData[0].Identifier = QObject::tr("Switch Key");
-    _Interface->StatusData.PasswordData[0].Password.clear();
-    _Interface->StatusData.PasswordData[0].PWPermissions = 0xFFFFFFFF;
-    _Interface->StatusData.PasswordData[1].Identifier = QObject::tr("Level 1");
-    _Interface->StatusData.PasswordData[1].Password.clear();
-    _Interface->StatusData.PasswordData[1].PWPermissions = 0;
-    _Interface->StatusData.PasswordData[2].Identifier = QObject::tr("Level 2");
-    _Interface->StatusData.PasswordData[2].Password.clear();
-    _Interface->StatusData.PasswordData[2].PWPermissions = 0;
-    _Interface->StatusData.PasswordData[3].Identifier = QObject::tr("Level 3");
-    _Interface->StatusData.PasswordData[3].Password.clear();
-    _Interface->StatusData.PasswordData[3].PWPermissions = 0;
-    _Interface->StatusData.PasswordData[4].Identifier = QObject::tr("Level 4");
-    _Interface->StatusData.PasswordData[4].Password.clear();
-    _Interface->StatusData.PasswordData[4].PWPermissions = 0;
-    _Interface->StatusData.ModularPassword[0].Identifier = QObject::tr("ENABLEKSK");
-    _Interface->StatusData.ModularPassword[0].Password = QObject::tr("ENKSK01");
-    _Interface->StatusData.ModularPassword[1].Identifier = QObject::tr("DISABLEKSK");
-    _Interface->StatusData.ModularPassword[1].Password = QObject::tr("DSKSK01");
-    _Interface->StatusData.ModularPassword[2].Identifier = QObject::tr("ENABLEKSK2D");
-    _Interface->StatusData.ModularPassword[2].Password = QObject::tr("ENKSK2D");
+    _DataStruct->EnableModularFlag = false;
+    _DataStruct->PasswordData[0].Identifier = QObject::tr("Switch Key");
+    _DataStruct->PasswordData[0].Password.clear();
+    _DataStruct->PasswordData[0].PWPermissions = 0xFFFFFFFF;
+    _DataStruct->PasswordData[1].Identifier = QObject::tr("Level 1");
+    _DataStruct->PasswordData[1].Password.clear();
+    _DataStruct->PasswordData[1].PWPermissions = 0;
+    _DataStruct->PasswordData[2].Identifier = QObject::tr("Level 2");
+    _DataStruct->PasswordData[2].Password.clear();
+    _DataStruct->PasswordData[2].PWPermissions = 0;
+    _DataStruct->PasswordData[3].Identifier = QObject::tr("Level 3");
+    _DataStruct->PasswordData[3].Password.clear();
+    _DataStruct->PasswordData[3].PWPermissions = 0;
+    _DataStruct->PasswordData[4].Identifier = QObject::tr("Level 4");
+    _DataStruct->PasswordData[4].Password.clear();
+    _DataStruct->PasswordData[4].PWPermissions = 0;
+    _DataStruct->ModularPassword[0].Identifier = QObject::tr("ENABLEKSK");
+    _DataStruct->ModularPassword[0].Password = QObject::tr("ENKSK01");
+    _DataStruct->ModularPassword[1].Identifier = QObject::tr("DISABLEKSK");
+    _DataStruct->ModularPassword[1].Password = QObject::tr("DSKSK01");
+    _DataStruct->ModularPassword[2].Identifier = QObject::tr("ENABLEKSK2D");
+    _DataStruct->ModularPassword[2].Password = QObject::tr("ENKSK2D");
 }
 
-void M10INI::SetShrinkTubeDefaults()
+void M10INI::SetShrinkTubeDefaults(Status_Data* _DataStruct)
 {
-    InterfaceClass* _Interface = InterfaceClass::Instance();
     //This function will set the shrink tube values to default values for the very 1st time.
     struct ShrinkTubeData tmpShrinkTube;
     for (int i = STIR1;  i <= STIR10; i++)
     {
         tmpShrinkTube.Name = QString::number(i + 1);
-        _Interface->StatusData.ShrinkTubeDefaults.insert(i, tmpShrinkTube);
+        _DataStruct->ShrinkTubeDefaults.insert(i, tmpShrinkTube);
     }
-    _Interface->StatusData.ShrinkTubeDefaults[STIR1].temp = ShrinkTubeDefTemp1;
-    _Interface->StatusData.ShrinkTubeDefaults[STIR1].Time = ShrinkTubeDefTime1;
-    _Interface->StatusData.ShrinkTubeDefaults[STIR2].temp = ShrinkTubeDefTemp2;
-    _Interface->StatusData.ShrinkTubeDefaults[STIR2].Time = ShrinkTubeDefTime2;
-    _Interface->StatusData.ShrinkTubeDefaults[STIR3].temp = ShrinkTubeDefTemp3;
-    _Interface->StatusData.ShrinkTubeDefaults[STIR3].Time = ShrinkTubeDefTime3;
-    _Interface->StatusData.ShrinkTubeDefaults[STIR4].temp = ShrinkTubeDefTemp4;
-    _Interface->StatusData.ShrinkTubeDefaults[STIR4].Time = ShrinkTubeDefTime4;
-    _Interface->StatusData.ShrinkTubeDefaults[STIR5].temp = ShrinkTubeDefTemp5;
-    _Interface->StatusData.ShrinkTubeDefaults[STIR5].Time = ShrinkTubeDefTime5;
-    _Interface->StatusData.ShrinkTubeDefaults[STIR6].temp = ShrinkTubeDefTemp6;
-    _Interface->StatusData.ShrinkTubeDefaults[STIR6].Time = ShrinkTubeDefTime6;
-    _Interface->StatusData.ShrinkTubeDefaults[STIR7].temp = ShrinkTubeDefTemp7;
-    _Interface->StatusData.ShrinkTubeDefaults[STIR7].Time = ShrinkTubeDefTime7;
-    _Interface->StatusData.ShrinkTubeDefaults[STIR8].temp = ShrinkTubeDefTemp8;
-    _Interface->StatusData.ShrinkTubeDefaults[STIR8].Time = ShrinkTubeDefTime8;
-    _Interface->StatusData.ShrinkTubeDefaults[STIR9].temp = ShrinkTubeDefTemp9;
-    _Interface->StatusData.ShrinkTubeDefaults[STIR9].Time = ShrinkTubeDefTime9;
-    _Interface->StatusData.ShrinkTubeDefaults[STIR10].temp = ShrinkTubeDefTemp10;
-    _Interface->StatusData.ShrinkTubeDefaults[STIR10].Time = ShrinkTubeDefTime10;
+    _DataStruct->ShrinkTubeDefaults[STIR1].temp = ShrinkTubeDefTemp1;
+    _DataStruct->ShrinkTubeDefaults[STIR1].Time = ShrinkTubeDefTime1;
+    _DataStruct->ShrinkTubeDefaults[STIR2].temp = ShrinkTubeDefTemp2;
+    _DataStruct->ShrinkTubeDefaults[STIR2].Time = ShrinkTubeDefTime2;
+    _DataStruct->ShrinkTubeDefaults[STIR3].temp = ShrinkTubeDefTemp3;
+    _DataStruct->ShrinkTubeDefaults[STIR3].Time = ShrinkTubeDefTime3;
+    _DataStruct->ShrinkTubeDefaults[STIR4].temp = ShrinkTubeDefTemp4;
+    _DataStruct->ShrinkTubeDefaults[STIR4].Time = ShrinkTubeDefTime4;
+    _DataStruct->ShrinkTubeDefaults[STIR5].temp = ShrinkTubeDefTemp5;
+    _DataStruct->ShrinkTubeDefaults[STIR5].Time = ShrinkTubeDefTime5;
+    _DataStruct->ShrinkTubeDefaults[STIR6].temp = ShrinkTubeDefTemp6;
+    _DataStruct->ShrinkTubeDefaults[STIR6].Time = ShrinkTubeDefTime6;
+    _DataStruct->ShrinkTubeDefaults[STIR7].temp = ShrinkTubeDefTemp7;
+    _DataStruct->ShrinkTubeDefaults[STIR7].Time = ShrinkTubeDefTime7;
+    _DataStruct->ShrinkTubeDefaults[STIR8].temp = ShrinkTubeDefTemp8;
+    _DataStruct->ShrinkTubeDefaults[STIR8].Time = ShrinkTubeDefTime8;
+    _DataStruct->ShrinkTubeDefaults[STIR9].temp = ShrinkTubeDefTemp9;
+    _DataStruct->ShrinkTubeDefaults[STIR9].Time = ShrinkTubeDefTime9;
+    _DataStruct->ShrinkTubeDefaults[STIR10].temp = ShrinkTubeDefTemp10;
+    _DataStruct->ShrinkTubeDefaults[STIR10].Time = ShrinkTubeDefTime10;
 
     //Make Remote recall port disable by default for special
-    _Interface->StatusData.TubeShrinkerport = PORT_DISABLE;
-    _Interface->StatusData.RemoteRecallport = PORT_DISABLE;
+    _DataStruct->TubeShrinkerport = PORT_DISABLE;
+    _DataStruct->RemoteRecallport = PORT_DISABLE;
 }
 
-void M10INI::SetSoftLimitDefaults(bool EnableSoftLimits)
+void M10INI::SetSoftLimitDefaults(Status_Data* _DataStruct, bool EnableSoftLimits)
 {
-    InterfaceClass* _Interface = InterfaceClass::Instance();
-    _Interface->StatusData.SoftLimitsModeFlags = (1 | 4 | 16 | 64); //Set to off with sigma
-    _Interface->StatusData.SoftLimitSampleSize = SoftLimitDefaultSampleSize;
+    _DataStruct->SoftLimitsModeFlags = (1 | 4 | 16 | 64); //Set to off with sigma
+    _DataStruct->SoftLimitSampleSize = SoftLimitDefaultSampleSize;
     for(int i = SLITime; i <= SLIHeight; i++)
     {
-        _Interface->StatusData.SoftLimit[SLIUpperControlLimit][i] = SoftLimitSigmaDefault;
-        _Interface->StatusData.SoftLimit[SLILowerControlLimit][i] = SoftLimitSigmaDefault;
+        _DataStruct->SoftLimit[SLIUpperControlLimit][i] = SoftLimitSigmaDefault;
+        _DataStruct->SoftLimit[SLILowerControlLimit][i] = SoftLimitSigmaDefault;
     }
     if (EnableSoftLimits == true)
-        _Interface->StatusData.SoftLimitsModeFlags =
-                (_Interface->StatusData.SoftLimitsModeFlags | SoftLimitEnabledFlag);
+        _DataStruct->SoftLimitsModeFlags =
+                (_DataStruct->SoftLimitsModeFlags | SoftLimitEnabledFlag);
 }
 
 void M10INI::ClearPasswordData()
@@ -287,97 +284,106 @@ void M10INI::ClearPasswordData()
 void M10INI::Init_StatusData()
 {
     InterfaceClass *_Interface = InterfaceClass::Instance();
-    _Interface->StatusData.RevCode = -1;
-    _Interface->StatusData.CreatedDate = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
-    _Interface->StatusData.StartScreen = CreateNew_SCREEN;
-    _Interface->StatusData.Soft_Settings.Lang_Support = ENGLISH_lang;
-    _Interface->StatusData.Soft_Settings.Horn_Calibrate = MAXAMPLITUDE;
-    _Interface->StatusData.Soft_Settings.AutoPreburst = 0;
+    _Interface->DefaultStatusData.RevCode = -1;
+    _Interface->DefaultStatusData.CreatedDate = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+    _Interface->DefaultStatusData.StartScreen = CreateNew_SCREEN;
+    _Interface->DefaultStatusData.Soft_Settings.Lang_Support = ENGLISH_lang;
+    _Interface->DefaultStatusData.Soft_Settings.Horn_Calibrate = MAXAMPLITUDE;
+    _Interface->DefaultStatusData.Soft_Settings.AutoPreburst = 0;
 //    _Interface->StatusData.Soft_Settings.AutoGetNext = true;
-    _Interface->StatusData.Soft_Settings.SonicGenWatts = 4000; // newsplicer 4000w, others we can set 3300w
-    _Interface->StatusData.Soft_Settings.ToolCoverIgnore  = true;
+    _Interface->DefaultStatusData.Soft_Settings.SonicGenWatts = 4000; // newsplicer 4000w, others we can set 3300w
+    _Interface->DefaultStatusData.Soft_Settings.ToolCoverIgnore  = true;
 //    _Interface->StatusData.Soft_Settings.NoToolCover4SU = true;
-    _Interface->StatusData.Soft_Settings.Pressure2Unit = ToPSI;
-    _Interface->StatusData.Soft_Settings.Mm2Awg = false;
-    _Interface->StatusData.Soft_Settings.PWWidth2Height = 0;
-    _Interface->StatusData.Soft_Settings.MinAmplitude = MINAMPLITUDE;
-    _Interface->StatusData.Soft_Settings.MinPressure = MINWELDPRESSURE;
-    _Interface->StatusData.Soft_Settings.WeldFormula = WeldFormulaAmtechStandard;
-    _Interface->StatusData.Soft_Settings.RunCount = 10;
-    _Interface->StatusData.Soft_Settings.Teach_Mode = SIGMA;
-    _Interface->StatusData.Soft_Settings.TunePoint = 40;
-    _Interface->StatusData.Soft_Settings.FrequencyOffset = 50;
+    _Interface->DefaultStatusData.Soft_Settings.Pressure2Unit = ToPSI;
+    _Interface->DefaultStatusData.Soft_Settings.Mm2Awg = false;
+    _Interface->DefaultStatusData.Soft_Settings.Mm2Inch = false;
+    _Interface->DefaultStatusData.Soft_Settings.PWWidth2Height = 0;
+    _Interface->DefaultStatusData.Soft_Settings.MinAmplitude = MINAMPLITUDE;
+    _Interface->DefaultStatusData.Soft_Settings.MinPressure = MINWELDPRESSURE;
+    _Interface->DefaultStatusData.Soft_Settings.WeldFormula = WeldFormulaAmtechStandard;
+    _Interface->DefaultStatusData.Soft_Settings.RunCount = 10;
+    _Interface->DefaultStatusData.Soft_Settings.Teach_Mode = SIGMA;
+    _Interface->DefaultStatusData.Soft_Settings.TunePoint = 40;
+    _Interface->DefaultStatusData.Soft_Settings.FrequencyOffset = 50;
 
-    _Interface->StatusData.Cust_Data.mod10a_settings.UnsignedWeldData = 4097;
-    _Interface->StatusData.Cust_Data.mod10a_settings.AfterBurstDelay = 10;
-    _Interface->StatusData.Cust_Data.mod10a_settings.AfterBurstDuration = 20;
-    _Interface->StatusData.Cust_Data.mod10a_settings.EnergyWindowPL = 50;
-    _Interface->StatusData.Cust_Data.mod10a_settings.PreBurstIndex = 0;
-    _Interface->StatusData.Cust_Data.cust_qual_range[TIME_PLRG] = 40;
-    _Interface->StatusData.Cust_Data.cust_qual_range[TIME_MSRG] = 40;
-    _Interface->StatusData.Cust_Data.cust_qual_range[POWER_PLRG] = 25;
-    _Interface->StatusData.Cust_Data.cust_qual_range[POWER_MSRG] = 25;
-    _Interface->StatusData.Cust_Data.cust_qual_range[PRE_HGT_PLRG] = 15;
-    _Interface->StatusData.Cust_Data.cust_qual_range[PRE_HGT_MSRG] = 15;
-    _Interface->StatusData.Cust_Data.cust_qual_range[HEIGHT_PLRG] = 10;
-    _Interface->StatusData.Cust_Data.cust_qual_range[HEIGHT_MSRG] = 10;
-    _Interface->StatusData.Cust_Data.cust_qual_range[FORCE_PLRG] = 5;
-    _Interface->StatusData.Cust_Data.cust_qual_range[FORCE_MSRG] = 10;
+    _Interface->DefaultStatusData.Cust_Data.mod10a_settings.UnsignedWeldData = 4097;
+    _Interface->DefaultStatusData.Cust_Data.mod10a_settings.AfterBurstDelay = 10;
+    _Interface->DefaultStatusData.Cust_Data.mod10a_settings.AfterBurstDuration = 20;
+    _Interface->DefaultStatusData.Cust_Data.mod10a_settings.EnergyWindowPL = 50;
+    _Interface->DefaultStatusData.Cust_Data.mod10a_settings.PreBurstIndex = 0;
+    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[TIME_PLRG] = 40;
+    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[TIME_MSRG] = 40;
+    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[POWER_PLRG] = 25;
+    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[POWER_MSRG] = 25;
+    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[PRE_HGT_PLRG] = 15;
+    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[PRE_HGT_MSRG] = 15;
+    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[HEIGHT_PLRG] = 10;
+    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[HEIGHT_MSRG] = 10;
+    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[FORCE_PLRG] = 5;
+    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[FORCE_MSRG] = 10;
     for(int i = TIME_CONFRG_PL; i <= HEIGHT_CONFRG_MS; i++)
     {
-        _Interface->StatusData.Cust_Data.cust_qual_range[i] = 4;
+        _Interface->DefaultStatusData.Cust_Data.cust_qual_range[i] = 4;
     }
-    _Interface->StatusData.Cust_Data.cust_qual_range[ENERGY_ADJ] = 280;
-    _Interface->StatusData.Cust_Data.cust_qual_range[PRESSURE_ADJ] = 30;
-    _Interface->StatusData.Cust_Data.cust_qual_range[AMPLITUDE_ADJ] = 26;
-    _Interface->StatusData.Cust_Data.cust_qual_range[WIDTH_ADJ] = 625;
+    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[ENERGY_ADJ] = 280;
+    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[PRESSURE_ADJ] = 30;
+    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[AMPLITUDE_ADJ] = 26;
+    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[WIDTH_ADJ] = 625;
     //Now store the new file data
 
     for(int i = TIME_USL; i<= HEIGHT_LSL; i++)
     {
-        _Interface->StatusData.HSDATA.HARD_LIMIT[i].TypeHS = Sigam;
-        _Interface->StatusData.HSDATA.HARD_LIMIT[i].ValueHS = 4;
-        _Interface->StatusData.HSDATA.SOFT_LIMIT[i].TypeHS = Percent;
-        _Interface->StatusData.HSDATA.SOFT_LIMIT[i].ValueHS = 30;
+        _Interface->DefaultStatusData.HSDATA.HARD_LIMIT[i].TypeHS = Sigam;
+        _Interface->DefaultStatusData.HSDATA.HARD_LIMIT[i].ValueHS = 4;
+        _Interface->DefaultStatusData.HSDATA.SOFT_LIMIT[i].TypeHS = Percent;
+        _Interface->DefaultStatusData.HSDATA.SOFT_LIMIT[i].ValueHS = 30;
     }
-    _Interface->StatusData.ComInfo.COMport = 1;
-    _Interface->StatusData.ComInfo.BaudRate = 1152;
-    _Interface->StatusData.MachineType = ACTNEWSPLICER; //Need To Fix
-    _Interface->StatusData.MachineDate = "";
-    _Interface->StatusData.Machineflags.Word[0] = 0;
-    _Interface->StatusData.KeepDailyHistory = true;
+    _Interface->DefaultStatusData.ComInfo.COMport = 1;
+    _Interface->DefaultStatusData.ComInfo.BaudRate = 1152;
+    _Interface->DefaultStatusData.MachineType = ACTNEWSPLICER; //Need To Fix
+    _Interface->DefaultStatusData.MachineDate = "";
+    _Interface->DefaultStatusData.Machineflags.Word[0] = 0;
+    _Interface->DefaultStatusData.KeepDailyHistory = true;
+    _Interface->DefaultStatusData.HistoryGraphData = true;
+    _Interface->DefaultStatusData.GraphSampleRatio = SampleWith1ms;
 
-    _Interface->StatusData.LockonAlarm = 0;
-    _Interface->StatusData.RunMode.Word = 0;
+    _Interface->DefaultStatusData.LockonAlarm = 0;
+    _Interface->DefaultStatusData.RunMode.Word = 0;
 //    _Interface->StatusData.AdminOptions = 0x00;
 //    _Interface->StatusData.WeldSettingDefaultWeldMode = 0;
 //    _Interface->StatusData.WeldSettingDefaultTrigPress = -1;
 //    _Interface->StatusData.AutoStartLastPart = false;
 //    _Interface->StatusData.NRGtoHeightMode = false;
-    _Interface->StatusData.ShrinkTubeMode = false;
-    _Interface->StatusData.FileSystemFlags = FSFDefaultSet;
-    _Interface->StatusData.AutoGetNextDelay = DefAutoGetNextDelay;
-    _Interface->StatusData.NetworkingEnabled = false;
-    _Interface->StatusData.CurrentWrkStaID = "";
-    _Interface->StatusData.CentralComputerID = "";
-    _Interface->StatusData.CurrentCoolingDel = 0;
-    _Interface->StatusData.CurrentCoolingDur = 100;
-    _Interface->StatusData.CurrentCoolingMode = ENERGYMODE;
-    _Interface->StatusData.CycleCount = 0;
-    _Interface->StatusData.HistoryGraphData = true;
-    _Interface->StatusData.RemoteGraphData = false;
+    _Interface->DefaultStatusData.ShrinkTubeMode = false;
+    _Interface->DefaultStatusData.FileSystemFlags = FSFDefaultSet;
+    _Interface->DefaultStatusData.AutoGetNextDelay = DefAutoGetNextDelay;
+    _Interface->DefaultStatusData.NetworkingEnabled = false;
+    _Interface->DefaultStatusData.RemoteDataLogging = false;
+    _Interface->DefaultStatusData.ServerPort = 4000;
+    _Interface->DefaultStatusData.ModularProductionEnabled = false;
+
+    _Interface->DefaultStatusData.CurrentWrkStaID = "";
+    _Interface->DefaultStatusData.CentralComputerID = "";
+    _Interface->DefaultStatusData.CurrentCoolingDel = 0;
+    _Interface->DefaultStatusData.CurrentCoolingDur = 100;
+    _Interface->DefaultStatusData.CurrentCoolingMode = ENERGYMODE;
+    _Interface->DefaultStatusData.CurrentCoolingTooling = true;
+    _Interface->DefaultStatusData.CycleCount = 0;
+
+    _Interface->DefaultStatusData.RemoteGraphData = false;
 //    _Interface->StatusData.AntisideSpliceTime = DEFAULTUNLOADTIME; //Default Unload time should be 1.5s
 
     for(int i = 0; i<= 7; i++)
     {
-        _Interface->StatusData.MaintenanceLimits[i] = 0;
-        _Interface->StatusData.CurrentMaintenanceLimits[i] = 0;
+        _Interface->DefaultStatusData.MaintenanceLimits[i] = 0;
+        _Interface->DefaultStatusData.CurrentMaintenanceLimits[i] = 0;
+        _Interface->DefaultStatusData.MaintenanceDateStarted[i] = 0;
     }
 
-    SetDefaultWeldFormula(&_Interface->StatusData);
-    SetDefaultPassword();
-    SetShrinkTubeDefaults();
-    SetSoftLimitDefaults();
+    SetDefaultWeldFormula(&_Interface->DefaultStatusData);
+    SetDefaultPassword(&_Interface->DefaultStatusData);
+    SetShrinkTubeDefaults(&_Interface->DefaultStatusData);
+    SetSoftLimitDefaults(&_Interface->DefaultStatusData);
 }
 
 void M10INI::Get_INI_File()
@@ -391,6 +397,7 @@ void M10INI::Get_INI_File()
 
     QDir dir;
     FileName = ConfigFilesPath + BRANSON_INI_FILE;
+    Init_StatusData();
     if (_Utility->ReadFromBinaryFile(FileName,&_Interface->StatusData) == true)
     {
 //        bErasePasswords can only be done in the debug mode (Can't be set to true
@@ -408,7 +415,7 @@ void M10INI::Get_INI_File()
         }
     }else
     {
-        Init_StatusData();
+        _Interface->StatusData = _Interface->DefaultStatusData;
     }
 
     FileName = ConfigFilesPath + BRANSON_LASTWELD_FILE;

@@ -59,6 +59,16 @@
 #define DEFAULTSTEP      0                  //Default values of all Steps
 #define ZEROHEIGHTPRESSURE 256              //PSI * 10
 #define DEFAULTUNLOADTIME  300              //secs * 200
+#define MAXHORNLIMIT     200000
+#define MINHORNLIMIT     1
+#define MAXANVILTIPLIMIT 400000
+#define MINANVILTIPLIMIT 1
+#define MAXGATHERLIMIT   400000
+#define MINGATHERLIMIT   1
+#define MAXANVILGUIDELIMIT    400000
+#define MINANVILGUIDELIMIT    1
+#define MAXCONVERTERLIMIT     400000
+#define MINCONVERTERLIMIT     1
 
 //Used by the program to consistently change from PSI to BAR
 #define PRESS2BARFACTOR  (0.1 / 14.5)
@@ -119,6 +129,11 @@ enum ScreenShowDataType{
     DINShrinkTubeTemperature,
     DINShrinkTubeTime,
     DINServerPortNumber,
+    DINHornLimit,
+    DINAnvilTipLimit,
+    DINGatherLimit,
+    DINAnvilGuideLimit,
+    DINConverterLimit,
     DIN_end,
 };
 
