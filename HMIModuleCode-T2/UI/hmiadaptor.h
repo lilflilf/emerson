@@ -3,6 +3,7 @@
 
 #include <QMetaType>
 #include <QObject>
+#include <QRegExpValidator>
 #include "tablemodel.h"
 #include "Interface/definition.h"
 #include "Interface/Settings/OperatorLibrary.h"
@@ -63,6 +64,8 @@ public:
     Q_INVOKABLE bool permissionsettingGetChecked(QString stringIndex, int level);
     Q_INVOKABLE bool permissionsettingSetValue(QString name,bool level1,bool level2,bool level3,bool level4);
     Q_INVOKABLE bool permissionsettingSetFourValue(QStringList fourName);
+    Q_INVOKABLE bool stringRegexMatch(QString exp, QString value);
+    Q_INVOKABLE bool keyNumStringMatch(QString minValue, QString maxValue, QString value);
 
     InterfaceClass *interfaceClass;
 

@@ -113,5 +113,7 @@
         <file>images/keyboarddone.png</file>
         <file>images/keyBoardxing.png</file>
         <file>images/keyboard1.png</file>
+        <file>images/menubg1.png</file>
+        <file>images/menubg2.png</file>
     </qresource>
 </RCC>

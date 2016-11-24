@@ -24,7 +24,9 @@ Item {
     property alias defaultText: defaultText.text
     property alias defaultTextSize: defaultText.font.pointSize
     property alias inputText: textInput.text
+    property bool inputFocus: false
     signal textChange(int text)
+//    signal myfocusChanged(bool focus)
     Rectangle {
         id: back
         anchors.left: parent.left
@@ -50,6 +52,10 @@ Item {
         verticalAlignment: Qt.AlignVCenter
         font.pointSize: 16
         font.family: "arial"
+        onFocusChanged: {
+            inputFocus = textInput.focus
+        }
+
         //validator: RegExpValidator{regExp: /^[1-9]{1,2}$/}
         Text {
             id: defaultText

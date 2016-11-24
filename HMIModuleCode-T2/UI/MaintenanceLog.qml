@@ -9,23 +9,32 @@ Item {
     id: toolChange
     width: Screen.width*0.7
     height: Screen.height*0.6
-    Image {
+    Rectangle {
         id: back
         width: parent.width * 0.3
         height: parent.height
-        source: "qrc:/images/images/bg.png"
+        color: "#052a40"
         z: 10
-
         Text {
             id: seach
             text: qsTr("Seach")
             font.family: "arial"
             color: "white"
-            font.pointSize: 16
+            font.pointSize: 18
             anchors.top: parent.top
+            anchors.topMargin: 20
             anchors.left: parent.left
             anchors.leftMargin: 20
-            anchors.topMargin: 10
+        }
+        Line {
+            id: line1
+            anchors.left: parent.left
+            anchors.leftMargin: 10
+            anchors.top: seach.bottom
+            anchors.topMargin: 20
+            width: parent.width-58
+            lineColor: "#375566"
+            height: 1
         }
 
         ListModel {
@@ -56,8 +65,10 @@ Item {
             id: searchArea
             property int selectNum: -2
             property int buttonIndex: -1
-            anchors.left: seach.left
-            width: Screen.width * 0.3 - 20
+            anchors.left: parent.left
+            anchors.leftMargin: 10
+            anchors.right: parent.right
+            anchors.rightMargin: 48
             anchors.top: seach.bottom
             anchors.bottom: parent.bottom
             z: 12
@@ -77,7 +88,7 @@ Item {
                 font.family: "arial"
                 font.pixelSize: 16
                 verticalAlignment: Qt.AlignVCenter
-                width: Screen.width * 0.3 - 20
+                width: parent.width
                 height: 40
                 color: "white"
                 text: qsTr("All")
@@ -192,19 +203,19 @@ Item {
             font.family: "arial"
             color: "white"
             font.pointSize: 16
-            anchors.top: seach.bottom
-            anchors.topMargin: 15
+            anchors.top: line1.bottom
+            anchors.topMargin: 10
             anchors.left: seach.left
         }
         CButton {
             id: workOrderName
             anchors.left: title2.left
             anchors.top: title2.bottom
-//            width: 250
+            anchors.right: parent.right
+            anchors.rightMargin: 48
             text: qsTr("All")
             clip: true
             height: mytimeSelect.height
-            anchors.right: mytimeSelect.right
             backgroundComponent: Rectangle {
                 anchors.fill: parent
                 color: "black"
@@ -215,13 +226,23 @@ Item {
                 searchArea.visible = true
             }
         }
+        Line {
+            id: line2
+            anchors.left: parent.left
+            anchors.leftMargin: 10
+            anchors.top: workOrderName.bottom
+            anchors.topMargin: 10
+            width: parent.width-58
+            lineColor: "#375566"
+            height: 1
+        }
         Text {
             id: date
             text: qsTr("Date and Time")
             font.family: "arial"
             color: "white"
             font.pointSize: 16
-            anchors.top: workOrderName.bottom
+            anchors.top: line2.bottom
             anchors.left: parent.left
             anchors.leftMargin: 20
             anchors.topMargin: 10
@@ -240,12 +261,12 @@ Item {
             id: mycalendar
             anchors.left: from.left
             anchors.top: from.bottom
-            width: 170
+            width: (parent.width-88)/2
             z: 10
         }
         MyTimeSelect {
             id: mytimeSelect
-            width: 170
+            width: (parent.width-88)/2
             anchors.top: mycalendar.top
             anchors.left: mycalendar.right
             anchors.leftMargin: 20
@@ -266,21 +287,34 @@ Item {
             id: mycalendar2
             anchors.left: from.left
             anchors.top: to.bottom
-            width: 170
+            width: (parent.width-88)/2
             z: 10
         }
         MyTimeSelect {
-            width: 170
+            id: timeSet
+            width: (parent.width-88)/2
             anchors.top: mycalendar2.top
             anchors.left: mycalendar2.right
             anchors.leftMargin: 20
             z: 10
+        }
+        Line {
+            id: line3
+            anchors.left: parent.left
+            anchors.leftMargin: 10
+            anchors.top: timeSet.bottom
+            anchors.topMargin: 10
+            width: parent.width-58
+            lineColor: "#375566"
+            height: 1
         }
         Column {
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 10
             anchors.left: parent.left
             anchors.leftMargin: 20
+            anchors.right: parent.right
+            anchors.rightMargin: 48
             spacing: 10
             CButton {
                 id: applyButton

@@ -102,387 +102,403 @@ Item {
         text: qsTr("Export Data")
     }
 
-    Image {
+    Rectangle {
         id: back
         width: Screen.width * 0.3
         height: parent.height
-        source: "qrc:/images/images/bg.png"
-    }
-
-    Text {
-        id: seach
-        text: qsTr("Seach")
-        font.family: "arial"
-        color: "white"
-        font.pointSize: 16
-        anchors.top: parent.top
-        anchors.left: parent.left
-        anchors.leftMargin: 20
-        anchors.topMargin: 10
-    }
-    ListModel {
-        id: testModel
-        Component.onCompleted: {
-            testModel.append({"name":"test name A"})
-            testModel.append({"name":"test name A"})
-            testModel.append({"name":"test name A"})
-            testModel.append({"name":"test name A"})
-            testModel.append({"name":"test name A"})
-            testModel.append({"name":"test name A"})
-            testModel.append({"name":"test name A"})
-            testModel.append({"name":"test name A"})
-            testModel.append({"name":"test name A"})
-            testModel.append({"name":"test name A"})
-            testModel.append({"name":"test name A"})
-            testModel.append({"name":"test name A"})
-            testModel.append({"name":"test name A"})
-            testModel.append({"name":"test name A"})
-            testModel.append({"name":"test name A"})
-            testModel.append({"name":"test name A"})
-            testModel.append({"name":"test name A"})
-            testModel.append({"name":"test name A"})
-            testModel.append({"name":"test name A"})
-        }
-    }
-    Item {
-        id: searchArea
-        property int selectNum: -2
-        property int buttonIndex: -1
-        anchors.left: seach.left
-        width: Screen.width * 0.3 - 20
-        anchors.top: seach.bottom
-        anchors.bottom: parent.bottom
-        z: 12
-        visible: false
-        Image {
-            anchors.fill: parent
-            source: "qrc:/images/images/bg.png"
-        }
-        ExclusiveGroup {
-            id: searchMos
-        }
+        color: "#052a40"
         Text {
-            id: allText
+            id: seach
+            text: qsTr("Seach")
+            font.family: "arial"
+            color: "white"
+            font.pointSize: 16
             anchors.top: parent.top
             anchors.left: parent.left
-            anchors.leftMargin: 6
-            font.family: "arial"
-            font.pixelSize: 16
-            verticalAlignment: Qt.AlignVCenter
-            width: Screen.width * 0.3 - 20
-            height: 40
-            color: "white"
-            text: qsTr("All")
-            MouseArea {
-                anchors.top: parent.top
-                anchors.left: parent.left
-                anchors.leftMargin: -6
-                width: parent.width
-                height: parent.height
-                onClicked: {
-                    searchArea.selectNum = -2
-                    selectCheck.checked = !selectCheck.checked
-                }
-            }
-            Rectangle {
-                id: backGround
-                anchors.top: parent.top
-                anchors.left: parent.left
-                anchors.leftMargin: -6
-                width: parent.width
-                height: parent.height
-                color: "black"
-                opacity: 0.3//opacityValue
-                RadioButton {
-                    id: selectCheck
-                    exclusiveGroup: searchMos
-                    checked: true
-                    visible: false
-                    onCheckedChanged: {
-                        if (checked)
-                            backGround.opacity = 0.3
-                        else
-                            backGround.opacity = 0
-                    }
-                }
+            anchors.leftMargin: 20
+            anchors.topMargin: 10
+        }
+        Line {
+            id: line1
+            anchors.left: parent.left
+            anchors.leftMargin: 10
+            anchors.top: seach.bottom
+            anchors.topMargin: 10
+            width: parent.width-58
+            lineColor: "#375566"
+            height: 1
+        }
+        ListModel {
+            id: testModel
+            Component.onCompleted: {
+                testModel.append({"name":"test name A"})
+                testModel.append({"name":"test name A"})
+                testModel.append({"name":"test name A"})
+                testModel.append({"name":"test name A"})
+                testModel.append({"name":"test name A"})
+                testModel.append({"name":"test name A"})
+                testModel.append({"name":"test name A"})
+                testModel.append({"name":"test name A"})
+                testModel.append({"name":"test name A"})
+                testModel.append({"name":"test name A"})
+                testModel.append({"name":"test name A"})
+                testModel.append({"name":"test name A"})
+                testModel.append({"name":"test name A"})
+                testModel.append({"name":"test name A"})
+                testModel.append({"name":"test name A"})
+                testModel.append({"name":"test name A"})
+                testModel.append({"name":"test name A"})
+                testModel.append({"name":"test name A"})
+                testModel.append({"name":"test name A"})
             }
         }
-        ListView {
-            id: searchList
-            anchors.top: allText.bottom
-            anchors.left: parent.left
-            width: parent.width
+        Item {
+            id: searchArea
+            property int selectNum: -2
+            property int buttonIndex: -1
+            anchors.left: seach.left
+            anchors.right: parent.right
+            anchors.rightMargin: 48
+            anchors.top: seach.bottom
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: 100
-            clip: true
-            model: testModel
-            delegate: Component {
-                id: seachComponent
-                Item {
-                    width: searchList.width
-                    height: 40
-                    Text {
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.left: parent.left
-                        anchors.leftMargin: 6
-                        font.family: "arial"
-                        font.pixelSize: 16
-                        color: "white"
-                        elide: Text.ElideRight
-                        text:  qsTr(name)
+            z: 12
+            visible: false
+            Image {
+                anchors.fill: parent
+                source: "qrc:/images/images/bg.png"
+            }
+            ExclusiveGroup {
+                id: searchMos
+            }
+            Text {
+                id: allText
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.leftMargin: 6
+                font.family: "arial"
+                font.pixelSize: 16
+                verticalAlignment: Qt.AlignVCenter
+                width: parent.width
+                height: 40
+                color: "white"
+                text: qsTr("All")
+                MouseArea {
+                    anchors.top: parent.top
+                    anchors.left: parent.left
+                    anchors.leftMargin: -6
+                    width: parent.width
+                    height: parent.height
+                    onClicked: {
+                        searchArea.selectNum = -2
+                        selectCheck.checked = !selectCheck.checked
                     }
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: {
-                            searchArea.selectNum = index
-                            selectCheck.checked = !selectCheck.checked
+                }
+                Rectangle {
+                    id: backGround
+                    anchors.top: parent.top
+                    anchors.left: parent.left
+                    anchors.leftMargin: -6
+                    width: parent.width
+                    height: parent.height
+                    color: "black"
+                    opacity: 0.3//opacityValue
+                    RadioButton {
+                        id: selectCheck
+                        exclusiveGroup: searchMos
+                        checked: true
+                        visible: false
+                        onCheckedChanged: {
+                            if (checked)
+                                backGround.opacity = 0.3
+                            else
+                                backGround.opacity = 0
                         }
                     }
-                    Rectangle {
-                        id: backGround
-                        anchors.fill: parent
-                        color: "black"
-                        opacity: 0//opacityValue
-                        RadioButton {
-                            id: selectCheck
-                            exclusiveGroup: searchMos
-                            visible: false
-                            onCheckedChanged: {
-                                if (checked)
-                                    backGround.opacity = 0.3
-                                else
-                                    backGround.opacity = 0
+                }
+            }
+            ListView {
+                id: searchList
+                anchors.top: allText.bottom
+                anchors.left: parent.left
+                width: parent.width
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: 100
+                clip: true
+                model: testModel
+                delegate: Component {
+                    id: seachComponent
+                    Item {
+                        width: searchList.width
+                        height: 40
+                        Text {
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.left: parent.left
+                            anchors.leftMargin: 6
+                            font.family: "arial"
+                            font.pixelSize: 16
+                            color: "white"
+                            elide: Text.ElideRight
+                            text:  qsTr(name)
+                        }
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: {
+                                searchArea.selectNum = index
+                                selectCheck.checked = !selectCheck.checked
+                            }
+                        }
+                        Rectangle {
+                            id: backGround
+                            anchors.fill: parent
+                            color: "black"
+                            opacity: 0//opacityValue
+                            RadioButton {
+                                id: selectCheck
+                                exclusiveGroup: searchMos
+                                visible: false
+                                onCheckedChanged: {
+                                    if (checked)
+                                        backGround.opacity = 0.3
+                                    else
+                                        backGround.opacity = 0
+                                }
                             }
                         }
                     }
                 }
             }
-        }
-        CButton {
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 10
-            width: parent.width
-            text: qsTr("OK")
-            iconSource: "qrc:/images/images/OK.png"
-            onClicked: {
-                if (searchArea.selectNum != -2) {
-                    searchArea.visible = false
-                    switch(searchArea.buttonIndex) {
-                    case 1:
-                        workOrderName.text = testModel.get(searchArea.selectNum).name
-                        break;
-                    case 2:
-                        partName.text = testModel.get(searchArea.selectNum).name
-                        break;
-                    case 3:
-                        spliceName.text = testModel.get(searchArea.selectNum).name
-                        break;
-                    default:
-                        break;
+            CButton {
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: 10
+                width: parent.width
+                text: qsTr("OK")
+                iconSource: "qrc:/images/images/OK.png"
+                onClicked: {
+                    if (searchArea.selectNum != -2) {
+                        searchArea.visible = false
+                        switch(searchArea.buttonIndex) {
+                        case 1:
+                            workOrderName.text = testModel.get(searchArea.selectNum).name
+                            break;
+                        case 2:
+                            partName.text = testModel.get(searchArea.selectNum).name
+                            break;
+                        case 3:
+                            spliceName.text = testModel.get(searchArea.selectNum).name
+                            break;
+                        default:
+                            break;
+                        }
+                    } else {
+                        switch(searchArea.buttonIndex) {
+                        case 1:
+                            workOrderName.text = "All"
+                            break;
+                        case 2:
+                            partName.text = "All"
+                            break;
+                        case 3:
+                            spliceName.text = "All"
+                            break;
+                        default:
+                            break;
+                        }
+                        searchArea.visible = false
                     }
-                } else {
-                    switch(searchArea.buttonIndex) {
-                    case 1:
-                        workOrderName.text = "All"
-                        break;
-                    case 2:
-                        partName.text = "All"
-                        break;
-                    case 3:
-                        spliceName.text = "All"
-                        break;
-                    default:
-                        break;
-                    }
-                    searchArea.visible = false
                 }
             }
         }
-    }
-    Text {
-        id: title2
-        text: qsTr("Work Order ID")
-        font.family: "arial"
-        color: "white"
-        font.pointSize: 16
-        anchors.top: seach.bottom
-        anchors.topMargin: 15
-        anchors.left: seach.left
-    }
-    CButton {
-        id: workOrderName
-        anchors.left: title2.left
-        anchors.top: title2.bottom
-//        width: 250
-        text: qsTr("All")
-        clip: true
-        height: mytimeSelect.height
-        anchors.right: mytimeSelect.right
-        backgroundComponent: Rectangle {
-            anchors.fill: parent
-            color: "black"
-            border.color: "#1987ab"
-            border.width: 2
-        }
-        onClicked: {
-            searchArea.buttonIndex = 1
-            searchArea.visible = true
-        }
-    }
-
-    Text {
-        id: date
-        text: qsTr("Date and Time")
-        font.family: "arial"
-        color: "white"
-        font.pointSize: 16
-        anchors.top: workOrderName.bottom
-        anchors.left: parent.left
-        anchors.leftMargin: 20
-        anchors.topMargin: 15
-    }
-    Text {
-        id: from
-        text: qsTr("From:")
-        font.family: "arial"
-        color: "white"
-        font.pointSize: 16
-        anchors.top: date.bottom
-        anchors.left: parent.left
-        anchors.leftMargin: 20
-    }
-    MyCalendar {
-        id: mycalendar
-        anchors.left: from.left
-        anchors.top: from.bottom
-        width: 170
-        z: 10
-    }
-    MyTimeSelect {
-        width: 170
-        anchors.top: mycalendar.top
-        anchors.left: mycalendar.right
-        anchors.leftMargin: 20
-        z: 11
-
-    }
-    Text {
-        id: to
-        text: qsTr("To:")
-        font.family: "arial"
-        color: "white"
-        font.pointSize: 16
-        anchors.top: mycalendar.bottom
-        anchors.left: parent.left
-        anchors.leftMargin: 20
-    }
-    MyCalendar {
-        id: mycalendar2
-        anchors.left: from.left
-        anchors.top: to.bottom
-        width: 170
-        z: 10
-    }
-    MyTimeSelect {
-        id: mytimeSelect
-        width: 170
-        anchors.top: mycalendar2.top
-        anchors.left: mycalendar2.right
-        anchors.leftMargin: 20
-        z: 10
-    }
-
-    Text {
-        id: title3
-        text: qsTr("Part Number")
-        font.family: "arial"
-        color: "white"
-        font.pointSize: 16
-        anchors.top: mycalendar2.bottom
-        anchors.left: seach.left
-        anchors.topMargin: 15
-    }
-    CButton {
-        id: partName
-        anchors.left: title3.left
-        anchors.top: title3.bottom
-        width: 250
-        text: qsTr("All")
-        clip: true
-        height: mytimeSelect.height
-        anchors.right: mytimeSelect.right
-        backgroundComponent: Rectangle {
-            anchors.fill: parent
-            color: "black"
-            border.color: "#1987ab"
-            border.width: 2
-        }
-        onClicked: {
-            searchArea.buttonIndex = 2
-            searchArea.visible = true
-        }
-    }
-    Text {
-        id: title99
-        text: qsTr("Splice Number")
-        font.family: "arial"
-        color: "white"
-        font.pointSize: 16
-        anchors.top: partName.bottom
-        anchors.left: seach.left
-        anchors.topMargin: 15
-    }
-    CButton {
-        id: spliceName
-        anchors.left: title3.left
-        anchors.top: title99.bottom
-        width: 250
-        text: qsTr("All")
-        clip: true
-        height: mytimeSelect.height
-        anchors.right: mytimeSelect.right
-        backgroundComponent: Rectangle {
-            anchors.fill: parent
-            color: "black"
-            border.color: "#1987ab"
-            border.width: 2
-        }
-        onClicked: {
-            searchArea.buttonIndex = 3
-            searchArea.visible = true
-        }
-    }
-    Column {
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 10
-        anchors.left: parent.left
-        anchors.leftMargin: 20
-        spacing: 10
-        CButton {
-            id: applyButton
-            width: spliceName.width
-            text: qsTr("APPLY")
+        Text {
+            id: title2
+            text: qsTr("Work Order ID")
+            font.family: "arial"
+            color: "white"
+            font.pointSize: 16
+            anchors.top: line1.bottom
+            anchors.topMargin: 10
+            anchors.left: seach.left
         }
         CButton {
-            id: backButton
-            width: spliceName.width
-            text: qsTr("Back")
+            id: workOrderName
+            anchors.left: title2.left
+            anchors.top: title2.bottom
+            anchors.right: parent.right
+            anchors.rightMargin: 48
+            text: qsTr("All")
+            clip: true
+            height: mytimeSelect.height
+            backgroundComponent: Rectangle {
+                anchors.fill: parent
+                color: "black"
+                border.color: "#1987ab"
+                border.width: 2
+            }
+            onClicked: {
+                searchArea.buttonIndex = 1
+                searchArea.visible = true
+            }
+        }
+        Line {
+            id: line2
+            anchors.left: parent.left
+            anchors.leftMargin: 10
+            anchors.top: workOrderName.bottom
+            anchors.topMargin: 10
+            width: parent.width-58
+            lineColor: "#375566"
+            height: 1
+        }
+        Text {
+            id: date
+            text: qsTr("Date and Time")
+            font.family: "arial"
+            color: "white"
+            font.pointSize: 16
+            anchors.top: line2.bottom
+            anchors.left: parent.left
+            anchors.leftMargin: 20
+            anchors.topMargin: 10
+        }
+        Text {
+            id: from
+            text: qsTr("From:")
+            font.family: "arial"
+            color: "white"
+            font.pointSize: 16
+            anchors.top: date.bottom
+            anchors.left: parent.left
+            anchors.leftMargin: 20
+        }
+        MyCalendar {
+            id: mycalendar
+            anchors.left: from.left
+            anchors.top: from.bottom
+            width: (parent.width-88)/2
+            z: 10
+        }
+        MyTimeSelect {
+            width: (parent.width-88)/2
+            anchors.top: mycalendar.top
+            anchors.left: mycalendar.right
+            anchors.leftMargin: 20
+            z: 11
+
+        }
+        Text {
+            id: to
+            text: qsTr("To:")
+            font.family: "arial"
+            color: "white"
+            font.pointSize: 16
+            anchors.top: mycalendar.bottom
+            anchors.left: parent.left
+            anchors.leftMargin: 20
+        }
+        MyCalendar {
+            id: mycalendar2
+            anchors.left: from.left
+            anchors.top: to.bottom
+            width: (parent.width-88)/2
+            z: 10
+        }
+        MyTimeSelect {
+            id: mytimeSelect
+            width: (parent.width-88)/2
+            anchors.top: mycalendar2.top
+            anchors.left: mycalendar2.right
+            anchors.leftMargin: 20
+            z: 10
+        }
+        Line {
+            id: line3
+            anchors.left: parent.left
+            anchors.leftMargin: 10
+            anchors.top: mytimeSelect.bottom
+            anchors.topMargin: 10
+            width: parent.width-58
+            lineColor: "#375566"
+            height: 1
+        }
+        Text {
+            id: title3
+            text: qsTr("Part Number")
+            font.family: "arial"
+            color: "white"
+            font.pointSize: 16
+            anchors.top: line3.bottom
+            anchors.left: seach.left
+            anchors.topMargin: 10
+        }
+        CButton {
+            id: partName
+            anchors.left: title3.left
+            anchors.top: title3.bottom
+            width: 250
+            text: qsTr("All")
+            clip: true
+            height: mytimeSelect.height
+            anchors.right: mytimeSelect.right
+            backgroundComponent: Rectangle {
+                anchors.fill: parent
+                color: "black"
+                border.color: "#1987ab"
+                border.width: 2
+            }
+            onClicked: {
+                searchArea.buttonIndex = 2
+                searchArea.visible = true
+            }
+        }
+        Text {
+            id: title99
+            text: qsTr("Splice Number")
+            font.family: "arial"
+            color: "white"
+            font.pointSize: 16
+            anchors.top: partName.bottom
+            anchors.left: seach.left
+            anchors.topMargin: 15
+        }
+        CButton {
+            id: spliceName
+            anchors.left: title3.left
+            anchors.top: title99.bottom
+            width: 250
+            text: qsTr("All")
+            clip: true
+            height: mytimeSelect.height
+            anchors.right: mytimeSelect.right
+            backgroundComponent: Rectangle {
+                anchors.fill: parent
+                color: "black"
+                border.color: "#1987ab"
+                border.width: 2
+            }
+            onClicked: {
+                searchArea.buttonIndex = 3
+                searchArea.visible = true
+            }
+        }
+        Column {
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 10
+            anchors.left: parent.left
+            anchors.leftMargin: 20
+            anchors.right: parent.right
+            anchors.rightMargin: 48
+            spacing: 10
+            CButton {
+                id: applyButton
+                width: spliceName.width
+                text: qsTr("APPLY")
+            }
+            CButton {
+                id: backButton
+                width: spliceName.width
+                text: qsTr("Back")
+            }
         }
     }
-
-
-//    ListView {
-//        id: listView
-//        anchors.left: back.right
-////        anchors.right: parent.right
-//        anchors.top: parent.top
-//        anchors.bottom: parent.bottom
-//        anchors.leftMargin: 10
-////        anchors.rightMargin: 10
-//        anchors.bottomMargin: 150
-//        model: workOrderModel
-//        delegate: listDelegate
-//    }
 
     Image {
         id: scrollUp

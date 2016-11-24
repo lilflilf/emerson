@@ -55,7 +55,7 @@ Item {
             text: qsTr("Calibration-Width and Height")
             color: "white"
             font.family: "arial"
-            font.pointSize: 14
+            font.pointSize: 20
             anchors.left: parent.left
             anchors.leftMargin: 15
             anchors.top: parent.top
@@ -66,7 +66,7 @@ Item {
             text: qsTr("This process calibrates and adjusts the Width and Height control system.Please press and hold the start button on this sereen or the start switch on the actuarot.")
             color: "white"
             font.family: "arial"
-            font.pointSize: 14
+            font.pointSize: 20
             anchors.left: parent.left
             anchors.leftMargin: 15
             width: parent.width * 0.8

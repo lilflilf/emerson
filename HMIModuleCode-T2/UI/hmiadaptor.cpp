@@ -251,3 +251,21 @@ bool HmiAdaptor::permissionsettingSetFourValue(QStringList fourName)
     qDebug() << permissionSetting->FourLevelIdentifier;
     return true;
 }
+
+bool HmiAdaptor::stringRegexMatch(QString exp, QString value)
+{
+    QRegExp rx(exp);
+    bool match = rx.exactMatch(value);
+    qDebug()<<"222222222222222222"<<match<<exp;
+    return match;
+}
+
+bool HmiAdaptor::keyNumStringMatch(QString minValue, QString maxValue, QString value)
+{
+    bool ok;
+    if (value.toFloat(&ok) >= minValue.toFloat(&ok) && value.toFloat(&ok) <= maxValue.toFloat(&ok)) {
+        return true;
+    } else {
+        return false;
+    }
+}

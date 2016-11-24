@@ -556,8 +556,8 @@ Item {
         height: 526
         visible: false
         titleText: qsTr("")
-        maxvalue: 12
-        minvalue: 3
+        maxvalue: "12"
+        minvalue: "3"
         currentValue: "123"
         onCurrentClickIndex: {
             if (index == 15) {
