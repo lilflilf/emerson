@@ -442,7 +442,6 @@ QStringList HmiAdaptor::dataCommunicationGetValue(QString index)
                  << dataCommunication->CurrentDataCommunication.ShrinkTubeDefault.at(i).Temp
                  << dataCommunication->CurrentDataCommunication.ShrinkTubeDefault.at(i).Time;
         }
-        qDebug() << "shrinkData" << list;
     }
     else if (index == "shrinkLimit")
     {

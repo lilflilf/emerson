@@ -1,6 +1,7 @@
 #include "DataCommunication.h"
 #include "Interface/Interface.h"
 #include "Modules/UtilityClass.h"
+#include <QDebug>
 DataCommunication::DataCommunication()
 {
 

@@ -276,9 +276,9 @@ QString UtilityClass::FormatedDataToString(ScreenShowDataType TypeIndex, int Dat
 {
     QString tmpStr;
     if(txtData[TypeIndex].Format.contains("d") == true)
-        tmpStr.sprintf(txtData[TypeIndex].Format.toLatin1().data(),(int)(Data * txtData[TypeIndex].Factor));
+        tmpStr.sprintf(txtData[TypeIndex].Format.toStdString().c_str(),(int)(Data * txtData[TypeIndex].Factor));
     else if(txtData[TypeIndex].Format.contains("f") == true)
-        tmpStr.sprintf(txtData[TypeIndex].Format.toLatin1().data(),(float)(Data * txtData[TypeIndex].Factor));
+        tmpStr.sprintf(txtData[TypeIndex].Format.toStdString().c_str(),(float)(Data * txtData[TypeIndex].Factor));
     else
         tmpStr.clear();
     return tmpStr;
@@ -288,9 +288,9 @@ QString UtilityClass::FormatedDataToString(ScreenShowDataType TypeIndex, long Da
 {
     QString tmpStr;
     if(txtData[TypeIndex].Format.contains("d") == true)
-        tmpStr.sprintf(txtData[TypeIndex].Format.toLatin1().data(),(long)(Data * txtData[TypeIndex].Factor));
+        tmpStr.sprintf(txtData[TypeIndex].Format.toStdString().c_str(),(long)(Data * txtData[TypeIndex].Factor));
     else if(txtData[TypeIndex].Format.contains("f") == true)
-        tmpStr.sprintf(txtData[TypeIndex].Format.toLatin1().data(),(float)(Data * txtData[TypeIndex].Factor));
+        tmpStr.sprintf(txtData[TypeIndex].Format.toStdString().c_str(),(float)(Data * txtData[TypeIndex].Factor));
     else
         tmpStr.clear();
     return tmpStr;
@@ -300,9 +300,9 @@ QString UtilityClass::FormatedDataToString(ScreenShowDataType TypeIndex, float D
 {
     QString tmpStr;
     if(txtData[TypeIndex].Format.contains("d") == true)
-        tmpStr.sprintf(txtData[TypeIndex].Format.toLatin1().data(),(float)(Data * txtData[TypeIndex].Factor));
+        tmpStr.sprintf(txtData[TypeIndex].Format.toStdString().c_str(),(float)(Data * txtData[TypeIndex].Factor));
     else if(txtData[TypeIndex].Format.contains("f") == true)
-        tmpStr.sprintf(txtData[TypeIndex].Format.toLatin1().data(),(float)(Data * txtData[TypeIndex].Factor));
+        tmpStr.sprintf(txtData[TypeIndex].Format.toStdString().c_str(),(float)(Data * txtData[TypeIndex].Factor));
     else
         tmpStr.clear();
     return tmpStr;
