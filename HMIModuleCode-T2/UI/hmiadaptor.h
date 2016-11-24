@@ -15,6 +15,7 @@
 #include "Interface/interface.h"
 #include "Interface/Settings/PermissionSetting.h"
 #include "Interface/Settings/WeldDefaults.h"
+#include "Interface/Settings/DataCommunication.h"
 
 #define HMI_PRINT (qDebug() <<"HMI adapter:" << __FILE__ << __FUNCTION__ << __LINE__ << ": ")
 
@@ -87,6 +88,12 @@ public:
     Q_INVOKABLE bool weldDefaultsExecute(QString code);
     Q_INVOKABLE bool weldDefaultsGetSwitch(QString index);
     Q_INVOKABLE QStringList weldDefaultsGetValue(FormulaRange index);
+    Q_INVOKABLE bool weldDefaultsSetValue(QList<bool> boolList, QStringList strList, int sampleIndex, QString coolingDur, QString coolingDel);
+
+    /********DataCommunication func**************/
+    Q_INVOKABLE bool dataCommunicationExecute(QString code);
+
+
 
     InterfaceClass *interfaceClass;
 
@@ -108,6 +115,7 @@ public:
     /*********Setting*****************/
     PermissionSetting *permissionSetting;
     WeldDefaults *weldDefaults;
+    DataCommunication *dataCommunication;
 signals:
     void widthCalibrationFinish(const bool &_Result);
     void heightCalibrationFinish(const bool &_Result);

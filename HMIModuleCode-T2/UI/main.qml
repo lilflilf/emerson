@@ -81,6 +81,7 @@ Window {
             contentLoader.source = "qrc:/UI/UserLibrarySetting.qml"
             break;
         case 17:
+            hmiAdaptor.dataCommunicationExecute("_Recall");
             contentLoader.source = "qrc:/UI/DataCommunication.qml"
             break;
         case 18:
