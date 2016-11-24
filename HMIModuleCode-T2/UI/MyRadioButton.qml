@@ -50,7 +50,7 @@ Item {
         CheckBoxStyle{
             indicator: Image {
                 id: checkIcon
-                source: control.checked ? "qrc:/images/images/check-click.png" : "qrc:/images/images/check-bg.png"
+                source: checkBox.checked ? "qrc:/images/images/check-click.png" : "qrc:/images/images/check-bg.png"
             }
         }
     }

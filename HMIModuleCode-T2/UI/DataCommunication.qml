@@ -63,6 +63,7 @@ Item {
             inputText: qsTr("4000")
 //            regExp: RegExpValidator{regExp: /^[1-4000]$/}
         }
+
         CButton {
             id: ipConfig
             anchors.top: serverPort.bottom
