@@ -284,6 +284,18 @@ QString UtilityClass::FormatedDataToString(ScreenShowDataType TypeIndex, int Dat
     return tmpStr;
 }
 
+QString UtilityClass::FormatedDataToString(ScreenShowDataType TypeIndex, long Data)
+{
+    QString tmpStr;
+    if(txtData[TypeIndex].Format.contains("d") == true)
+        tmpStr.sprintf(txtData[TypeIndex].Format.toLatin1().data(),(long)(Data * txtData[TypeIndex].Factor));
+    else if(txtData[TypeIndex].Format.contains("f") == true)
+        tmpStr.sprintf(txtData[TypeIndex].Format.toLatin1().data(),(float)(Data * txtData[TypeIndex].Factor));
+    else
+        tmpStr.clear();
+    return tmpStr;
+}
+
 QString UtilityClass::FormatedDataToString(ScreenShowDataType TypeIndex, float Data)
 {
     QString tmpStr;
