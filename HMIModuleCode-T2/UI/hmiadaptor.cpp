@@ -478,14 +478,64 @@ bool HmiAdaptor::stringRegexMatch(QString exp, QString value)
 {
     QRegExp rx(exp);
     bool match = rx.exactMatch(value);
-    qDebug()<<"222222222222222222"<<match<<exp;
     return match;
+}
+
+QString HmiAdaptor::getStringUnit(QString value)
+{
+    QString unit;
+    if (!value.isEmpty() && !value.isNull()) {
+        for (int i = 0; i < value.length(); i++) {
+            if ((value.at(i) >= '0' && value.at(i) <= '9') || value.at(i) == '.') {
+                continue;
+            } else {
+                unit = value.right(value.length()-i);
+                break;
+            }
+        }
+    }
+    return unit;
+}
+QString HmiAdaptor::getStringValue(QString value)
+{
+    QString num;
+    if (!value.isEmpty() && !value.isNull()) {
+        for (int i = 0; i < value.length(); i++) {
+            if ((value.at(i) >= '0' && value.at(i) <= '9') || value.at(i) == '.') {
+                continue;
+            } else {
+                num = value.left(i);
+                break;
+            }
+        }
+    }
+    return num;
 }
 
 bool HmiAdaptor::keyNumStringMatch(QString minValue, QString maxValue, QString value)
 {
     bool ok;
-    if (value.toFloat(&ok) >= minValue.toFloat(&ok) && value.toFloat(&ok) <= maxValue.toFloat(&ok)) {
+    QString minNum = getStringValue(minValue);
+    QString maxNum = getStringValue(maxValue);
+    if (value.contains("*")) {
+        return false;
+    }
+    if(minNum.toFloat(&ok) > 10 && value.toFloat(&ok) < minNum.toFloat(&ok)) {
+        return true;
+    }
+    if (value.toFloat(&ok) >= minNum.toFloat(&ok) && value.toFloat(&ok) <= maxNum.toFloat(&ok)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool HmiAdaptor::comepareCurrentValue(QString minValue, QString maxValue, QString value)
+{
+    bool ok;
+    QString minNum = getStringValue(minValue);
+    QString maxNum = getStringValue(maxValue);
+    if (value.toFloat(&ok) >= minNum.toFloat(&ok) && value.toFloat(&ok) <= maxNum.toFloat(&ok)) {
         return true;
     } else {
         return false;

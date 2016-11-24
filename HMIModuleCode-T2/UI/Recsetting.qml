@@ -10,10 +10,10 @@ Item {
     property string headTitle: ""
     property string centervalue: ""
     property alias bgvisable: bg.visible
+    property bool myFocus: false
     signal mouseAreaClick()
     width: parent.width
     height: parent.height
-
     Image {
         id: bg
         anchors.fill: parent
@@ -49,6 +49,7 @@ Item {
     MouseArea {
         anchors.fill: parent
         onClicked: {
+            myFocus = true
             mouseAreaClick()
         }
     }

@@ -565,6 +565,12 @@ Item {
                 background.opacity = 0
                 keyNum.visible = false
                 setClickColor(advanceset.currentIndex,true)
+            } else if (index == 11) {
+                backGround.visible = false
+                background.opacity = 0
+                keyNum.visible = false
+                keyNum.inputText = ""
+                keyNum.tempValue = ""
             }
         }
     }
