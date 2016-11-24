@@ -1,76 +1,89 @@
 import QtQuick 2.0
-import QtQuick.Controls 1.2
+import QtQuick.Controls 2.0
+import QtQuick.Layouts 1.0
+import QtQuick.Window 2.2
+import QtQuick.Controls 1.4
+import QtQuick.Dialogs 1.2
 
 Item {
     id: viewLib
     property int selectIndx: -1
     property int count: partTitleModel.count
-    Column {
-        id: column
+    Rectangle {
+        id: leftArea
         anchors.top: parent.top
-        anchors.topMargin: 30
         anchors.left: parent.left
-        anchors.leftMargin: 30
-        height: 79*3+20
-        width: 250
-        spacing: 10
+        width: Screen.width*0.3
+        height: parent.height
+        color: "#052a40"
         z: 10
-        CButton {
-            id: part
-            width: column.width
-            textColor: "white"
-            text: qsTr("Part")
-            opacity: 0.2
-            onClicked: {
-                if (splice.opacity == 0.2) {
-                    splice.opacity = 1
-                    part.opacity = 0.2
-                } else if (wire.opacity == 0.2) {
-                    wire.opacity = 1
-                    part.opacity = 0.2
+        Column {
+            id: column
+            anchors.top: parent.top
+            anchors.topMargin: 2
+            anchors.left: parent.left
+            anchors.leftMargin: 2
+            height: 50*3+4
+            width: parent.width-4
+            spacing: 2
+            CButton {
+                id: part
+                width: column.width
+                textColor: "white"
+                text: qsTr("Part")
+                opacity: 0.2
+                onClicked: {
+                    if (splice.opacity == 0.2) {
+                        splice.opacity = 1
+                        part.opacity = 0.2
+                    } else if (wire.opacity == 0.2) {
+                        wire.opacity = 1
+                        part.opacity = 0.2
+                    }
+                    headRepeater.model = partTitleModel
+                    viewLib.count = partTitleModel.count
+                    listView.model = partModel
                 }
-                headRepeater.model = partTitleModel
-                viewLib.count = partTitleModel.count
-                listView.model = partModel
             }
-        }
-        CButton {
-            id: splice
-            width: column.width
-            textColor: "white"
-            text: qsTr("Splice")
-            onClicked: {
-                if (part.opacity == 0.2) {
-                    part.opacity = 1
-                    splice.opacity = 0.2
-                } else if (wire.opacity == 0.2) {
-                    wire.opacity = 1
-                    splice.opacity = 0.2
+            CButton {
+                id: splice
+                width: column.width
+                textColor: "white"
+                text: qsTr("Splice")
+                onClicked: {
+                    if (part.opacity == 0.2) {
+                        part.opacity = 1
+                        splice.opacity = 0.2
+                    } else if (wire.opacity == 0.2) {
+                        wire.opacity = 1
+                        splice.opacity = 0.2
+                    }
+                    headRepeater.model = spliceTitleModel
+                    viewLib.count = spliceTitleModel.count
+                    listView.model = spliceModel
                 }
-                headRepeater.model = spliceTitleModel
-                viewLib.count = spliceTitleModel.count
-                listView.model = spliceModel
             }
-        }
-        CButton {
-            id: wire
-            width: column.width
-            textColor: "white"
-            text: qsTr("Wire")
-            onClicked: {
-                if (part.opacity == 0.2) {
-                    part.opacity = 1
-                    wire.opacity = 0.2
-                } else if (splice.opacity == 0.2) {
-                    splice.opacity = 1
-                    wire.opacity = 0.2
+            CButton {
+                id: wire
+                width: column.width
+                textColor: "white"
+                text: qsTr("Wire")
+                onClicked: {
+                    if (part.opacity == 0.2) {
+                        part.opacity = 1
+                        wire.opacity = 0.2
+                    } else if (splice.opacity == 0.2) {
+                        splice.opacity = 1
+                        wire.opacity = 0.2
+                    }
+                    headRepeater.model = wireTitleModel
+                    viewLib.count = wireTitleModel.count
+                    listView.model = wireModel
                 }
-                headRepeater.model = wireTitleModel
-                viewLib.count = wireTitleModel.count
-                listView.model = wireModel
             }
         }
     }
+
     ListModel {
         id: partKeyModel
     }
@@ -143,7 +156,25 @@ Item {
             wireTitleModel.append({"title":"VerticalPosition"})
         }
     }
-
+    Image {
+        id: back
+        anchors.left: leftArea.right
+        width: parent.width-leftArea.width
+        height: parent.height
+        source: "qrc:/images/images/bg.png"
+    }
+    Rectangle {
+        id: tipsRec
+        anchors.top: headTitle.bottom
+        anchors.topMargin: 10
+        anchors.left: leftArea.right
+        anchors.leftMargin: 20
+        anchors.right: parent.right
+        anchors.rightMargin: 20
+        clip: true
+        height: 1
+        color: "#ffffff"
+    }
     Row {
         id: headTitle
         anchors.top: parent.top
@@ -167,22 +198,11 @@ Item {
         }
     }
 
-    Rectangle {
-        id: tipsRec
-        anchors.top: headTitle.bottom
-        anchors.topMargin: 10
-        anchors.left: column.right
-        anchors.leftMargin: 20
-        anchors.right: parent.right
-        anchors.rightMargin: 20
-        clip: true
-        height: 1
-        color: "#ffffff"
-    }
+
     Rectangle {
         id: tipsRec2
         anchors.top: tipsRec.bottom
-        anchors.left: column.right
+        anchors.left: leftArea.right
         anchors.leftMargin: 20
         anchors.right: parent.right
         anchors.rightMargin: 20
@@ -201,12 +221,6 @@ Item {
         clip: true
         model: partModel
         delegate: listDelegate
-    }
-    Image {
-        id: back
-        width: column.width+50
-        height: parent.height
-        source: "qrc:/images/images/bg.png"
     }
     Image {
         id: scrollLeft

@@ -86,7 +86,9 @@ public:
     Q_INVOKABLE bool permissionsettingSetFourValue(QStringList fourName);
     Q_INVOKABLE bool stringRegexMatch(QString exp, QString value);
     Q_INVOKABLE bool keyNumStringMatch(QString minValue, QString maxValue, QString value);
-
+    Q_INVOKABLE QString getStringUnit(QString value);
+    Q_INVOKABLE QString getStringValue(QString value);
+    Q_INVOKABLE bool comepareCurrentValue(QString minValue, QString maxValue, QString value);
     /********weldDefaults func**************/
     Q_INVOKABLE bool weldDefaultsExecute(QString code);
     Q_INVOKABLE bool weldDefaultsGetSwitch(QString index);

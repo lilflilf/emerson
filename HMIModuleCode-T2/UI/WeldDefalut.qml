@@ -5,6 +5,7 @@ import QtQuick.Layouts 1.0
 import QtQuick.Window 2.2
 
 Item {
+    property var coolingList: ""
     Image {
         anchors.fill: parent
         source: "qrc:/images/images/bg.png"
@@ -49,8 +50,9 @@ Item {
 
             var list = new Array();
             list = hmiAdaptor.weldDefaultsGetValue(-1)
-            coolingModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2]})
-            coolingModel.append({"formulaHead":"Range","maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
+            coolingList = list;
+            //            coolingModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2]})
+            //            coolingModel.append({"formulaHead":"Range","maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
 
             list = hmiAdaptor.weldDefaultsGetValue(0)
             checkText.text = list[9]
@@ -229,22 +231,22 @@ Item {
             state: hmiAdaptor.weldDefaultsGetSwitch("Cooling Tooling") ? "right" : "left"
             clip: true
         }
-//        Row {
-//            anchors.top: coolingTooling.bottom
-//            anchors.topMargin: 10
-//            anchors.left: parent.left
-//            anchors.leftMargin: 20
-//            spacing: 20
-//            Repeater {
-//                model: coolingModel
-//                delegate: Recsetting {
-//                    width: (coolingItem.width-40)/2 //(parent.width-40)/2
-//                    height: 80
-//                    headTitle: formulaHead //qsTr("Cooling Duration")
-//                    centervalue: currenValue //qsTr("100s")
-//                }
-//            }
-//        }
+        //        Row {
+        //            anchors.top: coolingTooling.bottom
+        //            anchors.topMargin: 10
+        //            anchors.left: parent.left
+        //            anchors.leftMargin: 20
+        //            spacing: 20
+        //            Repeater {
+        //                model: coolingModel
+        //                delegate: Recsetting {
+        //                    width: (coolingItem.width-40)/2 //(parent.width-40)/2
+        //                    height: 80
+        //                    headTitle: formulaHead //qsTr("Cooling Duration")
+        //                    centervalue: currenValue //qsTr("100s")
+        //                }
+        //            }
+        //        }
 
         Recsetting {
             id: cooling1
@@ -255,7 +257,18 @@ Item {
             width: (parent.width-40)/2
             height: 80
             headTitle: qsTr("Cooling Duration")
-            centervalue: hmiAdaptor.weldDefaultsGetValue(-1)[1] //qsTr("100s")
+            centervalue: coolingList[1] //hmiAdaptor.weldDefaultsGetValue(-1)[1] //qsTr("100s")
+            onMouseAreaClick: {
+                if (cooling1.bgvisable) {
+                    localbordercolor = "#05f91c"
+                    keyNum.titleText = cooling1.headTitle
+                    keyNum.maxvalue = coolingList[0] //hmiAdaptor.weldDefaultsGetValue(-1)[0]
+                    keyNum.currentValue = coolingList[1] //hmiAdaptor.weldDefaultsGetValue(-1)[1]
+                    keyNum.minvalue = coolingList[2] //hmiAdaptor.weldDefaultsGetValue(-1)[2]
+                    keyNum.visible = true
+                    backGround.visible = true
+                }
+            }
         }
         Recsetting {
             id: cooling2
@@ -265,8 +278,16 @@ Item {
             width: (parent.width-40)/2
             height: 80
             headTitle: qsTr("Cooling Delay")
-            centervalue: hmiAdaptor.weldDefaultsGetValue(-1)[4] //qsTr("100s")
-
+            centervalue: coolingList[4] //hmiAdaptor.weldDefaultsGetValue(-1)[4] //qsTr("100s")
+            onMouseAreaClick: {
+                localbordercolor = "#05f91c"
+                keyNum.titleText = cooling1.headTitle
+                keyNum.maxvalue = coolingList[3]
+                keyNum.currentValue = coolingList[4]
+                keyNum.minvalue = coolingList[5]
+                keyNum.visible = true
+                backGround.visible = true
+            }
         }
     }
     Text {
@@ -375,6 +396,7 @@ Item {
         rows: 3
         spacing: 10
         property alias myModel: gridRepeater.model
+        property int selectIndex: -1
         Repeater {
             id: gridRepeater
             model: formulaModel
@@ -396,8 +418,14 @@ Item {
                     } else {
                         localbordercolor = "#05f91c"
                     }
+                    formulaSetting.selectIndex = index
+                    keyNum.titleText = formulaModel.get(index).formulaHead
+                    keyNum.maxvalue = formulaModel.get(index).maxValue
+                    keyNum.currentValue = formulaModel.get(index).currenValue
+                    keyNum.minvalue = formulaModel.get(index).minValue
+                    keyNum.visible = true
+                    backGround.visible = true
                 }
-
             }
         }
     }
@@ -422,7 +450,7 @@ Item {
                 if (radio1.bIsCheck) {
                     rec.anchors.leftMargin = 0
                     formulaSetting.myModel = formulaModel
-//                    checkText.text = formulaModel.get(0).identifier
+                    //                    checkText.text = formulaModel.get(0).identifier
                 }
             }
         }
@@ -572,5 +600,67 @@ Item {
         height: 70
         text: qsTr("Defalut Setting")
         textColor: "white"
+    }
+    Rectangle {
+        id: backGround
+        anchors.fill: parent
+        color: "black"
+        opacity: 0.7
+        visible: false
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+
+            }
+        }
+    }
+    KeyBoardNum {
+        id: keyNum
+        anchors.centerIn: parent
+        width: 962
+        height: 526
+        visible: false
+        titleText: qsTr("")
+        maxvalue: "12"
+        minvalue: "3"
+        currentValue: "123"
+        onCurrentClickIndex: {
+            if (index == 15) {
+                if (hmiAdaptor.comepareCurrentValue(keyNum.minvalue,keyNum.maxvalue,keyNum.currentValue)) {
+                    if (cooling1.myFocus) {
+                        coolingList[1] = keyNum.inputText
+                        cooling1.localbordercolor = "#0079c1"
+                        cooling1.myFocus = false
+                    } else if (cooling2.myFocus) {
+                        coolingList[4] = keyNum.inputText
+                        cooling2.localbordercolor = "#0079c1"
+                        cooling2.myFocus = false
+                    } else {
+                        gridRepeater.itemAt(formulaSetting.selectIndex).localbordercolor = "#0079c1"
+                        formulaModel.set(formulaSetting.selectIndex,{"currenValue":keyNum.inputText})
+                    }
+                    backGround.visible = false
+                    keyNum.visible = false
+                    keyNum.inputText = ""
+                    keyNum.tempValue = ""
+                }
+            } else if (index == 11) {
+                backGround.visible = false
+                keyNum.visible = false
+                keyNum.inputText = ""
+                keyNum.tempValue = ""
+            }
+        }
+        onInputTextChanged: {
+            if (cooling1.myFocus) {
+                cooling1.centervalue = keyNum.inputText
+            } else if (cooling2.myFocus) {
+                cooling2.centervalue = keyNum.inputText
+            } else {
+                if (keyNum.inputText != "") {
+                    formulaModel.set(formulaSetting.selectIndex,{"currenValue":keyNum.inputText})
+                }
+            }
+        }
     }
 }
