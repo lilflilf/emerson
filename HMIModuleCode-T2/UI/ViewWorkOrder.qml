@@ -276,6 +276,7 @@ Item {
             CButton {
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: 10
+                anchors.left: parent.left
                 width: parent.width
                 text: qsTr("OK")
                 iconSource: "qrc:/images/images/OK.png"
@@ -365,112 +366,99 @@ Item {
             anchors.leftMargin: 20
             anchors.topMargin: 10
         }
-    }
-
-    Text {
-        id: date
-        text: qsTr("Date and Time")
-        font.family: "arial"
-        color: "white"
-        font.pointSize: 16
-        anchors.top: workOrderName.bottom
-        anchors.left: parent.left
-        anchors.leftMargin: 20
-        anchors.topMargin: 15
-    }
-    Text {
-        id: from
-        text: qsTr("From:")
-        font.family: "arial"
-        color: "white"
-        font.pointSize: 16
-        anchors.top: date.bottom
-        anchors.left: parent.left
-        anchors.leftMargin: 20
-    }
-    CButton {
-        id: mycalendar
+        Text {
+            id: from
+            text: qsTr("From:")
+            font.family: "arial"
+            color: "white"
+            font.pointSize: 16
+            anchors.top: date.bottom
+            anchors.left: parent.left
+            anchors.leftMargin: 20
+        }
+        CButton {
+            id: mycalendar
             anchors.left: from.left
             anchors.top: from.bottom
             width: (parent.width-88)/2
-        z: 10
-        text: Qt.formatDateTime(new Date(), "yyyy-MM-dd")
-        height: 40
-        backgroundComponent: Rectangle {
-            anchors.fill: parent
-            color: "black"
-            border.color: "#1987ab"
-            border.width: 2
+            z: 10
+            text: Qt.formatDateTime(new Date(), "yyyy-MM-dd")
+            height: 40
+            backgroundComponent: Rectangle {
+                anchors.fill: parent
+                color: "black"
+                border.color: "#1987ab"
+                border.width: 2
+            }
+            onClicked: {
+                newCalendar.visible = !newCalendar.visible
+            }
         }
-        onClicked: {
-            newCalendar.visible = !newCalendar.visible
+        CButton {
+            width: (parent.width-88)/2
+            anchors.top: mycalendar.top
+            anchors.left: mycalendar.right
+            anchors.leftMargin: 20
+            z: 11
+            text: Qt.formatDateTime(new Date(), "hh:mm:ss")
+            height: 40
+            backgroundComponent: Rectangle {
+                anchors.fill: parent
+                color: "black"
+                border.color: "#1987ab"
+                border.width: 2
+            }
+            onClicked: {
+                newCalendar.visible = !newCalendar.visible
+            }
         }
-    }
-    CButton {
-        width: 170
-        anchors.top: mycalendar.top
-        anchors.left: mycalendar.right
-        anchors.leftMargin: 20
-        z: 11
-        text: Qt.formatDateTime(new Date(), "hh:mm:ss")
-        height: 40
-        backgroundComponent: Rectangle {
-            anchors.fill: parent
-            color: "black"
-            border.color: "#1987ab"
-            border.width: 2
+        Text {
+            id: to
+            text: qsTr("To:")
+            font.family: "arial"
+            color: "white"
+            font.pointSize: 16
+            anchors.top: mycalendar.bottom
+            anchors.left: parent.left
+            anchors.leftMargin: 20
         }
-        onClicked: {
-            newCalendar.visible = !newCalendar.visible
+        CButton {
+            id: mycalendar2
+            anchors.left: from.left
+            anchors.top: to.bottom
+            width: (parent.width-88)/2
+            z: 10
+            height: 40
+            text: Qt.formatDateTime(new Date(), "yyyy-MM-dd")
+            backgroundComponent: Rectangle {
+                anchors.fill: parent
+                color: "black"
+                border.color: "#1987ab"
+                border.width: 2
+            }
+            onClicked: {
+                newCalendar.visible = !newCalendar.visible
+            }
         }
-    }
-    Text {
-        id: to
-        text: qsTr("To:")
-        font.family: "arial"
-        color: "white"
-        font.pointSize: 16
-        anchors.top: mycalendar.bottom
-        anchors.left: parent.left
-        anchors.leftMargin: 20
-    }
-    CButton {
-        id: mycalendar2
-        anchors.left: from.left
-        anchors.top: to.bottom
-        width: 170
-        z: 10
-        height: 40
-        text: Qt.formatDateTime(new Date(), "yyyy-MM-dd")
-        backgroundComponent: Rectangle {
-            anchors.fill: parent
-            color: "black"
-            border.color: "#1987ab"
-            border.width: 2
+        CButton {
+            id: mytimeSelect
+            width: (parent.width-88)/2
+            anchors.top: mycalendar2.top
+            anchors.left: mycalendar2.right
+            anchors.leftMargin: 20
+            z: 10
+            text: Qt.formatDateTime(new Date(), "hh:mm:ss")
+            height: 40
+            backgroundComponent: Rectangle {
+                anchors.fill: parent
+                color: "black"
+                border.color: "#1987ab"
+                border.width: 2
+            }
+            onClicked: {
+                newCalendar.visible = !newCalendar.visible
+            }
         }
-        onClicked: {
-            newCalendar.visible = !newCalendar.visible
-        }
-    }
-    CButton {
-        id: mytimeSelect
-        width: 170
-        anchors.top: mycalendar2.top
-        anchors.left: mycalendar2.right
-        anchors.leftMargin: 20
-        z: 10
-        text: Qt.formatDateTime(new Date(), "hh:mm:ss")
-        height: 40
-        backgroundComponent: Rectangle {
-            anchors.fill: parent
-            color: "black"
-            border.color: "#1987ab"
-            border.width: 2
-        }
-        onClicked: {
-            newCalendar.visible = !newCalendar.visible
-        }
-    }
 
         Line {
             id: line3
@@ -562,7 +550,6 @@ Item {
             }
         }
     }
-
     Image {
         id: scrollUp
         anchors.top: rightItem.top
@@ -597,7 +584,7 @@ Item {
             id: button
             anchors.left: parent.left
             y: (listView.visibleArea.yPosition < 0 ) ? 0 : (listView.contentY+listView.height>listView.contentHeight) ?
-                scrollbar.height - button.height : listView.visibleArea.yPosition * scrollbar.height
+                                                           scrollbar.height - button.height : listView.visibleArea.yPosition * scrollbar.height
             width: 10
             height: listView.visibleArea.heightRatio * scrollbar.height;
             color: "#ccbfbf"
@@ -651,8 +638,8 @@ Item {
             id: button2
             anchors.top: parent.top
             x: 0
-//            y: (listView.visibleArea.yPosition < 0 ) ? 0 : (listView.contentY+listView.height>listView.contentHeight) ?
-//                scrollbar2.height - button2.height : listView.visibleArea.yPosition * scrollbar2.height
+            //            y: (listView.visibleArea.yPosition < 0 ) ? 0 : (listView.contentY+listView.height>listView.contentHeight) ?
+            //                scrollbar2.height - button2.height : listView.visibleArea.yPosition * scrollbar2.height
             width: scrollbar2.width / listView.width * scrollbar2.width //50
             height: 17 //listView.visibleArea.heightRatio * scrollbar2.height;
             color: "#ccbfbf"
