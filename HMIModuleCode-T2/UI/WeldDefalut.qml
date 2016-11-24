@@ -653,7 +653,7 @@ Item {
         currentValue: "123"
         onCurrentClickIndex: {
             if (index == 15) {
-                if (hmiAdaptor.comepareCurrentValue(keyNum.minvalue,keyNum.maxvalue,keyNum.currentValue)) {
+                if (hmiAdaptor.comepareCurrentValue(keyNum.minvalue,keyNum.maxvalue,keyNum.inputText)) {
                     if (cooling1.myFocus) {
                         coolingList[1] = keyNum.inputText
                         cooling1.localbordercolor = "#0079c1"

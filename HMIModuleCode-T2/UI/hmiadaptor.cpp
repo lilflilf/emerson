@@ -534,7 +534,9 @@ bool HmiAdaptor::comepareCurrentValue(QString minValue, QString maxValue, QStrin
     bool ok;
     QString minNum = getStringValue(minValue);
     QString maxNum = getStringValue(maxValue);
-    if (value.toFloat(&ok) >= minNum.toFloat(&ok) && value.toFloat(&ok) <= maxNum.toFloat(&ok)) {
+    QString theValue = getStringValue(value);
+    qDebug()<<"2222222222222"<<minNum<<maxNum<<theValue;
+    if (theValue.toFloat(&ok) >= minNum.toFloat(&ok) && theValue.toFloat(&ok) <= maxNum.toFloat(&ok)) {
         return true;
     } else {
         return false;
