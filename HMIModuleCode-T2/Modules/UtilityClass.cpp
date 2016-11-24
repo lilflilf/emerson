@@ -227,7 +227,7 @@ void UtilityClass::InitializeTextData()
     SetTextData(DINTime2Step, 0, MINTIME, MAXSTEPTIME, 2, 0.001, "%.2fs");
     SetTextData(DINCoolDur, 0, MINCOOLDUR, MAXCOOLDUR, 1, 0.01, "%.2fs");
     SetTextData(DINCoolDel, 0, MINCOOLDEL, MAXCOOLDEL, 1, 0.01, "%.2fs");
-    SetTextData(DINFormulaArea, 0, MINFORMULAAREA, MAXFORMULAAREA, 1, 1, "%.2fmm\u00b2");
+    SetTextData(DINFormulaArea, 0, MINFORMULAAREA, MAXFORMULAAREA, 1, 1, "%.2fmm²");
     SetTextData(DINFormulaEnergyOffset, 0, Minmm2EnergyOffset, Maxmm2EnergyOffset, 1, 1, "%.2fJ");
     SetTextData(DINFormulaEnergyMult, 0, Minmm2EnergyMult, Maxmm2EnergyMult, 1, 1, "%.2fJ" );
     SetTextData(DINFormulaWidthOffset, 0, 0, 0, 1, 1, "%dmm");
@@ -245,10 +245,10 @@ void UtilityClass::InitializeTextData()
         SetTextData(DINFormulaPressureOffset, 0, Minmm2PressOffset, Maxmm2PressOffset, 1, 1, "%.1fPSI");
         SetTextData(DINFormulaPressureMult, 0, Minmm2PressMult, Maxmm2PressMult, 1, 1, "%.2f");
     }
-    SetTextData(DINFormulaAmplitudeOffset, 0, Minmm2AmplitudeOffset, Maxmm2AmplitudeOffset, 1, 1, "%.2f\x003\x0bcm");
+    SetTextData(DINFormulaAmplitudeOffset, 0, Minmm2AmplitudeOffset, Maxmm2AmplitudeOffset, 1, 1, "%.2fμm");
     SetTextData(DINFormulaAmplitudeMult, 0, Minmm2AmplitudeMult, Maxmm2AmplitudeMult, 1, 1, "%.2f");
 
-    SetTextData(DINShrinkTubeTemperature, 0, ShrinkTubeMinTemp, ShrinkTubeMaxTemp, 1, 1, "%d\u2103");
+    SetTextData(DINShrinkTubeTemperature, 0, ShrinkTubeMinTemp, ShrinkTubeMaxTemp, 1, 1, "%d℃");
     SetTextData(DINShrinkTubeTime, 0, ShrinkTubeMinTime, ShrinkTubeMaxTime, 1, 1, "%.1fs");
     SetTextData(DINServerPortNumber, 0, MINSERVER_PORT_NUMBER, MAXSERVER_PORT_NUMBER, 1, 1, "%d");
     SetTextData(DINHornLimit, 0, MINHORNLIMIT, MAXHORNLIMIT, 1, 1, "%d");
@@ -276,9 +276,9 @@ QString UtilityClass::FormatedDataToString(ScreenShowDataType TypeIndex, int Dat
 {
     QString tmpStr;
     if(txtData[TypeIndex].Format.contains("d") == true)
-        tmpStr.sprintf(txtData[TypeIndex].Format.toLatin1().data(),(int)(Data * txtData[TypeIndex].Factor));
+        tmpStr.sprintf(txtData[TypeIndex].Format.toStdString().c_str(),(int)(Data * txtData[TypeIndex].Factor));
     else if(txtData[TypeIndex].Format.contains("f") == true)
-        tmpStr.sprintf(txtData[TypeIndex].Format.toLatin1().data(),(float)(Data * txtData[TypeIndex].Factor));
+        tmpStr.sprintf(txtData[TypeIndex].Format.toStdString().c_str(),(float)(Data * txtData[TypeIndex].Factor));
     else
         tmpStr.clear();
     return tmpStr;
@@ -288,9 +288,9 @@ QString UtilityClass::FormatedDataToString(ScreenShowDataType TypeIndex, long Da
 {
     QString tmpStr;
     if(txtData[TypeIndex].Format.contains("d") == true)
-        tmpStr.sprintf(txtData[TypeIndex].Format.toLatin1().data(),(long)(Data * txtData[TypeIndex].Factor));
+        tmpStr.sprintf(txtData[TypeIndex].Format.toStdString().c_str(),(long)(Data * txtData[TypeIndex].Factor));
     else if(txtData[TypeIndex].Format.contains("f") == true)
-        tmpStr.sprintf(txtData[TypeIndex].Format.toLatin1().data(),(float)(Data * txtData[TypeIndex].Factor));
+        tmpStr.sprintf(txtData[TypeIndex].Format.toStdString().c_str(),(float)(Data * txtData[TypeIndex].Factor));
     else
         tmpStr.clear();
     return tmpStr;
@@ -300,9 +300,9 @@ QString UtilityClass::FormatedDataToString(ScreenShowDataType TypeIndex, float D
 {
     QString tmpStr;
     if(txtData[TypeIndex].Format.contains("d") == true)
-        tmpStr.sprintf(txtData[TypeIndex].Format.toLatin1().data(),(float)(Data * txtData[TypeIndex].Factor));
+        tmpStr.sprintf(txtData[TypeIndex].Format.toStdString().c_str(),(float)(Data * txtData[TypeIndex].Factor));
     else if(txtData[TypeIndex].Format.contains("f") == true)
-        tmpStr.sprintf(txtData[TypeIndex].Format.toLatin1().data(),(float)(Data * txtData[TypeIndex].Factor));
+        tmpStr.sprintf(txtData[TypeIndex].Format.toStdString().c_str(),(float)(Data * txtData[TypeIndex].Factor));
     else
         tmpStr.clear();
     return tmpStr;

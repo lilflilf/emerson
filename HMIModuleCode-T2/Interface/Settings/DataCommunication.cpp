@@ -31,7 +31,6 @@ bool DataCommunication::_Recall()
         tmperature = _Interface->StatusData.ShrinkTubeDefaults.at(i).temp;
         str = _Utility->FormatedDataToString(DINShrinkTubeTemperature,tmperature);
         tmpShrinkTube.Temp = str;
-        qDebug()<<"Temp(℃)"<<str;
         time = _Interface->StatusData.ShrinkTubeDefaults.at(i).Time;
         str = _Utility->FormatedDataToString(DINShrinkTubeTime, time);
         tmpShrinkTube.Time = str;
