@@ -193,6 +193,7 @@ Item {
                 font.pixelSize: 20
                 color: "white"
                 clip: true
+                elide: Text.ElideRight
                 text: qsTr(title)
             }
         }
@@ -325,8 +326,8 @@ Item {
                 drag.maximumX: scrollbar2.width - button2.width
             }
             onXChanged: {
-                listView.anchors.leftMargin = -button2.x*1.1 + 20
-                headTitle.anchors.leftMargin = -button2.x*1.1 + 20
+                listView.anchors.leftMargin = -button2.x/scrollbar2.width*headTitle.width + 20
+                headTitle.anchors.leftMargin = -button2.x/scrollbar2.width*headTitle.width + 20
             }
         }
     }
@@ -398,9 +399,11 @@ Item {
         anchors.bottomMargin: 20
         anchors.right: parent.right
         anchors.rightMargin: 20
+        anchors.left: leftArea.right
+        anchors.leftMargin: 20
         spacing: 18
         CButton {
-            width: 250
+            width: (parent.width-54)/4
             textColor: "white"
             text: qsTr("Edit Details")
             onClicked: {
@@ -408,19 +411,19 @@ Item {
             }
         }
         CButton {
-            width: 250
+            width: (parent.width-54)/4
             textColor: "white"
             text: qsTr("Delete")
             onClicked: {
             }
         }
         CButton {
-            width: 250
+            width: (parent.width-54)/4
             textColor: "white"
             text: qsTr("Export")
         }
         CButton {
-            width: 250
+            width: (parent.width-54)/4
             textColor: "white"
             text: qsTr("Back")
         }
