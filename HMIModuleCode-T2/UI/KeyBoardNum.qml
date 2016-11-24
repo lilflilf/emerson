@@ -160,10 +160,11 @@ Item {
                     onClicked: {
                         if (index == 3) {
                             var TempSTring = ""
-                            for (var i = 0; i < inputText.length-1;i++) {
-                                TempSTring += inputText.charAt(i)
+                            for (var i = 0; i < tempValue.length-1;i++) {
+                                TempSTring += tempValue.charAt(i)
                             }
-                            inputText = TempSTring
+                            tempValue = TempSTring
+                            inputText = TempSTring + hmiAdaptor.getStringUnit(keyBoardnum.minvalue)
                         } else if (index == 7) {
                             inputText = ""
                             tempValue = ""

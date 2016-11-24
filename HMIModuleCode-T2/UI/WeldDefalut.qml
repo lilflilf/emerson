@@ -34,8 +34,9 @@ Item {
 
         var list = new Array();
         list = hmiAdaptor.weldDefaultsGetValue(-1)
-        coolingModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2]})
-        coolingModel.append({"formulaHead":"Range","maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
+        coolingList = list
+//        coolingModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2]})
+//        coolingModel.append({"formulaHead":"Range","maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
 
         list = hmiAdaptor.weldDefaultsGetValue(0)
         checkText.text = list[9]
@@ -299,7 +300,7 @@ Item {
             centervalue: coolingList[4] //hmiAdaptor.weldDefaultsGetValue(-1)[4] //qsTr("100s")
             onMouseAreaClick: {
                 localbordercolor = "#05f91c"
-                keyNum.titleText = cooling1.headTitle
+                keyNum.titleText = cooling2.headTitle
                 keyNum.maxvalue = coolingList[3]
                 keyNum.currentValue = coolingList[4]
                 keyNum.minvalue = coolingList[5]
@@ -672,6 +673,15 @@ Item {
                     keyNum.tempValue = ""
                 }
             } else if (index == 11) {
+                if (cooling1.myFocus) {
+                    cooling1.localbordercolor = "#0079c1"
+                    cooling1.myFocus = false
+                } else if (cooling2.myFocus) {
+                    cooling2.localbordercolor = "#0079c1"
+                    cooling2.myFocus = false
+                } else {
+                    gridRepeater.itemAt(formulaSetting.selectIndex).localbordercolor = "#0079c1"
+                }
                 backGround.visible = false
                 keyNum.visible = false
                 keyNum.inputText = ""
