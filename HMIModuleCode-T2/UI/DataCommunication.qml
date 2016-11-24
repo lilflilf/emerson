@@ -8,6 +8,40 @@ Item {
     property int selectIndx: -1
     width: parent.width
     height: parent.height
+    property var shrinkLimit: "" //   MaxmmTemp MinmmTemp MaxmmTime MinmmTime;
+
+    Component.onCompleted: {
+        initPage()
+        titleModel.append({title:"Shrink Tube Id"})
+        titleModel.append({title:"Temp(℃)"})
+        titleModel.append({title:"Time(S)"})
+    }
+
+    function initPage()
+    {
+        networkSwitch.state = hmiAdaptor.dataCommunicationGetSwitch("Network(Ethernet)") ? "right" : "left";
+        remoteSwitch.state = hmiAdaptor.dataCommunicationGetSwitch("Remote Data Logging") ? "right" : "left";
+        graphSwitch.state = hmiAdaptor.dataCommunicationGetSwitch("Graph Data") ? "right" : "left";
+        modularSwitch.state = hmiAdaptor.dataCommunicationGetSwitch("Modular Producation Mode") ? "right" : "left";
+        serverPortEdit.inputText = hmiAdaptor.dataCommunicationGetValue("IpPort")[2];
+        ipConfig.text = hmiAdaptor.dataCommunicationGetValue("IpPort")[0];
+        var list = new Array()
+        list = hmiAdaptor.dataCommunicationGetValue("shrinkLimit");
+        shrinkLimit = list;
+
+        testModel.clear()
+        list = hmiAdaptor.dataCommunicationGetValue("shrinkData")
+        {
+            if (list.length % 3 == 0)
+            {
+                for (var i = 0 ;i < list.length / 3; i++)
+                {
+                    testModel.append({shrinkid:list[i*3],temperature:list[i*3+1],times:list[i*3+2]})
+                }
+            }
+        }
+    }
+
     Image {
         anchors.fill: parent
         source: "qrc:/images/images/bg.png"
@@ -36,7 +70,7 @@ Item {
             anchors.right: parent.right
             anchors.rightMargin: 10
             width: parent.width*0.5
-            state: "right"
+//            state: "right"
             textLeft: qsTr("off")
             textRight: qsTr("on")
             clip: true
@@ -53,6 +87,7 @@ Item {
             text: qsTr("Server Port")
         }
         MyLineEdit {
+            id: serverPortEdit
             anchors.verticalCenter: serverPort.verticalCenter
             anchors.left: networkSwitch.left
             width: parent.width*0.5
@@ -90,7 +125,7 @@ Item {
             anchors.left: networkSwitch.left
             anchors.verticalCenter: remoteText.verticalCenter
             width: parent.width*0.5
-            state: "left"
+//            state: "left"
             textLeft: qsTr("off")
             textRight: qsTr("on")
             clip: true
@@ -112,7 +147,7 @@ Item {
             anchors.left: networkSwitch.left
             anchors.verticalCenter: graphText.verticalCenter
             width: parent.width*0.5
-            state: "left"
+//            state: "left"
             textLeft: qsTr("off")
             textRight: qsTr("on")
             visible: remoteSwitch.on
@@ -134,7 +169,7 @@ Item {
             anchors.left: networkSwitch.left
             anchors.verticalCenter: modularText.verticalCenter
             width: parent.width*0.5
-            state: "right"
+//            state: "right"
             textLeft: qsTr("off")
             textRight: qsTr("on")
             clip: true
@@ -144,16 +179,18 @@ Item {
             anchors.left: networkText.left
             anchors.right: parent.right
             anchors.rightMargin: 10
-            anchors.top: modularText.bottom
-            anchors.topMargin: 34
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: 24
+            anchors.bottomMargin: 10
             spacing: 10
             CButton {
                 text: qsTr("Defalut Setting")
                 textColor: "white"
                 clip: true
                 width: columnButton.width
+                onClicked: {
+                    hmiAdaptor.dataCommunicationExecute("_Recall")
+                    initPage()
+                }
             }
             CButton {
                 iconSource: "qrc:/images/images/cancel.png"
@@ -168,6 +205,23 @@ Item {
                 textColor: "white"
                 clip: true
                 width: columnButton.width
+                onClicked: {
+
+                    var boolList = new Array()
+                    boolList.push(networkSwitch.state == "right")
+                    boolList.push(remoteSwitch.state == "right")
+                    boolList.push(graphSwitch.state == "right")
+                    boolList.push(modularSwitch.state == "right")
+                    var strList = new Array()
+                    for (var i = 0 ; i < testModel.count; i++)
+                    {
+                        strList.push(testModel.get(i).shrinkid)
+                        strList.push(testModel.get(i).temperature)
+                        strList.push(testModel.get(i).times)
+                    }
+                    hmiAdaptor.dataCommunicationSetValue(boolList,strList,ipConfig.text,serverPortEdit.inputText)
+                    hmiAdaptor.dataCommunicationExecute("_Set")
+                }
             }
         }
     }
@@ -186,28 +240,6 @@ Item {
         }
         ListModel {
             id: titleModel
-            Component.onCompleted: {
-                titleModel.append({title:"Shrink Tube Id"})
-                titleModel.append({title:"Temp(℃)"})
-                titleModel.append({title:"Time(S)"})
-                testModel.append({shrinkid:"1111111111111111111",temperature:"26",times:"300"})
-                testModel.append({shrinkid:"1111111111111111111",temperature:"26",times:"300"})
-                testModel.append({shrinkid:"1111111111111111111",temperature:"26",times:"300"})
-                testModel.append({shrinkid:"1111111111111111111",temperature:"26",times:"300"})
-                testModel.append({shrinkid:"1111111111111111111",temperature:"26",times:"300"})
-                testModel.append({shrinkid:"1111111111111111111",temperature:"26",times:"300"})
-                testModel.append({shrinkid:"1111111111111111111",temperature:"26",times:"300"})
-                testModel.append({shrinkid:"1111111111111111111",temperature:"26",times:"300"})
-                testModel.append({shrinkid:"1111111111111111111",temperature:"26",times:"300"})
-                testModel.append({shrinkid:"1111111111111111111",temperature:"26",times:"300"})
-                testModel.append({shrinkid:"1111111111111111111",temperature:"26",times:"300"})
-                testModel.append({shrinkid:"1111111111111111111",temperature:"26",times:"300"})
-                testModel.append({shrinkid:"1111111111111111111",temperature:"26",times:"300"})
-                testModel.append({shrinkid:"1111111111111111111",temperature:"26",times:"300"})
-                testModel.append({shrinkid:"1111111111111111111",temperature:"26",times:"300"})
-                testModel.append({shrinkid:"1111111111111111111",temperature:"26",times:"300"})
-                testModel.append({shrinkid:"1111111111111111111",temperature:"26",times:"300"})
-            }
         }
 
         Row {

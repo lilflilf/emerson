@@ -182,13 +182,13 @@ Item {
         anchors.bottomMargin: 20
         spacing: 50
         Text {
-            text: qsTr("ActuatorPart Number: xxx-xxx\n\nActuatorSerial Number:xxx-xxx")
+            text: qsTr("Actuator Part Number: xxx-xxx\n\nActuator Serial Number:xxx-xxx")
             color: "white"
             font.family: "arial"
             font.pointSize: 14
         }
         Text {
-            text: qsTr("Software Verson Number: xxx-xxx\n\nActuatorModule:xxx-xxx")
+            text: qsTr("Actuator Software Verson Number: xxx-xxx\n\nActuator Module:xxx-xxx")
             color: "white"
             font.family: "arial"
             font.pointSize: 14
