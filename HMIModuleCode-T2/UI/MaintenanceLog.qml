@@ -330,7 +330,7 @@ Item {
                 newCalendar.visible = !newCalendar.visible
             }
         }
-        MyTimeSelect {
+        CButton {
             id: timeSet
             width: (parent.width-88)/2
             anchors.top: mycalendar2.top

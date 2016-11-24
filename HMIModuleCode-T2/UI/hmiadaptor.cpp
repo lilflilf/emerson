@@ -405,8 +405,9 @@ bool HmiAdaptor::dataCommunicationExecute(QString code)
     else if (code == "_Set") {
         return dataCommunication->_Set();
     }
-    else if (code == "_Default")
-        dataCommunication->_Default();
+    else if (code == "_Default") {
+//        dataCommunication->_Default();
+    }
     return true;
 }
 
