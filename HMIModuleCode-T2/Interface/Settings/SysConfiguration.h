@@ -467,14 +467,12 @@ public:
     QString CentralComputerID;
 
     enum ACTUATORMODE ActuatorMode;
+    QString ActuatorVersion;
+    QString ActuatorPartNumber;
+    QString ActuatorSerialNumber;
+    QString ActuatorModuleNumber;
     int AntisideSpliceTime;
-
-
-
     int LockonAlarm;
-
-
-
     long CycleCount;
     long MaintenanceLimits[8];
     long CurrentMaintenanceLimits[8];

@@ -380,6 +380,11 @@ void M10INI::Init_StatusData()
         _Interface->DefaultStatusData.MaintenanceDateStarted[i] = 0;
     }
 
+    _Interface->DefaultStatusData.ActuatorVersion.clear();
+    _Interface->DefaultStatusData.ActuatorPartNumber.clear();
+    _Interface->DefaultStatusData.ActuatorSerialNumber.clear();
+    _Interface->DefaultStatusData.ActuatorModuleNumber.clear();
+
     SetDefaultWeldFormula(&_Interface->DefaultStatusData);
     SetDefaultPassword(&_Interface->DefaultStatusData);
     SetShrinkTubeDefaults(&_Interface->DefaultStatusData);

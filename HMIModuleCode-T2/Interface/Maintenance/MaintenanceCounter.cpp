@@ -296,5 +296,13 @@ bool MaintenanceCounter::_recall()
             = TimeLabel.toString("MM/dd/yyyy");
     }
 
+    Str = _Interface->StatusData.ActuatorVersion;
+    CurrentMaintenanceCounter.ActuatorSoftwareVersion = Str;
+    Str = _Interface->StatusData.ActuatorPartNumber;
+    CurrentMaintenanceCounter.ActuatorPartNumber = Str;
+    Str = _Interface->StatusData.ActuatorSerialNumber;
+    CurrentMaintenanceCounter.ActuatorSerialNumber = Str;
+    Str = _Interface->StatusData.ActuatorModuleNumber;
+    CurrentMaintenanceCounter.ActuatorModuleNumber = Str;
     return true;
 }

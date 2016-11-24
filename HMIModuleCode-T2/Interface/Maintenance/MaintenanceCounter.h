@@ -35,6 +35,10 @@ struct MaintenanceCounterForScreen
     QString ConverterDateStarted;
     QString ActuatorCurrentCount;
     QString ActuatorDateStarted;
+    QString ActuatorSoftwareVersion;
+    QString ActuatorPartNumber;
+    QString ActuatorSerialNumber;
+    QString ActuatorModuleNumber;
 };
 
 class MaintenanceCounter : public Maintenance

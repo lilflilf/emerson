@@ -144,6 +144,12 @@ Status_Data Status_Data::operator=(const Status_Data &StatusDataObj) const
     Obj.FootPedalFlag = StatusDataObj.FootPedalFlag;
     Obj.ServerPort = StatusDataObj.ServerPort;
     Obj.ModularProductionEnabled = StatusDataObj.ModularProductionEnabled;
+
+    Obj.ActuatorModuleNumber = StatusDataObj.ActuatorModuleNumber;
+    Obj.ActuatorPartNumber = StatusDataObj.ActuatorPartNumber;
+    Obj.ActuatorSerialNumber = StatusDataObj.ActuatorSerialNumber;
+    Obj.ActuatorVersion = StatusDataObj.ActuatorVersion;
+
     return Obj;
 }
 
