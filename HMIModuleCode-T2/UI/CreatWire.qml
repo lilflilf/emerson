@@ -1494,8 +1494,8 @@ Item {
         height: 500
         visible: false
         titleText: qsTr("My TEST")
-        maxvalue: 12
-        minvalue: 3
+        maxvalue: "12"
+        minvalue: "3"
         currentValue: "123"
     }
 }

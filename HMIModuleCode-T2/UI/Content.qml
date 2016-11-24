@@ -281,6 +281,13 @@ Item {
                 regExp: RegExpValidator{regExp: /([1-9]|1[0-9]|20)/}
                 opacity: 0.7
                 tipsSize: 14
+                onInputFocusChanged: {
+                    if (edit1.inputFocus) {
+                        backGround.visible = true
+                        backGround.opacity = 0.5
+                        keyNum.visible = true
+                    }
+                }
                 onTextChange: {
                     getAllWorkstationColor(text)
                     workStationcolor.allWorkTotal = text
@@ -490,7 +497,7 @@ Item {
             anchors.top: parent.top
             anchors.topMargin: 4
             anchors.right: boardlayout.right
-            anchors.left: edit6.right
+            width: parent.width*0.26
             color: "#052a40"
             height: 43
             Text {
@@ -500,9 +507,11 @@ Item {
                 width: parent.width-40
                 anchors.verticalCenter: parent.verticalCenter
                 horizontalAlignment: Qt.AlignHCenter
+                clip: true
+                elide: Text.ElideRight
                 text: qsTr("Template")
                 font.family: "arial"
-                font.pixelSize: 16
+                font.pixelSize: 27
                 color: "#969ea5"
             }
             Image {
@@ -1101,6 +1110,31 @@ Item {
                 addnewBlack.visible = false
                 temPlateDialog.visible = false
                 addNewBack.opacity = 0
+            }
+        }
+    }
+    KeyBoardNum {
+        id: keyNum
+        anchors.centerIn: parent
+        width: 962
+        height: 526
+        visible: false
+        titleText: qsTr("")
+        maxvalue: "12"
+        minvalue: "3"
+        currentValue: "123"
+        onCurrentClickIndex: {
+            if (index == 15) {
+                backGround.visible = false
+                backGround.opacity = 0
+                keyNum.visible = false
+            }
+        }
+        onInputTextChanged: {
+            if (edit1.inputFocus) {
+                if (hmiAdaptor.stringRegexMatch("([1-9]|1[0-9]|20)",keyNum.inputText)) {
+                    edit1.inputText = keyNum.inputText
+                }
             }
         }
     }

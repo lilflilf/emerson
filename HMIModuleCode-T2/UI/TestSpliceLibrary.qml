@@ -31,6 +31,61 @@ Item {
             loader.source = ""
         }
     }
+    Row {
+        id: headTitle
+        anchors.left: parent.left
+        anchors.leftMargin: 52
+        anchors.top: parent.top
+        anchors.topMargin: 30
+        anchors.right: parent.right
+        anchors.rightMargin: 52
+        height: 50
+        spacing: 40
+        Text {
+            anchors.verticalCenter: parent.verticalCenter
+            verticalAlignment: Qt.AlignVCenter
+            width: (parent.width-120)/4
+            color: "white"
+            font.pixelSize: 25
+            font.family: "arial"
+            clip: true
+            elide: Text.ElideRight
+            text: qsTr("SPLICE NAME")
+        }
+        Text {
+            anchors.verticalCenter: parent.verticalCenter
+            verticalAlignment: Qt.AlignVCenter
+            width: (parent.width-120)/4
+            color: "white"
+            font.pixelSize: 25
+            font.family: "arial"
+            clip: true
+            elide: Text.ElideRight
+            text: qsTr("DATE CREATED")
+        }
+        Text {
+            anchors.verticalCenter: parent.verticalCenter
+            verticalAlignment: Qt.AlignVCenter
+            width: (parent.width-120)/4
+            color: "white"
+            font.pixelSize: 25
+            font.family: "arial"
+            clip: true
+            elide: Text.ElideRight
+            text: qsTr("#OF WIRES")
+        }
+        Text {
+            anchors.verticalCenter: parent.verticalCenter
+            verticalAlignment: Qt.AlignVCenter
+            width: (parent.width-120)/4
+            color: "white"
+            font.pixelSize: 25
+            font.family: "arial"
+            clip: true
+            elide: Text.ElideRight
+            text: qsTr("QLIANTITY")
+        }
+    }
     ListModel {
         id: listModel
         Component.onCompleted: {
@@ -48,62 +103,9 @@ Item {
             listModel.append({"name":"work order id5","date":"2016/10/13","middle":"123","count":"123","opacityValue":"0"})
         }
     }
-    Text {
-        id: head1
-        anchors.top: parent.top
-        anchors.topMargin: 10
-        anchors.left: parent.left
-        anchors.leftMargin: 52
-        width: (parent.width-104)/4
-        horizontalAlignment: Qt.AlignHCenter
-        color: "white"
-        font.pixelSize: 25
-        clip: true
-        font.family: "arial"
-        text: qsTr("SPLICE NAME")
-    }
-    Text {
-        id: head2
-        anchors.top: parent.top
-        anchors.topMargin: 14
-        anchors.left: head1.right
-        width: (parent.width-104)/4
-        horizontalAlignment: Qt.AlignHCenter
-        color: "white"
-        font.pixelSize: 25
-        clip: true
-        font.family: "arial"
-        text: qsTr("DATE CREATED")
-    }
-    Text {
-        id: head3
-        anchors.top: parent.top
-        anchors.topMargin: 14
-        anchors.left: head2.right
-        width: (parent.width-104)/4
-        horizontalAlignment: Qt.AlignHCenter
-        color: "white"
-        font.pixelSize: 25
-        clip: true
-        font.family: "arial"
-        text: qsTr("#OF WIRES")
-    }
-    Text {
-        id: head4
-        anchors.top: parent.top
-        anchors.topMargin: 14
-        anchors.left: head3.right
-        width: (parent.width-104)/4
-        horizontalAlignment: Qt.AlignHCenter
-        color: "white"
-        font.pixelSize: 25
-        font.family: "arial"
-        clip: true
-        text: qsTr("QLIANTITY")
-    }
     Rectangle {
         id: tipsRec
-        anchors.top: head1.bottom
+        anchors.top: headTitle.bottom
         anchors.topMargin: 20
         anchors.left: parent.left
         anchors.leftMargin: 20
@@ -127,9 +129,9 @@ Item {
         id: listView
         anchors.top: tipsRec2.bottom
         anchors.left: parent.left
-        anchors.leftMargin: 20
+        anchors.leftMargin: 52
         anchors.bottom: bottomTip.top
-        width: parent.width - 60
+        width: parent.width - 104
         clip: true
         model: spliceModel
         delegate: listDelegate
@@ -197,54 +199,54 @@ Item {
                 id: headName
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
-                anchors.leftMargin: 48
-                width: (parent.width-96)/4
-                horizontalAlignment: Qt.AlignLeft
+                verticalAlignment: Qt.AlignVCenter
+                width: (parent.width-120)/4
                 elide: Text.ElideRight
                 text: name
                 clip: true
                 color: "white"
-                font.pointSize: 20
+                font.pixelSize: 20
                 font.family: "arial"
             }
             Text {
                 id: headData
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: headName.right
-                width: (parent.width-96)/4
-                horizontalAlignment: Qt.AlignCenter
+                anchors.leftMargin: 40
+                verticalAlignment: Qt.AlignVCenter
+                width: (parent.width-120)/4
                 text: date
                 clip: true
                 color: "white"
-                font.pointSize: 20
+                font.pixelSize: 20
                 font.family: "arial"
             }
             Text {
                 id: headMiddle
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: headData.right
-                anchors.leftMargin: 24
-                width: (parent.width-96)/4-24
-                horizontalAlignment: Qt.AlignLeft
+                anchors.leftMargin: 40
+                verticalAlignment: Qt.AlignVCenter
+                width: (parent.width-120)/4
                 text: middle
                 elide: Text.ElideRight
                 clip: true
                 color: "white"
-                font.pointSize: 20
+                font.pixelSize: 20
                 font.family: "arial"
             }
             Text {
                 id: headCount
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: headMiddle.right
-                anchors.leftMargin: (parent.width-96)/12
-                horizontalAlignment: Qt.AlignLeft
-                width: (parent.width-96)/12
+                anchors.leftMargin: 40
+                verticalAlignment: Qt.AlignVCenter
+                width: (parent.width-120)/4
                 text: count
                 elide: Text.ElideRight
                 color: "white"
                 clip: true
-                font.pointSize: 20
+                font.pixelSize: 20
                 font.family: "arial"
             }
             MouseArea {

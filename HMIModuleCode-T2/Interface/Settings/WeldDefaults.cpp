@@ -4,6 +4,8 @@
 #include "Modules/M10INI.h"
 #include "Modules/M10definitions.h"
 #include "Modules/UtilityClass.h"
+#include <QDebug>
+
 WeldDefaults::WeldDefaults(QObject *parent) : QObject(parent)
 {
 }
@@ -232,6 +234,7 @@ bool WeldDefaults::_Recall()
 
 bool WeldDefaults::_Set()
 {
+    qDebug() << "WeldDefaults set srart";
     InterfaceClass* _Interface = InterfaceClass::Instance();
     UtilityClass* _Utility = UtilityClass::Instance();
 
@@ -365,5 +368,6 @@ bool WeldDefaults::_Set()
         _Interface->StatusData.WeldSettings4Build[i].Multplier = multiplier;
 
     }
+    qDebug() << "WeldDefaults set end";
     return true;
 }

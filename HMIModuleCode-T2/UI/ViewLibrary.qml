@@ -297,7 +297,7 @@ Item {
             id: button2
             anchors.top: parent.top
             x: 0
-            width: scrollbar2.width / listView.width * scrollbar2.width
+            width: scrollbar2.width / headTitle.width * scrollbar2.width
             height: 17
             color: "#ccbfbf"
             radius: 10
@@ -311,8 +311,8 @@ Item {
                 drag.maximumX: scrollbar2.width - button2.width
             }
             onXChanged: {
-                listView.anchors.leftMargin = -button2.x*1.1
-                headTitle.anchors.leftMargin = -button2.x*1.1
+                listView.anchors.leftMargin = -button2.x*1.1 + 20
+                headTitle.anchors.leftMargin = -button2.x*1.1 + 20
             }
         }
     }

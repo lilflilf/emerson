@@ -6,11 +6,19 @@ import QtQuick.Window 2.2
 
 Item {
     id: timeSelect
-    property var text: ""
-    property var dateValue: ""
-
+    property string timeValue: ""
+    property string dateValue: ""
     width: 691
     height: 396
+    onVisibleChanged: {
+        var temp = Qt.formatDateTime(new Date(), "hh")
+        time.currentIndex = temp
+        temp = Qt.formatDateTime(new Date(), "mm")
+        mint.currentIndex = temp
+        temp = Qt.formatDateTime(new Date(), "ss")
+        second.currentIndex = temp
+    }
+
     Image {
         id: bg
         anchors.fill: parent
@@ -27,10 +35,8 @@ Item {
         anchors.leftMargin: 13
         activeFocusOnTab: true
         onReleased: {
-            timeSelect.text = date;
-            timeSelect.text = timeSelect.text.substr(0, 10);
-            timeSelect.dateValue = timeSelect.text;
-            visible = false;
+            timeSelect.dateValue = date
+            timeSelect.dateValue = timeSelect.dateValue.substr(0, 10)
         }
 
         style: CalendarStyle {
@@ -176,7 +182,7 @@ Item {
         anchors.bottomMargin: 15
         horizontalAlignment: Qt.AlignHCenter
     }
-    ListView {
+    PathView {
         id: time
         model: 24
         width: 59
@@ -185,26 +191,30 @@ Item {
         anchors.bottomMargin: 20
         anchors.left: calendar.right
         highlightRangeMode: ListView.StrictlyEnforceRange;
-        preferredHighlightBegin: height / 2.5;
-        preferredHighlightEnd: height / 2.5;
+        preferredHighlightBegin: 0.5;
+        preferredHighlightEnd: 0.5;
         clip: true;
-        delegate: Text {
-            id: modelRect
+        pathItemCount: 7;
+        path: Path {
+            startY: 0
+            startX: 30 //0//pathMargin
+            PathLine { y: second.height; x: 30 }
+        }
+        delegate: Item {
             height: 33
             width: time.width
-            text: index//qsTr("index")
-            font.family: "arial"
-            color: modelRect.ListView.isCurrentItem ? "blue" : "white";
-            font.pointSize: 20
-            horizontalAlignment: Qt.AlignHCenter
-            onColorChanged: {
-                if (modelRect.color == "#0000ff") {
-                    hourText.inputText = index
-//                    var str = timeSelect.text
-//                    var myList = new Array();
-//                    myList = str.split(":")
-//                    myList[0] = index
-//                    timeSelect.text = myList[0] + ":" + myList[1] + ":" + myList[2]
+            Text {
+                id: modelRect
+                anchors.centerIn: parent
+                text: index//qsTr("index")
+                font.family: "arial"
+                color: time.currentIndex == index ? "blue" : "white";
+                font.pointSize: 20
+                onColorChanged: {
+                    if (modelRect.color == "#0000ff") {
+                        hourText.inputText = index
+                        timeSelect.timeValue = hourText.inputText + ":" + minuteText.inputText + ":" + secondText.inputText
+                    }
                 }
             }
         }
@@ -219,6 +229,13 @@ Item {
         anchors.fill: mint
         source: "qrc:/images/images/timeSlidDown.png"
     }
+    Text {
+        text: ":"
+        color: "white"
+        anchors.right: minuteText.left
+        anchors.verticalCenter: minuteText.verticalCenter
+        font.pointSize: 20
+    }
     MyLineEdit {
         id: minuteText
         width: 59
@@ -230,7 +247,7 @@ Item {
         anchors.bottomMargin: 15
         horizontalAlignment: Qt.AlignHCenter
     }
-    ListView {
+    PathView {
         id: mint
         model: 60
         width: 59
@@ -239,26 +256,31 @@ Item {
         anchors.left: time.right
         anchors.leftMargin: 15
         highlightRangeMode: ListView.StrictlyEnforceRange;
-        preferredHighlightBegin: height / 2.5;
-        preferredHighlightEnd: height / 2.5;
+        preferredHighlightBegin: 0.5;
+        preferredHighlightEnd: 0.5;
         clip: true;
-        delegate: Text {
-            id: modelRect2
+        pathItemCount: 7;
+        path: Path {
+            startY: 0
+            startX: 30 //0//pathMargin
+            PathLine { y: second.height; x: 30 }
+        }
+        delegate: Item {
             height: 33
             width: time.width
-            text: index//qsTr("index")
-            font.family: "arial"
-            color: modelRect2.ListView.isCurrentItem ? "blue" : "white";
-            font.pointSize: 20
-            horizontalAlignment: Qt.AlignHCenter
-            onColorChanged: {
-                if (modelRect2.color == "#0000ff") {
-                    minuteText.inputText = index
-//                    var str = timeSelect.text
-//                    var myList = new Array();
-//                    myList = str.split(":")
-//                    myList[1] = index
-//                    timeSelect.text = myList[0] + ":" + myList[1] + ":" + myList[2]
+            Text {
+                id: modelRect2
+                anchors.centerIn: parent
+                text: index//qsTr("index")
+                font.family: "arial"
+                color: mint.currentIndex == index ? "blue" : "white";
+                font.pointSize: 20
+                onColorChanged: {
+                    if (modelRect2.color == "#0000ff") {
+                        minuteText.inputText = index
+                        timeSelect.timeValue = hourText.inputText + ":" + minuteText.inputText + ":" + secondText.inputText
+
+                    }
                 }
             }
         }
@@ -272,6 +294,13 @@ Item {
         anchors.fill: second
         source: "qrc:/images/images/timeSlidDown.png"
     }
+    Text {
+        text: ":"
+        color: "white"
+        anchors.right: secondText.left
+        anchors.verticalCenter: secondText.verticalCenter
+        font.pointSize: 20
+    }
     MyLineEdit {
         id: secondText
         width: 59
@@ -284,8 +313,7 @@ Item {
         horizontalAlignment: Qt.AlignHCenter
 
     }
-
-    ListView {
+    PathView {
         id: second
         model: 60
         width: 59
@@ -294,26 +322,31 @@ Item {
         anchors.left: mint.right
         anchors.leftMargin: 15
         highlightRangeMode: ListView.StrictlyEnforceRange;
-        preferredHighlightBegin: height / 2.5;
-        preferredHighlightEnd: height / 2.5;
+        preferredHighlightBegin: 0.5 //height / 2.5;
+        preferredHighlightEnd: 0.5 //height / 2.5;
         clip: true;
-        delegate: Text {
-            id: modelRect3
+        pathItemCount: 7;
+        path: Path {
+            startY: 0
+            startX: 30 //0//pathMargin
+            PathLine { y: second.height; x: 30 }
+        }
+        delegate: Item {
             height: 33
             width: time.width
-            text: index//qsTr("index")
-            font.family: "arial"
-            color: modelRect3.ListView.isCurrentItem ? "blue" : "white";
-            font.pointSize: 20
-            horizontalAlignment: Qt.AlignHCenter
-            onColorChanged: {
-                if (modelRect3.color == "#0000ff") {
-                    secondText.inputText = index
-//                    var str = timeSelect.text
-//                    var myList = new Array();
-//                    myList = str.split(":")
-//                    myList[1] = index
-//                    timeSelect.text = myList[0] + ":" + myList[1] + ":" + myList[2]
+            Text {
+                id: modelRect3
+                anchors.centerIn: parent
+                text: index//qsTr("index")
+                font.family: "arial"
+                color: second.currentIndex == index ? "blue" : "white";
+                font.pointSize: 20
+                onColorChanged: {
+                    if (modelRect3.color == "#0000ff") {
+                        secondText.inputText = index
+                        timeSelect.timeValue = hourText.inputText + ":" + minuteText.inputText + ":" + secondText.inputText
+
+                    }
                 }
             }
         }

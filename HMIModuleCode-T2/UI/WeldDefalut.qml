@@ -5,8 +5,6 @@ import QtQuick.Layouts 1.0
 import QtQuick.Window 2.2
 
 Item {
-    width: parent.width
-    height: parent.height
     Image {
         anchors.fill: parent
         source: "qrc:/images/images/bg.png"
@@ -18,11 +16,24 @@ Item {
         id: mos2;
     }
     ListModel {
+        id: coolingModel
+    }
+    ListModel {
         id: graphModel
     }
     ListModel {
         id: formulaModel
     }
+    ListModel {
+        id: widthModel
+    }
+    ListModel {
+        id: pressureModel
+    }
+    ListModel {
+        id: amplitudeModel
+    }
+
     ListModel {
         id: repeaterModel
         Component.onCompleted: {
@@ -31,27 +42,83 @@ Item {
             repeaterModel.append({"headTitle":"Foot Pedal Abort","leftText":"off","righttext":"on","switchState":hmiAdaptor.weldDefaultsGetSwitch("Foot Pedal Abort")})
             repeaterModel.append({"headTitle":"Cooling","leftText":"off","righttext":"on","switchState":hmiAdaptor.weldDefaultsGetSwitch("Cooling")})
 
-//            repeaterModel.append({"headTitle":"cooling(1sec/100J)","leftText":"off","righttext":"on"})
-//            repeaterModel.append({"headTitle":"cooling Tooling","leftText":"off","righttext":"on"})
+            graphModel.append({"graphText":"1MS","isSelect":hmiAdaptor.weldDefaultsGetSwitch("Graph Data Sampling 1ms")})
+            graphModel.append({"graphText":"5MS","isSelect":hmiAdaptor.weldDefaultsGetSwitch("Graph Data Sampling 5ms")})
+            graphModel.append({"graphText":"10MS","isSelect":hmiAdaptor.weldDefaultsGetSwitch("Graph Data Sampling 10ms")})
+            graphModel.append({"graphText":"20MS","isSelect":hmiAdaptor.weldDefaultsGetSwitch("Graph Data Sampling 20ms")})
 
+            var list = new Array();
+            list = hmiAdaptor.weldDefaultsGetValue(-1)
+            coolingModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2]})
+            coolingModel.append({"formulaHead":"Range","maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
 
-            graphModel.append({"graphText":"1MS"})
-            graphModel.append({"graphText":"5MS"})
-            graphModel.append({"graphText":"10MS"})
-            graphModel.append({"graphText":"20MS"})
+            list = hmiAdaptor.weldDefaultsGetValue(0)
+            checkText.text = list[9]
+            formulaModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2],"identifier":list[9]})  //"formulaValue":"0.00mm²"
+            formulaModel.append({"formulaHead":"","maxValue":"","currenValue":list[1],"minValue":""})
+            formulaModel.append({"formulaHead":"Offset","maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
+            formulaModel.append({"formulaHead":"Multiplier","maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
 
-            formulaModel.append({"formulaHead":"Range","formulaValue":"0.00mm²"})
-            formulaModel.append({"formulaHead":"","formulaValue":"to 6.99"})
-            formulaModel.append({"formulaHead":"Offset","formulaValue":"17.00J"})
-            formulaModel.append({"formulaHead":"Multiplier","formulaValue":"88.00J"})
-            formulaModel.append({"formulaHead":"Range","formulaValue":"7.00mm²"})
-            formulaModel.append({"formulaHead":"","formulaValue":"to 14.99"})
-            formulaModel.append({"formulaHead":"Offset","formulaValue":"18.70J"})
-            formulaModel.append({"formulaHead":"Multiplier","formulaValue":"97.80J"})
-            formulaModel.append({"formulaHead":"Range","formulaValue":"15.00mm²"})
-            formulaModel.append({"formulaHead":"","formulaValue":"to 40.00"})
-            formulaModel.append({"formulaHead":"Offset","formulaValue":"20.57J"})
-            formulaModel.append({"formulaHead":"Multiplier","formulaValue":"106.48J"})
+            list = hmiAdaptor.weldDefaultsGetValue(1)
+            formulaModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2]})  //"formulaValue":"0.00mm²"
+            formulaModel.append({"formulaHead":"","maxValue":"","currenValue":list[1],"minValue":""})
+            formulaModel.append({"formulaHead":"Offset","maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
+            formulaModel.append({"formulaHead":"Multiplier","maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
+
+            list = hmiAdaptor.weldDefaultsGetValue(2)
+            formulaModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2]})  //"formulaValue":"0.00mm²"
+            formulaModel.append({"formulaHead":"","maxValue":"","currenValue":list[1],"minValue":""})
+            formulaModel.append({"formulaHead":"Offset","maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
+            formulaModel.append({"formulaHead":"Multiplier","maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
+
+            list = hmiAdaptor.weldDefaultsGetValue(3)
+            widthModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2],"identifier":list[9]})  //"formulaValue":"0.00mm²"
+            widthModel.append({"formulaHead":"","maxValue":"","currenValue":list[1],"minValue":""})
+            widthModel.append({"formulaHead":"Offset","maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
+            widthModel.append({"formulaHead":"Multiplier","maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
+            list = hmiAdaptor.weldDefaultsGetValue(4)
+            widthModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2]})  //"formulaValue":"0.00mm²"
+            widthModel.append({"formulaHead":"","maxValue":"","currenValue":list[1],"minValue":""})
+            widthModel.append({"formulaHead":"Offset","maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
+            widthModel.append({"formulaHead":"Multiplier","maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
+            list = hmiAdaptor.weldDefaultsGetValue(5)
+            widthModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2]})  //"formulaValue":"0.00mm²"
+            widthModel.append({"formulaHead":"","maxValue":"","currenValue":list[1],"minValue":""})
+            widthModel.append({"formulaHead":"Offset","maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
+            widthModel.append({"formulaHead":"Multiplier","maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
+
+            list = hmiAdaptor.weldDefaultsGetValue(6)
+            pressureModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2],"identifier":list[9]})  //"formulaValue":"0.00mm²"
+            pressureModel.append({"formulaHead":"","maxValue":"","currenValue":list[1],"minValue":""})
+            pressureModel.append({"formulaHead":"Offset","maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
+            pressureModel.append({"formulaHead":"Multiplier","maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
+            list = hmiAdaptor.weldDefaultsGetValue(7)
+            pressureModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2]})  //"formulaValue":"0.00mm²"
+            pressureModel.append({"formulaHead":"","maxValue":"","currenValue":list[1],"minValue":""})
+            pressureModel.append({"formulaHead":"Offset","maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
+            pressureModel.append({"formulaHead":"Multiplier","maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
+            list = hmiAdaptor.weldDefaultsGetValue(8)
+            pressureModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2]})  //"formulaValue":"0.00mm²"
+            pressureModel.append({"formulaHead":"","maxValue":"","currenValue":list[1],"minValue":""})
+            pressureModel.append({"formulaHead":"Offset","maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
+            pressureModel.append({"formulaHead":"Multiplier","maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
+
+            list = hmiAdaptor.weldDefaultsGetValue(9)
+            amplitudeModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2],"identifier":list[9]})  //"formulaValue":"0.00mm²"
+            amplitudeModel.append({"formulaHead":"","maxValue":"","currenValue":list[1],"minValue":""})
+            amplitudeModel.append({"formulaHead":"Offset","maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
+            amplitudeModel.append({"formulaHead":"Multiplier","maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
+            list = hmiAdaptor.weldDefaultsGetValue(10)
+            amplitudeModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2]})  //"formulaValue":"0.00mm²"
+            amplitudeModel.append({"formulaHead":"","maxValue":"","currenValue":list[1],"minValue":""})
+            amplitudeModel.append({"formulaHead":"Offset","maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
+            amplitudeModel.append({"formulaHead":"Multiplier","maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
+            list = hmiAdaptor.weldDefaultsGetValue(11)
+            amplitudeModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2]})  //"formulaValue":"0.00mm²"
+            amplitudeModel.append({"formulaHead":"","maxValue":"","currenValue":list[1],"minValue":""})
+            amplitudeModel.append({"formulaHead":"Offset","maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
+            amplitudeModel.append({"formulaHead":"Multiplier","maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
+
         }
     }
 
@@ -90,6 +157,12 @@ Item {
                             coolingItem.visible = false
                         else if (index == 3 && state == "right")
                             coolingItem.visible = true
+
+                        if (state == "right")
+                            repeaterModel.set(index,{"switchState":true})
+                        else
+                            repeaterModel.set(index,{"switchState":false})
+
                     }
                 }
             }
@@ -130,9 +203,9 @@ Item {
             state: hmiAdaptor.weldDefaultsGetSwitch("cooling(1sec/100J)") ? "right" : "left"
             clip: true
             onStateChanged: {
-                if (coolingsec.state == "left")
+                if (coolingsec.state == "right")
                     cooling1.bgvisable = false
-                else if (coolingsec.state == "right")
+                else if (coolingsec.state == "left")
                     cooling1.bgvisable = true
             }
         }
@@ -156,6 +229,22 @@ Item {
             state: hmiAdaptor.weldDefaultsGetSwitch("Cooling Tooling") ? "right" : "left"
             clip: true
         }
+//        Row {
+//            anchors.top: coolingTooling.bottom
+//            anchors.topMargin: 10
+//            anchors.left: parent.left
+//            anchors.leftMargin: 20
+//            spacing: 20
+//            Repeater {
+//                model: coolingModel
+//                delegate: Recsetting {
+//                    width: (coolingItem.width-40)/2 //(parent.width-40)/2
+//                    height: 80
+//                    headTitle: formulaHead //qsTr("Cooling Duration")
+//                    centervalue: currenValue //qsTr("100s")
+//                }
+//            }
+//        }
 
         Recsetting {
             id: cooling1
@@ -166,7 +255,7 @@ Item {
             width: (parent.width-40)/2
             height: 80
             headTitle: qsTr("Cooling Duration")
-            centervalue: qsTr("100s")
+            centervalue: hmiAdaptor.weldDefaultsGetValue(-1)[1] //qsTr("100s")
         }
         Recsetting {
             id: cooling2
@@ -176,7 +265,8 @@ Item {
             width: (parent.width-40)/2
             height: 80
             headTitle: qsTr("Cooling Delay")
-            centervalue: qsTr("100s")
+            centervalue: hmiAdaptor.weldDefaultsGetValue(-1)[4] //qsTr("100s")
+
         }
     }
     Text {
@@ -206,8 +296,8 @@ Item {
         anchors.top: conversion.bottom
         width: (parent.width-40)/6+40
         height: 50
-        textLeft: qsTr("Imperical")
-        textRight: qsTr("Metric")
+        textRight: qsTr("Imperical")
+        textLeft: qsTr("Metric")
         state: hmiAdaptor.weldDefaultsGetSwitch("Unit Conversion") ? "right" : "left"
         clip: true
     }
@@ -240,8 +330,11 @@ Item {
                 MyRadioButton {
                     anchors.fill: parent
                     buttontext: qsTr(graphText)
-                    bIsCheck: index == 0 ? true : false
+                    bIsCheck: isSelect //index == 0 ? true : false
                     exclusiveGroup: mos
+                    onBIsCheckChanged: {
+                        graphModel.set(index,{"isSelect":bIsCheck})
+                    }
                 }
             }
         }
@@ -270,6 +363,45 @@ Item {
         color: "#F79428"  //"#0079c1"
     }
 
+    Grid {
+        id: formulaSetting
+        anchors.top: centerTips.bottom
+        anchors.bottom: okButton.top
+        anchors.bottomMargin: 20
+        anchors.right: parent.right
+        anchors.rightMargin: 20
+        width: radioButton.width
+        columns: 4
+        rows: 3
+        spacing: 10
+        property alias myModel: gridRepeater.model
+        Repeater {
+            id: gridRepeater
+            model: formulaModel
+            delegate: Recsetting {
+                width: (radioButton.width-30)/4
+                height: (formulaSetting.height-20)/3
+                headTitle: qsTr(formulaHead)
+                centervalue: qsTr(currenValue)
+                Component.onCompleted: {
+                    if (index == 1 || index == 5 || index == 9) {
+                        localbordercolor = Qt.rgba(0,0,0,0)
+                        bgvisable = false
+                    }
+                }
+                onMouseAreaClick: {
+                    if (index == 1 || index == 5 || index == 9) {
+                        localbordercolor = Qt.rgba(0,0,0,0)
+                        bgvisable = false
+                    } else {
+                        localbordercolor = "#05f91c"
+                    }
+                }
+
+            }
+        }
+    }
+
     Row {
         id: radioButton
         anchors.top: formula.bottom
@@ -289,6 +421,8 @@ Item {
             onBIsCheckChanged: {
                 if (radio1.bIsCheck) {
                     rec.anchors.leftMargin = 0
+                    formulaSetting.myModel = formulaModel
+//                    checkText.text = formulaModel.get(0).identifier
                 }
             }
         }
@@ -300,6 +434,9 @@ Item {
             onBIsCheckChanged: {
                 if (bIsCheck) {
                     rec.anchors.leftMargin = (radioButton.width-30)/4+10
+                    formulaSetting.myModel = widthModel
+                    centerTips.myText = widthModel.get(0).identifier
+
                 }
             }
         }
@@ -311,6 +448,8 @@ Item {
             onBIsCheckChanged: {
                 if (bIsCheck) {
                     rec.anchors.leftMargin = (radioButton.width-30)/2+20
+                    formulaSetting.myModel = pressureModel
+                    centerTips.myText = pressureModel.get(0).identifier
                 }
             }
         }
@@ -322,6 +461,8 @@ Item {
             onBIsCheckChanged: {
                 if (bIsCheck) {
                     rec.anchors.leftMargin = (radioButton.width+10)/4*3
+                    formulaSetting.myModel = amplitudeModel
+                    centerTips.myText = amplitudeModel.get(0).identifier
                 }
             }
         }
@@ -337,7 +478,9 @@ Item {
         border.color: "#0079c1"
         border.width: 2
         color: Qt.rgba(0,0,0,0)
+        property alias myText: checkText.text
         Text {
+            id: checkText
             anchors.fill: parent
             horizontalAlignment: Qt.AlignHCenter
             verticalAlignment: Qt.AlignVCenter
@@ -347,42 +490,7 @@ Item {
             text: qsTr("Offset+(Area*Multiplier)")
         }
     }
-    Grid {
-        id: formulaSetting
-        anchors.top: centerTips.bottom
-        anchors.bottom: okButton.top
-        anchors.bottomMargin: 20
-        anchors.right: parent.right
-        anchors.rightMargin: 20
-        width: radioButton.width
-        columns: 4
-        rows: 3
-        spacing: 10
-        Repeater {
-            model: formulaModel
-            delegate: Recsetting {
-                width: (radioButton.width-30)/4
-                height: (formulaSetting.height-20)/3
-                headTitle: qsTr(formulaHead)
-                centervalue: qsTr(formulaValue)
-                Component.onCompleted: {
-                    if (index == 1 || index == 5 || index == 9) {
-                        localbordercolor = Qt.rgba(0,0,0,0)
-                        bgvisable = false
-                    }
-                }
-                onMouseAreaClick: {
-                    if (index == 1 || index == 5 || index == 9) {
-                        localbordercolor = Qt.rgba(0,0,0,0)
-                        bgvisable = false
-                    } else {
-                        localbordercolor = "#05f91c"
-                    }
-                }
 
-            }
-        }
-    }
     CButton {
         id: okButton
         anchors.right: parent.right
@@ -394,6 +502,51 @@ Item {
         text: qsTr("OK")
         iconSource: "qrc:/images/images/OK.png"
         textColor: "white"
+        onClicked: {
+            var i;
+            var switchCount;
+            var boolArray = new Array();
+            var stringArray = new Array();
+            var sampIndex = 0;
+            for (i = 0;i < repeaterModel.count;i++ )
+            {
+                boolArray.push(repeaterModel.get(i).switchState)
+            }
+            boolArray.push(coolingsec.state == "right")
+            boolArray.push(coolingTooling.state == "right")
+            boolArray.push(awg.state == "right")
+
+            for (i = 0;i < formulaModel.count;i++ )
+            {
+                if (i != 1 && i != 5 && i != 9)
+                    stringArray.push(formulaModel.get(i).currenValue)
+            }
+            for (i = 0;i < widthModel.count;i++ )
+            {
+                if (i != 1 && i != 5 && i != 9)
+                    stringArray.push(widthModel.get(i).currenValue)
+            }
+            for (i = 0;i < pressureModel.count;i++ )
+            {
+                if (i != 1 && i != 5 && i != 9)
+                    stringArray.push(pressureModel.get(i).currenValue)
+            }
+            for (i = 0;i < amplitudeModel.count;i++ )
+            {
+                if (i != 1 && i != 5 && i != 9)
+                    stringArray.push(amplitudeModel.get(i).currenValue)
+            }
+            for (i = 0;i < graphModel.count;i++ )
+            {
+                if (graphModel.get(i).isSelect == true) {
+                    sampIndex = i;
+                    break;
+                }
+            }
+
+            hmiAdaptor.weldDefaultsSetValue(boolArray, stringArray, sampIndex, cooling1.centervalue,cooling2.centervalue)
+            hmiAdaptor.weldDefaultsExecute("_Set")
+        }
     }
     CButton {
         id: cancelButton

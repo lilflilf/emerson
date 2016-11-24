@@ -113,4 +113,3 @@ MouseArea {
         anchors.verticalCenterOffset: button.labelVerticalOffset
     }
 }
-
