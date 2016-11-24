@@ -489,7 +489,7 @@ public:
     bool LockKeyFlag;
     bool FootPedalFlag;
 public:
-    Status_Data operator=(const Status_Data &StatusDataObj) const;
+    Status_Data &operator= (const Status_Data &StatusDataObj);
 };
 
 
