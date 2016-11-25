@@ -26,6 +26,13 @@ Item {
     property alias inputText: textInput.text
     property bool inputFocus: false
     signal textChange(int text)
+    onInputFocusChanged: {
+        if (inputFocus == false) {
+            textInput.cursorVisible = false
+            textInput.focus = false
+        }
+    }
+
 //    signal myfocusChanged(bool focus)
     Rectangle {
         id: back

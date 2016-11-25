@@ -517,9 +517,9 @@ QString HmiAdaptor::getStringValue(QString value)
     if (!value.isEmpty() && !value.isNull()) {
         for (int i = 0; i < value.length(); i++) {
             if ((value.at(i) >= '0' && value.at(i) <= '9') || value.at(i) == '.') {
+                num += value.at(i);
                 continue;
             } else {
-                num = value.left(i);
                 break;
             }
         }

@@ -169,8 +169,9 @@ Item {
                             inputText = ""
                             tempValue = ""
                         } else if (index == 11) {
-                            keyBoardnum.visible = false
                             inputText = keyBoardnum.currentValue
+                            keyBoardnum.visible = false
+                            tempValue = ""
                             currentClickIndex(11)
                         } else if (index == 15) {
                             currentClickIndex(index)

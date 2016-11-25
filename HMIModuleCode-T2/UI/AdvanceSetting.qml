@@ -6,28 +6,31 @@ import QtQuick.Dialogs 1.2
 Item {
     id: advanceset
     property int currentIndex: 0
-    width: parent.width
-    height: parent.height
     signal signalCancel()
     signal signalAdvanceOk()
-    function setClickColor(index,bIsOk)
+    function setClickColor(index)
     {
         if (standardUpperRepeater.itemAt(index).localbordercolor === "#05f91c") {
             standardUpperRepeater.itemAt(index).localbordercolor = "#f79428"
-            if (bIsOk)
-                standardUpperModel.set(index,{"value":keyNum.inputText+"%"})
         } else if (standardlowerRepeater.itemAt(index).localbordercolor == "#05f91c") {
             standardlowerRepeater.itemAt(index).localbordercolor = "#0079c1"
-            if (bIsOk)
-                standardLowerModel.set(index,{"value":keyNum.inputText+"%"})
         } else if (sigmaUpperRepeater.itemAt(index).localbordercolor == "#05f91c") {
             sigmaUpperRepeater.itemAt(index).localbordercolor = "#f79428"
-            if (bIsOk)
-                sigmaUpperModel.set(index,{"value":keyNum.inputText})
         } else if (sigmaLowerRepeater.itemAt(index).localbordercolor == "#05f91c") {
             sigmaLowerRepeater.itemAt(index).localbordercolor = "#0079c1"
-            if (bIsOk)
-                sigmaLowerModel.set(index,{"value":keyNum.inputText})
+        }
+    }
+
+    function setadvancesetingValue(index,text)
+    {
+        if (standardUpperRepeater.itemAt(index).localbordercolor === "#05f91c") {
+                standardUpperModel.set(index,{"value":text})
+        } else if (standardlowerRepeater.itemAt(index).localbordercolor == "#05f91c") {
+                standardLowerModel.set(index,{"value":text})
+        } else if (sigmaUpperRepeater.itemAt(index).localbordercolor == "#05f91c") {
+                sigmaUpperModel.set(index,{"value":text})
+        } else if (sigmaLowerRepeater.itemAt(index).localbordercolor == "#05f91c") {
+                sigmaLowerModel.set(index,{"value":text})
         }
     }
 
@@ -205,12 +208,6 @@ Item {
         width: 630
         clip: true
         spacing: 10
-//        anchors.bottom: line3.top
-//        anchors.bottomMargin: 10
-//        columns: 2
-//        rows: 2
-//        columnSpacing: 10
-//        rowSpacing: 15
         Repeater {
             id: standardUpperRepeater
             model: standardUpperModel
@@ -252,13 +249,12 @@ Item {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        setClickColor(advanceset.currentIndex,false)
+                        setClickColor(advanceset.currentIndex)
                         advanceset.currentIndex = index
                         localbordercolor = "#05f91c"
                         background.visible = true
                         background.opacity = 0.3
                         keyNum.visible = true
-                        keyNum.inputText = ""
                         keyNum.titleText = head
                         keyNum.currentValue = value
                     }
@@ -275,10 +271,6 @@ Item {
         width: 630
         clip: true
         spacing: 10
-//        columns: 2
-//        rows: 2
-//        columnSpacing: 10
-//        rowSpacing: 15
         Repeater {
             id: standardlowerRepeater
             model: standardLowerModel
@@ -320,13 +312,12 @@ Item {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        setClickColor(advanceset.currentIndex,false)
+                        setClickColor(advanceset.currentIndex)
                         advanceset.currentIndex = index
                         localbordercolor = "#05f91c"
                         background.visible = true
                         background.opacity = 0.3
                         keyNum.visible = true
-                        keyNum.inputText = ""
                         keyNum.titleText = head
                         keyNum.currentValue = value
                     }
@@ -343,12 +334,6 @@ Item {
         width: 630
         clip: true
         spacing: 10
-//        anchors.bottom: line3.top
-//        anchors.bottomMargin: 10
-//        columns: 2
-//        rows: 2
-//        columnSpacing: 10
-//        rowSpacing: 15
         Repeater {
             id: sigmaUpperRepeater
             model: sigmaUpperModel
@@ -390,13 +375,12 @@ Item {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        setClickColor(advanceset.currentIndex,false)
+                        setClickColor(advanceset.currentIndex)
                         advanceset.currentIndex = index
                         localbordercolor = "#05f91c"
                         background.visible = true
                         background.opacity = 0.3
                         keyNum.visible = true
-                        keyNum.inputText = ""
                         keyNum.titleText = head
                         keyNum.currentValue = value
                     }
@@ -414,11 +398,6 @@ Item {
         width: 630
         clip: true
         spacing: 10
-
-//        columns: 2
-//        rows: 2
-//        columnSpacing: 10
-//        rowSpacing: 15
         Repeater {
             id: sigmaLowerRepeater
             model: sigmaLowerModel
@@ -460,14 +439,13 @@ Item {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        setClickColor(advanceset.currentIndex,false)
+                        setClickColor(advanceset.currentIndex)
                         advanceset.currentIndex = index
                         localbordercolor = "#05f91c"
                         background.visible = true
                         background.opacity = 0.3
                         keyNum.visible = true
                         keyNum.titleText = head
-                        keyNum.inputText = ""
                         keyNum.currentValue = value
                     }
                 }
@@ -546,6 +524,8 @@ Item {
         opacity: 0
         MouseArea {
             anchors.fill: parent
+            onClicked: {
+            }
         }
     }
 
@@ -556,21 +536,30 @@ Item {
         height: 526
         visible: false
         titleText: qsTr("")
-        maxvalue: "12"
-        minvalue: "3"
+        maxvalue: "100%"
+        minvalue: "1%"
         currentValue: "123"
         onCurrentClickIndex: {
             if (index == 15) {
+                setadvancesetingValue(advanceset.currentIndex,keyNum.inputText)
+                setClickColor(advanceset.currentIndex)
                 background.visible = false
-                background.opacity = 0
-                keyNum.visible = false
-                setClickColor(advanceset.currentIndex,true)
-            } else if (index == 11) {
-                backGround.visible = false
                 background.opacity = 0
                 keyNum.visible = false
                 keyNum.inputText = ""
                 keyNum.tempValue = ""
+            } else if (index == 11) {
+                setClickColor(advanceset.currentIndex)
+                background.visible = false
+                background.opacity = 0
+                keyNum.visible = false
+                keyNum.inputText = ""
+                keyNum.tempValue = ""
+            }
+        }
+        onInputTextChanged: {
+            if (keyNum.inputText != "") {
+                setadvancesetingValue(advanceset.currentIndex,keyNum.inputText)
             }
         }
     }

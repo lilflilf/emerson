@@ -257,13 +257,13 @@ Item {
         anchors.bottom: parent.bottom
         spacing: 20
         CButton {
-            width: 300//Screen.width * 0.17
-            height: 79//Screen.height * 0.07
+            width: 300
+            height: 79
             text: qsTr("EDITE SPLICE")
         }
         CButton {
-            width: 300//Screen.width * 0.17
-            height: 79//Screen.height * 0.07
+            width: 300
+            height: 79
             text: qsTr("SAVE SPLICE")
             onClicked: {
                 signalSaveSplice()
