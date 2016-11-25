@@ -1173,27 +1173,31 @@ Item {
         currentValue: "4"
         onCurrentClickIndex: {
             if (index == 15) {
-                if (edit1.inputFocus) {
-                    edit1.inputText = keyNum.inputText
-                    edit1.inputFocus = false
-                } else if (edit2.inputFocus) {
-                    edit2.inputText = keyNum.inputText
-                    edit2.inputFocus = false
-                } else if (edit3.inputFocus) {
-                    edit3.inputText = keyNum.inputText
-                    edit3.inputFocus = false
-                } else if (edit4.inputFocus) {
-                    edit4.inputText = keyNum.inputText
-                    edit4.inputFocus = false
-                } else if (edit5.inputFocus) {
-                    edit5.inputText = keyNum.inputText
-                    edit5.inputFocus = false
+                if (hmiAdaptor.comepareCurrentValue(keyNum.minvalue,keyNum.maxvalue,keyNum.inputText)) {
+                    if (edit1.inputFocus) {
+                        edit1.inputText = keyNum.inputText
+                        edit1.inputFocus = false
+                    } else if (edit2.inputFocus) {
+                        edit2.inputText = keyNum.inputText
+                        edit2.inputFocus = false
+                    } else if (edit3.inputFocus) {
+                        edit3.inputText = keyNum.inputText
+                        edit3.inputFocus = false
+                    } else if (edit4.inputFocus) {
+                        edit4.inputText = keyNum.inputText
+                        edit4.inputFocus = false
+                    } else if (edit5.inputFocus) {
+                        edit5.inputText = keyNum.inputText
+                        edit5.inputFocus = false
+                    }
+                    backGround.visible = false
+                    backGround.opacity = 0
+                    keyNum.visible = false
+                    keyNum.inputText = ""
+                    keyNum.tempValue = ""
+                } else {
+                    keyNum.timeRun = true
                 }
-                backGround.visible = false
-                backGround.opacity = 0
-                keyNum.visible = false
-                keyNum.inputText = ""
-                keyNum.tempValue = ""
             } else if (index == 11) {
                 if (edit1.inputFocus) {
                     edit1.inputFocus = false
