@@ -264,6 +264,7 @@ Item {
             anchors.left: from.left
             anchors.leftMargin: 10
             anchors.top: from.bottom
+            width: (parent.width-98)/2
             bIsdate: true
             selecter: newCalendar
             exclusiveGroup: timeSelectGroup
@@ -271,6 +272,7 @@ Item {
 
         MyCalendar {
             id: mytimeSelect
+            width: (parent.width-98)/2
             anchors.top: mycalendar.top
             anchors.left: mycalendar.right
             anchors.leftMargin: 20
@@ -294,6 +296,7 @@ Item {
             anchors.left: from.left
             anchors.leftMargin: 10
             anchors.top: to.bottom
+            width: (parent.width-98)/2
             bIsdate: true
             selecter: newCalendar
             exclusiveGroup: timeSelectGroup
@@ -301,6 +304,7 @@ Item {
 
         MyCalendar {
             id: timeSet
+            width: (parent.width-98)/2
             anchors.top: mycalendar2.top
             anchors.left: mycalendar2.right
             anchors.leftMargin: 20
