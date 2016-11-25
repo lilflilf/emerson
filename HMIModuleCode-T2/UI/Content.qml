@@ -286,6 +286,10 @@ Item {
                         backGround.visible = true
                         backGround.opacity = 0.5
                         keyNum.visible = true
+                        keyNum.titleText = edit1.tipsText
+                        keyNum.currentValue = "0"
+                        keyNum.minvalue = "1"
+                        keyNum.maxvalue = "20"
                     }
                 }
                 onTextChange: {
@@ -311,6 +315,17 @@ Item {
                 regExp: RegExpValidator{regExp: /([1-9]|1[0-9]|20)/}
                 opacity: 0.7
                 tipsSize: 14
+                onInputFocusChanged: {
+                    if (edit2.inputFocus) {
+                        backGround.visible = true
+                        backGround.opacity = 0.5
+                        keyNum.visible = true
+                        keyNum.titleText = edit2.tipsText
+                        keyNum.currentValue = "0"
+                        keyNum.minvalue = "1"
+                        keyNum.maxvalue = "20"
+                    }
+                }
                 onTextChange: {
                     workStationcolor.maxSpliceNum = text
                 }
@@ -345,6 +360,17 @@ Item {
                 maxSize: 20
                 opacity: 0.7
                 tipsSize: 14
+                onInputFocusChanged: {
+                    if (edit3.inputFocus) {
+                        backGround.visible = true
+                        backGround.opacity = 0.5
+                        keyNum.visible = true
+                        keyNum.titleText = edit3.tipsText
+                        keyNum.currentValue = "0"
+                        keyNum.minvalue = "1"
+                        keyNum.maxvalue = "4"
+                    }
+                }
                 onTextChange: {
                     boardlayout.rows = text
                     for (var i = 0; i< workModel.count; i++) {
@@ -371,6 +397,17 @@ Item {
                 maxSize: 20
                 opacity: 0.7
                 tipsSize: 14
+                onInputFocusChanged: {
+                    if (edit4.inputFocus) {
+                        backGround.visible = true
+                        backGround.opacity = 0.5
+                        keyNum.visible = true
+                        keyNum.titleText = edit4.tipsText
+                        keyNum.currentValue = "0"
+                        keyNum.minvalue = "1"
+                        keyNum.maxvalue = "4"
+                    }
+                }
                 onTextChange: {
                     boardlayout.columns = text
                     for (var i = 0; i< workModel.count; i++) {
@@ -397,6 +434,17 @@ Item {
                 maxSize: 20
                 opacity: 0.7
                 tipsSize: 14
+                onInputFocusChanged: {
+                    if (edit5.inputFocus) {
+                        backGround.visible = true
+                        backGround.opacity = 0.5
+                        keyNum.visible = true
+                        keyNum.titleText = edit5.tipsText
+                        keyNum.currentValue = "0"
+                        keyNum.minvalue = "1"
+                        keyNum.maxvalue = "12"
+                    }
+                }
                 onTextChange: {
                 }
             }
@@ -1120,26 +1168,63 @@ Item {
         height: 526
         visible: false
         titleText: qsTr("")
-        maxvalue: "12"
-        minvalue: "3"
-        currentValue: "123"
+        maxvalue: "4"
+        minvalue: "1"
+        currentValue: "4"
         onCurrentClickIndex: {
             if (index == 15) {
+                if (edit1.inputFocus) {
+                    edit1.inputText = keyNum.inputText
+                    edit1.inputFocus = false
+                } else if (edit2.inputFocus) {
+                    edit2.inputText = keyNum.inputText
+                    edit2.inputFocus = false
+                } else if (edit3.inputFocus) {
+                    edit3.inputText = keyNum.inputText
+                    edit3.inputFocus = false
+                } else if (edit4.inputFocus) {
+                    edit4.inputText = keyNum.inputText
+                    edit4.inputFocus = false
+                } else if (edit5.inputFocus) {
+                    edit5.inputText = keyNum.inputText
+                    edit5.inputFocus = false
+                }
                 backGround.visible = false
                 backGround.opacity = 0
                 keyNum.visible = false
+                keyNum.inputText = ""
+                keyNum.tempValue = ""
             } else if (index == 11) {
+                if (edit1.inputFocus) {
+                    edit1.inputFocus = false
+                } else if (edit2.inputFocus) {
+                    edit2.inputFocus = false
+                } else if (edit3.inputFocus) {
+                    edit3.inputFocus = false
+                } else if (edit4.inputFocus) {
+                    edit4.inputFocus = false
+                } else if (edit5.inputFocus) {
+                    edit5.inputFocus = false
+                }
                 backGround.visible = false
-                background.opacity = 0
+                backGround.opacity = 0
                 keyNum.visible = false
                 keyNum.inputText = ""
                 keyNum.tempValue = ""
             }
         }
         onInputTextChanged: {
-            if (edit1.inputFocus) {
-                if (hmiAdaptor.stringRegexMatch("([1-9]|1[0-9]|20)",keyNum.inputText)) {
+            if (keyNum.inputText != "") {
+                if (edit1.inputFocus) {
                     edit1.inputText = keyNum.inputText
+                } else if (edit2.inputFocus) {
+                    edit2.inputText = keyNum.inputText
+                } else if (edit3.inputFocus) {
+                    edit3.inputText = keyNum.inputText
+                } else if (edit4.inputFocus) {
+                    edit4.inputText = keyNum.inputText
+                } else if (edit5.inputFocus) {
+                    edit5.inputText = keyNum.inputText
                 }
             }
         }

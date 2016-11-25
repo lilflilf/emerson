@@ -449,6 +449,18 @@ Item {
                     horizontalAlignment: Qt.AlignHCenter
                     maxSize: 20
                     opacity: 0.7
+                    onInputFocusChanged: {
+                        if (edit2.inputFocus) {
+                            backGround.visible = true
+                            backGround.opacity = 0.5
+                            keyNum.visible = true
+                            keyNum.titleText = labelGauge.text
+                            keyNum.currentValue = "1.12mm"
+                            keyNum.minvalue = "1.00mm"
+                            keyNum.maxvalue = "10.99mm"
+                        }
+                    }
+
                     onTextChange: {
                         if(detailIsChang)
                             return
@@ -1487,15 +1499,57 @@ Item {
             visible: false
         }
     }
+    Rectangle {
+        id: backGround
+        anchors.fill: parent
+        color: "black"
+        opacity: 0.7
+        visible: content.bIsEdit ? true : false
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+
+            }
+        }
+    }
     KeyBoardNum {
         id: keyNum
         anchors.centerIn: parent
-        width: 500
-        height: 500
+        width: 962
+        height: 526
         visible: false
-        titleText: qsTr("My TEST")
-        maxvalue: "12"
-        minvalue: "3"
-        currentValue: "123"
+        titleText: qsTr("")
+        maxvalue: "4"
+        minvalue: "1"
+        currentValue: "4"
+        onCurrentClickIndex: {
+            if (index == 15) {
+                if (edit2.inputFocus) {
+                    edit2.inputText = keyNum.inputText
+                    edit2.inputFocus = false
+                }
+                backGround.visible = false
+                backGround.opacity = 0
+                keyNum.visible = false
+                keyNum.inputText = ""
+                keyNum.tempValue = ""
+            } else if (index == 11) {
+                if (edit2.inputFocus) {
+                    edit2.inputFocus = false
+                }
+                backGround.visible = false
+                background.opacity = 0
+                keyNum.visible = false
+                keyNum.inputText = ""
+                keyNum.tempValue = ""
+            }
+        }
+        onInputTextChanged: {
+            if (keyNum.inputText != "") {
+                if (edit2.inputFocus) {
+                    edit2.inputText = keyNum.inputText
+                }
+            }
+        }
     }
 }
