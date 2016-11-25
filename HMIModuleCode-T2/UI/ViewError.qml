@@ -18,9 +18,8 @@ Item {
     }
     ListView {
         id: listView
-        anchors.top: headTitle.bottom
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 150
+        anchors.top: tipsRec2.bottom
+        anchors.bottom: scrollbar2.top
         anchors.left: headTitle.left
         anchors.leftMargin: 20
         width: headTitle.width
@@ -28,7 +27,6 @@ Item {
         model: alarmModel
         delegate: listDelegate
     }
-
     CButton {
         id: exportdata
         width: 300
@@ -39,11 +37,11 @@ Item {
         anchors.rightMargin: 20
     }
 
-    Image {
+    Rectangle {
         id: back
         width: parent.width * 0.3
         height: parent.height
-        source: "qrc:/images/images/bg.png"
+        color: "#052a40"
         z: 10
 
         Text {
@@ -56,6 +54,16 @@ Item {
             anchors.left: parent.left
             anchors.leftMargin: 20
             anchors.topMargin: 10
+        }
+        Line {
+            id: line
+            anchors.top: seach.bottom
+            anchors.topMargin: 10
+            anchors.left: parent.left
+            anchors.leftMargin: 10
+            width: parent.width-58
+            height: 1
+            lineColor: "#375566"
         }
 
         ListModel {
@@ -87,7 +95,8 @@ Item {
             property int selectNum: -2
             property int buttonIndex: -1
             anchors.left: seach.left
-            width: Screen.width * 0.3 - 20
+            anchors.right: parent.right
+            anchors.rightMargin: 48
             anchors.top: seach.bottom
             anchors.bottom: parent.bottom
             z: 12
@@ -107,7 +116,7 @@ Item {
                 font.family: "arial"
                 font.pixelSize: 16
                 verticalAlignment: Qt.AlignVCenter
-                width: Screen.width * 0.3 - 20
+                width: parent.width
                 height: 40
                 color: "white"
                 text: qsTr("All")
@@ -200,6 +209,7 @@ Item {
             CButton {
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: 10
+                anchors.left: parent.left
                 width: parent.width
                 text: qsTr("OK")
                 iconSource: "qrc:/images/images/OK.png"
@@ -221,22 +231,23 @@ Item {
             font.family: "arial"
             color: "white"
             font.pointSize: 16
-            anchors.top: seach.bottom
-            anchors.topMargin: 15
+            anchors.top: line.bottom
+            anchors.topMargin: 10
             anchors.left: seach.left
         }
         CButton {
             id: workOrderName
             anchors.left: title2.left
+            anchors.leftMargin: 10
+            anchors.right: parent.right
+            anchors.rightMargin: 48
             anchors.top: title2.bottom
-//            width: 250
             text: qsTr("All")
             clip: true
             height: mytimeSelect.height
-            anchors.right: mytimeSelect.right
             backgroundComponent: Rectangle {
                 anchors.fill: parent
-                color: "black"
+                color: "#052a40"
                 border.color: "#1987ab"
                 border.width: 2
             }
@@ -271,6 +282,7 @@ Item {
         MyCalendar {
             id: mycalendar
             anchors.left: from.left
+            anchors.leftMargin: 10
             anchors.top: from.bottom
             bIsdate: true
             selecter: newCalendar
@@ -301,6 +313,7 @@ Item {
         MyCalendar {
             id: mycalendar2
             anchors.left: from.left
+            anchors.leftMargin: 10
             anchors.top: to.bottom
             bIsdate: true
             selecter: newCalendar
@@ -320,16 +333,18 @@ Item {
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 10
             anchors.left: parent.left
-            anchors.leftMargin: 20
+            anchors.leftMargin: 30
+            anchors.right: parent.right
+            anchors.rightMargin: 48
             spacing: 10
             CButton {
                 id: applyButton
-                width: workOrderName.width
+                width: parent.width
                 text: qsTr("APPLY")
             }
             CButton {
                 id: backButton
-                width: workOrderName.width
+                width: parent.width
                 text: qsTr("Back")
             }
         }
@@ -337,9 +352,66 @@ Item {
     }
     //    list << "CreatedDate" << "Alarm/ErrorType" << "Alarm/ErrorLevel" << "Message" << "SpliceName";
     Image {
+        id: scrollUp
+        anchors.top: tipsRec2.bottom
+        anchors.topMargin: 2
+        anchors.right: parent.right
+        anchors.rightMargin: 6
+        width: 17
+        height: 10
+        visible: listView.contentHeight > listView.height ? true : false
+        source: "qrc:/images/images/up.png"
+    }
+    Image {
+        id: scrollDown
+        anchors.bottom: scrollbar2.top
+        anchors.bottomMargin: 2
+        anchors.right: parent.right
+        anchors.rightMargin: 6
+        width: 17
+        height: 10
+        visible: listView.contentHeight > listView.height ? true : false
+        source: "qrc:/images/images/down.png"
+    }
+    Rectangle {
+        id: scrollbar
+        width: 10
+        height: listView.height-24
+        anchors.top: scrollUp.bottom
+        anchors.right: parent.right
+        anchors.rightMargin: 8
+        color: "#585858"
+        radius: 10
+        visible: listView.contentHeight > listView.height ? true : false
+        Rectangle {
+            id: button
+            anchors.left: parent.left
+            y: (listView.visibleArea.yPosition < 0 ) ? 0 : (listView.contentY+listView.height>listView.contentHeight) ?
+                scrollbar.height - button.height : listView.visibleArea.yPosition * scrollbar.height
+            width: 10
+            height: listView.visibleArea.heightRatio * scrollbar.height;
+            color: "#ccbfbf"
+            radius: 10
+            // 鼠标区域
+            MouseArea {
+                id: mouseArea
+                anchors.fill: button
+                drag.target: button
+                drag.axis: Drag.YAxis
+                drag.minimumY: 0
+                drag.maximumY: scrollbar.height - button.height
+                // 拖动
+                onMouseYChanged: {
+                    listView.contentY = button.y / scrollbar.height * listView.contentHeight
+                }
+            }
+        }
+    }
+    Image {
         id: scrollLeft
         anchors.verticalCenter:scrollbar2.verticalCenter
-        anchors.right: scrollbar2.left
+        anchors.left: back.right
+        anchors.leftMargin: 11
         width: 11
         height: 17
         visible: true
@@ -357,10 +429,11 @@ Item {
 
     Rectangle {
         id: scrollbar2
-        anchors.left: back.right
-        anchors.leftMargin: 11
-        anchors.top: listView.bottom
+        anchors.left: scrollLeft.right
+        anchors.bottom: exportdata.top
+        anchors.bottomMargin: 20
         anchors.right: parent.right
+        anchors.rightMargin: 22
         height: 17
         color: "#585858"
         radius: 10
@@ -398,7 +471,6 @@ Item {
         ListElement {title:"Message"}
         ListElement {title:"SpliceName"}
     }
-
     Row {
         id: headTitle
         anchors.top: parent.top
@@ -420,6 +492,29 @@ Item {
                 text: qsTr(title)
             }
         }
+    }
+    Rectangle {
+        id: tipsRec
+        anchors.top: headTitle.bottom
+        anchors.topMargin: 10
+        anchors.left: back.right
+        anchors.leftMargin: 20
+        anchors.right: parent.right
+        anchors.rightMargin: 20
+        clip: true
+        height: 1
+        color: "#ffffff"
+    }
+    Rectangle {
+        id: tipsRec2
+        anchors.top: tipsRec.bottom
+        anchors.left: back.right
+        anchors.leftMargin: 20
+        anchors.right: parent.right
+        anchors.rightMargin: 20
+        clip: true
+        height: 1
+        color: "#0d0f11"
     }
 
 

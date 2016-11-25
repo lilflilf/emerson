@@ -217,6 +217,7 @@ Item {
         CButton {
             id: workOrderName
             anchors.left: title2.left
+            anchors.leftMargin: 10
             anchors.top: title2.bottom
             anchors.right: parent.right
             anchors.rightMargin: 48
@@ -225,7 +226,7 @@ Item {
             height: mytimeSelect.height
             backgroundComponent: Rectangle {
                 anchors.fill: parent
-                color: "black"
+                color: "#052a40"
                 border.color: "#1987ab"
                 border.width: 2
             }
@@ -233,23 +234,13 @@ Item {
                 searchArea.visible = true
             }
         }
-        Line {
-            id: line2
-            anchors.left: parent.left
-            anchors.leftMargin: 10
-            anchors.top: workOrderName.bottom
-            anchors.topMargin: 10
-            width: parent.width-58
-            lineColor: "#375566"
-            height: 1
-        }
         Text {
             id: date
             text: qsTr("Date and Time")
             font.family: "arial"
             color: "white"
             font.pointSize: 16
-            anchors.top: line2.bottom
+            anchors.top: workOrderName.bottom
             anchors.left: parent.left
             anchors.leftMargin: 20
             anchors.topMargin: 10
@@ -271,6 +262,7 @@ Item {
         MyCalendar {
             id: mycalendar
             anchors.left: from.left
+            anchors.leftMargin: 10
             anchors.top: from.bottom
             bIsdate: true
             selecter: newCalendar
@@ -300,6 +292,7 @@ Item {
         MyCalendar {
             id: mycalendar2
             anchors.left: from.left
+            anchors.leftMargin: 10
             anchors.top: to.bottom
             bIsdate: true
             selecter: newCalendar
@@ -330,18 +323,18 @@ Item {
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 10
             anchors.left: parent.left
-            anchors.leftMargin: 20
+            anchors.leftMargin: 30
             anchors.right: parent.right
             anchors.rightMargin: 48
             spacing: 10
             CButton {
                 id: applyButton
-                width: workOrderName.width
+                width: parent.width
                 text: qsTr("APPLY")
             }
             CButton {
                 id: backButton
-                width: workOrderName.width
+                width: parent.width
                 text: qsTr("Back")
             }
         }
