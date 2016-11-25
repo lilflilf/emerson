@@ -99,6 +99,7 @@ Item {
                 height: 40
                 color: "white"
                 text: qsTr("All")
+                visible: false
                 MouseArea {
                     anchors.top: parent.top
                     anchors.left: parent.left
@@ -136,7 +137,7 @@ Item {
 
             ListView {
                 id: searchList
-                anchors.top: allText.bottom
+                anchors.top: parent.top
                 anchors.left: parent.left
                 width: parent.width
                 anchors.bottom: parent.bottom
@@ -262,8 +263,9 @@ Item {
     MyCalendar {
         id: mycalendar
         anchors.left: from.left
-            anchors.leftMargin: 10
+        anchors.leftMargin: 10
         anchors.top: from.bottom
+        width: (parent.width-98)/2
         bIsdate: true
         selecter: newCalendar
         exclusiveGroup: timeSelectGroup
@@ -271,6 +273,7 @@ Item {
 
     MyCalendar {
         id: mytimeSelect
+        width: (parent.width-98)/2
         anchors.top: mycalendar.top
         anchors.left: mycalendar.right
         anchors.leftMargin: 20
@@ -295,12 +298,15 @@ Item {
         selecter: newCalendar
         exclusiveGroup: timeSelectGroup
         anchors.left: from.left
+        anchors.leftMargin: 10
         anchors.top: to.bottom
+        width: (parent.width-98)/2
     }
     MyCalendar {
         bIsdate: false
         selecter: newCalendar
         exclusiveGroup: timeSelectGroup
+        width: (parent.width-98)/2
         anchors.top: mycalendar2.top
         anchors.left: mycalendar2.right
         anchors.leftMargin: 20
