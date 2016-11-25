@@ -51,6 +51,12 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
     alarmModel->setRoles(list);
     alarmModel->setModelList();
 
+    maintenanceLogModel = new MaintenanceLogModel(this);
+    list.clear();
+    list << "MaintenanceLogId" << "CreatedDate" << "OperatorName" << "Type" << "Message";
+    maintenanceLogModel->setRoles(list);
+    maintenanceLogModel->setModelList();
+
     advanceMaintenance = new AdvancedMaintenance;
     calibration = new Calibration;
     maintenanceCount = new MaintenanceCounter;
@@ -327,6 +333,16 @@ QStringList HmiAdaptor::weldDefaultsGetValue(HmiAdaptor::FormulaRange index)
          << weldDefaults->CurrentWeldSettings.WeldSettingFormula[index].Multiplier.Minimum
          << weldDefaults->CurrentWeldSettings.WeldSettingFormula[index].Identifier;
     return list;
+}
+
+QString HmiAdaptor::weldDefaultsGetNum(QString index)
+{
+    bool ok;
+    QString temp;
+    if (getStringValue(index).toFloat(&ok) < 0.01)
+        return index;
+    else
+        return QString("%1%2").arg(getStringValue(index).toFloat(&ok) - 0.01).arg(getStringUnit(index));
 }
 
 bool HmiAdaptor::weldDefaultsSetValue(QList<bool> boolList, QStringList strList, int sampleIndex, QString coolingDur,QString coolingDel)

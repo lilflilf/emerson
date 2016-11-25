@@ -93,7 +93,9 @@ public:
     Q_INVOKABLE bool weldDefaultsExecute(QString code);
     Q_INVOKABLE bool weldDefaultsGetSwitch(QString index);
     Q_INVOKABLE QStringList weldDefaultsGetValue(FormulaRange index);
+    Q_INVOKABLE QString weldDefaultsGetNum(QString index);
     Q_INVOKABLE bool weldDefaultsSetValue(QList<bool> boolList, QStringList strList, int sampleIndex, QString coolingDur, QString coolingDel);
+
 
     /********DataCommunication func**************/
     Q_INVOKABLE bool dataCommunicationExecute(QString code);
@@ -110,6 +112,7 @@ public:
     WireModel *wireModel;
     WeldHistoryModel *weldHistoryModel;
     AlarmModel *alarmModel;
+    MaintenanceLogModel *maintenanceLogModel;
 
     /********Maintenance**************/
     AdvancedMaintenance * advanceMaintenance;

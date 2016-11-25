@@ -255,45 +255,30 @@ Item {
             anchors.left: parent.left
             anchors.leftMargin: 20
         }
-        CButton {
+        ExclusiveGroup {
+            id: timeSelectGroup
+        }
+
+        MyCalendar {
             id: mycalendar
             anchors.left: from.left
             anchors.leftMargin: 10
             anchors.top: from.bottom
-            width: (parent.width-98)/2
-            z: 10
-            text: Qt.formatDateTime(new Date(), "yyyy-MM-dd")
-            height: 40
-            backgroundComponent: Rectangle {
-                anchors.fill: parent
-                color: "#052a40"
-                border.color: "#1987ab"
-                border.width: 2
-            }
-            onClicked: {
-                newCalendar.visible = !newCalendar.visible
-            }
+            bIsdate: true
+            selecter: newCalendar
+            exclusiveGroup: timeSelectGroup
         }
-        CButton {
+
+        MyCalendar {
             id: mytimeSelect
-            width: (parent.width-98)/2
             anchors.top: mycalendar.top
             anchors.left: mycalendar.right
             anchors.leftMargin: 20
-            z: 11
-            text: Qt.formatDateTime(new Date(), "hh:mm:ss")
-            height: 40
-            backgroundComponent: Rectangle {
-                anchors.fill: parent
-                color: "#052a40"
-                border.color: "#1987ab"
-                border.width: 2
-            }
-            onClicked: {
-                newCalendar.visible = !newCalendar.visible
-            }
-
+            bIsdate: false
+            selecter: newCalendar
+            exclusiveGroup: timeSelectGroup
         }
+
         Text {
             id: to
             text: qsTr("To:")
@@ -304,45 +289,36 @@ Item {
             anchors.left: parent.left
             anchors.leftMargin: 20
         }
-        CButton {
+        MyCalendar {
             id: mycalendar2
             anchors.left: from.left
             anchors.leftMargin: 10
             anchors.top: to.bottom
-            width: (parent.width-98)/2
-            z: 10
-            text: Qt.formatDateTime(new Date(), "yyyy-MM-dd")
-            height: 40
-            backgroundComponent: Rectangle {
-                anchors.fill: parent
-                color: "#052a40"
-                border.color: "#1987ab"
-                border.width: 2
-            }
-            onClicked: {
-                newCalendar.visible = !newCalendar.visible
-            }
+            bIsdate: true
+            selecter: newCalendar
+            exclusiveGroup: timeSelectGroup
         }
-        CButton {
+
+        MyCalendar {
             id: timeSet
-            width: (parent.width-98)/2
             anchors.top: mycalendar2.top
             anchors.left: mycalendar2.right
             anchors.leftMargin: 20
-            z: 10
-            text: Qt.formatDateTime(new Date(), "hh:mm:ss")
-            height: 40
-            backgroundComponent: Rectangle {
-                anchors.fill: parent
-                color: "#052a40"
-                border.color: "#1987ab"
-                border.width: 2
-            }
-            onClicked: {
-                newCalendar.visible = !newCalendar.visible
-            }
+            bIsdate: false
+            selecter: newCalendar
+            exclusiveGroup: timeSelectGroup
         }
 
+        Line {
+            id: line3
+            anchors.left: parent.left
+            anchors.leftMargin: 10
+            anchors.top: timeSet.bottom
+            anchors.topMargin: 10
+            width: parent.width-58
+            lineColor: "#375566"
+            height: 1
+        }
         Column {
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 10
@@ -364,8 +340,6 @@ Item {
         }
     }
 
-
-
     ListModel {
         id: headModel
         ListElement {key:"CreatedDate"}
@@ -377,6 +351,7 @@ Item {
     Row {
         id: headRows
         anchors.left: back.right
+        anchors.leftMargin: 20
         spacing: 30
         anchors.top: parent.top
         anchors.topMargin: 20
@@ -402,5 +377,75 @@ Item {
         anchors.top: headRows.bottom
         height: 2
         lineColor: "white"
+    }
+
+    ListView {
+        id: listView
+        anchors.left: headRows.left
+        anchors.top: headRows.bottom
+        anchors.topMargin: 20
+        anchors.bottom: parent.bottom
+        model: maintenanceLogModel
+        delegate: listDelegate
+        width: headRows.width // headModel.count * 200 + (headModel.count - 1) * 30
+        clip: true
+    }
+
+    Component {
+        id: listDelegate
+        Item {
+            width: listView.width
+            height: 50
+            clip: true
+            property var listIndex: 0
+            Component.onCompleted: {
+                listIndex = index
+            }
+
+            Row {
+                width: parent.width
+                height: parent.height
+                spacing: 30
+                clip: true
+                Repeater {
+                    id: listRepeater
+                    model: 4
+                    delegate:  Text {
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: 200
+                        font.family: "arial"
+                        font.pixelSize: 20
+                        color: "white"
+                        clip: true
+                        elide: Text.ElideRight
+                        text: listView.model.getValue(listIndex,headModel.get(index).title)
+                    }
+                }
+            }
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    selectIndx = index
+                    selectCheck.checked = !selectCheck.checked
+                }
+            }
+            Rectangle {
+                id: backGround
+                anchors.fill: parent
+                color: "black"
+                opacity: 0//opacityValue
+                RadioButton {
+                    id: selectCheck
+                    exclusiveGroup: listviewPositionGroup
+                    visible: false
+                    onCheckedChanged: {
+                        if (checked)
+                            backGround.opacity = 0.3
+                        else
+                            backGround.opacity = 0
+                    }
+                }
+            }
+        }
     }
 }

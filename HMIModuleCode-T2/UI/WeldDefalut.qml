@@ -41,67 +41,75 @@ Item {
         list = hmiAdaptor.weldDefaultsGetValue(0)
         checkText.text = list[9]
         formulaModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2],"identifier":list[9]})  //"formulaValue":"0.00mm²"
-        formulaModel.append({"formulaHead":"","maxValue":"","currenValue":list[1],"minValue":""})
+        formulaModel.append({"formulaHead":"","maxValue":"","currenValue":list[2],"minValue":""})
         formulaModel.append({"formulaHead":"Offset","maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
         formulaModel.append({"formulaHead":"Multiplier","maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
 
         list = hmiAdaptor.weldDefaultsGetValue(1)
-        formulaModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2]})  //"formulaValue":"0.00mm²"
+        formulaModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2]})
+        formulaModel.set(1,{"currenValue":hmiAdaptor.weldDefaultsGetNum(list[1])})
         formulaModel.append({"formulaHead":"","maxValue":"","currenValue":list[1],"minValue":""})
         formulaModel.append({"formulaHead":"Offset","maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
         formulaModel.append({"formulaHead":"Multiplier","maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
 
         list = hmiAdaptor.weldDefaultsGetValue(2)
-        formulaModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2]})  //"formulaValue":"0.00mm²"
-        formulaModel.append({"formulaHead":"","maxValue":"","currenValue":list[1],"minValue":""})
+        formulaModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2]})
+        formulaModel.set(5,{"currenValue":hmiAdaptor.weldDefaultsGetNum(list[1])})
+        formulaModel.append({"formulaHead":"","maxValue":"","currenValue":list[0],"minValue":""})
         formulaModel.append({"formulaHead":"Offset","maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
         formulaModel.append({"formulaHead":"Multiplier","maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
 
         list = hmiAdaptor.weldDefaultsGetValue(3)
-        widthModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2],"identifier":list[9]})  //"formulaValue":"0.00mm²"
-        widthModel.append({"formulaHead":"","maxValue":"","currenValue":list[1],"minValue":""})
+        widthModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2],"identifier":list[9]})
+        widthModel.append({"formulaHead":"","maxValue":"","currenValue":list[2],"minValue":""})
         widthModel.append({"formulaHead":"Offset","maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
         widthModel.append({"formulaHead":"Multiplier","maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
         list = hmiAdaptor.weldDefaultsGetValue(4)
-        widthModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2]})  //"formulaValue":"0.00mm²"
+        widthModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2]})
+        widthModel.set(1,{"currenValue":hmiAdaptor.weldDefaultsGetNum(list[1])})
         widthModel.append({"formulaHead":"","maxValue":"","currenValue":list[1],"minValue":""})
         widthModel.append({"formulaHead":"Offset","maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
         widthModel.append({"formulaHead":"Multiplier","maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
         list = hmiAdaptor.weldDefaultsGetValue(5)
-        widthModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2]})  //"formulaValue":"0.00mm²"
-        widthModel.append({"formulaHead":"","maxValue":"","currenValue":list[1],"minValue":""})
+        widthModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2]})
+        widthModel.set(5,{"currenValue":hmiAdaptor.weldDefaultsGetNum(list[1])})
+        widthModel.append({"formulaHead":"","maxValue":"","currenValue":list[0],"minValue":""})
         widthModel.append({"formulaHead":"Offset","maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
         widthModel.append({"formulaHead":"Multiplier","maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
 
         list = hmiAdaptor.weldDefaultsGetValue(6)
-        pressureModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2],"identifier":list[9]})  //"formulaValue":"0.00mm²"
+        pressureModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2],"identifier":list[9]})
         pressureModel.append({"formulaHead":"","maxValue":"","currenValue":list[1],"minValue":""})
         pressureModel.append({"formulaHead":"Offset","maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
         pressureModel.append({"formulaHead":"Multiplier","maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
         list = hmiAdaptor.weldDefaultsGetValue(7)
-        pressureModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2]})  //"formulaValue":"0.00mm²"
+        pressureModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2]})
+        pressureModel.set(1,{"currenValue":hmiAdaptor.weldDefaultsGetNum(list[1])})
         pressureModel.append({"formulaHead":"","maxValue":"","currenValue":list[1],"minValue":""})
         pressureModel.append({"formulaHead":"Offset","maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
         pressureModel.append({"formulaHead":"Multiplier","maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
         list = hmiAdaptor.weldDefaultsGetValue(8)
-        pressureModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2]})  //"formulaValue":"0.00mm²"
-        pressureModel.append({"formulaHead":"","maxValue":"","currenValue":list[1],"minValue":""})
+        pressureModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2]})
+        pressureModel.set(5,{"currenValue":hmiAdaptor.weldDefaultsGetNum(list[1])})
+        pressureModel.append({"formulaHead":"","maxValue":"","currenValue":list[0],"minValue":""})
         pressureModel.append({"formulaHead":"Offset","maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
         pressureModel.append({"formulaHead":"Multiplier","maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
 
         list = hmiAdaptor.weldDefaultsGetValue(9)
-        amplitudeModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2],"identifier":list[9]})  //"formulaValue":"0.00mm²"
+        amplitudeModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2],"identifier":list[9]})
         amplitudeModel.append({"formulaHead":"","maxValue":"","currenValue":list[1],"minValue":""})
         amplitudeModel.append({"formulaHead":"Offset","maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
         amplitudeModel.append({"formulaHead":"Multiplier","maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
         list = hmiAdaptor.weldDefaultsGetValue(10)
-        amplitudeModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2]})  //"formulaValue":"0.00mm²"
+        amplitudeModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2]})
+        amplitudeModel.set(1,{"currenValue":hmiAdaptor.weldDefaultsGetNum(list[1])})
         amplitudeModel.append({"formulaHead":"","maxValue":"","currenValue":list[1],"minValue":""})
         amplitudeModel.append({"formulaHead":"Offset","maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
         amplitudeModel.append({"formulaHead":"Multiplier","maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
         list = hmiAdaptor.weldDefaultsGetValue(11)
-        amplitudeModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2]})  //"formulaValue":"0.00mm²"
-        amplitudeModel.append({"formulaHead":"","maxValue":"","currenValue":list[1],"minValue":""})
+        amplitudeModel.append({"formulaHead":"Range","maxValue":list[0],"currenValue":list[1],"minValue":list[2]})
+        amplitudeModel.set(5,{"currenValue":hmiAdaptor.weldDefaultsGetNum(list[1])})
+        amplitudeModel.append({"formulaHead":"","maxValue":"","currenValue":list[0],"minValue":""})
         amplitudeModel.append({"formulaHead":"Offset","maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
         amplitudeModel.append({"formulaHead":"Multiplier","maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
 
@@ -276,7 +284,7 @@ Item {
             width: (parent.width-40)/2
             height: 80
             headTitle: qsTr("Cooling Duration")
-            centervalue: coolingList[1] //hmiAdaptor.weldDefaultsGetValue(-1)[1] //qsTr("100s")
+//            centervalue: coolingList[1] //hmiAdaptor.weldDefaultsGetValue(-1)[1] //qsTr("100s")
             onMouseAreaClick: {
                 if (cooling1.bgvisable) {
                     localbordercolor = "#05f91c"
@@ -297,7 +305,7 @@ Item {
             width: (parent.width-40)/2
             height: 80
             headTitle: qsTr("Cooling Delay")
-            centervalue: coolingList[4] //hmiAdaptor.weldDefaultsGetValue(-1)[4] //qsTr("100s")
+//            centervalue: coolingList[4] //hmiAdaptor.weldDefaultsGetValue(-1)[4] //qsTr("100s")
             onMouseAreaClick: {
                 localbordercolor = "#05f91c"
                 keyNum.titleText = cooling2.headTitle
@@ -438,10 +446,10 @@ Item {
                         localbordercolor = "#05f91c"
                     }
                     formulaSetting.selectIndex = index
-                    keyNum.titleText = formulaModel.get(index).formulaHead
-                    keyNum.maxvalue = formulaModel.get(index).maxValue
-                    keyNum.currentValue = formulaModel.get(index).currenValue
-                    keyNum.minvalue = formulaModel.get(index).minValue
+                    keyNum.titleText = gridRepeater.model.get(index).formulaHead
+                    keyNum.maxvalue = gridRepeater.model.get(index).maxValue
+                    keyNum.currentValue = gridRepeater.model.get(index).currenValue
+                    keyNum.minvalue = gridRepeater.model.get(index).minValue
                     keyNum.visible = true
                     backGround.visible = true
                 }
@@ -665,7 +673,7 @@ Item {
                         cooling2.myFocus = false
                     } else {
                         gridRepeater.itemAt(formulaSetting.selectIndex).localbordercolor = "#0079c1"
-                        formulaModel.set(formulaSetting.selectIndex,{"currenValue":keyNum.inputText})
+                        gridRepeater.model.set(formulaSetting.selectIndex,{"currenValue":keyNum.inputText})
                     }
                     backGround.visible = false
                     keyNum.visible = false
@@ -695,7 +703,7 @@ Item {
                 cooling2.centervalue = keyNum.inputText
             } else {
                 if (keyNum.inputText != "") {
-                    formulaModel.set(formulaSetting.selectIndex,{"currenValue":keyNum.inputText})
+                    gridRepeater.model.set(formulaSetting.selectIndex,{"currenValue":keyNum.inputText})
                 }
             }
         }

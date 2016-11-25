@@ -255,110 +255,61 @@ Item {
             anchors.left: parent.left
             anchors.leftMargin: 20
         }
-        CButton {
-            id: mycalendar
-            anchors.left: from.left
+    ExclusiveGroup {
+        id: timeSelectGroup
+    }
+
+    MyCalendar {
+        id: mycalendar
+        anchors.left: from.left
             anchors.leftMargin: 10
-            anchors.top: from.bottom
-            width: (parent.width-98)/2
-            z: 10
-            text: Qt.formatDateTime(new Date(), "yyyy-MM-dd")
-            height: 40
-            backgroundComponent: Rectangle {
-                anchors.fill: parent
-                color: "#052a40"
-                border.color: "#1987ab"
-                border.width: 2
-            }
-            onClicked: {
-                newCalendar.visible = !newCalendar.visible
-            }
-            Connections {
-                target: newCalendar
-                onDateValueChanged: {
-                    mycalendar.text = newCalendar.dateValue
-                }
-            }
-        }
-        CButton {
-            id: mytimeSelect
-            width: (parent.width-98)/2
-            anchors.top: mycalendar.top
-            anchors.left: mycalendar.right
-            anchors.leftMargin: 20
-            z: 11
-            text: Qt.formatDateTime(new Date(), "hh:mm:ss")
-            height: 40
-            backgroundComponent: Rectangle {
-                anchors.fill: parent
-                color: "#052a40"
-                border.color: "#1987ab"
-                border.width: 2
-            }
-            onClicked: {
-                newCalendar.visible = !newCalendar.visible
-            }
-            Connections {
-                target: newCalendar
-                onTimeValueChanged: {
-                    mytimeSelect.text = newCalendar.timeValue
-                }
-            }
-        }
-        Text {
-            id: to
-            text: qsTr("To:")
-            font.family: "arial"
-            color: "white"
-            font.pointSize: 16
-            anchors.top: mycalendar.bottom
-            anchors.left: parent.left
-            anchors.leftMargin: 20
-        }
-        CButton {
-            id: mycalendar2
-            anchors.left: from.left
-            anchors.leftMargin: 10
-            anchors.top: to.bottom
-            width: (parent.width-98)/2
-            z: 10
-            text: Qt.formatDateTime(new Date(), "yyyy-MM-dd")
-            height: 40
-            backgroundComponent: Rectangle {
-                anchors.fill: parent
-                color: "#052a40"
-                border.color: "#1987ab"
-                border.width: 2
-            }
-            onClicked: {
-                newCalendar.visible = !newCalendar.visible
-            }
-        }
-        CButton {
-            width: (parent.width-98)/2
-            anchors.top: mycalendar2.top
-            anchors.left: mycalendar2.right
-            anchors.leftMargin: 20
-            z: 10
-            text: Qt.formatDateTime(new Date(), "hh:mm:ss")
-            height: 40
-            backgroundComponent: Rectangle {
-                anchors.fill: parent
-                color: "#052a40"
-                border.color: "#1987ab"
-                border.width: 2
-            }
-            onClicked: {
-                newCalendar.visible = !newCalendar.visible
-            }
-        }
-        Column {
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 10
-            anchors.left: parent.left
-            anchors.leftMargin: 30
-            anchors.right: parent.right
-            anchors.rightMargin: 48
+        anchors.top: from.bottom
+        bIsdate: true
+        selecter: newCalendar
+        exclusiveGroup: timeSelectGroup
+    }
+
+    MyCalendar {
+        id: mytimeSelect
+        anchors.top: mycalendar.top
+        anchors.left: mycalendar.right
+        anchors.leftMargin: 20
+        bIsdate: false
+        selecter: newCalendar
+        exclusiveGroup: timeSelectGroup
+    }
+
+    Text {
+        id: to
+        text: qsTr("To:")
+        font.family: "arial"
+        color: "white"
+        font.pointSize: 16
+        anchors.top: mycalendar.bottom
+        anchors.left: parent.left
+        anchors.leftMargin: 20
+    }
+    MyCalendar {
+        id: mycalendar2
+        bIsdate: true
+        selecter: newCalendar
+        exclusiveGroup: timeSelectGroup
+        anchors.left: from.left
+        anchors.top: to.bottom
+    }
+    MyCalendar {
+        bIsdate: false
+        selecter: newCalendar
+        exclusiveGroup: timeSelectGroup
+        anchors.top: mycalendar2.top
+        anchors.left: mycalendar2.right
+        anchors.leftMargin: 20
+    }
+    Column {
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 10
+        anchors.left: parent.left
+        anchors.leftMargin: 20
             spacing: 10
             CButton {
                 id: applyButton
