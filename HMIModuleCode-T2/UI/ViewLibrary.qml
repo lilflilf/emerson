@@ -279,21 +279,31 @@ Item {
             y: (listView.visibleArea.yPosition < 0 ) ? 0 : (listView.contentY+listView.height>listView.contentHeight) ?
                 scrollbar.height - button.height : listView.visibleArea.yPosition * scrollbar.height
             width: 10
-            height: listView.visibleArea.heightRatio * scrollbar.height;
+            height: listView.visibleArea.heightRatio * scrollbar.height // < 5 ? 20 : listView.visibleArea.heightRatio * scrollbar.height;
             color: "#ccbfbf"
             radius: 10
             // 鼠标区域
-            MouseArea {
-                id: mouseArea
-                anchors.fill: button
-                drag.target: button
-                drag.axis: Drag.YAxis
-                drag.minimumY: 0
-                drag.maximumY: scrollbar.height - button.height
-                // 拖动
-                onMouseYChanged: {
-                    listView.contentY = button.y / scrollbar.height * listView.contentHeight
-                }
+        }
+        MouseArea {
+            id: mouseArea
+//                anchors.fill: button
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: button.top
+            height: button.height < 5 ? 20 : button.height
+            drag.target: button
+            drag.axis: Drag.YAxis
+            drag.minimumY: 0
+            drag.maximumY: scrollbar.height - button.height
+            // 拖动
+            onMouseYChanged: {
+                listView.contentY = (button.y + button.height) / scrollbar.height * listView.contentHeight
+            }
+            Rectangle {
+                anchors.fill: parent
+                color: "#585858"
+                radius: 10
+
             }
         }
     }

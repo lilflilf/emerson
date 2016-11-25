@@ -94,7 +94,7 @@ Item {
                 height: 33//Math.round(TextSingleton.implicitHeight * 2.73)
                 CButton {
                     id: previousMonth
-                    width: 51 //parent.height
+                    width: 100 //parent.height
                     height: 33 //width
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.left: parent.left
@@ -102,6 +102,8 @@ Item {
                     onClicked: control.showPreviousMonth()
                     backgroundEnabled: false
                     textColor: "blue"
+                    pixelSize: 30
+                    labelHorizontalOffset: -30
                 }
                 Label {
                     id: dateText
@@ -119,7 +121,7 @@ Item {
                 }
                 CButton {
                     id: nextMonth
-                    width: 51 //parent.height
+                    width: 100 //parent.height
                     height: 33 //width
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
@@ -127,10 +129,14 @@ Item {
                     onClicked: control.showNextMonth()
                     backgroundEnabled: false
                     textColor: "blue"
+                    pixelSize: 30
+                    labelHorizontalOffset: 30
+
                 }
             }
         }
     }
+
     Row {
         anchors.left: calendar.right
         spacing: 15

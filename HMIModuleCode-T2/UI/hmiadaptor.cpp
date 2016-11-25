@@ -51,6 +51,12 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
     alarmModel->setRoles(list);
     alarmModel->setModelList();
 
+    maintenanceLogModel = new MaintenanceLogModel(this);
+    list.clear();
+    list << "MaintenanceLogId" << "CreatedDate" << "OperatorName" << "Type" << "Message";
+    maintenanceLogModel->setRoles(list);
+    maintenanceLogModel->setModelList();
+
     advanceMaintenance = new AdvancedMaintenance;
     calibration = new Calibration;
     maintenanceCount = new MaintenanceCounter;
@@ -329,6 +335,16 @@ QStringList HmiAdaptor::weldDefaultsGetValue(HmiAdaptor::FormulaRange index)
     return list;
 }
 
+QString HmiAdaptor::weldDefaultsGetNum(QString index)
+{
+    bool ok;
+    QString temp;
+    if (getStringValue(index).toFloat(&ok) < 0.01)
+        return index;
+    else
+        return QString("%1%2").arg(getStringValue(index).toFloat(&ok) - 0.01).arg(getStringUnit(index));
+}
+
 bool HmiAdaptor::weldDefaultsSetValue(QList<bool> boolList, QStringList strList, int sampleIndex, QString coolingDur,QString coolingDel)
 {
     weldDefaults->CurrentWeldSettings.SampleRatio = (SAMPLERATIO)sampleIndex;
@@ -535,7 +551,6 @@ bool HmiAdaptor::comepareCurrentValue(QString minValue, QString maxValue, QStrin
     QString minNum = getStringValue(minValue);
     QString maxNum = getStringValue(maxValue);
     QString theValue = getStringValue(value);
-    qDebug()<<"2222222222222"<<minNum<<maxNum<<theValue;
     if (theValue.toFloat(&ok) >= minNum.toFloat(&ok) && theValue.toFloat(&ok) <= maxNum.toFloat(&ok)) {
         return true;
     } else {
