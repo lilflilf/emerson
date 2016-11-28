@@ -4,6 +4,7 @@ QT += qml quick
 QT += serialport
 QT += sql
 CONFIG += c++11
+RC_FILE = res.rc
 #static {
 #    QT += svg
 #    QTPLUGIN += qtvirtualkeyboardplugin

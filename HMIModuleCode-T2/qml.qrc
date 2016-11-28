@@ -151,5 +151,8 @@
         <file>images/Thai.png</file>
         <file>images/Turkish.png</file>
         <file>images/Vietnam.png</file>
+        <file>images/logo.png</file>
+        <file>images/vg01.png</file>
+        <file>images/vg02.png</file>
     </qresource>
 </RCC>

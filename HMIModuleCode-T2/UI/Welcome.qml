@@ -29,17 +29,27 @@ Item {
         anchors.fill: parent
         source: "qrc:/images/images/loginbackground.png"
     }
-    Text {
+    Image {
         id: title1
+        source: "qrc:/images/images/logo.png"
         anchors.top: parent.top
         anchors.topMargin: parent.height/3
         anchors.left: parent.left
         anchors.leftMargin: parent.width/4
-        font.pointSize: 40
-        color: "white"
-        font.family: "arial"
-        text: qsTr("EMERSON")
+        width: 271
+        height: 115
     }
+//    Text {
+//        id: title1
+//        anchors.top: parent.top
+//        anchors.topMargin: parent.height/3
+//        anchors.left: parent.left
+//        anchors.leftMargin: parent.width/4
+//        font.pointSize: 40
+//        color: "white"
+//        font.family: "arial"
+//        text: qsTr("EMERSON")
+//    }
     Text {
         id: title2
         anchors.horizontalCenter: title1.horizontalCenter
@@ -60,6 +70,18 @@ Item {
         font.family: "arial"
         text: qsTr("BRANSON")
     }
+//    Text {
+//        id: title4
+//        anchors.left: title1.right
+//        anchors.right: parent.right
+//        anchors.bottom: mima.top
+//        anchors.bottomMargin: 8
+//        horizontalAlignment: Qt.AlignHCenter
+//        color: "white"
+//        font.family: "arial"
+//        font.pointSize: 24
+//        text: qsTr("Enter Passcode")
+//    }
     Text {
         id: title4
         anchors.left: title1.right
@@ -70,37 +92,38 @@ Item {
         color: "white"
         font.family: "arial"
         font.pointSize: 24
-        text: qsTr("Enter Passcode")
+        text: qsTr("Scan or Enter ID")
     }
-    Text {
-        id: title5
-        anchors.left: title1.right
-        anchors.right: parent.right
-        anchors.bottom: title4.top
-        anchors.bottomMargin: 8
-        horizontalAlignment: Qt.AlignHCenter
-        color: "white"
-        font.family: "arial"
-        font.pointSize: 24
-        text: qsTr("Or")
-    }
-    Text {
-        id: title6
-        anchors.left: title1.right
-        anchors.right: parent.right
-        anchors.bottom: title5.top
-        anchors.bottomMargin: 8
-        horizontalAlignment: Qt.AlignHCenter
-        color: "white"
-        font.family: "arial"
-        font.pointSize: 24
-        text: qsTr("Scan ID")
-    }
+//    Text {
+//        id: title5
+//        anchors.left: title1.right
+//        anchors.right: parent.right
+//        anchors.bottom: title4.top
+//        anchors.bottomMargin: 8
+//        horizontalAlignment: Qt.AlignHCenter
+//        color: "white"
+//        font.family: "arial"
+//        font.pointSize: 24
+//        text: qsTr("Or")
+//    }
+//    Text {
+//        id: title6
+//        anchors.left: title1.right
+//        anchors.right: parent.right
+//        anchors.bottom: title5.top
+//        anchors.bottomMargin: 8
+//        horizontalAlignment: Qt.AlignHCenter
+//        color: "white"
+//        font.family: "arial"
+//        font.pointSize: 24
+//        text: qsTr("Scan ID")
+//    }
     TextInput {
         id: mima
-        anchors.left: title1.right
+        anchors.left: title4.horizontalCenter
+        anchors.leftMargin: -50
         anchors.right: parent.right
-        horizontalAlignment: Qt.AlignHCenter
+//        horizontalAlignment: Qt.AlignHCenter
         anchors.verticalCenter: title1.verticalCenter
         anchors.verticalCenterOffset: -50
         maximumLength: 4
@@ -111,8 +134,49 @@ Item {
         text: qsTr("")
         echoMode: TextInput.Password
     }
+    Row {
+        anchors.left: mima.left
+        anchors.leftMargin: 1.5
+        anchors.verticalCenter: mima.verticalCenter
+        anchors.verticalCenterOffset: 2
+        spacing: 3
+        Rectangle {
+            radius: 100
+            width: 18
+            height: 18
+            border.color: "white"
+            border.width: 1
+            color: Qt.rgba(0,0,0,0)
+        }
+        Rectangle {
+            radius: 100
+            width: 18
+            height: 18
+            border.color: "white"
+            border.width: 1
+            color: Qt.rgba(0,0,0,0)
+        }
+        Rectangle {
+            radius: 100
+            width: 18
+            height: 18
+            border.color: "white"
+            border.width: 1
+            color: Qt.rgba(0,0,0,0)
+        }
+        Rectangle {
+            radius: 100
+            width: 18
+            height: 18
+            border.color: "white"
+            border.width: 1
+            color: Qt.rgba(0,0,0,0)
+        }
+
+    }
+
     Grid {
-        anchors.horizontalCenter: mima.horizontalCenter
+        anchors.horizontalCenter: title4.horizontalCenter
         anchors.top: mima.bottom
         anchors.topMargin: 10
         columnSpacing: 35

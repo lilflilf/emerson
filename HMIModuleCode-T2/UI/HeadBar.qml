@@ -404,14 +404,13 @@ Item {
     }
     Image {
         id: personButton
-        anchors.top: parent.top
-        anchors.topMargin: 6
         anchors.right: parent.right
         anchors.rightMargin: 20
-        width: 70
-        height: parent.height-16
+        height: 60
+        width: 60
         z: 14
-        source: "qrc:/images/images/user.png"
+        source: "qrc:/images/images/person.png"
+        anchors.verticalCenter: parent.verticalCenter
         MouseArea {
             anchors.fill: parent
             onClicked: {
@@ -433,14 +432,13 @@ Item {
     }
     Image {
         id: helpButton
-        anchors.top: parent.top
-        anchors.topMargin: 6
         anchors.right: personButton.left
         anchors.rightMargin: 20
-        width: 70
-        height: parent.height-16
         z: 14
+        height: 60
+        width: 60
         source: "qrc:/images/images/help.png"
+        anchors.verticalCenter: parent.verticalCenter
         MouseArea {
             anchors.fill: parent
             onClicked: {
@@ -462,14 +460,13 @@ Item {
     }
     Image {
         id: languageButton
-        anchors.top: parent.top
-        anchors.topMargin: 6
         anchors.right: helpButton.left
         anchors.rightMargin: 20
-        width: 70
-        height: parent.height-16
         z: 14
         source: "qrc:/images/images/English.png"
+        anchors.verticalCenter: parent.verticalCenter
+        height: 80
+        width: 80
         MouseArea {
             anchors.fill: parent
             onClicked: {
