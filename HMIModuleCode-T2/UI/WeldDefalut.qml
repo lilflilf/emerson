@@ -679,6 +679,8 @@ Item {
                     keyNum.visible = false
                     keyNum.inputText = ""
                     keyNum.tempValue = ""
+                } else {
+                    keyNum.timeRun = true
                 }
             } else if (index == 11) {
                 if (cooling1.myFocus) {

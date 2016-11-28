@@ -11,6 +11,7 @@ Item {
     property string inputText: ""
     property string maxvalue: "0"
     property string tempValue: ""
+    property alias timeRun: timer.running
     signal currentClickIndex(int index)
     width: parent.width
     height: parent.height
@@ -29,6 +30,24 @@ Item {
         font.pixelSize: 27
         color: "white"
         text: qsTr("text")
+    }
+    Text {
+        id: waring
+        anchors.top: title.top
+        anchors.left: title.right
+        anchors.leftMargin: 20
+        anchors.right: parent.right
+        horizontalAlignment: Qt.AlignHCenter
+        font.family: "arial"
+        font.pixelSize: 27
+        color: "red"
+        visible: timer.running
+        text: qsTr("输入值无效!")
+    }
+    Timer {
+        id: timer
+        interval: 3000
+        running: false
     }
     Text {
         id: currentText
@@ -180,6 +199,7 @@ Item {
                             if (hmiAdaptor.keyNumStringMatch(keyBoardnum.minvalue,keyBoardnum.maxvalue,keyBoardnum.tempValue)) {
                                 inputText = tempValue + hmiAdaptor.getStringUnit(keyBoardnum.minvalue)
                             } else {
+                                timer.running = true
                                 var Temp = ""
                                 for (var j = 0; j < tempValue.length-1;j++) {
                                     Temp += tempValue.charAt(j)
