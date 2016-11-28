@@ -87,6 +87,9 @@ Window {
         case 18:
             contentLoader.source = "qrc:/UI/BransonSetting.qml"
             break;
+        case 19:
+            contentLoader.source = "qrc:/UI/EditWire.qml"
+            break;
         default:
             break;
         }

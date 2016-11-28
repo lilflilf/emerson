@@ -867,6 +867,7 @@ Item {
         currentIndex: swipeView.currentIndex
         anchors.top: parent.top
         height: Screen.height * 0.08
+        spacing: 0
         TabButton {
             height: parent.height
             Rectangle {
@@ -918,6 +919,7 @@ Item {
             }
         }
     }
+
     Item {
         id: rightArea
         anchors.left: swipeView.right

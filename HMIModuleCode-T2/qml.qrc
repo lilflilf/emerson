@@ -53,6 +53,7 @@
         <file>UI/ViewVersion.qml</file>
         <file>UI/BransonSetting.qml</file>
         <file>UI/Welcome.qml</file>
+        <file>UI/EditWire.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file>images/you.png</file>

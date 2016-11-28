@@ -411,7 +411,7 @@ Item {
         width: 70
         height: parent.height-16
         z: 14
-        source: "qrc:/images/images/person.png"
+        source: "qrc:/images/images/user.png"
         MouseArea {
             anchors.fill: parent
             onClicked: {

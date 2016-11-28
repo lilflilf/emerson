@@ -8,11 +8,30 @@ Item {
         anchors.fill: parent
         source: "qrc:/images/images/bg.png"
     }
+    Rectangle {
+        id: back
+        width: parent.width * 0.3
+        height: parent.height
+        color: "#052a40"
+        z: 10
+
+        Text {
+            id: seach
+            text: qsTr("Version Information")
+            font.family: "arial"
+            color: "white"
+            font.pointSize: 20
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.leftMargin: 20
+            anchors.topMargin: 10
+        }
+    }
     Text {
         id: partNumber
         anchors.top: parent.top
         anchors.topMargin: 48
-        anchors.left: parent.left
+        anchors.left: back.right
         anchors.leftMargin: 50
         font.family: "arial"
         font.pixelSize: 24

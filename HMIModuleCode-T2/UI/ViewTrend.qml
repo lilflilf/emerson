@@ -222,7 +222,7 @@ Item {
             anchors.right: parent.right
             anchors.rightMargin: 48
             anchors.top: title2.bottom
-            text: qsTr("All")
+            text: qsTr("Click to Select")
             clip: true
             height: mytimeSelect.height
             backgroundComponent: Rectangle {
@@ -302,6 +302,7 @@ Item {
         anchors.top: to.bottom
         width: (parent.width-98)/2
     }
+
     MyCalendar {
         bIsdate: false
         selecter: newCalendar
@@ -449,6 +450,12 @@ Item {
         font.pointSize: 16
         color: "white"
         text: qsTr("Statistics\n\nSample Size\nMean\nMedian\nSigma\nCPK")
+    }
+    CButton {
+        anchors.bottom: parent.bottom
+        anchors.left: bottomText2.left
+        width: 200
+        text: "Export"
     }
 
 
