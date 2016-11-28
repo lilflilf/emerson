@@ -9,6 +9,7 @@ Item {
     width: Screen.width
     height: Screen.height
     signal signalSaveSplice()
+    property int selectIndex: 0
     property bool detailIsChang: true
     property variant colorArray: ["#ff6699","#ff0033","#33FFCC","#cc99ff","#cc0099","#930202","#99ccff","#f79428",
         "#0000cc","Olive","#ffff33","#ffcc00","#cc9909","#66ff00","#009900","#00cc66","#3366ff","#cc33cc","#cc9966","#9400D3"]
@@ -808,6 +809,17 @@ Item {
                         centervalue: qsTr(bottomText)
                         width: (settingLayout.width-30)/2
                         height: (settingLayout.height-60)/4
+                        onMouseAreaClick: {
+                            creatWire.selectIndex = index
+                            backGround.visible = true
+                            backGround.opacity = 0.5
+                            localbordercolor = "#05f91c"
+                            keyNum.visible = true
+                            keyNum.titleText = topText
+                            keyNum.currentValue = bottomText
+                            keyNum.minvalue = "0"
+                            keyNum.maxvalue = "100"
+                        }
                     }
                 }
             }
@@ -1285,6 +1297,7 @@ Item {
             }
             Grid {
                 id: heightSetting
+                property bool heightSetVisible: false
                 anchors.top: heightSettingText.bottom
                 anchors.left: parent.left
                 anchors.leftMargin: 20
@@ -1324,6 +1337,19 @@ Item {
                             inputColor: "white"
                             clip: true
                             inputText: qsTr(textValue)
+                            onInputFocusChanged: {
+                                if (heightValue.inputFocus) {
+                                    heightSetting.heightSetVisible = true
+                                    creatWire.selectIndex = index
+                                    backGround.visible = true
+                                    backGround.opacity = 0.5
+                                    keyNum.visible = true
+                                    keyNum.titleText = heightText
+                                    keyNum.currentValue = textValue
+                                    keyNum.minvalue = "0.00mm"
+                                    keyNum.maxvalue = "20.00mm"
+                                }
+                            }
                         }
                     }
                 }
@@ -1404,6 +1430,17 @@ Item {
                 inputColor: "white"
                 clip: true
                 inputText: qsTr("0.00mm")
+                onInputFocusChanged: {
+                    if (loadValue.inputFocus) {
+                        backGround.visible = true
+                        backGround.opacity = 0.5
+                        keyNum.visible = true
+                        keyNum.titleText = loadName.text
+                        keyNum.currentValue = loadValue.inputText
+                        keyNum.minvalue = "0.00mm"
+                        keyNum.maxvalue = "20.00mm"
+                    }
+                }
             }
             Text {
                 id: loadName2
@@ -1431,6 +1468,17 @@ Item {
                 inputColor: "white"
                 clip: true
                 inputText: qsTr("0.00mm")
+                onInputFocusChanged: {
+                    if (loadValue2.inputFocus) {
+                        backGround.visible = true
+                        backGround.opacity = 0.5
+                        keyNum.visible = true
+                        keyNum.titleText = loadName2.text
+                        keyNum.currentValue = loadValue2.inputText
+                        keyNum.minvalue = "0.00mm"
+                        keyNum.maxvalue = "20.00mm"
+                    }
+                }
             }
             Text {
                 id: instulationText
@@ -1453,6 +1501,8 @@ Item {
                 height: parent.height*0.12
                 text: qsTr("Insulation")
                 onClicked: {
+                    backGround.visible = true
+                    backGround.opacity = 0.5
                     shrinkSet.visible = true
                 }
             }
@@ -1497,6 +1547,16 @@ Item {
             width: parent.width*0.8
             height: parent.height*0.5
             visible: false
+            onSureClick: {
+                shrinkSet.visible = false
+                backGround.opacity = 0
+                backGround.visible = false
+            }
+            onCancelClick: {
+                shrinkSet.visible = false
+                backGround.opacity = 0
+                backGround.visible = false
+            }
         }
     }
     Rectangle {
@@ -1527,7 +1587,17 @@ Item {
                 if (edit2.inputFocus) {
                     edit2.inputText = keyNum.inputText
                     edit2.inputFocus = false
+                } else if (loadValue2.inputFocus) {
+                    loadValue2.inputText = keyNum.inputText
+                    loadValue2.inputFocus = false
+                } else if (loadValue.inputFocus) {
+                    loadValue.inputText = keyNum.inputText
+                    loadValue.inputFocus = false
+                } else if (heightSetting.heightSetVisible) {
+                    heightModel.set(cre)
+
                 }
+
                 backGround.visible = false
                 backGround.opacity = 0
                 keyNum.visible = false

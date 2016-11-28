@@ -87,12 +87,9 @@
         <file>images/maintenance-4.png</file>
         <file>images/maintenance-5.png</file>
         <file>images/maintenance-6.png</file>
-        <file>images/guo1.png</file>
-        <file>images/guo2.png</file>
         <file>images/help.png</file>
         <file>images/person.png</file>
         <file>images/loading.gif</file>
-        <file>images/welcome.png</file>
         <file>images/loginbackground.png</file>
         <file>images/close.png</file>
         <file>images/timeSelectbg.png</file>
@@ -118,5 +115,40 @@
         <file>images/keyboard1.png</file>
         <file>images/menubg1.png</file>
         <file>images/menubg2.png</file>
+        <file>images/key0.png</file>
+        <file>images/key1.png</file>
+        <file>images/key2.png</file>
+        <file>images/key3.png</file>
+        <file>images/key4.png</file>
+        <file>images/key5.png</file>
+        <file>images/key6.png</file>
+        <file>images/key7.png</file>
+        <file>images/key8.png</file>
+        <file>images/key9.png</file>
+        <file>images/keyc.png</file>
+        <file>images/keydel.png</file>
+        <file>images/Arabic.png</file>
+        <file>images/chinese.png</file>
+        <file>images/Czech.png</file>
+        <file>images/dutch.png</file>
+        <file>images/English.png</file>
+        <file>images/french.png</file>
+        <file>images/German.png</file>
+        <file>images/Hindi.png</file>
+        <file>images/Hungarian.png</file>
+        <file>images/Indonesian.png</file>
+        <file>images/Italian.png</file>
+        <file>images/Japanese.png</file>
+        <file>images/Korean.png</file>
+        <file>images/Malaysian.png</file>
+        <file>images/polish.png</file>
+        <file>images/Portuguese.png</file>
+        <file>images/Romanian.png</file>
+        <file>images/russian.png</file>
+        <file>images/Slovak.png</file>
+        <file>images/Spanish.png</file>
+        <file>images/Thai.png</file>
+        <file>images/Turkish.png</file>
+        <file>images/Vietnam.png</file>
     </qresource>
 </RCC>
