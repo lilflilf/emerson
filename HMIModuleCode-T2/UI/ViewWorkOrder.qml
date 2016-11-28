@@ -30,8 +30,8 @@ Item {
         ListView {
             id: listView
             anchors.left: parent.left
-            anchors.top: headRows.bottom
-            anchors.topMargin: 20
+            anchors.top: topLine.bottom
+            anchors.topMargin: 5
             anchors.bottom: parent.bottom
             model: weldHistoryModel
             delegate: listDelegate
@@ -45,7 +45,7 @@ Item {
             ListElement {key:"SpliceName"}
             ListElement {key:"OperatorName"}
             ListElement {key:"DateCreated"}
-            ListElement {key:"Cross ection"}
+            ListElement {key:"CrossSection"}
             ListElement {key:"WeldMode"}
             ListElement {key:"Energy"}
             ListElement {key:"Amplitude"}
@@ -72,8 +72,10 @@ Item {
 
         Row {
             id: headRows
-            anchors.left: listView.left
+            anchors.left: parent.left
             spacing: 30
+            anchors.top: parent.top
+            anchors.topMargin: 15
             Repeater {
                 delegate: Text {
                     id: headName
@@ -84,16 +86,18 @@ Item {
                     text: key
                     clip: true
                     color: "white"
-                    font.pointSize: 20
+                    font.pixelSize: 25
                     font.family: "arial"
                 }
                 model: headModel
             }
         }
         Line {
+            id: topLine
             width: listView.width
-            anchors.left: headRows.left
+            anchors.left: parent.left
             anchors.top: headRows.bottom
+            anchors.topMargin: 10
             height: 2
             lineColor: "white"
         }
@@ -386,6 +390,8 @@ Item {
             bIsdate: true
             selecter: newCalendar
             exclusiveGroup: timeSelectGroup
+            width: (parent.width-88)/2
+
         }
 
         MyCalendar {
@@ -395,6 +401,8 @@ Item {
             bIsdate: false
             selecter: newCalendar
             exclusiveGroup: timeSelectGroup
+            width: (parent.width-88)/2
+
         }
 
         Text {
@@ -414,6 +422,8 @@ Item {
             bIsdate: true
             selecter: newCalendar
             exclusiveGroup: timeSelectGroup
+            width: (parent.width-88)/2
+
         }
 
         MyCalendar {
@@ -424,6 +434,8 @@ Item {
             bIsdate: false
             selecter: newCalendar
             exclusiveGroup: timeSelectGroup
+            width: (parent.width-88)/2
+
         }
 
         Line {
@@ -620,9 +632,8 @@ Item {
                 drag.maximumX: scrollbar2.width - button2.width
             }
             onXChanged: {
-
                 listView.anchors.leftMargin = -button2.x / scrollbar2.width * listView.width
-                console.log(button2.x)
+                headRows.anchors.leftMargin = -button2.x / scrollbar2.width * listView.width
             }
         }
     }

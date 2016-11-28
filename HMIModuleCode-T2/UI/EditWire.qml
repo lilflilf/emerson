@@ -13,12 +13,12 @@ Item {
     property variant colorArray: ["#ff6699","#ff0033","#33FFCC","#cc99ff","#cc0099","#930202","#99ccff","#f79428",
         "#0000cc","Olive","#ffff33","#ffcc00","#cc9909","#66ff00","#009900","#00cc66","#3366ff","#cc33cc","#cc9966","#9400D3"]
 
-    function wireChanged(selectColor,selectPosition,selectText)
-    {
-        spliceDetailsItem.selectColor = selectColor
-        spliceDetailsItem.selectText = selectText
-        spliceDetailsItem.selectPosition = selectPosition
-    }
+//    function wireChanged(selectColor,selectPosition,selectText)
+//    {
+//        spliceDetailsItem.selectColor = selectColor
+//        spliceDetailsItem.selectText = selectText
+//        spliceDetailsItem.selectPosition = selectPosition
+//    }
 
     SwipeView {
         width: Screen.width * 0.3
@@ -27,46 +27,45 @@ Item {
         currentIndex: tabBar.currentIndex
         Page {
             id: wireBuilder
-
-            Connections {
-                target: spliceDetailsItem
-                onWireSelected: {
-                    //signal wireSelected(var selectColor,var selectDirection,var selectPosition,var selectText)
-                    forground.visible = false
-                    rectcolor.color = selectColor
-                    wireDirection.state = selectDirection
-                    edit2.inputText = selectText
-                    topRadio.checked = true
-                }
-                onChanging: {
-                    console.log("onChanging",bIsChang)
-                    detailIsChang = bIsChang
-                }
-            }
+//            Connections {
+//                target: spliceDetailsItem
+//                onWireSelected: {
+//                    //signal wireSelected(var selectColor,var selectDirection,var selectPosition,var selectText)
+//                    forground.visible = false
+//                    rectcolor.color = selectColor
+//                    wireDirection.state = selectDirection
+//                    edit2.inputText = selectText
+//                    topRadio.checked = true
+//                }
+//                onChanging: {
+//                    console.log("onChanging",bIsChang)
+//                    detailIsChang = bIsChang
+//                }
+//            }
 
             Rectangle {
                 anchors.top: parent.top
                 anchors.fill: parent
                 color: "#052a40"
             }
-            Rectangle {
-                id: forground
-                anchors.top: parent.top
-                anchors.fill: parent
-                color: "#052a40"
-                z:10
-                Label {
-                    id: nowire
-                    color: "#8295a0"
-                    text: qsTr("No Wires Selected")
-                    anchors.top: parent.top
-                    anchors.topMargin: tabBar.height + 15
-                    anchors.left: parent.left
-                    anchors.leftMargin: 10
-                    font.family: "arial"
-                    font.pointSize: 16
-                }
-            }
+//            Rectangle {
+//                id: forground
+//                anchors.top: parent.top
+//                anchors.fill: parent
+//                color: "#052a40"
+//                z:10
+//                Label {
+//                    id: nowire
+//                    color: "#8295a0"
+//                    text: qsTr("No Wires Selected")
+//                    anchors.top: parent.top
+//                    anchors.topMargin: tabBar.height + 15
+//                    anchors.left: parent.left
+//                    anchors.leftMargin: 10
+//                    font.family: "arial"
+//                    font.pointSize: 16
+//                }
+//            }
 
             MyLineEdit {
                 id: wireName
@@ -230,7 +229,7 @@ Item {
                                 if (pickColor == "")
                                     return
                                 itemColor.color = pickColor
-                                spliceDetailsItem.selectColor = pickColor
+//                                spliceDetailsItem.selectColor = pickColor
                                 colorLoader.sourceComponent = null
                             }
                         }
@@ -720,129 +719,7 @@ Item {
                 anchors.right: parent.right
                 anchors.rightMargin: 10
                 onClicked: {
-                }
-            }
 
-        }
-
-        Page {
-            id: weldSettting
-            Rectangle {
-                anchors.topMargin: tabBar.height
-                anchors.top: parent.top
-                anchors.fill: parent
-                color: "#052a40"
-            }
-            ListModel {
-                id: settingsModel
-                Component.onCompleted: {
-                    settingsModel.append({"topText":"Energy","bottomText":"30J"})
-                    settingsModel.append({"topText":"Trigger Pressure","bottomText":"50PSI"})
-                    settingsModel.append({"topText":"Amplitude","bottomText":"25um"})
-                    settingsModel.append({"topText":"Weld Pressure","bottomText":"50PSI"})
-                    settingsModel.append({"topText":"Width","bottomText":"12.5mm"})
-                }
-            }
-            ListModel {
-                id: settingsModel2
-                Component.onCompleted: {
-                    settingsModel2.append({"topText":"Time","bottomText":"0.00s"})
-                    settingsModel2.append({"topText":"Time","bottomText":"5.00s"})
-                    settingsModel2.append({"topText":"Power","bottomText":"0W"})
-                    settingsModel2.append({"topText":"Power","bottomText":"3960W"})
-                    settingsModel2.append({"topText":"Pre-Height","bottomText":"0.00mm"})
-                    settingsModel2.append({"topText":"Pre-Height","bottomText":"15.00mm"})
-                    settingsModel2.append({"topText":"Post-Height","bottomText":"0.00mm"})
-                    settingsModel2.append({"topText":"Post-Height","bottomText":"15.00mm"})
-
-
-                }
-            }
-            Row {
-                id: upper
-                anchors.top: parent.top
-                anchors.topMargin: tabBar.height + 5
-                spacing: 20
-                anchors.left: parent.left
-                anchors.leftMargin: 10
-                width: parent.width-20
-                visible: false
-                Text {
-                    text: qsTr("Lower Limit")
-                    font.pointSize: 14
-                    font.family: "arial"
-                    color: "#8295a0"
-                    width: (parent.width-20)/2
-                    anchors.verticalCenter: parent.verticalCenter
-                    horizontalAlignment: Qt.AlignHCenter
-                }
-                Text {
-                    font.pointSize: 14
-                    font.family: "arial"
-                    width: (parent.width-20)/2
-                    color: "#8295a0"
-                    text: qsTr("Upper Limit")
-                    anchors.verticalCenter: parent.verticalCenter
-                    horizontalAlignment: Qt.AlignHCenter
-                }
-            }
-
-            Grid {
-                id: settingLayout
-                anchors.top: parent.top
-                anchors.topMargin: tabBar.height + 30
-                anchors.left: parent.left
-                anchors.leftMargin: 10
-                width: parent.width-20
-                anchors.bottom: bottomButton.top
-                anchors.bottomMargin: 10
-                rows: 4
-                columns: 2
-                columnSpacing: 30
-                rowSpacing: 20
-                Repeater {
-                    id: repeater
-                    model: settingsModel
-                    Recsetting {
-                        headTitle: qsTr(topText)
-                        centervalue: qsTr(bottomText)
-                        width: (settingLayout.width-30)/2
-                        height: (settingLayout.height-60)/4
-                    }
-                }
-            }
-            Row {
-                id: bottomButton
-                anchors.bottom: parent.bottom
-                anchors.left: parent.left
-                anchors.leftMargin: 10
-                spacing: 10
-                height: 61
-                width: parent.width-20
-                CButton {
-                    pointSize: 14
-                    width: (parent.width-10)/2
-                    text: qsTr("QUALITY\nWINDOW")
-                    onClicked: {
-                        if (repeater.model == settingsModel){
-                            repeater.model = settingsModel2
-                            text = "WELD\nSETTINGS"
-                            upper.visible = true
-                        }
-                        else {
-                            text = "QUALITY\nWINDOW"
-                            repeater.model = settingsModel
-                            upper.visible = false
-                        }
-                    }
-                }
-                CButton {
-                    pointSize: 14
-                    width: (parent.width-10)/2
-                    text: qsTr("ADVANCED\nSETTING")
-                    onClicked: {
-                        settingRightArea.visible = true
-                    }
                 }
             }
         }
@@ -883,31 +760,7 @@ Item {
                 settingRightArea.visible = false
             }
         }
-        TabButton {
-            height: parent.height
-            Rectangle {
-                anchors.fill: parent
-                color:  "#052a40"  //tabBar.currentIndex == 0 ? "black" : "#48484a"
-            }
-            Text {
-                anchors.centerIn: parent
-                font.family: "arial"
-                font.pointSize: 17.5
-                text: qsTr("WELD SETTINGS")
-                color: tabBar.currentIndex == 1 ? "white" : "#969ea5"
-            }
-            Rectangle {
-                anchors.right: parent.right
-                anchors.rightMargin: 10
-                width: parent.width-10
-                height: 6
-                color:  "#F79428"
-                anchors.bottom: parent.bottom
-                visible: tabBar.currentIndex == 1 ? true : false
-            }
-        }
     }
-
     Item {
         id: rightArea
         anchors.left: swipeView.right
@@ -921,599 +774,21 @@ Item {
             anchors.topMargin: 100
             z: 10
         }
-        Rectangle {
-            anchors.fill: parent
-            color: "#626465"
-            MouseArea {
-                anchors.fill: parent
-            }
-        }
-        MyLineEdit {
-            id: edit1
-            width: parent.width*0.6
-            height: 50
-            anchors.top: parent.top
-            inputWidth: parent.width * 0.6
-            inputHeight: 48
-            defaultText: "SPLICE NAME"
-            anchors.topMargin: 8
-            anchors.left: parent.left
-            anchors.leftMargin: 20
-            clip: true
-            //displayText: qsTr("SPLICE NAME")
-        }
-        Label {
-            id: spliceDetails
-            anchors.top: edit1.bottom
-            anchors.topMargin: 10
-            anchors.left: edit1.left
-            text: qsTr("SpliceDetails")
-            font.pointSize: 16
-            font.family: "arial"
-            color: "white"
-        }
-        Label {
-            id: spliceDetailsTips
-            anchors.top: spliceDetails.bottom
-            anchors.topMargin: 10
-            anchors.left: spliceDetails.left
-            text: qsTr("TOTAL CROSS SECTION 0mm")
-            font.pointSize: 12
-            font.family: "arial"
-            color: "white"
-            opacity: 0.5
-        }
-        SpliceDetails {
-            id: spliceDetailsItem
-            width: Screen.width * 0.8
-            height: Screen.height *0.5
-            anchors.top: spliceDetailsTips.bottom
-            anchors.topMargin: 10
-            anchors.bottom: addWire.top
-            anchors.bottomMargin: 10
-            anchors.left: spliceDetails.left
-            anchors.right: parent.right
-            anchors.rightMargin: 20
-
-        }
-
-        CButton {
-            id: wirelibrary
-            pointSize: 14
-            width: (spliceDetailsItem.width-48)/3
-            anchors.right: addWire.left
-            anchors.rightMargin: 24
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 14
-            text: qsTr("WIRE LIBRARY")
-
-        }
-        CButton {
-            id: addWire
-            pointSize: 14
-            width: (spliceDetailsItem.width-48)/3
-            anchors.right: saveSplice.left
-            anchors.rightMargin: 24
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 14
-            text: qsTr("ADD WIRE")
-        }
-
-        CButton {
-            id: saveSplice
-            pointSize: 14
-            anchors.right: spliceDetailsItem.right
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 14
-            width: (spliceDetailsItem.width-48)/3
-            text: qsTr("SAVE SPLICE")
-            onClicked: {
-                signalSaveSplice()
-            }
-        }
     }
-    Item {
-        id: settingRightArea
-        anchors.left: swipeView.right
-        width: Screen.width * 0.7
-        height: parent.height
-        visible: false
-        clip: true
-        Image {
-            anchors.fill: parent
-            source: "qrc:/images/images/bg.png"
-            MouseArea {
-                anchors.fill: parent
-            }
-        }
-        Item {
-            id: rect1
-            anchors.left: parent.left
-            anchors.top: parent.top
-            anchors.leftMargin: 15
-            anchors.topMargin: 6
-            anchors.right: parent.right
-            clip: true
-            height: 150
-            Text {
-                id: weldModel
-                text: qsTr("Weld Model")
-                color: "white"
-                font.pointSize: 16
-                font.family: "arial"
-                anchors.top: parent.top
-                anchors.left: parent.left
-                anchors.topMargin: 5
-                anchors.leftMargin: 15
-            }
 
-            ExclusiveGroup {
-                id: weldModelSetting
-            }
-            Component {
-                id: buttonBackBlue
-                Item {
-                    Rectangle {
-                        anchors.centerIn: parent
-                        anchors.fill: parent
-                        radius: 3
-                        color: "#0079c1"
-                        Rectangle{
-                            anchors.fill: parent
-                            anchors.margins: 1
-                            radius: 3
-                            anchors.centerIn: parent
-                            color: "#0079c1"
-                        }
-                    }
-                }
-            }
-            Component {
-                id: buttonBackWhite
-                Item {
-                    Rectangle {
-                        anchors.centerIn: parent
-                        anchors.fill: parent
-                        radius: 3
-                        color: "#ffffff"
-                        Rectangle{
-                            anchors.fill: parent
-                            anchors.margins: 1
-                            radius: 3
-                            anchors.centerIn: parent
-                            color: "#ffffff"
-                        }
-                    }
-                }
-            }
-            ListModel {
-                id: weldListModel
-                Component.onCompleted: {
-                    weldListModel.append({"buttonName":"Energy"})
-                    weldListModel.append({"buttonName":"Time"})
-                    weldListModel.append({"buttonName":"Height"})
-                    weldListModel.append({"buttonName":"Energy/Height"})
-                    weldListModel.append({"buttonName":"Step-Energy"})
-                    weldListModel.append({"buttonName":"Step-Time"})
-                    weldListModel.append({"buttonName":"Step-Power"})
-                }
-            }
+//    Rectangle {
+//        id: backGround
+//        anchors.fill: parent
+//        color: "black"
+//        opacity: 0.7
+//        visible: false //content.bIsEdit ? true : false
+//        MouseArea {
+//            anchors.fill: parent
+//            onClicked: {
 
-            Grid {
-                anchors.top: weldModel.bottom
-                anchors.topMargin: 6
-                width: parent.width
-                anchors.bottom: parent.bottom
-                anchors.left: parent.left
-                anchors.leftMargin: 20
-                columnSpacing: 20
-                rowSpacing: 10
-                rows: 2
-                columns: 4
-                Repeater {
-                    model: weldListModel
-                    CButton {
-                        id: weldModelButton
-                        width: 200
-                        height: 50
-                        backgroundComponent: buttonBackWhite
-                        text: buttonName
-                        pointSize: 14
-                        textColor: weldModelCheck.checked ? "white" : "black"
-                        RadioButton {
-                            id: weldModelCheck
-                            exclusiveGroup: index < 4 ? tabPositionGroup : tabPositionGroup2
-                            visible: false
-                            checked: index == 0 ? true : false
-                            onCheckedChanged: {
-                                if (weldModelCheck.checked)
-                                    weldModelButton.backgroundComponent = buttonBackBlue
-                                else
-                                    weldModelButton.backgroundComponent = buttonBackWhite
-                            }
-                        }
-                        onClicked: {
-                            weldModelCheck.checked = !weldModelCheck.checked
-                        }
-                    }
-                }
-            }
-        }
-
-        Item {
-            id: rect2
-            anchors.top: rect1.bottom
-            anchors.left: rect1.left
-            anchors.right: parent.right
-            anchors.bottom: line5.top
-            anchors.bottomMargin: 20
-            clip: true
-            ListModel {
-                id: weldSettingModel
-                Component.onCompleted: {
-                    weldSettingModel.append({"headText":"Pre Burst:","textValue":"0.00s"})
-                    weldSettingModel.append({"headText":"Hold Time:","textValue":"0.00s"})
-                    weldSettingModel.append({"headText":"After Burst:","textValue":"0.00s"})
-                    weldSettingModel.append({"headText":"Squeeze Time:","textValue":"0.00s"})
-                }
-            }
-            Grid {
-                id: weldSetting
-                anchors.top: parent.top
-                anchors.left: parent.left
-                anchors.leftMargin: 20
-                width: parent.width-40
-                height: parent.height*0.23+6
-                clip: true
-                columns: 2
-                rows:2
-                columnSpacing: 20
-                rowSpacing: 6
-                Repeater {
-                    model: weldSettingModel
-                    delegate: Item {
-                        width: parent.width/2-20
-                        height: (weldSetting.height-6)/2
-                        Text {
-                            id: headName
-                            anchors.top: parent.top
-                            anchors.verticalCenter: parent.verticalCenter
-                            verticalAlignment: Qt.AlignVCenter
-                            anchors.left: parent.left
-                            anchors.leftMargin: 10
-                            width: parent.width/3
-                            font.pointSize: 16
-                            font.family: "arial"
-                            text: qsTr(headText)
-                            color: "white"
-                            clip: true
-                        }
-                        MyLineEdit {
-                            id: inputText
-                            anchors.verticalCenter: headName.verticalCenter
-                            anchors.left: headName.right
-                            width: parent.width/2
-                            horizontalAlignment: Qt.AlignHCenter
-                            height: parent.height
-                            inputWidth: parent.width/2
-                            inputHeight: parent.height
-                            inputColor: "white"
-                            clip: true
-                            inputText: qsTr(textValue)
-                        }
-                    }
-                }
-            }
-            Text {
-                id: widthSettingText
-                anchors.top: weldSetting.bottom
-                anchors.left: parent.left
-                anchors.leftMargin: 30
-                verticalAlignment: Qt.AlignVCenter
-                text: qsTr("Width off-set:")
-                color: "white"
-                font.pointSize: 16
-                font.family: "arial"
-            }
-            ListModel {
-                id: widthModel
-                Component.onCompleted: {
-                    widthModel.append({"widthText":"Displayed:","textValue":"0.00mm"})
-                    widthModel.append({"widthText":"Actual:","textValue":"0.00mm"})
-                }
-            }
-            Grid {
-                id: widthSetting
-                anchors.top: widthSettingText.bottom
-                anchors.left: parent.left
-                anchors.leftMargin: 20
-                width: parent.width-40
-                height: parent.height*0.12
-                clip: true
-                columns: 2
-                rows: 1
-                columnSpacing: 20
-                Repeater {
-                    model: widthModel
-                    delegate: Item {
-                        width: parent.width/2-20
-                        height: parent.height
-                        Text {
-                            id: widthName
-                            anchors.verticalCenter: parent.verticalCenter
-                            verticalAlignment: Qt.AlignVCenter
-                            anchors.left: parent.left
-                            anchors.leftMargin: 10
-                            width: parent.width/3
-                            font.pointSize: 16
-                            font.family: "arial"
-                            text: qsTr(widthText)
-                            color: "white"
-                            clip: true
-                        }
-                        MyLineEdit {
-                            id: widthValue
-                            anchors.left: widthName.right
-                            anchors.verticalCenter: widthName.verticalCenter
-                            width: parent.width/2
-                            horizontalAlignment: Qt.AlignHCenter
-                            height: parent.height
-                            inputWidth: parent.width/2
-                            inputHeight: parent.height
-                            inputColor: "white"
-                            clip: true
-                            inputText: qsTr(textValue)
-                        }
-                    }
-                }
-            }
-            Text {
-                id: heightSettingText
-                anchors.top: widthSetting.bottom
-                anchors.left: parent.left
-                anchors.leftMargin: 30
-                verticalAlignment: Qt.AlignVCenter
-                text: qsTr("Height off-set:")
-                color: "white"
-                font.pointSize: 16
-                font.family: "arial"
-            }
-            ListModel {
-                id: heightModel
-                Component.onCompleted: {
-                    heightModel.append({"heightText":"Displayed:","textValue":"0.00mm"})
-                    heightModel.append({"heightText":"Actual:","textValue":"0.00mm"})
-                }
-            }
-            Grid {
-                id: heightSetting
-                anchors.top: heightSettingText.bottom
-                anchors.left: parent.left
-                anchors.leftMargin: 20
-                width: parent.width-40
-                height: parent.height*0.12
-                clip: true
-                columns: 2
-                rows: 1
-                columnSpacing: 20
-                Repeater {
-                    model: heightModel
-                    delegate: Item {
-                        width: parent.width/2-20
-                        height: parent.height
-                        Text {
-                            id: heightName
-                            anchors.verticalCenter: parent.verticalCenter
-                            verticalAlignment: Qt.AlignVCenter
-                            anchors.left: parent.left
-                            anchors.leftMargin: 10
-                            width: parent.width/3
-                            font.pointSize: 16
-                            font.family: "arial"
-                            text: qsTr(heightText)
-                            color: "white"
-                            clip: true
-                        }
-                        MyLineEdit {
-                            id: heightValue
-                            anchors.left: heightName.right
-                            anchors.verticalCenter: heightName.verticalCenter
-                            width: parent.width/2
-                            horizontalAlignment: Qt.AlignHCenter
-                            height: parent.height
-                            inputWidth: parent.width/2
-                            inputHeight: parent.height
-                            inputColor: "white"
-                            clip: true
-                            inputText: qsTr(textValue)
-                        }
-                    }
-                }
-            }
-            ListModel {
-                id: thirdSwitchModel
-                Component.onCompleted: {
-                    thirdSwitchModel.append({"thirdSwitchText":"Anti-Side:"})
-                    thirdSwitchModel.append({"thirdSwitchText":"Cutf Off:"})
-                    thirdSwitchModel.append({"thirdSwitchText":"Shrink Tube:"})
-                }
-            }
-            Column {
-                id: thirdSwitch
-                anchors.top: heightSetting.bottom
-                anchors.topMargin: 6
-                anchors.bottom: parent.bottom
-                anchors.left: parent.left
-                anchors.leftMargin: 20
-                width: parent.width/2-40
-                spacing: 6
-                clip: true
-                Repeater {
-                    model: thirdSwitchModel
-                    delegate: Item {
-                        height: (thirdSwitch.height-12)/3
-                        width: parent.width
-                        Text {
-                            id: thirdSwitchName
-                            anchors.verticalCenter: parent.verticalCenter
-                            verticalAlignment: Qt.AlignVCenter
-                            anchors.left: parent.left
-                            anchors.leftMargin: 10
-                            width: parent.width/3
-                            font.pointSize: 16
-                            font.family: "arial"
-                            text: qsTr(thirdSwitchText)
-                            color: "white"
-                            clip: true
-                        }
-                        Switch2 {
-                            id: onoroff
-                            anchors.verticalCenter: thirdSwitchName.verticalCenter
-                            anchors.left: thirdSwitchName.right
-                            width: parent.width/2
-                            height: parent.height
-                            textLeft: qsTr("ON")
-                            textRight: qsTr("OFF")
-                            state: "left"
-                            clip: true
-                        }
-                    }
-                }
-            }
-            Text {
-                id: loadName
-                anchors.top: thirdSwitch.top
-                anchors.left: parent.left
-                anchors.leftMargin: parent.width/2+10
-                width: (parent.width/2-40)/3
-                height: thirdSwitch.height/3-6
-                verticalAlignment: Qt.AlignVCenter
-                font.pointSize: 16
-                font.family: "arial"
-                text: qsTr("unload Time:")
-                color: "white"
-                clip: true
-            }
-            MyLineEdit {
-                id: loadValue
-                anchors.verticalCenter: loadName.verticalCenter
-                anchors.left: loadName.right
-                width: parent.width/4
-                horizontalAlignment: Qt.AlignHCenter
-                height: parent.height*0.12
-                inputWidth: parent.width/4-20
-                inputHeight: parent.height*0.12
-                inputColor: "white"
-                clip: true
-                inputText: qsTr("0.00mm")
-            }
-            Text {
-                id: loadName2
-                anchors.top: loadName.bottom
-                anchors.topMargin: 6
-                anchors.left: loadName.left
-                width: (parent.width/2-40)/3
-                height: thirdSwitch.height/3-6
-                verticalAlignment: Qt.AlignVCenter
-                font.pointSize: 16
-                font.family: "arial"
-                text: qsTr("unload Time:")
-                color: "white"
-                clip: true
-            }
-            MyLineEdit {
-                id: loadValue2
-                anchors.verticalCenter: loadName2.verticalCenter
-                anchors.left: loadName2.right
-                width: parent.width/4-20
-                horizontalAlignment: Qt.AlignHCenter
-                height: parent.height*0.12
-                inputWidth: parent.width/4-20
-                inputHeight: parent.height*0.12
-                inputColor: "white"
-                clip: true
-                inputText: qsTr("0.00mm")
-            }
-            Text {
-                id: instulationText
-                anchors.top: loadName2.bottom
-                anchors.topMargin: 6
-                anchors.left: loadName.left
-                width: (parent.width/2-40)/3
-                height: thirdSwitch.height/3-6
-                verticalAlignment: Qt.AlignVCenter
-                text: qsTr("Insulation:")
-                color: "white"
-                font.pointSize: 16
-                font.family: "arial"
-            }
-            CButton {
-                id: instulationButton
-                anchors.verticalCenter: instulationText.verticalCenter
-                anchors.left: instulationText.right
-                width: parent.width/4-20
-                height: parent.height*0.12
-                text: qsTr("Insulation")
-                onClicked: {
-                    shrinkSet.visible = true
-                }
-            }
-        }
-        Rectangle {
-            id: line5
-            anchors.bottom: bottomRow.top
-            anchors.bottomMargin: 10
-            anchors.left: rect1.left
-            anchors.right: rect1.right
-            border.color: "white"
-            border.width: 2
-            height: 4
-        }
-        Row {
-            id: bottomRow
-            spacing: 30
-            anchors.right: parent.right
-            anchors.rightMargin: 20
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 10
-            CButton {
-                width: 200
-                text: qsTr("Back")
-                textColor: "white"
-                onClicked: {
-                    settingRightArea.visible = false
-                }
-            }
-            CButton {
-                width: 200
-                text: qsTr("Save")
-                textColor: "white"
-                onClicked: {
-                    settingRightArea.visible = false
-                }
-            }
-        }
-        ShrinkSet {
-            id: shrinkSet
-            anchors.centerIn: parent
-            width: parent.width*0.8
-            height: parent.height*0.5
-            visible: false
-        }
-    }
-    Rectangle {
-        id: backGround
-        anchors.fill: parent
-        color: "black"
-        opacity: 0.7
-        visible: content.bIsEdit ? true : false
-        MouseArea {
-            anchors.fill: parent
-            onClicked: {
-
-            }
-        }
-    }
+//            }
+//        }
+//    }
     KeyBoardNum {
         id: keyNum
         anchors.centerIn: parent

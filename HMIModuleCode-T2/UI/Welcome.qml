@@ -10,25 +10,49 @@ Item {
         anchors.fill: parent
         source: "qrc:/images/images/loginbackground.png"
     }
+
     Image {
         id: welcomeImage
         anchors.verticalCenter: parent.verticalCenter
-        height: parent.height*0.5
-        width: parent.width*0.35
+        anchors.verticalCenterOffset: -150
+        height: 115 //parent.height*0.5
+        width: 271 //parent.width*0.35
         anchors.left: parent.left
-        anchors.leftMargin: parent.width/8
-        opacity: 0.7
-        source: "qrc:/images/images/welcome.png"
+        anchors.leftMargin: parent.width/5
+        source: "qrc:/images/images/logo.png"
     }
+    Text {
+        id: title1
+        anchors.top: welcomeImage.bottom
+        anchors.horizontalCenter: welcomeImage.horizontalCenter
+        color: "white"
+        font.family: "arial"
+        font.pixelSize: 26
+        text: qsTr("Industrial Automation")
+    }
+    Text {
+        id: title2
+        anchors.top: welcomeImage.bottom
+        anchors.topMargin: 100
+        anchors.horizontalCenter: welcomeImage.horizontalCenter
+        color: "white"
+        font.family: "arial"
+        font.pixelSize: 40
+        text: qsTr("BRANSON")
+    }
+
+
+
+
     Text {
         id: title
         anchors.top: welcomeImage.top
         anchors.left: welcomeImage.right
-        anchors.leftMargin: 150
+        anchors.leftMargin: parent.width/5
         color: "white"
         font.family: "arial"
         font.pixelSize: 24
-        text: qsTr("Scan Or Enter ID")
+        text: qsTr("Scan Or \nEnter ID")
     }
     TextInput {
         id: mima
@@ -46,13 +70,13 @@ Item {
         anchors.horizontalCenter: title.horizontalCenter
         anchors.top: mima.bottom
         anchors.topMargin: 10
-        spacing: 20
+        spacing: 12
         columns: 3
         Repeater {
             model: ["1","2","3","4","5","6","7","8","9","C","0","Del"]
             delegate: CButton {
-                width: 50
-                height: 50
+                width: 98
+                height: 93
                 text: modelData
                 textColor: "white"
                 onClicked: {

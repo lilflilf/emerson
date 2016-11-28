@@ -457,6 +457,7 @@ Item {
         anchors.top: parent.top
         anchors.leftMargin: 10
         height: Screen.height * 0.08
+        spacing: 0
         TabButton {
             height: parent.height
             Rectangle {

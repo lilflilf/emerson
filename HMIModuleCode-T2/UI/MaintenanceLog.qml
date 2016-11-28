@@ -335,6 +335,9 @@ Item {
                 id: applyButton
                 width: parent.width
                 text: qsTr("APPLY")
+                onClicked: {
+
+                }
             }
             CButton {
                 id: backButton
@@ -355,7 +358,7 @@ Item {
     Row {
         id: headRows
         anchors.left: back.right
-        anchors.leftMargin: 20
+        anchors.leftMargin: 15
         spacing: 30
         anchors.top: parent.top
         anchors.topMargin: 20
@@ -369,7 +372,7 @@ Item {
                 text: key
                 clip: true
                 color: "white"
-                font.pointSize: 20
+                font.pixelSize: 25
                 font.family: "arial"
             }
             model: headModel
@@ -379,6 +382,7 @@ Item {
         width: headRows.width
         anchors.left: headRows.left
         anchors.top: headRows.bottom
+        anchors.topMargin: 10
         height: 2
         lineColor: "white"
     }
@@ -387,7 +391,7 @@ Item {
         id: listView
         anchors.left: headRows.left
         anchors.top: headRows.bottom
-        anchors.topMargin: 20
+        anchors.topMargin: 5
         anchors.bottom: parent.bottom
         model: maintenanceLogModel
         delegate: listDelegate

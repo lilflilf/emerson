@@ -46,7 +46,10 @@ Item {
         opacity: 0.5
     }
     Rectangle {
-        color: "#6d6e71"
+        Image {
+            anchors.fill: parent
+            source: "qrc:/images/images/bg.png"
+        }
         width: parent.width * 0.5
         height: parent.height * 0.8
         anchors.centerIn: parent

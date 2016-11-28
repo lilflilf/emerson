@@ -36,8 +36,8 @@ Item {
         id: back
         width: parent.width * 0.3
         height: parent.height
-        color: "black"
-        opacity: 0.5
+        color: "#052a40"
+//        opacity: 0.5
     }
 
     FolderListModel {

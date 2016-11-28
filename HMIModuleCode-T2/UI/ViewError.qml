@@ -18,7 +18,8 @@ Item {
     }
     ListView {
         id: listView
-        anchors.top: tipsRec2.bottom
+        anchors.top: tipsRec.bottom
+        anchors.topMargin: 5
         anchors.bottom: scrollbar2.top
         anchors.left: headTitle.left
         anchors.leftMargin: 20
@@ -27,13 +28,14 @@ Item {
         model: alarmModel
         delegate: listDelegate
     }
+
     CButton {
         id: exportdata
         width: 300
         anchors.right: parent.right
         anchors.bottom:  parent.bottom
         text: qsTr("Export Data")
-        anchors.bottomMargin: 20
+        anchors.bottomMargin: 10
         anchors.rightMargin: 20
     }
 
@@ -479,7 +481,7 @@ Item {
     Row {
         id: headTitle
         anchors.top: parent.top
-        anchors.topMargin: 30
+        anchors.topMargin: 15
         anchors.left: back.right
         anchors.leftMargin: 20
         spacing: 30
@@ -491,7 +493,7 @@ Item {
                 verticalAlignment: Qt.AlignVCenter
                 width: 200
                 font.family: "arial"
-                font.pixelSize: 20
+                font.pixelSize: 25
                 color: "white"
                 clip: true
                 text: qsTr(title)
@@ -507,20 +509,20 @@ Item {
         anchors.right: parent.right
         anchors.rightMargin: 20
         clip: true
-        height: 1
+        height: 2
         color: "#ffffff"
     }
-    Rectangle {
-        id: tipsRec2
-        anchors.top: tipsRec.bottom
-        anchors.left: back.right
-        anchors.leftMargin: 20
-        anchors.right: parent.right
-        anchors.rightMargin: 20
-        clip: true
-        height: 1
-        color: "#0d0f11"
-    }
+//    Rectangle {
+//        id: tipsRec2
+//        anchors.top: tipsRec.bottom
+//        anchors.left: back.right
+//        anchors.leftMargin: 20
+//        anchors.right: parent.right
+//        anchors.rightMargin: 20
+//        clip: true
+//        height: 1
+//        color: "#0d0f11"
+//    }
 
 
 
