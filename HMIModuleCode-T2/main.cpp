@@ -43,7 +43,8 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("weldHistoryModel",hmiAdaptor->weldHistoryModel);
     engine.rootContext()->setContextProperty("alarmModel",hmiAdaptor->alarmModel);
 
-//    DataBaseTest *_TestPtr = new DataBaseTest();
+    DataBaseTest *_TestPtr = new DataBaseTest();
+    _TestPtr->TestQueryOnlyUseFieldWeldResult();
 //    _TestPtr->TestMapJsonToString();
 //    _TestPtr->TestStringJsonToMap();
 //    _TestPtr->TestInsertOneRecordIntoWorkOrderTable();
