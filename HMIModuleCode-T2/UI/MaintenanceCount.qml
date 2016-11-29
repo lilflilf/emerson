@@ -125,11 +125,11 @@ Item {
                     height: 60
                     //source: "file:///c:/ToolChangeImage/group2/wiredemo.jpg"
                 }
-                MyLineEdit {
+                MiniKeyNumInput {
                     id: input
                     width: 150
                     height: 60
-                    inputHeight: 79
+//                    inputHeight: 79
                     inputWidth: 150
                     inputText: key3
                     visible: index == 5 ? false : true
