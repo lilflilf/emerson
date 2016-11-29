@@ -22,6 +22,7 @@ Item {
             anchors.leftMargin: 48
             height: 50
             clip: true
+            verticalAlignment: Qt.AlignVCenter
             color: "white"
             text: qsTr("SHRINK TUBE ID")
             font.pointSize: 16
