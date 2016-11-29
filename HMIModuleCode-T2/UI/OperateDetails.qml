@@ -163,7 +163,7 @@ Item {
         height: Screen.height *0.25
         columns: 4
         rows: 4
-        visible: false
+        visible: true
         listModel: treeModel
     }
     SpliceStatusOffLine {
@@ -174,6 +174,7 @@ Item {
         width: Screen.width * 0.37
         height: Screen.height *0.2
         listModel: testModel
+        visible: false
     }
 
     Rectangle {
@@ -290,9 +291,11 @@ Item {
         font.family: "arial"
         text: qsTr("PART COUNTER 68/125")
         color: "white"
+        visible: false
     }
     CProgressBar {
         id: progressBar2
+        visible: false
         anchors.top: partCount2.bottom
         anchors.topMargin: 10
         anchors.left: offline.left

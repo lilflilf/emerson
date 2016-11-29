@@ -248,7 +248,7 @@ Item {
                             font.pixelSize: 16
                             color: "white"
                             elide: Text.ElideRight
-                            text:  qsTr(name)
+                            text: searchList.model == partModel ? qsTr(PartName) : searchList.model == spliceModel ? qsTr(SpliceName) : qsTr(name)
                         }
                         MouseArea {
                             anchors.fill: parent
@@ -289,13 +289,13 @@ Item {
                         searchArea.visible = false
                         switch(searchArea.buttonIndex) {
                         case 1:
-                            workOrderName.text = testModel.get(searchArea.selectNum).name
+                            workOrderName.text = searchList.model.getWorkOrderValue(searchArea.selectNum,"name")
                             break;
                         case 2:
-                            partName.text = testModel.get(searchArea.selectNum).name
+                            partName.text = searchList.model.getValue(searchArea.selectNum,"PartName")
                             break;
                         case 3:
-                            spliceName.text = testModel.get(searchArea.selectNum).name
+                            spliceName.text = searchList.model.getValue(searchArea.selectNum,"SpliceName")
                             break;
                         default:
                             break;
@@ -347,6 +347,7 @@ Item {
             onClicked: {
                 searchArea.buttonIndex = 1
                 searchArea.visible = true
+                searchList.model = workOrderModel
             }
         }
         Line {
@@ -476,6 +477,7 @@ Item {
             onClicked: {
                 searchArea.buttonIndex = 2
                 searchArea.visible = true
+                searchList.model = partModel
             }
         }
         Text {
@@ -506,6 +508,7 @@ Item {
             onClicked: {
                 searchArea.buttonIndex = 3
                 searchArea.visible = true
+                searchList.model = spliceModel
             }
         }
         Column {

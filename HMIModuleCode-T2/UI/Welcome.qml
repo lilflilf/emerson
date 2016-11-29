@@ -31,13 +31,13 @@ Item {
     }
     Image {
         id: title1
-        source: "qrc:/images/images/logo.png"
+        source: "qrc:/images/images/logo1.png"
         anchors.top: parent.top
-        anchors.topMargin: parent.height/3
+        anchors.topMargin: 223 //parent.height/3
         anchors.left: parent.left
-        anchors.leftMargin: parent.width/4
-        width: 271
-        height: 115
+        anchors.leftMargin: 237 //parent.width/4
+        width: 381
+        height: 161
     }
 //    Text {
 //        id: title1
@@ -50,25 +50,23 @@ Item {
 //        font.family: "arial"
 //        text: qsTr("EMERSON")
 //    }
-    Text {
-        id: title2
-        anchors.horizontalCenter: title1.horizontalCenter
-        anchors.top: title1.bottom
-        font.pointSize: 26
-        color: "white"
-        font.family: "arial"
-        text: qsTr("Industrial Automation")
-    }
-    Text {
+//    Text {
+//        id: title2
+//        anchors.horizontalCenter: title1.horizontalCenter
+//        anchors.top: title1.bottom
+//        font.pointSize: 26
+//        color: "white"
+//        font.family: "arial"
+//        text: qsTr("Industrial Automation")
+//    }
+    Image {
         id: title3
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: parent.height/3
-        anchors.left: parent.left
-        anchors.leftMargin: parent.width/4
-        font.pointSize: 40
-        color: "white"
-        font.family: "arial"
-        text: qsTr("BRANSON")
+        anchors.top: title1.bottom
+        anchors.topMargin: 85 //parent.height/3
+        anchors.horizontalCenter: title1.horizontalCenter
+        width: 268
+        height: 40
+        source: "qrc:/images/images/logo2.png"
     }
 //    Text {
 //        id: title4
@@ -125,7 +123,7 @@ Item {
         anchors.right: parent.right
 //        horizontalAlignment: Qt.AlignHCenter
         anchors.verticalCenter: title1.verticalCenter
-        anchors.verticalCenterOffset: -50
+        anchors.verticalCenterOffset: -100
         maximumLength: 4
         font.pixelSize: 35
         height: 40

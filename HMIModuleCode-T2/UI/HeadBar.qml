@@ -45,7 +45,7 @@ Item {
         Rectangle {
             id: btnBack
             anchors.fill: parent
-            color: "#404041"
+            color: "#052a40"
             visible: false
         }
         Image {

@@ -51,11 +51,10 @@ MouseArea {
     property alias backgroundItem: backgroundLoader.item
 
     /*! 用于定制按钮的背景样式*/
-    property Component backgroundComponent: Item {
-        Image {
+    property Component backgroundComponent: Image {
             anchors.fill: parent
             source: "qrc:/images/images/icon-bg.png"
-        }
+    }
 //        Rectangle {
 //            anchors.centerIn: parent
 //            anchors.fill: parent
@@ -69,7 +68,7 @@ MouseArea {
 //                color: "#0079c1"
 //            }
 //        }
-    }
+//    }
 
     /*!
         \qmlproperty item CButton::labelItem

@@ -143,7 +143,7 @@ Item {
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: 20
                 clip: true
-                model: testModel
+                model: spliceModel
                 delegate: Component {
                     id: seachComponent
                     Item {
@@ -157,7 +157,7 @@ Item {
                             font.pixelSize: 16
                             color: "white"
                             elide: Text.ElideRight
-                            text: qsTr(name)
+                            text: qsTr(SpliceName)
                         }
                         MouseArea {
                             anchors.fill: parent
@@ -196,7 +196,7 @@ Item {
                 onClicked: {
                     if (searchArea.selectNum != -2) {
                         searchArea.visible = false
-                        workOrderName.text = testModel.get(searchArea.selectNum).name
+                        workOrderName.text = searchList.model.getValue(searchArea.selectNum,"SpliceName")
                     } else {
                         searchArea.visible = false
                         workOrderName.text = "All"

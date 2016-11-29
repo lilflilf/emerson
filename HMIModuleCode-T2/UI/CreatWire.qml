@@ -439,16 +439,16 @@ Item {
                     anchors.rightMargin: 290
                     anchors.verticalCenter: edit2.verticalCenter
                 }
-                MyLineEdit {
+                MiniKeyNumInput {
                     id: edit2
                     anchors.right: parent.right
                     anchors.rightMargin: 150
                     width: 80
                     height: 34
                     inputWidth: 80//parent.width * 0.3
-                    inputHeight: 34//parent.height
-                    horizontalAlignment: Qt.AlignHCenter
-                    maxSize: 20
+//                    inputHeight: 34//parent.height
+//                    horizontalAlignment: Qt.AlignHCenter
+//                    maxSize: 20
                     opacity: 0.7
                     onInputFocusChanged: {
                         if (edit2.inputFocus) {
@@ -1203,16 +1203,16 @@ Item {
                             color: "white"
                             clip: true
                         }
-                        MyLineEdit {
+                        MiniKeyNumInput {
                             id: inputText
                             anchors.verticalCenter: headName.verticalCenter
                             anchors.left: headName.right
                             width: parent.width/2
-                            horizontalAlignment: Qt.AlignHCenter
+//                            horizontalAlignment: Qt.AlignHCenter
                             height: parent.height
                             inputWidth: parent.width/2
-                            inputHeight: parent.height
-                            inputColor: "white"
+//                            inputHeight: parent.height
+//                            inputColor: "white"
                             clip: true
                             inputText: qsTr(textValue)
                             onInputFocusChanged: {
@@ -1282,16 +1282,16 @@ Item {
                             color: "white"
                             clip: true
                         }
-                        MyLineEdit {
+                        MiniKeyNumInput {
                             id: widthValue
                             anchors.left: widthName.right
                             anchors.verticalCenter: widthName.verticalCenter
                             width: parent.width/2
-                            horizontalAlignment: Qt.AlignHCenter
+//                            horizontalAlignment: Qt.AlignHCenter
                             height: parent.height
                             inputWidth: parent.width/2
-                            inputHeight: parent.height
-                            inputColor: "white"
+//                            inputHeight: parent.height
+//                            inputColor: "white"
                             clip: true
                             inputText: qsTr(textValue)
                             onInputFocusChanged: {
@@ -1361,16 +1361,16 @@ Item {
                             color: "white"
                             clip: true
                         }
-                        MyLineEdit {
+                        MiniKeyNumInput {
                             id: heightValue
                             anchors.left: heightName.right
                             anchors.verticalCenter: heightName.verticalCenter
                             width: parent.width/2
-                            horizontalAlignment: Qt.AlignHCenter
+//                            horizontalAlignment: Qt.AlignHCenter
                             height: parent.height
                             inputWidth: parent.width/2
-                            inputHeight: parent.height
-                            inputColor: "white"
+//                            inputHeight: parent.height
+//                            inputColor: "white"
                             clip: true
                             inputText: qsTr(textValue)
                             onInputFocusChanged: {
@@ -1454,16 +1454,16 @@ Item {
                 color: "white"
                 clip: true
             }
-            MyLineEdit {
+            MiniKeyNumInput {
                 id: loadValue
                 anchors.verticalCenter: loadName.verticalCenter
                 anchors.left: loadName.right
                 width: parent.width/4
-                horizontalAlignment: Qt.AlignHCenter
+//                horizontalAlignment: Qt.AlignHCenter
                 height: parent.height*0.12
                 inputWidth: parent.width/4-20
-                inputHeight: parent.height*0.12
-                inputColor: "white"
+//                inputHeight: parent.height*0.12
+//                inputColor: "white"
                 clip: true
                 inputText: qsTr("0.00mm")
                 onInputFocusChanged: {
@@ -1492,16 +1492,16 @@ Item {
                 color: "white"
                 clip: true
             }
-            MyLineEdit {
+            MiniKeyNumInput {
                 id: loadValue2
                 anchors.verticalCenter: loadName2.verticalCenter
                 anchors.left: loadName2.right
                 width: parent.width/4-20
-                horizontalAlignment: Qt.AlignHCenter
+//                horizontalAlignment: Qt.AlignHCenter
                 height: parent.height*0.12
                 inputWidth: parent.width/4-20
-                inputHeight: parent.height*0.12
-                inputColor: "white"
+//                inputHeight: parent.height*0.12
+//                inputColor: "white"
                 clip: true
                 inputText: qsTr("0.00mm")
                 onInputFocusChanged: {

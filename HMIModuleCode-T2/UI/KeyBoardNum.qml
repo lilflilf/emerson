@@ -42,7 +42,7 @@ Item {
         font.pixelSize: 27
         color: "red"
         visible: timer.running
-        text: qsTr("输入值无效!")
+        text: qsTr("Please type again. \nThe value is out of the range.")
     }
     Timer {
         id: timer

@@ -129,6 +129,7 @@ bool DBPartTable::InsertRecordIntoTable(void *_obj)
                        MaxSplicesPerZone);
     query.addBindValue(((PartElement*)_obj)->NoOfSplice);
 
+
     QString tmpJson;
     _Utility->MapJsonToString(&((PartElement*)_obj)->SpliceIndex,tmpJson);
     query.addBindValue(tmpJson);

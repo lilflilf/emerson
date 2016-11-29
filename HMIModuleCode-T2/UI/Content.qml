@@ -263,7 +263,8 @@ Item {
                 font.family: "arial"
                 font.pointSize: 16
             }
-            MyLineEdit {
+
+            MiniKeyNumInput {
                 id: edit1
                 visible: !bIsBasic
                 anchors.top: lab1.bottom
@@ -273,14 +274,15 @@ Item {
                 width: parent.width-20
                 height: 50
                 inputWidth: edit1.width/3
-                inputHeight: 45
-                borderColor: "#375566"
-                horizontalAlignment: Qt.AlignHCenter
-                tipsText: qsTr("#of Workstations")
-                maxSize: 20
-                regExp: RegExpValidator{regExp: /([1-9]|1[0-9]|20)/}
                 opacity: 0.7
-                tipsSize: 14
+//                inputHeight: 45
+//                borderColor: "#375566"
+//                horizontalAlignment: Qt.AlignHCenter
+                tipsText: qsTr("#of Workstations")
+//                maxSize: 20
+//                regExp: RegExpValidator{regExp: /([1-9]|1[0-9]|20)/}
+//                opacity: 0.7
+//                tipsSize: 14
                 onInputFocusChanged: {
                     if (edit1.inputFocus) {
                         backGround.visible = true
@@ -297,7 +299,7 @@ Item {
                     workStationcolor.allWorkTotal = text
                 }
             }
-            MyLineEdit {
+            MiniKeyNumInput {
                 id: edit2
                 visible: !bIsBasic
                 anchors.top: edit1.bottom
@@ -305,16 +307,16 @@ Item {
                 anchors.left: parent.left
                 anchors.leftMargin: 10
                 width: parent.width-20
-                borderColor: "#375566"
+//                borderColor: "#375566"
                 height: 50
                 inputWidth: edit2.width/3
-                inputHeight: 45
-                horizontalAlignment: Qt.AlignHCenter
+//                inputHeight: 45
+//                horizontalAlignment: Qt.AlignHCenter
                 tipsText: qsTr("#of Splices per Workstations")
-                maxSize: 20
-                regExp: RegExpValidator{regExp: /([1-9]|1[0-9]|20)/}
+//                maxSize: 20
+//                regExp: RegExpValidator{regExp: /([1-9]|1[0-9]|20)/}
                 opacity: 0.7
-                tipsSize: 14
+//                tipsSize: 14
                 onInputFocusChanged: {
                     if (edit2.inputFocus) {
                         backGround.visible = true
@@ -342,24 +344,24 @@ Item {
                 font.family: "arial"
                 font.pointSize: 16
             }
-            MyLineEdit {
+            MiniKeyNumInput {
                 id: edit3
                 visible: !bIsBasic
                 anchors.top: lab2.bottom
                 anchors.topMargin: 12
                 anchors.left: parent.left
                 anchors.leftMargin: 10
-                width: (parent.width-30)/2
-                borderColor: "#375566"
+                width: (parent.width-30) / 2
+//                borderColor: "#375566"
                 height: 50
-                horizontalAlignment: Qt.AlignHCenter
+//                horizontalAlignment: Qt.AlignHCenter
                 inputWidth: edit3.width/2
-                inputHeight: 45
+//                inputHeight: 45
                 tipsText: qsTr("Rows")
-                regExp: RegExpValidator{regExp: /^[1-4]{1}$/}
-                maxSize: 20
+//                regExp: RegExpValidator{regExp: /^[1-4]{1}$/}
+//                maxSize: 20
                 opacity: 0.7
-                tipsSize: 14
+//                tipsSize: 14
                 onInputFocusChanged: {
                     if (edit3.inputFocus) {
                         backGround.visible = true
@@ -379,24 +381,25 @@ Item {
                     workModel.clear()
                 }
             }
-            MyLineEdit {
+
+            MiniKeyNumInput {
                 id: edit4
                 visible: !bIsBasic
                 anchors.top: lab2.bottom
                 anchors.topMargin: 12
                 anchors.left: edit3.right
                 anchors.leftMargin: 10
-                horizontalAlignment: Qt.AlignHCenter
+//                horizontalAlignment: Qt.AlignHCenter
                 width: (parent.width-30)/2
                 height: 50
-                borderColor: "#375566"
+//                borderColor: "#375566"
                 inputWidth: edit4.width/2
-                inputHeight: 45
+//                inputHeight: 45
                 tipsText: qsTr("Columns")
-                regExp: RegExpValidator{regExp: /^[1-4]{1}$/}
-                maxSize: 20
+//                regExp: RegExpValidator{regExp: /^[1-4]{1}$/}
+//                maxSize: 20
                 opacity: 0.7
-                tipsSize: 14
+//                tipsSize: 14
                 onInputFocusChanged: {
                     if (edit4.inputFocus) {
                         backGround.visible = true
@@ -416,7 +419,7 @@ Item {
                     workModel.clear()
                 }
             }
-            MyLineEdit {
+            MiniKeyNumInput {
                 id: edit5
                 visible: !bIsBasic
                 anchors.top: edit4.bottom
@@ -425,15 +428,15 @@ Item {
                 anchors.leftMargin: 10
                 width: parent.width-20
                 height: 50
-                borderColor: "#375566"
+//                borderColor: "#375566"
                 inputWidth: edit5.width/3
-                inputHeight: 45
-                horizontalAlignment: Qt.AlignHCenter
+//                inputHeight: 45
+//                horizontalAlignment: Qt.AlignHCenter
                 tipsText: qsTr("Max Splice Per Zone")
-                regExp: RegExpValidator{regExp: /([1-9]|1[0-2])/}
-                maxSize: 20
+//                regExp: RegExpValidator{regExp: /([1-9]|1[0-2])/}
+//                maxSize: 20
                 opacity: 0.7
-                tipsSize: 14
+//                tipsSize: 14
                 onInputFocusChanged: {
                     if (edit5.inputFocus) {
                         backGround.visible = true

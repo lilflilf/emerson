@@ -437,16 +437,16 @@ Item {
                     anchors.rightMargin: 290
                     anchors.verticalCenter: edit2.verticalCenter
                 }
-                MyLineEdit {
+                MiniKeyNumInput {
                     id: edit2
                     anchors.right: parent.right
                     anchors.rightMargin: 150
                     width: 80
                     height: 34
                     inputWidth: 80//parent.width * 0.3
-                    inputHeight: 34//parent.height
-                    horizontalAlignment: Qt.AlignHCenter
-                    maxSize: 20
+//                    inputHeight: 34//parent.height
+//                    horizontalAlignment: Qt.AlignHCenter
+//                    maxSize: 20
                     opacity: 0.7
                     onInputFocusChanged: {
                         if (edit2.inputFocus) {

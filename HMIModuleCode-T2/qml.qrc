@@ -54,6 +54,7 @@
         <file>UI/BransonSetting.qml</file>
         <file>UI/Welcome.qml</file>
         <file>UI/EditWire.qml</file>
+        <file>UI/MiniKeyNumInput.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file>images/you.png</file>
@@ -154,5 +155,7 @@
         <file>images/logo.png</file>
         <file>images/vg01.png</file>
         <file>images/vg02.png</file>
+        <file>images/logo1.png</file>
+        <file>images/logo2.png</file>
     </qresource>
 </RCC>
