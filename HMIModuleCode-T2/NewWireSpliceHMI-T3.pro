@@ -4,10 +4,11 @@ QT += qml quick
 QT += serialport
 QT += sql
 CONFIG += c++11
-static {
-    QT += svg
-    QTPLUGIN += qtvirtualkeyboardplugin
-}
+RC_FILE = res.rc
+#static {
+#    QT += svg
+#    QTPLUGIN += qtvirtualkeyboardplugin
+#}
 SOURCES += main.cpp \
     UI/Utility.cpp \
     Modules/Modstart.cpp \
