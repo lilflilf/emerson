@@ -8,6 +8,8 @@ Item {
     property int selectIndex: -1
     width: parent.width
     height: parent.height
+    signal sureClick()
+    signal cancelClick()
     Rectangle {
         id: backGround
         anchors.fill: parent
@@ -125,7 +127,7 @@ Item {
             width: parent.width/6
             text: qsTr("OK")
             onClicked: {
-                shrink.visible = false
+                sureClick()
             }
         }
         CButton {
@@ -137,7 +139,7 @@ Item {
             width: parent.width/6
             text: qsTr("Cancel")
             onClicked: {
-                shrink.visible = false
+                cancelClick()
             }
         }
         Rectangle {

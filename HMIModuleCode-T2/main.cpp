@@ -42,6 +42,8 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("wireModel",hmiAdaptor->wireModel);
     engine.rootContext()->setContextProperty("weldHistoryModel",hmiAdaptor->weldHistoryModel);
     engine.rootContext()->setContextProperty("alarmModel",hmiAdaptor->alarmModel);
+    engine.rootContext()->setContextProperty("maintenanceLogModel",hmiAdaptor->maintenanceLogModel);
+
 
     DataBaseTest *_TestPtr = new DataBaseTest();
     _TestPtr->TestQueryOnlyUseFieldWeldResult();

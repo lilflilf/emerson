@@ -30,7 +30,7 @@ DBPartTable::DBPartTable()
 void DBPartTable::InsertTestDataIntoTable()
 {
     struct PartElement tmpPart;
-    for (int i = 0; i < 6; i++)
+    for (int i = 0; i < 7; i++)
     {
         if ( i == 0)
             tmpPart.PartName = "32117-SHA-0001-00(INSTHARNESSS)";
@@ -44,6 +44,9 @@ void DBPartTable::InsertTestDataIntoTable()
             tmpPart.PartName = "P5VH006P0";
         if ( i == 5)
             tmpPart.PartName = "P5VH006Z0";
+        else
+            tmpPart.PartName = QString("P5VH006Z0 + %1").arg(i);
+
         tmpPart.CreatedDate = QDateTime::currentDateTime().toTime_t();
         tmpPart.OperatorID = 2;
         tmpPart.PartTypeSetting.ProcessMode = BASIC;
@@ -133,7 +136,7 @@ bool DBPartTable::InsertRecordIntoTable(void *_obj)
     bResult = query.exec();
     if (bResult == false)   //run SQL
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "SQL ERROR InsertRecordIntoTable:"<< query.lastError();
     }
 
     PartDBObj.close();

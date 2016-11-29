@@ -18,7 +18,8 @@ Item {
     }
     ListView {
         id: listView
-        anchors.top: tipsRec2.bottom
+        anchors.top: tipsRec.bottom
+        anchors.topMargin: 5
         anchors.bottom: scrollbar2.top
         anchors.left: headTitle.left
         anchors.leftMargin: 20
@@ -27,13 +28,14 @@ Item {
         model: alarmModel
         delegate: listDelegate
     }
+
     CButton {
         id: exportdata
         width: 300
         anchors.right: parent.right
         anchors.bottom:  parent.bottom
         text: qsTr("Export Data")
-        anchors.bottomMargin: 20
+        anchors.bottomMargin: 10
         anchors.rightMargin: 20
     }
 
@@ -276,56 +278,32 @@ Item {
             anchors.left: parent.left
             anchors.leftMargin: 20
         }
-        CButton {
+        ExclusiveGroup {
+            id: timeSelectGroup
+        }
+
+        MyCalendar {
             id: mycalendar
             anchors.left: from.left
             anchors.leftMargin: 10
             anchors.top: from.bottom
             width: (parent.width-98)/2
-            z: 10
-            text: Qt.formatDateTime(new Date(), "yyyy-MM-dd")
-            height: 40
-            backgroundComponent: Rectangle {
-                anchors.fill: parent
-                color: "#052a40"
-                border.color: "#1987ab"
-                border.width: 2
-            }
-            onClicked: {
-                newCalendar.visible = !newCalendar.visible
-            }
-            Connections {
-                target: newCalendar
-                onDateValueChanged: {
-                    mycalendar.text = newCalendar.dateValue
-                }
-            }
+            bIsdate: true
+            selecter: newCalendar
+            exclusiveGroup: timeSelectGroup
         }
-        CButton {
+
+        MyCalendar {
             id: mytimeSelect
             width: (parent.width-98)/2
             anchors.top: mycalendar.top
             anchors.left: mycalendar.right
             anchors.leftMargin: 20
-            z: 11
-            text: Qt.formatDateTime(new Date(), "hh:mm:ss")
-            height: 40
-            backgroundComponent: Rectangle {
-                anchors.fill: parent
-                color: "#052a40"
-                border.color: "#1987ab"
-                border.width: 2
-            }
-            onClicked: {
-                newCalendar.visible = !newCalendar.visible
-            }
-            Connections {
-                target: newCalendar
-                onTimeValueChanged: {
-                    mytimeSelect.text = newCalendar.timeValue
-                }
-            }
+            bIsdate: false
+            selecter: newCalendar
+            exclusiveGroup: timeSelectGroup
         }
+
         Text {
             id: to
             text: qsTr("To:")
@@ -336,43 +314,28 @@ Item {
             anchors.left: parent.left
             anchors.leftMargin: 20
         }
-        CButton {
+
+        MyCalendar {
             id: mycalendar2
             anchors.left: from.left
             anchors.leftMargin: 10
             anchors.top: to.bottom
             width: (parent.width-98)/2
-            z: 10
-            text: Qt.formatDateTime(new Date(), "yyyy-MM-dd")
-            height: 40
-            backgroundComponent: Rectangle {
-                anchors.fill: parent
-                color: "#052a40"
-                border.color: "#1987ab"
-                border.width: 2
-            }
-            onClicked: {
-                newCalendar.visible = !newCalendar.visible
-            }
+            bIsdate: true
+            selecter: newCalendar
+            exclusiveGroup: timeSelectGroup
         }
-        CButton {
+
+        MyCalendar {
             width: (parent.width-98)/2
             anchors.top: mycalendar2.top
             anchors.left: mycalendar2.right
             anchors.leftMargin: 20
-            z: 10
-            text: Qt.formatDateTime(new Date(), "hh:mm:ss")
-            height: 40
-            backgroundComponent: Rectangle {
-                anchors.fill: parent
-                color: "#052a40"
-                border.color: "#1987ab"
-                border.width: 2
-            }
-            onClicked: {
-                newCalendar.visible = !newCalendar.visible
-            }
+            bIsdate: false
+            selecter: newCalendar
+            exclusiveGroup: timeSelectGroup
         }
+
         Column {
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 10
@@ -518,7 +481,7 @@ Item {
     Row {
         id: headTitle
         anchors.top: parent.top
-        anchors.topMargin: 30
+        anchors.topMargin: 15
         anchors.left: back.right
         anchors.leftMargin: 20
         spacing: 30
@@ -530,7 +493,7 @@ Item {
                 verticalAlignment: Qt.AlignVCenter
                 width: 200
                 font.family: "arial"
-                font.pixelSize: 20
+                font.pixelSize: 25
                 color: "white"
                 clip: true
                 text: qsTr(title)
@@ -546,20 +509,20 @@ Item {
         anchors.right: parent.right
         anchors.rightMargin: 20
         clip: true
-        height: 1
+        height: 2
         color: "#ffffff"
     }
-    Rectangle {
-        id: tipsRec2
-        anchors.top: tipsRec.bottom
-        anchors.left: back.right
-        anchors.leftMargin: 20
-        anchors.right: parent.right
-        anchors.rightMargin: 20
-        clip: true
-        height: 1
-        color: "#0d0f11"
-    }
+//    Rectangle {
+//        id: tipsRec2
+//        anchors.top: tipsRec.bottom
+//        anchors.left: back.right
+//        anchors.leftMargin: 20
+//        anchors.right: parent.right
+//        anchors.rightMargin: 20
+//        clip: true
+//        height: 1
+//        color: "#0d0f11"
+//    }
 
 
 

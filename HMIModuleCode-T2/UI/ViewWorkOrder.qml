@@ -30,8 +30,8 @@ Item {
         ListView {
             id: listView
             anchors.left: parent.left
-            anchors.top: headRows.bottom
-            anchors.topMargin: 20
+            anchors.top: topLine.bottom
+            anchors.topMargin: 5
             anchors.bottom: parent.bottom
             model: weldHistoryModel
             delegate: listDelegate
@@ -45,7 +45,7 @@ Item {
             ListElement {key:"SpliceName"}
             ListElement {key:"OperatorName"}
             ListElement {key:"DateCreated"}
-            ListElement {key:"Cross ection"}
+            ListElement {key:"CrossSection"}
             ListElement {key:"WeldMode"}
             ListElement {key:"Energy"}
             ListElement {key:"Amplitude"}
@@ -72,8 +72,10 @@ Item {
 
         Row {
             id: headRows
-            anchors.left: listView.left
+            anchors.left: parent.left
             spacing: 30
+            anchors.top: parent.top
+            anchors.topMargin: 15
             Repeater {
                 delegate: Text {
                     id: headName
@@ -84,16 +86,18 @@ Item {
                     text: key
                     clip: true
                     color: "white"
-                    font.pointSize: 20
+                    font.pixelSize: 25
                     font.family: "arial"
                 }
                 model: headModel
             }
         }
         Line {
+            id: topLine
             width: listView.width
-            anchors.left: headRows.left
+            anchors.left: parent.left
             anchors.top: headRows.bottom
+            anchors.topMargin: 10
             height: 2
             lineColor: "white"
         }
@@ -376,42 +380,31 @@ Item {
             anchors.left: parent.left
             anchors.leftMargin: 20
         }
-        CButton {
+        ExclusiveGroup {
+            id: timeSelectGroup
+        }
+        MyCalendar {
             id: mycalendar
             anchors.left: from.left
             anchors.top: from.bottom
+            bIsdate: true
+            selecter: newCalendar
+            exclusiveGroup: timeSelectGroup
             width: (parent.width-88)/2
-            z: 10
-            text: Qt.formatDateTime(new Date(), "yyyy-MM-dd")
-            height: 40
-            backgroundComponent: Rectangle {
-                anchors.fill: parent
-                color: "black"
-                border.color: "#1987ab"
-                border.width: 2
-            }
-            onClicked: {
-                newCalendar.visible = !newCalendar.visible
-            }
+
         }
-        CButton {
-            width: (parent.width-88)/2
+
+        MyCalendar {
             anchors.top: mycalendar.top
             anchors.left: mycalendar.right
             anchors.leftMargin: 20
-            z: 11
-            text: Qt.formatDateTime(new Date(), "hh:mm:ss")
-            height: 40
-            backgroundComponent: Rectangle {
-                anchors.fill: parent
-                color: "black"
-                border.color: "#1987ab"
-                border.width: 2
-            }
-            onClicked: {
-                newCalendar.visible = !newCalendar.visible
-            }
+            bIsdate: false
+            selecter: newCalendar
+            exclusiveGroup: timeSelectGroup
+            width: (parent.width-88)/2
+
         }
+
         Text {
             id: to
             text: qsTr("To:")
@@ -422,42 +415,27 @@ Item {
             anchors.left: parent.left
             anchors.leftMargin: 20
         }
-        CButton {
+        MyCalendar {
             id: mycalendar2
             anchors.left: from.left
             anchors.top: to.bottom
+            bIsdate: true
+            selecter: newCalendar
+            exclusiveGroup: timeSelectGroup
             width: (parent.width-88)/2
-            z: 10
-            height: 40
-            text: Qt.formatDateTime(new Date(), "yyyy-MM-dd")
-            backgroundComponent: Rectangle {
-                anchors.fill: parent
-                color: "black"
-                border.color: "#1987ab"
-                border.width: 2
-            }
-            onClicked: {
-                newCalendar.visible = !newCalendar.visible
-            }
+
         }
-        CButton {
+
+        MyCalendar {
             id: mytimeSelect
-            width: (parent.width-88)/2
             anchors.top: mycalendar2.top
             anchors.left: mycalendar2.right
             anchors.leftMargin: 20
-            z: 10
-            text: Qt.formatDateTime(new Date(), "hh:mm:ss")
-            height: 40
-            backgroundComponent: Rectangle {
-                anchors.fill: parent
-                color: "black"
-                border.color: "#1987ab"
-                border.width: 2
-            }
-            onClicked: {
-                newCalendar.visible = !newCalendar.visible
-            }
+            bIsdate: false
+            selecter: newCalendar
+            exclusiveGroup: timeSelectGroup
+            width: (parent.width-88)/2
+
         }
 
         Line {
@@ -654,9 +632,8 @@ Item {
                 drag.maximumX: scrollbar2.width - button2.width
             }
             onXChanged: {
-
                 listView.anchors.leftMargin = -button2.x / scrollbar2.width * listView.width
-                console.log(button2.x)
+                headRows.anchors.leftMargin = -button2.x / scrollbar2.width * listView.width
             }
         }
     }

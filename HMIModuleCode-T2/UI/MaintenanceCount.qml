@@ -31,6 +31,8 @@ Item {
         id: title
         spacing: 70
         anchors.left: listView.left
+        anchors.top: parent.top
+        anchors.topMargin: 15
         Item {
             width: 370
             height: 10
@@ -38,41 +40,37 @@ Item {
 
         Text {
             width: 150
-            height: 79
             text: qsTr("Counter Limit")
             color: "white"
             font.family: "arial"
-            font.pointSize: 16
+            font.pixelSize: 25
             verticalAlignment: Qt.AlignVCenter
             horizontalAlignment: Qt.AlignHCenter
         }
         Text {
             width: 150
-            height: 79
             text: qsTr("Current Counter")
             color: "white"
             font.family: "arial"
-            font.pointSize: 16
+            font.pixelSize: 25
             verticalAlignment: Qt.AlignVCenter
             horizontalAlignment: Qt.AlignHCenter
         }
         Text {
             width: 150
-            height: 79
             text: qsTr("Data Started")
             color: "white"
             font.family: "arial"
-            font.pointSize: 16
+            font.pixelSize: 25
             verticalAlignment: Qt.AlignVCenter
             horizontalAlignment: Qt.AlignHCenter
         }
         Text {
             width: 150
-            height: 79
             text: qsTr("Reset")
             color: "white"
             font.family: "arial"
-            font.pointSize: 16
+            font.pixelSize: 25
             verticalAlignment: Qt.AlignVCenter
             horizontalAlignment: Qt.AlignHCenter
         }
@@ -84,9 +82,10 @@ Item {
         lineColor: "white"
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.leftMargin: 30
+        anchors.leftMargin: 20
         anchors.rightMargin: 30
         anchors.top: title.bottom
+        anchors.topMargin: 10
     }
 
     ListView {
@@ -97,9 +96,9 @@ Item {
         delegate: listLine
         interactive: false
         anchors.top: line.bottom
-        anchors.topMargin: 10
+        anchors.topMargin: 5
         anchors.left: parent.left
-        anchors.leftMargin: 30
+        anchors.leftMargin: 20
     }
     Component {
         id: listLine

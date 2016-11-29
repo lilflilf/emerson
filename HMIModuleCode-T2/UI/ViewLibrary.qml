@@ -17,6 +17,10 @@ Item {
         height: parent.height
         color: "#052a40"
         z: 10
+        ExclusiveGroup {
+            id: checkGroup
+        }
+
         Column {
             id: column
             anchors.top: parent.top
@@ -25,60 +29,166 @@ Item {
             anchors.leftMargin: 2
             height: 50*3+4
             width: parent.width-4
-            spacing: 2
+//            spacing: 2
             CButton {
                 id: part
                 width: column.width
                 textColor: "white"
-                text: qsTr("Part")
-                opacity: 0.2
-                onClicked: {
-                    if (splice.opacity == 0.2) {
-                        splice.opacity = 1
-                        part.opacity = 0.2
-                    } else if (wire.opacity == 0.2) {
-                        wire.opacity = 1
-                        part.opacity = 0.2
+                RadioButton {
+                    id: partRadio
+                    visible: false
+                    exclusiveGroup: checkGroup
+                    onCheckedChanged: {
+                        if (partRadio.checked) {
+                            part.backgroundItem.source = "qrc:/images/images/icon-bg.png"
+                            headRepeater.model = partTitleModel
+                            viewLib.count = partTitleModel.count
+                            listView.model = partModel
+                        }
+                        else {
+                            part.backgroundItem.source = ""
+
+                        }
                     }
-                    headRepeater.model = partTitleModel
-                    viewLib.count = partTitleModel.count
-                    listView.model = partModel
+                }
+                backgroundComponent: Image {
+                    anchors.fill: parent
+                    source: ""
+                }
+
+                onClicked: {
+                    if (!partRadio.checked)
+                        partRadio.checked = !partRadio.checked
+                }
+                Component.onCompleted: {
+                    partRadio.checked = true
+                }
+                Line {
+                    width: parent.width
+                    height: 1
+                    lineColor: "#1987ab"
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: 3
+
+                }
+                Image {
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                    anchors.rightMargin: 18
+                    source: "qrc:/images/images/right.png"
+                }
+                Text {
+                    text: qsTr("Part")
+                    font.pointSize: 20
+                    font.family: "arial"
+                    color: "white"
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.left: parent.left
+                    anchors.leftMargin: 10
                 }
             }
             CButton {
                 id: splice
                 width: column.width
                 textColor: "white"
-                text: qsTr("Splice")
-                onClicked: {
-                    if (part.opacity == 0.2) {
-                        part.opacity = 1
-                        splice.opacity = 0.2
-                    } else if (wire.opacity == 0.2) {
-                        wire.opacity = 1
-                        splice.opacity = 0.2
+                RadioButton {
+                    id: spliceRadio
+                    visible: false
+                    exclusiveGroup: checkGroup
+                    onCheckedChanged: {
+                        if (spliceRadio.checked) {
+                            splice.backgroundItem.source = "qrc:/images/images/icon-bg.png"
+                            headRepeater.model = spliceTitleModel
+                            viewLib.count = spliceTitleModel.count
+                            listView.model = spliceModel
+                        }
+                        else {
+                            splice.backgroundItem.source = ""
+
+                        }
                     }
-                    headRepeater.model = spliceTitleModel
-                    viewLib.count = spliceTitleModel.count
-                    listView.model = spliceModel
+                }
+                backgroundComponent: Image {
+                    anchors.fill: parent
+                    source: ""
+                }
+                onClicked: {
+                    if (!spliceRadio.checked)
+                        spliceRadio.checked = !spliceRadio.checked
+                }
+                Line {
+                    width: parent.width
+                    height: 1
+                    lineColor: "#1987ab"
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: 3
+
+                }
+                Image {
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                    anchors.rightMargin: 18
+                    source: "qrc:/images/images/right.png"
+                }
+                Text {
+                    text: qsTr("Splice")
+                    font.pointSize: 20
+                    font.family: "arial"
+                    color: "white"
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.left: parent.left
+                    anchors.leftMargin: 10
                 }
             }
             CButton {
                 id: wire
                 width: column.width
                 textColor: "white"
-                text: qsTr("Wire")
-                onClicked: {
-                    if (part.opacity == 0.2) {
-                        part.opacity = 1
-                        wire.opacity = 0.2
-                    } else if (splice.opacity == 0.2) {
-                        splice.opacity = 1
-                        wire.opacity = 0.2
+                RadioButton {
+                    id: wireRadio
+                    visible: false
+                    exclusiveGroup: checkGroup
+                    onCheckedChanged: {
+                        if (wireRadio.checked) {
+                            wire.backgroundItem.source = "qrc:/images/images/icon-bg.png"
+                            headRepeater.model = wireTitleModel
+                            viewLib.count = wireTitleModel.count
+                            listView.model = wireModel
+                        }
+                        else {
+                            wire.backgroundItem.source = ""
+                        }
                     }
-                    headRepeater.model = wireTitleModel
-                    viewLib.count = wireTitleModel.count
-                    listView.model = wireModel
+                }
+                backgroundComponent: Image {
+                    anchors.fill: parent
+                    source: ""
+                }
+                onClicked: {
+                    if (!wireRadio.checked)
+                        wireRadio.checked = !wireRadio.checked
+                }
+                Line {
+                    width: parent.width
+                    height: 1
+                    lineColor: "#1987ab"
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: 3
+                }
+                Image {
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                    anchors.rightMargin: 18
+                    source: "qrc:/images/images/right.png"
+                }
+                Text {
+                    text: qsTr("Wire")
+                    font.pointSize: 20
+                    font.family: "arial"
+                    color: "white"
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.left: parent.left
+                    anchors.leftMargin: 10
                 }
             }
         }
@@ -172,13 +282,13 @@ Item {
         anchors.right: parent.right
         anchors.rightMargin: 20
         clip: true
-        height: 1
+        height: 2
         color: "#ffffff"
     }
     Row {
         id: headTitle
         anchors.top: parent.top
-        anchors.topMargin: 30
+        anchors.topMargin: 15
         anchors.left: tipsRec.left
         anchors.leftMargin: 20
         spacing: 30
@@ -190,7 +300,7 @@ Item {
                 verticalAlignment: Qt.AlignVCenter
                 width: 200
                 font.family: "arial"
-                font.pixelSize: 20
+                font.pixelSize: 25
                 color: "white"
                 clip: true
                 elide: Text.ElideRight
@@ -215,6 +325,7 @@ Item {
     ListView {
         id: listView
         anchors.top: tipsRec2.bottom
+        anchors.topMargin: 5
         anchors.bottom: scrollbar2.top
         anchors.left: tipsRec2.left
         anchors.leftMargin: 20
@@ -279,21 +390,31 @@ Item {
             y: (listView.visibleArea.yPosition < 0 ) ? 0 : (listView.contentY+listView.height>listView.contentHeight) ?
                 scrollbar.height - button.height : listView.visibleArea.yPosition * scrollbar.height
             width: 10
-            height: listView.visibleArea.heightRatio * scrollbar.height;
+            height: listView.visibleArea.heightRatio * scrollbar.height // < 5 ? 20 : listView.visibleArea.heightRatio * scrollbar.height;
             color: "#ccbfbf"
             radius: 10
             // 鼠标区域
-            MouseArea {
-                id: mouseArea
-                anchors.fill: button
-                drag.target: button
-                drag.axis: Drag.YAxis
-                drag.minimumY: 0
-                drag.maximumY: scrollbar.height - button.height
-                // 拖动
-                onMouseYChanged: {
-                    listView.contentY = button.y / scrollbar.height * listView.contentHeight
-                }
+        }
+        MouseArea {
+            id: mouseArea
+//                anchors.fill: button
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: button.top
+            height: button.height < 5 ? 20 : button.height
+            drag.target: button
+            drag.axis: Drag.YAxis
+            drag.minimumY: 0
+            drag.maximumY: scrollbar.height - button.height
+            // 拖动
+            onMouseYChanged: {
+                listView.contentY = (button.y + button.height) / scrollbar.height * listView.contentHeight
+            }
+            Rectangle {
+                anchors.fill: parent
+                color: "#585858"
+                radius: 10
+
             }
         }
     }
@@ -407,7 +528,12 @@ Item {
             textColor: "white"
             text: qsTr("Edit Details")
             onClicked: {
-                root.menuInit(0)
+                if (partRadio.checked)
+                    root.menuInit(0)
+                else if (spliceRadio.checked)
+                    root.menuInit(0)
+                else if (wireRadio.checked)
+                    root.menuInit(19)
             }
         }
         CButton {

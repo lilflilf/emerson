@@ -12,6 +12,8 @@
 #include "DataBase/DBWireTable.h"
 #include "Interface/Definition.h"
 #include "Interface/Settings/OperatorLibrary.h"
+#include "DataBase/DBMaintenanceLogTable.h"
+#include "Interface/Maintenance/MaintenanceLog.h"
 
 class WorkOrderModel : public QAbstractTableModel
 {
@@ -218,7 +220,6 @@ private:
 };
 
 
-
 class WireModel : public QAbstractTableModel
 {
     Q_OBJECT
@@ -230,6 +231,37 @@ public:
     QStringList m_idList;
     DBWireTable *m_wireAdaptor;
     QMap<int, QString> *wires;
+
+protected:
+    int rowCount(const QModelIndex &parent) const;
+    int columnCount(const QModelIndex &parent) const;
+    QVariant data(const QModelIndex &index, int role) const;
+    QVariant headerData(int section, Qt::Orientation orientation, int role) const;
+    QHash<int, QByteArray> roleNames() const;
+
+//signals:
+
+
+public slots:
+    void setRoles(const QStringList &names);
+    Q_INVOKABLE QVariant getValue(int index, QString key);
+    Q_INVOKABLE int count();
+private:
+    QHash<int, QByteArray> m_roleNames;
+};
+
+
+class MaintenanceLogModel : public QAbstractTableModel
+{
+    Q_OBJECT
+public:
+    explicit MaintenanceLogModel(QObject *parent = 0);
+    void setModelList(unsigned int time_from, unsigned int time_to);
+    void setModelList();
+
+    QStringList m_idList;
+    DBMaintenanceLogTable *m_maintenanceLogAdaptor;
+    QMap<int, QString> *logs;
 
 protected:
     int rowCount(const QModelIndex &parent) const;

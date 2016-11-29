@@ -232,6 +232,7 @@ Item {
     Item {
         id: rightArea
         anchors.left: leftArea.right
+        anchors.leftMargin: 20
         anchors.top: parent.top
         width: Screen.width*0.7
         height: parent.height
@@ -245,12 +246,11 @@ Item {
         Row {
             id: headTitle
             anchors.top: parent.top
-            anchors.topMargin: 24
+            anchors.topMargin: 15
             anchors.left: parent.left
-            anchors.leftMargin: 40
             anchors.right: parent.right
             anchors.rightMargin: 40
-            height: 50
+//            height: 50
             spacing: 40
             clip: true
             Repeater {
@@ -269,29 +269,29 @@ Item {
         Line {
             id: line1
             anchors.top: headTitle.bottom
-            anchors.topMargin: 6
+            anchors.topMargin: 10
             anchors.left: parent.left
-            anchors.leftMargin: 20
             width: parent.width-20
-            height: 1
+            height: 2
             lineColor: "#ffffff"
         }
-        Line {
-            id: line2
-            anchors.top: line1.bottom
-            anchors.left: parent.left
-            anchors.leftMargin: 20
-            width: parent.width-20
-            height: 1
-            lineColor: "#0d0f11"
-        }
+//        Line {
+//            id: line2
+//            anchors.top: line1.bottom
+//            anchors.left: parent.left
+//            anchors.leftMargin: 20
+//            width: parent.width-20
+//            height: 1
+//            lineColor: "#0d0f11"
+//        }
         ExclusiveGroup {
             id: listviewPositionGroup
         }
 
         ListView {
             id: listView
-            anchors.top: line2.bottom
+            anchors.top: line1.bottom
+            anchors.topMargin: 5
             anchors.left: parent.left
             anchors.leftMargin: 40
             anchors.right: parent.right

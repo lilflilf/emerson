@@ -1229,3 +1229,143 @@ QVariant WireModel::getValue(int index, QString key)
         return WireModelHash.value(key);
     }
 }
+
+/*************************MaintenanceLog Model******************************/
+MaintenanceLogModel::MaintenanceLogModel(QObject *parent) :
+    QAbstractTableModel(parent)
+{
+    m_maintenanceLogAdaptor = DBMaintenanceLogTable::Instance();
+    logs = new QMap<int, QString>();
+}
+
+QVariant MaintenanceLogModel::data(const QModelIndex &index, int role) const
+{
+    QVariant value;
+    if(role < Qt::UserRole)
+    {
+        qDebug() << "MaintenanceLogModel::data(const QModelIndex &index, int role) const";
+    }
+    else
+    {
+        int columnIdx = role - Qt::UserRole - 1;
+        int rowId;
+        QMap<int,QString>::iterator it; //遍历map
+        int i = 0;
+        for ( it = logs->begin(); it != logs->end(); ++it ) {
+            if (i == index.row()){
+                rowId = it.key();
+                break;
+            }
+            else {
+                i++;
+            }
+        }
+        MaintenanceLogElement myLog;
+
+//        ListElement {key:"CreatedDate"}
+//        ListElement {key:"OperatorName"}
+//        ListElement {key:"Type"}
+//        ListElement {key:"Message"}
+
+        m_maintenanceLogAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myLog);
+        if (columnIdx == 0)
+            value = QVariant::fromValue(myLog.MaintenanceLogID);
+        else if (columnIdx == 1)
+            value = QVariant::fromValue(QDateTime::fromTime_t(myLog.CreatedDate).toString("MM/dd/yyyy hh:mm"));
+        else if (columnIdx == 2)
+            value = QVariant::fromValue(myLog.OperatorID);
+        else if (columnIdx == 3)
+            value = QVariant::fromValue(myLog.MaintenanceType);
+        else if (columnIdx == 4)
+            value = QVariant::fromValue(myLog.MaintenanceMsg);
+    }
+    return value;
+}
+
+void MaintenanceLogModel::setModelList(unsigned int time_from, unsigned int time_to)
+{
+    beginResetModel();
+    logs->clear();
+    if (m_maintenanceLogAdaptor->QueryOnlyUseTime(time_from,time_to,logs))
+        qDebug( )<< "MaintenanceLogModel " << logs->count();
+    endResetModel();
+}
+
+void MaintenanceLogModel::setModelList()
+{
+    beginResetModel();
+    logs->clear();
+    if (m_maintenanceLogAdaptor->QueryEntireTable(logs))
+        qDebug( )<< "MaintenanceLogModel" << logs->count();
+    endResetModel();
+}
+
+int MaintenanceLogModel::rowCount(const QModelIndex & parent) const
+{
+    return logs->count();
+}
+
+int MaintenanceLogModel::count()
+{
+    return logs->count();
+}
+
+int MaintenanceLogModel::columnCount(const QModelIndex &parent) const
+{
+    return 1;
+}
+
+QVariant MaintenanceLogModel::headerData(int section, Qt::Orientation orientation, int role) const
+{
+    return QVariant();
+}
+
+void MaintenanceLogModel::setRoles(const QStringList &names)
+{
+    m_roleNames.clear();
+    for(int idx=0; idx<names.count(); idx++)
+    {
+        m_roleNames[Qt::UserRole + idx + 1] = names[idx].toLocal8Bit();
+    }
+
+}
+
+QHash<int, QByteArray> MaintenanceLogModel::roleNames() const
+{
+    return m_roleNames;
+}
+
+QVariant MaintenanceLogModel::getValue(int index, QString key)
+{
+    QMap<int,QString>::iterator it; //遍历map
+    int i = 0;
+    int orderId;
+    for ( it = logs->begin(); it != logs->end(); ++it ) {
+        if (i == index){
+            orderId = it.key();
+            break;
+        }
+        else {
+            i++;
+        }
+    }
+    MaintenanceLogElement myLog;
+    m_maintenanceLogAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myLog);
+
+    //        ListElement {key:"CreatedDate"}
+    //        ListElement {key:"OperatorName"}
+    //        ListElement {key:"Type"}
+    //        ListElement {key:"Message"}
+
+    QHash<QString, QVariant> MaintenanceModelHash;
+    MaintenanceModelHash.insert("MaintenanceLogId",myLog.MaintenanceLogID);
+    MaintenanceModelHash.insert("OperatorName",myLog.OperatorID);
+    MaintenanceModelHash.insert("CreatedDate",QDateTime::fromTime_t(myLog.CreatedDate).toString("MM/dd/yyyy hh:mm"));
+    MaintenanceModelHash.insert("Type",myLog.MaintenanceType);
+    MaintenanceModelHash.insert("Message",myLog.MaintenanceMsg);
+    if (key == "") {
+        return MaintenanceModelHash;
+    } else {
+        return MaintenanceModelHash.value(key);
+    }
+}

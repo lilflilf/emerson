@@ -404,14 +404,13 @@ Item {
     }
     Image {
         id: personButton
-        anchors.top: parent.top
-        anchors.topMargin: 6
         anchors.right: parent.right
         anchors.rightMargin: 20
-        width: 70
-        height: parent.height-16
+        height: 60
+        width: 60
         z: 14
         source: "qrc:/images/images/person.png"
+        anchors.verticalCenter: parent.verticalCenter
         MouseArea {
             anchors.fill: parent
             onClicked: {
@@ -433,14 +432,13 @@ Item {
     }
     Image {
         id: helpButton
-        anchors.top: parent.top
-        anchors.topMargin: 6
         anchors.right: personButton.left
         anchors.rightMargin: 20
-        width: 70
-        height: parent.height-16
         z: 14
+        height: 60
+        width: 60
         source: "qrc:/images/images/help.png"
+        anchors.verticalCenter: parent.verticalCenter
         MouseArea {
             anchors.fill: parent
             onClicked: {
@@ -462,22 +460,21 @@ Item {
     }
     Image {
         id: languageButton
-        anchors.top: parent.top
-        anchors.topMargin: 6
         anchors.right: helpButton.left
         anchors.rightMargin: 20
-        width: 70
-        height: parent.height-16
         z: 14
-        source: "qrc:/images/images/guo1.png"
+        source: "qrc:/images/images/English.png"
+        anchors.verticalCenter: parent.verticalCenter
+        height: 80
+        width: 80
         MouseArea {
             anchors.fill: parent
             onClicked: {
                 background.visible = true
+                background.opacity = 0.7
                 dialog.visible = true
                 language.visible = true
                 okButton.visible = true
-                background.opacity = 0.5
             }
             onPressed: {
                 languageButton.opacity = 0.5
@@ -499,56 +496,95 @@ Item {
             anchors.fill: parent
         }
     }
-    Rectangle {
+    ListModel {
+        id: listModel
+        Component.onCompleted: {
+            listModel.append({"iconsource":"qrc:/images/images/English.png","contrl":"EngLish"})
+            listModel.append({"iconsource":"qrc:/images/images/Japanese.png","contrl":"Japanese"})
+            listModel.append({"iconsource":"qrc:/images/images/chinese.png","contrl":"Chinese"})
+            listModel.append({"iconsource":"qrc:/images/images/Indonesian.png","contrl":"Indonesian"})
+            listModel.append({"iconsource":"qrc:/images/images/Spanish.png","contrl":"Spanish"})
+            listModel.append({"iconsource":"qrc:/images/images/Vietnam.png","contrl":"Vietnam"})
+            listModel.append({"iconsource":"qrc:/images/images/Turkish.png","contrl":"Turkish"})
+            listModel.append({"iconsource":"qrc:/images/images/Thai.png","contrl":"Thai"})
+            listModel.append({"iconsource":"qrc:/images/images/Portuguese.png","contrl":"Portuguese"})
+            listModel.append({"iconsource":"qrc:/images/images/German.png","contrl":"German"})
+            listModel.append({"iconsource":"qrc:/images/images/french.png","contrl":"French"})
+            listModel.append({"iconsource":"qrc:/images/images/russian.png","contrl":"Russian"})
+            listModel.append({"iconsource":"qrc:/images/images/polish.png","contrl":"Polish"})
+            listModel.append({"iconsource":"qrc:/images/images/Korean.png","contrl":"Korean"})
+            listModel.append({"iconsource":"qrc:/images/images/Italian.png","contrl":"Italian"})
+            listModel.append({"iconsource":"qrc:/images/images/Slovak.png","contrl":"Slovak"})
+            listModel.append({"iconsource":"qrc:/images/images/Romanian.png","contrl":"Romanian"})
+            listModel.append({"iconsource":"qrc:/images/images/dutch.png","contrl":"Dutch"})
+            listModel.append({"iconsource":"qrc:/images/images/Czech.png","contrl":"Czech"})
+            listModel.append({"iconsource":"qrc:/images/images/Malaysian.png","contrl":"Malaysian"})
+            listModel.append({"iconsource":"qrc:/images/images/Arabic.png","contrl":"Arabic"})
+            listModel.append({"iconsource":"qrc:/images/images/Hindi.png","contrl":"Hindi"})
+            listModel.append({"iconsource":"qrc:/images/images/Hungarian.png","contrl":"Hungarian"})
+        }
+    }
+
+    Image {
         id: dialog
         visible: false
         anchors.top: parent.top
-        anchors.topMargin: Screen.height/4
+        anchors.topMargin: (Screen.height-dialog.height)/2
         anchors.left: parent.left
-        anchors.leftMargin: Screen.width/3
-        width: Screen.width/3
-        height: Screen.height/2+30
-        color: "#404041"
+        anchors.leftMargin: (Screen.width - dialog.width)/2
+        width: languageRep.visible ? 1270 : 700
+        height: languageRep.visible ? 659 : 525
+        source: "qrc:/images/images/dialogbg.png"
         z: background.z+1
         Grid {
             id: language
             property int selectIndex: -1
             visible: false
             anchors.top: parent.top
-            anchors.topMargin: 10
+            anchors.topMargin: 60
             anchors.left: parent.left
-            anchors.leftMargin: 8
-            spacing: 10
-            columns: 6
-            rows: 5
+            anchors.leftMargin: (parent.width-8*148)/2
+            columns: 8
+            rows: 3
             Repeater {
                 id: languageRep
-                model: 26
+                model: listModel
                 delegate: Rectangle {
-                    property string borderColor: "#404041"
-                    width: 65
-                    height: 55
-                    color: "#404041"
+                    property string backColor: "black"
+                    id: languageRec
+                    width: 148
+                    height: 148
+                    color: backColor
                     border.width: 1
-                    border.color: borderColor
+                    border.color: "#0079C1"
                     Image {
                         anchors.centerIn: parent
-                        width: 59
-                        height: 49
-                        source: "qrc:/images/images/guo2.png"
+                        source: iconsource
                         MouseArea {
                             anchors.fill: parent
                             onClicked: {
                                 if (language.selectIndex == -1) {
-                                    languageRep.itemAt(index).borderColor = "yellow"
+                                    languageRep.itemAt(index).backColor = "#29afff"
+                                    languageRep.itemAt(index).opacity = 0.5
                                     language.selectIndex = index
                                 } else {
-                                    languageRep.itemAt(language.selectIndex).borderColor = "#404041"
+                                    languageRep.itemAt(language.selectIndex).opacity = 1
+                                    languageRep.itemAt(language.selectIndex).backColor = "black"
+                                    languageRep.itemAt(index).opacity = 0.5
+                                    languageRep.itemAt(index).backColor = "#29afff"
                                     language.selectIndex = index
-                                    languageRep.itemAt(index).borderColor = "yellow"
                                 }
                             }
                         }
+                    }
+                    Text {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.bottom: parent.bottom
+                        anchors.bottomMargin: 6
+                        font.family: "arial"
+                        font.pixelSize: 20
+                        color: "white"
+                        text: contrl
                     }
                 }
             }
@@ -560,7 +596,7 @@ Item {
             anchors.topMargin: 20
             anchors.left: parent.left
             anchors.leftMargin: 20
-            font.pixelSize: 20
+            font.pixelSize: 24
             font.family: "arial"
             color: "white"
             text: qsTr("Create Part:")
@@ -582,10 +618,10 @@ Item {
             id: personColumn
             visible: false
             anchors.top: helpTitle.bottom
-            anchors.topMargin: 50
+            anchors.topMargin: 100
             anchors.left: parent.left
-            anchors.leftMargin: 40
-            width: parent.width-80
+            anchors.leftMargin: 80
+            width: parent.width-160
             spacing: 30
             CButton {
                 width: parent.width
@@ -601,20 +637,6 @@ Item {
                     dialog.visible = false
                 }
             }
-            //            CButton {
-            //                width: parent.width
-            //                textColor: "white"
-            //                text: qsTr("Log Off")
-            //                onClicked: {
-            //                    root.logoff()
-
-            //                    personColumn.visible = false
-            //                    background.visible = false
-            //                    helpTitle.visible = false
-            //                    background.opacity = 0
-            //                    dialog.visible = false
-            //                }
-            //            }
             CButton {
                 width: parent.width
                 textColor: "white"
@@ -640,13 +662,33 @@ Item {
         CButton {
             id: okButton
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: 12
+            anchors.bottomMargin: 24
             anchors.right: parent.right
-            anchors.rightMargin: 20
-            width: 200
-            height: 60
+            anchors.rightMargin: language.visible ? (parent.width-8*148)/2 : 30
+            width: 180
             iconSource: "qrc:/images/images/OK.png"
             text: qsTr("OK")
+            onClicked: {
+                if (languageRep.visible ) {
+                    languageButton.source = listModel.get(language.selectIndex).iconsource
+                }
+                dialog.visible = false
+                background.visible = false
+                language.visible = false
+                helpTitle.visible = false
+                helpValue.visible = false
+                background.opacity = 0
+            }
+        }
+        CButton {
+            id: cancelButton
+            anchors.bottom: okButton.bottom
+            anchors.right: okButton.left
+            anchors.rightMargin: 20
+            width: 180
+            visible: languageRep.visible
+            iconSource: "qrc:/images/images/cancel.png"
+            text: qsTr("Cancel")
             onClicked: {
                 dialog.visible = false
                 background.visible = false

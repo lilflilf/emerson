@@ -9,6 +9,7 @@ Item {
     width: Screen.width
     height: Screen.height
     signal signalSaveSplice()
+    property int selectIndex: 0
     property bool detailIsChang: true
     property variant colorArray: ["#ff6699","#ff0033","#33FFCC","#cc99ff","#cc0099","#930202","#99ccff","#f79428",
         "#0000cc","Olive","#ffff33","#ffcc00","#cc9909","#66ff00","#009900","#00cc66","#3366ff","#cc33cc","#cc9966","#9400D3"]
@@ -449,6 +450,18 @@ Item {
                     horizontalAlignment: Qt.AlignHCenter
                     maxSize: 20
                     opacity: 0.7
+                    onInputFocusChanged: {
+                        if (edit2.inputFocus) {
+                            backGround.visible = true
+                            backGround.opacity = 0.5
+                            keyNum.visible = true
+                            keyNum.titleText = labelGauge.text
+                            keyNum.currentValue = "1.12mm"
+                            keyNum.minvalue = "1.00mm"
+                            keyNum.maxvalue = "10.99mm"
+                        }
+                    }
+
                     onTextChange: {
                         if(detailIsChang)
                             return
@@ -796,6 +809,17 @@ Item {
                         centervalue: qsTr(bottomText)
                         width: (settingLayout.width-30)/2
                         height: (settingLayout.height-60)/4
+                        onMouseAreaClick: {
+                            creatWire.selectIndex = index
+                            backGround.visible = true
+                            backGround.opacity = 0.5
+                            localbordercolor = "#05f91c"
+                            keyNum.visible = true
+                            keyNum.titleText = topText
+                            keyNum.currentValue = bottomText
+                            keyNum.minvalue = "0"
+                            keyNum.maxvalue = "100"
+                        }
                     }
                 }
             }
@@ -843,6 +867,7 @@ Item {
         currentIndex: swipeView.currentIndex
         anchors.top: parent.top
         height: Screen.height * 0.08
+        spacing: 0
         TabButton {
             height: parent.height
             Rectangle {
@@ -894,6 +919,7 @@ Item {
             }
         }
     }
+
     Item {
         id: rightArea
         anchors.left: swipeView.right
@@ -1145,6 +1171,7 @@ Item {
             }
             Grid {
                 id: weldSetting
+                property bool weldSetVisible: false
                 anchors.top: parent.top
                 anchors.left: parent.left
                 anchors.leftMargin: 20
@@ -1156,8 +1183,10 @@ Item {
                 columnSpacing: 20
                 rowSpacing: 6
                 Repeater {
+                    id: weldRepeater
                     model: weldSettingModel
                     delegate: Item {
+                        property alias myfocus: inputText.inputFocus
                         width: parent.width/2-20
                         height: (weldSetting.height-6)/2
                         Text {
@@ -1186,6 +1215,19 @@ Item {
                             inputColor: "white"
                             clip: true
                             inputText: qsTr(textValue)
+                            onInputFocusChanged: {
+                                if (inputText.inputFocus) {
+                                    weldSetting.weldSetVisible = true
+                                    creatWire.selectIndex = index
+                                    backGround.visible = true
+                                    backGround.opacity = 0.5
+                                    keyNum.visible = true
+                                    keyNum.titleText = headText
+                                    keyNum.currentValue = textValue
+                                    keyNum.minvalue = "0.00mm"
+                                    keyNum.maxvalue = "20.00mm"
+                                }
+                            }
                         }
                     }
                 }
@@ -1210,6 +1252,7 @@ Item {
             }
             Grid {
                 id: widthSetting
+                property bool widthSetVisible: false
                 anchors.top: widthSettingText.bottom
                 anchors.left: parent.left
                 anchors.leftMargin: 20
@@ -1220,8 +1263,10 @@ Item {
                 rows: 1
                 columnSpacing: 20
                 Repeater {
+                    id: widthRepeater
                     model: widthModel
                     delegate: Item {
+                        property alias myfocus: widthValue.inputFocus
                         width: parent.width/2-20
                         height: parent.height
                         Text {
@@ -1249,6 +1294,19 @@ Item {
                             inputColor: "white"
                             clip: true
                             inputText: qsTr(textValue)
+                            onInputFocusChanged: {
+                                if (widthValue.inputFocus) {
+                                    widthSetting.widthSetVisible = true
+                                    creatWire.selectIndex = index
+                                    backGround.visible = true
+                                    backGround.opacity = 0.5
+                                    keyNum.visible = true
+                                    keyNum.titleText = widthText
+                                    keyNum.currentValue = textValue
+                                    keyNum.minvalue = "0.00mm"
+                                    keyNum.maxvalue = "20.00mm"
+                                }
+                            }
                         }
                     }
                 }
@@ -1273,6 +1331,7 @@ Item {
             }
             Grid {
                 id: heightSetting
+                property bool heightSetVisible: false
                 anchors.top: heightSettingText.bottom
                 anchors.left: parent.left
                 anchors.leftMargin: 20
@@ -1283,8 +1342,10 @@ Item {
                 rows: 1
                 columnSpacing: 20
                 Repeater {
+                    id: heightRepeater
                     model: heightModel
                     delegate: Item {
+                        property alias myfocus: heightValue.inputFocus
                         width: parent.width/2-20
                         height: parent.height
                         Text {
@@ -1312,6 +1373,19 @@ Item {
                             inputColor: "white"
                             clip: true
                             inputText: qsTr(textValue)
+                            onInputFocusChanged: {
+                                if (heightValue.inputFocus) {
+                                    heightSetting.heightSetVisible = true
+                                    creatWire.selectIndex = index
+                                    backGround.visible = true
+                                    backGround.opacity = 0.5
+                                    keyNum.visible = true
+                                    keyNum.titleText = heightText
+                                    keyNum.currentValue = textValue
+                                    keyNum.minvalue = "0.00mm"
+                                    keyNum.maxvalue = "20.00mm"
+                                }
+                            }
                         }
                     }
                 }
@@ -1392,6 +1466,17 @@ Item {
                 inputColor: "white"
                 clip: true
                 inputText: qsTr("0.00mm")
+                onInputFocusChanged: {
+                    if (loadValue.inputFocus) {
+                        backGround.visible = true
+                        backGround.opacity = 0.5
+                        keyNum.visible = true
+                        keyNum.titleText = loadName.text
+                        keyNum.currentValue = loadValue.inputText
+                        keyNum.minvalue = "0.00mm"
+                        keyNum.maxvalue = "20.00mm"
+                    }
+                }
             }
             Text {
                 id: loadName2
@@ -1419,6 +1504,17 @@ Item {
                 inputColor: "white"
                 clip: true
                 inputText: qsTr("0.00mm")
+                onInputFocusChanged: {
+                    if (loadValue2.inputFocus) {
+                        backGround.visible = true
+                        backGround.opacity = 0.5
+                        keyNum.visible = true
+                        keyNum.titleText = loadName2.text
+                        keyNum.currentValue = loadValue2.inputText
+                        keyNum.minvalue = "0.00mm"
+                        keyNum.maxvalue = "20.00mm"
+                    }
+                }
             }
             Text {
                 id: instulationText
@@ -1441,6 +1537,8 @@ Item {
                 height: parent.height*0.12
                 text: qsTr("Insulation")
                 onClicked: {
+                    backGround.visible = true
+                    backGround.opacity = 0.5
                     shrinkSet.visible = true
                 }
             }
@@ -1479,23 +1577,117 @@ Item {
                 }
             }
         }
-        ShrinkSet {
-            id: shrinkSet
-            anchors.centerIn: parent
-            width: parent.width*0.8
-            height: parent.height*0.5
-            visible: false
+    }
+    Rectangle {
+        id: backGround
+        anchors.fill: parent
+        color: "black"
+        opacity: 0.7
+        visible: content.bIsEdit ? true : false
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+
+            }
+        }
+    }
+    ShrinkSet {
+        id: shrinkSet
+        anchors.centerIn: parent
+        width: parent.width*0.8
+        height: parent.height*0.5
+        visible: false
+        onSureClick: {
+            shrinkSet.visible = false
+            backGround.opacity = 0
+            backGround.visible = false
+        }
+        onCancelClick: {
+            shrinkSet.visible = false
+            backGround.opacity = 0
+            backGround.visible = false
         }
     }
     KeyBoardNum {
         id: keyNum
         anchors.centerIn: parent
-        width: 500
-        height: 500
+        width: 962
+        height: 526
         visible: false
-        titleText: qsTr("My TEST")
-        maxvalue: "12"
-        minvalue: "3"
-        currentValue: "123"
+        titleText: qsTr("")
+        maxvalue: "4"
+        minvalue: "1"
+        currentValue: "4"
+        onCurrentClickIndex: {
+            if (index == 15) {
+                if (edit2.inputFocus) {
+                    edit2.inputText = keyNum.inputText
+                    edit2.inputFocus = false
+                } else if (loadValue2.inputFocus) {
+                    loadValue2.inputText = keyNum.inputText
+                    loadValue2.inputFocus = false
+                } else if (loadValue.inputFocus) {
+                    loadValue.inputText = keyNum.inputText
+                    loadValue.inputFocus = false
+                } else if (heightSetting.heightSetVisible) {
+                    heightModel.set(creatWire.selectIndex,{"textValue":keyNum.inputText})
+                    heightRepeater.itemAt(creatWire.selectIndex).myfocus = false
+                } else if (widthSetting.widthSetVisible) {
+                    widthModel.set(creatWire.selectIndex,{"textValue":keyNum.inputText})
+                    widthRepeater.itemAt(creatWire.selectIndex).myfocus = false
+                } else if (weldSetting.weldSetVisible) {
+                    weldSettingModel.set(creatWire.selectIndex,{"textValue":keyNum.inputText})
+                    weldRepeater.itemAt(creatWire.selectIndex).myfocus = false
+                } else {
+                    repeater.model.set(creatWire.selectIndex,{"bottomText":keyNum.inputText})
+                    repeater.itemAt(creatWire.selectIndex).localbordercolor = "#0079c1"
+                }
+                backGround.visible = false
+                backGround.opacity = 0
+                keyNum.visible = false
+                keyNum.inputText = ""
+                keyNum.tempValue = ""
+            } else if (index == 11) {
+                if (edit2.inputFocus) {
+                    edit2.inputFocus = false
+                } else if (loadValue2.inputFocus) {
+                    loadValue2.inputFocus = false
+                } else if (loadValue.inputFocus) {
+                    loadValue.inputFocus = false
+                } else if (heightSetting.heightSetVisible) {
+                    heightRepeater.itemAt(creatWire.selectIndex).myfocus = false
+                } else if (widthSetting.widthSetVisible) {
+                    widthRepeater.itemAt(creatWire.selectIndex).myfocus = false
+                } else if (weldSetting.weldSetVisible) {
+                    weldRepeater.itemAt(creatWire.selectIndex).myfocus = false
+                } else {
+                    repeater.itemAt(creatWire.selectIndex).localbordercolor = "#0079c1"
+                }
+                backGround.visible = false
+                backGround.opacity = 0
+                keyNum.visible = false
+                keyNum.inputText = ""
+                keyNum.tempValue = ""
+            }
+        }
+        onInputTextChanged: {
+            if (keyNum.inputText != "") {
+                if (edit2.inputFocus) {
+                    edit2.inputText = keyNum.inputText
+                } else if (loadValue2.inputFocus) {
+                    loadValue2.inputText = keyNum.inputText
+                } else if (loadValue.inputFocus) {
+                    loadValue.inputText = keyNum.inputText
+                } else if (heightSetting.heightSetVisible) {
+                    heightModel.set(creatWire.selectIndex,{"textValue":keyNum.inputText})
+                } else if (widthSetting.widthSetVisible) {
+                    widthModel.set(creatWire.selectIndex,{"textValue":keyNum.inputText})
+                } else if (weldSetting.weldSetVisible) {
+                    weldSettingModel.set(creatWire.selectIndex,{"textValue":keyNum.inputText})
+                } else {
+                    repeater.model.set(creatWire.selectIndex,{"bottomText":keyNum.inputText})
+                }
+            }
+        }
     }
 }
