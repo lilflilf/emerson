@@ -6,6 +6,8 @@ import QtQuick.Controls 1.4
 import QtQuick.Dialogs 1.2
 Item {
     id: toolChange
+    property int select: -1
+    property bool myfocus: false
     width: Screen.width*0.7
     height: Screen.height*0.6
 
@@ -103,11 +105,8 @@ Item {
     Component {
         id: listLine
         Item {
-            id: line
             width: listView.width
             height: index == 5 ? 100 : 80
-
-
             Row {
                 spacing: 70
                 anchors.verticalCenter: parent.verticalCenter
@@ -127,12 +126,26 @@ Item {
                     //source: "file:///c:/ToolChangeImage/group2/wiredemo.jpg"
                 }
                 MyLineEdit {
+                    id: input
                     width: 150
                     height: 60
                     inputHeight: 79
                     inputWidth: 150
-                    defaultText: key3
+                    inputText: key3
                     visible: index == 5 ? false : true
+                    inputFocus: toolChange.myfocus
+                    onInputFocusChanged: {
+                        if (input.inputFocus) {
+                            toolChange.select = index
+                            backGround.visible = true
+                            backGround.opacity = 0.5
+                            keyNum.visible = true
+                            keyNum.titleText = qsTr("Counter Limit")
+                            keyNum.currentValue = input.inputText
+                            keyNum.minvalue = "0"
+                            keyNum.maxvalue = "10000"
+                        }
+                    }
                 }
                 Text {
                     width: 150
@@ -193,6 +206,51 @@ Item {
             font.pointSize: 14
         }
     }
+    Rectangle {
+        id: backGround
+        anchors.fill: parent
+        color: "black"
+        opacity: 0.5
+        visible: false
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
 
-
+            }
+        }
+    }
+    KeyBoardNum {
+        id: keyNum
+        anchors.centerIn: parent
+        width: 962
+        height: 526
+        visible: false
+        titleText: qsTr("")
+        maxvalue: "4"
+        minvalue: "1"
+        currentValue: "4"
+        onCurrentClickIndex: {
+            if (index == 15) {
+                listModel.set(toolChange.select,{"key3":keyNum.inputText})
+                toolChange.myfocus = false
+                backGround.visible = false
+                backGround.opacity = 0
+                keyNum.visible = false
+                keyNum.inputText = ""
+                keyNum.tempValue = ""
+            } else if (index == 11) {
+                backGround.visible = false
+                toolChange.myfocus = false
+                backGround.opacity = 0
+                keyNum.visible = false
+                keyNum.inputText = ""
+                keyNum.tempValue = ""
+            }
+        }
+        onInputTextChanged: {
+            if (keyNum.inputText != "") {
+                listModel.set(toolChange.select,{"key3":keyNum.inputText})
+            }
+        }
+    }
 }

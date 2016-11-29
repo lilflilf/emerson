@@ -1594,7 +1594,7 @@ Item {
     ShrinkSet {
         id: shrinkSet
         anchors.centerIn: parent
-        width: parent.width*0.8
+        width: parent.width*0.65
         height: parent.height*0.5
         visible: false
         onSureClick: {

@@ -276,9 +276,15 @@ void MODstart::CheckBransonFolder()
         objDriveSystem.mkdir("c:\\BransonData\\"); //Creates a new directory or folder.
         objDriveSystem.mkdir("c:\\BransonData\\Library\\");
         objDriveSystem.mkdir("c:\\BransonData\\History\\");
+        objDriveSystem.mkdir("c:\\BransonData\\History\\Graph\\");
     }else{
         if (objDriveSystem.exists("c:\\BransonData\\History\\") == false)
            objDriveSystem.mkdir("c:\\BransonData\\History\\");
+        else
+        {
+            if(objDriveSystem.exists("c:\\BransonData\\History\\Graph") == false)
+                objDriveSystem.mkdir("c:\\BransonData\\History\\Graph\\");
+        }
 
         if (objDriveSystem.exists("c:\\BransonData\\Library\\") == false)
            objDriveSystem.mkdir("c:\\BransonData\\Library\\");

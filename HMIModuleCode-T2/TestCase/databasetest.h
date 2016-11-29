@@ -12,6 +12,7 @@ public:
     void TestInsertOneRecordIntoPartTable();
     void TestInsertOneRecordIntoWorkOrderTable();
     void TestInsertOneRecordIntoOperatorTable();
+    void TestInsertOneRecordIntoWeldResultTable();
 
     void TestUpdateOneRecordIntoWireTable();
     void TestUpdateOneRecordIntoPresetTable();
@@ -39,6 +40,8 @@ public:
 
     void TestQueryOneWireTable();
     void TestQueryOneOperatorTable();
+
+    void TestQueryOnlyUseFieldWeldResult();
 
     void TestMapJsonToString();
     void TestStringJsonToMap();

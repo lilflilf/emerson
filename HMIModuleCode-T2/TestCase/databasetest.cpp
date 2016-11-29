@@ -5,6 +5,7 @@
 #include "DataBase/DBPartTable.h"
 #include "DataBase/DBWorkOrderTable.h"
 #include "DataBase/DBOperatorTable.h"
+#include "DataBase/DBWeldResultTable.h"
 #include <QMap>
 #include <QDebug>
 #include <QDateTime>
@@ -176,6 +177,42 @@ void DataBaseTest::TestInsertOneRecordIntoOperatorTable()
     _SQLITCLASS->InsertRecordIntoTable(&tmpOperator);
 }
 
+void DataBaseTest::TestInsertOneRecordIntoWeldResultTable()
+{
+    SQLITCLASS *_SQLITCLASS = DBWeldResultTable::Instance();
+    struct WeldResultElement tmpWeldResult;
+    tmpWeldResult.OperatorName = "TESTOperator";
+    QDateTime tmp = QDateTime::currentDateTime();
+    tmpWeldResult.CreatedDate = tmp.toTime_t();
+    tmpWeldResult.CurrentWorkOrder.WorkOrderID = 1;
+    tmpWeldResult.CurrentWorkOrder.WorkOrderName = "WorkOrderID";
+    tmpWeldResult.CurrentPart.PartID = 1;
+    tmpWeldResult.CurrentPart.PartName = "PartName";
+    tmpWeldResult.CurrentSplice.SpliceID = 1;
+    tmpWeldResult.CurrentSplice.SpliceName = "SpliceName";
+    tmpWeldResult.WeldCount = 0;
+    tmpWeldResult.PartCount = 0;
+    tmpWeldResult.CrossSection = 100;
+    tmpWeldResult.ActualResult.ActualAlarmflags = 0x55;
+    tmpWeldResult.ActualResult.ActualAmplitude = 1;
+    tmpWeldResult.ActualResult.ActualAmplitude2 = 2;
+    tmpWeldResult.ActualResult.ActualEnergy = 3;
+    tmpWeldResult.ActualResult.ActualPeakPower = 4;
+    tmpWeldResult.ActualResult.ActualPostheight = 5;
+    tmpWeldResult.ActualResult.ActualPreheight = 6;
+    tmpWeldResult.ActualResult.ActualPressure = 7;
+    tmpWeldResult.ActualResult.ActualTime = 8;
+    tmpWeldResult.ActualResult.ActualTPressure = 9;
+    tmpWeldResult.ActualResult.ActualWidth = 10;
+    tmpWeldResult.SampleRatio = SampleWith1ms;
+    tmpWeldResult.NoOfSamples = 2;
+    tmpWeldResult.PowerGraph.insert(1, "500");
+    tmpWeldResult.PowerGraph.insert(2, "1000");
+    tmpWeldResult.PostHeightGraph.insert(1, "120");
+    tmpWeldResult.PostHeightGraph.insert(2, "240");
+    _SQLITCLASS->InsertRecordIntoTable(&tmpWeldResult);
+}
+
 void DataBaseTest::TestMapJsonToString()
 {
     UtilityClass *_Utility = UtilityClass::Instance();
@@ -319,6 +356,20 @@ void DataBaseTest::TestQueryOneOperatorTable()
         qDebug()<<"WhoCreatedNewID: "<<tmpOperator.WhoCreatedNewID;
         qDebug()<<"Password: "<<tmpOperator.Password;
         qDebug()<<"PermissionLevel: "<<tmpOperator.PermissionLevel;
+    }
+}
+
+void DataBaseTest::TestQueryOnlyUseFieldWeldResult()
+{
+    DBWeldResultTable *_SQLITCLASS = DBWeldResultTable::Instance();
+    QMap<int, QString> tmpMap;
+    _SQLITCLASS->QueryOnlyUseField("WorkOrderName", &tmpMap, true);
+    QMap<int, QString>::ConstIterator i = tmpMap.constBegin();
+    while(i != tmpMap.constEnd())
+    {
+        qDebug()<<"WorkResult ID: "<<i.key();
+        qDebug()<<"WorkOrder Name: "<<i.value();
+        ++i;
     }
 }
 

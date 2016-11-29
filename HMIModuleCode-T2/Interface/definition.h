@@ -645,6 +645,7 @@ class WeldResultElement
 public:
     int RevCode;
     int WeldResultID;
+    QString TableName;
     QString OperatorName;
     unsigned int CreatedDate;
     struct WorkOrderIndex CurrentWorkOrder;
@@ -652,6 +653,7 @@ public:
     struct SpliceIndex CurrentSplice;
     int WeldCount;//just for the test mode
     int PartCount;//just for the operate mode
+    int CrossSection;
     struct WELDRESULT ActualResult;
     enum SAMPLERATIO SampleRatio;
     int NoOfSamples;
@@ -662,6 +664,7 @@ public:
     {
         RevCode = -1;
         WeldResultID = -1;
+        TableName.clear();
         OperatorName.clear();
         CreatedDate = 0;
         CurrentWorkOrder.WorkOrderID = -1;
