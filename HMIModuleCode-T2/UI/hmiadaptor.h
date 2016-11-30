@@ -73,6 +73,8 @@ public:
     explicit HmiAdaptor(QObject *parent = 0);
     Q_INVOKABLE void openFileDialog();
     Q_INVOKABLE void advancedMaintenanceExecute(int code);
+    Q_INVOKABLE void maintenanceCountExecute(QString code);
+    Q_INVOKABLE QString maintenanceCountGetValue(int code, int index);
     Q_INVOKABLE void maintenanceStart(int page);
     Q_INVOKABLE void maintenanceStop(int page);
     Q_INVOKABLE bool login(QString passwd);

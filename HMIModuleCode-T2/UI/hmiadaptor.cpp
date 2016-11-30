@@ -105,7 +105,152 @@ void HmiAdaptor::openFileDialog()
 
 void HmiAdaptor::advancedMaintenanceExecute(int code)
 {
-        advanceMaintenance->_execute(code);
+    advanceMaintenance->_execute(code);
+}
+
+void HmiAdaptor::maintenanceCountExecute(QString code)
+{
+    if (code == "_Recll")
+        maintenanceCount->_recall();
+}
+
+QString HmiAdaptor::maintenanceCountGetValue(int code, int index)
+{
+    QString value;
+    if (code == 0)
+    {
+        switch (index) {
+        case 2:
+            value = maintenanceCount->CurrentMaintenanceCounter.HornCounterLimit.Current;
+            break;
+        case 3:
+            value = maintenanceCount->CurrentMaintenanceCounter.HornCurrentCount;
+            break;
+        case 4:
+            value = maintenanceCount->CurrentMaintenanceCounter.HornDateStarted;
+            break;
+        case 5:
+            value = maintenanceCount->CurrentMaintenanceCounter.HornCounterLimit.Maximum;
+            break;
+        case 6:
+            value = maintenanceCount->CurrentMaintenanceCounter.HornCounterLimit.Minimum;
+            break;
+        default:
+            break;
+        }
+    }
+    else if (code == 1)
+    {
+        switch (index) {
+        case 2:
+            value = maintenanceCount->CurrentMaintenanceCounter.AnvilTipCounterLimit.Current;
+            break;
+        case 3:
+            value = maintenanceCount->CurrentMaintenanceCounter.AnvilTipCurrentCount;
+            break;
+        case 4:
+            value = maintenanceCount->CurrentMaintenanceCounter.AnvilTipDateStarted;
+            break;
+        case 5:
+            value = maintenanceCount->CurrentMaintenanceCounter.AnvilTipCounterLimit.Maximum;
+            break;
+        case 6:
+            value = maintenanceCount->CurrentMaintenanceCounter.AnvilTipCounterLimit.Minimum;
+            break;
+        default:
+            break;
+        }
+    }
+    else if (code == 2)
+    {
+        switch (index) {
+        case 2:
+            value = maintenanceCount->CurrentMaintenanceCounter.GatherCounterLimit.Current;
+            break;
+        case 3:
+            value = maintenanceCount->CurrentMaintenanceCounter.GatherCurrentCount;
+            break;
+        case 4:
+            value = maintenanceCount->CurrentMaintenanceCounter.GatherDateStarted;
+            break;
+        case 5:
+            value = maintenanceCount->CurrentMaintenanceCounter.GatherCounterLimit.Maximum;
+            break;
+        case 6:
+            value = maintenanceCount->CurrentMaintenanceCounter.GatherCounterLimit.Minimum;
+            break;
+        default:
+            break;
+        }
+    }
+    else if (code == 3)
+    {
+        switch (index) {
+        case 2:
+            value = maintenanceCount->CurrentMaintenanceCounter.AnvilGuideCounterLimit.Current;
+            break;
+        case 3:
+            value = maintenanceCount->CurrentMaintenanceCounter.AnvilGuideCurrentCount;
+            break;
+        case 4:
+            value = maintenanceCount->CurrentMaintenanceCounter.AnvilGuideDateStarted;
+            break;
+        case 5:
+            value = maintenanceCount->CurrentMaintenanceCounter.AnvilGuideCounterLimit.Maximum;
+            break;
+        case 6:
+            value = maintenanceCount->CurrentMaintenanceCounter.AnvilGuideCounterLimit.Minimum;
+            break;
+        default:
+            break;
+        }
+    }
+    else if (code == 4)
+    {
+        switch (index) {
+        case 2:
+            value = maintenanceCount->CurrentMaintenanceCounter.ConverterCounterLimit.Current;
+            break;
+        case 3:
+            value = maintenanceCount->CurrentMaintenanceCounter.ConverterCurrentCount;
+            break;
+        case 4:
+            value = maintenanceCount->CurrentMaintenanceCounter.ConverterDateStarted;
+            break;
+        case 5:
+            value = maintenanceCount->CurrentMaintenanceCounter.ConverterCounterLimit.Maximum;
+            break;
+        case 6:
+            value = maintenanceCount->CurrentMaintenanceCounter.ConverterCounterLimit.Minimum;
+            break;
+        default:
+            break;
+        }
+    }
+    else if (code == 5)
+    {
+        switch (index) {
+        case 2:
+            value = "-";
+            break;
+        case 3:
+            value = maintenanceCount->CurrentMaintenanceCounter.ActuatorCurrentCount;
+            break;
+        case 4:
+            value = maintenanceCount->CurrentMaintenanceCounter.ActuatorDateStarted;
+            break;
+        case 5:
+            value = "-";
+            break;
+        case 6:
+            value = "-";
+            break;
+        default:
+            break;
+        }
+    }
+    qDebug() << "xxxxxxxxx" << value << code << index;
+    return value;
 }
 
 void HmiAdaptor::maintenanceStart(int page)
