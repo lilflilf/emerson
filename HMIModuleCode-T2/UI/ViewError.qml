@@ -509,20 +509,20 @@ Item {
         anchors.right: parent.right
         anchors.rightMargin: 20
         clip: true
-        height: 2
+        height: 1
         color: "#ffffff"
     }
-//    Rectangle {
-//        id: tipsRec2
-//        anchors.top: tipsRec.bottom
-//        anchors.left: back.right
-//        anchors.leftMargin: 20
-//        anchors.right: parent.right
-//        anchors.rightMargin: 20
-//        clip: true
-//        height: 1
-//        color: "#0d0f11"
-//    }
+    Rectangle {
+        id: tipsRec2
+        anchors.top: tipsRec.bottom
+        anchors.left: back.right
+        anchors.leftMargin: 20
+        anchors.right: parent.right
+        anchors.rightMargin: 20
+        clip: true
+        height: 1
+        color: "#0d0f11"
+    }
 
 
 
