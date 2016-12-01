@@ -49,6 +49,7 @@ Window {
             contentLoader.source = "qrc:/UI/AdvancedMaintenance.qml"
             break;
         case 7:
+            hmiAdaptor.maintenanceCountExecute("_Recall")
             contentLoader.source = "qrc:/UI/MaintenanceCount.qml"
             break;
         case 8:
