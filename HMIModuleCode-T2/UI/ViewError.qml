@@ -349,18 +349,18 @@ Item {
                 width: parent.width
                 text: qsTr("APPLY")
             }
-            CButton {
-                id: backButton
-                width: parent.width
-                text: qsTr("Back")
-            }
+//            CButton {
+//                id: backButton
+//                width: parent.width
+//                text: qsTr("Back")
+//            }
         }
 
     }
     //    list << "CreatedDate" << "Alarm/ErrorType" << "Alarm/ErrorLevel" << "Message" << "SpliceName";
     Image {
         id: scrollUp
-        anchors.top: tipsRec2.bottom
+        anchors.top: tipsRec.bottom
         anchors.topMargin: 2
         anchors.right: parent.right
         anchors.rightMargin: 6

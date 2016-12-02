@@ -208,7 +208,7 @@ Item {
         onVisibleChanged: {
             if (visible)
             {
-                coolingsec.state = hmiAdaptor.weldDefaultsGetSwitch("cooling(1sec/100J)") ? "right" : "left"
+                coolingsec.state = hmiAdaptor.weldDefaultsGetSwitch("Cooling(1sec/100J)") ? "right" : "left"
                 coolingTooling.state = hmiAdaptor.weldDefaultsGetSwitch("Cooling Tooling") ? "right" : "left"
 
             }

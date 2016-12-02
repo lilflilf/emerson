@@ -339,11 +339,11 @@ Item {
 
                 }
             }
-            CButton {
-                id: backButton
-                width: parent.width
-                text: qsTr("Back")
-            }
+//            CButton {
+//                id: backButton
+//                width: parent.width
+//                text: qsTr("Back")
+//            }
         }
     }
 

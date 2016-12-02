@@ -530,9 +530,9 @@ Item {
             anchors.top: parent.top
             anchors.topMargin: 4
             anchors.left: boardlayout.left
-            width: boardlayout.width*0.6
+            width: boardlayout.width*0.65
             height: 43
-            inputWidth: boardlayout.width*0.6
+            inputWidth: boardlayout.width*0.65
             inputHeight: 40
             horizontalAlignment: Qt.AlignHCenter
             defaultText: qsTr("PART NAME")

@@ -9,6 +9,31 @@ Item {
     id: viewLib
     property int selectIndx: -1
     property int count: partTitleModel.count
+
+    function shrinkGetValue(index1,index2)
+    {
+        if (index2 == 0 )
+            return shrinkModel.get(index1).shrinkid
+        else if (index2 == 1 )
+            return shrinkModel.get(index1).temperature
+        else if (index2 == 2 )
+            return shrinkModel.get(index1).times
+    }
+
+    function initPage()
+    {
+        var list
+        list = hmiAdaptor.dataCommunicationGetValue("shrinkData")
+        if (list.length % 3 == 0)
+        {
+            for (var i = 0 ;i < list.length / 3; i++)
+            {
+                shrinkModel.append({shrinkid:list[i*3],temperature:list[i*3+1],times:list[i*3+2]})
+            }
+        }
+
+    }
+
     Rectangle {
         id: leftArea
         anchors.top: parent.top
@@ -191,7 +216,66 @@ Item {
                     anchors.leftMargin: 10
                 }
             }
+
+            CButton {
+                id: shrink
+                width: column.width
+                textColor: "white"
+                RadioButton {
+                    id: shrinkRadio
+                    visible: false
+                    exclusiveGroup: checkGroup
+                    onCheckedChanged: {
+                        if (shrinkRadio.checked) {
+                            shrink.backgroundItem.source = "qrc:/images/images/icon-bg.png"
+                            headRepeater.model = shrinkTitleModel
+                            viewLib.count = shrinkTitleModel.count
+                            listView.model = shrinkModel
+                        }
+                        else {
+                            shrink.backgroundItem.source = ""
+                        }
+                    }
+                }
+                backgroundComponent: Image {
+                    anchors.fill: parent
+                    source: ""
+                }
+                onClicked: {
+                    if (!shrinkRadio.checked)
+                        shrinkRadio.checked = !shrinkRadio.checked
+                }
+                Line {
+                    width: parent.width
+                    height: 1
+                    lineColor: "#1987ab"
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: 3
+                }
+                Image {
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                    anchors.rightMargin: 18
+                    source: "qrc:/images/images/right.png"
+                }
+                Text {
+                    text: qsTr("Shrink")
+                    font.pointSize: 20
+                    font.family: "arial"
+                    color: "white"
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.left: parent.left
+                    anchors.leftMargin: 10
+                }
+            }
         }
+    }
+    ListModel {
+        id: shrinkTitleModel
+    }
+
+    ListModel {
+        id: shrinkModel
     }
 
     ListModel {
@@ -208,6 +292,7 @@ Item {
 //        list << "partId" << "name" << "date" << "totalSplices" << "type" << "operatorName" << "processMode" << "ofWorkstation" << "ofSplicesperWorkstation" << "rows" << "columns" << "maxSplicesPerZone";
 
         Component.onCompleted: {
+            initPage()
             partKeyModel.append({"title":"name"})
             partKeyModel.append({"title":"date"})
             partKeyModel.append({"title":"totalSplices"})
@@ -219,6 +304,10 @@ Item {
             partKeyModel.append({"title":"rows"})
             partKeyModel.append({"title":"columns"})
             partKeyModel.append({"title":"maxSplicesPerZone"})
+
+            shrinkTitleModel.append({title:qsTr("Shrink Tube Id")})
+            shrinkTitleModel.append({title:qsTr("Temp(℃)")})
+            shrinkTitleModel.append({title:qsTr("Time(S)")})
 
             partTitleModel.append({"title":"PartName"})
             partTitleModel.append({"title":"DateCreated"})
@@ -297,6 +386,7 @@ Item {
             id: headRepeater
             model: partTitleModel
             delegate:  Text {
+                id: tempTitle
                 verticalAlignment: Qt.AlignVCenter
                 width: 200
                 font.family: "arial"
@@ -305,6 +395,34 @@ Item {
                 clip: true
                 elide: Text.ElideRight
                 text: qsTr(title)
+//                Rectangle {
+//                    id: rect
+//                    width: 10
+//                    height: parent.height
+//                    anchors.right: parent.right
+//                    MouseArea {
+//                        id: mymouse
+//                        anchors.fill: parent
+//                        cursorShape: Qt.SizeHorCursor
+//                        drag.target: parent
+//                        drag.axis: Drag.XAxis
+//                        drag.maximumX: 400
+//                        drag.minimumX: 200
+//                        hoverEnabled: true
+////                        onMouseXChanged: {
+////                            if (mouse.accepted)
+////                            {
+////                                parent.parent.width = 200 + mouseX
+////                            }
+////                        }
+//                    }
+//                    onXChanged: {
+//                        if (mymouse.pressed) {
+//                            console.log("xxxxxxxxxxxxx",rect.x)
+//                            parent.width = 200 + rect.x
+//                        }
+//                    }
+//                }
             }
         }
     }
@@ -475,6 +593,8 @@ Item {
                     id: listRepeater
                     model: viewLib.count
                     delegate:  Text {
+                        id: tempText
+                        property var newObject: null
                         anchors.verticalCenter: parent.verticalCenter
                         width: 200
                         font.family: "arial"
@@ -482,7 +602,27 @@ Item {
                         color: "white"
                         clip: true
                         elide: Text.ElideRight
-                        text: listView.model.getValue(listIndex,headRepeater.model.get(index).title)
+                        text: listView.model == shrinkModel ? shrinkGetValue(listIndex,index) : listView.model.getValue(listIndex,headRepeater.model.get(index).title)
+                        MouseArea {
+                            anchors.fill: parent
+//                            z:10
+                            hoverEnabled: true
+                            onEntered: {
+                                tempText.color = "red"
+                                tempText.newObject = Qt.createQmlObject('import QtQuick 2.0;Rectangle {color: "#052a40";property alias mytext: tempText.text;height: tempText.height; width:tempText.width;Text {id: tempText;anchors.verticalCenter: parent.verticalCenter;text: qsTr("")
+;font.family: "arial";font.pixelSize: 20;color: "white";wrapMode: Text.WordWrap; maximumLineCount: 60}}',parent,"");
+                                tempText.newObject.mytext = tempText.text
+                                if (tempText.width > 600)
+                                    tempText.width = 600
+//                                tempText.newObject.width = tempText.width
+//                                tempText.newObject.height = tempText.height
+
+                            }
+                            onExited: {
+                                tempText.color = "white"
+                                tempText.newObject.destroy()
+                            }
+                        }
                     }
                 }
             }

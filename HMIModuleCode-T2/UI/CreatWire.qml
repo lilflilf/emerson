@@ -711,7 +711,6 @@ Item {
                 color: "#375566"
                 height: 1
             }
-
             CButton {
                 id: save
                 text: qsTr("SAVE TO WIRE\nLIBRARY")
@@ -990,25 +989,36 @@ Item {
         }
 
         CButton {
-            id: wirelibrary
+            id: wireLibrary
             pointSize: 14
-            width: (spliceDetailsItem.width-48)/3
-            anchors.right: addWire.left
+            width: (spliceDetailsItem.width-72)/4
+            anchors.right: wirelibrary.left
             anchors.rightMargin: 24
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 14
             text: qsTr("WIRE LIBRARY")
+        }
+
+        CButton {
+            id: wirelibrary
+            pointSize: 14
+            width: (spliceDetailsItem.width-72)/4
+            anchors.right: addWire.left
+            anchors.rightMargin: 24
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 14
+            text: qsTr("ADD WIRE")
 
         }
         CButton {
             id: addWire
             pointSize: 14
-            width: (spliceDetailsItem.width-48)/3
+            width: (spliceDetailsItem.width-72)/4
             anchors.right: saveSplice.left
             anchors.rightMargin: 24
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 14
-            text: qsTr("ADD WIRE")
+            text: qsTr("DELETE WIRE")
         }
 
         CButton {
@@ -1017,7 +1027,7 @@ Item {
             anchors.right: spliceDetailsItem.right
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 14
-            width: (spliceDetailsItem.width-48)/3
+            width: (spliceDetailsItem.width-72)/4
             text: qsTr("SAVE SPLICE")
             onClicked: {
                 signalSaveSplice()
