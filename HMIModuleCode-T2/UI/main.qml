@@ -65,6 +65,7 @@ Window {
             contentLoader.source = "qrc:/UI/ViewError.qml"
             break;
         case 12:
+            hmiAdaptor.dataCommunicationExecute("_Recall");
             contentLoader.source = "qrc:/UI/ViewLibrary.qml"
             break;
         case 13:

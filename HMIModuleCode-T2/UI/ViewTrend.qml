@@ -317,17 +317,19 @@ Item {
         anchors.bottomMargin: 10
         anchors.left: parent.left
         anchors.leftMargin: 20
-            spacing: 10
+        anchors.right: parent.right
+        anchors.rightMargin: 48
+        spacing: 10
             CButton {
                 id: applyButton
                 width: parent.width
                 text: qsTr("APPLY")
             }
-            CButton {
-                id: backButton
-                width: parent.width
-                text: qsTr("Back")
-            }
+//            CButton {
+//                id: backButton
+//                width: parent.width
+//                text: qsTr("Back")
+//            }
         }
 
     }
@@ -438,25 +440,114 @@ Item {
         font.family: "arial"
         font.pointSize: 16
         color: "white"
-        text: qsTr("Weld Parameter\n\nCross section\nEnergy\nTime\nPressure\nAmplitude\nWidth\nPre-Height\nPost-Height")
+        text: qsTr("Weld Parameter\n") //Cross section\nEnergy\nTime\nPressure\nAmplitude\nWidth\nPre-Height\nPost-Height")
     }
+    ListModel {
+        id: leftTextModel
+        Component.onCompleted: {
+            leftTextModel.append({"mytitle":"Cross section:","myvalue":"xxxxxx","mytitle2":"Energy:","myvalue2":"xxxxxx"})
+            leftTextModel.append({"mytitle":"Trigger Pressure:","myvalue":"xxxxxx","mytitle2":"Weld Pressure:","myvalue2":"xxxxxx"})
+            leftTextModel.append({"mytitle":"Amplitude:","myvalue":"xxxxxx","mytitle2":"Width:","myvalue2":"xxxxxx"})
+            leftTextModel.append({"mytitle":"Time USL:","myvalue":"xxxxxx","mytitle2":"Time LSL:","myvalue2":"xxxxxx"})
+            leftTextModel.append({"mytitle":"Power USL:","myvalue":"xxxxxx","mytitle2":"Power LSL:","myvalue2":"xxxxxx"})
+            leftTextModel.append({"mytitle":"Pre-Height USL:","myvalue":"xxxxxx","mytitle2":"Pre-Height LSL:","myvalue2":"xxxxxx"})
+            leftTextModel.append({"mytitle":"Height USL:","myvalue":"xxxxxx","mytitle2":"Height LSL:","myvalue2":"xxxxxx"})
+
+        }
+    }
+
+    Column {
+        id: leftTextList
+        anchors.left: qualityListViewTwo.left
+        anchors.top: bottomText.bottom
+        Repeater {
+            model: leftTextModel
+            delegate: Row {
+                spacing: 5
+                Text {
+                    font.family: "arial"
+                    font.pointSize: 16
+                    color: "white"
+                    width: qualityListViewTwo.width / 8 + 60
+                    text: qsTr(mytitle)
+                }
+                Text {
+                    font.family: "arial"
+                    font.pointSize: 16
+                    color: "white"
+                    width: qualityListViewTwo.width / 8
+                    text: qsTr(myvalue)
+                }
+                Text {
+                    font.family: "arial"
+                    font.pointSize: 16
+                    color: "white"
+                    width: qualityListViewTwo.width / 8 + 40
+                    text: qsTr(mytitle2)
+                }
+                Text {
+                    font.family: "arial"
+                    font.pointSize: 16
+                    color: "white"
+                    width: qualityListViewTwo.width / 8
+                    text: qsTr(myvalue2)
+                }
+            }
+        }
+    }
+
     Text {
         id: bottomText2
-        anchors.left: qualityListViewTwo.left
-        anchors.leftMargin: qualityListViewTwo.width / 2
+        anchors.left: leftTextList.right
+        anchors.leftMargin: 30 //qualityListViewTwo.width / 4 * 3
         anchors.top: selectButton.bottom
         anchors.topMargin: 10
         font.family: "arial"
         font.pointSize: 16
         color: "white"
-        text: qsTr("Statistics\n\nSample Size\nMean\nMedian\nSigma\nCPK")
+        text: qsTr("Statistics\n")  // \nSample Size\nMean\nMedian\nSigma\nCPK")
     }
+    ListModel {
+        id: rightTextModel
+        Component.onCompleted: {
+            rightTextModel.append({"mytitle":"Sample Size:","myvalue":"xxxxxx"})
+            rightTextModel.append({"mytitle":"Mean:","myvalue":"xxxxxx"})
+            rightTextModel.append({"mytitle":"Median:","myvalue":"xxxxxx"})
+            rightTextModel.append({"mytitle":"Sigma:","myvalue":"xxxxxx"})
+            rightTextModel.append({"mytitle":"CPK:","myvalue":"xxxxxx"})
+        }
+    }
+    Column {
+        id: rightTextList
+        anchors.left: bottomText2.left
+        anchors.top: bottomText2.bottom
+        Repeater {
+            model: rightTextModel
+            delegate: Row {
+                spacing: 5
+                Text {
+                    font.family: "arial"
+                    font.pointSize: 16
+                    color: "white"
+                    width: qualityListViewTwo.width / 8 + 40
+                    text: qsTr(mytitle)
+                }
+                Text {
+                    font.family: "arial"
+                    font.pointSize: 16
+                    color: "white"
+                    width: qualityListViewTwo.width / 8
+                    text: qsTr(myvalue)
+                }
+            }
+        }
+    }
+
     CButton {
         anchors.bottom: parent.bottom
-        anchors.left: bottomText2.left
+        anchors.right: selectButton.right
         width: 200
         text: "Export"
     }
-
 
 }

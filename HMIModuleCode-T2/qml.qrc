@@ -55,6 +55,7 @@
         <file>UI/Welcome.qml</file>
         <file>UI/EditWire.qml</file>
         <file>UI/MiniKeyNumInput.qml</file>
+        <file>UI/TipsText.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file>images/you.png</file>

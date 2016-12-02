@@ -105,7 +105,7 @@ Item {
                 height: 28
                 font.pointSize: 14
                 font.family: "arial"
-                text: qsTr(name)
+                text: qsTr(SpliceName)
                 elide: Text.ElideRight
                 color: "white"
                 clip: true

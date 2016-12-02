@@ -10,7 +10,7 @@ Item {
     property bool myfocus: false
     width: Screen.width*0.7
     height: Screen.height*0.6
-
+    signal clickDone(var value)
 //    Component.onCompleted: {
 //        hmiAdaptor.maintenanceStart(3);
 //    }
@@ -30,7 +30,7 @@ Item {
 
         for (var i = 0; i < 6; i++)
         {
-            listModel.set(i,{imageSourece:"",mylimit:hmiAdaptor.maintenanceCountGetValue(i,2), mycurrent:hmiAdaptor.maintenanceCountGetValue(i,3),createDate:hmiAdaptor.maintenanceCountGetValue(i,4),maxLimit:hmiAdaptor.maintenanceCountGetValue(i,5),minLimit:hmiAdaptor.maintenanceCountGetValue(i,6),myreset:"Reset"})
+            listModel.set(i,{"imageSourece":"","mylimit":hmiAdaptor.maintenanceCountGetValue(i,2), "mycurrent":hmiAdaptor.maintenanceCountGetValue(i,3),"createDate":hmiAdaptor.maintenanceCountGetValue(i,4),"maxLimit":hmiAdaptor.maintenanceCountGetValue(i,5),"minLimit":hmiAdaptor.maintenanceCountGetValue(i,6),"myreset":"Reset"})
         }
     }
 
@@ -164,6 +164,7 @@ Item {
                             keyNum.currentValue = input.inputText
                             keyNum.minvalue = minLimit //"0"
                             keyNum.maxvalue = maxLimit //"10000"
+
                         }
                     }
                 }
@@ -198,12 +199,13 @@ Item {
                     verticalAlignment: Qt.AlignVCenter
                     horizontalAlignment: Qt.AlignHCenter
                 }
-
                 CButton {
                     width: 150
                     text: myreset
                     visible: index == 5 ? false : true
-
+                    onClicked: {
+                        hmiAdaptor.maintenanceCountReset(mytitle)
+                    }
                 }
             }
         }
@@ -251,7 +253,9 @@ Item {
         currentValue: "4"
         onCurrentClickIndex: {
             if (index == 15) {
-                listModel.set(toolChange.select,{"key3":keyNum.inputText})
+                clickDone(keyNum.inputText)
+                hmiAdaptor.maintenanceCountSetLimit(listModel.get(toolChange.select).mytitle, keyNum.inputText)
+                listModel.set(toolChange.select,{"mylimit":keyNum.inputText})
                 toolChange.myfocus = false
                 backGround.visible = false
                 backGround.opacity = 0

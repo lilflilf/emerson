@@ -31,15 +31,15 @@ Item {
 
         testModel.clear()
         list = hmiAdaptor.dataCommunicationGetValue("shrinkData")
+
+        if (list.length % 3 == 0)
         {
-            if (list.length % 3 == 0)
+            for (var i = 0 ;i < list.length / 3; i++)
             {
-                for (var i = 0 ;i < list.length / 3; i++)
-                {
-                    testModel.append({shrinkid:list[i*3],temperature:list[i*3+1],times:list[i*3+2]})
-                }
+                testModel.append({shrinkid:list[i*3],temperature:list[i*3+1],times:list[i*3+2]})
             }
         }
+
     }
 
     Image {
@@ -372,7 +372,7 @@ Item {
         }
         Image {
             id: scrollUp
-            anchors.top: line2.bottom
+            anchors.top: line1.bottom
             anchors.topMargin: 2
             anchors.left: listView.right
             width: 17
