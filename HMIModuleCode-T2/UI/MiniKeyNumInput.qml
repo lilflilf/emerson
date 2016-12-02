@@ -5,7 +5,6 @@ Item {
     property alias inputText: mytext.text
     property bool inputFocus: false
     property alias inputWidth: miniKey.width
-    signal textChange(int text)
 
     CButton {
         id: miniKey
@@ -35,9 +34,6 @@ Item {
             font.family: "arial"
             color: "white"
             font.pointSize: 16
-            onTextChanged: {
-                miniKey.textChanged(mytext.text)
-            }
         }
 
         backgroundComponent: Rectangle {
