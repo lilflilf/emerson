@@ -25,7 +25,6 @@ Item {
             titleTextChanged("Create Assembly")
         }
     }
-
     Loader {
         id: loader
         z: 10
@@ -1165,6 +1164,7 @@ Item {
             }
         }
     }
+
     KeyBoardNum {
         id: keyNum
         anchors.centerIn: parent
