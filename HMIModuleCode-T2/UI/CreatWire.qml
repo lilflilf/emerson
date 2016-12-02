@@ -469,7 +469,7 @@ Item {
                         }
                     }
 
-                    onTextChange: {
+                    onInputTextChanged: {
                         if(detailIsChang)
                             return
                         spliceDetailsItem.selectText = inputText
