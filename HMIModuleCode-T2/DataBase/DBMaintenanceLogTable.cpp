@@ -63,7 +63,7 @@ int DBMaintenanceLogTable::InsertRecordIntoTable(void *_obj)
 //    query.prepare(SQLSentence[INSERT_OPERATOR_TABLE]);
     query.addBindValue(((MaintenanceLogElement*)_obj)->MaintenanceType);
     query.addBindValue(((MaintenanceLogElement*)_obj)->MaintenanceMsg);
-    QDateTime TimeLabel = QDateTime::fromTime_t(((MaintenanceLogElement*)_obj)->CreatedDate);
+    QDateTime TimeLabel = QDateTime::currentDateTime();
     query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
     query.addBindValue(((MaintenanceLogElement*)_obj)->OperatorID);
 

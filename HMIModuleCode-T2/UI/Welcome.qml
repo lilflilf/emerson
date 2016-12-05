@@ -131,12 +131,11 @@ Item {
         color: "white"
         text: qsTr("")
         echoMode: TextInput.Password
-        focus: true
-        Keys.enabled: true
-        Keys.onReturnPressed: {
-        }
-        Keys.onPressed: {
-        }
+//        Keys.enabled: true
+//        Keys.onReturnPressed: {
+//        }
+//        Keys.onPressed: {
+//        }
         Component.onCompleted: {
             mima.forceActiveFocus()
             mima.cursorVisible = false

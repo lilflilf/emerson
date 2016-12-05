@@ -51,12 +51,12 @@ Item {
 
     Row {
         id: title
-        spacing: 70
+        spacing: 30
         anchors.left: listView.left
         anchors.top: parent.top
         anchors.topMargin: 15
         Item {
-            width: 370
+            width: 330
             height: 10
         }
 
@@ -96,6 +96,15 @@ Item {
             verticalAlignment: Qt.AlignVCenter
             horizontalAlignment: Qt.AlignHCenter
         }
+        Text {
+            width: 150
+            text: qsTr("On/Off")
+            color: "white"
+            font.family: "arial"
+            font.pixelSize: 25
+            verticalAlignment: Qt.AlignVCenter
+            horizontalAlignment: Qt.AlignHCenter
+        }
     }
     Line {
         id: line
@@ -128,7 +137,7 @@ Item {
             width: listView.width
             height: index == 5 ? 100 : 80
             Row {
-                spacing: 70
+                spacing: 30
                 anchors.verticalCenter: parent.verticalCenter
                 Text {
                     width: 150
@@ -207,6 +216,18 @@ Item {
                         hmiAdaptor.maintenanceCountReset(mytitle)
                     }
                 }
+                Item {
+                    width: 150
+                    height: 79
+                    visible: index == 5 ? true : false
+                }
+                Switch2 {
+                    width: 150
+                    textLeft: qsTr("On")
+                    textRight: qsTr("Off")
+                    clip: true
+                    state: "left"
+                }
             }
         }
     }
@@ -217,13 +238,13 @@ Item {
         anchors.bottomMargin: 20
         spacing: 50
         Text {
-            text: qsTr("Actuator Part Number: ")+hmiAdaptor.getMaintenanceVerson(0)
+            text: qsTr("Actuator Part Number: ")//+hmiAdaptor.getMaintenanceVerson(0)
             color: "white"
             font.family: "arial"
             font.pointSize: 14
         }
         Text {
-            text: qsTr("Actuator Software Verson Number: ")+hmiAdaptor.getMaintenanceVerson(1)
+            text: qsTr("Actuator Software Verson Number: ")//+hmiAdaptor.getMaintenanceVerson(1)
             color: "white"
             font.family: "arial"
             font.pointSize: 14
@@ -236,13 +257,13 @@ Item {
         anchors.bottomMargin: 20
         spacing: 50
         Text {
-            text: qsTr("Actuator Serial Number: ")+hmiAdaptor.getMaintenanceVerson(2)
+            text: qsTr("Actuator Serial Number: ")//+hmiAdaptor.getMaintenanceVerson(2)
             color: "white"
             font.family: "arial"
             font.pointSize: 14
         }
         Text {
-            text: qsTr("Actuator Module: ")+hmiAdaptor.getMaintenanceVerson(3)
+            text: qsTr("Actuator Module: ")//+hmiAdaptor.getMaintenanceVerson(3)
             color: "white"
             font.family: "arial"
             font.pointSize: 14

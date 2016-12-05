@@ -90,7 +90,7 @@ int DBWireTable::InsertRecordIntoTable(void *_obj)
 
     query.prepare(SQLSentence[INSERT_WIRE_TABLE]);
     query.addBindValue(((WireElement*)_obj)->WireName);
-    QDateTime TimeLabel = QDateTime::fromTime_t(((WireElement*)_obj)->CreatedDate);
+    QDateTime TimeLabel = QDateTime::currentDateTime();
     qDebug()<<"Time: "<<TimeLabel.toString("yyyy/MM/dd hh:mm:ss");
     query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
     query.addBindValue(((WireElement*)_obj)->OperatorID);

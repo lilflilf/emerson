@@ -148,7 +148,7 @@ int DBPartTable::InsertRecordIntoTable(void *_obj)
     query.prepare(SQLSentence[INSERT_PART_TABLE]);
 
     query.addBindValue(((PartElement*)_obj)->PartName);
-    QDateTime TimeLabel = QDateTime::fromTime_t(((PartElement*)_obj)->CreatedDate);
+    QDateTime TimeLabel = QDateTime::currentDateTime();
     query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
     query.addBindValue(((PartElement*)_obj)->OperatorID);
     query.addBindValue(((PartElement*)_obj)->PartTypeSetting.ProcessMode);

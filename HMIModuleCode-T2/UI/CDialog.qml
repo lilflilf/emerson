@@ -26,15 +26,22 @@ Item {
         }
     }
     Image {
-        anchors.centerIn: parent
+        anchors.top: parent.top
+        anchors.topMargin: (parent.height-525)/2+25
+        anchors.left: parent.left
+        anchors.leftMargin: (parent.width - 700)/2
         width: 700
         height: 525
         source: "qrc:/images/images/dialogbg.png"
         Text {
             id: title
             anchors.centerIn: parent
+            anchors.left: parent.left
+            anchors.leftMargin: 10
+            width: parent.width - 20
             font.family: "arial"
             font.pixelSize: 25
+            wrapMode: Text.WordWrap
             color: "white"
             text: qsTr("aaaaaaaaaaaaaaaaaa")
         }

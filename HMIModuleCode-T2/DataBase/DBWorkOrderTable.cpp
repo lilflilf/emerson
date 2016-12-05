@@ -132,7 +132,7 @@ int DBWorkOrderTable::InsertRecordIntoTable(void *_obj)
     query.prepare(SQLSentence[INSERT_WORKORDER_TABLE]);
 
     query.addBindValue(((WorkOrderElement*)_obj)->WorkOrderName);
-    QDateTime TimeLabel = QDateTime::fromTime_t(((WorkOrderElement*)_obj)->CreatedDate);
+    QDateTime TimeLabel = QDateTime::currentDateTime();
     query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
     query.addBindValue(((WorkOrderElement*)_obj)->OperatorID);
     query.addBindValue(((WorkOrderElement*)_obj)->NoOfPart);

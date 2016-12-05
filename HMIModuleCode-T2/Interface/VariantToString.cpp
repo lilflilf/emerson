@@ -7,21 +7,27 @@ VariantToString::VariantToString()
     _Utility->InitializeTextData();
 }
 
-QString VariantToString::GaugeToString(int Gauge, int GaugeAWG)
+struct BRANSONDATA VariantToString::GaugeToString(int Gauge, int GaugeAWG)
 {
-    QString str;
+    struct BRANSONDATA tmpData;
     InterfaceClass* _Interface = InterfaceClass::Instance();
     if(_Interface->StatusData.Soft_Settings.Mm2Awg == true)
     {
-        if(GaugeAWG == -1)
-            str = _Utility->FormatedDataToString(DINGauge, Gauge);
-        else
-            str = QString::number(GaugeAWG, 10) + "AWG";
+        if(GaugeAWG != -1)
+        {
+            tmpData.Current = QString::number(GaugeAWG, 10) + "AWG";
+            tmpData.Maximum = "37AWG";
+            tmpData.Minimum = "1AWG";
+        }
     }else
     {
-        str = _Utility->FormatedDataToString(DINGauge, Gauge);
+        tmpData.Current = _Utility->FormatedDataToString(DINGauge, Gauge);
+        tmpData.Maximum = _Utility->FormatedDataToString(DINGauge,
+                        _Utility->txtData[DINGauge].max);
+        tmpData.Minimum = _Utility->FormatedDataToString(DINGauge,
+                        _Utility->txtData[DINGauge].min);
     }
-    return str;
+    return tmpData;
 }
 
 QString VariantToString::CrossSectionToString(int CrossSection)
