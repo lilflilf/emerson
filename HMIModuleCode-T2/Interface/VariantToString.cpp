@@ -15,9 +15,11 @@ struct BRANSONDATA VariantToString::GaugeToString(int Gauge, int GaugeAWG)
     {
         if(GaugeAWG != -1)
         {
-            tmpData.Current = QString::number(GaugeAWG, 10) + "AWG";
-            tmpData.Maximum = "37AWG";
-            tmpData.Minimum = "1AWG";
+            tmpData.Current = _Utility->FormatedDataToString(DINGaugeAWG, GaugeAWG);
+            tmpData.Maximum = _Utility->FormatedDataToString(DINGaugeAWG,
+                            _Utility->txtData[DINGaugeAWG].max);
+            tmpData.Minimum = _Utility->FormatedDataToString(DINGaugeAWG,
+                            _Utility->txtData[DINGaugeAWG].min);
         }
     }else
     {

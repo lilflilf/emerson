@@ -78,8 +78,8 @@ public:
         Color = "pink";
         Stripe.Color = "pink";
         Stripe.TypeOfStripe = Horizontal;
-        Gauge = -1;
-        GaugeAWG = -1;
+        Gauge = 10;
+        GaugeAWG = 37;
         TypeOfWire = Copper;
         Side = Right;
         VerticalSide = Basic;

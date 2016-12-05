@@ -166,6 +166,7 @@ void UtilityClass::InitializeTextData()
 {
     InterfaceClass* _Interface = InterfaceClass::Instance();
     SetTextData(DINGauge, 0, MINEDITWIRE, MAXEDITWIRE, 1, 0.01, "%.2fmm²");
+    SetTextData(DINGaugeAWG, 0, MINWIREAREA_AWG, MAXWIREAREA_AWG, 1, 1, "%dAWG");
     SetTextData(DINCrossSection, 0, MINWIREAREA, MAXWIREAREA, 1, 0.01, "%.2fmm²");
     SetTextData(DINEnergy, 0, MINENERGY, MAXENERGY, 2, 1, "%dJ");
     if (_Interface->StatusData.MachineType != ACT2032)

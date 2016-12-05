@@ -1,11 +1,13 @@
 #ifndef STRINGTOVARIANT_H
 #define STRINGTOVARIANT_H
 #include <QString>
-
+#include "Modules/UtilityClass.h"
 class StringToVariant
 {
+private:
+    static UtilityClass *_Utility;
 public:
-    int GaugeToInt(QString Gauge, QString GaugeAWG);
+    bool GaugeToInt(QString strGauge, int &GaugeAWG, int &GaugeMM);
     int CrossSectionToInt(QString);
     int EnergyToInt(QString);
     int AmplitudeToInt(QString);
