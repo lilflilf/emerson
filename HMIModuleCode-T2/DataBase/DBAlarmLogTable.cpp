@@ -61,7 +61,7 @@ int DBAlarmLogTable::InsertRecordIntoTable(void *_obj)
 
 //    query.prepare(SQLSentence[INSERT_OPERATOR_TABLE]);
     query.addBindValue(((AlarmElement*)_obj)->AlarmMsg);
-    QDateTime TimeLabel = QDateTime::fromTime_t(((AlarmElement*)_obj)->CreatedDate);
+    QDateTime TimeLabel = QDateTime::currentDateTime();
     query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
     query.addBindValue(((AlarmElement*)_obj)->AlarmType);
     query.addBindValue(((AlarmElement*)_obj)->WeldResultID);

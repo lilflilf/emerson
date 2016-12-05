@@ -108,7 +108,8 @@ int DBWeldResultTable::InsertRecordIntoTable(void *_obj)
     }
     if(bResult == true)
     {
-        QString sPathName = QDateTime::currentDateTime().toString("yyyyMMddhhmmss");
+        QDateTime TimeLabel = QDateTime::currentDateTime();
+        QString sPathName = TimeLabel.toString("yyyyMMddhhmmss");
         sPathName = DatabaseGraphDir + sPathName + ".ini";
         UtilityClass *_Utility = UtilityClass::Instance();
         QString PowerJson;
@@ -128,7 +129,6 @@ int DBWeldResultTable::InsertRecordIntoTable(void *_obj)
         "?, ?, ?, ?, ?, ?)");
 
         query.addBindValue(((WeldResultElement*)_obj)->OperatorName);
-        QDateTime TimeLabel = QDateTime::fromTime_t(((WeldResultElement*)_obj)->CreatedDate);
         query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
         query.addBindValue(((WeldResultElement*)_obj)->CurrentWorkOrder.WorkOrderID);
         query.addBindValue(((WeldResultElement*)_obj)->CurrentWorkOrder.WorkOrderName);
