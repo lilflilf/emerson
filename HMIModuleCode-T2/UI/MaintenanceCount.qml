@@ -211,18 +211,38 @@ Item {
         }
     }
     Row {
+        id: row1
         anchors.bottom: parent.bottom
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottomMargin: 20
         spacing: 50
         Text {
-            text: qsTr("Actuator Part Number: xxx-xxx\n\nActuator Serial Number:xxx-xxx")
+            text: qsTr("Actuator Part Number: ")+hmiAdaptor.getMaintenanceVerson(0)
             color: "white"
             font.family: "arial"
             font.pointSize: 14
         }
         Text {
-            text: qsTr("Actuator Software Verson Number: xxx-xxx\n\nActuator Module:xxx-xxx")
+            text: qsTr("Actuator Software Verson Number: ")+hmiAdaptor.getMaintenanceVerson(1)
+            color: "white"
+            font.family: "arial"
+            font.pointSize: 14
+        }
+    }
+    Row {
+        id: row2
+        anchors.bottom: row1.top
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottomMargin: 20
+        spacing: 50
+        Text {
+            text: qsTr("Actuator Serial Number: ")+hmiAdaptor.getMaintenanceVerson(2)
+            color: "white"
+            font.family: "arial"
+            font.pointSize: 14
+        }
+        Text {
+            text: qsTr("Actuator Module: ")+hmiAdaptor.getMaintenanceVerson(3)
             color: "white"
             font.family: "arial"
             font.pointSize: 14

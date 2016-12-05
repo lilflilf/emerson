@@ -252,6 +252,28 @@ QString HmiAdaptor::maintenanceCountGetValue(int code, int index)
     qDebug() << "maintenanceCountGetValue" << value << code << index;
     return value;
 }
+
+QString HmiAdaptor::getMaintenanceVerson(int index)
+{
+    QString value;
+    switch (index) {
+    case 0:
+        value = maintenanceCount->CurrentMaintenanceCounter.ActuatorPartNumber;
+        break;
+    case 1:
+        value = maintenanceCount->CurrentMaintenanceCounter.ActuatorSoftwareVersion;
+        break;
+    case 2:
+        value = maintenanceCount->CurrentMaintenanceCounter.ActuatorSerialNumber;
+        break;
+    case 3:
+        value = maintenanceCount->CurrentMaintenanceCounter.ActuatorModuleNumber;
+        break;
+    default:
+        break;
+    }
+}
+
 //listModel.append({mytitle:"Horn"})
 //listModel.append({mytitle:"AnvilTip"})
 //listModel.append({mytitle:"Gather"})

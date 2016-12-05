@@ -458,7 +458,7 @@ Item {
         anchors.right: scrollbar2.left
         width: 11
         height: 17
-        visible: true
+        visible: listView.width > scrollbar2.width ? true : false
         source: "qrc:/images/images/left.png"
     }
     Image {
@@ -467,7 +467,7 @@ Item {
         anchors.left: scrollbar2.right
         width: 11
         height: 17
-        visible: true
+        visible: listView.width > scrollbar2.width ? true : false
         source: "qrc:/images/images/right.png"
     }
     Image {
@@ -546,7 +546,7 @@ Item {
         height: 17
         color: "#585858"
         radius: 10
-        visible: true
+        visible: listView.width > scrollbar2.width ? true : false
         Rectangle {
             id: button2
             anchors.top: parent.top
@@ -674,6 +674,10 @@ Item {
                     root.menuInit(0)
                 else if (wireRadio.checked)
                     root.menuInit(19)
+                else if (shrinkRadio.checked){
+                    backGround.visible = true
+                    dialog.visible = true
+                }
             }
         }
         CButton {
@@ -692,6 +696,148 @@ Item {
             width: (parent.width-54)/4
             textColor: "white"
             text: qsTr("Back")
+        }
+    }
+    Rectangle {
+        id: backGround
+        anchors.fill: parent
+        color: "black"
+        opacity: 0.5
+        visible: false
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+            }
+        }
+
+    }
+    Image {
+        id: dialog
+        visible: false
+        anchors.centerIn: parent
+        width: 639
+        height: 390
+        source: "qrc:/images/images/dialogbg.png"
+        Text {
+            id: shrinkId
+            anchors.top: parent.top
+            anchors.topMargin: 60
+            anchors.right: inputshrinkId.left
+            anchors.rightMargin: 20
+            width: 150
+            height: 60
+            font.pointSize: 18
+            font.family: "arial"
+            text: qsTr("Shrink Tube ID")
+            verticalAlignment: Qt.AlignVCenter
+            horizontalAlignment: Qt.AlignRight
+            color: "white"
+        }
+        MyLineEdit {
+            id: inputshrinkId
+            anchors.top: parent.top
+            anchors.topMargin: 60
+            anchors.right: parent.right
+            anchors.rightMargin: 72
+            horizontalAlignment: Qt.AlignHCenter
+            width: 375
+            height: 60
+            inputWidth: 375
+            inputColor: "white"
+            inputHeight: 60
+            inputText: shrinkModel.get(selectIndx).shrinkid
+        }
+        Text {
+            id: temperatureText
+            anchors.top: inputshrinkId.bottom
+            anchors.topMargin: 20
+            anchors.right: inputTemperature.left
+            anchors.rightMargin: 20
+            width: 150
+            height: 60
+            font.pointSize: 18
+            font.family: "arial"
+            text: qsTr("Temp")
+            verticalAlignment: Qt.AlignVCenter
+            horizontalAlignment: Qt.AlignRight
+            color: "white"
+        }
+        MyLineEdit {
+            id: inputTemperature
+            property var partId: 1
+            anchors.top: inputshrinkId.bottom
+            anchors.topMargin: 20
+            anchors.right: parent.right
+            anchors.rightMargin: 72
+            horizontalAlignment: Qt.AlignHCenter
+            width: 375
+            height: 60
+            inputWidth: 375
+            inputColor: "white"
+            inputHeight: 60
+            inputText: shrinkModel.get(selectIndx).temperature
+        }
+        Text {
+            id: timeText
+            anchors.top: temperatureText.bottom
+            anchors.topMargin: 20
+            anchors.right: inputtimeText.left
+            anchors.rightMargin: 20
+            width: 150
+            height: 60
+            font.pointSize: 18
+            font.family: "arial"
+            text: qsTr("Time")
+            verticalAlignment: Qt.AlignVCenter
+            horizontalAlignment: Qt.AlignRight
+            color: "white"
+        }
+        MyLineEdit {
+            id: inputtimeText
+            anchors.top: temperatureText.bottom
+            anchors.topMargin: 20
+            anchors.right: parent.right
+            anchors.rightMargin: 72
+            width: 375
+            height: 60
+            inputWidth: 375
+            inputHeight: 60
+            inputColor: "white"
+            horizontalAlignment: Qt.AlignHCenter
+            inputText: shrinkModel.get(selectIndx).times
+        }
+        CButton {
+            id: cancel
+            anchors.right: sure.left
+            anchors.rightMargin: 15
+            anchors.top: timeText.bottom
+            anchors.topMargin: 16
+            width: 180
+            text: qsTr("CANCEL")
+            textColor: "white"
+            iconSource: "qrc:/images/images/cancel.png"
+            onClicked: {
+                backGround.visible = false
+                dialog.visible = false
+            }
+        }
+
+        CButton {
+            id: sure
+            anchors.right: parent.right
+            anchors.rightMargin: 72
+            anchors.top: timeText.bottom
+            anchors.topMargin: 16
+            width: 180
+            text: qsTr("OK")
+            textColor: "white"
+            iconSource: "qrc:/images/images/OK.png"
+            onClicked: {
+                shrinkModel.remove(selectIndx)
+                shrinkModel.insert(selectIndx,{shrinkid:inputshrinkId.inputText,temperature:inputTemperature.inputText,times:inputtimeText.inputText})
+                backGround.visible = false
+                dialog.visible = false
+            }
         }
     }
 }

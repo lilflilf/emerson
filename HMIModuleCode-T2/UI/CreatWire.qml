@@ -11,6 +11,8 @@ Item {
     signal signalSaveSplice()
     property int selectIndex: 0
     property bool detailIsChang: true
+    property bool bIsStep: false
+    property string stepSetText: ""
     property variant colorArray: ["#ff6699","#ff0033","#33FFCC","#cc99ff","#cc0099","#930202","#99ccff","#f79428",
         "#0000cc","Olive","#ffff33","#ffcc00","#cc9909","#66ff00","#009900","#00cc66","#3366ff","#cc33cc","#cc9966","#9400D3"]
 
@@ -874,12 +876,16 @@ Item {
                             creatWire.selectIndex = index
                             backGround.visible = true
                             backGround.opacity = 0.5
-                            localbordercolor = "#05f91c"
-                            keyNum.visible = true
-                            keyNum.titleText = topText
-                            keyNum.currentValue = bottomText
-                            keyNum.minvalue = "0"
-                            keyNum.maxvalue = "100"
+                            if (repeater.model == settingsModel && index == 2 && bIsStep) {
+                                stepTimeSet.visible = true
+                            } else {
+                                localbordercolor = "#05f91c"
+                                keyNum.visible = true
+                                keyNum.titleText = topText
+                                keyNum.currentValue = bottomText
+                                keyNum.minvalue = "0"
+                                keyNum.maxvalue = "100"
+                            }
                         }
                     }
                 }
@@ -1219,7 +1225,13 @@ Item {
                             }
                         }
                         onClicked: {
+                            stepSetText =  buttonName
                             weldModelCheck.checked = !weldModelCheck.checked
+                            if (index >= 4 && weldModelCheck.checked) {
+                                bIsStep = true
+                            } else {
+                                bIsStep = false
+                            }
                         }
                     }
                 }
@@ -1682,6 +1694,77 @@ Item {
             backGround.visible = false
         }
     }
+    Image {
+        id: stepTimeSet
+        anchors.centerIn: parent
+        width: 700
+        height: 525
+        source: "qrc:/images/images/dialogbg.png"
+        visible: false
+        Text {
+            id: stepTitle
+            anchors.top: parent.top
+            anchors.topMargin: 24
+            anchors.horizontalCenter: parent.horizontalCenter
+            font.family: "arial"
+            font.pixelSize: 25
+            color: "white"
+            text: qsTr(stepSetText)
+        }
+        ListModel {
+            id: stepSetModel
+            Component.onCompleted: {
+                stepSetModel.append({"topText":"Step Point","centerText":"0.00s"})
+                stepSetModel.append({"topText":"Amplitude A","centerText":"1μm"})
+                stepSetModel.append({"topText":"Amplitude B","centerText":"2μm"})
+            }
+        }
+        Row {
+            id: stepRow
+            anchors.top: stepTitle.bottom
+            anchors.topMargin: 50
+            anchors.left: parent.left
+            anchors.leftMargin: 24
+            anchors.right: parent.right
+            anchors.rightMargin: 24
+            spacing: 20
+            Repeater {
+                id: stepRepeater
+                model: stepSetModel
+                Recsetting {
+                    headTitle: qsTr(topText)
+                    centervalue: qsTr(centerText)
+                    width: (stepRow.width-40)/3
+                    height: 154
+                    onMouseAreaClick: {
+                        creatWire.selectIndex = index
+                        localbordercolor = "#05f91c"
+                        keyNum.visible = true
+                        keyNum.titleText = topText
+                        keyNum.currentValue = centerText
+                        keyNum.minvalue = "0"
+                        keyNum.maxvalue = "100"
+                    }
+                }
+            }
+        }
+        CButton {
+            id: okButton
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 24
+            anchors.right: parent.right
+            anchors.rightMargin: 20
+            width: parent.width/3
+            text: qsTr("OK")
+            pixelSize: 20
+            iconSource: "qrc:/images/images/OK.png"
+            onClicked: {
+                backGround.visible = false
+                stepTimeSet.visible = false
+            }
+        }
+    }
+
     KeyBoardNum {
         id: keyNum
         anchors.centerIn: parent
@@ -1712,6 +1795,13 @@ Item {
                 } else if (weldSetting.weldSetVisible) {
                     weldSettingModel.set(creatWire.selectIndex,{"textValue":keyNum.inputText})
                     weldRepeater.itemAt(creatWire.selectIndex).myfocus = false
+                } else if (stepTimeSet.visible) {
+                    stepRepeater.model.set(creatWire.selectIndex,{"centerText":keyNum.inputText})
+                    stepRepeater.itemAt(creatWire.selectIndex).localbordercolor = "#0079c1"
+                    keyNum.visible = false
+                    keyNum.inputText = ""
+                    keyNum.tempValue = ""
+                    return
                 } else {
                     repeater.model.set(creatWire.selectIndex,{"bottomText":keyNum.inputText})
                     repeater.itemAt(creatWire.selectIndex).localbordercolor = "#0079c1"
@@ -1734,6 +1824,12 @@ Item {
                     widthRepeater.itemAt(creatWire.selectIndex).myfocus = false
                 } else if (weldSetting.weldSetVisible) {
                     weldRepeater.itemAt(creatWire.selectIndex).myfocus = false
+                } else if (stepTimeSet.visible) {
+                    stepRepeater.itemAt(creatWire.selectIndex).localbordercolor = "#0079c1"
+                    keyNum.visible = false
+                    keyNum.inputText = ""
+                    keyNum.tempValue = ""
+                    return
                 } else {
                     repeater.itemAt(creatWire.selectIndex).localbordercolor = "#0079c1"
                 }
@@ -1758,6 +1854,8 @@ Item {
                     widthModel.set(creatWire.selectIndex,{"textValue":keyNum.inputText})
                 } else if (weldSetting.weldSetVisible) {
                     weldSettingModel.set(creatWire.selectIndex,{"textValue":keyNum.inputText})
+                } else if (stepTimeSet.visible) {
+                    stepRepeater.model.set(creatWire.selectIndex,{"centerText":keyNum.inputText})
                 } else {
                     repeater.model.set(creatWire.selectIndex,{"bottomText":keyNum.inputText})
                 }

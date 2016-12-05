@@ -40,11 +40,11 @@ Item {
         }
         CButton {
             id: okButton
-            anchors.right: parent.right
-            anchors.rightMargin: 20
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: 20
-            width: parent.width/3
+            anchors.bottomMargin: 24
+            anchors.right: parent.right
+            anchors.rightMargin: 30
+            width: 180
             visible: false
             pointSize: 16
             text: qsTr("")
@@ -56,10 +56,9 @@ Item {
         CButton {
             id: cancelButton
             anchors.right: okButton.left
+            anchors.bottom: okButton.bottom
             anchors.rightMargin: 20
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 20
-            width: parent.width/3
+            width: 180
             pointSize: 16
             visible: false
             text: qsTr("")

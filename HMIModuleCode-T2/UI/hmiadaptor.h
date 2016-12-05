@@ -79,6 +79,7 @@ public:
     Q_INVOKABLE void maintenanceCountSetLimit(QString code, QString value);
     Q_INVOKABLE void maintenanceStart(int page);
     Q_INVOKABLE void maintenanceStop(int page);
+    Q_INVOKABLE QString getMaintenanceVerson(int index);
     Q_INVOKABLE bool login(QString passwd);
     Q_INVOKABLE void calibrationMaintenanceExecute(int code);
 

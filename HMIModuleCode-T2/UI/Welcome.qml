@@ -4,7 +4,7 @@ import QtQuick.Layouts 1.0
 import QtQuick.Controls 1.3
 import QtQuick.Window 2.2
 
-FocusScope {
+Item {
     signal passWordInputOk()
     ListModel {
         id: listModel
@@ -116,12 +116,12 @@ FocusScope {
 //        font.pointSize: 24
 //        text: qsTr("Scan ID")
 //    }
+
     TextInput {
         id: mima
         anchors.left: title4.horizontalCenter
         anchors.leftMargin: -50
         anchors.right: parent.right
-//        horizontalAlignment: Qt.AlignHCenter
         anchors.verticalCenter: title1.verticalCenter
         anchors.verticalCenterOffset: -100
         maximumLength: 4
