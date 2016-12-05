@@ -412,6 +412,8 @@ public:
     QString CreatedDate;
     QString OperatorName;
 
+    QMap<int, int> AWGToAreaTable;
+
     QUALITY_DATA_FILE Cust_Data;
     HARD_SOFT_SETTINGS HSDATA;     //Not used, held for backwords compatibility
 

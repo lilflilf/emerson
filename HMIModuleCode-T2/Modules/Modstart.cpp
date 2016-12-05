@@ -49,6 +49,7 @@ MODstart::MODstart()
     _MDefine->MessageFlag.DataGraphComplete = true;
     _MDefine->MessageFlag.EmergencyStopMessage = false;
     CheckBransonFolder(); //the routine checks whether Amtech folder exists on system drive or not
+    CheckAWGAreaTable();
     _M10INI->Get_INI_File();
     CheckIOStatus();
     GlobalInitM10();
@@ -435,7 +436,7 @@ void MODstart::CheckVersionFile(VersionList CurrVersions)
     //Controller sends some fixed length string so it may have some garbage
     //values at the end of version number. Copy it to Vb6's Label controll
     //and vb will take care of it.
-    sPathName = _M10INI->ConfigFilesPath + AVERSION_NUM_FILE;
+    sPathName = _M10INI->ConfigFilesPath + VERSION_NUM_FILE;
 
     //Check if file exists, if not, create it.
     QDir dir;
@@ -500,6 +501,12 @@ void MODstart::CheckVersionFile(VersionList CurrVersions)
         settings.setValue("PreviousActuatorVersion", CurrVersions.ActuatorVersion);
         settings.endGroup();
     }
+}
+
+void MODstart::CheckAWGAreaTable()
+{
+    M10INI* _M10INI = M10INI::Instance();
+    _M10INI->Init_AWGToMMTable();
 }
 
 //This funciton only for the Offline Initialization in case of the controller is not detected

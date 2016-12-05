@@ -156,5 +156,6 @@
         <file>images/logo.png</file>
         <file>images/logo1.png</file>
         <file>images/logo2.png</file>
+        <file>images/colorPickerBg.png</file>
     </qresource>
 </RCC>

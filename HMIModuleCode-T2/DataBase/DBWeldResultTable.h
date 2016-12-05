@@ -25,7 +25,7 @@ private:
     bool QSettingToJsonString(QString sPathName, QString &PowerGraph, QString &HeightGraph);
 public:
     virtual bool CreateNewTable();
-    virtual bool InsertRecordIntoTable(void* _obj);
+    virtual int InsertRecordIntoTable(void* _obj);
     virtual bool UpdateRecordIntoTable(void* _obj);
     virtual bool QueryEntireTable(QMap<int, QString>* _obj);
     virtual bool QueryOneRecordFromTable(int ID, QString Name, void* _obj);
@@ -40,6 +40,8 @@ public:
                            unsigned int time_from, unsigned int time_to,
                            enum FieldType OrderField, bool Orderby, QMap<int, QString> *_obj);
     bool QueryOneRecordWithGraph(int ID, QString Name, void* _obj);
+    bool QueryBySomeFields(QString SpliceName, unsigned int HashCode,
+                           unsigned int time_from, unsigned int time_to, QMap<int, QString> *_obj);
 public:
     static DBWeldResultTable* Instance();
 protected:
