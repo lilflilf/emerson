@@ -158,9 +158,10 @@ Item {
         id: spliceLocation
         anchors.top: spliceTips.bottom
         anchors.topMargin: 10
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 10
         anchors.left: operateTitle.left
         width: Screen.width * 0.37
-        height: Screen.height *0.25
         columns: 4
         rows: 4
         visible: true

@@ -36,7 +36,7 @@ Item {
         font.family: "arial"
         font.pixelSize: 24
         color: "white"
-        text: qsTr("Actuator Part Number: xxx-xxx")
+        text: qsTr("Actuator Part Number: ")+hmiAdaptor.getMaintenanceVerson(0)
     }
     Text {
         id: serialNumber
@@ -46,7 +46,7 @@ Item {
         font.family: "arial"
         font.pixelSize: 24
         color: "white"
-        text: qsTr("Actuator Serial Number: xxx-xxx")
+        text: qsTr("Actuator Serial Number: ")+hmiAdaptor.getMaintenanceVerson(2)
     }
     Text {
         id: supplyPartNumber
@@ -109,6 +109,6 @@ Item {
         font.family: "arial"
         font.pixelSize: 24
         color: "white"
-        text: qsTr("Actuator Module: xxx-xxx")
+        text: qsTr("Actuator Module: ")+hmiAdaptor.getMaintenanceVerson(3)
     }
 }

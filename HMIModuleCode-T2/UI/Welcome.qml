@@ -116,12 +116,12 @@ Item {
 //        font.pointSize: 24
 //        text: qsTr("Scan ID")
 //    }
+
     TextInput {
         id: mima
         anchors.left: title4.horizontalCenter
         anchors.leftMargin: -50
         anchors.right: parent.right
-//        horizontalAlignment: Qt.AlignHCenter
         anchors.verticalCenter: title1.verticalCenter
         anchors.verticalCenterOffset: -100
         maximumLength: 4
@@ -131,6 +131,10 @@ Item {
         color: "white"
         text: qsTr("")
         echoMode: TextInput.Password
+        Component.onCompleted: {
+            mima.forceActiveFocus()
+            cursorVisible= false
+        }
     }
     Row {
         anchors.left: mima.left

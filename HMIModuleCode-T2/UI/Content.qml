@@ -868,7 +868,7 @@ Item {
         width: parent.width*0.9
         height: parent.width*0.4
         visible: content.bIsEdit ? true : false
-        listModel: content.bIsEdit ? partModel : testModel
+        listModel: content.bIsEdit ? partModel : spliceModel
         titleName: content.bIsEdit ? qsTr("Add Part") : qsTr("Add Existing Splice")
         componentName: content.bIsEdit ? qsTr("Part Name") : qsTr("SPLICE NAME")
         componentData: qsTr("DATE CREATED")
@@ -883,6 +883,7 @@ Item {
             content.bIsEdit = false
         }
         onSignalAddExistSelectClick: {
+            //que hanshu
             backGround.visible = false
             backGround.opacity = 0
             addExit.visible = false
