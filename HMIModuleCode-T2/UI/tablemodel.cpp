@@ -939,6 +939,7 @@ QVariant WeldHistoryModel::data(const QModelIndex &index, int role) const
         m_weldHistoryAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myHistory);
         PresetElement presetElement;
         m_spliceTable->QueryOneRecordFromTable(myHistory.CurrentSplice.SpliceID,myHistory.CurrentSplice.SpliceName,&presetElement);
+        QString temp;
         if (columnIdx == 0)
             value = QVariant::fromValue(myHistory.WeldResultID);
         else if (columnIdx == 1)
@@ -955,47 +956,60 @@ QVariant WeldHistoryModel::data(const QModelIndex &index, int role) const
             value = QVariant::fromValue(m_variant->CrossSectionToString(myHistory.CrossSection));
         else if (columnIdx == 7)
             value = QVariant::fromValue(m_variant->WeldModeToString(presetElement.WeldSettings.AdvanceSetting.WeldMode,presetElement.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode));
-        else if (columnIdx == 8)
-            value = QVariant::fromValue(m_variant->EnergyToString(myHistory.ActualResult.ActualEnergy));
-        else if (columnIdx == 9)
-            value = QVariant::fromValue(m_variant->AmplitudeToString(myHistory.ActualResult.ActualAmplitude));
-        else if (columnIdx == 10)
-            value = QVariant::fromValue(m_variant->WidthToString(myHistory.ActualResult.ActualWidth));
-        else if (columnIdx == 11)
-            value = QVariant::fromValue(m_variant->TriggerPressureToString(myHistory.ActualResult.ActualTPressure));
-        else if (columnIdx == 12)
-            value = QVariant::fromValue(m_variant->WeldPressureToString(myHistory.ActualResult.ActualPressure));
+        else if (columnIdx == 8) {
+            temp = m_variant->EnergyToString(myHistory.ActualResult.ActualEnergy).Current;
+            value = QVariant::fromValue(temp);
+        } else if (columnIdx == 9) {
+            temp = m_variant->AmplitudeToString(myHistory.ActualResult.ActualAmplitude).Current;
+            value = QVariant::fromValue(temp);
+        } else if (columnIdx == 10) {
+            temp = m_variant->WidthToString(myHistory.ActualResult.ActualWidth).Current;
+            value = QVariant::fromValue(temp);
+        } else if (columnIdx == 11) {
+            temp = m_variant->TriggerPressureToString(myHistory.ActualResult.ActualTPressure).Current;
+            value = QVariant::fromValue(temp);
+        } else if (columnIdx == 12) {
+            temp = m_variant->WeldPressureToString(myHistory.ActualResult.ActualPressure).Current;
+            value = QVariant::fromValue(temp);
+        }
         else if (columnIdx == 13)
             value = QVariant::fromValue(myHistory.ActualResult.ActualTime);
         else if (columnIdx == 14)
             value = QVariant::fromValue(myHistory.ActualResult.ActualTime);
-        else if (columnIdx == 15)
-            value = QVariant::fromValue(myHistory.ActualResult.ActualTime);
-        else if (columnIdx == 16)
+        else if (columnIdx == 15) {
+            temp = m_variant->ActualTimeToString(myHistory.ActualResult.ActualTime);
+            value = QVariant::fromValue(temp);
+        } else if (columnIdx == 16) {
             value = QVariant::fromValue(myHistory.ActualResult.ActualPeakPower);
+        }
         else if (columnIdx == 17)
             value = QVariant::fromValue(myHistory.ActualResult.ActualPeakPower);
-        else if (columnIdx == 18)
-            value = QVariant::fromValue(myHistory.ActualResult.ActualPeakPower);
-        else if (columnIdx == 19)
+        else if (columnIdx == 18) {
+            temp = m_variant->ActualPowerToString(myHistory.ActualResult.ActualPeakPower);
+            value = QVariant::fromValue(temp);
+        } else if (columnIdx == 19) {
             value = QVariant::fromValue(myHistory.ActualResult.ActualPreheight);
-        else if (columnIdx == 20)
+        } else if (columnIdx == 20)
             value = QVariant::fromValue(myHistory.ActualResult.ActualPreheight);
-        else if (columnIdx == 21)
-            value = QVariant::fromValue(myHistory.ActualResult.ActualPreheight);
-        else if (columnIdx == 22)
+        else if (columnIdx == 21) {
+            temp = m_variant->ActualPreHeightToString(myHistory.ActualResult.ActualPreheight);
+            value = QVariant::fromValue(temp);
+        } else if (columnIdx == 22)
             value = QVariant::fromValue(myHistory.ActualResult.ActualPostheight);
         else if (columnIdx == 23)
             value = QVariant::fromValue(myHistory.ActualResult.ActualPostheight);
-        else if (columnIdx == 24)
+        else if (columnIdx == 24) {
+            temp = m_variant->ActualHeightToString(myHistory.ActualResult.ActualPostheight);
+            value = QVariant::fromValue(temp);
+        } else if (columnIdx == 25) {
+            temp = m_variant->AlarmTypeToString((ALARMTYPE)myHistory.ActualResult.ActualAlarmflags);
+            value = QVariant::fromValue(temp);
+        } else if (columnIdx == 26) {
+            temp = m_variant->SampleRatioToString(myHistory.SampleRatio);
+            value = QVariant::fromValue(temp);
+        } else if (columnIdx == 27) {
             value = QVariant::fromValue(myHistory.ActualResult.ActualPostheight);
-        else if (columnIdx == 25)
-            value = QVariant::fromValue(myHistory.ActualResult.ActualPostheight);
-        else if (columnIdx == 26)
-            value = QVariant::fromValue((int)myHistory.SampleRatio);
-        else if (columnIdx == 27)
-            value = QVariant::fromValue(myHistory.ActualResult.ActualPostheight);
-
+        }
     }
     return value;
 }
