@@ -7,28 +7,27 @@ StringToVariant::StringToVariant()
     _Utility->InitializeTextData();
 }
 
-int StringToVariant::GaugeToInt(QString strGauge, QString strGaugeAWG)
+bool StringToVariant::GaugeToInt(QString strGauge, int &GaugeAWG, int &GaugeMM)
 {
-    int Data = -1;
-    InterfaceClass* _Interface = InterfaceClass::Instance();
-    if(_Interface->StatusData.Soft_Settings.Mm2Awg == true)
+    bool bResult = false;
+    if(strGauge.contains("AWG") == true)
     {
-        if(strGaugeAWG.isEmpty() == false)
+        GaugeAWG = (int)_Utility->StringToFormatedData(DINGaugeAWG, strGauge);
+        if(_Interface->StatusData.AWGToAreaTable.contains(GaugeAWG) == true)
         {
-            int GaugeAWG;
-            GaugeAWG = (int)_Utility->StringToFormatedData(DINGaugeAWG, strGaugeAWG);
-            if(_Interface->StatusData.AWGToAreaTable.contains(GaugeAWG) == true)
-            {
-                QMap<int, int>::iterator at
-                        = _Interface->StatusData.AWGToAreaTable.find(GaugeAWG);
-                Data = at.value();
-            }
-        }
-    }else
+            QMap<int, int>::iterator at
+                    = _Interface->StatusData.AWGToAreaTable.find(GaugeAWG);
+            GaugeMM = at.value();
+            bResult = true;
+        }else
+            GaugeMM = -1;
+    }else if(strGauge.contains("mm²") == true)
     {
-        Data = (int)_Utility->StringToFormatedData(DINGauge, strGauge);
+        GaugeAWG = -1;
+        GaugeMM = (int)_Utility->StringToFormatedData(DINGauge, strGauge);
+        bResult = true;
     }
-    return Data;
+    return bResult;
 }
 
 int StringToVariant::CrossSectionToInt(QString strCrossSection)
