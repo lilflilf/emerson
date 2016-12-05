@@ -327,7 +327,7 @@ Item {
         width: (parent.width-230)/4
         spacing: 10
         iconSource: "qrc:/images/images/stting.png"
-        text: qsTr("EDIT EXISTING")
+        text: qsTr("EDIT")
         pointSize: 20
         clip: true
         textColor: "white"
@@ -348,7 +348,7 @@ Item {
         anchors.leftMargin: 15
         width: (parent.width-230)/4
         spacing: 10
-        text: qsTr("DELETE WORK ORDER")
+        text: qsTr("DELETE")
         pointSize: 20
         clip: true
         textColor: "white"
@@ -363,7 +363,7 @@ Item {
         width: (parent.width-230)/4
         spacing: 10
         iconSource: "qrc:/images/images/import.png"
-        text: qsTr("IMPORT WORK ORDER")
+        text: qsTr("IMPORT")
         pointSize: 20
         clip: true
         textColor: "white"

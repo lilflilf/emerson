@@ -67,8 +67,8 @@ Item {
     {
         var array = ["#ff6699","#ff0033","#33FFCC","#cc99ff","#cc0099","#930202","#99ccff","#f79428","#0000cc","Olive"]
         colorModel.clear()
-        if (count > 7)
-            count = 7
+        if (count > 8)
+            count = 8
         for (var i = 0; i < count; i++) {
             colorModel.append({"workcolor":array[i]});
         }

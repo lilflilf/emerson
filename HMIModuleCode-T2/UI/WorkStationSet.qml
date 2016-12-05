@@ -10,7 +10,6 @@ Item {
     height: parent.height
     property variant array: ["#ff6699","#ff0033","#33FFCC","#cc99ff","#cc0099","#930202","#99ccff","#f79428",
         "#0000cc","Olive","#ffff33","#ffcc00","#cc9909","#66ff00","#009900","#00cc66","#3366ff","#cc33cc","#cc9966","#9400D3"]
-
     property var array2: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P"]
     property int allWorkTotal: 0
     property int allZoneTotal: 0

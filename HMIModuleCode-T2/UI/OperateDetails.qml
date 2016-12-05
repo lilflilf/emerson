@@ -79,7 +79,8 @@ Item {
         anchors.left: operateTitle.left
         font.pointSize: 16
         font.family: "arial"
-        text: qsTr("Splice Locations and Status")
+        //text: qsTr("Splice Locations and Status")
+        text: qsTr("Shrink Tube ID: xxxxx")
         color: "white"
     }
     Text {
