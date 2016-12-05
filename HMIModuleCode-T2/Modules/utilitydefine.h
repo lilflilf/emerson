@@ -52,6 +52,8 @@
 #define MAXFORCE         (1.2 * MAXWELDPRESSURE)  //PSI * 10
 #define MINWIREAREA      10
 #define MAXWIREAREA      4000                 //* 100
+#define MINWIREAREA_AWG  1
+#define MAXWIREAREA_AWG  37
 #define MINWIREREF       0.1
 #define MAXWIREREF       40
 #define DEFWIREAREA      10
@@ -84,6 +86,7 @@ enum ScreenShowDataType{
 // Data Index Numbers
     DINZero,
     DINGauge,
+    DINGaugeAWG,
     DINCrossSection,
     DINEnergy,
     DINWidth,

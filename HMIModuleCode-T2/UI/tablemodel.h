@@ -214,6 +214,7 @@ public:
     QMap<int, QString> *historys;
 
 protected:
+    DBPresetTable *m_spliceTable;
     int rowCount(const QModelIndex &parent) const;
     int columnCount(const QModelIndex &parent) const;
     QVariant data(const QModelIndex &index, int role) const;
@@ -231,6 +232,7 @@ public slots:
 
 private:
     QHash<int, QByteArray> m_roleNames;
+    VariantToString *m_variant;
 };
 
 
