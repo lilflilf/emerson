@@ -19,6 +19,9 @@ Item {
     property var selectLocation: ""
     property var wireCount: 0
     property var wireName: ""
+    property var selectWireType: ""
+    property var selectWireGauge: -1
+    property var selectWireAWG: -1
     signal wireSelected(var selectColor,var selectDirection,var selectPosition,var selectText,var selectWireName)
     signal changing(var bIsChang)
 

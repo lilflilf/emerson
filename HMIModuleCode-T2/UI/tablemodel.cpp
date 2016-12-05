@@ -312,6 +312,122 @@ int SpliceModel::count()
     return splices->count();
 }
 
+QString SpliceModel::getStructValue(QString valueKey, QString valueType)
+{
+
+    //                    settingsModel.append({"topText":"Energy","bottomText":"30J"})
+    //                    settingsModel.append({"topText":"Trigger Pressure","bottomText":"50PSI"})
+    //                    settingsModel.append({"topText":"Amplitude","bottomText":"25um"})
+    //                    settingsModel.append({"topText":"Weld Pressure","bottomText":"50PSI"})
+    //                    settingsModel.append({"topText":"Width","bottomText":"12.5mm"})
+    if (valueKey == "Energy") {
+        if (valueType == "current")
+            return variantToString.EnergyToString(presetElement.WeldSettings.BasicSetting.Energy).Current;
+        else if (valueType == "max")
+            return variantToString.EnergyToString(presetElement.WeldSettings.BasicSetting.Energy).Maximum;
+        else if (valueType == "min")
+            return variantToString.EnergyToString(presetElement.WeldSettings.BasicSetting.Energy).Minimum;
+    }
+    else if (valueKey == "Trigger Pressure") {
+        if (valueType == "current")
+            return variantToString.TriggerPressureToString(presetElement.WeldSettings.BasicSetting.TrigPres).Current;
+        else if (valueType == "max")
+            return variantToString.TriggerPressureToString(presetElement.WeldSettings.BasicSetting.TrigPres).Maximum;
+        else if (valueType == "min")
+            return variantToString.TriggerPressureToString(presetElement.WeldSettings.BasicSetting.TrigPres).Minimum;
+    }
+    else if (valueKey == "Amplitude") {
+        if (valueType == "current")
+            return variantToString.AmplitudeToString(presetElement.WeldSettings.BasicSetting.Amplitude).Current;
+        else if (valueType == "max")
+            return variantToString.AmplitudeToString(presetElement.WeldSettings.BasicSetting.Amplitude).Maximum;
+        else if (valueType == "min")
+            return variantToString.AmplitudeToString(presetElement.WeldSettings.BasicSetting.Amplitude).Minimum;
+    }
+    else if (valueKey == "Weld Pressure") {
+        if (valueType == "current")
+            return variantToString.WeldPressureToString(presetElement.WeldSettings.BasicSetting.Pressure).Current;
+        else if (valueType == "max")
+            return variantToString.WeldPressureToString(presetElement.WeldSettings.BasicSetting.Pressure).Maximum;
+        else if (valueType == "min")
+            return variantToString.WeldPressureToString(presetElement.WeldSettings.BasicSetting.Pressure).Minimum;
+    }
+    else if (valueKey == "Width") {
+        if (valueType == "current")
+            return variantToString.WidthToString(presetElement.WeldSettings.BasicSetting.Width).Current;
+        else if (valueType == "max")
+            return variantToString.WidthToString(presetElement.WeldSettings.BasicSetting.Width).Maximum;
+        else if (valueType == "min")
+            return variantToString.WidthToString(presetElement.WeldSettings.BasicSetting.Width).Minimum;
+    }
+    else if (valueKey == "Time-") {
+        if (valueType == "current")
+            return variantToString.TimeMinusToString(presetElement.WeldSettings.QualitySetting.Time.Minus).Current;
+        else if (valueType == "max")
+            return variantToString.TimeMinusToString(presetElement.WeldSettings.QualitySetting.Time.Minus).Maximum;
+        else if (valueType == "min")
+            return variantToString.TimeMinusToString(presetElement.WeldSettings.QualitySetting.Time.Minus).Minimum;
+    }
+    else if (valueKey == "Time+") {
+        if (valueType == "current")
+            return variantToString.TimePlusToString(presetElement.WeldSettings.QualitySetting.Time.Plus).Current;
+        else if (valueType == "max")
+            return variantToString.TimePlusToString(presetElement.WeldSettings.QualitySetting.Time.Plus).Maximum;
+        else if (valueType == "min")
+            return variantToString.TimePlusToString(presetElement.WeldSettings.QualitySetting.Time.Plus).Minimum;
+    }
+//    else if (valueKey == "Power-") {
+//        if (valueType == "current")
+//            return variantToString.PowerMinusToString(presetElement.WeldSettings.QualitySetting.Power).Current;
+//        else if (valueType == "max")
+//            return variantToString.PowerMinusToString(presetElement.WeldSettings.QualitySetting.Power).Maximum;
+//        else if (valueType == "min")
+//            return variantToString.PowerMinusToString(presetElement.WeldSettings.QualitySetting.Power).Minimum;
+//    }
+//    else if (valueKey == "Power+") {
+//        if (valueType == "current")
+//            return variantToString.PowerPlusToString(presetElement.WeldSettings.QualitySetting.Power).Current;
+//        else if (valueType == "max")
+//            return variantToString.PowerPlusToString(presetElement.WeldSettings.QualitySetting.Power).Maximum;
+//        else if (valueType == "min")
+//            return variantToString.PowerPlusToString(presetElement.WeldSettings.QualitySetting.Power).Minimum;
+//    }
+//    else if (valueKey == "Pre-Height-") {
+//        if (valueType == "current")
+//            return variantToString.PreHeightMinusToString(presetElement.WeldSettings.QualitySetting.Preheight).Current;
+//        else if (valueType == "max")
+//            return variantToString.PreHeightMinusToString(presetElement.WeldSettings.QualitySetting.Preheight).Maximum;
+//        else if (valueType == "min")
+//            return variantToString.PreHeightMinusToString(presetElement.WeldSettings.QualitySetting.Preheight).Minimum;
+//    }
+//    else if (valueKey == "Pre-Height+") {
+//        if (valueType == "current")
+//            return variantToString.PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight).Current;
+//        else if (valueType == "max")
+//            return variantToString.PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight).Maximum;
+//        else if (valueType == "min")
+//            return variantToString.PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight).Minimum;
+//    }
+//    else if (valueKey == "Post-Height-") {
+//        if (valueType == "current")
+//            return variantToString.PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight).Current;
+//        else if (valueType == "max")
+//            return variantToString.PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight).Maximum;
+//        else if (valueType == "min")
+//            return variantToString.PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight).Minimum;
+//    }
+//    else if (valueKey == "Pre-Height+") {
+//        if (valueType == "current")
+//            return variantToString.PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight).Current;
+//        else if (valueType == "max")
+//            return variantToString.PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight).Maximum;
+//        else if (valueType == "min")
+//            return variantToString.PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight).Minimum;
+//    }
+    else
+        return "";
+}
+
 void SpliceModel::createNew()
 {
     PresetElement temp;
