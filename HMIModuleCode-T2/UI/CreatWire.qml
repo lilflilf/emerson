@@ -11,6 +11,8 @@ Item {
     signal signalSaveSplice()
     property int selectIndex: 0
     property bool detailIsChang: true
+    property bool bIsStep: false
+    property string stepSetText: ""
     property variant colorArray: ["#ff6699","#ff0033","#33FFCC","#cc99ff","#cc0099","#930202","#99ccff","#f79428",
         "#0000cc","Olive","#ffff33","#ffcc00","#cc9909","#66ff00","#009900","#00cc66","#3366ff","#cc33cc","#cc9966","#9400D3"]
 
@@ -38,9 +40,15 @@ Item {
                     wireDirection.state = selectDirection
                     edit2.inputText = selectText
                     topRadio.checked = true
+                    tabPositionGroup.current = null
+                    if (selectPosition == "rightList" || selectPosition == "leftList")
+                        midRadio.checked = true
+                    else if (selectPosition == "topLeft" || selectPosition == "topRight")
+                        topRadio.checked = true
+                    else if (selectPosition == "bottomLeft" || selectPosition == "bottomRight")
+                        bottomRadio.checked = true
                 }
                 onChanging: {
-                    console.log("onChanging",bIsChang)
                     detailIsChang = bIsChang
                 }
             }
@@ -83,6 +91,10 @@ Item {
                 borderColor: "#375566"
                 defaultText: "WIRE NAME"
                 maxSize: 20
+                onTextChange: {
+                    console.log("xxxxxxxxxxxxxxx",wireName.inputText)
+                    spliceDetailsItem.wireName = wireName.inputText
+                }
             }
             Label {
                 id: properties
@@ -177,7 +189,6 @@ Item {
                                         radioButton.checked = !radioButton.checked
                                         if (radioButton.checked) {
                                             backColor.pickColor = colorArray[index]
-                                            console.log("color picker == ",colorArray[index])
                                         }
                                     }
                                 }
@@ -462,7 +473,7 @@ Item {
                         }
                     }
 
-                    onTextChange: {
+                    onInputTextChanged: {
                         if(detailIsChang)
                             return
                         spliceDetailsItem.selectText = inputText
@@ -548,7 +559,6 @@ Item {
                     state: "left"
                     opacity: 0.8
                     onStateChanged: {
-                        console.log("onStateChanged",wireDirection.state,spliceDetailsItem.selectDirection,detailIsChang)
                         if(detailIsChang)
                             return
                         if (spliceDetailsItem.selectDirection != wireDirection.state)
@@ -624,6 +634,30 @@ Item {
                         anchors.verticalCenter: labelTop.verticalCenter
                         source: "qrc:/images/images/up.png"
                     }
+                    MouseArea {
+                        id: mouse1
+                        anchors.fill: parent
+                        property bool isDialog: false
+                        onClicked: {
+                            if (spliceDetailsItem.changeTop()) {
+                                root.showDialog(true,true,"OK","CANCEL","Would you want to move the activated wire to the selected position?")
+                                isDialog = true
+                                return
+                            }
+                            topRadio.checked = !topRadio.checked
+                        }
+                        Connections {
+                            target: root
+                            onDialogReturn: {
+                                if (!mouse1.isDialog)
+                                    return
+                                if (reb) {
+                                    topRadio.checked = !topRadio.checked
+                                    mouse1.isDialog = false
+                                }
+                            }
+                        }
+                    }
                     RadioButton {
                         id: topRadio
                         scale: 2
@@ -653,6 +687,11 @@ Item {
                         anchors.right: parent.right
                         anchors.rightMargin: 210
                     }
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: midRadio.checked = !midRadio.checked
+                    }
+
                     RadioButton {
                         id: midRadio
                         scale: 2
@@ -686,7 +725,32 @@ Item {
                         anchors.verticalCenter: labelBottom.verticalCenter
                         source: "qrc:/images/images/down.png"
                     }
+                    MouseArea {
+                        id: mouse2
+                        anchors.fill: parent
+                        property bool isDialog: false
+                        onClicked: {
+                            if (spliceDetailsItem.changeBottom()) {
+                                root.showDialog(true,true,"OK","CANCEL","Would you want to move the activated wire to the selected position?")
+                                isDialog = true
+                                return
+                            }
+                            bottomRadio.checked = !bottomRadio.checked
+                        }
+                        Connections {
+                            target: root
+                            onDialogReturn: {
+                                if (!mouse2.isDialog)
+                                    return
+                                if (reb) {
+                                    bottomRadio.checked = !bottomRadio.checked
+                                    mouse2.isDialog = false
+                                }
+                            }
+                        }
+                    }
                     RadioButton {
+                        id: bottomRadio
                         scale: 2
                         anchors.left: parent.left
                         anchors.leftMargin: 80
@@ -711,7 +775,6 @@ Item {
                 color: "#375566"
                 height: 1
             }
-
             CButton {
                 id: save
                 text: qsTr("SAVE TO WIRE\nLIBRARY")
@@ -813,12 +876,16 @@ Item {
                             creatWire.selectIndex = index
                             backGround.visible = true
                             backGround.opacity = 0.5
-                            localbordercolor = "#05f91c"
-                            keyNum.visible = true
-                            keyNum.titleText = topText
-                            keyNum.currentValue = bottomText
-                            keyNum.minvalue = "0"
-                            keyNum.maxvalue = "100"
+                            if (repeater.model == settingsModel && index == 2 && bIsStep) {
+                                stepTimeSet.visible = true
+                            } else {
+                                localbordercolor = "#05f91c"
+                                keyNum.visible = true
+                                keyNum.titleText = topText
+                                keyNum.currentValue = bottomText
+                                keyNum.minvalue = "0"
+                                keyNum.maxvalue = "100"
+                            }
                         }
                     }
                 }
@@ -990,25 +1057,38 @@ Item {
         }
 
         CButton {
-            id: wirelibrary
+            id: wireLibrary
             pointSize: 14
-            width: (spliceDetailsItem.width-48)/3
-            anchors.right: addWire.left
+            width: (spliceDetailsItem.width-72)/4
+            anchors.right: wirelibrary.left
             anchors.rightMargin: 24
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 14
             text: qsTr("WIRE LIBRARY")
+        }
+        CButton {
+            id: wirelibrary
+            pointSize: 14
+            width: (spliceDetailsItem.width-72)/4
+            anchors.right: addWire.left
+            anchors.rightMargin: 24
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 14
+            text: qsTr("ADD WIRE")
+            onClicked: spliceDetailsItem.addWire()
 
         }
         CButton {
             id: addWire
             pointSize: 14
-            width: (spliceDetailsItem.width-48)/3
+            width: (spliceDetailsItem.width-72)/4
             anchors.right: saveSplice.left
             anchors.rightMargin: 24
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 14
-            text: qsTr("ADD WIRE")
+            text: qsTr("DELETE WIRE")
+            onClicked: spliceDetailsItem.deleteWire()
+
         }
 
         CButton {
@@ -1017,7 +1097,7 @@ Item {
             anchors.right: spliceDetailsItem.right
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 14
-            width: (spliceDetailsItem.width-48)/3
+            width: (spliceDetailsItem.width-72)/4
             text: qsTr("SAVE SPLICE")
             onClicked: {
                 signalSaveSplice()
@@ -1145,7 +1225,13 @@ Item {
                             }
                         }
                         onClicked: {
+                            stepSetText =  buttonName
                             weldModelCheck.checked = !weldModelCheck.checked
+                            if (index >= 4 && weldModelCheck.checked) {
+                                bIsStep = true
+                            } else {
+                                bIsStep = false
+                            }
                         }
                     }
                 }
@@ -1608,6 +1694,77 @@ Item {
             backGround.visible = false
         }
     }
+    Image {
+        id: stepTimeSet
+        anchors.centerIn: parent
+        width: 700
+        height: 525
+        source: "qrc:/images/images/dialogbg.png"
+        visible: false
+        Text {
+            id: stepTitle
+            anchors.top: parent.top
+            anchors.topMargin: 24
+            anchors.horizontalCenter: parent.horizontalCenter
+            font.family: "arial"
+            font.pixelSize: 25
+            color: "white"
+            text: qsTr(stepSetText)
+        }
+        ListModel {
+            id: stepSetModel
+            Component.onCompleted: {
+                stepSetModel.append({"topText":"Step Point","centerText":"0.00s"})
+                stepSetModel.append({"topText":"Amplitude A","centerText":"1μm"})
+                stepSetModel.append({"topText":"Amplitude B","centerText":"2μm"})
+            }
+        }
+        Row {
+            id: stepRow
+            anchors.top: stepTitle.bottom
+            anchors.topMargin: 50
+            anchors.left: parent.left
+            anchors.leftMargin: 24
+            anchors.right: parent.right
+            anchors.rightMargin: 24
+            spacing: 20
+            Repeater {
+                id: stepRepeater
+                model: stepSetModel
+                Recsetting {
+                    headTitle: qsTr(topText)
+                    centervalue: qsTr(centerText)
+                    width: (stepRow.width-40)/3
+                    height: 154
+                    onMouseAreaClick: {
+                        creatWire.selectIndex = index
+                        localbordercolor = "#05f91c"
+                        keyNum.visible = true
+                        keyNum.titleText = topText
+                        keyNum.currentValue = centerText
+                        keyNum.minvalue = "0"
+                        keyNum.maxvalue = "100"
+                    }
+                }
+            }
+        }
+        CButton {
+            id: okButton
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 24
+            anchors.right: parent.right
+            anchors.rightMargin: 20
+            width: parent.width/3
+            text: qsTr("OK")
+            pixelSize: 20
+            iconSource: "qrc:/images/images/OK.png"
+            onClicked: {
+                backGround.visible = false
+                stepTimeSet.visible = false
+            }
+        }
+    }
+
     KeyBoardNum {
         id: keyNum
         anchors.centerIn: parent
@@ -1638,6 +1795,13 @@ Item {
                 } else if (weldSetting.weldSetVisible) {
                     weldSettingModel.set(creatWire.selectIndex,{"textValue":keyNum.inputText})
                     weldRepeater.itemAt(creatWire.selectIndex).myfocus = false
+                } else if (stepTimeSet.visible) {
+                    stepRepeater.model.set(creatWire.selectIndex,{"centerText":keyNum.inputText})
+                    stepRepeater.itemAt(creatWire.selectIndex).localbordercolor = "#0079c1"
+                    keyNum.visible = false
+                    keyNum.inputText = ""
+                    keyNum.tempValue = ""
+                    return
                 } else {
                     repeater.model.set(creatWire.selectIndex,{"bottomText":keyNum.inputText})
                     repeater.itemAt(creatWire.selectIndex).localbordercolor = "#0079c1"
@@ -1660,6 +1824,12 @@ Item {
                     widthRepeater.itemAt(creatWire.selectIndex).myfocus = false
                 } else if (weldSetting.weldSetVisible) {
                     weldRepeater.itemAt(creatWire.selectIndex).myfocus = false
+                } else if (stepTimeSet.visible) {
+                    stepRepeater.itemAt(creatWire.selectIndex).localbordercolor = "#0079c1"
+                    keyNum.visible = false
+                    keyNum.inputText = ""
+                    keyNum.tempValue = ""
+                    return
                 } else {
                     repeater.itemAt(creatWire.selectIndex).localbordercolor = "#0079c1"
                 }
@@ -1684,6 +1854,8 @@ Item {
                     widthModel.set(creatWire.selectIndex,{"textValue":keyNum.inputText})
                 } else if (weldSetting.weldSetVisible) {
                     weldSettingModel.set(creatWire.selectIndex,{"textValue":keyNum.inputText})
+                } else if (stepTimeSet.visible) {
+                    stepRepeater.model.set(creatWire.selectIndex,{"centerText":keyNum.inputText})
                 } else {
                     repeater.model.set(creatWire.selectIndex,{"bottomText":keyNum.inputText})
                 }

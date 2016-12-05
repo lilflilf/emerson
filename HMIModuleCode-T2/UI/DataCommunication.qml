@@ -31,15 +31,15 @@ Item {
 
         testModel.clear()
         list = hmiAdaptor.dataCommunicationGetValue("shrinkData")
+
+        if (list.length % 3 == 0)
         {
-            if (list.length % 3 == 0)
+            for (var i = 0 ;i < list.length / 3; i++)
             {
-                for (var i = 0 ;i < list.length / 3; i++)
-                {
-                    testModel.append({shrinkid:list[i*3],temperature:list[i*3+1],times:list[i*3+2]})
-                }
+                testModel.append({shrinkid:list[i*3],temperature:list[i*3+1],times:list[i*3+2]})
             }
         }
+
     }
 
     Image {
@@ -70,7 +70,7 @@ Item {
             anchors.right: parent.right
             anchors.rightMargin: 10
             width: parent.width*0.5
-//            state: "right"
+            //            state: "right"
             textLeft: qsTr("off")
             textRight: qsTr("on")
             clip: true
@@ -96,7 +96,7 @@ Item {
             inputHeight: 48
             horizontalAlignment: Qt.AlignHCenter
             inputText: qsTr("4000")
-//            regExp: RegExpValidator{regExp: /^[1-4000]$/}
+            //            regExp: RegExpValidator{regExp: /^[1-4000]$/}
         }
 
         CButton {
@@ -125,7 +125,7 @@ Item {
             anchors.left: networkSwitch.left
             anchors.verticalCenter: remoteText.verticalCenter
             width: parent.width*0.5
-//            state: "left"
+            //            state: "left"
             textLeft: qsTr("off")
             textRight: qsTr("on")
             clip: true
@@ -147,7 +147,7 @@ Item {
             anchors.left: networkSwitch.left
             anchors.verticalCenter: graphText.verticalCenter
             width: parent.width*0.5
-//            state: "left"
+            //            state: "left"
             textLeft: qsTr("off")
             textRight: qsTr("on")
             visible: remoteSwitch.on
@@ -169,7 +169,7 @@ Item {
             anchors.left: networkSwitch.left
             anchors.verticalCenter: modularText.verticalCenter
             width: parent.width*0.5
-//            state: "right"
+            //            state: "right"
             textLeft: qsTr("off")
             textRight: qsTr("on")
             clip: true
@@ -250,7 +250,7 @@ Item {
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.rightMargin: 40
-//            height: 50
+            //            height: 50
             spacing: 40
             clip: true
             Repeater {
@@ -272,25 +272,24 @@ Item {
             anchors.topMargin: 10
             anchors.left: parent.left
             width: parent.width-20
-            height: 2
+            height: 1
             lineColor: "#ffffff"
         }
-//        Line {
-//            id: line2
-//            anchors.top: line1.bottom
-//            anchors.left: parent.left
-//            anchors.leftMargin: 20
-//            width: parent.width-20
-//            height: 1
-//            lineColor: "#0d0f11"
-//        }
+        Line {
+            id: line2
+            anchors.top: line1.bottom
+            anchors.left: parent.left
+            width: parent.width-20
+            height: 1
+            lineColor: "#0d0f11"
+        }
         ExclusiveGroup {
             id: listviewPositionGroup
         }
 
         ListView {
             id: listView
-            anchors.top: line1.bottom
+            anchors.top: line2.bottom
             anchors.topMargin: 5
             anchors.left: parent.left
             anchors.leftMargin: 40
@@ -372,7 +371,7 @@ Item {
         }
         Image {
             id: scrollUp
-            anchors.top: line2.bottom
+            anchors.top: line1.bottom
             anchors.topMargin: 2
             anchors.left: listView.right
             width: 17
@@ -404,7 +403,7 @@ Item {
                 id: button
                 anchors.left: parent.left
                 y: (listView.visibleArea.yPosition < 0 ) ? 0 : (listView.contentY+listView.height>listView.contentHeight) ?
-                    scrollbar.height - button.height : listView.visibleArea.yPosition * scrollbar.height
+                                                               scrollbar.height - button.height : listView.visibleArea.yPosition * scrollbar.height
                 width: 10
                 height: listView.visibleArea.heightRatio * scrollbar.height;
                 color: "#ccbfbf"
@@ -459,10 +458,10 @@ Item {
             clip: true
             textColor: "white"
             onClicked: {
-//                backGround.visible = true
-//                backGround.opacity = 0.5
-//                dialog.bIsEdit = false
-//                dialog.visible = true
+                backGround.visible = true
+                backGround.opacity = 0.5
+                dialog.bIsEdit = false
+                dialog.visible = true
             }
         }
         CButton {
@@ -477,8 +476,13 @@ Item {
             clip: true
             textColor: "white"
             onClicked: {
-//                backGround.visible = true
-//                backGround.opacity = 0.5
+                if(workOrderModel.count() == 0 || selectIndx == -1) {
+                    return
+                }
+                backGround.visible = true
+                backGround.opacity = 0.5
+                dialog.bIsEdit = true
+                dialog.visible = true
             }
         }
         CButton {
@@ -492,6 +496,156 @@ Item {
             clip: true
             textColor: "white"
             onClicked: {
+            }
+        }
+    }
+    Rectangle {
+        id: backGround
+        anchors.fill: parent
+        color: "black"
+        opacity: 0
+        visible: false
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+            }
+        }
+
+    }
+    Image {
+        id: dialog
+        visible: false
+        anchors.centerIn: parent
+        property bool bIsEdit: false
+        property var oldWorkOrderName: ""
+        width: 639
+        height: 390
+        source: "qrc:/images/images/dialogbg.png"
+        Text {
+            id: shrinkId
+            anchors.top: parent.top
+            anchors.topMargin: 60
+            anchors.right: inputshrinkId.left
+            anchors.rightMargin: 20
+            width: 150
+            height: 60
+            font.pointSize: 18
+            font.family: "arial"
+            text: qsTr("Shrink Tube ID")
+            verticalAlignment: Qt.AlignVCenter
+            horizontalAlignment: Qt.AlignRight
+            color: "white"
+        }
+        MyLineEdit {
+            id: inputshrinkId
+            anchors.top: parent.top
+            anchors.topMargin: 60
+            anchors.right: parent.right
+            anchors.rightMargin: 72
+            horizontalAlignment: Qt.AlignHCenter
+            width: 375
+            height: 60
+            inputWidth: 375
+            inputColor: "white"
+            inputHeight: 60
+            inputText: dialog.bIsEdit ? testModel.get(selectIndx).shrinkid : ""
+        }
+        Text {
+            id: temperatureText
+            anchors.top: inputshrinkId.bottom
+            anchors.topMargin: 20
+            anchors.right: inputTemperature.left
+            anchors.rightMargin: 20
+            width: 150
+            height: 60
+            font.pointSize: 18
+            font.family: "arial"
+            text: qsTr("Temp")
+            verticalAlignment: Qt.AlignVCenter
+            horizontalAlignment: Qt.AlignRight
+            color: "white"
+        }
+        MyLineEdit {
+            id: inputTemperature
+            property var partId: 1
+            anchors.top: inputshrinkId.bottom
+            anchors.topMargin: 20
+            anchors.right: parent.right
+            anchors.rightMargin: 72
+            horizontalAlignment: Qt.AlignHCenter
+            width: 375
+            height: 60
+            inputWidth: 375
+            inputColor: "white"
+            inputHeight: 60
+            inputText: dialog.bIsEdit ? testModel.get(selectIndx).temperature : ""
+        }
+        Text {
+            id: timeText
+            anchors.top: temperatureText.bottom
+            anchors.topMargin: 20
+            anchors.right: inputtimeText.left
+            anchors.rightMargin: 20
+            width: 150
+            height: 60
+            font.pointSize: 18
+            font.family: "arial"
+            text: qsTr("Time")
+            verticalAlignment: Qt.AlignVCenter
+            horizontalAlignment: Qt.AlignRight
+            color: "white"
+        }
+        MyLineEdit {
+            id: inputtimeText
+            anchors.top: temperatureText.bottom
+            anchors.topMargin: 20
+            anchors.right: parent.right
+            anchors.rightMargin: 72
+            width: 375
+            height: 60
+            inputWidth: 375
+            inputHeight: 60
+            inputColor: "white"
+            horizontalAlignment: Qt.AlignHCenter
+            inputText: dialog.bIsEdit ? testModel.get(selectIndx).times : ""
+        }
+        CButton {
+            id: cancel
+            anchors.right: sure.left
+            anchors.rightMargin: 15
+            anchors.top: timeText.bottom
+            anchors.topMargin: 16
+            width: 180
+            text: qsTr("CANCEL")
+            textColor: "white"
+            iconSource: "qrc:/images/images/cancel.png"
+            onClicked: {
+                backGround.visible = false
+                backGround.opacity = 0
+                dialog.visible = false
+                dialog.bIsEdit = false
+                //                if (!dialog.bIsEdit) {
+                //                    selectPart.text = "SELECT PART"
+                //                }
+            }
+        }
+
+        CButton {
+            id: sure
+            anchors.right: parent.right
+            anchors.rightMargin: 72
+            anchors.top: timeText.bottom
+            anchors.topMargin: 16
+            width: 180
+            text: qsTr("OK")
+            textColor: "white"
+            iconSource: "qrc:/images/images/OK.png"
+            onClicked: {
+                backGround.visible = false
+                backGround.opacity = 0
+                dialog.visible = false
+                testModel.set(selectIndx,{shrinkid:inputshrinkId.inputText,temperature:inputTemperature.inputText,times:inputtimeText.inputText})
+                dialog.bIsEdit = false
             }
         }
     }

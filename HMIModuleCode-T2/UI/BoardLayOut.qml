@@ -48,7 +48,6 @@ Item {
                 return
             }
         }
-
         if (rec.itemAt(index).bIsCenterShow) {
             rec.itemAt(index).zoneModel.append({"zonecolor":color,"selecteNum":selecteIndex})
         } else {

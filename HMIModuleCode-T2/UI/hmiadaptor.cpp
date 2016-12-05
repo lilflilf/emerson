@@ -105,7 +105,217 @@ void HmiAdaptor::openFileDialog()
 
 void HmiAdaptor::advancedMaintenanceExecute(int code)
 {
-        advanceMaintenance->_execute(code);
+    advanceMaintenance->_execute(code);
+}
+
+void HmiAdaptor::maintenanceCountExecute(QString code)
+{
+    if (code == "_Recll")
+        maintenanceCount->_recall();
+}
+
+QString HmiAdaptor::maintenanceCountGetValue(int code, int index)
+{
+    QString value;
+    if (code == 0)
+    {
+        switch (index) {
+        case 2:
+            value = maintenanceCount->CurrentMaintenanceCounter.HornCounterLimit.Current;
+            break;
+        case 3:
+            value = maintenanceCount->CurrentMaintenanceCounter.HornCurrentCount;
+            break;
+        case 4:
+            value = maintenanceCount->CurrentMaintenanceCounter.HornDateStarted;
+            break;
+        case 5:
+            value = maintenanceCount->CurrentMaintenanceCounter.HornCounterLimit.Maximum;
+            break;
+        case 6:
+            value = maintenanceCount->CurrentMaintenanceCounter.HornCounterLimit.Minimum;
+            break;
+        default:
+            break;
+        }
+    }
+    else if (code == 1)
+    {
+        switch (index) {
+        case 2:
+            value = maintenanceCount->CurrentMaintenanceCounter.AnvilTipCounterLimit.Current;
+            break;
+        case 3:
+            value = maintenanceCount->CurrentMaintenanceCounter.AnvilTipCurrentCount;
+            break;
+        case 4:
+            value = maintenanceCount->CurrentMaintenanceCounter.AnvilTipDateStarted;
+            break;
+        case 5:
+            value = maintenanceCount->CurrentMaintenanceCounter.AnvilTipCounterLimit.Maximum;
+            break;
+        case 6:
+            value = maintenanceCount->CurrentMaintenanceCounter.AnvilTipCounterLimit.Minimum;
+            break;
+        default:
+            break;
+        }
+    }
+    else if (code == 2)
+    {
+        switch (index) {
+        case 2:
+            value = maintenanceCount->CurrentMaintenanceCounter.GatherCounterLimit.Current;
+            break;
+        case 3:
+            value = maintenanceCount->CurrentMaintenanceCounter.GatherCurrentCount;
+            break;
+        case 4:
+            value = maintenanceCount->CurrentMaintenanceCounter.GatherDateStarted;
+            break;
+        case 5:
+            value = maintenanceCount->CurrentMaintenanceCounter.GatherCounterLimit.Maximum;
+            break;
+        case 6:
+            value = maintenanceCount->CurrentMaintenanceCounter.GatherCounterLimit.Minimum;
+            break;
+        default:
+            break;
+        }
+    }
+    else if (code == 3)
+    {
+        switch (index) {
+        case 2:
+            value = maintenanceCount->CurrentMaintenanceCounter.AnvilGuideCounterLimit.Current;
+            break;
+        case 3:
+            value = maintenanceCount->CurrentMaintenanceCounter.AnvilGuideCurrentCount;
+            break;
+        case 4:
+            value = maintenanceCount->CurrentMaintenanceCounter.AnvilGuideDateStarted;
+            break;
+        case 5:
+            value = maintenanceCount->CurrentMaintenanceCounter.AnvilGuideCounterLimit.Maximum;
+            break;
+        case 6:
+            value = maintenanceCount->CurrentMaintenanceCounter.AnvilGuideCounterLimit.Minimum;
+            break;
+        default:
+            break;
+        }
+    }
+    else if (code == 4)
+    {
+        switch (index) {
+        case 2:
+            value = maintenanceCount->CurrentMaintenanceCounter.ConverterCounterLimit.Current;
+            break;
+        case 3:
+            value = maintenanceCount->CurrentMaintenanceCounter.ConverterCurrentCount;
+            break;
+        case 4:
+            value = maintenanceCount->CurrentMaintenanceCounter.ConverterDateStarted;
+            break;
+        case 5:
+            value = maintenanceCount->CurrentMaintenanceCounter.ConverterCounterLimit.Maximum;
+            break;
+        case 6:
+            value = maintenanceCount->CurrentMaintenanceCounter.ConverterCounterLimit.Minimum;
+            break;
+        default:
+            break;
+        }
+    }
+    else if (code == 5)
+    {
+        switch (index) {
+        case 2:
+            value = "-";
+            break;
+        case 3:
+            value = maintenanceCount->CurrentMaintenanceCounter.ActuatorCurrentCount;
+            break;
+        case 4:
+            value = maintenanceCount->CurrentMaintenanceCounter.ActuatorDateStarted;
+            break;
+        case 5:
+            value = "-";
+            break;
+        case 6:
+            value = "-";
+            break;
+        default:
+            break;
+        }
+    }
+    qDebug() << "maintenanceCountGetValue" << value << code << index;
+    return value;
+}
+
+QString HmiAdaptor::getMaintenanceVerson(int index)
+{
+    QString value;
+    switch (index) {
+    case 0:
+        value = maintenanceCount->CurrentMaintenanceCounter.ActuatorPartNumber;
+        break;
+    case 1:
+        value = maintenanceCount->CurrentMaintenanceCounter.ActuatorSoftwareVersion;
+        break;
+    case 2:
+        value = maintenanceCount->CurrentMaintenanceCounter.ActuatorSerialNumber;
+        break;
+    case 3:
+        value = maintenanceCount->CurrentMaintenanceCounter.ActuatorModuleNumber;
+        break;
+    default:
+        break;
+    }
+}
+
+//listModel.append({mytitle:"Horn"})
+//listModel.append({mytitle:"AnvilTip"})
+//listModel.append({mytitle:"Gather"})
+//listModel.append({mytitle:"AnvilGuide"})
+//listModel.append({mytitle:"Converter"})
+//listModel.append({mytitle:"Actuator"})
+void HmiAdaptor::maintenanceCountReset(QString code)
+{
+    if (code == "Horn")
+        maintenanceCount->_execute(TOOLINGCOUNT::HORNRESET);
+    else if (code == "AnvilTip")
+        maintenanceCount->_execute(TOOLINGCOUNT::ANVILTIPRESET);
+    else if (code == "Gather")
+        maintenanceCount->_execute(TOOLINGCOUNT::GATHERRESET);
+    else if (code == "AnvilGuide")
+        maintenanceCount->_execute(TOOLINGCOUNT::ANVILGUIDERESET);
+    else if (code == "Converter")
+        maintenanceCount->_execute(TOOLINGCOUNT::CONVERTERRESET);
+}
+
+void HmiAdaptor::maintenanceCountSetLimit(QString code, QString value)
+{
+    if (code == "Horn"){
+        maintenanceCount->CurrentMaintenanceCounter.HornCounterLimit.Current = value;
+        maintenanceCount->_execute(TOOLINGCOUNT::HORNCHANGE);
+    }
+    else if (code == "AnvilTip") {
+        maintenanceCount->CurrentMaintenanceCounter.AnvilTipCounterLimit.Current = value;
+        maintenanceCount->_execute(TOOLINGCOUNT::ANVILTIPCHANGE);
+    }
+    else if (code == "Gather"){
+        maintenanceCount->CurrentMaintenanceCounter.GatherCounterLimit.Current = value;
+        maintenanceCount->_execute(TOOLINGCOUNT::GATHERCHANGE);
+    }
+    else if (code == "AnvilGuide"){
+        maintenanceCount->CurrentMaintenanceCounter.AnvilGuideCounterLimit.Current = value;
+        maintenanceCount->_execute(TOOLINGCOUNT::ANVILGUIDECHANGE);
+    }
+    else if (code == "Converter"){
+        maintenanceCount->CurrentMaintenanceCounter.ConverterCounterLimit.Current = value;
+        maintenanceCount->_execute(TOOLINGCOUNT::CONVERTERCHANGE);
+    }
 }
 
 void HmiAdaptor::maintenanceStart(int page)
@@ -253,6 +463,7 @@ bool HmiAdaptor::permissionsettingSetValue(QString name, bool level1, bool level
     temp.Level3 = level3;
     temp.Level4 = level4;
     permissionSetting->CurrentPermissionList.append(temp);
+    return true;
 }
 
 bool HmiAdaptor::permissionsettingSetFourValue(QStringList fourName)
@@ -474,10 +685,6 @@ QStringList HmiAdaptor::dataCommunicationGetValue(QString index)
 
 bool HmiAdaptor::dataCommunicationSetValue(QList<bool> boolList, QStringList strList, QString ip, QString port)
 {
-//    boolList.push(networkSwitch.state == "right")
-//    boolList.push(remoteSwitch.state == "right")
-//    boolList.push(graphSwitch.state == "right")
-//    boolList.push(modularSwitch.state == "right")
     dataCommunication->CurrentDataCommunication.EthernetMode = boolList[0];
     dataCommunication->CurrentDataCommunication.RemoteDataLogging = boolList[1];
     dataCommunication->CurrentDataCommunication.RemoteGraphData = boolList[2];
@@ -490,6 +697,7 @@ bool HmiAdaptor::dataCommunicationSetValue(QList<bool> boolList, QStringList str
         dataCommunication->CurrentDataCommunication.ShrinkTubeDefault[i].Temp = strList[i*3+1];
         dataCommunication->CurrentDataCommunication.ShrinkTubeDefault[i].Time = strList[i*3+2];
     }
+    return true;
 }
 
 bool HmiAdaptor::stringRegexMatch(QString exp, QString value)

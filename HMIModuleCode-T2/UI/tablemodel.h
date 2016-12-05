@@ -41,6 +41,7 @@ signals:
 public slots:
     void setRoles(const QStringList &names);
     Q_INVOKABLE QVariant getWorkOrderValue(int index, QString key);
+    Q_INVOKABLE void removeValue(int id, QString name);
 
     //    QString getContacterName(QString contacterId);
     Q_INVOKABLE int count();
@@ -82,6 +83,7 @@ public slots:
     void setRoles(const QStringList &names);
     Q_INVOKABLE QVariant getValue(int index, QString key);
     Q_INVOKABLE int count();
+    Q_INVOKABLE void removeValue(int id, QString name);
 
 private:
     QHash<int, QByteArray> m_roleNames;
@@ -114,7 +116,7 @@ signals:
 public slots:
     void setRoles(const QStringList &names);
     Q_INVOKABLE QVariant getValue(int index, QString key);
-
+    Q_INVOKABLE void removeValue(int id, QString name);
     Q_INVOKABLE int count();
    // int getCurrentIndex(QString info);
 
@@ -154,6 +156,8 @@ public slots:
     Q_INVOKABLE int count();
     Q_INVOKABLE void insertValue(QString name, QString passwd);
     Q_INVOKABLE bool login(QString passwd, OperatorElement *operatot);
+    Q_INVOKABLE void removeValue(int id, QString name);
+
 private:
     QHash<int, QByteArray> m_roleNames;
 };
@@ -183,6 +187,7 @@ protected:
 public slots:
     void setRoles(const QStringList &names);
     Q_INVOKABLE QVariant getAlarmValue(int index, QString key);
+    Q_INVOKABLE void removeValue(int id, QString name);
     Q_INVOKABLE int count();
 private:
     QHash<int, QByteArray> m_roleNames;
@@ -215,6 +220,8 @@ public slots:
     void setRoles(const QStringList &names);
     Q_INVOKABLE QVariant getValue(int index, QString key);
     Q_INVOKABLE int count();
+    Q_INVOKABLE void removeValue(int id, QString name);
+
 private:
     QHash<int, QByteArray> m_roleNames;
 };
@@ -246,6 +253,8 @@ public slots:
     void setRoles(const QStringList &names);
     Q_INVOKABLE QVariant getValue(int index, QString key);
     Q_INVOKABLE int count();
+    Q_INVOKABLE void removeValue(int id, QString name);
+
 private:
     QHash<int, QByteArray> m_roleNames;
 };
@@ -277,6 +286,8 @@ public slots:
     void setRoles(const QStringList &names);
     Q_INVOKABLE QVariant getValue(int index, QString key);
     Q_INVOKABLE int count();
+    Q_INVOKABLE void removeValue(int id, QString name);
+
 private:
     QHash<int, QByteArray> m_roleNames;
 };

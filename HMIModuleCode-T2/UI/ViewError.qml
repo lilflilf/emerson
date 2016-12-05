@@ -349,18 +349,18 @@ Item {
                 width: parent.width
                 text: qsTr("APPLY")
             }
-            CButton {
-                id: backButton
-                width: parent.width
-                text: qsTr("Back")
-            }
+//            CButton {
+//                id: backButton
+//                width: parent.width
+//                text: qsTr("Back")
+//            }
         }
 
     }
     //    list << "CreatedDate" << "Alarm/ErrorType" << "Alarm/ErrorLevel" << "Message" << "SpliceName";
     Image {
         id: scrollUp
-        anchors.top: tipsRec2.bottom
+        anchors.top: tipsRec.bottom
         anchors.topMargin: 2
         anchors.right: parent.right
         anchors.rightMargin: 6
@@ -509,20 +509,20 @@ Item {
         anchors.right: parent.right
         anchors.rightMargin: 20
         clip: true
-        height: 2
+        height: 1
         color: "#ffffff"
     }
-//    Rectangle {
-//        id: tipsRec2
-//        anchors.top: tipsRec.bottom
-//        anchors.left: back.right
-//        anchors.leftMargin: 20
-//        anchors.right: parent.right
-//        anchors.rightMargin: 20
-//        clip: true
-//        height: 1
-//        color: "#0d0f11"
-//    }
+    Rectangle {
+        id: tipsRec2
+        anchors.top: tipsRec.bottom
+        anchors.left: back.right
+        anchors.leftMargin: 20
+        anchors.right: parent.right
+        anchors.rightMargin: 20
+        clip: true
+        height: 1
+        color: "#0d0f11"
+    }
 
 
 

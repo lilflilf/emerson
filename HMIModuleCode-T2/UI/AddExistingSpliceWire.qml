@@ -135,6 +135,8 @@ Item {
             delegate: listDelegate
         }
 //        list << "PartId" << "PartName" << "DateCreated" << "OperatorName" << "TotalSplices" << "ProcessMode" << "#ofWorkstation" << "#ofSplicesperWorkstation" << "Rows" << "Columns" << "MaxSplicesPerZone";
+//        list << "SpliceId" << "SpliceName" << "DateCreated" << "OperatorName" << "CrossSection" << "TotalWires" << "Verified" << "WeldMode" << "Energy" << "Amplitude"
+//             << "Width" << "TriggerPressure" << "WeldPressure" << "Time+" << "Time-" << "Power+" << "Power-" << "Pre-Height+" << "Pre-Height-" << "Height+" << "Height-" << "count";
 
         Component {
             id: listDelegate
@@ -148,7 +150,7 @@ Item {
                     anchors.left: parent.left
                     width: (parent.width-40)/5
                     elide: Text.ElideRight
-                    text: PartName
+                    text: (listModel == spliceModel) ? SpliceName : PartName
                     clip: true
                     color: "white"
                     font.pixelSize: 14
@@ -162,7 +164,7 @@ Item {
                     anchors.leftMargin: 10
                     elide: Text.ElideRight
                     width: (parent.width-40)/5
-                    text: DateCreated
+                    text: (listModel == spliceModel) ? DateCreated : DateCreated
                     clip: true
                     color: "white"
                     font.pixelSize: 14
@@ -176,7 +178,7 @@ Item {
                     anchors.leftMargin: 10
                     width: (parent.width-40)/5
                     elide: Text.ElideRight
-                    text: TotalSplices
+                    text: (listModel == spliceModel) ? TotalWires : TotalSplices
                     clip: true
                     color: "white"
                     font.pixelSize: 14
@@ -190,7 +192,7 @@ Item {
                     anchors.leftMargin: 10
                     elide: Text.ElideRight
                     width: (parent.width-40)/5
-                    text: ProcessMode
+                    text: (listModel == spliceModel) ? CrossSection : ProcessMode
                     color: "white"
                     clip: true
                     font.pixelSize: 14
@@ -204,7 +206,7 @@ Item {
                     anchors.leftMargin: 10
                     width: (parent.width-40)/5
                     elide: Text.ElideRight
-                    text: ProcessMode
+                    text: (listModel == spliceModel) ? count : ProcessMode
                     color: "white"
                     clip: true
                     font.pixelSize: 14

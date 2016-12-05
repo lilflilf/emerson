@@ -11,6 +11,9 @@ Item {
     height: Screen.height*0.53
     signal currentSelecte(int index)
     signal currentWorkStation(int index)
+    ExclusiveGroup {
+        id: checkGroup
+    }
     ListView {
         id: splice
         width: spliceList.width
@@ -74,14 +77,8 @@ Item {
             MouseArea {
                 id: mouse
                 anchors.fill: parent
-                onPressed: {
-                    timer.running = true
-                    background.opacity = 0.5
-                }
-                onReleased: {
-                    background.opacity = 0
-                }
                 onClicked: {
+                    select.checked = !select.checked
                     currentSelecte(index)
                 }
             }
@@ -94,6 +91,18 @@ Item {
                 color: "black"
                 opacity: 0
                 clip: true
+                RadioButton {
+                    id: select
+                    visible: false
+                    exclusiveGroup: checkGroup
+                    onCheckedChanged: {
+                        if (select.checked) {
+                            background.opacity = 0.5
+                        } else {
+                            background.opacity = 0
+                        }
+                    }
+                }
             }
             Text {
                 id: spliceName
@@ -105,7 +114,7 @@ Item {
                 height: 28
                 font.pointSize: 14
                 font.family: "arial"
-                text: qsTr(name)
+                text: qsTr(SpliceName)
                 elide: Text.ElideRight
                 color: "white"
                 clip: true
@@ -148,15 +157,7 @@ Item {
                 height: 28
                 iconSource: "qrc:/images/images/close.png"
                 onClicked: {
-
-                }
-            }
-            Timer {
-                id: timer
-                running: false
-                interval: 100
-                onTriggered: {
-                    background.opacity = 0
+                    listModel.remove(index)
                 }
             }
         }

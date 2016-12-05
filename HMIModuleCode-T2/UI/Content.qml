@@ -25,7 +25,6 @@ Item {
             titleTextChanged("Create Assembly")
         }
     }
-
     Loader {
         id: loader
         z: 10
@@ -161,7 +160,7 @@ Item {
                 pointSize: 16
                 onClicked: {
                     loader.source = "qrc:/UI/CreatWire.qml"
-                    titleTextChanged("Creat Splice")
+                    titleTextChanged("Create Splice")
                 }
             }
 
@@ -294,9 +293,9 @@ Item {
                         keyNum.maxvalue = "20"
                     }
                 }
-                onTextChange: {
-                    getAllWorkstationColor(text)
-                    workStationcolor.allWorkTotal = text
+                onInputTextChanged: {
+                    getAllWorkstationColor(edit1.inputText)
+                    workStationcolor.allWorkTotal = edit1.inputText
                 }
             }
             MiniKeyNumInput {
@@ -328,8 +327,8 @@ Item {
                         keyNum.maxvalue = "20"
                     }
                 }
-                onTextChange: {
-                    workStationcolor.maxSpliceNum = text
+                onInputTextChanged: {
+                    workStationcolor.maxSpliceNum = edit2.inputText
                 }
             }
             Label {
@@ -373,8 +372,8 @@ Item {
                         keyNum.maxvalue = "4"
                     }
                 }
-                onTextChange: {
-                    boardlayout.rows = text
+                onInputTextChanged: {
+                    boardlayout.rows = edit3.inputText
                     for (var i = 0; i< workModel.count; i++) {
                         workModel.get(i).workStation.destroy()
                     }
@@ -411,8 +410,8 @@ Item {
                         keyNum.maxvalue = "4"
                     }
                 }
-                onTextChange: {
-                    boardlayout.columns = text
+                onInputTextChanged: {
+                    boardlayout.columns = edit4.inputText
                     for (var i = 0; i< workModel.count; i++) {
                         workModel.get(i).workStation.destroy()
                     }
@@ -448,7 +447,7 @@ Item {
                         keyNum.maxvalue = "12"
                     }
                 }
-                onTextChange: {
+                onInputTextChanged: {
                 }
             }
         }
@@ -531,9 +530,9 @@ Item {
             anchors.top: parent.top
             anchors.topMargin: 4
             anchors.left: boardlayout.left
-            width: boardlayout.width*0.6
+            width: boardlayout.width*0.65
             height: 43
-            inputWidth: boardlayout.width*0.6
+            inputWidth: boardlayout.width*0.65
             inputHeight: 40
             horizontalAlignment: Qt.AlignHCenter
             defaultText: qsTr("PART NAME")
@@ -617,100 +616,100 @@ Item {
             visible: !bIsBasic
             columns: 0
             rows: 0
-            onColumnsChanged: {
-                followArea.visible = false
-            }
-            onRowsChanged: {
-                followArea.visible = false
-            }
+//            onColumnsChanged: {
+//                followArea.visible = false
+//            }
+//            onRowsChanged: {
+//                followArea.visible = false
+//            }
         }
 
-        Component {
-            id: dragColor
-            Rectangle {
-                id: dragItem
-                width: 35
-                height: 35
-                radius: 35
-                border.color: "white"
-                border.width: 1
-                Drag.active: dragArea.drag.active
-                Drag.supportedActions: Qt.MoveAction
-                Drag.dragType: Drag.Internal
-                Drag.mimeData: {"color": color, "width": width, "height": height};
-                MouseArea {
-                    id: dragArea;
-                    anchors.fill: parent
-                    drag.target: parent
-                    drag.minimumX: 0
-                    drag.maximumX: boardlayout.width-35
-                    drag.minimumY: 0
-                    drag.maximumY: boardlayout.height-35
-                    onPositionChanged: {
-                        draColor = dragItem.color
-                        bIsDrag = true
-                    }
-                    onReleased: {
-                        bIsDrag = false
-                    }
-                }
-            }
-        }
+//        Component {
+//            id: dragColor
+//            Rectangle {
+//                id: dragItem
+//                width: 35
+//                height: 35
+//                radius: 35
+//                border.color: "white"
+//                border.width: 1
+//                Drag.active: dragArea.drag.active
+//                Drag.supportedActions: Qt.MoveAction
+//                Drag.dragType: Drag.Internal
+//                Drag.mimeData: {"color": color, "width": width, "height": height};
+//                MouseArea {
+//                    id: dragArea;
+//                    anchors.fill: parent
+//                    drag.target: parent
+//                    drag.minimumX: 0
+//                    drag.maximumX: boardlayout.width-35
+//                    drag.minimumY: 0
+//                    drag.maximumY: boardlayout.height-35
+//                    onPositionChanged: {
+//                        draColor = dragItem.color
+//                        bIsDrag = true
+//                    }
+//                    onReleased: {
+//                        bIsDrag = false
+//                    }
+//                }
+//            }
+//        }
 
-        DropArea {
-            id: dropContainer;
-            property bool bFollow: followArea.visible
-            anchors.top: boardText.bottom
-            anchors.topMargin: 6
-            anchors.left: parent.left
-            anchors.leftMargin: 50
-            width: boardlayout.width-35
-            height: boardlayout.height-35
-            onEntered: {
-                drag.accepted = true;
-                if (!bIsDrag) {
-                    followArea.visible = false
-                    followArea.color = drag.getDataAsString("color");
-                } else {
-                    followArea.color = draColor
-                }
-            }
-            onPositionChanged: {
-                drag.accepted = true;
-                followArea.visible = true
-                followArea.x = drag.x
-                followArea.y = drag.y
-            }
-            onDropped: {
-                if(drop.supportedActions == Qt.CopyAction){
-                    var component =  dragColor.createObject(boardlayout,{
-                                                          "x": drop.x,
-                                                          "y": drop.y,
-                                                          "width": parseInt(drop.getDataAsString("width")),
-                                                          "height": parseInt(drop.getDataAsString("height")),
-                                                          "color": drop.getDataAsString("color"),
-                                                          "Drag.supportedActions": Qt.MoveAction,
-                                                          "Drag.dragType": Drag.Internal
-                                                      });
-                    workModel.append({"workStation":component})
-                    followArea.visible = false
-                }
-                drop.acceptProposedAction();
-                drop.accepted = true;
-            }
-            Rectangle {
-                id: followArea
-                radius: 35
-                width: 35
-                height: 35
-                border.color: "white"
-                border.width: 1
-                visible: parent.containsDrag
-                onVisibleChanged: {
-//                    console.log("aaaaaaaaa",followArea.visible)
-                }
-            }
-        }
+//        DropArea {
+//            id: dropContainer;
+//            property bool bFollow: followArea.visible
+//            anchors.top: boardText.bottom
+//            anchors.topMargin: 6
+//            anchors.left: parent.left
+//            anchors.leftMargin: 50
+//            width: boardlayout.width-35
+//            height: boardlayout.height-35
+//            onEntered: {
+//                drag.accepted = true;
+//                if (!bIsDrag) {
+//                    followArea.visible = false
+//                    followArea.color = drag.getDataAsString("color");
+//                } else {
+//                    followArea.color = draColor
+//                }
+//            }
+//            onPositionChanged: {
+//                drag.accepted = true;
+//                followArea.visible = true
+//                followArea.x = drag.x
+//                followArea.y = drag.y
+//            }
+//            onDropped: {
+//                if(drop.supportedActions == Qt.CopyAction){
+//                    var component =  dragColor.createObject(boardlayout,{
+//                                                          "x": drop.x,
+//                                                          "y": drop.y,
+//                                                          "width": parseInt(drop.getDataAsString("width")),
+//                                                          "height": parseInt(drop.getDataAsString("height")),
+//                                                          "color": drop.getDataAsString("color"),
+//                                                          "Drag.supportedActions": Qt.MoveAction,
+//                                                          "Drag.dragType": Drag.Internal
+//                                                      });
+//                    workModel.append({"workStation":component})
+//                    followArea.visible = false
+//                }
+//                drop.acceptProposedAction();
+//                drop.accepted = true;
+//            }
+//            Rectangle {
+//                id: followArea
+//                radius: 35
+//                width: 35
+//                height: 35
+//                border.color: "white"
+//                border.width: 1
+//                visible: parent.containsDrag
+//                onVisibleChanged: {
+////                    console.log("aaaaaaaaa",followArea.visible)
+//                }
+//            }
+//        }
         CButton {
             id: editSplice
             anchors.bottom: testSplice.top
@@ -869,7 +868,7 @@ Item {
         width: parent.width*0.9
         height: parent.width*0.4
         visible: content.bIsEdit ? true : false
-        listModel: content.bIsEdit ? partModel : testModel
+        listModel: content.bIsEdit ? partModel : spliceModel
         titleName: content.bIsEdit ? qsTr("Add Part") : qsTr("Add Existing Splice")
         componentName: content.bIsEdit ? qsTr("Part Name") : qsTr("SPLICE NAME")
         componentData: qsTr("DATE CREATED")
@@ -884,6 +883,7 @@ Item {
             content.bIsEdit = false
         }
         onSignalAddExistSelectClick: {
+            //que hanshu
             backGround.visible = false
             backGround.opacity = 0
             addExit.visible = false
@@ -1165,6 +1165,7 @@ Item {
             }
         }
     }
+
     KeyBoardNum {
         id: keyNum
         anchors.centerIn: parent

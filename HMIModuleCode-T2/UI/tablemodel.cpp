@@ -164,6 +164,11 @@ QVariant WorkOrderModel::getWorkOrderValue(int index, QString key)
     }
 }
 
+void WorkOrderModel::removeValue(int id, QString name)
+{
+    m_workOrderAdaptor->DeleteOneRecordFromTable(id,name);
+}
+
 //QString WorkOrderModel::getContacterName(QString contacterId)
 //{
 //    Contacter contacter;
@@ -305,6 +310,11 @@ int SpliceModel::rowCount(const QModelIndex & parent) const
 int SpliceModel::count()
 {
     return splices->count();
+}
+
+void SpliceModel::removeValue(int id, QString name)
+{
+    m_spliceAdaptor->DeleteOneRecordFromTable(id,name);
 }
 
 int SpliceModel::columnCount(const QModelIndex &parent) const
@@ -546,6 +556,11 @@ QVariant PartModel::getValue(int index, QString key)
     }
 }
 
+void PartModel::removeValue(int id, QString name)
+{
+    m_partAdaptor->DeleteOneRecordFromTable(id, name);
+}
+
 /*******************************OperaTorModel*****************************/
 
 
@@ -660,6 +675,11 @@ bool OperatorModel::login(QString passwd, OperatorElement *operatot)
         }
     }
     return false;
+}
+
+void OperatorModel::removeValue(int id, QString name)
+{
+    m_operatorAdaptor->DeleteOneRecordFromTable(id,name);
 }
 
 
@@ -871,6 +891,11 @@ QVariant AlarmModel::getAlarmValue(int index, QString key)
     }
 }
 
+void AlarmModel::removeValue(int id, QString name)
+{
+    m_alarmAdaptor->DeleteOneRecordFromTable(id,name);
+}
+
 /*****************WorkOrderHistory************************/
 
 WeldHistoryModel::WeldHistoryModel(QObject *parent) :
@@ -993,6 +1018,11 @@ int WeldHistoryModel::rowCount(const QModelIndex & parent) const
 int WeldHistoryModel::count()
 {
     return historys->count();
+}
+
+void WeldHistoryModel::removeValue(int id, QString name)
+{
+    m_weldHistoryAdaptor->DeleteOneRecordFromTable(id,name);
 }
 
 
@@ -1168,6 +1198,11 @@ int WireModel::count()
     return wires->count();
 }
 
+void WireModel::removeValue(int id, QString name)
+{
+    m_wireAdaptor->DeleteOneRecordFromTable(id,name);
+}
+
 int WireModel::columnCount(const QModelIndex &parent) const
 {
     return 1;
@@ -1308,6 +1343,11 @@ int MaintenanceLogModel::rowCount(const QModelIndex & parent) const
 int MaintenanceLogModel::count()
 {
     return logs->count();
+}
+
+void MaintenanceLogModel::removeValue(int id, QString name)
+{
+    m_maintenanceLogAdaptor->DeleteOneRecordFromTable(id,name);
 }
 
 int MaintenanceLogModel::columnCount(const QModelIndex &parent) const

@@ -116,12 +116,12 @@ Item {
 //        font.pointSize: 24
 //        text: qsTr("Scan ID")
 //    }
+
     TextInput {
         id: mima
         anchors.left: title4.horizontalCenter
         anchors.leftMargin: -50
         anchors.right: parent.right
-//        horizontalAlignment: Qt.AlignHCenter
         anchors.verticalCenter: title1.verticalCenter
         anchors.verticalCenterOffset: -100
         maximumLength: 4
@@ -131,6 +131,22 @@ Item {
         color: "white"
         text: qsTr("")
         echoMode: TextInput.Password
+        focus: true
+        Keys.enabled: true
+        Keys.onReturnPressed: {
+        }
+        Keys.onPressed: {
+        }
+        Component.onCompleted: {
+            mima.forceActiveFocus()
+            mima.cursorVisible = false
+        }
+        onTextChanged: {
+            if (mima.text.length == 4) {
+                if (hmiAdaptor.login(mima.text))
+                    passWordInputOk()
+            }
+        }
     }
     Row {
         anchors.left: mima.left

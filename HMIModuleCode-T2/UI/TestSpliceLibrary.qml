@@ -86,23 +86,6 @@ Item {
             text: qsTr("QLIANTITY")
         }
     }
-    ListModel {
-        id: listModel
-        Component.onCompleted: {
-            listModel.append({"name":"work order id1","date":"2016/10/13","middle":"part65487911111111111111111111111111111111","count":"1adasd","opacityValue":"0"})
-            listModel.append({"name":"work order id2","date":"2016/10/13","middle":"part654879","count":"sdsd","opacityValue":"0"})
-            listModel.append({"name":"work order id3","date":"2016/10/13","middle":"part654879","count":"asdad","opacityValue":"0"})
-            listModel.append({"name":"work order id4","date":"2016/10/13","middle":"part654879","count":"asdsa","opacityValue":"0"})
-            listModel.append({"name":"work order id5","date":"2016/10/13","middle":"part65487911","count":"10","opacityValue":"0"})
-            listModel.append({"name":"work order id5","date":"2016/10/13","middle":"part6548791","count":"10","opacityValue":"0"})
-            listModel.append({"name":"work order id5","date":"2016/10/13","middle":"part6548","count":"100111","opacityValue":"0"})
-            listModel.append({"name":"work order id5","date":"2016/10/13","middle":"123","count":"123","opacityValue":"0"})
-            listModel.append({"name":"work order id5","date":"2016/10/13","middle":"123","count":"123","opacityValue":"0"})
-            listModel.append({"name":"work order id5","date":"2016/10/13","middle":"213","count":"213","opacityValue":"0"})
-            listModel.append({"name":"work order id5","date":"2016/10/13","middle":"123","count":"123","opacityValue":"0"})
-            listModel.append({"name":"work order id5","date":"2016/10/13","middle":"123","count":"123","opacityValue":"0"})
-        }
-    }
     Rectangle {
         id: tipsRec
         anchors.top: headTitle.bottom
@@ -190,6 +173,8 @@ Item {
             }
         }
     }
+    //        list << "SpliceId" << "SpliceName" << "DateCreated" << "OperatorName" << "CrossSection" << "TotalWires" << "Verified" << "WeldMode" << "Energy" << "Amplitude"
+    //             << "Width" << "TriggerPressure" << "WeldPressure" << "Time+" << "Time-" << "Power+" << "Power-" << "Pre-Height+" << "Pre-Height-" << "Height+" << "Height-" << "count";
     Component {
         id: listDelegate
         Item {
@@ -202,7 +187,7 @@ Item {
                 verticalAlignment: Qt.AlignVCenter
                 width: (parent.width-120)/4
                 elide: Text.ElideRight
-                text: name
+                text: SpliceName
                 clip: true
                 color: "white"
                 font.pixelSize: 20
@@ -215,7 +200,7 @@ Item {
                 anchors.leftMargin: 40
                 verticalAlignment: Qt.AlignVCenter
                 width: (parent.width-120)/4
-                text: date
+                text: DateCreated
                 clip: true
                 color: "white"
                 font.pixelSize: 20
@@ -228,7 +213,7 @@ Item {
                 anchors.leftMargin: 40
                 verticalAlignment: Qt.AlignVCenter
                 width: (parent.width-120)/4
-                text: middle
+                text: TotalWires
                 elide: Text.ElideRight
                 clip: true
                 color: "white"

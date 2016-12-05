@@ -534,7 +534,7 @@ Item {
         anchors.leftMargin: (Screen.width - dialog.width)/2
         width: languageRep.visible ? 1270 : 700
         height: languageRep.visible ? 659 : 525
-        source: "qrc:/images/images/dialogbg.png"
+        source: "qrc:/images/images/bg.png"
         z: background.z+1
         Grid {
             id: language

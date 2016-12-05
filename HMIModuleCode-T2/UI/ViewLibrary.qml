@@ -9,6 +9,31 @@ Item {
     id: viewLib
     property int selectIndx: -1
     property int count: partTitleModel.count
+
+    function shrinkGetValue(index1,index2)
+    {
+        if (index2 == 0 )
+            return shrinkModel.get(index1).shrinkid
+        else if (index2 == 1 )
+            return shrinkModel.get(index1).temperature
+        else if (index2 == 2 )
+            return shrinkModel.get(index1).times
+    }
+
+    function initPage()
+    {
+        var list
+        list = hmiAdaptor.dataCommunicationGetValue("shrinkData")
+        if (list.length % 3 == 0)
+        {
+            for (var i = 0 ;i < list.length / 3; i++)
+            {
+                shrinkModel.append({shrinkid:list[i*3],temperature:list[i*3+1],times:list[i*3+2]})
+            }
+        }
+
+    }
+
     Rectangle {
         id: leftArea
         anchors.top: parent.top
@@ -191,7 +216,66 @@ Item {
                     anchors.leftMargin: 10
                 }
             }
+
+            CButton {
+                id: shrink
+                width: column.width
+                textColor: "white"
+                RadioButton {
+                    id: shrinkRadio
+                    visible: false
+                    exclusiveGroup: checkGroup
+                    onCheckedChanged: {
+                        if (shrinkRadio.checked) {
+                            shrink.backgroundItem.source = "qrc:/images/images/icon-bg.png"
+                            headRepeater.model = shrinkTitleModel
+                            viewLib.count = shrinkTitleModel.count
+                            listView.model = shrinkModel
+                        }
+                        else {
+                            shrink.backgroundItem.source = ""
+                        }
+                    }
+                }
+                backgroundComponent: Image {
+                    anchors.fill: parent
+                    source: ""
+                }
+                onClicked: {
+                    if (!shrinkRadio.checked)
+                        shrinkRadio.checked = !shrinkRadio.checked
+                }
+                Line {
+                    width: parent.width
+                    height: 1
+                    lineColor: "#1987ab"
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: 3
+                }
+                Image {
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                    anchors.rightMargin: 18
+                    source: "qrc:/images/images/right.png"
+                }
+                Text {
+                    text: qsTr("Shrink")
+                    font.pointSize: 20
+                    font.family: "arial"
+                    color: "white"
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.left: parent.left
+                    anchors.leftMargin: 10
+                }
+            }
         }
+    }
+    ListModel {
+        id: shrinkTitleModel
+    }
+
+    ListModel {
+        id: shrinkModel
     }
 
     ListModel {
@@ -208,6 +292,7 @@ Item {
 //        list << "partId" << "name" << "date" << "totalSplices" << "type" << "operatorName" << "processMode" << "ofWorkstation" << "ofSplicesperWorkstation" << "rows" << "columns" << "maxSplicesPerZone";
 
         Component.onCompleted: {
+            initPage()
             partKeyModel.append({"title":"name"})
             partKeyModel.append({"title":"date"})
             partKeyModel.append({"title":"totalSplices"})
@@ -219,6 +304,10 @@ Item {
             partKeyModel.append({"title":"rows"})
             partKeyModel.append({"title":"columns"})
             partKeyModel.append({"title":"maxSplicesPerZone"})
+
+            shrinkTitleModel.append({title:qsTr("Shrink Tube Id")})
+            shrinkTitleModel.append({title:qsTr("Temp(℃)")})
+            shrinkTitleModel.append({title:qsTr("Time(S)")})
 
             partTitleModel.append({"title":"PartName"})
             partTitleModel.append({"title":"DateCreated"})
@@ -297,6 +386,7 @@ Item {
             id: headRepeater
             model: partTitleModel
             delegate:  Text {
+                id: tempTitle
                 verticalAlignment: Qt.AlignVCenter
                 width: 200
                 font.family: "arial"
@@ -305,6 +395,34 @@ Item {
                 clip: true
                 elide: Text.ElideRight
                 text: qsTr(title)
+//                Rectangle {
+//                    id: rect
+//                    width: 10
+//                    height: parent.height
+//                    anchors.right: parent.right
+//                    MouseArea {
+//                        id: mymouse
+//                        anchors.fill: parent
+//                        cursorShape: Qt.SizeHorCursor
+//                        drag.target: parent
+//                        drag.axis: Drag.XAxis
+//                        drag.maximumX: 400
+//                        drag.minimumX: 200
+//                        hoverEnabled: true
+////                        onMouseXChanged: {
+////                            if (mouse.accepted)
+////                            {
+////                                parent.parent.width = 200 + mouseX
+////                            }
+////                        }
+//                    }
+//                    onXChanged: {
+//                        if (mymouse.pressed) {
+//                            console.log("xxxxxxxxxxxxx",rect.x)
+//                            parent.width = 200 + rect.x
+//                        }
+//                    }
+//                }
             }
         }
     }
@@ -340,7 +458,7 @@ Item {
         anchors.right: scrollbar2.left
         width: 11
         height: 17
-        visible: true
+        visible: listView.width > scrollbar2.width ? true : false
         source: "qrc:/images/images/left.png"
     }
     Image {
@@ -349,7 +467,7 @@ Item {
         anchors.left: scrollbar2.right
         width: 11
         height: 17
-        visible: true
+        visible: listView.width > scrollbar2.width ? true : false
         source: "qrc:/images/images/right.png"
     }
     Image {
@@ -428,7 +546,7 @@ Item {
         height: 17
         color: "#585858"
         radius: 10
-        visible: true
+        visible: listView.width > scrollbar2.width ? true : false
         Rectangle {
             id: button2
             anchors.top: parent.top
@@ -475,6 +593,8 @@ Item {
                     id: listRepeater
                     model: viewLib.count
                     delegate:  Text {
+                        id: tempText
+                        property var newObject: null
                         anchors.verticalCenter: parent.verticalCenter
                         width: 200
                         font.family: "arial"
@@ -482,7 +602,27 @@ Item {
                         color: "white"
                         clip: true
                         elide: Text.ElideRight
-                        text: listView.model.getValue(listIndex,headRepeater.model.get(index).title)
+                        text: listView.model == shrinkModel ? shrinkGetValue(listIndex,index) : listView.model.getValue(listIndex,headRepeater.model.get(index).title)
+                        MouseArea {
+                            anchors.fill: parent
+//                            z:10
+                            hoverEnabled: true
+                            onEntered: {
+                                tempText.color = "red"
+                                tempText.newObject = Qt.createQmlObject('import QtQuick 2.0;Rectangle {color: "#052a40";property alias mytext: tempText.text;height: tempText.height; width:tempText.width;Text {id: tempText;anchors.verticalCenter: parent.verticalCenter;text: qsTr("")
+;font.family: "arial";font.pixelSize: 20;color: "white";wrapMode: Text.WordWrap; maximumLineCount: 60}}',parent,"");
+                                tempText.newObject.mytext = tempText.text
+                                if (tempText.width > 600)
+                                    tempText.width = 600
+//                                tempText.newObject.width = tempText.width
+//                                tempText.newObject.height = tempText.height
+
+                            }
+                            onExited: {
+                                tempText.color = "white"
+                                tempText.newObject.destroy()
+                            }
+                        }
                     }
                 }
             }
@@ -534,6 +674,10 @@ Item {
                     root.menuInit(0)
                 else if (wireRadio.checked)
                     root.menuInit(19)
+                else if (shrinkRadio.checked){
+                    backGround.visible = true
+                    dialog.visible = true
+                }
             }
         }
         CButton {
@@ -552,6 +696,148 @@ Item {
             width: (parent.width-54)/4
             textColor: "white"
             text: qsTr("Back")
+        }
+    }
+    Rectangle {
+        id: backGround
+        anchors.fill: parent
+        color: "black"
+        opacity: 0.5
+        visible: false
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+            }
+        }
+
+    }
+    Image {
+        id: dialog
+        visible: false
+        anchors.centerIn: parent
+        width: 639
+        height: 390
+        source: "qrc:/images/images/dialogbg.png"
+        Text {
+            id: shrinkId
+            anchors.top: parent.top
+            anchors.topMargin: 60
+            anchors.right: inputshrinkId.left
+            anchors.rightMargin: 20
+            width: 150
+            height: 60
+            font.pointSize: 18
+            font.family: "arial"
+            text: qsTr("Shrink Tube ID")
+            verticalAlignment: Qt.AlignVCenter
+            horizontalAlignment: Qt.AlignRight
+            color: "white"
+        }
+        MyLineEdit {
+            id: inputshrinkId
+            anchors.top: parent.top
+            anchors.topMargin: 60
+            anchors.right: parent.right
+            anchors.rightMargin: 72
+            horizontalAlignment: Qt.AlignHCenter
+            width: 375
+            height: 60
+            inputWidth: 375
+            inputColor: "white"
+            inputHeight: 60
+            inputText: shrinkModel.get(selectIndx).shrinkid
+        }
+        Text {
+            id: temperatureText
+            anchors.top: inputshrinkId.bottom
+            anchors.topMargin: 20
+            anchors.right: inputTemperature.left
+            anchors.rightMargin: 20
+            width: 150
+            height: 60
+            font.pointSize: 18
+            font.family: "arial"
+            text: qsTr("Temp")
+            verticalAlignment: Qt.AlignVCenter
+            horizontalAlignment: Qt.AlignRight
+            color: "white"
+        }
+        MyLineEdit {
+            id: inputTemperature
+            property var partId: 1
+            anchors.top: inputshrinkId.bottom
+            anchors.topMargin: 20
+            anchors.right: parent.right
+            anchors.rightMargin: 72
+            horizontalAlignment: Qt.AlignHCenter
+            width: 375
+            height: 60
+            inputWidth: 375
+            inputColor: "white"
+            inputHeight: 60
+            inputText: shrinkModel.get(selectIndx).temperature
+        }
+        Text {
+            id: timeText
+            anchors.top: temperatureText.bottom
+            anchors.topMargin: 20
+            anchors.right: inputtimeText.left
+            anchors.rightMargin: 20
+            width: 150
+            height: 60
+            font.pointSize: 18
+            font.family: "arial"
+            text: qsTr("Time")
+            verticalAlignment: Qt.AlignVCenter
+            horizontalAlignment: Qt.AlignRight
+            color: "white"
+        }
+        MyLineEdit {
+            id: inputtimeText
+            anchors.top: temperatureText.bottom
+            anchors.topMargin: 20
+            anchors.right: parent.right
+            anchors.rightMargin: 72
+            width: 375
+            height: 60
+            inputWidth: 375
+            inputHeight: 60
+            inputColor: "white"
+            horizontalAlignment: Qt.AlignHCenter
+            inputText: shrinkModel.get(selectIndx).times
+        }
+        CButton {
+            id: cancel
+            anchors.right: sure.left
+            anchors.rightMargin: 15
+            anchors.top: timeText.bottom
+            anchors.topMargin: 16
+            width: 180
+            text: qsTr("CANCEL")
+            textColor: "white"
+            iconSource: "qrc:/images/images/cancel.png"
+            onClicked: {
+                backGround.visible = false
+                dialog.visible = false
+            }
+        }
+
+        CButton {
+            id: sure
+            anchors.right: parent.right
+            anchors.rightMargin: 72
+            anchors.top: timeText.bottom
+            anchors.topMargin: 16
+            width: 180
+            text: qsTr("OK")
+            textColor: "white"
+            iconSource: "qrc:/images/images/OK.png"
+            onClicked: {
+                shrinkModel.remove(selectIndx)
+                shrinkModel.insert(selectIndx,{shrinkid:inputshrinkId.inputText,temperature:inputTemperature.inputText,times:inputtimeText.inputText})
+                backGround.visible = false
+                dialog.visible = false
+            }
         }
     }
 }
