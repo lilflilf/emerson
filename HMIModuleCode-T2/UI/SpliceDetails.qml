@@ -19,7 +19,7 @@ Item {
     property var selectLocation: ""
     property var wireCount: 0
     property var wireName: ""
-    signal wireSelected(var selectColor,var selectDirection,var selectPosition,var selectText)
+    signal wireSelected(var selectColor,var selectDirection,var selectPosition,var selectText,var selectWireName)
     signal changing(var bIsChang)
 
     function changeTop()
@@ -209,7 +209,6 @@ Item {
         }
         else if (selectDirection == "right" && selectLocation == "bottom")
         {
-            console.log("xxxxxxxxxxxxxx",selectPosition)
             if (selectPosition == "rightList")
             {
                 selectPosition = "bottomRight"
@@ -427,11 +426,11 @@ Item {
         height: parent.height * 0.7
         anchors.top: top.bottom
         anchors.topMargin: parent.height * 0.1 / 2
-        Rectangle {
-            anchors.fill: parent
-            color: "black"
-            opacity: 0.2
-        }
+//        Rectangle {
+//            anchors.fill: parent
+//            color: "black"
+//            opacity: 0.2
+//        }
         ListModel {
             id: listModelLeft
             Component.onCompleted: {
@@ -541,14 +540,14 @@ Item {
                             selectPosition = leftItem.position
                             selectColor = leftRec.color
                             selectText = mytextLeft.text
-                            wireSelected(leftRec.color,"left",leftItem.position,mytextLeft.text)
+                            wireSelected(leftRec.color,"left",leftItem.position,mytextLeft.text,myWireNameLeft.text)
                             changing(false)
 
                         }
                         else if (leftItem.position == "leftList" && radioButtonLeft.checked)
                         {
                             changing(true)
-                            wireSelected(leftRec.color,"left",leftItem.position,mytextLeft.text)
+                            wireSelected(leftRec.color,"left",leftItem.position,mytextLeft.text,myWireNameLeft.text)
                             selectPosition = leftItem.position
                             selectIndex = index
                             selectColor = leftRec.color
@@ -646,14 +645,14 @@ Item {
                             selectPosition = rightItem.position
                             selectColor = rightRec.color.toString()
                             selectText = mytext.text
-                            wireSelected(rightRec.color,"right",rightItem.position,mytext.text)
+                            wireSelected(rightRec.color,"right",rightItem.position,mytext.text,myWireNameRight.text)
                             changing(false)
 
                         }
                         else if (rightItem.position == "rightList" && radioButton.checked)
                         {
                             changing(true)
-                            wireSelected(rightRec.color,"right",rightItem.position,mytext.text)
+                            wireSelected(rightRec.color,"right",rightItem.position,mytext.text,myWireNameRight.text)
                             selectPosition = rightItem.position
                             selectIndex = index
                             selectColor = rightRec.color.toString()
