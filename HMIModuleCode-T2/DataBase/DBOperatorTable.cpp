@@ -85,7 +85,7 @@ int DBOperatorTable::InsertRecordIntoTable(void *_obj)
 
     query.prepare(SQLSentence[INSERT_OPERATOR_TABLE]);
     query.addBindValue(((OperatorElement*)_obj)->OperatorName);
-    QDateTime TimeLabel = QDateTime::fromTime_t(((OperatorElement*)_obj)->CreatedDate);
+    QDateTime TimeLabel = QDateTime::currentDateTime();
     query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
     query.addBindValue(((OperatorElement*)_obj)->WhoCreatedNewID);
     query.addBindValue(((OperatorElement*)_obj)->Password);

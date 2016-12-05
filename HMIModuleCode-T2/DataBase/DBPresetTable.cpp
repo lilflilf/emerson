@@ -255,7 +255,7 @@ int DBPresetTable::InsertRecordIntoTable(void *_obj)
 
     query.prepare(SQLSentence[INSERT_SPLICE_TABLE]);
     query.addBindValue(((PresetElement*)_obj)->SpliceName);
-    QDateTime TimeLabel = QDateTime::fromTime_t(((PresetElement*)_obj)->CreatedDate);
+    QDateTime TimeLabel = QDateTime::currentDateTime();
     query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
     query.addBindValue(((PresetElement*)_obj)->OperatorID);
     query.addBindValue(((PresetElement*)_obj)->CrossSection);

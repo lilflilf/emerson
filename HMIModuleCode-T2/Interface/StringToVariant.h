@@ -5,7 +5,7 @@
 class StringToVariant
 {
 public:
-    int GaugeToInt(QString);
+    int GaugeToInt(QString Gauge, QString GaugeAWG);
     int CrossSectionToInt(QString);
     int EnergyToInt(QString);
     int AmplitudeToInt(QString);

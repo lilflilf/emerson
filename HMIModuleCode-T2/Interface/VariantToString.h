@@ -15,7 +15,7 @@ class VariantToString
 private:
     static UtilityClass *_Utility;
 public:
-    QString GaugeToString(int Gauge, int GaugeAWG);
+    struct BRANSONDATA GaugeToString(int Gauge, int GaugeAWG);
     QString CrossSectionToString(int);
     struct BRANSONDATA EnergyToString(int);
     struct BRANSONDATA AmplitudeToString(int);
