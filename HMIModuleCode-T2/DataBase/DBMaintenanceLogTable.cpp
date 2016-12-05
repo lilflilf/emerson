@@ -45,9 +45,10 @@ bool DBMaintenanceLogTable::CreateNewTable()
     return bResult;
 }
 
-bool DBMaintenanceLogTable::InsertRecordIntoTable(void *_obj)
+int DBMaintenanceLogTable::InsertRecordIntoTable(void *_obj)
 {
     bool bResult = false;
+    int iResult = -1;
     if(_obj == NULL)
         return false;
 
@@ -68,12 +69,13 @@ bool DBMaintenanceLogTable::InsertRecordIntoTable(void *_obj)
 
     bResult = query.exec();
     if (bResult == false)   //run SQL
-    {
         qDebug() << "SQL ERROR:"<< query.lastError();
-    }
-
+    else
+        iResult = query.lastInsertId().toInt(&bResult);
+    if(bResult == false)
+        iResult = -1;
     MaintenanceLogDBObj.close();
-    return bResult;
+    return iResult;
 }
 
 bool DBMaintenanceLogTable::QueryEntireTable(QMap<int, QString> *_obj)

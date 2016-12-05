@@ -5,6 +5,39 @@
 DBPartTable* DBPartTable::_instance = NULL;
 QString DBPartTable::PartDBFile   = "Part.db";
 QString DBPartTable::DatabaseDir = "c:\\BransonData\\Library\\";
+const QString SQLSentence[] = {
+    "CREATE TABLE Part ("                       /*0 Create Part Table*/
+    "ID INTEGER PRIMARY KEY AUTOINCREMENT, "
+    "PartName VARCHAR UNIQUE, "
+    "CreatedDate VARCHAR, OperatorID INT, "
+    /* PartTypeSetting */
+    "ProcessMode ENUM,"
+    "TotalWorkstation INT, MaxSplicesPerWorkstation INT, "
+    "Rows INT, Columns INT, MaxSplicesPerZone INT, "
+    "NoOfSplice INT, JSONSplice VARCHAR)",
+
+    "INSERT INTO Part ("                        /*1 Insert record into Part Table*/
+    "PartName, CreatedDate, OperatorID, "
+    "ProcessMode, TotalWorkstation, MaxSplicesPerWorkstation, "
+    "Rows, Columns, MaxSplicesPerZone, NoOfSplice, JSONSplice) "
+    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+
+    "SELECT ID, PartName FROM Part",            /*2 Query Entire Part Table */
+
+    "SELECT * FROM Part WHERE ID = ? AND PartName = ?",
+                                                /*3 Query One Record From WorkOrder Table */
+    "DELETE FROM Part",                         /*4 Delete Entire Part Table*/
+
+    "DELETE FROM Part WHERE ID = ? AND PartName = ?",
+                                                /*5 Delete One Record from Part Table*/
+
+    "UPDATE Part SET PartName = ?, CreatedDate = ?, OperatorID = ?, "
+    "ProcessMode = ?, TotalWorkstation = ?, MaxSplicesPerWorkstation = ?, "
+    "Rows = ?, Columns = ?, MaxSplicesPerZone = ?, NoOfSplice = ?, JSONSplice = ? "
+    "WHERE ID = ?",                             /*6 Update One Record to Part Table*/
+
+};
+
 DBPartTable* DBPartTable::Instance()
 {
     if(_instance == 0){
@@ -95,9 +128,10 @@ bool DBPartTable::CreateNewTable()
     return bResult;
 }
 
-bool DBPartTable::InsertRecordIntoTable(void *_obj)
+int DBPartTable::InsertRecordIntoTable(void *_obj)
 {
     bool bResult = false;
+    int iResult = -1;
     if(_obj == NULL)
         return false;
 
@@ -136,12 +170,13 @@ bool DBPartTable::InsertRecordIntoTable(void *_obj)
 
     bResult = query.exec();
     if (bResult == false)   //run SQL
-    {
         qDebug() << "SQL ERROR InsertRecordIntoTable:"<< query.lastError();
-    }
-
+    else
+        iResult = query.lastInsertId().toInt(&bResult);
+    if(bResult == false)
+        iResult = -1;
     PartDBObj.close();
-    return bResult;
+    return iResult;
 }
 
 bool DBPartTable::QueryEntireTable(QMap<int, QString> *_obj)

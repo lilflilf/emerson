@@ -12,15 +12,13 @@ typedef void (*ptrCallbackFun)(void*); //define a the recall
 
 class UtilityClass
 {  
-private:
-    DataShownStructure txtData[DIN_end];
 public:
+    DataShownStructure txtData[DIN_end];
     int Maxpower;
 public:
     void SetTextData(enum ScreenShowDataType TypeIndex,int Data, int min, int max,
                      int incrementor, float factor, QString formater);
 public:
-
     void InitializeTextData();
     QString FormatedDataToString(ScreenShowDataType TypeIndex, int Data);
     QString FormatedDataToString(enum ScreenShowDataType TypeIndex, long Data);

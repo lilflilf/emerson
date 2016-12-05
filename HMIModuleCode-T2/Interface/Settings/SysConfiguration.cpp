@@ -6,6 +6,13 @@ Status_Data &Status_Data::operator= (const Status_Data &StatusDataObj)
     this->RevCode = StatusDataObj.RevCode;
     this->CreatedDate = StatusDataObj.CreatedDate;
     this->OperatorName = StatusDataObj.OperatorName;
+    this->AWGToAreaTable.clear();
+    QMap<int, int>::const_iterator i = StatusDataObj.AWGToAreaTable.constBegin();
+    while(i != StatusDataObj.AWGToAreaTable.constEnd())
+    {
+        this->AWGToAreaTable.insert(i.key(),i.value());
+        ++i;
+    }
 
     this->Soft_Settings.Lang_Support = StatusDataObj.Soft_Settings.Lang_Support;
     this->Soft_Settings.Horn_Calibrate = StatusDataObj.Soft_Settings.Horn_Calibrate;

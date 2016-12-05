@@ -7,13 +7,13 @@
 #include <QtSql/QSqlDriver>
 #include <QDateTime>
 #include "Interface/Definition.h"
-#include "sqlsentence.h"
+//#include "sqlsentence.h"
 
 class SQLITCLASS
 {
 public:
     virtual bool CreateNewTable() = 0;
-    virtual bool InsertRecordIntoTable(void* _obj) = 0;
+    virtual int InsertRecordIntoTable(void* _obj) = 0;
     virtual bool UpdateRecordIntoTable(void* _obj) = 0;
     virtual bool QueryEntireTable(QMap<int, QString>* _obj) = 0;
     virtual bool QueryOneRecordFromTable(int ID, QString Name, void* _obj) = 0;

@@ -20,6 +20,8 @@
 #define MINSTOPCOUNT     0
 #define MINSQUEEZETIME   0
 #define MINHOLDTIME      0
+#define MINANTISIDETIME  100
+#define MINCUTOFFTIME    100
 #define MINPREBURST      0
 #define MINFORCE         0
 #define MINCOOLDUR       100
@@ -44,15 +46,17 @@
 #define MAXSTOPCOUNT     1000               //Pieces
 #define MAXSQUEEZETIME   200                //Seconds * 100
 #define MAXHOLDTIME      200                //Seconds * 100
+#define MAXANTISIDETIME  1000               //Secs * 200
+#define MAXCUTOFFTIME    1000               //Secs * 200
 #define MAXPREBURST      50                 //Seconds * 1000
 #define MAXFORCE         (1.2 * MAXWELDPRESSURE)  //PSI * 10
-#define MINWIREAREA      0.1
-#define MAXWIREAREA      40                 //* 100
+#define MINWIREAREA      10
+#define MAXWIREAREA      4000                 //* 100
 #define MINWIREREF       0.1
 #define MAXWIREREF       40
 #define DEFWIREAREA      10
-#define MINEDITWIRE      0.1
-#define MAXEDITWIRE      20
+#define MINEDITWIRE      10
+#define MAXEDITWIRE      2000
 #define MINFORMULAAREA   0
 #define MAXFORMULAAREA   40
 #define MINSTEPAMPLITUDE 2                  //Min value of Amplitude2
@@ -79,16 +83,22 @@
 enum ScreenShowDataType{
 // Data Index Numbers
     DINZero,
+    DINGauge,
+    DINCrossSection,
     DINEnergy,
     DINWidth,
     DINPressure,
     DINAmplitude,
+    DINActTime,
     DINTimePl,
     DINTimeMs,
+    DINActPower,
     DINPowerPl,
     DINPowerMs,
+    DINActPreHgt,
     DINPre_HgtPl,
     DINPre_HgtMs,
+    DINActHgt,
     DINHeightPl,
     DINHeightMs,
     DINForcePl,
@@ -102,6 +112,8 @@ enum ScreenShowDataType{
     DINStopCounter,
     DINSqueezeTime,
     DINHoldTime,
+    DINAntiSpliceTime,
+    DINCutOffTime,
     DINCoolDur,
     DINCoolDel,
     DINFlagBits,

@@ -4,6 +4,35 @@
 DBWireTable* DBWireTable::_instance = NULL;
 QString DBWireTable::WireDBFile   = "Wire.db";
 QString DBWireTable::DatabaseDir = "c:\\BransonData\\Library\\";
+
+const QString SQLSentence[] = {
+    "CREATE TABLE Wire ("                   /*0 Create Wire Table*/
+    "ID INTEGER PRIMARY KEY AUTOINCREMENT, "
+    "WireName VARCHAR, "
+    "CreatedDate VARCHAR, OperatorID INT, Color VARCHAR, "
+    "StripeType INT, StripeColor VARCHAR, Gauge INT, "
+    "MetalType INT, HorizontalLocation INT, VerticalLocation INT, "
+    "VerticalPosition INT)",
+
+    "INSERT INTO Wire ("                    /*1 Insert record into Wire Table*/
+    "WireName, CreatedDate, OperatorID, Color, "
+    "StripeType, StripeColor, Gauge, MetalType, "
+    "HorizontalLocation, VerticalLocation, VerticalPosition)"
+    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+
+    "SELECT ID, WireName FROM Wire",        /*2 Query Entire Wire Table */
+
+    "SELECT * FROM Wire WHERE ID = ? AND WireName = ?",
+                                            /*3 Query One Record From Splice Table */
+    "DELETE FROM Wire",                     /*4 Delete Entire Wire Table*/
+    "DELETE FROM Wire WHERE ID = ? AND WireName = ?",
+                                            /*5 Delete One Record from Wire Table*/
+    "UPDATE Wire Set WireName = ?, CreatedDate = ?, OperatorID = ?, "
+    "Color = ?, StripeType = ?, StripeColor = ?, Gauge = ?, MetalType = ?, "
+    "HorizontalLocation = ?, VerticalLocation = ?, VerticalPosition = ? "
+    "WHERE ID = ?",                         /*6 Update One Record to Wire Table*/
+};
+
 DBWireTable* DBWireTable::Instance()
 {
     if(_instance == 0){
@@ -44,9 +73,10 @@ bool DBWireTable::CreateNewTable()
     return bResult;
 }
 
-bool DBWireTable::InsertRecordIntoTable(void *_obj)
+int DBWireTable::InsertRecordIntoTable(void *_obj)
 {
     bool bResult = false;
+    int iResult = -1;
     if(_obj == NULL)
         return false;
 
@@ -75,11 +105,13 @@ bool DBWireTable::InsertRecordIntoTable(void *_obj)
 
     bResult = query.exec();   //run SQL
     if(bResult == false)
-    {
         qDebug() << "SQL ERROR:"<< query.lastError();
-    }
+    else
+        iResult = query.lastInsertId().toInt(&bResult);
+    if(bResult == false)
+        iResult = -1;
     WireDBObj.close();
-    return bResult;
+    return iResult;
 }
 
 bool DBWireTable::QueryEntireTable(QMap<int, QString> *_obj)

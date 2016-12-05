@@ -2,6 +2,7 @@
 #define DEFINITION_H
 #include <QString>
 #include <QMap>
+#include <QHash>
 
 struct BRANSONDATA
 {
@@ -60,7 +61,8 @@ struct WireElement
 
     QString Color;
     struct STRIPE Stripe;
-    int Gauge;
+    int Gauge;               //Area of Wire in mm*mm/100
+    int GaugeAWG;
     enum MetalType TypeOfWire;
     enum HorizontalLocation Side;
     enum VerticalLocation VerticalSide;
@@ -109,7 +111,7 @@ struct SHRINKTUBE
 
 };
 
-struct WELDSETTING
+struct BASICWELDSETTING
 {
     int Energy;               //Energy in joules
     int Amplitude;            //Amplitude in microns
@@ -141,7 +143,9 @@ struct ADVANCESETTING
     int ABDur;                //Secs * 100
 
     bool CutOff;           //CutterOption
+    int CutOffSpliceTime;
     bool AntiSide;
+    int AntiSideSpliceTime;
 
     int MeasuredWidth;
     int MeasuredHeight;
@@ -208,6 +212,12 @@ struct TESTSETTING
     struct TEACHMODESETTING TeachModeSetting;
     bool TestingDone;
 };
+struct WELDSETTING
+{
+    struct BASICWELDSETTING BasicSetting;
+    struct QUALITYWINDONSETTING QualitySetting;
+    struct ADVANCESETTING AdvanceSetting;
+};
 
 class PresetElement
 {
@@ -222,10 +232,8 @@ public:
     QString PresetPicNamePath;
     bool Verified;
 
-    struct WELDSETTING WeldSetting;
-    struct QUALITYWINDONSETTING QualitySetting;
-    struct ADVANCESETTING AdvanceSetting;
-
+    struct WELDSETTING WeldSettings;
+    unsigned int HashCode;
     int NoOfWires;            //Number of wires in this splice
     /*WireEl(1 To MAX_WIRE_ELEMENTS) As WireElement*/
     QMap<int,QString> WireIndex;   //Store data for individual wires
@@ -244,38 +252,39 @@ public:
         PresetPicNamePath.clear();
         Verified = false;
 
-        WeldSetting.Energy = -1;
-        WeldSetting.Amplitude = -1;
-        WeldSetting.Pressure = -1;
-        WeldSetting.TrigPres = -1;
-        WeldSetting.Width = -1;
-        QualitySetting.Time.Minus = 0;
-        QualitySetting.Time.Plus = 1000;               //Seconds * 200
-        QualitySetting.Power.Minus = 0;
-        QualitySetting.Power.Plus = 4800;
-        QualitySetting.Preheight.Minus = 0;
-        QualitySetting.Preheight.Plus = 1500;               //mm * 100
-        QualitySetting.Height.Minus = 0;
-        QualitySetting.Height.Plus = 1500;
-        AdvanceSetting.ABDelay = 0;
-        AdvanceSetting.ABDur = 0;
-        AdvanceSetting.AntiSide = false;
-        AdvanceSetting.CutOff = false;
-        AdvanceSetting.HoldTime = 0;
-        AdvanceSetting.MeasuredHeight = 0;
-        AdvanceSetting.MeasuredWidth = 0;
-        AdvanceSetting.PreBurst = 0;
-        AdvanceSetting.SqzTime = 0;
-        AdvanceSetting.WeldMode = ENERGY;
-        AdvanceSetting.StepWeld.StepWeldMode = STEPDISABLE;
-        AdvanceSetting.StepWeld.Amplitude2 = -1;
-        AdvanceSetting.StepWeld.EnergyToStep = -1;
-        AdvanceSetting.StepWeld.PowerToStep = -1;
-        AdvanceSetting.StepWeld.TimeToStep = -1;
-        AdvanceSetting.ShrinkTube.ShrinkOption = false;
-        AdvanceSetting.ShrinkTube.ShrinkTemperature = -1;
-        AdvanceSetting.ShrinkTube.ShrinkTime = -1;
-        AdvanceSetting.ShrinkTube.ShrinkTubeID = -1;
+        WeldSettings.BasicSetting.Energy = -1;
+        WeldSettings.BasicSetting.Amplitude = -1;
+        WeldSettings.BasicSetting.Pressure = -1;
+        WeldSettings.BasicSetting.TrigPres = -1;
+        WeldSettings.BasicSetting.Width = -1;
+        WeldSettings.QualitySetting.Time.Minus = 0;
+        WeldSettings.QualitySetting.Time.Plus = 1000;               //Seconds * 200
+        WeldSettings.QualitySetting.Power.Minus = 0;
+        WeldSettings.QualitySetting.Power.Plus = 4800;
+        WeldSettings.QualitySetting.Preheight.Minus = 0;
+        WeldSettings.QualitySetting.Preheight.Plus = 1500;               //mm * 100
+        WeldSettings.QualitySetting.Height.Minus = 0;
+        WeldSettings.QualitySetting.Height.Plus = 1500;
+        WeldSettings.AdvanceSetting.ABDelay = 0;
+        WeldSettings.AdvanceSetting.ABDur = 0;
+        WeldSettings.AdvanceSetting.AntiSide = false;
+        WeldSettings.AdvanceSetting.CutOff = false;
+        WeldSettings.AdvanceSetting.HoldTime = 0;
+        WeldSettings.AdvanceSetting.MeasuredHeight = 0;
+        WeldSettings.AdvanceSetting.MeasuredWidth = 0;
+        WeldSettings.AdvanceSetting.PreBurst = 0;
+        WeldSettings.AdvanceSetting.SqzTime = 0;
+        WeldSettings.AdvanceSetting.WeldMode = ENERGY;
+        WeldSettings.AdvanceSetting.StepWeld.StepWeldMode = STEPDISABLE;
+        WeldSettings.AdvanceSetting.StepWeld.Amplitude2 = -1;
+        WeldSettings.AdvanceSetting.StepWeld.EnergyToStep = -1;
+        WeldSettings.AdvanceSetting.StepWeld.PowerToStep = -1;
+        WeldSettings.AdvanceSetting.StepWeld.TimeToStep = -1;
+        WeldSettings.AdvanceSetting.ShrinkTube.ShrinkOption = false;
+        WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTemperature = -1;
+        WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime = -1;
+        WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID = -1;
+        HashCode = qHashBits(&WeldSettings, sizeof(WeldSettings), 0);
         WireIndex.clear();
         NoOfWires = WireIndex.size();
         TestSetting.Qutanty = -1;
@@ -303,80 +312,101 @@ public:
         WireIndex.clear();
         NoOfWires = WireIndex.size();
     }
-    PresetElement operator=(const PresetElement &PresetObject) const
+    PresetElement operator=(const PresetElement &PresetObject)
     {
-        PresetElement Obj;
-        Obj.RevCode = PresetObject.RevCode;
-        Obj.SpliceID = PresetObject.SpliceID;
-        Obj.SpliceName = PresetObject.SpliceName;
-        Obj.CreatedDate = PresetObject.CreatedDate;
-        Obj.OperatorID = PresetObject.OperatorID;
+        if(this == &PresetObject)
+            return *this;
+        this->RevCode = PresetObject.RevCode;
+        this->SpliceID = PresetObject.SpliceID;
+        this->SpliceName = PresetObject.SpliceName;
+        this->CreatedDate = PresetObject.CreatedDate;
+        this->OperatorID = PresetObject.OperatorID;
 
-        Obj.CrossSection = PresetObject.CrossSection;
-        Obj.PresetPicNamePath = PresetObject.PresetPicNamePath;
-        Obj.Verified = PresetObject.Verified;
+        this->CrossSection = PresetObject.CrossSection;
+        this->PresetPicNamePath = PresetObject.PresetPicNamePath;
+        this->Verified = PresetObject.Verified;
 
-        Obj.WeldSetting.Energy = PresetObject.WeldSetting.Energy;
-        Obj.WeldSetting.Amplitude = PresetObject.WeldSetting.Amplitude;
-        Obj.WeldSetting.Pressure = PresetObject.WeldSetting.Pressure;
-        Obj.WeldSetting.TrigPres = PresetObject.WeldSetting.TrigPres;
-        Obj.WeldSetting.Width = PresetObject.WeldSetting.Width;
-        Obj.QualitySetting.Time.Minus = PresetObject.QualitySetting.Time.Minus;
-        Obj.QualitySetting.Time.Plus = PresetObject.QualitySetting.Time.Plus;
-        Obj.QualitySetting.Power.Minus = PresetObject.QualitySetting.Power.Minus;
-        Obj.QualitySetting.Power.Plus = PresetObject.QualitySetting.Power.Plus;
-        Obj.QualitySetting.Preheight.Minus = PresetObject.QualitySetting.Preheight.Minus;
-        Obj.QualitySetting.Preheight.Plus = PresetObject.QualitySetting.Preheight.Plus;
-        Obj.QualitySetting.Height.Minus = PresetObject.QualitySetting.Height.Minus;
-        Obj.QualitySetting.Height.Plus = PresetObject.QualitySetting.Height.Plus;
-        Obj.AdvanceSetting.ABDelay = PresetObject.AdvanceSetting.ABDelay;
-        Obj.AdvanceSetting.ABDur = PresetObject.AdvanceSetting.ABDur;
-        Obj.AdvanceSetting.AntiSide = PresetObject.AdvanceSetting.AntiSide;
-        Obj.AdvanceSetting.CutOff = PresetObject.AdvanceSetting.CutOff;
-        Obj.AdvanceSetting.HoldTime = PresetObject.AdvanceSetting.HoldTime;
-        Obj.AdvanceSetting.MeasuredHeight = PresetObject.AdvanceSetting.MeasuredHeight;
-        Obj.AdvanceSetting.MeasuredWidth = PresetObject.AdvanceSetting.MeasuredWidth;
-        Obj.AdvanceSetting.PreBurst = PresetObject.AdvanceSetting.PreBurst;
-        Obj.AdvanceSetting.SqzTime = PresetObject.AdvanceSetting.SqzTime;
-        Obj.AdvanceSetting.WeldMode = PresetObject.AdvanceSetting.WeldMode;
-        Obj.AdvanceSetting.StepWeld.StepWeldMode
-                = PresetObject.AdvanceSetting.StepWeld.StepWeldMode;
-        Obj.AdvanceSetting.StepWeld.Amplitude2
-                = PresetObject.AdvanceSetting.StepWeld.Amplitude2;
-        Obj.AdvanceSetting.StepWeld.EnergyToStep
-                = PresetObject.AdvanceSetting.StepWeld.EnergyToStep;
-        Obj.AdvanceSetting.StepWeld.PowerToStep
-                = PresetObject.AdvanceSetting.StepWeld.PowerToStep;
-        Obj.AdvanceSetting.StepWeld.TimeToStep
-                = PresetObject.AdvanceSetting.StepWeld.TimeToStep;
-        Obj.AdvanceSetting.ShrinkTube.ShrinkOption
-                = PresetObject.AdvanceSetting.ShrinkTube.ShrinkOption;
-        Obj.AdvanceSetting.ShrinkTube.ShrinkTemperature
-                = PresetObject.AdvanceSetting.ShrinkTube.ShrinkTemperature;
-        Obj.AdvanceSetting.ShrinkTube.ShrinkTime
-                = PresetObject.AdvanceSetting.ShrinkTube.ShrinkTime;
-        Obj.AdvanceSetting.ShrinkTube.ShrinkTubeID
-                = PresetObject.AdvanceSetting.ShrinkTube.ShrinkTubeID;
+        this->WeldSettings.BasicSetting.Energy =
+                PresetObject.WeldSettings.BasicSetting.Energy;
+        this->WeldSettings.BasicSetting.Amplitude = PresetObject.WeldSettings.BasicSetting.Amplitude;
+        this->WeldSettings.BasicSetting.Pressure = PresetObject.WeldSettings.BasicSetting.Pressure;
+        this->WeldSettings.BasicSetting.TrigPres = PresetObject.WeldSettings.BasicSetting.TrigPres;
+        this->WeldSettings.BasicSetting.Width = PresetObject.WeldSettings.BasicSetting.Width;
+        this->WeldSettings.QualitySetting.Time.Minus =
+                PresetObject.WeldSettings.QualitySetting.Time.Minus;
+        this->WeldSettings.QualitySetting.Time.Plus =
+                PresetObject.WeldSettings.QualitySetting.Time.Plus;
+        this->WeldSettings.QualitySetting.Power.Minus =
+                PresetObject.WeldSettings.QualitySetting.Power.Minus;
+        this->WeldSettings.QualitySetting.Power.Plus =
+                PresetObject.WeldSettings.QualitySetting.Power.Plus;
+        this->WeldSettings.QualitySetting.Preheight.Minus =
+                PresetObject.WeldSettings.QualitySetting.Preheight.Minus;
+        this->WeldSettings.QualitySetting.Preheight.Plus =
+                PresetObject.WeldSettings.QualitySetting.Preheight.Plus;
+        this->WeldSettings.QualitySetting.Height.Minus =
+                PresetObject.WeldSettings.QualitySetting.Height.Minus;
+        this->WeldSettings.QualitySetting.Height.Plus =
+                PresetObject.WeldSettings.QualitySetting.Height.Plus;
+        this->WeldSettings.AdvanceSetting.ABDelay =
+                PresetObject.WeldSettings.AdvanceSetting.ABDelay;
+        this->WeldSettings.AdvanceSetting.ABDur =
+                PresetObject.WeldSettings.AdvanceSetting.ABDur;
+        this->WeldSettings.AdvanceSetting.AntiSide =
+                PresetObject.WeldSettings.AdvanceSetting.AntiSide;
+        this->WeldSettings.AdvanceSetting.CutOff =
+                PresetObject.WeldSettings.AdvanceSetting.CutOff;
+        this->WeldSettings.AdvanceSetting.HoldTime =
+                PresetObject.WeldSettings.AdvanceSetting.HoldTime;
+        this->WeldSettings.AdvanceSetting.MeasuredHeight =
+                PresetObject.WeldSettings.AdvanceSetting.MeasuredHeight;
+        this->WeldSettings.AdvanceSetting.MeasuredWidth =
+                PresetObject.WeldSettings.AdvanceSetting.MeasuredWidth;
+        this->WeldSettings.AdvanceSetting.PreBurst =
+                PresetObject.WeldSettings.AdvanceSetting.PreBurst;
+        this->WeldSettings.AdvanceSetting.SqzTime =
+                PresetObject.WeldSettings.AdvanceSetting.SqzTime;
+        this->WeldSettings.AdvanceSetting.WeldMode =
+                PresetObject.WeldSettings.AdvanceSetting.WeldMode;
+        this->WeldSettings.AdvanceSetting.StepWeld.StepWeldMode
+                = PresetObject.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode;
+        this->WeldSettings.AdvanceSetting.StepWeld.Amplitude2
+                = PresetObject.WeldSettings.AdvanceSetting.StepWeld.Amplitude2;
+        this->WeldSettings.AdvanceSetting.StepWeld.EnergyToStep
+                = PresetObject.WeldSettings.AdvanceSetting.StepWeld.EnergyToStep;
+        this->WeldSettings.AdvanceSetting.StepWeld.PowerToStep
+                = PresetObject.WeldSettings.AdvanceSetting.StepWeld.PowerToStep;
+        this->WeldSettings.AdvanceSetting.StepWeld.TimeToStep
+                = PresetObject.WeldSettings.AdvanceSetting.StepWeld.TimeToStep;
+        this->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkOption
+                = PresetObject.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkOption;
+        this->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTemperature
+                = PresetObject.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTemperature;
+        this->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime
+                = PresetObject.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime;
+        this->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID
+                = PresetObject.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID;
+        this->HashCode = PresetObject.HashCode;
         QMap<int,QString>::const_iterator i
                 = PresetObject.WireIndex.constBegin();
         while(i != PresetObject.WireIndex.constEnd())
         {
-            Obj.WireIndex.insert(i.key(),i.value());
+            this->WireIndex.insert(i.key(),i.value());
             ++i;
         }
-        Obj.NoOfWires = Obj.WireIndex.size();
-        Obj.TestSetting.Qutanty = PresetObject.TestSetting.Qutanty;
-        Obj.TestSetting.StopCount = PresetObject.TestSetting.StopCount;
-        Obj.TestSetting.TestMode = PresetObject.TestSetting.TestMode;
-        Obj.TestSetting.TeachModeSetting.TeachModeType
+        this->NoOfWires = this->WireIndex.size();
+        this->TestSetting.Qutanty = PresetObject.TestSetting.Qutanty;
+        this->TestSetting.StopCount = PresetObject.TestSetting.StopCount;
+        this->TestSetting.TestMode = PresetObject.TestSetting.TestMode;
+        this->TestSetting.TeachModeSetting.TeachModeType
                 = PresetObject.TestSetting.TeachModeSetting.TeachModeType;
         for (int i = TIME_PLRG; i<= HEIGHT_CONFRG_MS; i++)
         {
-            Obj.TestSetting.TeachModeSetting.TeachModequal_Window[i]
+            this->TestSetting.TeachModeSetting.TeachModequal_Window[i]
                     = PresetObject.TestSetting.TeachModeSetting.TeachModequal_Window[i];
         }
-        Obj.TestSetting.TestingDone = PresetObject.TestSetting.TestingDone;
-        return Obj;
+        this->TestSetting.TestingDone = PresetObject.TestSetting.TestingDone;
+        return *this;
     }
 
  };
@@ -486,6 +516,7 @@ struct SpliceIndex
 {
     int SpliceID;
     QString SpliceName;
+    unsigned int SpliceHash;
 };
 
 class WorkOrderElement
@@ -567,7 +598,22 @@ enum PASSWORDCONTROL
 
 
 
-//
+enum ALARMTYPE
+{
+    NONEALARM = -1,
+    TIMEALARM,
+    PEAKPOWERALARM,
+    PREHEIGHTALARM,
+    HEIGHTALARM,
+    OVERLOADALARM,
+    MOTORERROR,
+    HEIGHTENCODERERROR,
+    SAFETYERROR,
+    VOL24ERROR,
+    CUTERROR,
+    E_STOP,
+};
+
 class AlarmElement
 {
 public:
@@ -575,7 +621,7 @@ public:
     int AlarmID;
     QString AlarmMsg;
     unsigned int CreatedDate;
-    int AlarmType;
+    enum ALARMTYPE AlarmType;
     int WeldResultID;
     int OperatorID;
 public:
@@ -585,7 +631,7 @@ public:
         AlarmID = -1;
         AlarmMsg.clear();
         CreatedDate = 0;
-        AlarmType = -1;
+        AlarmType = NONEALARM;
         WeldResultID = -1;
         OperatorID = -1;
     }
@@ -629,7 +675,7 @@ struct WELDRESULT
     int ActualPeakPower;
     int ActualPreheight;
     int ActualPostheight;
-    int ActualAlarmflags;
+    unsigned int ActualAlarmflags;
 };
 
 enum SAMPLERATIO

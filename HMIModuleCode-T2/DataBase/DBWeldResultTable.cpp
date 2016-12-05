@@ -42,7 +42,7 @@ bool DBWeldResultTable::CreateNewTable()
     bool bResult = query.exec("CREATE TABLE WeldResultHistory ( "
         "ID INTEGER PRIMARY KEY AUTOINCREMENT,"
         "OperatorName VARCHAR, CreatedDate VARCHAR, WorkOrderID INT, WorkOrderName VARCHAR, "
-        "PartID INT, PartName VARCHAR, SpliceID INT, SpliceName VARCHAR, "
+        "PartID INT, PartName VARCHAR, SpliceID INT, SpliceName VARCHAR, SpliceHash INT, "
         "WeldCount INT, PartCount INT, CrossSection INT, ActualEnergy INT, ActualTPressure INT, "
         "ActualPressure INT, ActualAmplitude INT, ActualAmplitude2 INT, ActualWidth INT, "
         "ActualTime INT, ActualPeakPower INT, ActualPreheight INT, ActualPostheight INT, "
@@ -91,9 +91,10 @@ bool DBWeldResultTable::QSettingToJsonString(QString sPathName, QString &PowerGr
     return bResult;
 }
 
-bool DBWeldResultTable::InsertRecordIntoTable(void *_obj)
+int DBWeldResultTable::InsertRecordIntoTable(void *_obj)
 {
     bool bResult = false;
+    int iResult = -1;
     if(_obj == NULL)
         return false;
 
@@ -118,12 +119,13 @@ bool DBWeldResultTable::InsertRecordIntoTable(void *_obj)
         query.prepare(
         "INSERT INTO WeldResultHistory ( "
         "OperatorName, CreatedDate, WorkOrderID, WorkOrderName, PartID, "
-        "PartName, SpliceID, SpliceName, WeldCount, PartCount, "
-        "CrossSection, ActualEnergy, ActualTPressure, ActualPressure, ActualAmplitude, "
-        "ActualAmplitude2, ActualWidth, ActualTime, ActualPeakPower, ActualPreheight, "
-        "ActualPostheight, ActualAlarmFlags, SampleRatio, NoOfSamples, CurrentGraphDirectory) "
+        "PartName, SpliceID, SpliceName, SpliceHash, WeldCount, "
+        "PartCount, CrossSection, ActualEnergy, ActualTPressure, ActualPressure, "
+        "ActualAmplitude, ActualAmplitude2, ActualWidth, ActualTime, ActualPeakPower, "
+        "ActualPreheight, ActualPostheight, ActualAlarmFlags, SampleRatio, NoOfSamples, "
+        "CurrentGraphDirectory) "
         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
-        "?, ?, ?, ?, ?)");
+        "?, ?, ?, ?, ?, ?)");
 
         query.addBindValue(((WeldResultElement*)_obj)->OperatorName);
         QDateTime TimeLabel = QDateTime::fromTime_t(((WeldResultElement*)_obj)->CreatedDate);
@@ -134,6 +136,7 @@ bool DBWeldResultTable::InsertRecordIntoTable(void *_obj)
         query.addBindValue(((WeldResultElement*)_obj)->CurrentPart.PartName);
         query.addBindValue(((WeldResultElement*)_obj)->CurrentSplice.SpliceID);
         query.addBindValue(((WeldResultElement*)_obj)->CurrentSplice.SpliceName);
+        query.addBindValue(((WeldResultElement*)_obj)->CurrentSplice.SpliceHash);
         query.addBindValue(((WeldResultElement*)_obj)->WeldCount);
         query.addBindValue(((WeldResultElement*)_obj)->PartCount);
         query.addBindValue(((WeldResultElement*)_obj)->CrossSection);
@@ -154,12 +157,13 @@ bool DBWeldResultTable::InsertRecordIntoTable(void *_obj)
         bResult = query.exec();
     }
     if (bResult == false)   //run SQL
-    {
         qDebug() << "SQL ERROR:"<< query.lastError();
-    }
-
+    else
+        iResult = query.lastInsertId().toInt(&bResult);
+    if(bResult == false)
+        iResult = -1;
     WeldResultDBObj.close();
-    return bResult;
+    return iResult;
 }
 
 bool DBWeldResultTable::QueryEntireTable(QMap<int, QString> *_obj)
@@ -230,17 +234,19 @@ bool DBWeldResultTable::QueryOneRecordFromTable(int ID, QString OperatorName, vo
                                                 "yyyy/MM/dd hh:mm:ss");
     ((WeldResultElement*)_obj)->CreatedDate = TimeLabel.toTime_t();
     ((WeldResultElement*)_obj)->CurrentWorkOrder.WorkOrderID
-            = query.value("CurrentWorkOrderID").toInt();
+            = query.value("WorkOrderID").toInt();
     ((WeldResultElement*)_obj)->CurrentWorkOrder.WorkOrderName
-            = query.value("CurrentWorkOrderName").toString();
+            = query.value("WorkOrderName").toString();
     ((WeldResultElement*)_obj)->CurrentPart.PartID
-            = query.value("CurrentPartID").toInt();
+            = query.value("PartID").toInt();
     ((WeldResultElement*)_obj)->CurrentPart.PartName
-            = query.value("CurrentPartName").toString();
+            = query.value("PartName").toString();
     ((WeldResultElement*)_obj)->CurrentSplice.SpliceID
-            = query.value("CurrentSpliceID").toInt();
+            = query.value("SpliceID").toInt();
     ((WeldResultElement*)_obj)->CurrentSplice.SpliceName
-            = query.value("CurrentSpliceName").toString();
+            = query.value("SpliceName").toString();
+    ((WeldResultElement*)_obj)->CurrentSplice.SpliceHash
+            = query.value("SpliceHash").toInt();
     ((WeldResultElement*)_obj)->WeldCount = query.value("WeldCount").toInt();
     ((WeldResultElement*)_obj)->PartCount = query.value("PartCount").toInt();
     ((WeldResultElement*)_obj)->CrossSection = query.value("CrossSection").toInt();
@@ -332,7 +338,7 @@ bool DBWeldResultTable::UpdateRecordIntoTable(void *_obj)
     QString tmpTableName = QDateTime::currentDateTime().toString("yyyyMMdd");
     query.prepare("UPDATE ? Set "
     "OperatorName = ?, CreatedDate = ?, WorkOrderID = ?, WorkOrderName = ?, "
-    "PartID = ?, PartName = ?, SpliceID = ?, SpliceName = ?, "
+    "PartID = ?, PartName = ?, SpliceID = ?, SpliceName = ?, SpliceHash = ?, "
     "WeldCount = ?, PartCount = ?, CrossSection = ?, ActualEnergy = ?, "
     "ActualTPressure = ?, ActualPressure = ?, ActualAmplitude = ?, ActualAmplitude2 = ?, "
     "ActualWidth = ?, ActualTime = ?, ActualPeakPower = ?, ActualPreheight = ?, "
@@ -349,6 +355,7 @@ bool DBWeldResultTable::UpdateRecordIntoTable(void *_obj)
     query.addBindValue(((WeldResultElement*)_obj)->CurrentPart.PartName);
     query.addBindValue(((WeldResultElement*)_obj)->CurrentSplice.SpliceID);
     query.addBindValue(((WeldResultElement*)_obj)->CurrentSplice.SpliceName);
+    query.addBindValue(((WeldResultElement*)_obj)->CurrentSplice.SpliceHash);
     query.addBindValue(((WeldResultElement*)_obj)->WeldCount);
     query.addBindValue(((WeldResultElement*)_obj)->PartCount);
     query.addBindValue(((WeldResultElement*)_obj)->CrossSection);
@@ -722,6 +729,43 @@ bool DBWeldResultTable::QueryBySomeFields(QString WorkOrderName, QString PartNam
     WeldResultDBObj.close();
     return bResult;
 }
+
+bool DBWeldResultTable::QueryBySomeFields(QString SpliceName, unsigned int HashCode,
+                                          unsigned int time_from, unsigned int time_to, QMap<int, QString> *_obj)
+{
+    if(_obj == NULL)
+        return false;
+
+    QSqlQuery query(WeldResultDBObj);
+    bool bResult = WeldResultDBObj.open();
+    if(bResult == true){
+        query.prepare("SELECT ID, OperatorName FROM WeldResultHistory WHERE CreatedDate >= ?"
+                " AND CreatedDate <= ? AND SpliceName == ? AND SpliceHash == ?");
+
+
+        QDateTime TimeLabel = QDateTime::fromTime_t(time_from);
+        query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
+        TimeLabel = QDateTime::fromTime_t(time_to);
+        query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
+        query.addBindValue(SpliceName);
+        query.addBindValue(HashCode);
+        bResult = query.exec();
+    }
+    if(bResult == true)
+    {
+        _obj->clear();
+        while(query.next())
+            _obj->insert(query.value("ID").toInt(),
+                           query.value("OperatorName").toString());
+    }
+    else
+    {
+        qDebug() << "SQL ERROR:"<< query.lastError();
+    }
+
+    return bResult;
+}
+
 bool DBWeldResultTable::QueryOneRecordWithGraph(int ID, QString OperatorName, void *_obj)
 {
     if(_obj == NULL)
@@ -760,17 +804,19 @@ bool DBWeldResultTable::QueryOneRecordWithGraph(int ID, QString OperatorName, vo
                                                 "yyyy/MM/dd hh:mm:ss");
     ((WeldResultElement*)_obj)->CreatedDate = TimeLabel.toTime_t();
     ((WeldResultElement*)_obj)->CurrentWorkOrder.WorkOrderID
-            = query.value("CurrentWorkOrderID").toInt();
+            = query.value("WorkOrderID").toInt();
     ((WeldResultElement*)_obj)->CurrentWorkOrder.WorkOrderName
-            = query.value("CurrentWorkOrderName").toString();
+            = query.value("WorkOrderName").toString();
     ((WeldResultElement*)_obj)->CurrentPart.PartID
-            = query.value("CurrentPartID").toInt();
+            = query.value("PartID").toInt();
     ((WeldResultElement*)_obj)->CurrentPart.PartName
-            = query.value("CurrentPartName").toString();
+            = query.value("PartName").toString();
     ((WeldResultElement*)_obj)->CurrentSplice.SpliceID
-            = query.value("CurrentSpliceID").toInt();
+            = query.value("SpliceID").toInt();
     ((WeldResultElement*)_obj)->CurrentSplice.SpliceName
-            = query.value("CurrentSpliceName").toString();
+            = query.value("SpliceName").toString();
+    ((WeldResultElement*)_obj)->CurrentSplice.SpliceHash
+            = query.value("SpliceHash").toInt();
     ((WeldResultElement*)_obj)->WeldCount = query.value("WeldCount").toInt();
     ((WeldResultElement*)_obj)->PartCount = query.value("PartCount").toInt();
     ((WeldResultElement*)_obj)->CrossSection = query.value("CrossSection").toInt();
@@ -810,3 +856,4 @@ bool DBWeldResultTable::QueryOneRecordWithGraph(int ID, QString OperatorName, vo
     WeldResultDBObj.close();
     return bResult;
 }
+

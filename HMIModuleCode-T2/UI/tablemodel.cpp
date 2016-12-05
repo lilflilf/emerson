@@ -243,17 +243,17 @@ QVariant SpliceModel::data(const QModelIndex &index, int role) const
         else if (columnIdx == 6)
             value = QVariant::fromValue(mySplice.Verified);
         else if (columnIdx == 7)
-            value = QVariant::fromValue((int)mySplice.AdvanceSetting.WeldMode);
+            value = QVariant::fromValue((int)mySplice.WeldSettings.AdvanceSetting.WeldMode);
         else if (columnIdx == 8)
-            value = QVariant::fromValue(mySplice.WeldSetting.Energy);
+            value = QVariant::fromValue(mySplice.WeldSettings.BasicSetting.Energy);
         else if (columnIdx == 9)
-            value = QVariant::fromValue(mySplice.WeldSetting.Amplitude);
+            value = QVariant::fromValue(mySplice.WeldSettings.BasicSetting.Amplitude);
         else if (columnIdx == 10)
-            value = QVariant::fromValue(mySplice.WeldSetting.Width);
+            value = QVariant::fromValue(mySplice.WeldSettings.BasicSetting.Width);
         else if (columnIdx == 11)
-            value = QVariant::fromValue(mySplice.WeldSetting.TrigPres);
+            value = QVariant::fromValue(mySplice.WeldSettings.BasicSetting.TrigPres);
         else if (columnIdx == 12)
-            value = QVariant::fromValue(mySplice.WeldSetting.Pressure);
+            value = QVariant::fromValue(mySplice.WeldSettings.BasicSetting.Pressure);
         else if (columnIdx == 13)
             value = QVariant::fromValue(1);
         else if (columnIdx == 14)
@@ -271,7 +271,7 @@ QVariant SpliceModel::data(const QModelIndex &index, int role) const
         else if (columnIdx == 20)
             value = QVariant::fromValue(2);
         else if (columnIdx == 21)
-            value = QVariant::fromValue(mySplice.QualitySetting.Time.Minus);
+            value = QVariant::fromValue(mySplice.WeldSettings.QualitySetting.Time.Minus);
 
     }
     return value;
@@ -357,12 +357,12 @@ QVariant SpliceModel::getValue(int index, QString key)
     SpliceModelHash.insert("CrossSection",mySplice.CrossSection);
     SpliceModelHash.insert("TotalWires",mySplice.NoOfWires);
     SpliceModelHash.insert("Verified",mySplice.Verified);
-    SpliceModelHash.insert("WeldMode",(int)mySplice.AdvanceSetting.WeldMode);
-    SpliceModelHash.insert("Energy",mySplice.WeldSetting.Energy);
-    SpliceModelHash.insert("Amplitude",mySplice.WeldSetting.Amplitude);
-    SpliceModelHash.insert("Width",mySplice.WeldSetting.Width);
-    SpliceModelHash.insert("TriggerPressure",mySplice.WeldSetting.TrigPres);
-    SpliceModelHash.insert("WeldPressure",mySplice.WeldSetting.Pressure);
+    SpliceModelHash.insert("WeldMode",(int)mySplice.WeldSettings.AdvanceSetting.WeldMode);
+    SpliceModelHash.insert("Energy",mySplice.WeldSettings.BasicSetting.Energy);
+    SpliceModelHash.insert("Amplitude",mySplice.WeldSettings.BasicSetting.Amplitude);
+    SpliceModelHash.insert("Width",mySplice.WeldSettings.BasicSetting.Width);
+    SpliceModelHash.insert("TriggerPressure",mySplice.WeldSettings.BasicSetting.TrigPres);
+    SpliceModelHash.insert("WeldPressure",mySplice.WeldSettings.BasicSetting.Pressure);
     SpliceModelHash.insert("Time+","Time+");
     SpliceModelHash.insert("Time-","Time-");
     SpliceModelHash.insert("Power+","Power+");
@@ -371,7 +371,7 @@ QVariant SpliceModel::getValue(int index, QString key)
     SpliceModelHash.insert("Pre-Height-","Pre-Height-");
     SpliceModelHash.insert("Height+","Height+");
     SpliceModelHash.insert("Height-","Height-");
-    SpliceModelHash.insert("count",mySplice.QualitySetting.Time.Minus);
+    SpliceModelHash.insert("count",mySplice.WeldSettings.QualitySetting.Time.Minus);
 
     if (key == "") {
         return SpliceModelHash;
@@ -770,7 +770,7 @@ QVariant AlarmModel::data(const QModelIndex &index, int role) const
         else if (columnIdx == 1)
             value = QVariant::fromValue(QDateTime::fromTime_t(myAlarm.CreatedDate).toString("MM/dd/yyyy hh:mm"));
         else if (columnIdx == 2)
-            value = QVariant::fromValue(myAlarm.AlarmType);
+            value = QVariant::fromValue((int)myAlarm.AlarmType);
         else if (columnIdx == 3)
             value = QVariant::fromValue(myAlarm.WeldResultID);
         else if (columnIdx == 4)
@@ -859,8 +859,8 @@ QVariant AlarmModel::getAlarmValue(int index, QString key)
     QHash<QString, QVariant> AlarmModelHash;
     AlarmModelHash.insert("AlarmId",myAlarm.AlarmID);
     AlarmModelHash.insert("CreatedDate",QDateTime::fromTime_t(myAlarm.CreatedDate).toString("MM/dd/yyyy hh:mm"));
-    AlarmModelHash.insert("Alarm/ErrorType",myAlarm.AlarmType);
-    AlarmModelHash.insert("Alarm/ErrorLevel",myAlarm.AlarmType);
+    AlarmModelHash.insert("Alarm/ErrorType",(int)myAlarm.AlarmType);
+    AlarmModelHash.insert("Alarm/ErrorLevel",(int)myAlarm.AlarmType);
     AlarmModelHash.insert("Message",myAlarm.AlarmMsg);//myOperator.PermissionLevel;
     AlarmModelHash.insert("SpliceName",myAlarm.WeldResultID);//myOperator.PermissionLevel;
 

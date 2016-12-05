@@ -200,6 +200,7 @@ private:
     void SetSoftLimitDefaults(Status_Data* _DataStruct, bool EnableSoftLimits = false);
     void SetShrinkTubeDefaults(Status_Data* _DataStruct);
     void SetDefaultPassword(Status_Data* _DataStruct);
+    void SetAWGToMMTable(Status_Data* _DataStruct);
     void ClearPasswordData();
 public:
     void SetDefaultWeldFormula(Status_Data* _DataStruct);
@@ -214,6 +215,7 @@ public:
     void Get_INI_File();
     void Save_StatusData(bool WithUpdate = true);
     void HelpFileLoader();
+    void Init_AWGToMMTable();
 public:
     static M10INI* Instance();
 protected:

@@ -165,6 +165,8 @@ bool UtilityClass::StringJsonToMap(QString SourceString, QMap<int, struct PARTAT
 void UtilityClass::InitializeTextData()
 {
     InterfaceClass* _Interface = InterfaceClass::Instance();
+    SetTextData(DINGauge, 0, MINEDITWIRE, MAXEDITWIRE, 1, 0.01, "%.2fmm²");
+    SetTextData(DINCrossSection, 0, MINWIREAREA, MAXWIREAREA, 1, 0.01, "%.2fmm²");
     SetTextData(DINEnergy, 0, MINENERGY, MAXENERGY, 2, 1, "%dJ");
     if (_Interface->StatusData.MachineType != ACT2032)
         SetTextData(DINWidth, 0, MINWIDTH, MAXWIDTH, 2, 0.01, "%.2fmm");
@@ -197,13 +199,17 @@ void UtilityClass::InitializeTextData()
 
     SetTextData(DINAmplitude,0, MINAMPLITUDE,
                 _Interface->StatusData.Soft_Settings.Horn_Calibrate, 1, 1, "%dμm");
+    SetTextData(DINActTime, 0, MINTIME, MAXTIME, 2, 0.005, "%.2fs");
     SetTextData(DINTimePl, 0, MINTIME, MAXTIME, 2, 0.005, "%.2fs");
     SetTextData(DINTimeMs, 0, MINTIME, MAXTIME, 2, 0.005, "%.2fs");
+    SetTextData(DINActPower, 0, MINPOWER, Maxpower, 100, 1, "%dW");
     SetTextData(DINPowerPl, 0, MINPOWER, Maxpower, 100, 1, "%dW");
     SetTextData(DINPowerMs, 0, MINPOWER,
                 _Interface->StatusData.Soft_Settings.SonicGenWatts, 100, 1, "%dW");
+    SetTextData(DINActPreHgt, 0, MINHEIGHT, MAXHEIGHT, 2, 0.01, "%.2fmm");
     SetTextData(DINPre_HgtPl, 0, MINHEIGHT, MAXHEIGHT, 2, 0.01, "%.2fmm");
     SetTextData(DINPre_HgtMs, 0, MINHEIGHT, MAXHEIGHT, 2, 0.01, "%.2fmm");
+    SetTextData(DINActHgt, 0, MINHEIGHT, MAXHEIGHT, 2, 0.01, "%.2fmm");
     SetTextData(DINHeightPl, 0, MINHEIGHT, MAXHEIGHT, 2, 0.01, "%.2fmm");
     SetTextData(DINHeightMs, 0, MINHEIGHT, MAXHEIGHT, 2, 0.01, "%.2fmm");
 
@@ -213,6 +219,9 @@ void UtilityClass::InitializeTextData()
     SetTextData(DINStopCounter, 0, MINSTOPCOUNT, MAXSTOPCOUNT, 2, 1, "%dPcs");
     SetTextData(DINSqueezeTime, 0, MINSQUEEZETIME, MAXSQUEEZETIME, 2, 0.01, "%.2fs");
     SetTextData(DINHoldTime, 0, MINHOLDTIME, MAXHOLDTIME, 2, 0.01, "%.2fs");
+
+    SetTextData(DINAntiSpliceTime, 0, MINANTISIDETIME, MAXANTISIDETIME, 2, 0.005, "%.1fs" );
+    SetTextData(DINCutOffTime, 0, MINCUTOFFTIME, MAXCUTOFFTIME, 2, 0.005, "%.1fs");
 
     // Flag word is a bit field and must have all bits active
     SetTextData(DINFlagBits, 0, 0x8000, 0x7FFF, 0, 1, "");

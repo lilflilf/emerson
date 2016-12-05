@@ -142,7 +142,8 @@ enum ActualIndexer{      //Indexes for Labels on Setup Screen
 #define AdminUsername        QObject::tr("ADMIN")
 #define TechUsername         QObject::tr("TECH")
 
-#define AVERSION_NUM_FILE "VersionNum.ini"
+#define VERSION_NUM_FILE "VersionNum.ini"
+#define AWG2MM_TABLE_FILE "AWG2AreaTable.ini"
 #define TESTVERSION       QObject::tr("-T5")
 #define DESCRIPTION       QObject::tr("TEST VERSION")
 
