@@ -810,10 +810,12 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
                      float(0.2 * _Interface->StatusData.Soft_Settings.SonicGenWatts);
         }
 
-        _Utility->SetTextData(DINPowerPl, _Interface->CurrentSplice.QualitySetting.Power.Plus, MINPOWER,
-                    _Utility->Maxpower, 100, 1, "%dW");
-        _Utility->SetTextData(DINPowerMs, _Interface->CurrentSplice.QualitySetting.Power.Minus, MINPOWER,
-                    _Interface->StatusData.Soft_Settings.SonicGenWatts, 100, 1, "%dW");
+        _Utility->SetTextData(DINPowerPl,
+            _Interface->CurrentSplice.WeldSettings.QualitySetting.Power.Plus, MINPOWER,
+            _Utility->Maxpower, 100, 1, "%dW");
+        _Utility->SetTextData(DINPowerMs,
+            _Interface->CurrentSplice.WeldSettings.QualitySetting.Power.Minus, MINPOWER,
+            _Interface->StatusData.Soft_Settings.SonicGenWatts, 100, 1, "%dW");
         _M2010->ReceiveFlags.POWERrating = true;
         break;
     case IASigSequenceTable:     // Data Signature = "10"
@@ -1011,7 +1013,8 @@ bool M102IA::SetIAWidth(int WidthSet, bool SettingCheck)
     //If Not StatusData.Soft_Settings.NoToolCover4SU Then _
     //        SendIACommand IAComAuxMotion, DO_CLOSE_SAFETY
 
-    if (WidthSet == -1) WidthSet = _Interface->CurrentSplice.WeldSetting.Width;
+    if (WidthSet == -1) WidthSet =
+            _Interface->CurrentSplice.WeldSettings.BasicSetting.Width;
     _M2010->ReceiveFlags.WIDTHdata = false;
     _M10runMode->WidthError = true;
     SendIACommand(IAComSetWidth, WidthSet);

@@ -13,6 +13,7 @@
 #include "UI/hmiadaptor.h"
 #include "Interface/Maintenance/AdvancedMaintenance.h"
 #include "Interface/Interface.h"
+#include <QHash>
 
 int main(int argc, char *argv[])
 {
@@ -46,7 +47,8 @@ int main(int argc, char *argv[])
 
 
     DataBaseTest *_TestPtr = new DataBaseTest();
-    _TestPtr->TestQueryOnlyUseFieldWeldResult();
+//    _TestPtr->TestInsertOneRecordIntoWireTable();
+//    _TestPtr->TestQueryOnlyUseFieldWeldResult();
 //    _TestPtr->TestMapJsonToString();
 //    _TestPtr->TestStringJsonToMap();
 //    _TestPtr->TestInsertOneRecordIntoWorkOrderTable();
@@ -84,6 +86,15 @@ int main(int argc, char *argv[])
 //    _Interface->StatusData.Machineflags.Flag.WdthEncoderOff = 1;
 //    unsigned short tmp = _Interface->StatusData.Machineflags.Word[0];
 //    tmp = _Interface->StatusData.Machineflags.Word[3];
-
+//    struct test{
+//        int a = 0;
+//        int b = 8;
+//    }www;
+//    QByteArray ba;
+//    ba.resize(sizeof(www));
+//    memcpy(ba.data(), &www, sizeof(www));
+//    uint tmp = qHashBits(&www,sizeof(struct test), 0);
+//    uint tmp1 = qHash(ba, 0);
+//    qDebug()<<"Hash Code: "<<tmp<< "" <<tmp1;
     return app.exec();
 }

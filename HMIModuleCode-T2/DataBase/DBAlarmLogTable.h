@@ -11,7 +11,7 @@ private:
     QSqlDatabase AlarmLogDBObj;
 public:
     virtual bool CreateNewTable();
-    virtual bool InsertRecordIntoTable(void* _obj);
+    virtual int InsertRecordIntoTable(void* _obj);
     virtual bool UpdateRecordIntoTable(void* _obj);
     virtual bool QueryEntireTable(QMap<int, QString>* _obj);
     virtual bool QueryOneRecordFromTable(int ID, QString Name, void* _obj);

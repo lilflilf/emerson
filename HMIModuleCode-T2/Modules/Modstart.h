@@ -35,10 +35,12 @@ public:
     void ViewIPConfiguration();
     void SetDefaultIndicatorsForOperatorScreen();
     void StoreTopCoordinateCreateEditSpliceScreen();
-    void CheckVersionFile(VersionList CurrVersions);
+
 
     static void OfflineInitialization(void*);
 private:
+    void CheckAWGAreaTable();
+    void CheckVersionFile(VersionList CurrVersions);
     void CheckBransonFolder();
 public:
     static MODstart* Instance();

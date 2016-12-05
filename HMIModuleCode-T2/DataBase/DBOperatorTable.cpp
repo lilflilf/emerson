@@ -5,6 +5,29 @@
 DBOperatorTable* DBOperatorTable::_instance = NULL;
 QString DBOperatorTable::OperatorDBFile = "Operator.db";
 QString DBOperatorTable::DatabaseDir = "c:\\BransonData\\Library\\";
+
+const QString SQLSentence[] = {
+    "CREATE TABLE Operator ("                        /*0 Create Operator Table*/
+    "ID INTEGER PRIMARY KEY AUTOINCREMENT, OperatorName VARCHAR, "
+    "CreatedDate VARCHAR, WhoCreatedNewID INT, Password VARCHAR UNIQUE, "
+    "PermissionLevel ENUM)",
+
+    "INSERT INTO Operator (OperatorName, "           /*1 Insert record into Operator Table */
+    "CreatedDate, WhoCreatedNewID, Password, "
+    "PermissionLevel)VALUES(?, ?, ?, ?, ?)",
+
+    "SELECT ID, OperatorName FROM Operator",         /*2 Query Entire Operator Table */
+                                                     /*3 Query One Record From Operator Table*/
+    "SELECT * FROM Operator WHERE ID = ? AND OperatorName = ?",
+
+    "DELETE FROM Operator",                          /*4 Delete Entire Operator Table*/
+    "DELETE FROM Operator WHERE ID = ? AND OperatorName = ?",
+                                                     /*5 Delete One Record from Part Table*/
+    "UPDATE Operator Set OperatorName = ?, "         /*6 Update one Record to Operator Table */
+    "CreatedDate = ?, WhoCreatedNewID = ?, Password = ?, "
+    "PermissionLevel = ? WHERE ID = ?",
+};
+
 DBOperatorTable* DBOperatorTable::Instance()
 {
     if(_instance == 0){
@@ -45,9 +68,10 @@ bool DBOperatorTable::CreateNewTable()
     return bResult;
 }
 
-bool DBOperatorTable::InsertRecordIntoTable(void *_obj)
+int DBOperatorTable::InsertRecordIntoTable(void *_obj)
 {
     bool bResult = false;
+    int iResult = -1;
     if(_obj == NULL)
         return false;
 
@@ -69,12 +93,13 @@ bool DBOperatorTable::InsertRecordIntoTable(void *_obj)
 
     bResult = query.exec();
     if (bResult == false)   //run SQL
-    {
         qDebug() << "SQL ERROR:"<< query.lastError();
-    }
-
+    else
+        iResult = query.lastInsertId().toInt(&bResult);
+    if(bResult == false)
+        iResult = -1;
     OperatorDBObj.close();
-    return bResult;
+    return iResult;
 }
 
 bool DBOperatorTable::QueryEntireTable(QMap<int, QString> *_obj)

@@ -44,7 +44,10 @@ SOURCES += main.cpp \
     Interface/Settings/WeldDefaults.cpp \
     Interface/Settings/DataCommunication.cpp \
     Interface/Settings/PermissionSetting.cpp \
-    Interface/Settings/SysConfiguration.cpp
+    Interface/Settings/SysConfiguration.cpp \
+    Interface/ViewData/StatisticalTrend.cpp \
+    Interface/VariantToString.cpp \
+    Interface/StringToVariant.cpp
 
 RESOURCES += qml.qrc
 
@@ -71,7 +74,6 @@ HEADERS += \
     Modules/BransonSerial.h \
     DataBase/Sqlit3Class.h \
     Interface/Definition.h \
-    DataBase/SqlSentence.h \
     UI/hmiadaptor.h \
     TestCase/databasetest.h \
     UI/alpainteditem.h \
@@ -96,7 +98,10 @@ HEADERS += \
     Interface/Settings/OperatorLibrary.h \
     Interface/Settings/DataCommunication.h \
     Interface/Settings/PermissionSetting.h \
-    Interface/Settings/SysConfiguration.h
+    Interface/Settings/SysConfiguration.h \
+    Interface/ViewData/StatisticalTrend.h \
+    Interface/VariantToString.h \
+    Interface/StringToVariant.h
 
 DISTFILES += \
     UI/displayChinese_zh_CN.qm \

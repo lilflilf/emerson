@@ -5,6 +5,41 @@
 DBWorkOrderTable* DBWorkOrderTable::_instance = NULL;
 QString DBWorkOrderTable::WorkOrderFile = "WorkOrder.db";
 QString DBWorkOrderTable::DatabaseDir = "c:\\BransonData\\Library\\";
+
+const QString SQLSentence[] = {
+    "CREATE TABLE WorkOrder ("                  /*0 Create WorkOrder Table*/
+    "ID INTEGER PRIMARY KEY AUTOINCREMENT, "
+    "WorkOrderName VARCHAR UNIQUE, "
+    "CreatedDate VARCHAR, OperatorID INT, "
+    "NoOfPart INT, Quantity INT, CurrentPartCount INT, "
+    "CurrentSpliceID INT, CurrentSpliceName VARCHAR, WorkOrderDone INT, "
+    "JSONPartIndex VARCHAR, JSONMissSpliceList VARCHAR)",
+
+    "INSERT INTO WorkOrder ("                   /*1 Insert record into Part Table*/
+    "WorkOrderName, CreatedDate, OperatorID, "
+    "NoOfPart, Quantity, CurrentPartCount, "
+    "CurrentSpliceID, CurrentSpliceName, WorkOrderDone, "
+    "JSONPartIndex, JSONMissSpliceList) "
+    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+
+    "SELECT ID, WorkOrderName FROM WorkOrder",  /*2 Query Entire WorkOrder Table */
+
+                                                /*3 Query One Record From Wire Table */
+    "SELECT * FROM WorkOrder WHERE ID = ? AND WorkOrderName = ?",
+
+    "DELETE FROM WorkOrder",                    /*4 Delete Entire WorkOrder Table*/
+
+    "DELETE FROM WorkOrder WHERE ID = ? AND WorkOrderName = ?",
+                                                /*5 Delete One Record from WorkOrder Table*/
+
+    "UPDATE WorkOrder SET WorkOrderName = ?, CreatedDate = ?, OperatorID = ?, "
+    "NoOfPart = ?, Quantity = ?, CurrentPartCount = ?, "
+    "CurrentSpliceID = ?, CurrentSpliceName = ?, WorkOrderDone = ?, "
+    "JSONPartIndex = ?, JSONMissSpliceList = ?"
+    "WHERE ID = ?",                              /*6 Update One Record to WorkOrder Table*/
+
+};
+
 DBWorkOrderTable* DBWorkOrderTable::Instance()
 {
     if(_instance == 0){
@@ -77,9 +112,10 @@ bool DBWorkOrderTable::CreateNewTable()
     return bResult;
 }
 
-bool DBWorkOrderTable::InsertRecordIntoTable(void *_obj)
+int DBWorkOrderTable::InsertRecordIntoTable(void *_obj)
 {
     bool bResult = false;
+    int iResult = -1;
     if(_obj == NULL)
         return false;
 
@@ -116,12 +152,13 @@ bool DBWorkOrderTable::InsertRecordIntoTable(void *_obj)
     bResult = query.exec();   //run SQL
 
     if(bResult == false)
-    {
         qDebug() << "SQL ERROR:"<< query.lastError();
-    }
+    else
+        iResult = query.lastInsertId().toInt(&bResult);
+    if(bResult == false)
+        iResult = -1;
     WorkOrderDBObj.close();
-
-    return bResult;
+    return iResult;
 }
 
 bool DBWorkOrderTable::QueryEntireTable(QMap<int, QString> *_obj)
