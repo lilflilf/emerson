@@ -559,6 +559,9 @@ Item {
                     textRight: qsTr("Alum")
                     state: "left"
                     opacity: 0.8
+                    onStateChanged: {
+
+                    }
                 }
             }
 
@@ -854,24 +857,31 @@ Item {
             ListModel {
                 id: settingsModel
                 Component.onCompleted: {
-                    settingsModel.append({"topText":"Energy","bottomText":"30J"})
-                    settingsModel.append({"topText":"Trigger Pressure","bottomText":"50PSI"})
-                    settingsModel.append({"topText":"Amplitude","bottomText":"25um"})
-                    settingsModel.append({"topText":"Weld Pressure","bottomText":"50PSI"})
-                    settingsModel.append({"topText":"Width","bottomText":"12.5mm"})
+//                    settingsModel.append({"topText":"Energy","bottomText":"30J"})
+//                    settingsModel.append({"topText":"Trigger Pressure","bottomText":"50PSI"})
+//                    settingsModel.append({"topText":"Amplitude","bottomText":"25um"})
+//                    settingsModel.append({"topText":"Weld Pressure","bottomText":"50PSI"})
+//                    settingsModel.append({"topText":"Width","bottomText":"12.5mm"})
+
+                    settingsModel.append({"topText":"Energy","bottomText":spliceModel.getStructValue("Energy","current"),"maxText":spliceModel.getStructValue("Energy","max"),"minText":spliceModel.getStructValue("Energy","min")})
+                    settingsModel.append({"topText":"Trigger Pressure","bottomText":spliceModel.getStructValue("Trigger Pressure","current"),"maxText":spliceModel.getStructValue("Trigger Pressure","max"),"minText":spliceModel.getStructValue("Trigger Pressure","min")})
+                    settingsModel.append({"topText":"Amplitude","bottomText":spliceModel.getStructValue("Amplitude","current"),"maxText":spliceModel.getStructValue("Amplitude","max"),"minText":spliceModel.getStructValue("Amplitude","min")})
+                    settingsModel.append({"topText":"Weld Pressure","bottomText":spliceModel.getStructValue("Weld Pressure","current"),"maxText":spliceModel.getStructValue("Weld Pressure","max"),"minText":spliceModel.getStructValue("Weld Pressure","min")})
+                    settingsModel.append({"topText":"Width","bottomText":spliceModel.getStructValue("Width","current"),"maxText":spliceModel.getStructValue("Width","max"),"minText":spliceModel.getStructValue("Width","min")})
+
                 }
             }
             ListModel {
                 id: settingsModel2
                 Component.onCompleted: {
-                    settingsModel2.append({"topText":"Time","bottomText":"0.00s"})
-                    settingsModel2.append({"topText":"Time","bottomText":"5.00s"})
-                    settingsModel2.append({"topText":"Power","bottomText":"0W"})
-                    settingsModel2.append({"topText":"Power","bottomText":"3960W"})
-                    settingsModel2.append({"topText":"Pre-Height","bottomText":"0.00mm"})
-                    settingsModel2.append({"topText":"Pre-Height","bottomText":"15.00mm"})
-                    settingsModel2.append({"topText":"Post-Height","bottomText":"0.00mm"})
-                    settingsModel2.append({"topText":"Post-Height","bottomText":"15.00mm"})
+                    settingsModel2.append({"topText":"Time","bottomText":spliceModel.getStructValue("Time-","current"),"maxText":spliceModel.getStructValue("Time-","max"),"minText":spliceModel.getStructValue("Time-","min")})
+                    settingsModel2.append({"topText":"Time","bottomText":spliceModel.getStructValue("Time+","current"),"maxText":spliceModel.getStructValue("Time+","max"),"minText":spliceModel.getStructValue("Time+","min")})
+                    settingsModel2.append({"topText":"Power","bottomText":spliceModel.getStructValue("Power-","current"),"maxText":spliceModel.getStructValue("Power-","max"),"minText":spliceModel.getStructValue("Power-","min")})
+                    settingsModel2.append({"topText":"Power","bottomText":spliceModel.getStructValue("Power+","current"),"maxText":spliceModel.getStructValue("Power+","max"),"minText":spliceModel.getStructValue("Power+","min")})
+                    settingsModel2.append({"topText":"Pre-Height","bottomText":spliceModel.getStructValue("Pre-Height-","current"),"maxText":spliceModel.getStructValue("Pre-Height-","max"),"minText":spliceModel.getStructValue("Pre-Height-","min")})
+                    settingsModel2.append({"topText":"Pre-Height","bottomText":spliceModel.getStructValue("Pre-Height+","current"),"maxText":spliceModel.getStructValue("Pre-Height+","max"),"minText":spliceModel.getStructValue("Pre-Height+","min")})
+                    settingsModel2.append({"topText":"Post-Height","bottomText":spliceModel.getStructValue("Post-Height-","current"),"maxText":spliceModel.getStructValue("Post-Height-","max"),"minText":spliceModel.getStructValue("Post-Height-","min")})
+                    settingsModel2.append({"topText":"Post-Height","bottomText":spliceModel.getStructValue("Post-Height+","current"),"maxText":spliceModel.getStructValue("Post-Height+","max"),"minText":spliceModel.getStructValue("Post-Height+","min")})
 
 
                 }
@@ -937,8 +947,8 @@ Item {
                                 keyNum.visible = true
                                 keyNum.titleText = topText
                                 keyNum.currentValue = bottomText
-                                keyNum.minvalue = "0"
-                                keyNum.maxvalue = "100"
+                                keyNum.minvalue = minText
+                                keyNum.maxvalue = maxText
                             }
                         }
                     }
@@ -952,6 +962,7 @@ Item {
                 spacing: 10
                 height: 61
                 width: parent.width-20
+
                 CButton {
                     pointSize: 14
                     width: (parent.width-10)/2

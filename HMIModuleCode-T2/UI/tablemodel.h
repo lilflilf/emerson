@@ -78,15 +78,17 @@ public:
     QHash<int, QByteArray> roleNames() const;
 
     PresetElement presetElement;
+    VariantToString variantToString;
 signals:
 
 
 public slots:
     void setRoles(const QStringList &names);
-    Q_INVOKABLE QVariant getValue(int index, QString key);
+    Q_INVOKABLE QVariant getValue(int index, QString key); // table
     Q_INVOKABLE void removeValue(int id, QString name);
     Q_INVOKABLE int count();
 
+    Q_INVOKABLE QString getStructValue(QString valueKey, QString valueType); // create wire
     Q_INVOKABLE void createNew();
 //    Q_INVOKABLE void setNewValue();
 
