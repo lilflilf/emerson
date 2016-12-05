@@ -40,6 +40,13 @@ Item {
                     wireDirection.state = selectDirection
                     edit2.inputText = selectText
                     topRadio.checked = true
+                    tabPositionGroup.current = null
+                    if (selectPosition == "rightList" || selectPosition == "leftList")
+                        midRadio.checked = true
+                    else if (selectPosition == "topLeft" || selectPosition == "topRight")
+                        topRadio.checked = true
+                    else if (selectPosition == "bottomLeft" || selectPosition == "bottomRight")
+                        bottomRadio.checked = true
                 }
                 onChanging: {
                     console.log("onChanging",bIsChang)
@@ -689,6 +696,7 @@ Item {
                         source: "qrc:/images/images/down.png"
                     }
                     RadioButton {
+                        id: bottomRadio
                         scale: 2
                         anchors.left: parent.left
                         anchors.leftMargin: 80

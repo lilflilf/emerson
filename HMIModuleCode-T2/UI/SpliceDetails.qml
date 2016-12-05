@@ -72,14 +72,18 @@ Item {
     }
     onSelectDirectionChanged: {
         if (detail.selectPosition == "rightList" && selectDirection != "right"){
-            listModelLeft.append(listModelRight.get(detail.selectIndex))
+//            listModelLeft.append(listModelRight.get(detail.selectIndex))
+            listModelLeft.append({"myLineLength":200,"mycolor":selectColor.toString(),"isCheck":false,"linetext":selectText})
+            wirePositionGroup.current = null
             listModelRight.remove(detail.selectIndex, 1)
             detail.selectPosition = "leftList"
             listModelLeft.set(listModelLeft.count - 1, {"isCheck":true})
             detail.selectIndex = listModelLeft.count - 1
         }
         else if (detail.selectPosition == "leftList" && selectDirection != "left"){
-            listModelRight.append(listModelLeft.get(detail.selectIndex))
+//            listModelRight.append(listModelLeft.get(detail.selectIndex))
+            listModelRight.append({"myLineLength":200,"mycolor":selectColor.toString(),"isCheck":false,"linetext":selectText})
+            wirePositionGroup.current = null
             listModelLeft.remove(detail.selectIndex, 1)
             detail.selectPosition = "rightList"
             listModelRight.set(listModelRight.count - 1, {"isCheck":true})
@@ -234,7 +238,8 @@ Item {
             id: listViewLeft
             anchors.rightMargin: -40
             anchors.verticalCenter: parent.verticalCenter
-            height: listModelLeft.count * 50
+            anchors.verticalCenterOffset: 5
+            height: listModelLeft.count <= 5 ? listModelLeft.count * (detail.height * 0.1 + 10) : listModelLeft.count < 10 ? listModelLeft.count * 30 : 300
             model: listModelLeft
             delegate: left
             interactive: false
@@ -245,10 +250,13 @@ Item {
             anchors.leftMargin: parent.width / 2 - 40
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
-            height: listModelRight.count * 50
+            height: listModelRight.count <= 5 ? listModelRight.count * (detail.height * 0.1 + 10) : listModelRight.count < 10 ? listModelRight.count * 30 : 300
             model: listModelRight
             delegate: right
             interactive: false
+            Component.onCompleted: {
+
+            }
         }
 
         CButton {
@@ -257,9 +265,8 @@ Item {
             width: 60
             height: 40
             onClicked: {
-                if (listModelRight.count < 8)
+                if (listModelRight.count < 19)
                     listModelRight.append({"myLineLength":200,"mycolor":"white","isCheck":false,"linetext":"0"})
-
                 //fileDialog.open()
                 //loadder.source = "qrc:/UI/MyFileDialog.qml"
             }
@@ -286,13 +293,15 @@ Item {
             id: leftItem
             property alias lineLength: leftLine.width
             property alias myColor: leftRec.color
-            property alias myText: mytext.text
+            property alias myText: mytextLeft.text
             property var position: "leftList"
             width: middle.width / 2 + 40
-            height: listModelLeft.count <= 5 ? detail.height * 0.1 + 10 : 30
+//            height: listModelLeft.count <= 5 ? detail.height * 0.1 + 10 : 30
+            height: listModelLeft.count <= 5 ? detail.height * 0.1 + 10 : (listModelLeft.count > 5 && listModelLeft.count <= 10) ? 30 : index < (listModelLeft.count - 10) * 2 ? 15 : 30
+
             Rectangle {
                 id: leftLine
-                width: myLineLength
+                width: index % 2 && index < (listModelLeft.count - 10) * 2 ? myLineLength + 150 : myLineLength
                 height: 2
                 anchors.right: parent.right
                 anchors.verticalCenter: leftRec.verticalCenter
@@ -307,11 +316,39 @@ Item {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        radioButton.checked = !radioButton.checked
+                        radioButtonLeft.checked = !radioButtonLeft.checked
+
+                        if (leftItem.position != "leftList" && radioButtonLeft.checked)
+                        {
+                            changing(true)
+                            selectPosition = leftItem.position
+                            selectColor = leftRec.color
+                            selectText = mytextLeft.text
+                            wireSelected(leftRec.color,"left",leftItem.position,mytextLeft.text)
+                            changing(false)
+
+                        }
+                        else if (leftItem.position == "leftList" && radioButtonLeft.checked)
+                        {
+                            changing(true)
+                            wireSelected(leftRec.color,"left",leftItem.position,mytextLeft.text)
+                            selectPosition = leftItem.position
+                            selectIndex = index
+                            selectColor = leftRec.color
+                            selectText = mytextLeft.text
+                            listModelLeft.set(index,{"isCheck":radioButtonLeft.checked})
+                            selectDirection = "left"
+                            changing(false)
+
+                        }
+                        else if (leftItem.position == "leftList" && !radioButtonLeft.checked)
+                        {
+                            listModelLeft.set(index,{"isCheck":radioButtonLeft.checked})
+                        }
                     }
                 }
                 Text {
-                    id: mytext
+                    id: mytextLeft
                     anchors.centerIn: parent
                     text: qsTr(linetext)
                     font.family: "arial"
@@ -321,52 +358,29 @@ Item {
             }
 
             RadioButton {
-                id: radioButton
+                id: radioButtonLeft
                 checked: isCheck
                 exclusiveGroup: wirePositionGroup
                 visible: false
                 onCheckedChanged: {
-                    if (leftItem.position != "leftList" && radioButton.checked)
+                    if (!checked)
                     {
-                        changing(true)
-                        selectPosition = leftItem.position
-                        selectColor = leftRec.color
-                        selectText = mytext.text
-                        wireSelected(leftRec.color,"left",leftItem.position,mytext.text)
-                        changing(false)
-
+                        nameLeft.visible = false
                     }
-                    else if (leftItem.position == "leftList" && radioButton.checked)
-                    {
-                        changing(true)
-                        wireSelected(leftRec.color,"left",leftItem.position,mytext.text)
-                        selectPosition = leftItem.position
-                        selectIndex = index
-                        selectColor = leftRec.color
-                        selectText = mytext.text
-                        listModelLeft.set(index,{"isCheck":checked})
-                        selectDirection = "left"
-                        changing(false)
-
-                    }
-                    else if (leftItem.position == "leftList" && !radioButton.checked)
-                    {
-                        listModelLeft.set(index,{"isCheck":checked})
-                    }
-                    name.visible = radioButton.checked
-
+                    else
+                        nameLeft.visible = true
                 }
 
             }
             Rectangle {
-                id: name
+                id: nameLeft
                 width: leftRec.width + 5
                 height: leftRec.height + 5
                 color: Qt.rgba(0,0,0,0)
                 border.color: "white"
                 border.width: 1
                 anchors.centerIn: leftRec
-                visible: radioButton.checked ? true : false
+                visible: radioButtonLeft.checked ? true : false
             }
         }
     }
@@ -379,10 +393,11 @@ Item {
             property var position: "rightList"
             id: rightItem
             width: 300
-            height: listModelLeft.count <= 5 ? detail.height * 0.1 + 10 : 30
+//            height: listModelRight.count <= 5 ? detail.height * 0.1 + 10 : 30
+            height: listModelRight.count <= 5 ? detail.height * 0.1 + 10 : (listModelRight.count > 5 && listModelRight.count <= 10) ? 30 : index < (listModelRight.count - 10) * 2 ? 15 : 30
             Rectangle {
                 id: rightLine
-                width: myLineLength
+                width: index % 2 && index < (listModelRight.count - 10) * 2 ? myLineLength + 150 : myLineLength
                 height: 2
                 anchors.left: parent.left
                 anchors.verticalCenter: rightRec.verticalCenter

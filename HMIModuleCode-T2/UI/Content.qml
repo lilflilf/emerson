@@ -160,7 +160,7 @@ Item {
                 pointSize: 16
                 onClicked: {
                     loader.source = "qrc:/UI/CreatWire.qml"
-                    titleTextChanged("Creat Splice")
+                    titleTextChanged("Create Splice")
                 }
             }
 
