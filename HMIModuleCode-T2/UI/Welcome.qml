@@ -4,7 +4,7 @@ import QtQuick.Layouts 1.0
 import QtQuick.Controls 1.3
 import QtQuick.Window 2.2
 
-Item {
+FocusScope {
     signal passWordInputOk()
     ListModel {
         id: listModel
@@ -131,6 +131,22 @@ Item {
         color: "white"
         text: qsTr("")
         echoMode: TextInput.Password
+        focus: true
+        Keys.enabled: true
+        Keys.onReturnPressed: {
+        }
+        Keys.onPressed: {
+        }
+        Component.onCompleted: {
+            mima.forceActiveFocus()
+            mima.cursorVisible = false
+        }
+        onTextChanged: {
+            if (mima.text.length == 4) {
+                if (hmiAdaptor.login(mima.text))
+                    passWordInputOk()
+            }
+        }
     }
     Row {
         anchors.left: mima.left

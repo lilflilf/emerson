@@ -9,7 +9,8 @@ Window {
     visible: true
     title: qsTr("NewWireSplice")
     flags: Qt.FramelessWindowHint |Qt.Window //| Qt.WindowSystemMenuHint | 0x00800000 | Qt.WindowFullscreenButtonHint
-//     flags: Qt.Window | 0x00800000
+    signal dialogReturn(bool reb)
+    //     flags: Qt.Window | 0x00800000
     property var initIndex: 0
     /*0-- create
       1-- edit
@@ -109,6 +110,25 @@ Window {
         //w.setWindowFlags(w.windowFlags()& ~Qt::WindowMaximizeButtonHint&  ~Qt::WindowMinimizeButtonHint);
 //        w.showMaximized();
         root.showFullScreen()
+    }
+    function showDialog(okVisable,cancelVisable,okText,cancelText,centerText)
+    {
+        cdialog.okvisible = okVisable
+        cdialog.cancelvisible = cancelVisable
+        cdialog.okText = okText
+        cdialog.cancelText = cancelText
+        cdialog.centerText = centerText
+        cdialog.visible = true
+    }
+
+    CDialog {
+        id: cdialog
+        anchors.centerIn: parent
+        visible: false
+        z: 20
+        onCliceTo: {
+            dialogReturn(reb)
+        }
     }
 
     Image {

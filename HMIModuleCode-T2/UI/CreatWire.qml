@@ -47,7 +47,6 @@ Item {
                         bottomRadio.checked = true
                 }
                 onChanging: {
-                    console.log("onChanging",bIsChang)
                     detailIsChang = bIsChang
                 }
             }
@@ -90,6 +89,10 @@ Item {
                 borderColor: "#375566"
                 defaultText: "WIRE NAME"
                 maxSize: 20
+                onTextChange: {
+                    console.log("xxxxxxxxxxxxxxx",wireName.inputText)
+                    spliceDetailsItem.wireName = wireName.inputText
+                }
             }
             Label {
                 id: properties
@@ -184,7 +187,6 @@ Item {
                                         radioButton.checked = !radioButton.checked
                                         if (radioButton.checked) {
                                             backColor.pickColor = colorArray[index]
-                                            console.log("color picker == ",colorArray[index])
                                         }
                                     }
                                 }
@@ -555,7 +557,6 @@ Item {
                     state: "left"
                     opacity: 0.8
                     onStateChanged: {
-                        console.log("onStateChanged",wireDirection.state,spliceDetailsItem.selectDirection,detailIsChang)
                         if(detailIsChang)
                             return
                         if (spliceDetailsItem.selectDirection != wireDirection.state)
@@ -631,6 +632,30 @@ Item {
                         anchors.verticalCenter: labelTop.verticalCenter
                         source: "qrc:/images/images/up.png"
                     }
+                    MouseArea {
+                        id: mouse1
+                        anchors.fill: parent
+                        property bool isDialog: false
+                        onClicked: {
+                            if (spliceDetailsItem.changeTop()) {
+                                root.showDialog(true,true,"OK","CANCEL","Would you want to move the activated wire to the selected position?")
+                                isDialog = true
+                                return
+                            }
+                            topRadio.checked = !topRadio.checked
+                        }
+                        Connections {
+                            target: root
+                            onDialogReturn: {
+                                if (!mouse1.isDialog)
+                                    return
+                                if (reb) {
+                                    topRadio.checked = !topRadio.checked
+                                    mouse1.isDialog = false
+                                }
+                            }
+                        }
+                    }
                     RadioButton {
                         id: topRadio
                         scale: 2
@@ -660,6 +685,11 @@ Item {
                         anchors.right: parent.right
                         anchors.rightMargin: 210
                     }
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: midRadio.checked = !midRadio.checked
+                    }
+
                     RadioButton {
                         id: midRadio
                         scale: 2
@@ -692,6 +722,30 @@ Item {
                         anchors.rightMargin: 10
                         anchors.verticalCenter: labelBottom.verticalCenter
                         source: "qrc:/images/images/down.png"
+                    }
+                    MouseArea {
+                        id: mouse2
+                        anchors.fill: parent
+                        property bool isDialog: false
+                        onClicked: {
+                            if (spliceDetailsItem.changeBottom()) {
+                                root.showDialog(true,true,"OK","CANCEL","Would you want to move the activated wire to the selected position?")
+                                isDialog = true
+                                return
+                            }
+                            bottomRadio.checked = !bottomRadio.checked
+                        }
+                        Connections {
+                            target: root
+                            onDialogReturn: {
+                                if (!mouse2.isDialog)
+                                    return
+                                if (reb) {
+                                    bottomRadio.checked = !bottomRadio.checked
+                                    mouse2.isDialog = false
+                                }
+                            }
+                        }
                     }
                     RadioButton {
                         id: bottomRadio
@@ -1006,7 +1060,6 @@ Item {
             anchors.bottomMargin: 14
             text: qsTr("WIRE LIBRARY")
         }
-
         CButton {
             id: wirelibrary
             pointSize: 14
@@ -1016,6 +1069,7 @@ Item {
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 14
             text: qsTr("ADD WIRE")
+            onClicked: spliceDetailsItem.addWire()
 
         }
         CButton {
@@ -1027,6 +1081,8 @@ Item {
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 14
             text: qsTr("DELETE WIRE")
+            onClicked: spliceDetailsItem.deleteWire()
+
         }
 
         CButton {

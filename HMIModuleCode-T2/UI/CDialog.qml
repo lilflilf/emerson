@@ -12,6 +12,7 @@ Item {
     property alias cancelvisible: cancelButton.visible
     property alias cancelText: cancelButton.text
     property alias centerText: title.text
+    signal cliceTo(bool reb)
     Rectangle {
         id: backGround
         anchors.fill: parent
@@ -49,6 +50,7 @@ Item {
             text: qsTr("")
             onClicked: {
                 dialog.visible = false
+                cliceTo(true)
             }
         }
         CButton {
@@ -63,6 +65,7 @@ Item {
             text: qsTr("")
             onClicked: {
                 dialog.visible = false
+                cliceTo(false)
             }
         }
     }
