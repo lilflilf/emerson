@@ -14,6 +14,7 @@
 #include "Interface/Settings/OperatorLibrary.h"
 #include "DataBase/DBMaintenanceLogTable.h"
 #include "Interface/Maintenance/MaintenanceLog.h"
+#include "Interface/VariantToString.h"
 
 class WorkOrderModel : public QAbstractTableModel
 {
@@ -76,14 +77,18 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
     QHash<int, QByteArray> roleNames() const;
 
+    PresetElement presetElement;
 signals:
 
 
 public slots:
     void setRoles(const QStringList &names);
     Q_INVOKABLE QVariant getValue(int index, QString key);
-    Q_INVOKABLE int count();
     Q_INVOKABLE void removeValue(int id, QString name);
+    Q_INVOKABLE int count();
+
+    Q_INVOKABLE void createNew();
+//    Q_INVOKABLE void setNewValue();
 
 private:
     QHash<int, QByteArray> m_roleNames;
@@ -207,6 +212,7 @@ public:
     QMap<int, QString> *historys;
 
 protected:
+    DBPresetTable *m_spliceTable;
     int rowCount(const QModelIndex &parent) const;
     int columnCount(const QModelIndex &parent) const;
     QVariant data(const QModelIndex &index, int role) const;
@@ -224,6 +230,7 @@ public slots:
 
 private:
     QHash<int, QByteArray> m_roleNames;
+    VariantToString *m_variant;
 };
 
 

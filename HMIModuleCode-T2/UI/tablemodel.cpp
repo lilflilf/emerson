@@ -312,6 +312,12 @@ int SpliceModel::count()
     return splices->count();
 }
 
+void SpliceModel::createNew()
+{
+    PresetElement temp;
+    presetElement = temp;
+}
+
 void SpliceModel::removeValue(int id, QString name)
 {
     m_spliceAdaptor->DeleteOneRecordFromTable(id,name);
@@ -903,6 +909,8 @@ WeldHistoryModel::WeldHistoryModel(QObject *parent) :
 {
     m_weldHistoryAdaptor = DBWeldResultTable::Instance();
     historys = new QMap<int, QString>();
+    m_variant = new VariantToString;
+    m_spliceTable = DBPresetTable::Instance();
 }
 
 QVariant WeldHistoryModel::data(const QModelIndex &index, int role) const
@@ -929,6 +937,8 @@ QVariant WeldHistoryModel::data(const QModelIndex &index, int role) const
         }
         WeldResultElement myHistory;
         m_weldHistoryAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myHistory);
+        PresetElement presetElement;
+        m_spliceTable->QueryOneRecordFromTable(myHistory.CurrentSplice.SpliceID,myHistory.CurrentSplice.SpliceName,&presetElement);
         if (columnIdx == 0)
             value = QVariant::fromValue(myHistory.WeldResultID);
         else if (columnIdx == 1)
@@ -942,19 +952,19 @@ QVariant WeldHistoryModel::data(const QModelIndex &index, int role) const
         else if (columnIdx == 5)
             value = QVariant::fromValue(QDateTime::fromTime_t(myHistory.CreatedDate).toString("MM/dd/yyyy hh:mm"));
         else if (columnIdx == 6)
-            value = QVariant::fromValue(myHistory.PartCount);
+            value = QVariant::fromValue(m_variant->CrossSectionToString(myHistory.CrossSection));
         else if (columnIdx == 7)
-            value = QVariant::fromValue(myHistory.WeldCount);
+            value = QVariant::fromValue(m_variant->WeldModeToString(presetElement.WeldSettings.AdvanceSetting.WeldMode,presetElement.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode));
         else if (columnIdx == 8)
-            value = QVariant::fromValue(myHistory.ActualResult.ActualEnergy);
+            value = QVariant::fromValue(m_variant->EnergyToString(myHistory.ActualResult.ActualEnergy));
         else if (columnIdx == 9)
-            value = QVariant::fromValue(myHistory.ActualResult.ActualAmplitude);
+            value = QVariant::fromValue(m_variant->AmplitudeToString(myHistory.ActualResult.ActualAmplitude));
         else if (columnIdx == 10)
-            value = QVariant::fromValue(myHistory.ActualResult.ActualWidth);
+            value = QVariant::fromValue(m_variant->WidthToString(myHistory.ActualResult.ActualWidth));
         else if (columnIdx == 11)
-            value = QVariant::fromValue(myHistory.ActualResult.ActualTPressure);
+            value = QVariant::fromValue(m_variant->TriggerPressureToString(myHistory.ActualResult.ActualTPressure));
         else if (columnIdx == 12)
-            value = QVariant::fromValue(myHistory.ActualResult.ActualPressure);
+            value = QVariant::fromValue(m_variant->WeldPressureToString(myHistory.ActualResult.ActualPressure));
         else if (columnIdx == 13)
             value = QVariant::fromValue(myHistory.ActualResult.ActualTime);
         else if (columnIdx == 14)
