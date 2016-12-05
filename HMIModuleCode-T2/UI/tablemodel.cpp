@@ -312,6 +312,12 @@ int SpliceModel::count()
     return splices->count();
 }
 
+void SpliceModel::createNew()
+{
+    PresetElement temp;
+    presetElement = temp;
+}
+
 void SpliceModel::removeValue(int id, QString name)
 {
     m_spliceAdaptor->DeleteOneRecordFromTable(id,name);

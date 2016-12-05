@@ -76,14 +76,18 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
     QHash<int, QByteArray> roleNames() const;
 
+    PresetElement presetElement;
 signals:
 
 
 public slots:
     void setRoles(const QStringList &names);
     Q_INVOKABLE QVariant getValue(int index, QString key);
-    Q_INVOKABLE int count();
     Q_INVOKABLE void removeValue(int id, QString name);
+    Q_INVOKABLE int count();
+
+    Q_INVOKABLE void createNew();
+//    Q_INVOKABLE void setNewValue();
 
 private:
     QHash<int, QByteArray> m_roleNames;

@@ -161,6 +161,7 @@ Item {
                 onClicked: {
                     loader.source = "qrc:/UI/CreatWire.qml"
                     titleTextChanged("Create Splice")
+                    spliceModel.createNew()
                 }
             }
 
