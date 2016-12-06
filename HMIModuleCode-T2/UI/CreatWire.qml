@@ -49,6 +49,13 @@ Item {
                         topRadio.checked = true
                     else if (selectPosition == "bottomLeft" || selectPosition == "bottomRight")
                         bottomRadio.checked = true
+
+                    console.log("xxxxxxxxxxxxxxxxxxxxxwireSelected",selectWireType)
+                    if (selectWireType == 0)
+                        typeSwitch.state = "left"
+                    else if (selectWireType == 1)
+                        typeSwitch.state = "right"
+
                 }
                 onChanging: {
                     detailIsChang = bIsChang
@@ -520,9 +527,9 @@ Item {
                             backGround.opacity = 0.5
                             keyNum.visible = true
                             keyNum.titleText = labelGauge.text
-                            keyNum.currentValue = "1.12mm"
-                            keyNum.minvalue = "1.00mm"
-                            keyNum.maxvalue = "10.99mm"
+                            keyNum.currentValue = wireModel.getStructValue2("Gauge","current") //"1.12mm"
+                            keyNum.minvalue = wireModel.getStructValue2("Gauge","min") //"1.00mm"
+                            keyNum.maxvalue = wireModel.getStructValue2("Gauge","max") //"10.99mm"
                         }
                     }
 
@@ -530,6 +537,8 @@ Item {
                         if(detailIsChang)
                             return
                         spliceDetailsItem.selectText = hmiAdaptor.getStringValue(inputText) //inputText
+                        spliceDetailsItem.selectWireGauge = wireModel.getStructValue3("Gauge",inputText);
+                        spliceDetailsItem.selectWireAWG = wireModel.getStructValue3("awg",inputText);
                     }
                 }
             }
@@ -560,7 +569,13 @@ Item {
                     state: "left"
                     opacity: 0.8
                     onStateChanged: {
-
+                        if(detailIsChang)
+                            return
+                        console.log("11111111111111111111111",typeSwitch.state)
+                        if (state == "left")
+                            spliceDetailsItem.selectWireType = 0
+                        else if (state == "right")
+                            spliceDetailsItem.selectWireType = 1
                     }
                 }
             }
@@ -1163,6 +1178,7 @@ Item {
             anchors.bottomMargin: 14
             text: qsTr("ADD WIRE")
             onClicked: {
+                wireModel.createNew()
                 spliceDetailsItem.addWire()
             }
 
