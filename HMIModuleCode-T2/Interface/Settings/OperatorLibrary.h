@@ -1,7 +1,7 @@
 #ifndef OPERATORLIBRARY_H
 #define OPERATORLIBRARY_H
 #include <QString>
-
+#include "Interface/Definition.h"
 //default has two records in user log.
 class OperatorElement
 {
