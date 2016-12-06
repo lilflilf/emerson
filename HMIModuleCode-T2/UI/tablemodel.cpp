@@ -1254,6 +1254,8 @@ WireModel::WireModel(QObject *parent) :
 {
     m_wireAdaptor = DBWireTable::Instance();
     wires = new QMap<int, QString>();
+    variantToString = VariantToString::Instance();
+    stringToVariant = StringToVariant::Instance();
 }
 
 QVariant WireModel::data(const QModelIndex &index, int role) const
@@ -1377,11 +1379,11 @@ QString WireModel::getStructValue2(QString key, QString type)
 {
     if (key == "Gauge"){
         if (type == "current")
-            return variantToString.GaugeToString(wireElement.Gauge,wireElement.GaugeAWG).Current;
+            return variantToString->GaugeToString(wireElement.Gauge,wireElement.GaugeAWG).Current;
         else if (type == "max")
-            return variantToString.GaugeToString(wireElement.Gauge,wireElement.GaugeAWG).Maximum;
+            return variantToString->GaugeToString(wireElement.Gauge,wireElement.GaugeAWG).Maximum;
         else if (type == "min")
-            return variantToString.GaugeToString(wireElement.Gauge,wireElement.GaugeAWG).Minimum;
+            return variantToString->GaugeToString(wireElement.Gauge,wireElement.GaugeAWG).Minimum;
     }
     else if (key == "StripeColor")
         return wireElement.Stripe.Color;
@@ -1393,11 +1395,11 @@ int WireModel::getStructValue3(QString key, QString value)
     int gauge;
     int awg;
     if (key == "Gauge"){
-        stringToVariant.GaugeToInt(value,awg,gauge);
+        stringToVariant->GaugeToInt(value,awg,gauge);
         return gauge;
     }
     else if (key == "awg") {
-        stringToVariant.GaugeToInt(value,awg,gauge);
+        stringToVariant->GaugeToInt(value,awg,gauge);
         return awg;
     }
     else if (key == "StripeType")
@@ -1406,7 +1408,7 @@ int WireModel::getStructValue3(QString key, QString value)
 
 QString WireModel::getStructValue4(int gauge, int awg)
 {
-    return variantToString.GaugeToString(gauge,awg).Current;
+    return variantToString->GaugeToString(gauge,awg).Current;
 }
 
 int WireModel::columnCount(const QModelIndex &parent) const
