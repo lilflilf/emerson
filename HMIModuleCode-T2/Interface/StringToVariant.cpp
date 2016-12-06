@@ -10,6 +10,7 @@ StringToVariant::StringToVariant()
 bool StringToVariant::GaugeToInt(QString strGauge, int &GaugeAWG, int &GaugeMM)
 {
     bool bResult = false;
+    InterfaceClass* _Interface = InterfaceClass::Instance();
     if(strGauge.contains("AWG") == true)
     {
         GaugeAWG = (int)_Utility->StringToFormatedData(DINGaugeAWG, strGauge);
