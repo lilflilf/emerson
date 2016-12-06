@@ -9,11 +9,12 @@
 #include <QMap>
 #include <QDebug>
 #include <QDateTime>
-#include "Interface/definition.h"
+//#include "Interface/definition.h"
 #include "Interface/WireElement.h"
 #include "Interface/PresetElement.h"
 #include "Interface/PartElement.h"
 #include "Interface/WorkOrderElement.h"
+#include "Interface/WeldResultElement.h"
 #include "Interface/Settings/OperatorLibrary.h"
 #include "Modules/UtilityClass.h"
 DataBaseTest::DataBaseTest()

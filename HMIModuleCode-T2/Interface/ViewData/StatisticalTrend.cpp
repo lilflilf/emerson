@@ -1,7 +1,8 @@
 #include "StatisticalTrend.h"
 #include "DataBase/DBPresetTable.h"
 #include "DataBase/DBWeldResultTable.h"
-#include "Interface/Definition.h"
+#include "Interface/WeldResultElement.h"
+//#include "Interface/Definition.h"
 #include "Modules/UtilityClass.h"
 StatisticalTrend::StatisticalTrend(QObject *parent) : QObject(parent)
 {

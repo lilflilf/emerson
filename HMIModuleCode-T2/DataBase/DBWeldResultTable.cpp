@@ -1,5 +1,6 @@
 #include "DBWeldResultTable.h"
 #include "Modules/UtilityClass.h"
+#include "Interface/WeldResultElement.h"
 #include <QSettings>
 #include <QDir>
 #include <QDebug>
