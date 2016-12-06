@@ -51,7 +51,12 @@ SOURCES += main.cpp \
     Interface/WireElement.cpp \
     Interface/PresetElement.cpp \
     Interface/PartElement.cpp \
-    Interface/WorkOrderElement.cpp
+    Interface/WorkOrderElement.cpp \
+    Interface/WeldResultElement.cpp \
+    Interface/AlarmElement.cpp
+
+
+
 
 RESOURCES += qml.qrc
 
@@ -109,7 +114,9 @@ HEADERS += \
     Interface/WireElement.h \
     Interface/PresetElement.h \
     Interface/PartElement.h \
-    Interface/WorkOrderElement.h
+    Interface/WorkOrderElement.h \
+    Interface/WeldResultElement.h \
+    Interface/AlarmElement.h
 
 DISTFILES += \
     UI/displayChinese_zh_CN.qm \

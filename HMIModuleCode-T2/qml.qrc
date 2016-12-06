@@ -157,5 +157,11 @@
         <file>images/logo1.png</file>
         <file>images/logo2.png</file>
         <file>images/colorPickerBg.png</file>
+        <file>images/australia.png</file>
+        <file>images/Brazil.png</file>
+        <file>images/Canada.png</file>
+        <file>images/Mexcio.png</file>
+        <file>images/United-Arab-Emirates.png</file>
+        <file>images/us.png</file>
     </qresource>
 </RCC>

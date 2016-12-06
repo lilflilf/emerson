@@ -13,6 +13,7 @@ Item {
     property bool detailIsChang: true
     property bool bIsStep: false
     property string stepSetText: ""
+    property var totalGauge: 0
     property variant colorArray: ["#ff6699","#ff0033","#33FFCC","#cc99ff","#cc0099","#930202","#99ccff","#f79428",
         "#0000cc","Olive","#ffff33","#ffcc00","#cc9909","#66ff00","#009900","#00cc66","#3366ff","#cc33cc","#cc9966","#9400D3"]
 
@@ -21,6 +22,16 @@ Item {
         spliceDetailsItem.selectColor = selectColor
         spliceDetailsItem.selectText = selectText
         spliceDetailsItem.selectPosition = selectPosition
+    }
+    function initSettings()
+    {
+        settingsModel.clear();
+        settingsModel.append({"topText":"Energy","bottomText":spliceModel.getStructValue("Energy","current"),"maxText":spliceModel.getStructValue("Energy","max"),"minText":spliceModel.getStructValue("Energy","min")})
+        settingsModel.append({"topText":"Trigger Pressure","bottomText":spliceModel.getStructValue("Trigger Pressure","current"),"maxText":spliceModel.getStructValue("Trigger Pressure","max"),"minText":spliceModel.getStructValue("Trigger Pressure","min")})
+        settingsModel.append({"topText":"Amplitude","bottomText":spliceModel.getStructValue("Amplitude","current"),"maxText":spliceModel.getStructValue("Amplitude","max"),"minText":spliceModel.getStructValue("Amplitude","min")})
+        settingsModel.append({"topText":"Weld Pressure","bottomText":spliceModel.getStructValue("Weld Pressure","current"),"maxText":spliceModel.getStructValue("Weld Pressure","max"),"minText":spliceModel.getStructValue("Weld Pressure","min")})
+        settingsModel.append({"topText":"Width","bottomText":spliceModel.getStructValue("Width","current"),"maxText":spliceModel.getStructValue("Width","max"),"minText":spliceModel.getStructValue("Width","min")})
+
     }
 
     SwipeView {
@@ -55,12 +66,20 @@ Item {
                     else if (selectWireType == 1)
                         typeSwitch.state = "right"
 
+
                     itemStripe.color = selectWireStripeColor
                     itemStripe.stripeType = selectWireStripeType
 
                 }
                 onChanging: {
                     detailIsChang = bIsChang
+                } //
+                onGaugeChanged: {
+                    if (type == "add")
+                        totalGauge+= value
+                    else if (type == "sub")
+                        totalGauge-= value
+                    spliceDetailsTip2.text = spliceModel.getString("CrossSection",totalGauge)
                 }
             }
 
@@ -238,8 +257,14 @@ Item {
                                 }
                                 else if (colorLoader.sourceComponent == stripePicker)
                                 {
+                                    if (colorLoader.item.radioCheck == -1)
+                                        return
+
                                     itemStripe.color = pickColor
                                     itemStripe.stripeType = colorLoader.item.radioCheck
+                                    spliceDetailsItem.selectWireStripeColor = pickColor
+                                    spliceDetailsItem.selectWireStripeType = colorLoader.item.radioCheck
+
                                     colorLoader.sourceComponent = null
 
                                 }
@@ -258,16 +283,16 @@ Item {
                 anchors.topMargin: 10
                 property alias color: stripeBack.color
                 property var stripeType: -1
-                onColorChanged: {
-                    if(detailIsChang)
-                        return
-                    spliceDetailsItem.selectWireStripeColor = itemStripe.color
-                }
-                onStripeTypeChanged: {
-                    if(detailIsChang)
-                        return
-                    spliceDetailsItem.selectWireStripeType = itemStripe.stripeType
-                }
+//                onColorChanged: {
+//                    if(detailIsChang)
+//                        return
+//                    spliceDetailsItem.selectWireStripeColor = itemStripe.color
+//                }
+//                onStripeTypeChanged: {
+//                    if(detailIsChang)
+//                        return
+//                    spliceDetailsItem.selectWireStripeType = itemStripe.stripeType
+//                }
 
                 Label {
                     id: labelStripe
@@ -293,14 +318,14 @@ Item {
                         }
                     }
                     Rectangle {
-                        color: "#66ff00"
+                        color: "black"
                         height: 5
                         width: parent.width
                         anchors.verticalCenter: parent.verticalCenter
                         visible: itemStripe.stripeType == 0 ? true : false
                     }
                     Rectangle {
-                        color: "#66ff00"
+                        color: "black"
                         height: 5
                         width: parent.width
                         anchors.centerIn: parent
@@ -308,7 +333,7 @@ Item {
                         visible: itemStripe.stripeType == 1 ? true : false
                     }
                     Rectangle {
-                        color: "#66ff00"
+                        color: "black"
                         width: 5
                         height: parent.height
                         anchors.horizontalCenter: parent.horizontalCenter
@@ -320,12 +345,12 @@ Item {
                         spacing: 20
                         visible: itemStripe.stripeType == 3 ? true : false
                         Rectangle {
-                            color: "#66ff00"
+                            color: "black"
                             width: 5
                             height: parent.height
                         }
                         Rectangle {
-                            color: "#66ff00"
+                            color: "black"
                             width: 5
                             height: parent.height
                         }
@@ -354,7 +379,7 @@ Item {
                             border.width: 2
                             border.color: "black"
                             Rectangle {
-                                color: "#66ff00"
+                                color: "black"
                                 height: 5
                                 width: parent.width
                                 anchors.verticalCenter: parent.verticalCenter
@@ -390,7 +415,7 @@ Item {
                             border.width: 2
                             border.color: "black"
                             Rectangle {
-                                color: "#66ff00"
+                                color: "black"
                                 height: 5
                                 width: parent.width
                                 anchors.centerIn: parent
@@ -434,7 +459,7 @@ Item {
                                 visible: radioButton2.checked ? true : false
                             }
                             Rectangle {
-                                color: "#66ff00"
+                                color: "black"
                                 width: 5
                                 height: parent.height
                                 anchors.horizontalCenter: parent.horizontalCenter
@@ -463,12 +488,12 @@ Item {
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 spacing: 20
                                 Rectangle {
-                                    color: "#66ff00"
+                                    color: "black"
                                     width: 5
                                     height: parent.height
                                 }
                                 Rectangle {
-                                    color: "#66ff00"
+                                    color: "black"
                                     width: 5
                                     height: parent.height
                                 }
@@ -884,17 +909,12 @@ Item {
             ListModel {
                 id: settingsModel
                 Component.onCompleted: {
-//                    settingsModel.append({"topText":"Energy","bottomText":"30J"})
-//                    settingsModel.append({"topText":"Trigger Pressure","bottomText":"50PSI"})
-//                    settingsModel.append({"topText":"Amplitude","bottomText":"25um"})
-//                    settingsModel.append({"topText":"Weld Pressure","bottomText":"50PSI"})
-//                    settingsModel.append({"topText":"Width","bottomText":"12.5mm"})
-
-                    settingsModel.append({"topText":"Energy","bottomText":spliceModel.getStructValue("Energy","current"),"maxText":spliceModel.getStructValue("Energy","max"),"minText":spliceModel.getStructValue("Energy","min")})
-                    settingsModel.append({"topText":"Trigger Pressure","bottomText":spliceModel.getStructValue("Trigger Pressure","current"),"maxText":spliceModel.getStructValue("Trigger Pressure","max"),"minText":spliceModel.getStructValue("Trigger Pressure","min")})
-                    settingsModel.append({"topText":"Amplitude","bottomText":spliceModel.getStructValue("Amplitude","current"),"maxText":spliceModel.getStructValue("Amplitude","max"),"minText":spliceModel.getStructValue("Amplitude","min")})
-                    settingsModel.append({"topText":"Weld Pressure","bottomText":spliceModel.getStructValue("Weld Pressure","current"),"maxText":spliceModel.getStructValue("Weld Pressure","max"),"minText":spliceModel.getStructValue("Weld Pressure","min")})
-                    settingsModel.append({"topText":"Width","bottomText":spliceModel.getStructValue("Width","current"),"maxText":spliceModel.getStructValue("Width","max"),"minText":spliceModel.getStructValue("Width","min")})
+                      initSettings()
+//                    settingsModel.append({"topText":"Energy","bottomText":spliceModel.getStructValue("Energy","current"),"maxText":spliceModel.getStructValue("Energy","max"),"minText":spliceModel.getStructValue("Energy","min")})
+//                    settingsModel.append({"topText":"Trigger Pressure","bottomText":spliceModel.getStructValue("Trigger Pressure","current"),"maxText":spliceModel.getStructValue("Trigger Pressure","max"),"minText":spliceModel.getStructValue("Trigger Pressure","min")})
+//                    settingsModel.append({"topText":"Amplitude","bottomText":spliceModel.getStructValue("Amplitude","current"),"maxText":spliceModel.getStructValue("Amplitude","max"),"minText":spliceModel.getStructValue("Amplitude","min")})
+//                    settingsModel.append({"topText":"Weld Pressure","bottomText":spliceModel.getStructValue("Weld Pressure","current"),"maxText":spliceModel.getStructValue("Weld Pressure","max"),"minText":spliceModel.getStructValue("Weld Pressure","min")})
+//                    settingsModel.append({"topText":"Width","bottomText":spliceModel.getStructValue("Width","current"),"maxText":spliceModel.getStructValue("Width","max"),"minText":spliceModel.getStructValue("Width","min")})
 
                 }
             }
@@ -1150,12 +1170,24 @@ Item {
             anchors.top: spliceDetails.bottom
             anchors.topMargin: 10
             anchors.left: spliceDetails.left
-            text: qsTr("TOTAL CROSS SECTION 0mm")
+            text: qsTr("TOTAL CROSS SECTION ")
             font.pointSize: 12
             font.family: "arial"
             color: "white"
             opacity: 0.5
         }
+        Label {
+            id: spliceDetailsTip2
+            anchors.top: spliceDetails.bottom
+            anchors.topMargin: 10
+            anchors.left: spliceDetailsTips.right
+            text: qsTr("0mm")
+            font.pointSize: 12
+            font.family: "arial"
+            color: "white"
+            opacity: 0.5
+        }
+
         SpliceDetails {
             id: spliceDetailsItem
             width: Screen.width * 0.8

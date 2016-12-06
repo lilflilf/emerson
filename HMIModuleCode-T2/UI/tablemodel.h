@@ -97,6 +97,7 @@ public slots:
 
     Q_INVOKABLE QString getStructValue(QString valueKey, QString valueType); // create wire
     Q_INVOKABLE void createNew();
+    Q_INVOKABLE QString getString(QString type, int value);
 //    Q_INVOKABLE void setNewValue();
 
 private:
