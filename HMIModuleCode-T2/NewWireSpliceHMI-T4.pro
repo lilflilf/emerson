@@ -53,7 +53,8 @@ SOURCES += main.cpp \
     Interface/PartElement.cpp \
     Interface/WorkOrderElement.cpp \
     Interface/WeldResultElement.cpp \
-    Interface/AlarmElement.cpp
+    Interface/AlarmElement.cpp \
+    Interface/Operate/OperateProcess.cpp
 
 
 
@@ -116,7 +117,8 @@ HEADERS += \
     Interface/PartElement.h \
     Interface/WorkOrderElement.h \
     Interface/WeldResultElement.h \
-    Interface/AlarmElement.h
+    Interface/AlarmElement.h \
+    Interface/Operate/OperateProcess.h
 
 DISTFILES += \
     UI/displayChinese_zh_CN.qm \

@@ -1003,7 +1003,7 @@ bool M102IA::SetIAWidth(int WidthSet, bool SettingCheck)
     M10runMode* _M10runMode = M10runMode::Instance();
     ModRunSetup* _ModRunSetup = ModRunSetup::Instance();
     BransonSerial* _SerialPort = BransonSerial::Instance();
-    InterfaceClass* _Interface = InterfaceClass::Instance();
+//    InterfaceClass* _Interface = InterfaceClass::Instance();
     OperateProcess* _Operate   = OperateProcess::Instance();
     //This command is ignored if the safety cover does not exist
     //Aux Motion Control, Close Safety Cover

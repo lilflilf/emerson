@@ -19,7 +19,7 @@ const QString SQLSentence[] = {
     "SELECT ID, OperatorName FROM Operator",         /*2 Query Entire Operator Table */
                                                      /*3 Query One Record From Operator Table*/
     "SELECT * FROM Operator WHERE ID = ? AND OperatorName = ?",
-    "SELECT * FROM Operator WHERE ID = ?",           /*4 Query One Record Only USE ID
+    "SELECT * FROM Operator WHERE ID = ?",           /*4 Query One Record Only USE ID*/
 
     "DELETE FROM Operator",                          /*5 Delete Entire Operator Table*/
     "DELETE FROM Operator WHERE ID = ? AND OperatorName = ?",
