@@ -34,7 +34,7 @@ Item {
             Connections {
                 target: spliceDetailsItem
                 onWireSelected: {
-                    //signal wireSelected(var selectColor,var selectDirection,var selectPosition,var selectText)
+//                    signal wireSelected(var selectColor,var selectDirection,var selectPosition,var selectText,var selectWireName, var selectWireType, var selectWireStripeColor, var selectWireStripeType)
                     forground.visible = false
                     rectcolor.color = selectColor
                     wireDirection.state = selectDirection
@@ -50,11 +50,13 @@ Item {
                     else if (selectPosition == "bottomLeft" || selectPosition == "bottomRight")
                         bottomRadio.checked = true
 
-                    console.log("xxxxxxxxxxxxxxxxxxxxxwireSelected",selectWireType)
                     if (selectWireType == 0)
                         typeSwitch.state = "left"
                     else if (selectWireType == 1)
                         typeSwitch.state = "right"
+
+                    itemStripe.color = selectWireStripeColor
+                    itemStripe.stripeType = selectWireStripeType
 
                 }
                 onChanging: {
@@ -256,6 +258,17 @@ Item {
                 anchors.topMargin: 10
                 property alias color: stripeBack.color
                 property var stripeType: -1
+                onColorChanged: {
+                    if(detailIsChang)
+                        return
+                    spliceDetailsItem.selectWireStripeColor = itemStripe.color
+                }
+                onStripeTypeChanged: {
+                    if(detailIsChang)
+                        return
+                    spliceDetailsItem.selectWireStripeType = itemStripe.stripeType
+                }
+
                 Label {
                     id: labelStripe
                     color: "#8295a0"
@@ -571,7 +584,6 @@ Item {
                     onStateChanged: {
                         if(detailIsChang)
                             return
-                        console.log("11111111111111111111111",typeSwitch.state)
                         if (state == "left")
                             spliceDetailsItem.selectWireType = 0
                         else if (state == "right")
