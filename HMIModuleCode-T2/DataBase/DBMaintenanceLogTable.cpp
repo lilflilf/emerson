@@ -151,6 +151,48 @@ bool DBMaintenanceLogTable::QueryOneRecordFromTable(int ID, QString TypeDefine, 
     return bResult;
 }
 
+bool DBMaintenanceLogTable::QueryOneRecordFromTable(int ID, void *_obj)
+{
+    if(_obj == NULL)
+        return false;
+
+    QSqlQuery query(MaintenanceLogDBObj);
+    bool bResult = MaintenanceLogDBObj.open();
+    if(bResult == false)
+    {
+        qDebug() << "SQL ERROR:"<< query.lastError();
+        return bResult;
+    }
+
+//    query.prepare(SQLSentence[QUERY_ONE_RECORD_OPERATOR_TABLE]);
+    query.addBindValue(ID);
+
+    bResult = query.exec();
+    if(bResult == false)
+    {
+        MaintenanceLogDBObj.close();
+        qDebug() << "SQL ERROR:"<< query.lastError();
+        return bResult;
+    }
+
+    bResult = query.next();
+    if(bResult == false)
+    {
+        MaintenanceLogDBObj.close();
+        return bResult;
+    }
+
+    ((MaintenanceLogElement*)_obj)->MaintenanceLogID = query.value("ID").toInt();
+    ((MaintenanceLogElement*)_obj)->MaintenanceType = query.value("MaintenanceType").toString();
+    ((MaintenanceLogElement*)_obj)->MaintenanceMsg = query.value("MaintenanceMsg").toString();
+    QDateTime TimeLabel = QDateTime::fromString(query.value("CreatedDate").toString(),
+                                                "yyyy/MM/dd hh:mm:ss");
+    ((MaintenanceLogElement*)_obj)->CreatedDate = TimeLabel.toTime_t();
+    ((MaintenanceLogElement*)_obj)->OperatorID = query.value("OperaterID").toInt();
+    MaintenanceLogDBObj.close();
+    return bResult;
+}
+
 bool DBMaintenanceLogTable::DeleteEntireTable()
 {
     QSqlQuery query(MaintenanceLogDBObj);

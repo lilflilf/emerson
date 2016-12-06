@@ -2,15 +2,6 @@
 #define DBPRESETTABLE_H
 
 #include "Sqlit3Class.h"
-enum{
-    CREATE_SPLICE_TABLE = 0,
-    INSERT_SPLICE_TABLE = 1,
-    QUERY_ENTIRE_SPLICE_TABLE = 2,
-    QUERY_ONE_RECORD_SPLICE_TABLE = 3,
-    DELETE_ENTIRE_SPLICE_TABLE = 4,
-    DELETE_ONE_RECORD_SPLICE_TABLE = 5,
-    UPDATE_ONE_RECORD_SPLICE_TABLE = 6,
-};
 
 class DBPresetTable : public SQLITCLASS
 {
@@ -26,6 +17,7 @@ public:
     virtual bool UpdateRecordIntoTable(void* _obj);
     virtual bool QueryEntireTable(QMap<int, QString>* _obj);
     virtual bool QueryOneRecordFromTable(int ID, QString Name, void* _obj);
+    virtual bool QueryOneRecordFromTable(int ID, void* _obj);
     virtual bool DeleteEntireTable();
     virtual bool DeleteOneRecordFromTable(int ID, QString Name);
 

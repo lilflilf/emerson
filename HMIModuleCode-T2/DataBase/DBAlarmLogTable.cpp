@@ -153,6 +153,49 @@ bool DBAlarmLogTable::QueryOneRecordFromTable(int ID, QString AlarmMsg, void *_o
     return bResult;
 }
 
+bool DBAlarmLogTable::QueryOneRecordFromTable(int ID, void* _obj)
+{
+    if(_obj == NULL)
+        return false;
+
+    QSqlQuery query(AlarmLogDBObj);
+    bool bResult = AlarmLogDBObj.open();
+    if(bResult == false)
+    {
+        qDebug() << "SQL ERROR:"<< query.lastError();
+        return bResult;
+    }
+
+//    query.prepare(SQLSentence[QUERY_ONE_RECORD_OPERATOR_TABLE]);
+    query.addBindValue(ID);
+
+    bResult = query.exec();
+    if(bResult == false)
+    {
+        AlarmLogDBObj.close();
+        qDebug() << "SQL ERROR:"<< query.lastError();
+        return bResult;
+    }
+
+    bResult = query.next();
+    if(bResult == false)
+    {
+        AlarmLogDBObj.close();
+        return bResult;
+    }
+
+    ((AlarmElement*)_obj)->AlarmID = query.value("ID").toInt();
+    ((AlarmElement*)_obj)->AlarmMsg = query.value("AlarmMsg").toString();
+    QDateTime TimeLabel = QDateTime::fromString(query.value("CreatedDate").toString(),
+                                                "yyyy/MM/dd hh:mm:ss");
+    ((AlarmElement*)_obj)->CreatedDate = TimeLabel.toTime_t();
+    ((AlarmElement*)_obj)->AlarmType = (enum ALARMTYPE)(query.value("AlarmType").toInt());
+    ((AlarmElement*)_obj)->WeldResultID = query.value("WeldResultID").toInt();
+    ((AlarmElement*)_obj)->OperatorID = query.value("OperaterID").toInt();
+    AlarmLogDBObj.close();
+    return bResult;
+}
+
 bool DBAlarmLogTable::DeleteEntireTable()
 {
     QSqlQuery query(AlarmLogDBObj);

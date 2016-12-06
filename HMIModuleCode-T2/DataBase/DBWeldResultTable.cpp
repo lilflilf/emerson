@@ -281,6 +281,89 @@ bool DBWeldResultTable::QueryOneRecordFromTable(int ID, QString OperatorName, vo
     return bResult;
 }
 
+bool DBWeldResultTable::QueryOneRecordFromTable(int ID, void *_obj)
+{
+    if(_obj == NULL)
+        return false;
+
+    QSqlQuery query(WeldResultDBObj);
+    bool bResult = WeldResultDBObj.open();
+    if(bResult == false)
+    {
+        qDebug() << "SQL ERROR:"<< query.lastError();
+        return bResult;
+    }
+
+    query.prepare("SELECT * FROM WeldResultHistory WHERE ID = ?");
+    query.addBindValue(ID);
+
+    bResult = query.exec();
+    if(bResult == false)
+    {
+        WeldResultDBObj.close();
+        qDebug() << "SQL ERROR:"<< query.lastError();
+        return bResult;
+    }
+
+    bResult = query.next();
+    if(bResult == false)
+    {
+        WeldResultDBObj.close();
+        return bResult;
+    }
+
+    ((WeldResultElement*)_obj)->WeldResultID = query.value("ID").toInt();
+    ((WeldResultElement*)_obj)->OperatorName = query.value("OperatorName").toString();
+    QDateTime TimeLabel = QDateTime::fromString(query.value("CreatedDate").toString(),
+                                                "yyyy/MM/dd hh:mm:ss");
+    ((WeldResultElement*)_obj)->CreatedDate = TimeLabel.toTime_t();
+    ((WeldResultElement*)_obj)->CurrentWorkOrder.WorkOrderID
+            = query.value("WorkOrderID").toInt();
+    ((WeldResultElement*)_obj)->CurrentWorkOrder.WorkOrderName
+            = query.value("WorkOrderName").toString();
+    ((WeldResultElement*)_obj)->CurrentPart.PartID
+            = query.value("PartID").toInt();
+    ((WeldResultElement*)_obj)->CurrentPart.PartName
+            = query.value("PartName").toString();
+    ((WeldResultElement*)_obj)->CurrentSplice.SpliceID
+            = query.value("SpliceID").toInt();
+    ((WeldResultElement*)_obj)->CurrentSplice.SpliceName
+            = query.value("SpliceName").toString();
+    ((WeldResultElement*)_obj)->CurrentSplice.SpliceHash
+            = query.value("SpliceHash").toInt();
+    ((WeldResultElement*)_obj)->WeldCount = query.value("WeldCount").toInt();
+    ((WeldResultElement*)_obj)->PartCount = query.value("PartCount").toInt();
+    ((WeldResultElement*)_obj)->CrossSection = query.value("CrossSection").toInt();
+    ((WeldResultElement*)_obj)->ActualResult.ActualEnergy
+            = query.value("ActualEnergy").toInt();
+    ((WeldResultElement*)_obj)->ActualResult.ActualTPressure
+            = query.value("ActualTPressure").toInt();
+    ((WeldResultElement*)_obj)->ActualResult.ActualPressure
+            = query.value("ActualPressure").toInt();
+    ((WeldResultElement*)_obj)->ActualResult.ActualAmplitude
+            = query.value("ActualAmplitude").toInt();
+    ((WeldResultElement*)_obj)->ActualResult.ActualAmplitude2
+            = query.value("ActualAmplitude2").toInt();
+    ((WeldResultElement*)_obj)->ActualResult.ActualWidth
+            = query.value("ActualWidth").toInt();
+    ((WeldResultElement*)_obj)->ActualResult.ActualTime
+            = query.value("ActualTime").toInt();
+    ((WeldResultElement*)_obj)->ActualResult.ActualPeakPower
+            = query.value("ActualPeakPower").toInt();
+    ((WeldResultElement*)_obj)->ActualResult.ActualPreheight
+            = query.value("ActualPreheight").toInt();
+    ((WeldResultElement*)_obj)->ActualResult.ActualPostheight
+            = query.value("ActualPostHeight").toInt();
+    ((WeldResultElement*)_obj)->ActualResult.ActualAlarmflags
+            = query.value("ActualAlarmFlags").toInt();
+    ((WeldResultElement*)_obj)->SampleRatio
+            = (enum SAMPLERATIO)query.value("SampleRatio").toInt();
+    ((WeldResultElement*)_obj)->NoOfSamples
+            = query.value("NoOfSamples").toInt();
+    WeldResultDBObj.close();
+    return bResult;
+}
+
 bool DBWeldResultTable::DeleteEntireTable()
 {
     QSqlQuery query(WeldResultDBObj);

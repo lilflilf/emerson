@@ -16,6 +16,7 @@ public:
     virtual bool UpdateRecordIntoTable(void* _obj);
     virtual bool QueryEntireTable(QMap<int, QString>* _obj);
     virtual bool QueryOneRecordFromTable(int ID, QString Name, void* _obj);
+    virtual bool QueryOneRecordFromTable(int ID, void* _obj);
     virtual bool DeleteEntireTable();
     virtual bool DeleteOneRecordFromTable(int ID, QString Name);
 

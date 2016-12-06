@@ -41,7 +41,6 @@ public:
     Status_Data DefaultStatusData;
     VersionList PreviousVersions;
     VersionList CurrentVersions;
-    PresetElement CurrentSplice;
     OperatorElement CurrentOperator;
 public:
     void cMsgBox(struct BransonMessageBox* MsgBox);

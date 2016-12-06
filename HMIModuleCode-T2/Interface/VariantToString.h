@@ -60,6 +60,14 @@ public:
     QString ActualPreHeightToString(int ActualPreHeight);
     QString ActualHeightToString(int ActualHeight);
 
+    QString Time_PlusToString(int);
+    QString Time_MinusToString(int);
+    QString Power_PlusToString(int);
+    QString Power_MinusToString(int);
+    QString PreHeight_PlusToString(int);
+    QString PreHeight_MinusToString(int);
+    QString Height_PlusToString(int);
+    QString Height_MinusToString(int);
 
     //Alarm History
     QString AlarmTypeToString(enum ALARMTYPE);

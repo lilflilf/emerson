@@ -27,17 +27,18 @@ const QString SQLSentence[] = {
 
                                                 /*3 Query One Record From Wire Table */
     "SELECT * FROM WorkOrder WHERE ID = ? AND WorkOrderName = ?",
+    "SELECT * FROM WorkOrder WHERE ID = ?",     /*4 Query One Record only use ID */
 
-    "DELETE FROM WorkOrder",                    /*4 Delete Entire WorkOrder Table*/
+    "DELETE FROM WorkOrder",                    /*5 Delete Entire WorkOrder Table*/
 
     "DELETE FROM WorkOrder WHERE ID = ? AND WorkOrderName = ?",
-                                                /*5 Delete One Record from WorkOrder Table*/
+                                                /*6 Delete One Record from WorkOrder Table*/
 
     "UPDATE WorkOrder SET WorkOrderName = ?, CreatedDate = ?, OperatorID = ?, "
     "NoOfPart = ?, Quantity = ?, CurrentPartCount = ?, "
     "CurrentSpliceID = ?, CurrentSpliceName = ?, WorkOrderDone = ?, "
     "JSONPartIndex = ?, JSONMissSpliceList = ?"
-    "WHERE ID = ?",                              /*6 Update One Record to WorkOrder Table*/
+    "WHERE ID = ?",                              /*7 Update One Record to WorkOrder Table*/
 
 };
 
@@ -103,7 +104,7 @@ bool DBWorkOrderTable::CreateNewTable()
     QSqlQuery query(WorkOrderDBObj);
     bool bResult = WorkOrderDBObj.open();
 
-    bResult = query.exec(SQLSentence[CREATE_WORKORDER_TABLE]);   //run SQL
+    bResult = query.exec(SQLSentence[CREATE]);   //run SQL
 
     if(bResult == false)
         qDebug() << "SQL ERROR:"<< query.lastError();
@@ -130,7 +131,7 @@ int DBWorkOrderTable::InsertRecordIntoTable(void *_obj)
 
     UtilityClass *_Utility = UtilityClass::Instance();
 
-    query.prepare(SQLSentence[INSERT_WORKORDER_TABLE]);
+    query.prepare(SQLSentence[INSERT]);
 
     query.addBindValue(((WorkOrderElement*)_obj)->WorkOrderName);
     QDateTime TimeLabel = QDateTime::currentDateTime();
@@ -171,7 +172,7 @@ bool DBWorkOrderTable::QueryEntireTable(QMap<int, QString> *_obj)
     if(bResult == false)
         return bResult;
 
-    bResult = query.exec(SQLSentence[QUERY_ENTIRE_WORKORDER_TABLE]);
+    bResult = query.exec(SQLSentence[QUERY_ENTIRE_TABLE]);
     if (bResult == true)
     {
         _obj->clear();
@@ -203,9 +204,62 @@ bool DBWorkOrderTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
         return bResult;
     }
 
-    query.prepare(SQLSentence[QUERY_ONE_RECORD_WORKORDER_TABLE]);
+    query.prepare(SQLSentence[QUERY_ONE_RECORD]);
     query.addBindValue(ID);
     query.addBindValue(Name);
+
+    bResult = query.exec();
+    if(bResult == false)
+    {
+        WorkOrderDBObj.close();
+        qDebug() << "SQL ERROR:"<< query.lastError();
+        return bResult;
+    }
+
+    bResult = query.next();
+    if(bResult == false)
+    {
+        WorkOrderDBObj.close();
+        return bResult;
+    }
+
+    ((WorkOrderElement*)_obj)->WorkOrderID = query.value("ID").toInt();
+    ((WorkOrderElement*)_obj)->WorkOrderName = query.value("WorkOrderName").toString();
+    QDateTime TimeLabel = QDateTime::fromString(query.value("CreatedDate").toString(),
+                                                "yyyy/MM/dd hh:mm:ss");
+    ((WorkOrderElement*)_obj)->CreatedDate = TimeLabel.toTime_t();
+    ((WorkOrderElement*)_obj)->OperatorID = query.value("OperatorID").toInt();
+    QString tmpStr = query.value("JSONPartIndex").toString();
+    _Utility->StringJsonToMap(tmpStr, &((WorkOrderElement*)_obj)->PartIndex);
+    ((WorkOrderElement*)_obj)->NoOfPart = ((WorkOrderElement*)_obj)->PartIndex.size();
+    ((WorkOrderElement*)_obj)->Quantity = query.value("Quantity").toInt();
+    ((WorkOrderElement*)_obj)->CurrentPartCount = query.value("CurrentPartCount").toInt();
+    tmpStr = query.value("JSONMissSpliceList").toString();
+    _Utility->StringJsonToMap(tmpStr, &((WorkOrderElement*)_obj)->MissSpliceList);
+    ((WorkOrderElement*)_obj)->CurrentSplice.SpliceID = query.value("CurrentSpliceID").toInt();
+    ((WorkOrderElement*)_obj)->CurrentSplice.SpliceName = query.value("CurrentSpliceName").toString();
+    ((WorkOrderElement*)_obj)->WorkOrderDone = query.value("WorkOrderDone").toBool();
+
+    WorkOrderDBObj.close();
+
+    return bResult;
+}
+
+bool DBWorkOrderTable::QueryOneRecordFromTable(int ID, void *_obj)
+{
+    if(_obj == NULL)
+        return false;
+    UtilityClass *_Utility = UtilityClass::Instance();
+    QSqlQuery query(WorkOrderDBObj);
+    bool bResult = WorkOrderDBObj.open();
+    if(bResult == false)
+    {
+        qDebug() << "SQL ERROR:"<< query.lastError();
+        return bResult;
+    }
+
+    query.prepare(SQLSentence[QUERY_ONE_RECORD_ONLY_ID]);
+    query.addBindValue(ID);
 
     bResult = query.exec();
     if(bResult == false)
@@ -254,7 +308,7 @@ bool DBWorkOrderTable::DeleteEntireTable()
         return bResult;
     }
 
-    bResult = query.exec(SQLSentence[DELETE_ENTIRE_WORKORDER_TABLE]);
+    bResult = query.exec(SQLSentence[DELETE_ENTIRE_TABLE]);
     if(bResult == false)
     {
         qDebug() << "SQL ERROR:"<< query.lastError();
@@ -273,7 +327,7 @@ bool DBWorkOrderTable::DeleteOneRecordFromTable(int ID, QString Name)
         return bResult;
     }
 
-    query.prepare(SQLSentence[DELETE_ONE_RECORD_WORKORDER_TABLE]);
+    query.prepare(SQLSentence[DELETE_ONE_RECORD]);
     query.addBindValue(ID);
     query.addBindValue(Name);
 
@@ -299,7 +353,7 @@ bool DBWorkOrderTable::UpdateRecordIntoTable(void *_obj)
         return bResult;
     }
 
-    query.prepare(SQLSentence[UPDATE_ONE_RECORD_WORKORDER_TABLE]);
+    query.prepare(SQLSentence[UPDATE_ONE_RECORD]);
     query.addBindValue(((WorkOrderElement*)_obj)->WorkOrderName);
     QDateTime TimeLabel = QDateTime::fromTime_t(((WorkOrderElement*)_obj)->CreatedDate);
     query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));

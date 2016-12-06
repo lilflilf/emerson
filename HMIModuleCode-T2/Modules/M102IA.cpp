@@ -9,6 +9,7 @@
 #include "M10runMode.h"
 #include "UtilityClass.h"
 #include "Interface/Interface.h"
+#include "Interface/Operate/OperateProcess.h"
 #include <QCoreApplication>
 #include <QDebug>
 
@@ -585,6 +586,7 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
     ModRunSetup *_ModRunSetup = ModRunSetup::Instance();
     UtilityClass* _Utility = UtilityClass::Instance();
     InterfaceClass *_Interface = InterfaceClass::Instance();
+    OperateProcess *_Operate = OperateProcess::Instance();
     const QString Colon = ":";
 
     int i;
@@ -811,10 +813,10 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         }
 
         _Utility->SetTextData(DINPowerPl,
-            _Interface->CurrentSplice.WeldSettings.QualitySetting.Power.Plus, MINPOWER,
+            _Operate->CurrentSplice.WeldSettings.QualitySetting.Power.Plus, MINPOWER,
             _Utility->Maxpower, 100, 1, "%dW");
         _Utility->SetTextData(DINPowerMs,
-            _Interface->CurrentSplice.WeldSettings.QualitySetting.Power.Minus, MINPOWER,
+            _Operate->CurrentSplice.WeldSettings.QualitySetting.Power.Minus, MINPOWER,
             _Interface->StatusData.Soft_Settings.SonicGenWatts, 100, 1, "%dW");
         _M2010->ReceiveFlags.POWERrating = true;
         break;
@@ -1002,6 +1004,7 @@ bool M102IA::SetIAWidth(int WidthSet, bool SettingCheck)
     ModRunSetup* _ModRunSetup = ModRunSetup::Instance();
     BransonSerial* _SerialPort = BransonSerial::Instance();
     InterfaceClass* _Interface = InterfaceClass::Instance();
+    OperateProcess* _Operate   = OperateProcess::Instance();
     //This command is ignored if the safety cover does not exist
     //Aux Motion Control, Close Safety Cover
 
@@ -1014,7 +1017,7 @@ bool M102IA::SetIAWidth(int WidthSet, bool SettingCheck)
     //        SendIACommand IAComAuxMotion, DO_CLOSE_SAFETY
 
     if (WidthSet == -1) WidthSet =
-            _Interface->CurrentSplice.WeldSettings.BasicSetting.Width;
+            _Operate->CurrentSplice.WeldSettings.BasicSetting.Width;
     _M2010->ReceiveFlags.WIDTHdata = false;
     _M10runMode->WidthError = true;
     SendIACommand(IAComSetWidth, WidthSet);

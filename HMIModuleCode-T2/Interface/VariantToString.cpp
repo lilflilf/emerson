@@ -112,6 +112,11 @@ struct BRANSONDATA VariantToString::TimePlusToString(int Time)
     return tmpData;
 }
 
+QString VariantToString::Time_PlusToString(int Time)
+{
+    return _Utility->FormatedDataToString(DINTimePl, Time);
+}
+
 struct BRANSONDATA VariantToString::TimeMinusToString(int Time)
 {
     struct BRANSONDATA tmpData;
@@ -121,6 +126,11 @@ struct BRANSONDATA VariantToString::TimeMinusToString(int Time)
     tmpData.Minimum = _Utility->FormatedDataToString(DINTimeMs,
                     _Utility->txtData[DINTimeMs].min);
     return tmpData;
+}
+
+QString VariantToString::Time_MinusToString(int Time)
+{
+    return _Utility->FormatedDataToString(DINTimeMs, Time);
 }
 
 struct BRANSONDATA VariantToString::PowerPlusToString(int Power)
@@ -134,6 +144,11 @@ struct BRANSONDATA VariantToString::PowerPlusToString(int Power)
     return tmpData;
 }
 
+QString VariantToString::Power_PlusToString(int Power)
+{
+    return _Utility->FormatedDataToString(DINPowerPl, Power);
+}
+
 struct BRANSONDATA VariantToString::PowerMinusToString(int Power)
 {
     struct BRANSONDATA tmpData;
@@ -143,6 +158,11 @@ struct BRANSONDATA VariantToString::PowerMinusToString(int Power)
     tmpData.Minimum = _Utility->FormatedDataToString(DINPowerMs,
                     _Utility->txtData[DINPowerMs].min);
     return tmpData;
+}
+
+QString VariantToString::Power_MinusToString(int Power)
+{
+    return _Utility->FormatedDataToString(DINPowerMs, Power);
 }
 
 struct BRANSONDATA VariantToString::PreHeightPlusToString(int PreHeight)
@@ -156,6 +176,11 @@ struct BRANSONDATA VariantToString::PreHeightPlusToString(int PreHeight)
     return tmpData;
 }
 
+QString VariantToString::PreHeight_PlusToString(int PreHeight)
+{
+    return _Utility->FormatedDataToString(DINPre_HgtPl, PreHeight);
+}
+
 struct BRANSONDATA VariantToString::PreHeightMinusToString(int PreHeight)
 {
     struct BRANSONDATA tmpData;
@@ -165,6 +190,11 @@ struct BRANSONDATA VariantToString::PreHeightMinusToString(int PreHeight)
     tmpData.Minimum = _Utility->FormatedDataToString(DINPre_HgtMs,
                     _Utility->txtData[DINPre_HgtMs].min);
     return tmpData;
+}
+
+QString VariantToString::PreHeight_MinusToString(int PreHeight)
+{
+    return _Utility->FormatedDataToString(DINPre_HgtMs, PreHeight);
 }
 
 struct BRANSONDATA VariantToString::HeightPlusToString(int Height)
@@ -178,6 +208,11 @@ struct BRANSONDATA VariantToString::HeightPlusToString(int Height)
     return tmpData;
 }
 
+QString VariantToString::Height_PlusToString(int Height)
+{
+   return _Utility->FormatedDataToString(DINHeightPl, Height);
+}
+
 struct BRANSONDATA VariantToString::HeightMinusToString(int Height)
 {
     struct BRANSONDATA tmpData;
@@ -187,6 +222,11 @@ struct BRANSONDATA VariantToString::HeightMinusToString(int Height)
     tmpData.Minimum = _Utility->FormatedDataToString(DINHeightMs,
                     _Utility->txtData[DINHeightMs].min);
     return tmpData;
+}
+
+QString VariantToString::Height_MinusToString(int Height)
+{
+    return _Utility->FormatedDataToString(DINHeightMs, Height);
 }
 
 struct BRANSONDATA VariantToString::AfterBurstDelayToString(int Time)

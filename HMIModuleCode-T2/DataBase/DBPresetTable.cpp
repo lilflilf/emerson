@@ -84,6 +84,8 @@ const QString SQLSentence[] = {
     "SELECT * FROM Preset WHERE ID = ? AND SpliceName = ?",
                                                 /*3 Query One Record From Part Table */
 
+    "SELECT * FROM Preset WHERE ID = ?",        /*4 Query One Record Only Use ID */
+
     "DELETE FROM Preset",                       /*4 Delete Entire Splice Table*/
 
     "DELETE FROM Preset WHERE ID = ? AND SpliceName = ?",
@@ -227,7 +229,7 @@ bool DBPresetTable::CreateNewTable()
     QSqlQuery query(SpliceDBObj);
     bool bResult = SpliceDBObj.open();
 
-    bResult = query.exec(SQLSentence[CREATE_SPLICE_TABLE]);   //run SQL
+    bResult = query.exec(SQLSentence[CREATE]);   //run SQL
 
     if(bResult == false)
         qDebug() << "SQL ERROR:"<< query.lastError();
@@ -254,7 +256,7 @@ int DBPresetTable::InsertRecordIntoTable(void *_obj)
 
     UtilityClass *_Utility = UtilityClass::Instance();
 
-    query.prepare(SQLSentence[INSERT_SPLICE_TABLE]);
+    query.prepare(SQLSentence[INSERT]);
     query.addBindValue(((PresetElement*)_obj)->SpliceName);
     QDateTime TimeLabel = QDateTime::currentDateTime();
     query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
@@ -345,7 +347,7 @@ bool DBPresetTable::QueryEntireTable(QMap<int, QString> *_obj)
     if(bResult == false)
         return bResult;
 
-    bResult = query.exec(SQLSentence[QUERY_ENTIRE_SPLICE_TABLE]);
+    bResult = query.exec(SQLSentence[QUERY_ENTIRE_TABLE]);
     if (bResult == true)
     {
         _obj->clear();
@@ -378,9 +380,165 @@ bool DBPresetTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
         return bResult;
     }
 
-    query.prepare(SQLSentence[QUERY_ONE_RECORD_SPLICE_TABLE]);
+    query.prepare(SQLSentence[QUERY_ONE_RECORD]);
     query.addBindValue(ID);
     query.addBindValue(Name);
+
+    bResult = query.exec();
+    if(bResult == false)
+    {
+        SpliceDBObj.close();
+        qDebug() << "SQL ERROR:"<< query.lastError();
+        return bResult;
+    }
+
+    bResult = query.next();
+    if(bResult == false)
+    {
+        SpliceDBObj.close();
+        return bResult;
+    }
+
+    ((PresetElement*)_obj)->SpliceID = query.value("ID").toInt();
+    ((PresetElement*)_obj)->SpliceName = query.value("SpliceName").toString();
+    QDateTime TimeLabel = QDateTime::fromString(query.value("CreatedDate").toString(),
+                                                "yyyy/MM/dd hh:mm:ss");
+    ((PresetElement*)_obj)->CreatedDate = TimeLabel.toTime_t();
+    ((PresetElement*)_obj)->OperatorID = query.value("OperatorID").toInt();
+    ((PresetElement*)_obj)->CrossSection = query.value("Color").toInt();
+    ((PresetElement*)_obj)->PresetPicNamePath = query.value("PresetPicPath").toString();
+    ((PresetElement*)_obj)->Verified = query.value("Verified").toBool();
+    ((PresetElement*)_obj)->WeldSettings.BasicSetting.Energy =
+            query.value("Energy").toInt();
+    ((PresetElement*)_obj)->WeldSettings.BasicSetting.Amplitude =
+            query.value("Amplitude").toInt();
+    ((PresetElement*)_obj)->WeldSettings.BasicSetting.Width =
+            query.value("Width").toInt();
+    ((PresetElement*)_obj)->WeldSettings.BasicSetting.Pressure =
+            query.value("Pressure").toInt();
+    ((PresetElement*)_obj)->WeldSettings.BasicSetting.TrigPres =
+            query.value("TrigPres").toInt();
+    ((PresetElement*)_obj)->WeldSettings.QualitySetting.Time.Plus =
+            query.value("TimePlus").toInt();
+    ((PresetElement*)_obj)->WeldSettings.QualitySetting.Time.Minus =
+            query.value("TimeMinus").toInt();
+    ((PresetElement*)_obj)->WeldSettings.QualitySetting.Power.Plus =
+            query.value("PowerPlus").toInt();
+    ((PresetElement*)_obj)->WeldSettings.QualitySetting.Power.Minus =
+            query.value("PowerMinus").toInt();
+    ((PresetElement*)_obj)->WeldSettings.QualitySetting.Preheight.Plus =
+            query.value("PreheightPlus").toInt();
+    ((PresetElement*)_obj)->WeldSettings.QualitySetting.Preheight.Minus =
+            query.value("PreheightMinus").toInt();
+    ((PresetElement*)_obj)->WeldSettings.QualitySetting.Height.Plus =
+            query.value("HeightPlus").toInt();
+    ((PresetElement*)_obj)->WeldSettings.QualitySetting.Height.Minus =
+            query.value("HeightMinus").toInt();
+    ((PresetElement*)_obj)->WeldSettings.QualitySetting.Force.Plus =
+            query.value("ForcePlus").toInt();
+    ((PresetElement*)_obj)->WeldSettings.QualitySetting.Force.Minus =
+            query.value("ForceMinus").toInt();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.WeldMode =
+            (enum WELDMODE)query.value("WeldMode").toInt();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.StepWeld.StepWeldMode =
+            (enum STEPWELDMODE)query.value("StepWeldMode").toInt();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.StepWeld.EnergyToStep =
+            query.value("EnergyToStep").toInt();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.StepWeld.TimeToStep =
+            query.value("TimeToStep").toInt();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.StepWeld.PowerToStep =
+            query.value("PowerToStep").toInt();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.StepWeld.Amplitude2 =
+            query.value("Amplitude2").toInt();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.PreBurst = query.value("PreBurst").toInt();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.HoldTime = query.value("HoldTime").toInt();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.SqzTime = query.value("SqueezeTime").toInt();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ABDelay = query.value("AfterBurstDelay").toInt();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ABDur = query.value("AfterBurstDuring").toInt();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.CutOff = query.value("CutOff").toInt();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.CutOffSpliceTime =
+            query.value("CutOffSpliceTime").toInt();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.AntiSide = query.value("AntiSide").toInt();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.AntiSideSpliceTime =
+            query.value("AntiSideSpliceTime").toInt();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.MeasuredWidth = query.value("MeasuredWidth").toInt();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.MeasuredHeight = query.value("MeasuredHeight").toInt();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkOption =
+            query.value("ShrinkOption").toBool();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID = query.value("ShrinkTubeID").toInt();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime = query.value("ShrinkTubeTime").toInt();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTemperature =
+            query.value("ShrinkTemperature").toInt();
+    ((PresetElement*)_obj)->HashCode = query.value("HashCode").toInt();
+
+    QString tmpStr = query.value("JSONWire").toString();
+    _Utility->StringJsonToMap(tmpStr, &((PresetElement*)_obj)->WireIndex);
+    ((PresetElement*)_obj)->NoOfWires = ((PresetElement*)_obj)->WireIndex.size();
+
+    ((PresetElement*)_obj)->TestSetting.Qutanty = query.value("Qutanty").toInt();
+    ((PresetElement*)_obj)->TestSetting.StopCount = query.value("StopCount").toInt();
+    ((PresetElement*)_obj)->TestSetting.TestMode =
+            (enum TESTMODE)query.value("TestMode").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModeType =
+            (enum TEACH_MODE_TYPE)query.value("TeachModeType").toInt();
+
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[0] =
+            query.value("TimePLRG").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[1] =
+            query.value("TimeMSRG").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[2] =
+            query.value("PowerPLRG").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[3] =
+            query.value("PowerMSRG").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[4] =
+            query.value("PreHeightPLRG").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[5] =
+            query.value("PreHeightMSRG").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[6] =
+            query.value("HeightPLRG").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[7] =
+            query.value("HeightMSRG").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[8] =
+            query.value("ForcePLRG").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[9] =
+            query.value("ForceMSRG").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[10] =
+            query.value("TimeConfigPL").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[11] =
+            query.value("TimeConfigMS").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[12] =
+            query.value("PowerConfigPL").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[13] =
+            query.value("PowerConfigMS").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[14] =
+            query.value("PreHeightConfigPL").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[15] =
+            query.value("PreHeightConfigMS").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[16] =
+            query.value("HeightConfigPL").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[17] =
+            query.value("HeightCOnfigMS").toInt();
+    ((PresetElement*)_obj)->TestSetting.TestingDone = query.value("TestingDone").toBool();
+
+    SpliceDBObj.close();
+    return bResult;
+}
+
+bool DBPresetTable::QueryOneRecordFromTable(int ID, void *_obj)
+{
+    if(_obj == NULL)
+        return false;
+    QSqlQuery query(SpliceDBObj);
+    bool bResult = SpliceDBObj.open();
+    UtilityClass *_Utility = UtilityClass::Instance();
+    if(bResult == false)
+    {
+        qDebug() << "SQL ERROR:"<< query.lastError();
+        return bResult;
+    }
+
+    query.prepare(SQLSentence[QUERY_ONE_RECORD_ONLY_ID]);
+    query.addBindValue(ID);
 
     bResult = query.exec();
     if(bResult == false)
@@ -532,7 +690,7 @@ bool DBPresetTable::DeleteEntireTable()
         return bResult;
     }
 
-    bResult = query.exec(SQLSentence[DELETE_ENTIRE_SPLICE_TABLE]);
+    bResult = query.exec(SQLSentence[DELETE_ENTIRE_TABLE]);
     if(bResult == false)
     {
         qDebug() << "SQL ERROR:"<< query.lastError();
@@ -552,7 +710,7 @@ bool DBPresetTable::DeleteOneRecordFromTable(int ID, QString Name)
         return bResult;
     }
 
-    query.prepare(SQLSentence[DELETE_ONE_RECORD_SPLICE_TABLE]);
+    query.prepare(SQLSentence[DELETE_ONE_RECORD]);
     query.addBindValue(ID);
     query.addBindValue(Name);
 
@@ -578,7 +736,7 @@ bool DBPresetTable::UpdateRecordIntoTable(void *_obj)
         return bResult;
     }
 
-    query.prepare(SQLSentence[UPDATE_ONE_RECORD_SPLICE_TABLE]);
+    query.prepare(SQLSentence[UPDATE_ONE_RECORD]);
     query.addBindValue(((PresetElement*)_obj)->SpliceName);
     QDateTime TimeLabel = QDateTime::fromTime_t(((PresetElement*)_obj)->CreatedDate);
     query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));

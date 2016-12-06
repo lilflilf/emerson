@@ -25,13 +25,14 @@ const QString SQLSentence[] = {
 
     "SELECT * FROM Wire WHERE ID = ? AND WireName = ?",
                                             /*3 Query One Record From Splice Table */
-    "DELETE FROM Wire",                     /*4 Delete Entire Wire Table*/
+    "SELECT * FROM Wire WHERE ID = ?",      /*4 Query One Record only Use ID*/
+    "DELETE FROM Wire",                     /*5 Delete Entire Wire Table*/
     "DELETE FROM Wire WHERE ID = ? AND WireName = ?",
-                                            /*5 Delete One Record from Wire Table*/
+                                            /*6 Delete One Record from Wire Table*/
     "UPDATE Wire Set WireName = ?, CreatedDate = ?, OperatorID = ?, "
     "Color = ?, StripeType = ?, StripeColor = ?, Gauge = ?, MetalType = ?, "
     "HorizontalLocation = ?, VerticalLocation = ?, VerticalPosition = ? "
-    "WHERE ID = ?",                         /*6 Update One Record to Wire Table*/
+    "WHERE ID = ?",                         /*7 Update One Record to Wire Table*/
 };
 
 DBWireTable* DBWireTable::Instance()
@@ -64,7 +65,7 @@ bool DBWireTable::CreateNewTable()
     QSqlQuery query(WireDBObj);
     bool bResult = WireDBObj.open();
 
-    bResult = query.exec(SQLSentence[CREATE_WIRE_TABLE]);   //run SQL
+    bResult = query.exec(SQLSentence[CREATE]);   //run SQL
 
     if(bResult == false)
         qDebug() << "SQL ERROR:"<< query.lastError();
@@ -89,7 +90,7 @@ int DBWireTable::InsertRecordIntoTable(void *_obj)
         return bResult;
     }
 
-    query.prepare(SQLSentence[INSERT_WIRE_TABLE]);
+    query.prepare(SQLSentence[INSERT]);
     query.addBindValue(((WireElement*)_obj)->WireName);
     QDateTime TimeLabel = QDateTime::currentDateTime();
     qDebug()<<"Time: "<<TimeLabel.toString("yyyy/MM/dd hh:mm:ss");
@@ -125,7 +126,7 @@ bool DBWireTable::QueryEntireTable(QMap<int, QString> *_obj)
     if(bResult == false)
         return bResult;
 
-    bResult = query.exec(SQLSentence[QUERY_ENTIRE_WIRE_TABLE]);
+    bResult = query.exec(SQLSentence[QUERY_ENTIRE_TABLE]);
     if(bResult == true)
     {
         _obj->clear();
@@ -154,9 +155,60 @@ bool DBWireTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
         return bResult;
     }
 
-    query.prepare(SQLSentence[QUERY_ONE_RECORD_WIRE_TABLE]);
+    query.prepare(SQLSentence[QUERY_ONE_RECORD]);
     query.addBindValue(ID);
     query.addBindValue(Name);
+
+    bResult = query.exec();
+    if(bResult == false)
+    {
+        WireDBObj.close();
+        qDebug() << "SQL ERROR:"<< query.lastError();
+        return bResult;
+    }
+
+    bResult = query.next();
+    if(bResult == false)
+    {
+        WireDBObj.close();
+        return bResult;
+    }
+
+    ((WireElement*)_obj)->WireID = query.value("ID").toInt();
+    ((WireElement*)_obj)->WireName = query.value("WireName").toString();
+    QDateTime TimeLabel = QDateTime::fromString(query.value("CreatedDate").toString(),
+                                                "yyyy/MM/dd hh:mm:ss");
+    ((WireElement*)_obj)->CreatedDate = TimeLabel.toTime_t();
+    ((WireElement*)_obj)->OperatorID = query.value("OperatorID").toInt();
+    ((WireElement*)_obj)->Color = query.value("Color").toString();
+    ((WireElement*)_obj)->Stripe.Color = query.value("StripeColor").toString();
+    ((WireElement*)_obj)->Stripe.TypeOfStripe = (enum StripeType)query.value("StripeType").toInt();
+    ((WireElement*)_obj)->Gauge = query.value("Gauge").toInt();
+    ((WireElement*)_obj)->TypeOfWire = (enum MetalType)query.value("MetalType").toInt();
+    ((WireElement*)_obj)->Side = (enum HorizontalLocation)query.value("HorizontalLocation").toInt();
+    ((WireElement*)_obj)->VerticalSide = (enum VerticalLocation)query.value("VerticalLocation").toInt();
+    ((WireElement*)_obj)->Position = (enum VerticalPosition)query.value("VerticalPosition").toInt();
+
+    bResult = true;
+    WireDBObj.close();
+
+    return bResult;
+}
+
+bool DBWireTable::QueryOneRecordFromTable(int ID, void *_obj)
+{
+    if(_obj == NULL)
+        return false;
+    QSqlQuery query(WireDBObj);
+    bool bResult = WireDBObj.open();
+    if(bResult == false)
+    {
+        qDebug() << "SQL ERROR:"<< query.lastError();
+        return bResult;
+    }
+
+    query.prepare(SQLSentence[QUERY_ONE_RECORD_ONLY_ID]);
+    query.addBindValue(ID);
 
     bResult = query.exec();
     if(bResult == false)
@@ -203,7 +255,7 @@ bool DBWireTable::DeleteEntireTable()
         qDebug() << "SQL ERROR:"<< query.lastError();
         return bResult;
     }
-    bResult = query.exec(SQLSentence[DELETE_ENTIRE_WIRE_TABLE]);
+    bResult = query.exec(SQLSentence[DELETE_ENTIRE_TABLE]);
     if(bResult == false)
     {
         qDebug() << "SQL ERROR:"<< query.lastError();
@@ -222,7 +274,7 @@ bool DBWireTable::DeleteOneRecordFromTable(int ID, QString Name)
         return bResult;
     }
 
-    query.prepare(SQLSentence[DELETE_ONE_RECORD_WIRE_TABLE]);
+    query.prepare(SQLSentence[DELETE_ONE_RECORD]);
     query.addBindValue(ID);
     query.addBindValue(Name);
 
@@ -247,7 +299,7 @@ bool DBWireTable::UpdateRecordIntoTable(void *_obj)
         return bResult;
     }
 
-    query.prepare(SQLSentence[UPDATE_ONE_RECORD_WIRE_TABLE]);
+    query.prepare(SQLSentence[UPDATE_ONE_RECORD]);
     query.addBindValue(((WireElement*)_obj)->WireName);
     QDateTime TimeLabel = QDateTime::fromTime_t(((WireElement*)_obj)->CreatedDate);
     query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));

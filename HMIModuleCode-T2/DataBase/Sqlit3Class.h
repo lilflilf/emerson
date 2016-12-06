@@ -9,6 +9,17 @@
 //#include "Interface/Definition.h"
 //#include "sqlsentence.h"
 
+enum{
+    CREATE = 0,
+    INSERT = 1,
+    QUERY_ENTIRE_TABLE = 2,
+    QUERY_ONE_RECORD = 3,
+    QUERY_ONE_RECORD_ONLY_ID = 4,
+    DELETE_ENTIRE_TABLE = 5,
+    DELETE_ONE_RECORD = 6,
+    UPDATE_ONE_RECORD = 7,
+};
+
 class SQLITCLASS
 {
 public:
@@ -17,6 +28,7 @@ public:
     virtual bool UpdateRecordIntoTable(void* _obj) = 0;
     virtual bool QueryEntireTable(QMap<int, QString>* _obj) = 0;
     virtual bool QueryOneRecordFromTable(int ID, QString Name, void* _obj) = 0;
+    virtual bool QueryOneRecordFromTable(int ID, void* _obj) = 0;
     virtual bool DeleteEntireTable() = 0;
     virtual bool DeleteOneRecordFromTable(int ID, QString Name) = 0;
 

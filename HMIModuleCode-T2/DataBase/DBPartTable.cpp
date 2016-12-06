@@ -26,16 +26,18 @@ const QString SQLSentence[] = {
     "SELECT ID, PartName FROM Part",            /*2 Query Entire Part Table */
 
     "SELECT * FROM Part WHERE ID = ? AND PartName = ?",
-                                                /*3 Query One Record From WorkOrder Table */
-    "DELETE FROM Part",                         /*4 Delete Entire Part Table*/
+                                                /*3 Query One Record From Part Table */
+    "SELECT * FROM Part WHERE ID = ?",          /*4 Query One Record Only Use ID */
+
+    "DELETE FROM Part",                         /*5 Delete Entire Part Table*/
 
     "DELETE FROM Part WHERE ID = ? AND PartName = ?",
-                                                /*5 Delete One Record from Part Table*/
+                                                /*6 Delete One Record from Part Table*/
 
     "UPDATE Part SET PartName = ?, CreatedDate = ?, OperatorID = ?, "
     "ProcessMode = ?, TotalWorkstation = ?, MaxSplicesPerWorkstation = ?, "
     "Rows = ?, Columns = ?, MaxSplicesPerZone = ?, NoOfSplice = ?, JSONSplice = ? "
-    "WHERE ID = ?",                             /*6 Update One Record to Part Table*/
+    "WHERE ID = ?",                             /*7 Update One Record to Part Table*/
 
 };
 
@@ -119,7 +121,7 @@ bool DBPartTable::CreateNewTable()
     QSqlQuery query(PartDBObj);
     bool bResult = PartDBObj.open();
 
-    bResult = query.exec(SQLSentence[CREATE_PART_TABLE]);   //run SQL
+    bResult = query.exec(SQLSentence[CREATE]);   //run SQL
 
     if(bResult == false)
         qDebug() << "SQL ERROR:"<< query.lastError();
@@ -146,7 +148,7 @@ int DBPartTable::InsertRecordIntoTable(void *_obj)
 
     UtilityClass *_Utility = UtilityClass::Instance();
 
-    query.prepare(SQLSentence[INSERT_PART_TABLE]);
+    query.prepare(SQLSentence[INSERT]);
 
     query.addBindValue(((PartElement*)_obj)->PartName);
     QDateTime TimeLabel = QDateTime::currentDateTime();
@@ -190,7 +192,7 @@ bool DBPartTable::QueryEntireTable(QMap<int, QString> *_obj)
     if(bResult == false)
         return bResult;
 
-    bResult = query.exec(SQLSentence[QUERY_ENTIRE_PART_TABLE]);
+    bResult = query.exec(SQLSentence[QUERY_ENTIRE_TABLE]);
     if (bResult == true)
     {
         _obj->clear();
@@ -224,9 +226,66 @@ bool DBPartTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
         return bResult;
     }
 
-    query.prepare(SQLSentence[QUERY_ONE_RECORD_PART_TABLE]);
+    query.prepare(SQLSentence[QUERY_ONE_RECORD]);
     query.addBindValue(ID);
     query.addBindValue(Name);
+
+    bResult = query.exec();
+    if(bResult == false)
+    {
+        PartDBObj.close();
+        qDebug() << "SQL ERROR:"<< query.lastError();
+        return bResult;
+    }
+
+    bResult = query.next();
+    if(bResult == false)
+    {
+        PartDBObj.close();
+        return bResult;
+    }
+
+    ((PartElement*)_obj)->PartID = query.value("ID").toInt();
+    ((PartElement*)_obj)->PartName = query.value("PartName").toString();
+    QDateTime TimeLabel = QDateTime::fromString(query.value("CreatedDate").toString(),
+                                                "yyyy/MM/dd hh:mm:ss");
+    ((PartElement*)_obj)->CreatedDate = TimeLabel.toTime_t();
+    ((PartElement*)_obj)->OperatorID = query.value("OperatorID").toInt();
+    ((PartElement*)_obj)->PartTypeSetting.ProcessMode =
+            (enum PROCESSMODE)query.value("ProcessMode").toInt();
+    ((PartElement*)_obj)->PartTypeSetting.WorkStations.TotalWorkstation =
+            query.value("TotalWorkstation").toInt();
+    ((PartElement*)_obj)->PartTypeSetting.WorkStations.MaxSplicesPerWorkstation =
+            query.value("MaxSplicesPerWorkstation").toInt();
+    ((PartElement*)_obj)->PartTypeSetting.BoardLayout.Rows = query.value("Rows").toInt();
+    ((PartElement*)_obj)->PartTypeSetting.BoardLayout.Columns = query.value("Columns").toInt();
+    ((PartElement*)_obj)->PartTypeSetting.BoardLayout.MaxSplicesPerZone =
+            query.value("MaxSplicesPerZone").toInt();
+    QString tmpStr = query.value("JSONSplice").toString();
+    _Utility->StringJsonToMap(tmpStr, &((PartElement*)_obj)->SpliceIndex);
+
+    ((PartElement*)_obj)->NoOfSplice = ((PartElement*)_obj)->SpliceIndex.size();
+
+    PartDBObj.close();
+    return bResult;
+}
+
+bool DBPartTable::QueryOneRecordFromTable(int ID, void *_obj)
+{
+    if(_obj == NULL)
+        return false;
+
+    UtilityClass *_Utility = UtilityClass::Instance();
+    QSqlQuery query(PartDBObj);
+    bool bResult = PartDBObj.open();
+    if(bResult == false)
+    {
+        qDebug() << "SQL ERROR:"<< query.lastError();
+        return bResult;
+    }
+
+    query.prepare(SQLSentence[QUERY_ONE_RECORD_ONLY_ID]);
+    query.addBindValue(ID);
 
     bResult = query.exec();
     if(bResult == false)
@@ -278,7 +337,7 @@ bool DBPartTable::DeleteEntireTable()
         return bResult;
     }
 
-    bResult = query.exec(SQLSentence[DELETE_ENTIRE_PART_TABLE]);
+    bResult = query.exec(SQLSentence[DELETE_ENTIRE_TABLE]);
     if(bResult == false)
     {
         qDebug() << "SQL ERROR:"<< query.lastError();
@@ -298,7 +357,7 @@ bool DBPartTable::DeleteOneRecordFromTable(int ID, QString Name)
         return bResult;
     }
 
-    query.prepare(SQLSentence[DELETE_ONE_RECORD_PART_TABLE]);
+    query.prepare(SQLSentence[DELETE_ONE_RECORD]);
     query.addBindValue(ID);
     query.addBindValue(Name);
 
@@ -324,7 +383,7 @@ bool DBPartTable::UpdateRecordIntoTable(void *_obj)
         return bResult;
     }
 
-    query.prepare(SQLSentence[UPDATE_ONE_RECORD_PART_TABLE]);
+    query.prepare(SQLSentence[UPDATE_ONE_RECORD]);
     query.addBindValue(((PartElement*)_obj)->PartName);
     QDateTime TimeLabel = QDateTime::fromTime_t(((PartElement*)_obj)->CreatedDate);
     query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
