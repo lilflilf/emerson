@@ -92,6 +92,7 @@ public slots:
 
 private:
     QHash<int, QByteArray> m_roleNames;
+    VariantToString *m_variant;
 };
 
 
@@ -178,6 +179,7 @@ public:
     QStringList m_idList;
     DBAlarmLogTable *m_alarmAdaptor;
     QMap<int, QString> *alarms;
+    DBWeldResultTable *m_weldHistoryAdaptor;
 
 protected:
     int rowCount(const QModelIndex &parent) const;
@@ -196,6 +198,7 @@ public slots:
     Q_INVOKABLE int count();
 private:
     QHash<int, QByteArray> m_roleNames;
+    VariantToString *m_variant;
 };
 
 
