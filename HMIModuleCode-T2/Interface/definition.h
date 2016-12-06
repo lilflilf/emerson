@@ -3,6 +3,8 @@
 #include <QString>
 #include <QMap>
 #include <QHash>
+//#include "Interface.h"
+//#include "Modules/UtilityClass.h"
 
 struct BRANSONDATA
 {
@@ -375,11 +377,13 @@ public:
         }
         TestSetting.TestingDone = false;
     }
+
     ~PresetElement()
     {
         WireIndex.clear();
         NoOfWires = WireIndex.size();
     }
+
     PresetElement operator=(const PresetElement &PresetObject)
     {
         if(this == &PresetObject)
@@ -477,6 +481,10 @@ public:
         return *this;
     }
 
+    void CalculateSpliceData()
+    {
+//        InterfaceClass *_Interface = InterfaceClass::Instance();
+    }
  };
 
 //Part Structure
