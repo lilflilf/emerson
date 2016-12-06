@@ -1,5 +1,6 @@
 #include "DBPartTable.h"
 #include "Modules/UtilityClass.h"
+#include "Interface/PartElement.h"
 #include <QDebug>
 
 DBPartTable* DBPartTable::_instance = NULL;

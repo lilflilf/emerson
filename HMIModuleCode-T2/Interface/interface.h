@@ -6,7 +6,8 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include <QObject>
-#include "definition.h"
+//#include "definition.h"
+#include "PresetElement.h"
 #include "Settings/SysConfiguration.h"
 #include "Settings/OperatorLibrary.h"
 

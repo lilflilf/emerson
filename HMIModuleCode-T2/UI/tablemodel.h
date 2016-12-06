@@ -11,10 +11,14 @@
 #include "DataBase/DBWeldResultTable.h"
 #include "DataBase/DBWireTable.h"
 #include "Interface/Definition.h"
+#include "Interface/WireElement.h"
+#include "Interface/PresetElement.h"
+#include "Interface/PartElement.h"
+#include "Interface/WorkOrderElement.h"
 #include "Interface/Settings/OperatorLibrary.h"
 #include "DataBase/DBMaintenanceLogTable.h"
 #include "Interface/Maintenance/MaintenanceLog.h"
-#include "Interface/VariantToString.h"
+#include "Interface/variantToString.h"
 
 class WorkOrderModel : public QAbstractTableModel
 {
@@ -78,7 +82,7 @@ public:
     QHash<int, QByteArray> roleNames() const;
 
     PresetElement presetElement;
-    VariantToString variantToString;
+    VariantToString *variantToString;
 signals:
 
 
