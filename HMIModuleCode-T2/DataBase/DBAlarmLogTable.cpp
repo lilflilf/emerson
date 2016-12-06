@@ -1,4 +1,5 @@
 #include "DBAlarmLogTable.h"
+#include "Interface/AlarmElement.h"
 #include <QDebug>
 
 DBAlarmLogTable* DBAlarmLogTable::_instance = NULL;
