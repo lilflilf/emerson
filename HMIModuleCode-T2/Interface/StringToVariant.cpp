@@ -13,6 +13,7 @@ bool StringToVariant::GaugeToInt(QString strGauge, int &GaugeAWG, int &GaugeMM)
     if(strGauge.contains("AWG") == true)
     {
         GaugeAWG = (int)_Utility->StringToFormatedData(DINGaugeAWG, strGauge);
+        InterfaceClass* _Interface = InterfaceClass::Instance();
         if(_Interface->StatusData.AWGToAreaTable.contains(GaugeAWG) == true)
         {
             QMap<int, int>::iterator at

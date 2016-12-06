@@ -15,6 +15,7 @@
 #include "DataBase/DBMaintenanceLogTable.h"
 #include "Interface/Maintenance/MaintenanceLog.h"
 #include "Interface/VariantToString.h"
+#include "Interface/StringToVariant.h"
 
 class WorkOrderModel : public QAbstractTableModel
 {
@@ -255,6 +256,9 @@ protected:
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
     QHash<int, QByteArray> roleNames() const;
 
+    WireElement wireElement;
+    VariantToString variantToString;
+    StringToVariant stringToVariant;
 //signals:
 
 
@@ -263,6 +267,14 @@ public slots:
     Q_INVOKABLE QVariant getValue(int index, QString key);
     Q_INVOKABLE int count();
     Q_INVOKABLE void removeValue(int id, QString name);
+
+    Q_INVOKABLE void createNew();
+    Q_INVOKABLE QVariant getStructValue(QString key);
+    Q_INVOKABLE QString getStructValue2(QString key, QString type);
+    Q_INVOKABLE int getStructValue3(QString key, QString value);
+    Q_INVOKABLE QString getStructValue4(int gauge, int awg);
+
+
 
 private:
     QHash<int, QByteArray> m_roleNames;

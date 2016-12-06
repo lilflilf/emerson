@@ -1343,6 +1343,72 @@ void WireModel::removeValue(int id, QString name)
     m_wireAdaptor->DeleteOneRecordFromTable(id,name);
 }
 
+void WireModel::createNew()
+{
+    WireElement temp;
+    wireElement = temp;
+}
+
+QVariant WireModel::getStructValue(QString key)
+{
+    QHash<QString, QVariant> WireModelHash;
+    WireModelHash.insert("Gauge",wireElement.Gauge);
+    WireModelHash.insert("AWG",wireElement.GaugeAWG);
+    WireModelHash.insert("WireType",(int)wireElement.TypeOfWire);
+
+    qDebug() << "getStructValue" << (int)wireElement.TypeOfWire;
+//    WireModelHash.insert("OperatorName",myWire.OperatorID);
+//    WireModelHash.insert("Color",myWire.Color);
+//    WireModelHash.insert("StripeType",(int)myWire.Stripe.TypeOfStripe);
+//    WireModelHash.insert("StripeColor",myWire.Stripe.Color);
+//    WireModelHash.insert("Gauge",myWire.Gauge);
+//    WireModelHash.insert("MetalType",(int)myWire.TypeOfWire);
+//    WireModelHash.insert("HorizontalLocation",(int)myWire.Side);
+//    WireModelHash.insert("VerticalLocation",(int)myWire.VerticalSide);
+//    WireModelHash.insert("VerticalPosition",(int)myWire.Position);
+    if (key == "") {
+        return WireModelHash;
+    } else {
+        return WireModelHash.value(key);
+    }
+}
+
+QString WireModel::getStructValue2(QString key, QString type)
+{
+    if (key == "Gauge"){
+        if (type == "current")
+            return variantToString.GaugeToString(wireElement.Gauge,wireElement.GaugeAWG).Current;
+        else if (type == "max")
+            return variantToString.GaugeToString(wireElement.Gauge,wireElement.GaugeAWG).Maximum;
+        else if (type == "min")
+            return variantToString.GaugeToString(wireElement.Gauge,wireElement.GaugeAWG).Minimum;
+
+    }
+
+}
+
+int WireModel::getStructValue3(QString key, QString value)
+{
+    int gauge;
+    int awg;
+    if (key == "Gauge"){
+        stringToVariant.GaugeToInt(value,awg,gauge);
+        qDebug() << "getStructValue3" << key << value << gauge;
+        return gauge;
+    }
+    else if (key == "awg") {
+        stringToVariant.GaugeToInt(value,awg,gauge);
+        qDebug() << "getStructValue3" << key << value << awg;
+        return awg;
+    }
+}
+
+QString WireModel::getStructValue4(int gauge, int awg)
+{
+    qDebug() << "getStructValue4" << gauge << awg;
+    return variantToString.GaugeToString(gauge,awg).Current;
+}
+
 int WireModel::columnCount(const QModelIndex &parent) const
 {
     return 1;
