@@ -499,29 +499,38 @@ Item {
     ListModel {
         id: listModel
         Component.onCompleted: {
-            listModel.append({"iconsource":"qrc:/images/images/English.png","contrl":"EngLish"})
-            listModel.append({"iconsource":"qrc:/images/images/Japanese.png","contrl":"Japanese"})
-            listModel.append({"iconsource":"qrc:/images/images/chinese.png","contrl":"Chinese"})
-            listModel.append({"iconsource":"qrc:/images/images/Indonesian.png","contrl":"Indonesian"})
-            listModel.append({"iconsource":"qrc:/images/images/Spanish.png","contrl":"Spanish"})
-            listModel.append({"iconsource":"qrc:/images/images/Vietnam.png","contrl":"Vietnam"})
-            listModel.append({"iconsource":"qrc:/images/images/Turkish.png","contrl":"Turkish"})
-            listModel.append({"iconsource":"qrc:/images/images/Thai.png","contrl":"Thai"})
-            listModel.append({"iconsource":"qrc:/images/images/Portuguese.png","contrl":"Portuguese"})
-            listModel.append({"iconsource":"qrc:/images/images/German.png","contrl":"German"})
-            listModel.append({"iconsource":"qrc:/images/images/french.png","contrl":"French"})
-            listModel.append({"iconsource":"qrc:/images/images/russian.png","contrl":"Russian"})
-            listModel.append({"iconsource":"qrc:/images/images/polish.png","contrl":"Polish"})
-            listModel.append({"iconsource":"qrc:/images/images/Korean.png","contrl":"Korean"})
-            listModel.append({"iconsource":"qrc:/images/images/Italian.png","contrl":"Italian"})
-            listModel.append({"iconsource":"qrc:/images/images/Slovak.png","contrl":"Slovak"})
-            listModel.append({"iconsource":"qrc:/images/images/Romanian.png","contrl":"Romanian"})
-            listModel.append({"iconsource":"qrc:/images/images/dutch.png","contrl":"Dutch"})
-            listModel.append({"iconsource":"qrc:/images/images/Czech.png","contrl":"Czech"})
-            listModel.append({"iconsource":"qrc:/images/images/Malaysian.png","contrl":"Malaysian"})
-            listModel.append({"iconsource":"qrc:/images/images/Arabic.png","contrl":"Arabic"})
-            listModel.append({"iconsource":"qrc:/images/images/Hindi.png","contrl":"Hindi"})
-            listModel.append({"iconsource":"qrc:/images/images/Hungarian.png","contrl":"Hungarian"})
+            listModel.append({"iconsource":"qrc:/images/images/Arabic.png","selectlanguage":"Arabic"})
+            listModel.append({"iconsource":"qrc:/images/images/United-Arab-Emirates.png","selectlanguage":"Arabic"})
+            listModel.append({"iconsource":"qrc:/images/images/chinese.png","selectlanguage":"Chinese"})
+            listModel.append({"iconsource":"qrc:/images/images/chinese.png","selectlanguage":"Chinese(TaiWan)"})
+            listModel.append({"iconsource":"qrc:/images/images/Czech.png","selectlanguage":"Czech"})
+            listModel.append({"iconsource":"qrc:/images/images/dutch.png","selectlanguage":"Dutch"})
+            listModel.append({"iconsource":"qrc:/images/images/australia.png","selectlanguage":"EngLish"})
+            listModel.append({"iconsource":"qrc:/images/images/Canada.png","selectlanguage":"EngLish"})
+            listModel.append({"iconsource":"qrc:/images/images/Hindi.png","selectlanguage":"EngLish"})
+            listModel.append({"iconsource":"qrc:/images/images/English.png","selectlanguage":"EngLish"})
+            listModel.append({"iconsource":"qrc:/images/images/us.png","selectlanguage":"EngLish"})
+            listModel.append({"iconsource":"qrc:/images/images/Canada.png","selectlanguage":"French"})
+            listModel.append({"iconsource":"qrc:/images/images/french.png","selectlanguage":"French"})
+            listModel.append({"iconsource":"qrc:/images/images/German.png","selectlanguage":"German"})
+            listModel.append({"iconsource":"qrc:/images/images/Hindi.png","selectlanguage":"Hindi"})
+            listModel.append({"iconsource":"qrc:/images/images/Hungarian.png","selectlanguage":"Hungarian"})
+            listModel.append({"iconsource":"qrc:/images/images/Indonesian.png","selectlanguage":"Indonesian"})
+            listModel.append({"iconsource":"qrc:/images/images/Italian.png","selectlanguage":"Italian"})
+            listModel.append({"iconsource":"qrc:/images/images/Japanese.png","selectlanguage":"Japanese"})
+            listModel.append({"iconsource":"qrc:/images/images/Korean.png","selectlanguage":"Korean"})
+            listModel.append({"iconsource":"qrc:/images/images/Malaysian.png","selectlanguage":"Malaysian"})
+            listModel.append({"iconsource":"qrc:/images/images/polish.png","selectlanguage":"Polish"})
+            listModel.append({"iconsource":"qrc:/images/images/Portuguese.png","selectlanguage":"Portuguese"})
+            listModel.append({"iconsource":"qrc:/images/images/Brazil.png","selectlanguage":"Portuguese"})
+            listModel.append({"iconsource":"qrc:/images/images/Romanian.png","selectlanguage":"Romanian"})
+            listModel.append({"iconsource":"qrc:/images/images/russian.png","selectlanguage":"Russian"})
+            listModel.append({"iconsource":"qrc:/images/images/Slovak.png","selectlanguage":"Slovak"})
+            listModel.append({"iconsource":"qrc:/images/images/Spanish.png","selectlanguage":"Spanish"})
+            listModel.append({"iconsource":"qrc:/images/images/Mexcio.png","selectlanguage":"Spanish"})
+            listModel.append({"iconsource":"qrc:/images/images/Thai.png","selectlanguage":"Thai"})
+            listModel.append({"iconsource":"qrc:/images/images/Turkish.png","selectlanguage":"Turkish"})
+            listModel.append({"iconsource":"qrc:/images/images/Vietnam.png","selectlanguage":"Vietnam"})
         }
     }
 
@@ -541,19 +550,19 @@ Item {
             property int selectIndex: -1
             visible: false
             anchors.top: parent.top
-            anchors.topMargin: 60
+            anchors.topMargin: 30
             anchors.left: parent.left
-            anchors.leftMargin: (parent.width-8*148)/2
+            anchors.leftMargin: (parent.width-8*135)/2
             columns: 8
-            rows: 3
+            rows: 4
             Repeater {
                 id: languageRep
                 model: listModel
                 delegate: Rectangle {
                     property string backColor: "black"
                     id: languageRec
-                    width: 148
-                    height: 148
+                    width: 135
+                    height: 135
                     color: backColor
                     border.width: 1
                     border.color: "#0079C1"
@@ -584,7 +593,7 @@ Item {
                         font.family: "arial"
                         font.pixelSize: 20
                         color: "white"
-                        text: contrl
+                        text: selectlanguage
                     }
                 }
             }
