@@ -78,7 +78,7 @@ public:
         CreatedDate = 0;
         OperatorID = -1;
         Color = "pink";
-        Stripe.Color = "pink";
+        Stripe.Color = "#ffc0cb";
         Stripe.TypeOfStripe = Horizontal;
         Gauge = 10;
         GaugeAWG = 37;

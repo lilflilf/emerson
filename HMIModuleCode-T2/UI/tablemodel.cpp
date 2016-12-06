@@ -1356,7 +1356,6 @@ QVariant WireModel::getStructValue(QString key)
     WireModelHash.insert("AWG",wireElement.GaugeAWG);
     WireModelHash.insert("WireType",(int)wireElement.TypeOfWire);
 
-    qDebug() << "getStructValue" << (int)wireElement.TypeOfWire;
 //    WireModelHash.insert("OperatorName",myWire.OperatorID);
 //    WireModelHash.insert("Color",myWire.Color);
 //    WireModelHash.insert("StripeType",(int)myWire.Stripe.TypeOfStripe);
@@ -1382,8 +1381,9 @@ QString WireModel::getStructValue2(QString key, QString type)
             return variantToString.GaugeToString(wireElement.Gauge,wireElement.GaugeAWG).Maximum;
         else if (type == "min")
             return variantToString.GaugeToString(wireElement.Gauge,wireElement.GaugeAWG).Minimum;
-
     }
+    else if (key == "StripeColor")
+        return wireElement.Stripe.Color;
 
 }
 
@@ -1393,19 +1393,18 @@ int WireModel::getStructValue3(QString key, QString value)
     int awg;
     if (key == "Gauge"){
         stringToVariant.GaugeToInt(value,awg,gauge);
-        qDebug() << "getStructValue3" << key << value << gauge;
         return gauge;
     }
     else if (key == "awg") {
         stringToVariant.GaugeToInt(value,awg,gauge);
-        qDebug() << "getStructValue3" << key << value << awg;
         return awg;
     }
+    else if (key == "StripeType")
+        return (int)wireElement.Stripe.TypeOfStripe;
 }
 
 QString WireModel::getStructValue4(int gauge, int awg)
 {
-    qDebug() << "getStructValue4" << gauge << awg;
     return variantToString.GaugeToString(gauge,awg).Current;
 }
 
