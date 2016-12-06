@@ -65,11 +65,11 @@ public:
     QString AlarmTypeToString(enum ALARMTYPE);
     QString AlarmLevelToString(enum ALARMTYPE);
 
-
-
-
-
 public:
+    static VariantToString* Instance();
+private:
+    static VariantToString* _instance;
+private:
     VariantToString();
 };
 

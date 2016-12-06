@@ -1,6 +1,15 @@
 #include "StringToVariant.h"
 #include "Interface/Interface.h"
 UtilityClass* StringToVariant::_Utility = NULL;
+StringToVariant* StringToVariant::_instance = NULL;
+StringToVariant* StringToVariant::Instance()
+{
+    if(_instance == NULL){
+        _instance = new StringToVariant();
+    }
+    return _instance;
+}
+
 StringToVariant::StringToVariant()
 {
     _Utility = UtilityClass::Instance();
@@ -14,6 +23,7 @@ bool StringToVariant::GaugeToInt(QString strGauge, int &GaugeAWG, int &GaugeMM)
     if(strGauge.contains("AWG") == true)
     {
         GaugeAWG = (int)_Utility->StringToFormatedData(DINGaugeAWG, strGauge);
+        InterfaceClass* _Interface = InterfaceClass::Instance();
         if(_Interface->StatusData.AWGToAreaTable.contains(GaugeAWG) == true)
         {
             QMap<int, int>::iterator at

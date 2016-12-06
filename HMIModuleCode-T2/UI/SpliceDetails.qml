@@ -19,7 +19,14 @@ Item {
     property var selectLocation: ""
     property var wireCount: 0
     property var wireName: ""
-    signal wireSelected(var selectColor,var selectDirection,var selectPosition,var selectText,var selectWireName)
+    property var selectWireType: -1
+    property var selectWireGauge: -1
+    property var selectWireAWG: -1
+    property var selectWireStripeColor: ""
+    property var selectWireStripeType: -1
+//    property var selectWireCurrent: ""
+
+    signal wireSelected(var selectColor,var selectDirection,var selectPosition,var selectText,var selectWireName, var selectWireType, var selectWireStripeColor, var selectWireStripeType)
     signal changing(var bIsChang)
 
     function changeTop()
@@ -44,7 +51,9 @@ Item {
     function addWire()
     {
         if (wireCount < 19) {
-            listModelRight.append({"myLineLength":200,"mycolor":"#ff6699","isCheck":false,"linetext":"0","wireName":""})
+            listModelRight.append({"myLineLength":200,"mycolor":"#ff6699","isCheck":false,"linetext":hmiAdaptor.getStringValue(wireModel.getStructValue2("Gauge","current")),
+                                   "wireName":"","wireType":wireModel.getStructValue("WireType"),"gauge":wireModel.getStructValue("Gauge"),"gaugeawg":wireModel.getStructValue("AWG"),
+                                   "stripeColor":wireModel.getStructValue2("StripeColor",""),"stripeType":wireModel.getStructValue3("StripeType","")})
             wireCount++
         }
 
@@ -90,6 +99,111 @@ Item {
                 wireCount--
         }
     }
+    onSelectWireStripeTypeChanged: {
+        if (selectPosition == "topRight") {
+            topRight.item.myStripeType = selectWireStripeType
+        }
+        else if (selectPosition == "bottomRight") {
+            bottomRight.item.myStripeType = selectWireStripeType
+        }
+        else if (selectPosition == "topLeft") {
+            topLeft.item.myStripeType = selectWireStripeType
+        }
+        else if (selectPosition == "bottomLeft") {
+            bottomLeft.item.myStripeType = selectWireStripeType
+        }
+        else if (selectPosition == "rightList") {
+            listModelRight.set(selectIndex,{"stripeType":detail.selectWireStripeType})
+        }
+        else if (selectPosition == "leftList") {
+            listModelLeft.set(selectIndex,{"stripeType":detail.selectWireStripeType})
+        }
+    }
+
+    onSelectWireStripeColorChanged: {
+        if (selectPosition == "topRight") {
+            topRight.item.myStripeColor = selectWireStripeColor
+            console.log("onSelectWireStripeColorChanged",topRight.item.myStripeColor)
+        }
+        else if (selectPosition == "bottomRight") {
+            bottomRight.item.myStripeColor = selectWireStripeColor
+        }
+        else if (selectPosition == "topLeft") {
+            topLeft.item.myStripeColor = selectWireStripeColor
+        }
+        else if (selectPosition == "bottomLeft") {
+            bottomLeft.item.myStripeColor = selectWireStripeColor
+        }
+        else if (selectPosition == "rightList") {
+            listModelRight.set(selectIndex,{"stripeColor":detail.selectWireStripeColor.toString()})
+        }
+        else if (selectPosition == "leftList") {
+            listModelLeft.set(selectIndex,{"stripeColor":detail.selectWireStripeColor.toString()})
+        }
+    }
+
+    onSelectWireGaugeChanged: {
+        if (selectPosition == "topRight") {
+            topRight.item.myGauge = selectWireGauge
+        }
+        else if (selectPosition == "bottomRight") {
+            bottomRight.item.myGauge = selectWireGauge
+        }
+        else if (selectPosition == "topLeft") {
+            topLeft.item.myGauge = selectWireGauge
+        }
+        else if (selectPosition == "bottomLeft") {
+            bottomLeft.item.myGauge = selectWireGauge
+        }
+        else if (selectPosition == "rightList") {
+            listModelRight.set(selectIndex,{"gauge":detail.selectWireGauge})
+        }
+        else if (selectPosition == "leftList") {
+            listModelLeft.set(selectIndex,{"gauge":detail.selectWireGauge})
+        }
+    }
+
+    onSelectWireAWGChanged: {
+        if (selectPosition == "topRight") {
+            topRight.item.myAwg = selectWireAWG
+        }
+        else if (selectPosition == "bottomRight") {
+            bottomRight.item.myAwg = selectWireAWG
+        }
+        else if (selectPosition == "topLeft") {
+            topLeft.item.myAwg = selectWireAWG
+        }
+        else if (selectPosition == "bottomLeft") {
+            bottomLeft.item.myAwg = selectWireAWG
+        }
+        else if (selectPosition == "rightList") {
+            listModelRight.set(selectIndex,{"gaugeawg":detail.selectWireAWG})
+        }
+        else if (selectPosition == "leftList") {
+            listModelLeft.set(selectIndex,{"gaugeawg":detail.selectWireAWG})
+        }
+    }
+
+    onSelectWireTypeChanged:{
+        if (selectPosition == "topRight") {
+            topRight.item.myWireType = selectWireType
+        }
+        else if (selectPosition == "bottomRight") {
+            bottomRight.item.myWireType = selectWireType
+        }
+        else if (selectPosition == "topLeft") {
+            topLeft.item.myWireType = selectWireType
+        }
+        else if (selectPosition == "bottomLeft") {
+            bottomLeft.item.myWireType = selectWireType
+        }
+        else if (selectPosition == "rightList") {
+            listModelRight.set(selectIndex,{"wireType":detail.selectWireType})
+        }
+        else if (selectPosition == "leftList") {
+            listModelLeft.set(selectIndex,{"wireType":detail.selectWireType})
+        }
+    }
 
     onWireNameChanged: {
         if (selectPosition == "topRight") {
@@ -124,7 +238,7 @@ Item {
 
                 selectPosition = "leftList"
                 wirePositionGroup.current = null
-                listModelLeft.append({"myLineLength":200,"mycolor":selectColor.toString(),"isCheck":false,"linetext":selectText,"wireName":wireName})
+                listModelLeft.append({"myLineLength":200,"mycolor":selectColor.toString(),"isCheck":false,"linetext":selectText,"wireName":wireName,"wireType":selectWireType,"gauge":selectWireGauge,"gaugeawg":selectWireAWG,"stripeColor":selectWireStripeColor.toString(),"stripeType":selectWireStripeType})
                 selectIndex = listModelLeft.count - 1
                 listModelLeft.set(selectIndex,{"isCheck":true})
             }
@@ -201,7 +315,7 @@ Item {
                     bottomRight.sourceComponent = null
                 selectPosition = "rightList"
                 wirePositionGroup.current = null
-                listModelRight.append({"myLineLength":200,"mycolor":detail.selectColor,"isCheck":false,"linetext":selectText,"wireName":wireName})
+                listModelRight.append({"myLineLength":200,"mycolor":detail.selectColor,"isCheck":false,"linetext":selectText,"wireName":wireName,"wireType":selectWireType,"gauge":selectWireGauge,"gaugeawg":selectWireAWG,"stripeColor":selectWireStripeColor.toString(),"stripeType":selectWireStripeType})
                 selectIndex = listModelRight.count - 1
                 listModelRight.set(selectIndex,{"isCheck":true})
 
@@ -264,7 +378,7 @@ Item {
     onSelectDirectionChanged: {
         if (detail.selectPosition == "rightList" && selectDirection != "right"){
 
-            listModelLeft.append({"myLineLength":200,"mycolor":listModelRight.get(selectIndex).mycolor,"isCheck":false,"linetext":selectText,"wireName":wireName})
+            listModelLeft.append({"myLineLength":200,"mycolor":listModelRight.get(selectIndex).mycolor,"isCheck":false,"linetext":selectText,"wireName":wireName,"wireType":selectWireType,"gauge":selectWireGauge,"gaugeawg":selectWireAWG,"stripeColor":selectWireStripeColor.toString(),"stripeType":selectWireStripeType})
             listModelRight.remove(detail.selectIndex, 1)
             wirePositionGroup.current = null
 
@@ -275,7 +389,7 @@ Item {
         }
         else if (detail.selectPosition == "leftList" && selectDirection != "left"){
 
-            listModelRight.append({"myLineLength":200,"mycolor":listModelLeft.get(selectIndex).mycolor,"isCheck":false,"linetext":selectText,"wireName":wireName})
+            listModelRight.append({"myLineLength":200,"mycolor":listModelLeft.get(selectIndex).mycolor,"isCheck":false,"linetext":selectText,"wireName":wireName,"wireType":selectWireType,"gauge":selectWireGauge,"gaugeawg":selectWireAWG,"stripeColor":selectWireStripeColor.toString(),"stripeType":selectWireStripeType})
             listModelLeft.remove(detail.selectIndex, 1)
             wirePositionGroup.current = null
 
@@ -348,13 +462,19 @@ Item {
             id: topLeft
             anchors.right: parent.right
             anchors.rightMargin: parent.width / 2 - 40
-            //sourceComponent: left
+//            sourceComponent: left
             onLoaded: {
                 topLeft.item.lineLength = 200
                 topLeft.item.myColor = selectColor
                 topLeft.item.myText = selectText
                 topLeft.item.position = "topLeft"
                 topLeft.item.myWireName = wireName
+                topLeft.item.myGauge = selectWireGauge
+                topLeft.item.myAwg = selectWireAWG
+                topLeft.item.myWireType = selectWireType
+                topLeft.item.myStripeColor = selectWireStripeColor
+                topLeft.item.myStripeType = selectWireStripeType
+
                 topRight.sourceComponent = null
             }
             anchors.verticalCenter: parent.verticalCenter
@@ -370,6 +490,11 @@ Item {
                 topRight.item.myText = selectText
                 topRight.item.position = "topRight"
                 topRight.item.myWireName = wireName
+                topRight.item.myGauge = selectWireGauge
+                topRight.item.myAwg = selectWireAWG
+                topRight.item.myWireType = selectWireType
+                topRight.item.myStripeColor = selectWireStripeColor
+                topRight.item.myStripeType = selectWireStripeType
                 topLeft.sourceComponent = null
 
             }
@@ -397,6 +522,11 @@ Item {
                 bottomLeft.item.myText = selectText
                 bottomLeft.item.position = "bottomLeft"
                 bottomLeft.item.myWireName = wireName
+                bottomLeft.item.myGauge = selectWireGauge
+                bottomLeft.item.myAwg = selectWireAWG
+                bottomLeft.item.myWireType = selectWireType
+                bottomLeft.item.myStripeColor = selectWireStripeColor
+                bottomLeft.item.myStripeType = selectWireStripeType
 
                 bottomRight.sourceComponent = null
             }
@@ -413,6 +543,12 @@ Item {
                 bottomRight.item.myText = selectText
                 bottomRight.item.position = "bottomRight"
                 bottomRight.item.myWireName = wireName
+                bottomRight.item.myGauge = selectWireGauge
+                bottomRight.item.myAwg = selectWireAWG
+                bottomRight.item.myWireType = selectWireType
+                bottomRight.item.myStripeColor = selectWireStripeColor
+                bottomRight.item.myStripeType = selectWireStripeType
+
                 bottomLeft.sourceComponent = null
             }
             anchors.verticalCenter: parent.verticalCenter
@@ -471,7 +607,6 @@ Item {
 
             }
         }
-
         CButton {
             id: centerButton
             anchors.centerIn: parent
@@ -511,6 +646,11 @@ Item {
             property var position: "leftList"
             property alias isCheck: radioButtonLeft.checked
             property var myWireName: myWireNameLeft.text
+            property var myGauge: -1
+            property var myAwg: -1
+            property var myWireType: 1
+            property var myStripeColor: ""
+            property var myStripeType: -1
             width: middle.width / 2 + 40
 //            height: listModelLeft.count <= 5 ? detail.height * 0.1 + 10 : 30
             height: listModelLeft.count <= 5 ? detail.height * 0.1 + 10 : (listModelLeft.count > 5 && listModelLeft.count <= 10) ? 30 : index < (listModelLeft.count - 10) * 2 ? 15 : 30
@@ -540,20 +680,32 @@ Item {
                             selectPosition = leftItem.position
                             selectColor = leftRec.color
                             selectText = mytextLeft.text
-                            wireSelected(leftRec.color,"left",leftItem.position,mytextLeft.text,myWireNameLeft.text)
+                            selectDirection = "left"
+                            selectWireType = leftItem.myWireType
+                            selectWireGauge = leftItem.myGauge
+                            selectWireAWG = leftItem.myAwg
+                            selectWireStripeColor = leftItem.myStripeColor
+                            selectWireStripeType = leftItem.myStripeType
+
+                            wireSelected(leftRec.color,"left",leftItem.position,wireModel.getStructValue4(leftItem.myGauge,leftItem.myAwg),myWireNameLeft.text,leftItem.myWireType,leftItem.myStripeColor.toString(),leftItem.myStripeType)
                             changing(false)
 
                         }
                         else if (leftItem.position == "leftList" && radioButtonLeft.checked)
                         {
                             changing(true)
-                            wireSelected(leftRec.color,"left",leftItem.position,mytextLeft.text,myWireNameLeft.text)
                             selectPosition = leftItem.position
                             selectIndex = index
+                            selectWireType = listModelLeft.get(index).wireType
+                            selectWireGauge = listModelLeft.get(index).gauge
+                            selectWireAWG = listModelLeft.get(index).gaugeawg
+                            selectWireStripeColor = listModelLeft.get(index).stripeColor
+                            selectWireStripeType = listModelLeft.get(index).stripeType
                             selectColor = leftRec.color
                             selectText = mytextLeft.text
                             listModelLeft.set(index,{"isCheck":radioButtonLeft.checked})
                             selectDirection = "left"
+                            wireSelected(leftRec.color,"left",leftItem.position,wireModel.getStructValue4(listModelLeft.get(index).gauge,listModelLeft.get(index).gaugeawg),myWireNameLeft.text,listModelLeft.get(index).wireType,listModelLeft.get(index).stripeColor,listModelLeft.get(index).stripeType)
                             changing(false)
 
                         }
@@ -617,9 +769,21 @@ Item {
             property var position: "rightList"
             property alias isCheck: radioButton.checked
             property var myWireName: myWireNameRight.text
+            property var myGauge: -1
+            property var myAwg: -1
+            property var myWireType: 1 // wireTypeText.text
+            property var myStripeColor: stripeColor.color
+            property var myStripeType: -1
             id: rightItem
+            onMyStripeColorChanged: {
+                console.log("0000000000000000000",position,myStripeColor)
+            }
+
+            Rectangle {
+                id: stripeColor
+            }
+
             width: 300
-//            height: listModelRight.count <= 5 ? detail.height * 0.1 + 10 : 30
             height: listModelRight.count <= 5 ? detail.height * 0.1 + 10 : (listModelRight.count > 5 && listModelRight.count <= 10) ? 30 : index < (listModelRight.count - 10) * 2 ? 15 : 30
             Rectangle {
                 id: rightLine
@@ -645,16 +809,30 @@ Item {
                             selectPosition = rightItem.position
                             selectColor = rightRec.color.toString()
                             selectText = mytext.text
-                            wireSelected(rightRec.color,"right",rightItem.position,mytext.text,myWireNameRight.text)
+//                            selectWireType = rightItem.myWireType
+//                            selectWireGauge = rightItem.myGauge
+//                            selectWireAWG = rightItem.myAwg
+//                            selectWireStripeColor = rightItem.myStripeColor
+                            console.log("ttttttttttttttttttttt",rightItem.position,selectWireStripeColor,rightItem.myStripeColor)
+                            selectWireStripeType = rightItem.myStripeType
+                            wireSelected(rightRec.color,"right",rightItem.position,wireModel.getStructValue4(rightItem.myGauge,rightItem.myAwg),myWireNameRight.text,rightItem.myWireType,rightItem.myStripeColor.toString(),rightItem.myStripeType)
+                            selectDirection = "right"
                             changing(false)
 
                         }
                         else if (rightItem.position == "rightList" && radioButton.checked)
                         {
                             changing(true)
-                            wireSelected(rightRec.color,"right",rightItem.position,mytext.text,myWireNameRight.text)
+                            wireSelected(rightRec.color,"right",rightItem.position,wireModel.getStructValue4(listModelRight.get(index).gauge,listModelRight.get(index).gaugeawg),myWireNameRight.text,listModelRight.get(index).wireType,listModelRight.get(index).stripeColor,listModelRight.get(index).stripeType)
                             selectPosition = rightItem.position
                             selectIndex = index
+                            selectWireType = listModelRight.get(index).wireType
+                            selectWireGauge = listModelRight.get(index).gauge
+                            selectWireAWG = listModelRight.get(index).gaugeawg
+                            selectWireStripeColor = listModelRight.get(index).stripeColor
+                            console.log("mmmmmmmmmmmmmmmm",selectWireStripeColor)
+
+                            selectWireStripeType = listModelRight.get(index).stripeType
                             selectColor = rightRec.color.toString()
                             selectText = mytext.text
                             listModelRight.set(index,{"isCheck":radioButton.checked})

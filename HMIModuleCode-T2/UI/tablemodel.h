@@ -11,10 +11,15 @@
 #include "DataBase/DBWeldResultTable.h"
 #include "DataBase/DBWireTable.h"
 #include "Interface/Definition.h"
+#include "Interface/WireElement.h"
+#include "Interface/PresetElement.h"
+#include "Interface/PartElement.h"
+#include "Interface/WorkOrderElement.h"
 #include "Interface/Settings/OperatorLibrary.h"
 #include "DataBase/DBMaintenanceLogTable.h"
 #include "Interface/Maintenance/MaintenanceLog.h"
-#include "Interface/VariantToString.h"
+#include "Interface/variantToString.h"
+#include "Interface/StringToVariant.h"
 
 class WorkOrderModel : public QAbstractTableModel
 {
@@ -78,15 +83,17 @@ public:
     QHash<int, QByteArray> roleNames() const;
 
     PresetElement presetElement;
+    VariantToString *variantToString;
 signals:
 
 
 public slots:
     void setRoles(const QStringList &names);
-    Q_INVOKABLE QVariant getValue(int index, QString key);
+    Q_INVOKABLE QVariant getValue(int index, QString key); // table
     Q_INVOKABLE void removeValue(int id, QString name);
     Q_INVOKABLE int count();
 
+    Q_INVOKABLE QString getStructValue(QString valueKey, QString valueType); // create wire
     Q_INVOKABLE void createNew();
 //    Q_INVOKABLE void setNewValue();
 
@@ -198,7 +205,7 @@ public slots:
     Q_INVOKABLE int count();
 private:
     QHash<int, QByteArray> m_roleNames;
-    VariantToString *m_variant;
+    VariantToString *variantToString;
 };
 
 
@@ -233,7 +240,7 @@ public slots:
 
 private:
     QHash<int, QByteArray> m_roleNames;
-    VariantToString *m_variant;
+    VariantToString *variantToString;
 };
 
 
@@ -255,7 +262,9 @@ protected:
     QVariant data(const QModelIndex &index, int role) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
     QHash<int, QByteArray> roleNames() const;
-
+    WireElement wireElement;
+    VariantToString *variantToString;
+    StringToVariant *stringToVariant;
 //signals:
 
 
@@ -264,6 +273,13 @@ public slots:
     Q_INVOKABLE QVariant getValue(int index, QString key);
     Q_INVOKABLE int count();
     Q_INVOKABLE void removeValue(int id, QString name);
+
+    Q_INVOKABLE void createNew();
+    Q_INVOKABLE QVariant getStructValue(QString key);
+    Q_INVOKABLE QString getStructValue2(QString key, QString type);
+    Q_INVOKABLE int getStructValue3(QString key, QString value);
+    Q_INVOKABLE QString getStructValue4(int gauge, int awg);
+
 
 private:
     QHash<int, QByteArray> m_roleNames;

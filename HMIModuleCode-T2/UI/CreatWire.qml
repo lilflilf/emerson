@@ -34,7 +34,7 @@ Item {
             Connections {
                 target: spliceDetailsItem
                 onWireSelected: {
-                    //signal wireSelected(var selectColor,var selectDirection,var selectPosition,var selectText)
+//                    signal wireSelected(var selectColor,var selectDirection,var selectPosition,var selectText,var selectWireName, var selectWireType, var selectWireStripeColor, var selectWireStripeType)
                     forground.visible = false
                     rectcolor.color = selectColor
                     wireDirection.state = selectDirection
@@ -49,6 +49,15 @@ Item {
                         topRadio.checked = true
                     else if (selectPosition == "bottomLeft" || selectPosition == "bottomRight")
                         bottomRadio.checked = true
+
+                    if (selectWireType == 0)
+                        typeSwitch.state = "left"
+                    else if (selectWireType == 1)
+                        typeSwitch.state = "right"
+
+                    itemStripe.color = selectWireStripeColor
+                    itemStripe.stripeType = selectWireStripeType
+
                 }
                 onChanging: {
                     detailIsChang = bIsChang
@@ -249,6 +258,17 @@ Item {
                 anchors.topMargin: 10
                 property alias color: stripeBack.color
                 property var stripeType: -1
+                onColorChanged: {
+                    if(detailIsChang)
+                        return
+                    spliceDetailsItem.selectWireStripeColor = itemStripe.color
+                }
+                onStripeTypeChanged: {
+                    if(detailIsChang)
+                        return
+                    spliceDetailsItem.selectWireStripeType = itemStripe.stripeType
+                }
+
                 Label {
                     id: labelStripe
                     color: "#8295a0"
@@ -520,9 +540,9 @@ Item {
                             backGround.opacity = 0.5
                             keyNum.visible = true
                             keyNum.titleText = labelGauge.text
-                            keyNum.currentValue = "1.12mm"
-                            keyNum.minvalue = "1.00mm"
-                            keyNum.maxvalue = "10.99mm"
+                            keyNum.currentValue = wireModel.getStructValue2("Gauge","current") //"1.12mm"
+                            keyNum.minvalue = wireModel.getStructValue2("Gauge","min") //"1.00mm"
+                            keyNum.maxvalue = wireModel.getStructValue2("Gauge","max") //"10.99mm"
                         }
                     }
 
@@ -530,6 +550,8 @@ Item {
                         if(detailIsChang)
                             return
                         spliceDetailsItem.selectText = hmiAdaptor.getStringValue(inputText) //inputText
+                        spliceDetailsItem.selectWireGauge = wireModel.getStructValue3("Gauge",inputText);
+                        spliceDetailsItem.selectWireAWG = wireModel.getStructValue3("awg",inputText);
                     }
                 }
             }
@@ -559,6 +581,14 @@ Item {
                     textRight: qsTr("Alum")
                     state: "left"
                     opacity: 0.8
+                    onStateChanged: {
+                        if(detailIsChang)
+                            return
+                        if (state == "left")
+                            spliceDetailsItem.selectWireType = 0
+                        else if (state == "right")
+                            spliceDetailsItem.selectWireType = 1
+                    }
                 }
             }
 
@@ -854,24 +884,31 @@ Item {
             ListModel {
                 id: settingsModel
                 Component.onCompleted: {
-                    settingsModel.append({"topText":"Energy","bottomText":"30J"})
-                    settingsModel.append({"topText":"Trigger Pressure","bottomText":"50PSI"})
-                    settingsModel.append({"topText":"Amplitude","bottomText":"25um"})
-                    settingsModel.append({"topText":"Weld Pressure","bottomText":"50PSI"})
-                    settingsModel.append({"topText":"Width","bottomText":"12.5mm"})
+//                    settingsModel.append({"topText":"Energy","bottomText":"30J"})
+//                    settingsModel.append({"topText":"Trigger Pressure","bottomText":"50PSI"})
+//                    settingsModel.append({"topText":"Amplitude","bottomText":"25um"})
+//                    settingsModel.append({"topText":"Weld Pressure","bottomText":"50PSI"})
+//                    settingsModel.append({"topText":"Width","bottomText":"12.5mm"})
+
+                    settingsModel.append({"topText":"Energy","bottomText":spliceModel.getStructValue("Energy","current"),"maxText":spliceModel.getStructValue("Energy","max"),"minText":spliceModel.getStructValue("Energy","min")})
+                    settingsModel.append({"topText":"Trigger Pressure","bottomText":spliceModel.getStructValue("Trigger Pressure","current"),"maxText":spliceModel.getStructValue("Trigger Pressure","max"),"minText":spliceModel.getStructValue("Trigger Pressure","min")})
+                    settingsModel.append({"topText":"Amplitude","bottomText":spliceModel.getStructValue("Amplitude","current"),"maxText":spliceModel.getStructValue("Amplitude","max"),"minText":spliceModel.getStructValue("Amplitude","min")})
+                    settingsModel.append({"topText":"Weld Pressure","bottomText":spliceModel.getStructValue("Weld Pressure","current"),"maxText":spliceModel.getStructValue("Weld Pressure","max"),"minText":spliceModel.getStructValue("Weld Pressure","min")})
+                    settingsModel.append({"topText":"Width","bottomText":spliceModel.getStructValue("Width","current"),"maxText":spliceModel.getStructValue("Width","max"),"minText":spliceModel.getStructValue("Width","min")})
+
                 }
             }
             ListModel {
                 id: settingsModel2
                 Component.onCompleted: {
-                    settingsModel2.append({"topText":"Time","bottomText":"0.00s"})
-                    settingsModel2.append({"topText":"Time","bottomText":"5.00s"})
-                    settingsModel2.append({"topText":"Power","bottomText":"0W"})
-                    settingsModel2.append({"topText":"Power","bottomText":"3960W"})
-                    settingsModel2.append({"topText":"Pre-Height","bottomText":"0.00mm"})
-                    settingsModel2.append({"topText":"Pre-Height","bottomText":"15.00mm"})
-                    settingsModel2.append({"topText":"Post-Height","bottomText":"0.00mm"})
-                    settingsModel2.append({"topText":"Post-Height","bottomText":"15.00mm"})
+                    settingsModel2.append({"topText":"Time","bottomText":spliceModel.getStructValue("Time-","current"),"maxText":spliceModel.getStructValue("Time-","max"),"minText":spliceModel.getStructValue("Time-","min")})
+                    settingsModel2.append({"topText":"Time","bottomText":spliceModel.getStructValue("Time+","current"),"maxText":spliceModel.getStructValue("Time+","max"),"minText":spliceModel.getStructValue("Time+","min")})
+                    settingsModel2.append({"topText":"Power","bottomText":spliceModel.getStructValue("Power-","current"),"maxText":spliceModel.getStructValue("Power-","max"),"minText":spliceModel.getStructValue("Power-","min")})
+                    settingsModel2.append({"topText":"Power","bottomText":spliceModel.getStructValue("Power+","current"),"maxText":spliceModel.getStructValue("Power+","max"),"minText":spliceModel.getStructValue("Power+","min")})
+                    settingsModel2.append({"topText":"Pre-Height","bottomText":spliceModel.getStructValue("Pre-Height-","current"),"maxText":spliceModel.getStructValue("Pre-Height-","max"),"minText":spliceModel.getStructValue("Pre-Height-","min")})
+                    settingsModel2.append({"topText":"Pre-Height","bottomText":spliceModel.getStructValue("Pre-Height+","current"),"maxText":spliceModel.getStructValue("Pre-Height+","max"),"minText":spliceModel.getStructValue("Pre-Height+","min")})
+                    settingsModel2.append({"topText":"Post-Height","bottomText":spliceModel.getStructValue("Post-Height-","current"),"maxText":spliceModel.getStructValue("Post-Height-","max"),"minText":spliceModel.getStructValue("Post-Height-","min")})
+                    settingsModel2.append({"topText":"Post-Height","bottomText":spliceModel.getStructValue("Post-Height+","current"),"maxText":spliceModel.getStructValue("Post-Height+","max"),"minText":spliceModel.getStructValue("Post-Height+","min")})
 
 
                 }
@@ -937,8 +974,8 @@ Item {
                                 keyNum.visible = true
                                 keyNum.titleText = topText
                                 keyNum.currentValue = bottomText
-                                keyNum.minvalue = "0"
-                                keyNum.maxvalue = "100"
+                                keyNum.minvalue = minText
+                                keyNum.maxvalue = maxText
                             }
                         }
                     }
@@ -952,6 +989,7 @@ Item {
                 spacing: 10
                 height: 61
                 width: parent.width-20
+
                 CButton {
                     pointSize: 14
                     width: (parent.width-10)/2
@@ -1152,6 +1190,7 @@ Item {
             anchors.bottomMargin: 14
             text: qsTr("ADD WIRE")
             onClicked: {
+                wireModel.createNew()
                 spliceDetailsItem.addWire()
             }
 

@@ -1,5 +1,6 @@
 #include "DBWireTable.h"
 #include <QDebug>
+#include "Interface/WireElement.h"
 
 DBWireTable* DBWireTable::_instance = NULL;
 QString DBWireTable::WireDBFile   = "Wire.db";

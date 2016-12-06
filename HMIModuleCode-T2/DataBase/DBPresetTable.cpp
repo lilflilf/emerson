@@ -1,5 +1,6 @@
 #include "DBPresetTable.h"
 #include "Modules/UtilityClass.h"
+#include "Interface/PresetElement.h"
 #include <QHash>
 #include <QDebug>
 

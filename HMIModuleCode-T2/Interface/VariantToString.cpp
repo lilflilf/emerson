@@ -1,6 +1,15 @@
 #include "VariantToString.h"
 #include "Interface/Interface.h"
 UtilityClass* VariantToString::_Utility = NULL;
+VariantToString* VariantToString::_instance = NULL;
+VariantToString* VariantToString::Instance()
+{
+    if(_instance == NULL){
+        _instance = new VariantToString();
+    }
+    return _instance;
+}
+
 VariantToString::VariantToString()
 {
     _Utility = UtilityClass::Instance();

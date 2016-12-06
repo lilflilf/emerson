@@ -204,7 +204,7 @@ SpliceModel::SpliceModel(QObject *parent) :
 {
     m_spliceAdaptor = DBPresetTable::Instance();
     splices = new QMap<int, QString>();
-    m_variant = new VariantToString;
+    variantToString = VariantToString::Instance();
 }
 
 QVariant SpliceModel::data(const QModelIndex &index, int role) const
@@ -244,29 +244,29 @@ QVariant SpliceModel::data(const QModelIndex &index, int role) const
         else if (columnIdx == 3)
             value = QVariant::fromValue(mySplice.OperatorID);
         else if (columnIdx == 4) {
-            temp = m_variant->CrossSectionToString(mySplice.CrossSection);
+            temp = variantToString->CrossSectionToString(mySplice.CrossSection);
             value = QVariant::fromValue(temp);
         } else if (columnIdx == 5)
             value = QVariant::fromValue(mySplice.NoOfWires);
         else if (columnIdx == 6)
             value = QVariant::fromValue(mySplice.Verified);
         else if (columnIdx == 7) {
-            temp = m_variant->WeldModeToString(mySplice.WeldSettings.AdvanceSetting.WeldMode,mySplice.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode);
+            temp = variantToString->WeldModeToString(mySplice.WeldSettings.AdvanceSetting.WeldMode,mySplice.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode);
             value = QVariant::fromValue(temp);
         } else if (columnIdx == 8) {
-            temp = m_variant->EnergyToString(mySplice.WeldSettings.BasicSetting.Energy).Current;
+            temp = variantToString->EnergyToString(mySplice.WeldSettings.BasicSetting.Energy).Current;
             value = QVariant::fromValue(temp);
         } else if (columnIdx == 9) {
-            temp = m_variant->AmplitudeToString(mySplice.WeldSettings.BasicSetting.Amplitude).Current;
+            temp = variantToString->AmplitudeToString(mySplice.WeldSettings.BasicSetting.Amplitude).Current;
             value = QVariant::fromValue(temp);
         } else if (columnIdx == 10) {
-            temp = m_variant->WidthToString(mySplice.WeldSettings.BasicSetting.Width).Current;
+            temp = variantToString->WidthToString(mySplice.WeldSettings.BasicSetting.Width).Current;
             value = QVariant::fromValue(temp);
         } else if (columnIdx == 11) {
-            temp = m_variant->TriggerPressureToString(mySplice.WeldSettings.BasicSetting.TrigPres).Current;
+            temp = variantToString->TriggerPressureToString(mySplice.WeldSettings.BasicSetting.TrigPres).Current;
             value = QVariant::fromValue(temp);
         } else if (columnIdx == 12) {
-            temp = m_variant->WeldPressureToString(mySplice.WeldSettings.BasicSetting.Pressure).Current;
+            temp = variantToString->WeldPressureToString(mySplice.WeldSettings.BasicSetting.Pressure).Current;
             value = QVariant::fromValue(temp);
         } else if (columnIdx == 13)
             value = QVariant::fromValue(1);
@@ -316,6 +316,122 @@ int SpliceModel::rowCount(const QModelIndex & parent) const
 int SpliceModel::count()
 {
     return splices->count();
+}
+
+QString SpliceModel::getStructValue(QString valueKey, QString valueType)
+{
+
+    //                    settingsModel.append({"topText":"Energy","bottomText":"30J"})
+    //                    settingsModel.append({"topText":"Trigger Pressure","bottomText":"50PSI"})
+    //                    settingsModel.append({"topText":"Amplitude","bottomText":"25um"})
+    //                    settingsModel.append({"topText":"Weld Pressure","bottomText":"50PSI"})
+    //                    settingsModel.append({"topText":"Width","bottomText":"12.5mm"})
+    if (valueKey == "Energy") {
+        if (valueType == "current")
+            return variantToString->EnergyToString(presetElement.WeldSettings.BasicSetting.Energy).Current;
+        else if (valueType == "max")
+            return variantToString->EnergyToString(presetElement.WeldSettings.BasicSetting.Energy).Maximum;
+        else if (valueType == "min")
+            return variantToString->EnergyToString(presetElement.WeldSettings.BasicSetting.Energy).Minimum;
+    }
+    else if (valueKey == "Trigger Pressure") {
+        if (valueType == "current")
+            return variantToString->TriggerPressureToString(presetElement.WeldSettings.BasicSetting.TrigPres).Current;
+        else if (valueType == "max")
+            return variantToString->TriggerPressureToString(presetElement.WeldSettings.BasicSetting.TrigPres).Maximum;
+        else if (valueType == "min")
+            return variantToString->TriggerPressureToString(presetElement.WeldSettings.BasicSetting.TrigPres).Minimum;
+    }
+    else if (valueKey == "Amplitude") {
+        if (valueType == "current")
+            return variantToString->AmplitudeToString(presetElement.WeldSettings.BasicSetting.Amplitude).Current;
+        else if (valueType == "max")
+            return variantToString->AmplitudeToString(presetElement.WeldSettings.BasicSetting.Amplitude).Maximum;
+        else if (valueType == "min")
+            return variantToString->AmplitudeToString(presetElement.WeldSettings.BasicSetting.Amplitude).Minimum;
+    }
+    else if (valueKey == "Weld Pressure") {
+        if (valueType == "current")
+            return variantToString->WeldPressureToString(presetElement.WeldSettings.BasicSetting.Pressure).Current;
+        else if (valueType == "max")
+            return variantToString->WeldPressureToString(presetElement.WeldSettings.BasicSetting.Pressure).Maximum;
+        else if (valueType == "min")
+            return variantToString->WeldPressureToString(presetElement.WeldSettings.BasicSetting.Pressure).Minimum;
+    }
+    else if (valueKey == "Width") {
+        if (valueType == "current")
+            return variantToString->WidthToString(presetElement.WeldSettings.BasicSetting.Width).Current;
+        else if (valueType == "max")
+            return variantToString->WidthToString(presetElement.WeldSettings.BasicSetting.Width).Maximum;
+        else if (valueType == "min")
+            return variantToString->WidthToString(presetElement.WeldSettings.BasicSetting.Width).Minimum;
+    }
+    else if (valueKey == "Time-") {
+        if (valueType == "current")
+            return variantToString->TimeMinusToString(presetElement.WeldSettings.QualitySetting.Time.Minus).Current;
+        else if (valueType == "max")
+            return variantToString->TimeMinusToString(presetElement.WeldSettings.QualitySetting.Time.Minus).Maximum;
+        else if (valueType == "min")
+            return variantToString->TimeMinusToString(presetElement.WeldSettings.QualitySetting.Time.Minus).Minimum;
+    }
+    else if (valueKey == "Time+") {
+        if (valueType == "current")
+            return variantToString->TimePlusToString(presetElement.WeldSettings.QualitySetting.Time.Plus).Current;
+        else if (valueType == "max")
+            return variantToString->TimePlusToString(presetElement.WeldSettings.QualitySetting.Time.Plus).Maximum;
+        else if (valueType == "min")
+            return variantToString->TimePlusToString(presetElement.WeldSettings.QualitySetting.Time.Plus).Minimum;
+    }
+//    else if (valueKey == "Power-") {
+//        if (valueType == "current")
+//            return variantToString->PowerMinusToString(presetElement.WeldSettings.QualitySetting.Power).Current;
+//        else if (valueType == "max")
+//            return variantToString->PowerMinusToString(presetElement.WeldSettings.QualitySetting.Power).Maximum;
+//        else if (valueType == "min")
+//            return variantToString->PowerMinusToString(presetElement.WeldSettings.QualitySetting.Power).Minimum;
+//    }
+//    else if (valueKey == "Power+") {
+//        if (valueType == "current")
+//            return variantToString->PowerPlusToString(presetElement.WeldSettings.QualitySetting.Power).Current;
+//        else if (valueType == "max")
+//            return variantToString->PowerPlusToString(presetElement.WeldSettings.QualitySetting.Power).Maximum;
+//        else if (valueType == "min")
+//            return variantToString->PowerPlusToString(presetElement.WeldSettings.QualitySetting.Power).Minimum;
+//    }
+//    else if (valueKey == "Pre-Height-") {
+//        if (valueType == "current")
+//            return variantToString->PreHeightMinusToString(presetElement.WeldSettings.QualitySetting.Preheight).Current;
+//        else if (valueType == "max")
+//            return variantToString->PreHeightMinusToString(presetElement.WeldSettings.QualitySetting.Preheight).Maximum;
+//        else if (valueType == "min")
+//            return variantToString->PreHeightMinusToString(presetElement.WeldSettings.QualitySetting.Preheight).Minimum;
+//    }
+//    else if (valueKey == "Pre-Height+") {
+//        if (valueType == "current")
+//            return variantToString->PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight).Current;
+//        else if (valueType == "max")
+//            return variantToString->PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight).Maximum;
+//        else if (valueType == "min")
+//            return variantToString->PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight).Minimum;
+//    }
+//    else if (valueKey == "Post-Height-") {
+//        if (valueType == "current")
+//            return variantToString->PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight).Current;
+//        else if (valueType == "max")
+//            return variantToString->PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight).Maximum;
+//        else if (valueType == "min")
+//            return variantToString->PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight).Minimum;
+//    }
+//    else if (valueKey == "Pre-Height+") {
+//        if (valueType == "current")
+//            return variantToString->PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight).Current;
+//        else if (valueType == "max")
+//            return variantToString->PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight).Maximum;
+//        else if (valueType == "min")
+//            return variantToString->PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight).Minimum;
+//    }
+    else
+        return "";
 }
 
 void SpliceModel::createNew()
@@ -376,15 +492,15 @@ QVariant SpliceModel::getValue(int index, QString key)
     SpliceModelHash.insert("SpliceName",mySplice.SpliceName);
     SpliceModelHash.insert("DateCreated",QDateTime::fromTime_t(mySplice.CreatedDate).toString("MM/dd/yyyy hh:mm"));
     SpliceModelHash.insert("OperatorName",mySplice.NoOfWires);
-    SpliceModelHash.insert("CrossSection",m_variant->CrossSectionToString(mySplice.CrossSection));
+    SpliceModelHash.insert("CrossSection",variantToString->CrossSectionToString(mySplice.CrossSection));
     SpliceModelHash.insert("TotalWires",mySplice.NoOfWires);
     SpliceModelHash.insert("Verified",mySplice.Verified);
-    SpliceModelHash.insert("WeldMode",m_variant->WeldModeToString(mySplice.WeldSettings.AdvanceSetting.WeldMode,mySplice.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode));
-    SpliceModelHash.insert("Energy",m_variant->EnergyToString(mySplice.WeldSettings.BasicSetting.Energy).Current);
-    SpliceModelHash.insert("Amplitude",m_variant->AmplitudeToString(mySplice.WeldSettings.BasicSetting.Amplitude).Current);
-    SpliceModelHash.insert("Width",m_variant->WidthToString(mySplice.WeldSettings.BasicSetting.Width).Current);
-    SpliceModelHash.insert("TriggerPressure",m_variant->TriggerPressureToString(mySplice.WeldSettings.BasicSetting.TrigPres).Current);
-    SpliceModelHash.insert("WeldPressure",m_variant->WeldPressureToString(mySplice.WeldSettings.BasicSetting.Pressure).Current);
+    SpliceModelHash.insert("WeldMode",variantToString->WeldModeToString(mySplice.WeldSettings.AdvanceSetting.WeldMode,mySplice.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode));
+    SpliceModelHash.insert("Energy",variantToString->EnergyToString(mySplice.WeldSettings.BasicSetting.Energy).Current);
+    SpliceModelHash.insert("Amplitude",variantToString->AmplitudeToString(mySplice.WeldSettings.BasicSetting.Amplitude).Current);
+    SpliceModelHash.insert("Width",variantToString->WidthToString(mySplice.WeldSettings.BasicSetting.Width).Current);
+    SpliceModelHash.insert("TriggerPressure",variantToString->TriggerPressureToString(mySplice.WeldSettings.BasicSetting.TrigPres).Current);
+    SpliceModelHash.insert("WeldPressure",variantToString->WeldPressureToString(mySplice.WeldSettings.BasicSetting.Pressure).Current);
     SpliceModelHash.insert("Time+","Time+");
     SpliceModelHash.insert("Time-","Time-");
     SpliceModelHash.insert("Power+","Power+");
@@ -769,7 +885,7 @@ AlarmModel::AlarmModel(QObject *parent) :
     m_alarmAdaptor = DBAlarmLogTable::Instance();
     m_weldHistoryAdaptor = DBWeldResultTable::Instance();
     alarms = new QMap<int, QString>();
-    m_variant = new VariantToString;
+    variantToString = VariantToString::Instance();
 }
 
 QVariant AlarmModel::data(const QModelIndex &index, int role) const
@@ -804,10 +920,10 @@ QVariant AlarmModel::data(const QModelIndex &index, int role) const
         else if (columnIdx == 1)
             value = QVariant::fromValue(QDateTime::fromTime_t(myAlarm.CreatedDate).toString("MM/dd/yyyy hh:mm"));
         else if (columnIdx == 2) {
-            temp = m_variant->AlarmTypeToString(myAlarm.AlarmType);
+            temp = variantToString->AlarmTypeToString(myAlarm.AlarmType);
             value = QVariant::fromValue(temp);
         } else if (columnIdx == 3) {
-            temp = m_variant->AlarmLevelToString(myAlarm.AlarmType);
+            temp = variantToString->AlarmLevelToString(myAlarm.AlarmType);
             value = QVariant::fromValue(temp);
         } else if (columnIdx == 4)
             value = QVariant::fromValue(myAlarm.AlarmMsg);
@@ -896,8 +1012,8 @@ QVariant AlarmModel::getAlarmValue(int index, QString key)
     QHash<QString, QVariant> AlarmModelHash;
     AlarmModelHash.insert("AlarmId",myAlarm.AlarmID);
     AlarmModelHash.insert("CreatedDate",QDateTime::fromTime_t(myAlarm.CreatedDate).toString("MM/dd/yyyy hh:mm"));
-    AlarmModelHash.insert("Alarm/ErrorType",m_variant->AlarmTypeToString(myAlarm.AlarmType));
-    AlarmModelHash.insert("Alarm/ErrorLevel",m_variant->AlarmLevelToString(myAlarm.AlarmType));
+    AlarmModelHash.insert("Alarm/ErrorType",variantToString->AlarmTypeToString(myAlarm.AlarmType));
+    AlarmModelHash.insert("Alarm/ErrorLevel",variantToString->AlarmLevelToString(myAlarm.AlarmType));
     AlarmModelHash.insert("Message",myAlarm.AlarmMsg);//myOperator.PermissionLevel;
     AlarmModelHash.insert("SpliceName",myAlarm.WeldResultID);//myOperator.PermissionLevel;
 
@@ -920,7 +1036,7 @@ WeldHistoryModel::WeldHistoryModel(QObject *parent) :
 {
     m_weldHistoryAdaptor = DBWeldResultTable::Instance();
     historys = new QMap<int, QString>();
-    m_variant = new VariantToString;
+    variantToString = VariantToString::Instance();
     m_spliceTable = DBPresetTable::Instance();
 }
 
@@ -964,23 +1080,23 @@ QVariant WeldHistoryModel::data(const QModelIndex &index, int role) const
         else if (columnIdx == 5)
             value = QVariant::fromValue(QDateTime::fromTime_t(myHistory.CreatedDate).toString("MM/dd/yyyy hh:mm"));
         else if (columnIdx == 6)
-            value = QVariant::fromValue(m_variant->CrossSectionToString(myHistory.CrossSection));
+            value = QVariant::fromValue(variantToString->CrossSectionToString(myHistory.CrossSection));
         else if (columnIdx == 7)
-            value = QVariant::fromValue(m_variant->WeldModeToString(presetElement.WeldSettings.AdvanceSetting.WeldMode,presetElement.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode));
+            value = QVariant::fromValue(variantToString->WeldModeToString(presetElement.WeldSettings.AdvanceSetting.WeldMode,presetElement.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode));
         else if (columnIdx == 8) {
-            temp = m_variant->EnergyToString(myHistory.ActualResult.ActualEnergy).Current;
+            temp = variantToString->EnergyToString(myHistory.ActualResult.ActualEnergy).Current;
             value = QVariant::fromValue(temp);
         } else if (columnIdx == 9) {
-            temp = m_variant->AmplitudeToString(myHistory.ActualResult.ActualAmplitude).Current;
+            temp = variantToString->AmplitudeToString(myHistory.ActualResult.ActualAmplitude).Current;
             value = QVariant::fromValue(temp);
         } else if (columnIdx == 10) {
-            temp = m_variant->WidthToString(myHistory.ActualResult.ActualWidth).Current;
+            temp = variantToString->WidthToString(myHistory.ActualResult.ActualWidth).Current;
             value = QVariant::fromValue(temp);
         } else if (columnIdx == 11) {
-            temp = m_variant->TriggerPressureToString(myHistory.ActualResult.ActualTPressure).Current;
+            temp = variantToString->TriggerPressureToString(myHistory.ActualResult.ActualTPressure).Current;
             value = QVariant::fromValue(temp);
         } else if (columnIdx == 12) {
-            temp = m_variant->WeldPressureToString(myHistory.ActualResult.ActualPressure).Current;
+            temp = variantToString->WeldPressureToString(myHistory.ActualResult.ActualPressure).Current;
             value = QVariant::fromValue(temp);
         }
         else if (columnIdx == 13)
@@ -988,7 +1104,7 @@ QVariant WeldHistoryModel::data(const QModelIndex &index, int role) const
         else if (columnIdx == 14)
             value = QVariant::fromValue(myHistory.ActualResult.ActualTime);
         else if (columnIdx == 15) {
-            temp = m_variant->ActualTimeToString(myHistory.ActualResult.ActualTime);
+            temp = variantToString->ActualTimeToString(myHistory.ActualResult.ActualTime);
             value = QVariant::fromValue(temp);
         } else if (columnIdx == 16) {
             value = QVariant::fromValue(myHistory.ActualResult.ActualPeakPower);
@@ -996,27 +1112,27 @@ QVariant WeldHistoryModel::data(const QModelIndex &index, int role) const
         else if (columnIdx == 17)
             value = QVariant::fromValue(myHistory.ActualResult.ActualPeakPower);
         else if (columnIdx == 18) {
-            temp = m_variant->ActualPowerToString(myHistory.ActualResult.ActualPeakPower);
+            temp = variantToString->ActualPowerToString(myHistory.ActualResult.ActualPeakPower);
             value = QVariant::fromValue(temp);
         } else if (columnIdx == 19) {
             value = QVariant::fromValue(myHistory.ActualResult.ActualPreheight);
         } else if (columnIdx == 20)
             value = QVariant::fromValue(myHistory.ActualResult.ActualPreheight);
         else if (columnIdx == 21) {
-            temp = m_variant->ActualPreHeightToString(myHistory.ActualResult.ActualPreheight);
+            temp = variantToString->ActualPreHeightToString(myHistory.ActualResult.ActualPreheight);
             value = QVariant::fromValue(temp);
         } else if (columnIdx == 22)
             value = QVariant::fromValue(myHistory.ActualResult.ActualPostheight);
         else if (columnIdx == 23)
             value = QVariant::fromValue(myHistory.ActualResult.ActualPostheight);
         else if (columnIdx == 24) {
-            temp = m_variant->ActualHeightToString(myHistory.ActualResult.ActualPostheight);
+            temp = variantToString->ActualHeightToString(myHistory.ActualResult.ActualPostheight);
             value = QVariant::fromValue(temp);
         } else if (columnIdx == 25) {
-            temp = m_variant->AlarmTypeToString((ALARMTYPE)myHistory.ActualResult.ActualAlarmflags);
+            temp = variantToString->AlarmTypeToString((ALARMTYPE)myHistory.ActualResult.ActualAlarmflags);
             value = QVariant::fromValue(temp);
         } else if (columnIdx == 26) {
-            temp = m_variant->SampleRatioToString(myHistory.SampleRatio);
+            temp = variantToString->SampleRatioToString(myHistory.SampleRatio);
             value = QVariant::fromValue(temp);
         } else if (columnIdx == 27) {
             value = QVariant::fromValue(myHistory.ActualResult.ActualPostheight);
@@ -1113,27 +1229,27 @@ QVariant WeldHistoryModel::getValue(int index, QString key)
     WeldHistoryModelHash.insert("OperatorName",myHistory.OperatorName);
     WeldHistoryModelHash.insert("DateCreated",QDateTime::fromTime_t(myHistory.CreatedDate).toString("MM/dd/yyyy hh:mm"));
 
-    WeldHistoryModelHash.insert("CrossSection",m_variant->CrossSectionToString(myHistory.CrossSection)); //contain in splice
-    WeldHistoryModelHash.insert("WeldMode",m_variant->WeldModeToString(presetElement.WeldSettings.AdvanceSetting.WeldMode,presetElement.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode));     //contain in splice
-    WeldHistoryModelHash.insert("Energy",m_variant->EnergyToString(myHistory.ActualResult.ActualEnergy).Current);
-    WeldHistoryModelHash.insert("Amplitude",m_variant->AmplitudeToString(myHistory.ActualResult.ActualAmplitude).Current);
-    WeldHistoryModelHash.insert("Width",m_variant->WidthToString(myHistory.ActualResult.ActualWidth).Current);
-    WeldHistoryModelHash.insert("TriggerPressure",m_variant->TriggerPressureToString(myHistory.ActualResult.ActualTPressure).Current);
-    WeldHistoryModelHash.insert("WeldPressure",m_variant->WeldPressureToString(myHistory.ActualResult.ActualPressure).Current);
+    WeldHistoryModelHash.insert("CrossSection",variantToString->CrossSectionToString(myHistory.CrossSection)); //contain in splice
+    WeldHistoryModelHash.insert("WeldMode",variantToString->WeldModeToString(presetElement.WeldSettings.AdvanceSetting.WeldMode,presetElement.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode));     //contain in splice
+    WeldHistoryModelHash.insert("Energy",variantToString->EnergyToString(myHistory.ActualResult.ActualEnergy).Current);
+    WeldHistoryModelHash.insert("Amplitude",variantToString->AmplitudeToString(myHistory.ActualResult.ActualAmplitude).Current);
+    WeldHistoryModelHash.insert("Width",variantToString->WidthToString(myHistory.ActualResult.ActualWidth).Current);
+    WeldHistoryModelHash.insert("TriggerPressure",variantToString->TriggerPressureToString(myHistory.ActualResult.ActualTPressure).Current);
+    WeldHistoryModelHash.insert("WeldPressure",variantToString->WeldPressureToString(myHistory.ActualResult.ActualPressure).Current);
     WeldHistoryModelHash.insert("Time+",myHistory.ActualResult.ActualTime); //contain in splice QUALITYWINDONSETTING
     WeldHistoryModelHash.insert("Timer-",myHistory.ActualResult.ActualTime);
-    WeldHistoryModelHash.insert("Time",m_variant->ActualTimeToString(myHistory.ActualResult.ActualTime));
+    WeldHistoryModelHash.insert("Time",variantToString->ActualTimeToString(myHistory.ActualResult.ActualTime));
     WeldHistoryModelHash.insert("Power+",myHistory.ActualResult.ActualPeakPower);
     WeldHistoryModelHash.insert("Power-",myHistory.ActualResult.ActualPeakPower);
-    WeldHistoryModelHash.insert("Power",m_variant->ActualPowerToString(myHistory.ActualResult.ActualPeakPower));
+    WeldHistoryModelHash.insert("Power",variantToString->ActualPowerToString(myHistory.ActualResult.ActualPeakPower));
     WeldHistoryModelHash.insert("Pre-Height+",myHistory.ActualResult.ActualPreheight);
     WeldHistoryModelHash.insert("Pre-Height-",myHistory.ActualResult.ActualPreheight);
-    WeldHistoryModelHash.insert("Pre-Height",m_variant->ActualPreHeightToString(myHistory.ActualResult.ActualPreheight));
+    WeldHistoryModelHash.insert("Pre-Height",variantToString->ActualPreHeightToString(myHistory.ActualResult.ActualPreheight));
     WeldHistoryModelHash.insert("Height+",myHistory.ActualResult.ActualPostheight);
     WeldHistoryModelHash.insert("Height-",myHistory.ActualResult.ActualPostheight);
-    WeldHistoryModelHash.insert("Height",m_variant->ActualHeightToString(myHistory.ActualResult.ActualPostheight));
-    WeldHistoryModelHash.insert("Alarm",m_variant->AlarmTypeToString((ALARMTYPE)myHistory.ActualResult.ActualAlarmflags)); //myHistory.ActualResult.ActualAlarmflags
-    WeldHistoryModelHash.insert("SampleRatio",m_variant->SampleRatioToString(myHistory.SampleRatio));
+    WeldHistoryModelHash.insert("Height",variantToString->ActualHeightToString(myHistory.ActualResult.ActualPostheight));
+    WeldHistoryModelHash.insert("Alarm",variantToString->AlarmTypeToString((ALARMTYPE)myHistory.ActualResult.ActualAlarmflags)); //myHistory.ActualResult.ActualAlarmflags
+    WeldHistoryModelHash.insert("SampleRatio",variantToString->SampleRatioToString(myHistory.SampleRatio));
     WeldHistoryModelHash.insert("GraphData","GraphData");
     if (key == "") {
         return WeldHistoryModelHash;
@@ -1150,7 +1266,8 @@ WireModel::WireModel(QObject *parent) :
 {
     m_wireAdaptor = DBWireTable::Instance();
     wires = new QMap<int, QString>();
-    m_variant = new VariantToString;
+    variantToString = VariantToString::Instance();
+    stringToVariant = StringToVariant::Instance();
 }
 
 QVariant WireModel::data(const QModelIndex &index, int role) const
@@ -1194,10 +1311,10 @@ QVariant WireModel::data(const QModelIndex &index, int role) const
             value = QVariant::fromValue((int)myWire.Stripe.TypeOfStripe);
         else if (columnIdx == 6)
             value = QVariant::fromValue(myWire.Stripe.Color);
-        else if (columnIdx == 7)
-            temp = m_variant->GaugeToString(myWire.Gauge,myWire.GaugeAWG).Current;
+        else if (columnIdx == 7) {
+            temp = variantToString->GaugeToString(myWire.Gauge,myWire.GaugeAWG).Current;
             value = QVariant::fromValue(temp);
-        else if (columnIdx == 8)
+        } else if (columnIdx == 8)
             value = QVariant::fromValue((int)myWire.TypeOfWire);
         else if (columnIdx == 9)
             value = QVariant::fromValue((int)myWire.Side);
@@ -1241,6 +1358,71 @@ int WireModel::count()
 void WireModel::removeValue(int id, QString name)
 {
     m_wireAdaptor->DeleteOneRecordFromTable(id,name);
+}
+
+void WireModel::createNew()
+{
+    WireElement temp;
+    wireElement = temp;
+}
+
+QVariant WireModel::getStructValue(QString key)
+{
+    QHash<QString, QVariant> WireModelHash;
+    WireModelHash.insert("Gauge",wireElement.Gauge);
+    WireModelHash.insert("AWG",wireElement.GaugeAWG);
+    WireModelHash.insert("WireType",(int)wireElement.TypeOfWire);
+
+//    WireModelHash.insert("OperatorName",myWire.OperatorID);
+//    WireModelHash.insert("Color",myWire.Color);
+//    WireModelHash.insert("StripeType",(int)myWire.Stripe.TypeOfStripe);
+//    WireModelHash.insert("StripeColor",myWire.Stripe.Color);
+//    WireModelHash.insert("Gauge",myWire.Gauge);
+//    WireModelHash.insert("MetalType",(int)myWire.TypeOfWire);
+//    WireModelHash.insert("HorizontalLocation",(int)myWire.Side);
+//    WireModelHash.insert("VerticalLocation",(int)myWire.VerticalSide);
+//    WireModelHash.insert("VerticalPosition",(int)myWire.Position);
+    if (key == "") {
+        return WireModelHash;
+    } else {
+        return WireModelHash.value(key);
+    }
+}
+
+QString WireModel::getStructValue2(QString key, QString type)
+{
+    if (key == "Gauge"){
+        if (type == "current")
+            return variantToString->GaugeToString(wireElement.Gauge,wireElement.GaugeAWG).Current;
+        else if (type == "max")
+            return variantToString->GaugeToString(wireElement.Gauge,wireElement.GaugeAWG).Maximum;
+        else if (type == "min")
+            return variantToString->GaugeToString(wireElement.Gauge,wireElement.GaugeAWG).Minimum;
+    }
+    else if (key == "StripeColor")
+        return wireElement.Stripe.Color;
+
+}
+
+int WireModel::getStructValue3(QString key, QString value)
+{
+    int gauge;
+    int awg;
+    if (key == "Gauge"){
+        stringToVariant->GaugeToInt(value,awg,gauge);
+        return gauge;
+    }
+    else if (key == "awg") {
+        stringToVariant->GaugeToInt(value,awg,gauge);
+        return awg;
+    }
+    else if (key == "StripeType")
+        return (int)wireElement.Stripe.TypeOfStripe;
+}
+
+QString WireModel::getStructValue4(int gauge, int awg)
+{
+    return variantToString->GaugeToString(gauge,awg).Current;
 }
 
 int WireModel::columnCount(const QModelIndex &parent) const
