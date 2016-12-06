@@ -47,7 +47,11 @@ SOURCES += main.cpp \
     Interface/Settings/SysConfiguration.cpp \
     Interface/ViewData/StatisticalTrend.cpp \
     Interface/VariantToString.cpp \
-    Interface/StringToVariant.cpp
+    Interface/StringToVariant.cpp \
+    Interface/WireElement.cpp \
+    Interface/PresetElement.cpp \
+    Interface/PartElement.cpp \
+    Interface/WorkOrderElement.cpp
 
 RESOURCES += qml.qrc
 
@@ -101,7 +105,11 @@ HEADERS += \
     Interface/Settings/SysConfiguration.h \
     Interface/ViewData/StatisticalTrend.h \
     Interface/VariantToString.h \
-    Interface/StringToVariant.h
+    Interface/StringToVariant.h \
+    Interface/WireElement.h \
+    Interface/PresetElement.h \
+    Interface/PartElement.h \
+    Interface/WorkOrderElement.h
 
 DISTFILES += \
     UI/displayChinese_zh_CN.qm \

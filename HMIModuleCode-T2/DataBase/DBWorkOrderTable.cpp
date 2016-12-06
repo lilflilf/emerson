@@ -1,5 +1,6 @@
 #include "DBWorkOrderTable.h"
 #include "Modules/UtilityClass.h"
+#include "Interface/WorkOrderElement.h"
 #include <QDebug>
 
 DBWorkOrderTable* DBWorkOrderTable::_instance = NULL;

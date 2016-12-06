@@ -1,6 +1,15 @@
 #include "StringToVariant.h"
 #include "Interface/Interface.h"
 UtilityClass* StringToVariant::_Utility = NULL;
+StringToVariant* StringToVariant::_instance = NULL;
+StringToVariant* StringToVariant::Instance()
+{
+    if(_instance == NULL){
+        _instance = new StringToVariant();
+    }
+    return _instance;
+}
+
 StringToVariant::StringToVariant()
 {
     _Utility = UtilityClass::Instance();

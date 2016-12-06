@@ -204,6 +204,7 @@ SpliceModel::SpliceModel(QObject *parent) :
 {
     m_spliceAdaptor = DBPresetTable::Instance();
     splices = new QMap<int, QString>();
+    variantToString = VariantToString::Instance();
 }
 
 QVariant SpliceModel::data(const QModelIndex &index, int role) const
@@ -322,107 +323,107 @@ QString SpliceModel::getStructValue(QString valueKey, QString valueType)
     //                    settingsModel.append({"topText":"Width","bottomText":"12.5mm"})
     if (valueKey == "Energy") {
         if (valueType == "current")
-            return variantToString.EnergyToString(presetElement.WeldSettings.BasicSetting.Energy).Current;
+            return variantToString->EnergyToString(presetElement.WeldSettings.BasicSetting.Energy).Current;
         else if (valueType == "max")
-            return variantToString.EnergyToString(presetElement.WeldSettings.BasicSetting.Energy).Maximum;
+            return variantToString->EnergyToString(presetElement.WeldSettings.BasicSetting.Energy).Maximum;
         else if (valueType == "min")
-            return variantToString.EnergyToString(presetElement.WeldSettings.BasicSetting.Energy).Minimum;
+            return variantToString->EnergyToString(presetElement.WeldSettings.BasicSetting.Energy).Minimum;
     }
     else if (valueKey == "Trigger Pressure") {
         if (valueType == "current")
-            return variantToString.TriggerPressureToString(presetElement.WeldSettings.BasicSetting.TrigPres).Current;
+            return variantToString->TriggerPressureToString(presetElement.WeldSettings.BasicSetting.TrigPres).Current;
         else if (valueType == "max")
-            return variantToString.TriggerPressureToString(presetElement.WeldSettings.BasicSetting.TrigPres).Maximum;
+            return variantToString->TriggerPressureToString(presetElement.WeldSettings.BasicSetting.TrigPres).Maximum;
         else if (valueType == "min")
-            return variantToString.TriggerPressureToString(presetElement.WeldSettings.BasicSetting.TrigPres).Minimum;
+            return variantToString->TriggerPressureToString(presetElement.WeldSettings.BasicSetting.TrigPres).Minimum;
     }
     else if (valueKey == "Amplitude") {
         if (valueType == "current")
-            return variantToString.AmplitudeToString(presetElement.WeldSettings.BasicSetting.Amplitude).Current;
+            return variantToString->AmplitudeToString(presetElement.WeldSettings.BasicSetting.Amplitude).Current;
         else if (valueType == "max")
-            return variantToString.AmplitudeToString(presetElement.WeldSettings.BasicSetting.Amplitude).Maximum;
+            return variantToString->AmplitudeToString(presetElement.WeldSettings.BasicSetting.Amplitude).Maximum;
         else if (valueType == "min")
-            return variantToString.AmplitudeToString(presetElement.WeldSettings.BasicSetting.Amplitude).Minimum;
+            return variantToString->AmplitudeToString(presetElement.WeldSettings.BasicSetting.Amplitude).Minimum;
     }
     else if (valueKey == "Weld Pressure") {
         if (valueType == "current")
-            return variantToString.WeldPressureToString(presetElement.WeldSettings.BasicSetting.Pressure).Current;
+            return variantToString->WeldPressureToString(presetElement.WeldSettings.BasicSetting.Pressure).Current;
         else if (valueType == "max")
-            return variantToString.WeldPressureToString(presetElement.WeldSettings.BasicSetting.Pressure).Maximum;
+            return variantToString->WeldPressureToString(presetElement.WeldSettings.BasicSetting.Pressure).Maximum;
         else if (valueType == "min")
-            return variantToString.WeldPressureToString(presetElement.WeldSettings.BasicSetting.Pressure).Minimum;
+            return variantToString->WeldPressureToString(presetElement.WeldSettings.BasicSetting.Pressure).Minimum;
     }
     else if (valueKey == "Width") {
         if (valueType == "current")
-            return variantToString.WidthToString(presetElement.WeldSettings.BasicSetting.Width).Current;
+            return variantToString->WidthToString(presetElement.WeldSettings.BasicSetting.Width).Current;
         else if (valueType == "max")
-            return variantToString.WidthToString(presetElement.WeldSettings.BasicSetting.Width).Maximum;
+            return variantToString->WidthToString(presetElement.WeldSettings.BasicSetting.Width).Maximum;
         else if (valueType == "min")
-            return variantToString.WidthToString(presetElement.WeldSettings.BasicSetting.Width).Minimum;
+            return variantToString->WidthToString(presetElement.WeldSettings.BasicSetting.Width).Minimum;
     }
     else if (valueKey == "Time-") {
         if (valueType == "current")
-            return variantToString.TimeMinusToString(presetElement.WeldSettings.QualitySetting.Time.Minus).Current;
+            return variantToString->TimeMinusToString(presetElement.WeldSettings.QualitySetting.Time.Minus).Current;
         else if (valueType == "max")
-            return variantToString.TimeMinusToString(presetElement.WeldSettings.QualitySetting.Time.Minus).Maximum;
+            return variantToString->TimeMinusToString(presetElement.WeldSettings.QualitySetting.Time.Minus).Maximum;
         else if (valueType == "min")
-            return variantToString.TimeMinusToString(presetElement.WeldSettings.QualitySetting.Time.Minus).Minimum;
+            return variantToString->TimeMinusToString(presetElement.WeldSettings.QualitySetting.Time.Minus).Minimum;
     }
     else if (valueKey == "Time+") {
         if (valueType == "current")
-            return variantToString.TimePlusToString(presetElement.WeldSettings.QualitySetting.Time.Plus).Current;
+            return variantToString->TimePlusToString(presetElement.WeldSettings.QualitySetting.Time.Plus).Current;
         else if (valueType == "max")
-            return variantToString.TimePlusToString(presetElement.WeldSettings.QualitySetting.Time.Plus).Maximum;
+            return variantToString->TimePlusToString(presetElement.WeldSettings.QualitySetting.Time.Plus).Maximum;
         else if (valueType == "min")
-            return variantToString.TimePlusToString(presetElement.WeldSettings.QualitySetting.Time.Plus).Minimum;
+            return variantToString->TimePlusToString(presetElement.WeldSettings.QualitySetting.Time.Plus).Minimum;
     }
 //    else if (valueKey == "Power-") {
 //        if (valueType == "current")
-//            return variantToString.PowerMinusToString(presetElement.WeldSettings.QualitySetting.Power).Current;
+//            return variantToString->PowerMinusToString(presetElement.WeldSettings.QualitySetting.Power).Current;
 //        else if (valueType == "max")
-//            return variantToString.PowerMinusToString(presetElement.WeldSettings.QualitySetting.Power).Maximum;
+//            return variantToString->PowerMinusToString(presetElement.WeldSettings.QualitySetting.Power).Maximum;
 //        else if (valueType == "min")
-//            return variantToString.PowerMinusToString(presetElement.WeldSettings.QualitySetting.Power).Minimum;
+//            return variantToString->PowerMinusToString(presetElement.WeldSettings.QualitySetting.Power).Minimum;
 //    }
 //    else if (valueKey == "Power+") {
 //        if (valueType == "current")
-//            return variantToString.PowerPlusToString(presetElement.WeldSettings.QualitySetting.Power).Current;
+//            return variantToString->PowerPlusToString(presetElement.WeldSettings.QualitySetting.Power).Current;
 //        else if (valueType == "max")
-//            return variantToString.PowerPlusToString(presetElement.WeldSettings.QualitySetting.Power).Maximum;
+//            return variantToString->PowerPlusToString(presetElement.WeldSettings.QualitySetting.Power).Maximum;
 //        else if (valueType == "min")
-//            return variantToString.PowerPlusToString(presetElement.WeldSettings.QualitySetting.Power).Minimum;
+//            return variantToString->PowerPlusToString(presetElement.WeldSettings.QualitySetting.Power).Minimum;
 //    }
 //    else if (valueKey == "Pre-Height-") {
 //        if (valueType == "current")
-//            return variantToString.PreHeightMinusToString(presetElement.WeldSettings.QualitySetting.Preheight).Current;
+//            return variantToString->PreHeightMinusToString(presetElement.WeldSettings.QualitySetting.Preheight).Current;
 //        else if (valueType == "max")
-//            return variantToString.PreHeightMinusToString(presetElement.WeldSettings.QualitySetting.Preheight).Maximum;
+//            return variantToString->PreHeightMinusToString(presetElement.WeldSettings.QualitySetting.Preheight).Maximum;
 //        else if (valueType == "min")
-//            return variantToString.PreHeightMinusToString(presetElement.WeldSettings.QualitySetting.Preheight).Minimum;
+//            return variantToString->PreHeightMinusToString(presetElement.WeldSettings.QualitySetting.Preheight).Minimum;
 //    }
 //    else if (valueKey == "Pre-Height+") {
 //        if (valueType == "current")
-//            return variantToString.PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight).Current;
+//            return variantToString->PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight).Current;
 //        else if (valueType == "max")
-//            return variantToString.PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight).Maximum;
+//            return variantToString->PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight).Maximum;
 //        else if (valueType == "min")
-//            return variantToString.PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight).Minimum;
+//            return variantToString->PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight).Minimum;
 //    }
 //    else if (valueKey == "Post-Height-") {
 //        if (valueType == "current")
-//            return variantToString.PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight).Current;
+//            return variantToString->PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight).Current;
 //        else if (valueType == "max")
-//            return variantToString.PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight).Maximum;
+//            return variantToString->PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight).Maximum;
 //        else if (valueType == "min")
-//            return variantToString.PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight).Minimum;
+//            return variantToString->PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight).Minimum;
 //    }
 //    else if (valueKey == "Pre-Height+") {
 //        if (valueType == "current")
-//            return variantToString.PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight).Current;
+//            return variantToString->PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight).Current;
 //        else if (valueType == "max")
-//            return variantToString.PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight).Maximum;
+//            return variantToString->PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight).Maximum;
 //        else if (valueType == "min")
-//            return variantToString.PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight).Minimum;
+//            return variantToString->PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight).Minimum;
 //    }
     else
         return "";
@@ -1025,7 +1026,7 @@ WeldHistoryModel::WeldHistoryModel(QObject *parent) :
 {
     m_weldHistoryAdaptor = DBWeldResultTable::Instance();
     historys = new QMap<int, QString>();
-    m_variant = new VariantToString;
+    m_variant = VariantToString::Instance();
     m_spliceTable = DBPresetTable::Instance();
 }
 

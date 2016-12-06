@@ -2,7 +2,7 @@
 #define STATISTICALTREND_H
 
 #include <QObject>
-#include "Interface/Definition.h"
+#include "Interface/PresetElement.h"
 
 struct WeldParameter
 {

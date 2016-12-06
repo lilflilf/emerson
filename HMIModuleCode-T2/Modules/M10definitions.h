@@ -7,7 +7,7 @@
 #include <QString>
 #include <QObject>
 #include "UtilityDefine.h"
-#include "Interface/Definition.h"
+#include "Interface/WireElement.h"
 using namespace std;
 //enum TubeShrinkermessages{
 //    TubeShrinker_comError = -1,

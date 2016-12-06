@@ -38,6 +38,10 @@ public:
     int ShrinkTemperatureToInt(QString);
     int ShrinkTimeToInt(QString);
 public:
+    static StringToVariant* Instance();
+private:
+    static StringToVariant* _instance;
+private:
     StringToVariant();
 };
 
