@@ -75,6 +75,7 @@ public:
 
     QStringList m_idList;
     DBPresetTable *m_spliceAdaptor;
+    DBOperatorTable *m_operatorAdaptor;
     QMap<int, QString> *splices;
 
  protected:
@@ -117,6 +118,7 @@ public:
 
     QStringList m_idList;
     DBPartTable *m_partAdaptor;
+    DBOperatorTable *m_operatorAdaptor;
     QMap<int, QString> *parts;
 
 protected:
@@ -257,6 +259,7 @@ public:
 
     QStringList m_idList;
     DBWireTable *m_wireAdaptor;
+    DBOperatorTable *m_operatorAdaptor;
     QMap<int, QString> *wires;
 
 protected:

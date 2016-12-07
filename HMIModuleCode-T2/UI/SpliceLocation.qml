@@ -64,7 +64,7 @@ Item {
                                     anchors.leftMargin: getspliceNoLeftMargin(index)
                                     height: parent.height/3
                                     verticalAlignment: Qt.AlignVCenter
-                                    font.pointSize: 8
+                                    font.pointSize: 10
                                     font.family: "arial"
                                     color: "white"
                                     text: model.spliceNo
@@ -75,9 +75,9 @@ Item {
                                     anchors.topMargin: 8
                                     anchors.left: spliceNo.right
                                     anchors.leftMargin: 2
-                                    width: 10
-                                    height: 10
-                                    radius: 10
+                                    width: 14
+                                    height: 14
+                                    radius: 14
                                     color: model.spliceColor
                                 }
                             }

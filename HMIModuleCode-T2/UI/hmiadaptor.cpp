@@ -272,6 +272,7 @@ QString HmiAdaptor::getMaintenanceVerson(int index)
     default:
         break;
     }
+    return value;
 }
 
 //listModel.append({mytitle:"Horn"})

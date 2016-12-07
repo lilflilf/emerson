@@ -685,6 +685,15 @@ Item {
             textColor: "white"
             text: qsTr("Delete")
             onClicked: {
+                if (partRadio.checked)
+                    partModel.removeValue(partModel.getValue(selectIndx,"PartId"),partModel.getValue(selectIndx,"PartName"))
+                else if (spliceRadio.checked)
+                    spliceModel.removeValue(spliceModel.getValue(selectIndx,"SpliceId"),spliceModel.getValue(selectIndx,"SpliceName"))
+                else if (wireRadio.checked)
+                    wireModel.removeValue(wireModel.getValue(selectIndx,"WireId"),wireModel.getValue(selectIndx,"WireName"))
+                else if (shrinkRadio.checked){
+                    shrinkModel.remove(selectIndx)
+                }
             }
         }
         CButton {
