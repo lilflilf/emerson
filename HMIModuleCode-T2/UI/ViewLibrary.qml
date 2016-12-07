@@ -305,7 +305,7 @@ Item {
             partKeyModel.append({"title":"columns"})
             partKeyModel.append({"title":"maxSplicesPerZone"})
 
-            shrinkTitleModel.append({title:qsTr("Shrink Tube Id")})
+            shrinkTitleModel.append({title:qsTr("InsulationName")})
             shrinkTitleModel.append({title:qsTr("Temp(℃)")})
             shrinkTitleModel.append({title:qsTr("Time(S)")})
 

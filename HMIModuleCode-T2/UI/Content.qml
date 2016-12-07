@@ -905,19 +905,31 @@ Item {
             anchors.fill: parent
             source: "qrc:/images/images/dialogbg.png"
         }
-        Text {
+//        Text {
+//            id: addNew
+//            anchors.top: parent.top
+//            anchors.left: parent.left
+//            anchors.leftMargin: 20
+//            verticalAlignment: Qt.AlignVCenter
+//            height: 40
+//            width: parent.width-30
+//            font.pixelSize: 20
+//            font.family: "arial"
+//            color: "white"
+//            text: qsTr("Add New")
+//        }
+        CButton {
             id: addNew
             anchors.top: parent.top
             anchors.left: parent.left
             anchors.leftMargin: 20
-            verticalAlignment: Qt.AlignVCenter
+//            verticalAlignment: Qt.AlignVCenter
             height: 40
-            width: parent.width-30
-            font.pixelSize: 20
-            font.family: "arial"
-            color: "white"
+            width: parent.width / 2
+            pixelSize: 20
             text: qsTr("Add New")
         }
+
         Rectangle {
             id: addNewBack
             anchors.top: parent.top

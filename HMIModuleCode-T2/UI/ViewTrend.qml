@@ -402,7 +402,7 @@ Item {
                 anchors.top: parent.top
                 anchors.topMargin: 50
                 Component.onCompleted: {
-                    point.anchors.topMargin = index + 50
+                    point.anchors.topMargin = hmiAdaptor.randPoint() + qualityListViewTwo.height / 2 - 20
                 }
             }
         }

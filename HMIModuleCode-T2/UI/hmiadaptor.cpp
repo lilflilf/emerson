@@ -255,7 +255,7 @@ QString HmiAdaptor::maintenanceCountGetValue(int code, int index)
 
 QString HmiAdaptor::getMaintenanceVerson(int index)
 {
-    QString value;
+    QString value = "";
     switch (index) {
     case 0:
         value = maintenanceCount->CurrentMaintenanceCounter.ActuatorPartNumber;
@@ -388,6 +388,11 @@ bool HmiAdaptor::login(QString passwd)
 void HmiAdaptor::calibrationMaintenanceExecute(int code)
 {
     calibration->_execute(code);
+}
+
+int HmiAdaptor::randPoint()
+{
+    return qrand() % 40;
 }
 
 

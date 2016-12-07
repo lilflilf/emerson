@@ -10,6 +10,7 @@ Item {
     property alias leftModel: listModelLeft
     property alias rightModel: listModelRight
     property alias centerVisable: centerButton.visible
+    property alias topLeft: topLeft
 
     property var selectColor: ""
     property var selectText: ""
@@ -30,6 +31,21 @@ Item {
     signal wireSelected(var selectColor,var selectDirection,var selectPosition,var selectText,var selectWireName, var selectWireType, var selectWireStripeColor, var selectWireStripeType)
     signal changing(var bIsChang)
     signal gaugeChanged(var type, var value)
+
+    function setState(setPosition,setLine,setText,setColor)
+    {
+        selectColor = setColor
+        selectText = setText
+        if (setPosition == "topLeft")
+            topLeft.sourceComponent = left
+        else if (setPosition == "topRight")
+            topRight.sourceComponent = right
+        else if (setPosition == "bottomLeft")
+            bottomLeft.sourceComponent = left
+        else if (setPosition == "bottomRight")
+            bottomRight.sourceComponent = right
+
+    }
 
     function safeChange(change)
     {

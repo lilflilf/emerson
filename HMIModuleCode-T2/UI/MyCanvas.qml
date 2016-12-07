@@ -45,10 +45,11 @@ Item {
     Line {
         id: bottomLine
         height: 1
-        width: parent.width
+        width: parent.width - 40
         lineColor: "white"
         anchors.bottom: parent.bottom
         anchors.left: parent.left
+        anchors.leftMargin: 20
         Text {
             anchors.top: bottomLineRow.bottom
             anchors.topMargin: 5
@@ -95,6 +96,7 @@ Item {
         lineColor: "white"
         anchors.bottom: parent.bottom
         anchors.left: parent.left
+        anchors.leftMargin: 20
         Column {
             spacing: leftLine.height / 5
             anchors.right: leftLine.left
@@ -140,6 +142,7 @@ Item {
         lineColor: "white"
         anchors.bottom: parent.bottom
         anchors.right: parent.right
+        anchors.rightMargin: 20
         Text {
             anchors.bottom: rightLine.top
             anchors.bottomMargin: 5
