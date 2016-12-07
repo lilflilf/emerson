@@ -150,9 +150,13 @@ Item {
     }
 
     Rectangle {
-        anchors.fill: qualityListViewTwo
+//        anchors.fill: qualityListViewTwo
         color: "#6d6e71"
         visible: qualityListViewTwo.visible
+        width: qualityParent.width //Screen.width * 0.35
+        height: Screen.height *0.25
+        anchors.top: qualityListView.bottom
+        anchors.topMargin: 40
         Line {
             anchors.top: parent.top
             anchors.topMargin: parent.height / 2
@@ -192,7 +196,7 @@ Item {
 
     ListView {
         id: qualityListViewTwo
-        width: qualityParent.width //Screen.width * 0.35
+        width: qualityParent.width - 20 //Screen.width * 0.35
         height: Screen.height *0.25
         orientation: Qt.Horizontal
         interactive: false
@@ -200,21 +204,41 @@ Item {
         anchors.topMargin: 40
         delegate: qualityListViewTwoDelegate
         model: 100
+        layoutDirection: Qt.RightToLeft
+        anchors.right: parent.right
+        anchors.rightMargin: 20
     }
     Component {
         id: qualityListViewTwoDelegate
         Item {
-            width: 8
+            width: index == 0 ? 40 : 8
             height: Screen.height * 0.25
+            Rectangle {
+                width: 15
+                height: parent.height
+                color: Qt.rgba(0,0,0,0)
+                border.width: 1
+                border.color: "#33FFCC"
+                visible: index == 0 ? true : false
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
             Rectangle {
                 id: point
                 radius: 100
-                width: 4
-                height: 4
+                width: index == 0 ? 30 : 4
+                height: index == 0 ? 30 : 4
                 anchors.top: parent.top
-//                anchors.topMargin: 50
+                anchors.horizontalCenter: parent.horizontalCenter
+                color: index == 0 ? "#33FFCC" : "white" //* 8 >= qualityListViewTwo.width ? "red" : "white"
                 Component.onCompleted: {
-                    point.anchors.topMargin = index + clickType
+                    point.anchors.topMargin = hmiAdaptor.randPoint() + 80 //index + clickType
+                }
+                Text {
+                    text: index == 0 ? "68" : ""
+                    font.family: "arial"
+                    font.pixelSize: 20
+                    color: "white"
+                    anchors.centerIn: parent
                 }
             }
         }

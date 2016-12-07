@@ -82,6 +82,7 @@ public:
     Q_INVOKABLE QString getMaintenanceVerson(int index);
     Q_INVOKABLE bool login(QString passwd);
     Q_INVOKABLE void calibrationMaintenanceExecute(int code);
+    Q_INVOKABLE int randPoint();
 
     /********permissionsetting func**************/
     Q_INVOKABLE bool permissionsettingExecute(QString code);

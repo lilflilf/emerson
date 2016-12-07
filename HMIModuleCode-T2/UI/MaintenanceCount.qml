@@ -39,14 +39,6 @@ Item {
         Component.onCompleted: {
             initPage()
         }
-
-//        ListElement {key1:"Horn";     key2:"3"; key3:"200,000"; key4:"105009"; key5:"10/20/2016"; key6:"Reset"}
-//        ListElement {key1:"AnvilTip"; key2:"3"; key3:"400,000"; key4:"15001"; key5:"10/20/2016"; key6:"Reset"}
-//        ListElement {key1:"Gather";   key2:"3"; key3:"400,000"; key4:"25111"; key5:"10/20/2016"; key6:"Reset"}
-//        ListElement {key1:"AnvilGuide"; key2:"3"; key3:"400,000"; key4:"35222"; key5:"10/20/2016"; key6:"Reset"}
-//        ListElement {key1:"Converter";  key2:"3"; key3:"400,000"; key4:"35224"; key5:"10/20/2016"; key6:"Reset"}
-//        ListElement {key1:"Actuator";  key2:"-"; key3:"-"; key4:"35224"; key5:"10/20/2016"; key6:"-"}
-
     }
 
     Row {
@@ -61,7 +53,7 @@ Item {
         }
 
         Text {
-            width: 150
+            width: 160
             text: qsTr("Counter Limit")
             color: "white"
             font.family: "arial"
@@ -70,7 +62,7 @@ Item {
             horizontalAlignment: Qt.AlignHCenter
         }
         Text {
-            width: 150
+            width: 160
             text: qsTr("Current Counter")
             color: "white"
             font.family: "arial"
@@ -79,7 +71,7 @@ Item {
             horizontalAlignment: Qt.AlignHCenter
         }
         Text {
-            width: 150
+            width: 160
             text: qsTr("Data Started")
             color: "white"
             font.family: "arial"
@@ -88,7 +80,7 @@ Item {
             horizontalAlignment: Qt.AlignHCenter
         }
         Text {
-            width: 150
+            width: 160
             text: qsTr("Reset")
             color: "white"
             font.family: "arial"
@@ -97,7 +89,7 @@ Item {
             horizontalAlignment: Qt.AlignHCenter
         }
         Text {
-            width: 150
+            width: 160
             text: qsTr("On/Off")
             color: "white"
             font.family: "arial"
@@ -140,7 +132,7 @@ Item {
                 spacing: 30
                 anchors.verticalCenter: parent.verticalCenter
                 Text {
-                    width: 150
+                    width: 160
                     height: 79
                     text: qsTr(mytitle)
                     color: "white"
@@ -150,13 +142,13 @@ Item {
                     horizontalAlignment: Qt.AlignHCenter
                 }
                 Image {
-                    width: 150
+                    width: 160
                     height: 60
                     //source:  imageSouce //"file:///c:/ToolChangeImage/group2/wiredemo.jpg"
                 }
                 MiniKeyNumInput {
                     id: input
-                    width: 150
+                    width: 160
                     height: 60
 //                    inputHeight: 79
                     inputWidth: 150
@@ -178,7 +170,7 @@ Item {
                     }
                 }
                 Text {
-                    width: 150
+                    width: 160
                     height: 79
                     text: qsTr("-")
                     color: "white"
@@ -189,7 +181,7 @@ Item {
                     visible: index == 5 ? true : false
                 }
                 Text {
-                    width: 150
+                    width: 160
                     height: 79
                     text: qsTr(mycurrent)
                     color: "white"
@@ -199,7 +191,7 @@ Item {
                     horizontalAlignment: Qt.AlignHCenter
                 }
                 Text {
-                    width: 150
+                    width: 160
                     height: 79
                     text: qsTr(createDate)
                     color: "white"
@@ -209,7 +201,7 @@ Item {
                     horizontalAlignment: Qt.AlignHCenter
                 }
                 CButton {
-                    width: 150
+                    width: 160
                     text: myreset
                     visible: index == 5 ? false : true
                     onClicked: {
@@ -217,12 +209,12 @@ Item {
                     }
                 }
                 Item {
-                    width: 150
+                    width: 160
                     height: 79
                     visible: index == 5 ? true : false
                 }
                 Switch2 {
-                    width: 150
+                    width: 175
                     textLeft: qsTr("On")
                     textRight: qsTr("Off")
                     clip: true

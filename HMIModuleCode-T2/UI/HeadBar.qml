@@ -230,7 +230,7 @@ Item {
     }
     ListModel {
         id: viewDataList
-        ListElement {menuKey:"Word Order History"}
+        ListElement {menuKey:"Work Order History"}
         ListElement {menuKey:"Statistical Trend"}
         ListElement {menuKey:"Error/Alarm Log"}
         ListElement {menuKey:"Library"}
@@ -342,9 +342,9 @@ Item {
                                     root.menuInit(13)
                                     title.text = qsTr("Version Information")
                                 }
-                                else if (menuKey == "Word Order History"){
+                                else if (menuKey == "Work Order History"){
                                     root.menuInit(9)
-                                    title.text = qsTr("Word Order History")
+                                    title.text = qsTr("Work Order History")
                                 }
                                 else if (menuKey == "Statistical Trend"){
                                     root.menuInit(10)
@@ -484,6 +484,21 @@ Item {
             }
         }
     }
+    Image {
+        id: alarmButton
+        anchors.right: languageButton.left
+        anchors.rightMargin: 20
+        z: 14
+        source: "qrc:/images/images/alarm.png"
+        anchors.verticalCenter: parent.verticalCenter
+        height: 80
+        width: 80
+        MouseArea {
+            anchors.fill: parent
+
+        }
+    }
+
     Rectangle {
         id: background
         z: 18
