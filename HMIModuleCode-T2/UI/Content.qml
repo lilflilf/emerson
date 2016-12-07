@@ -10,6 +10,7 @@ Item {
     property bool bIsBasic: true
     property bool bIsDrag: false
     property bool bIsEdit: false
+    property bool bIsBoard: true
     property string draColor: ""
     signal titleTextChanged(var myTitleText)
     width: Screen.width
@@ -334,7 +335,7 @@ Item {
             }
             Label {
                 id: lab2
-                visible: !bIsBasic
+                visible: bIsBoard
                 anchors.top: edit2.bottom
                 anchors.topMargin: 6
                 anchors.left: parent.left
@@ -593,17 +594,122 @@ Item {
             visible: !bIsBasic
             text: qsTr("Board Layout")
         }
-        Text {
-            id: tempText
-            anchors.top:  edit6.bottom
-            anchors.topMargin: 14
-            anchors.right: boardlayout.right
+//        Text {
+//            id: tempText
+//            anchors.top:  edit6.bottom
+//            anchors.topMargin: 14
+//            anchors.right: boardlayout.right
+//            color: "white"
+//            opacity: 0.5
+//            font.family: "arial"
+//            font.pointSize: 16
+//            text: qsTr("Temp(℃):260 Time(s):09.0 ENABLED")
+//        }
+        Switch2 {
+            id: borderSwitch
+            anchors.top: edit6.bottom
+            anchors.topMargin: 10
+            anchors.left: parent.left
+            anchors.leftMargin: 20
+            textLeft: qsTr("Board")
+            textRight: qsTr("Splice")
+            state: "left"
+            width: parent.width * 0.25
+            onStateChanged: {
+                if (state == "left")
+                    bIsBoard = true
+                else if (state == "right")
+                    bIsBoard = false
+            }
+        }
+        Switch2 {
+            id: wireSwitch
+            anchors.top: edit6.bottom
+            anchors.topMargin: 10
+            anchors.right: parent.right
+            anchors.rightMargin: 20
+            textLeft: qsTr("Wire")
+            textRight: qsTr("Image")
+            state: "left"
+            width: parent.width * 0.25
+            visible: !bIsBoard
+        }
+
+        Label {
+            id: spliceDetailsTips
+            anchors.top: borderSwitch.bottom
+            anchors.topMargin: 10
+            anchors.left: parent.left
+            anchors.leftMargin: 20
+            text: qsTr("TOTAL CROSS SECTION ")
+            font.pointSize: 12
+            font.family: "arial"
             color: "white"
             opacity: 0.5
-            font.family: "arial"
-            font.pointSize: 16
-            text: qsTr("Temp(℃):260 Time(s):09.0 ENABLED")
         }
+
+
+
+        SpliceDetails {
+            id: spliceDetailItem
+            anchors.top: spliceDetailsTips.bottom
+            anchors.topMargin: 10
+            anchors.left: parent.left
+            anchors.leftMargin: 20
+            anchors.right: parent.right
+            anchors.rightMargin: 20
+            anchors.bottom: editSplice.top
+            anchors.bottomMargin: 10
+            visible: !bIsBoard
+            Component.onCompleted: {
+                spliceDetailItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+                spliceDetailItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+                spliceDetailItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+                spliceDetailItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+
+                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+
+                spliceDetailItem.setState("topLeft",200,"0.75","red")
+                spliceDetailItem.setState("bottomLeft",200,"0.75","red")
+            }
+        }
+
+        Item {
+            id: selectImage
+            visible: wireSwitch.state == "left" ? false : true
+            anchors.fill: spliceDetailItem
+            Image {
+                anchors.fill: parent
+                source: "qrc:/images/images/bg.png"
+            }
+            Text {
+                anchors.centerIn: parent
+                font.pointSize: 20
+                font.family: "arial"
+                color: "white"
+                text: qsTr("Click to Select Picture")
+            }
+        }
+
+
         BoardLayOut {
             id: boardlayout
             anchors.top: boardText.bottom
@@ -614,7 +720,7 @@ Item {
             anchors.rightMargin: 20
             anchors.bottom: editSplice.top
             anchors.bottomMargin: 10
-            visible: !bIsBasic
+            visible: bIsBoard
             columns: 0
             rows: 0
 //            onColumnsChanged: {
@@ -713,15 +819,17 @@ Item {
 //        }
         CButton {
             id: editSplice
-            anchors.bottom: testSplice.top
+            anchors.bottom: bIsBoard ? testSplice.top : parent.bottom
             anchors.bottomMargin: 14
-            anchors.right: boardlayout.right
+            anchors.right: bIsBoard ? boardlayout.right : testSplice.left
+            anchors.rightMargin: bIsBoard ? 0 : 14
             text: "EDIT SPLICE"
             textColor: "white"
             width: 250
             pointSize: 16
             onClicked: {
             }
+
         }
         CButton {
             id: testSplice
@@ -740,7 +848,7 @@ Item {
             anchors.top: boardlayout.bottom
             anchors.topMargin: 5
             anchors.left: boardlayout.left
-            visible: !bIsBasic
+            visible:  bIsBoard
             text: qsTr("WORKSTATIONS")
             color: "white"
             opacity: 0.5
@@ -750,7 +858,7 @@ Item {
 
         WorkStationColor {
             id: workStationcolor
-            visible: !bIsBasic
+            visible: bIsBoard
             anchors.top: workStation.bottom
 //            anchors.topMargin: 4
             anchors.left: boardlayout.left
@@ -1137,7 +1245,7 @@ Item {
             font.pixelSize: 20
             font.family: "arial"
             color: "white"
-            text: qsTr("Part Number")
+            text: qsTr("Part Name")
         }
         MyLineEdit {
             id: partNumberInput

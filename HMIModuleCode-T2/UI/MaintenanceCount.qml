@@ -72,7 +72,7 @@ Item {
         }
         Text {
             width: 160
-            text: qsTr("Data Started")
+            text: qsTr("Date Started")
             color: "white"
             font.family: "arial"
             font.pixelSize: 25

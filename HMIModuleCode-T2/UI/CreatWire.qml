@@ -81,6 +81,9 @@ Item {
                         totalGauge-= value
                     spliceDetailsTip2.text = spliceModel.getString("CrossSection",totalGauge)
                 }
+                onWireDetailHide: {
+                    forground.visible = true
+                }
             }
 
             Rectangle {
@@ -892,7 +895,28 @@ Item {
                 anchors.right: parent.right
                 anchors.rightMargin: 10
                 onClicked: {
+// QString type,QString wireName,int wireId,int operatorId,QString color,QString stripeColor,QString stripeType,QString gauge,int wireType,int side,int verside,int position
+                    var wireType = typeSwitch.state == "left" ? 0 : 1
+                    var side = wireDirection.state == "left" ? 0 : 1
+                    var verside = basicSwitch.state == "left" ? 0 : 1
+                    var positionside;
+                    if (topRadio.checked)
+                        positionside = 0;
+                    else if (midRadio.checked)
+                        positionside = 1;
+                    else if (bottomRadio.checked)
+                        positionside = 2;
+                    if (spliceDetailsItem.selectWireId == -1)
+                    {
+                        //insert
+//                        wireModel.insertValueToTable("insert",-1,1,rectcolor.color,itemStripe.color,itemStripe.stripeType,edit2.inputText,wireType,side,verside,positionside)
+                    }
+                    else
+                    {
+                        //update
+//                        wireModel.insertValueToTable("update",spliceDetailsItem.selectWireId,1,rectcolor.color,itemStripe.color,itemStripe.stripeType,edit2.inputText,wireType,side,verside,positionside)
 
+                    }
                 }
             }
 
@@ -1630,7 +1654,7 @@ Item {
                 Component.onCompleted: {
                     thirdSwitchModel.append({"thirdSwitchText":"Anti-Side:"})
                     thirdSwitchModel.append({"thirdSwitchText":"Cutf Off:"})
-                    thirdSwitchModel.append({"thirdSwitchText":"Shrink Tube:"})
+                    thirdSwitchModel.append({"thirdSwitchText":"Insulation:"})
                 }
             }
             Column {
@@ -1685,7 +1709,7 @@ Item {
                 verticalAlignment: Qt.AlignVCenter
                 font.pointSize: 16
                 font.family: "arial"
-                text: qsTr("unload Time:")
+                text: qsTr("Unload Time:")
                 color: "white"
                 clip: true
             }
@@ -1723,7 +1747,7 @@ Item {
                 verticalAlignment: Qt.AlignVCenter
                 font.pointSize: 16
                 font.family: "arial"
-                text: qsTr("unload Time:")
+                text: qsTr("Load Time:")
                 color: "white"
                 clip: true
             }
@@ -1759,7 +1783,7 @@ Item {
                 width: (parent.width/2-40)/3
                 height: thirdSwitch.height/3-6
                 verticalAlignment: Qt.AlignVCenter
-                text: qsTr("Insulation:")
+                text: qsTr("")
                 color: "white"
                 font.pointSize: 16
                 font.family: "arial"
@@ -1770,7 +1794,7 @@ Item {
                 anchors.left: instulationText.right
                 width: parent.width/4-20
                 height: parent.height*0.12
-                text: qsTr("Insulation")
+                text: qsTr("Insulation Setting")
                 onClicked: {
                     backGround.visible = true
                     backGround.opacity = 0.5

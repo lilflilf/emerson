@@ -440,18 +440,19 @@ Item {
         font.family: "arial"
         font.pointSize: 16
         color: "white"
-        text: qsTr("Weld Parameter\n") //Cross section\nEnergy\nTime\nPressure\nAmplitude\nWidth\nPre-Height\nPost-Height")
+        text: qsTr("Weld Actual Result\n") //Cross section\nEnergy\nTime\nPressure\nAmplitude\nWidth\nPre-Height\nPost-Height")
     }
     ListModel {
         id: leftTextModel
         Component.onCompleted: {
-            leftTextModel.append({"mytitle":"Cross section:","myvalue":"xxxxxx","mytitle2":"Energy:","myvalue2":"xxxxxx"})
-            leftTextModel.append({"mytitle":"Trigger Pressure:","myvalue":"xxxxxx","mytitle2":"Weld Pressure:","myvalue2":"xxxxxx"})
-            leftTextModel.append({"mytitle":"Amplitude:","myvalue":"xxxxxx","mytitle2":"Width:","myvalue2":"xxxxxx"})
-            leftTextModel.append({"mytitle":"Time USL:","myvalue":"xxxxxx","mytitle2":"Time LSL:","myvalue2":"xxxxxx"})
-            leftTextModel.append({"mytitle":"Power USL:","myvalue":"xxxxxx","mytitle2":"Power LSL:","myvalue2":"xxxxxx"})
-            leftTextModel.append({"mytitle":"Pre-Height USL:","myvalue":"xxxxxx","mytitle2":"Pre-Height LSL:","myvalue2":"xxxxxx"})
-            leftTextModel.append({"mytitle":"Height USL:","myvalue":"xxxxxx","mytitle2":"Height LSL:","myvalue2":"xxxxxx"})
+            leftTextModel.append({"mytitle":"Cross section:","myvalue":"xxxxxx","mytitle2":"Weld Time:","myvalue2":"xxxxxx"})
+            leftTextModel.append({"mytitle":"Energy:","myvalue":"xxxxxx","mytitle2":"Peak Power:","myvalue2":"xxxxxx"})
+            leftTextModel.append({"mytitle":"Weld Pressure:","myvalue":"xxxxxx","mytitle2":"Pre-Heigh:","myvalue2":"xxxxxx"})
+            leftTextModel.append({"mytitle":"Trigger Pressure:","myvalue":"xxxxxx","mytitle2":"Post-Heigh:","myvalue2":"xxxxxx"})
+            leftTextModel.append({"mytitle":"Amplitude:","myvalue":"xxxxxx","mytitle2":"Part Name:","myvalue2":"xxxxxx"})
+            leftTextModel.append({"mytitle":"Width:","myvalue":"xxxxxx","mytitle2":"Part Created:","myvalue2":"xxxxxx"})
+            leftTextModel.append({"mytitle":"Work Order Name:","myvalue":"xxxxxx","mytitle2":"","myvalue2":""})
+
 
         }
     }

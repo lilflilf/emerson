@@ -1358,6 +1358,27 @@ void WireModel::removeValue(int id, QString name)
 {
     m_wireAdaptor->DeleteOneRecordFromTable(id,name);
 }
+void WireModel::insertValueToTable()//QString type,QString wireName,int wireId,int operatorId,QString color,QString stripeColor,QString stripeType,QString gauge,int wireType,int side,int verside,int position)
+
+//void WireModel::insertValueToTable(QString type,QString wireName,int wireId,int operatorId,QString color,QString stripeColor,QString stripeType,QString gauge,int wireType,int side,int verside,int position)
+{
+//    QString WireName;
+//    int     WireID;
+//    unsigned int CreatedDate;
+//    int OperatorID;
+
+//    QString Color;
+//    struct STRIPE Stripe;
+//    int Gauge;               //Area of Wire in mm*mm/100
+//    int GaugeAWG;
+//    enum MetalType TypeOfWire;
+//    enum HorizontalLocation Side;
+//    enum VerticalLocation VerticalSide;
+//    enum VerticalPosition Position;
+
+    WireElement insertWire;
+//    insertWire.WireName =
+}
 
 void WireModel::createNew()
 {

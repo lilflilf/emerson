@@ -276,6 +276,7 @@ public slots:
     Q_INVOKABLE QVariant getValue(int index, QString key);
     Q_INVOKABLE int count();
     Q_INVOKABLE void removeValue(int id, QString name);
+    Q_INVOKABLE void insertValueToTable();
 
     Q_INVOKABLE void createNew();
     Q_INVOKABLE QVariant getStructValue(QString key);
