@@ -167,6 +167,7 @@ QVariant WorkOrderModel::getWorkOrderValue(int index, QString key)
 void WorkOrderModel::removeValue(int id, QString name)
 {
     m_workOrderAdaptor->DeleteOneRecordFromTable(id,name);
+    setModelList();
 }
 
 //QString WorkOrderModel::getContacterName(QString contacterId)
@@ -203,6 +204,7 @@ SpliceModel::SpliceModel(QObject *parent) :
     QAbstractTableModel(parent)
 {
     m_spliceAdaptor = DBPresetTable::Instance();
+    m_operatorAdaptor = DBOperatorTable::Instance();
     splices = new QMap<int, QString>();
     variantToString = VariantToString::Instance();
 }
@@ -233,7 +235,9 @@ QVariant SpliceModel::data(const QModelIndex &index, int role) const
 //             << "Width" << "TriggerPressure" << "WeldPressure" << "Time+" << "Time-" << "Power+" << "Power-" << "Pre-Height+" << "Pre-Height-" << "Height+" << "Height-";
 
         PresetElement mySplice;
+        OperatorElement myOperator;
         m_spliceAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&mySplice);
+        m_operatorAdaptor->QueryOneRecordFromTable(mySplice.OperatorID,&myOperator);
         QString temp;
         if (columnIdx == 0)
             value = QVariant::fromValue(mySplice.SpliceID);
@@ -242,7 +246,7 @@ QVariant SpliceModel::data(const QModelIndex &index, int role) const
         else if (columnIdx == 2)
             value = QVariant::fromValue(QDateTime::fromTime_t(mySplice.CreatedDate).toString("MM/dd/yyyy hh:mm"));
         else if (columnIdx == 3)
-            value = QVariant::fromValue(mySplice.OperatorID);
+            value = QVariant::fromValue(myOperator.OperatorName);
         else if (columnIdx == 4) {
             temp = variantToString->CrossSectionToString(mySplice.CrossSection);
             value = QVariant::fromValue(temp);
@@ -268,22 +272,31 @@ QVariant SpliceModel::data(const QModelIndex &index, int role) const
         } else if (columnIdx == 12) {
             temp = variantToString->WeldPressureToString(mySplice.WeldSettings.BasicSetting.Pressure).Current;
             value = QVariant::fromValue(temp);
-        } else if (columnIdx == 13)
-            value = QVariant::fromValue(1);
-        else if (columnIdx == 14)
-            value = QVariant::fromValue(1);
-        else if (columnIdx == 15)
+        } else if (columnIdx == 13) {
+            temp = variantToString->Time_PlusToString(mySplice.WeldSettings.QualitySetting.Time.Plus);
+            value = QVariant::fromValue(temp);
+        } else if (columnIdx == 14) {
+            temp = variantToString->Time_MinusToString(mySplice.WeldSettings.QualitySetting.Time.Minus);
+            value = QVariant::fromValue(temp);
+        } else if (columnIdx == 15) {
+            temp = variantToString->Power_PlusToString(mySplice.WeldSettings.QualitySetting.Power.Plus);
+            value = QVariant::fromValue(temp);
+        } else if (columnIdx == 16) {
+            temp = variantToString->Power_MinusToString(mySplice.WeldSettings.QualitySetting.Power.Minus);
+            value = QVariant::fromValue(temp);
+        } else if (columnIdx == 17) {
+            temp = variantToString->PreHeight_PlusToString(mySplice.WeldSettings.QualitySetting.Preheight.Plus);
             value = QVariant::fromValue(2);
-        else if (columnIdx == 16)
+        } else if (columnIdx == 18) {
+            temp = variantToString->PreHeight_MinusToString(mySplice.WeldSettings.QualitySetting.Preheight.Minus);
+            value = QVariant::fromValue(temp);
+        } else if (columnIdx == 19) {
+            temp = variantToString->Height_PlusToString(mySplice.WeldSettings.QualitySetting.Height.Plus);
+            value = QVariant::fromValue(temp);
+        } else if (columnIdx == 20) {
+            temp = variantToString->Height_MinusToString(mySplice.WeldSettings.QualitySetting.Height.Minus);
             value = QVariant::fromValue(2);
-        else if (columnIdx == 17)
-            value = QVariant::fromValue(2);
-        else if (columnIdx == 18)
-            value = QVariant::fromValue(2);
-        else if (columnIdx == 19)
-            value = QVariant::fromValue(2);
-        else if (columnIdx == 20)
-            value = QVariant::fromValue(2);
+        }
     }
     return value;
 }
@@ -443,6 +456,7 @@ QString SpliceModel::getString(QString type, int value)
 void SpliceModel::removeValue(int id, QString name)
 {
     m_spliceAdaptor->DeleteOneRecordFromTable(id,name);
+    setModelList();
 }
 
 int SpliceModel::columnCount(const QModelIndex &parent) const
@@ -486,12 +500,15 @@ QVariant SpliceModel::getValue(int index, QString key)
     //        list << "SpliceId" << "SpliceName" << "DateCreated" << "OperatorName" << "CrossSection" << "TotalWires" << "Verified" << "WeldMode" << "Energy" << "Amplitude"
     //             << "Width" << "TriggerPressure" << "WeldPressure" << "Time+" << "Time-" << "Power+" << "Power-" << "Pre-Height+" << "Pre-Height-" << "Height+" << "Height-" << "count";
     PresetElement mySplice;
+    OperatorElement myOperator;
     m_spliceAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&mySplice);
+    m_operatorAdaptor->QueryOneRecordFromTable(mySplice.OperatorID,&myOperator);
     QHash<QString, QVariant> SpliceModelHash;
-    SpliceModelHash.insert("SpliceId",mySplice.SpliceName);
+    qDebug()<<"33333333333333333333333"<<mySplice.SpliceID;
+    SpliceModelHash.insert("SpliceId",mySplice.SpliceID);
     SpliceModelHash.insert("SpliceName",mySplice.SpliceName);
     SpliceModelHash.insert("DateCreated",QDateTime::fromTime_t(mySplice.CreatedDate).toString("MM/dd/yyyy hh:mm"));
-    SpliceModelHash.insert("OperatorName",mySplice.NoOfWires);
+    SpliceModelHash.insert("OperatorName",myOperator.OperatorName);
     SpliceModelHash.insert("CrossSection",variantToString->CrossSectionToString(mySplice.CrossSection));
     SpliceModelHash.insert("TotalWires",mySplice.NoOfWires);
     SpliceModelHash.insert("Verified",mySplice.Verified);
@@ -501,14 +518,14 @@ QVariant SpliceModel::getValue(int index, QString key)
     SpliceModelHash.insert("Width",variantToString->WidthToString(mySplice.WeldSettings.BasicSetting.Width).Current);
     SpliceModelHash.insert("TriggerPressure",variantToString->TriggerPressureToString(mySplice.WeldSettings.BasicSetting.TrigPres).Current);
     SpliceModelHash.insert("WeldPressure",variantToString->WeldPressureToString(mySplice.WeldSettings.BasicSetting.Pressure).Current);
-    SpliceModelHash.insert("Time+","Time+");
-    SpliceModelHash.insert("Time-","Time-");
-    SpliceModelHash.insert("Power+","Power+");
-    SpliceModelHash.insert("Power-","Power-");
-    SpliceModelHash.insert("Pre-Height+","Pre-Height+");
-    SpliceModelHash.insert("Pre-Height-","Pre-Height-");
-    SpliceModelHash.insert("Height+","Height+");
-    SpliceModelHash.insert("Height-","Height-");
+    SpliceModelHash.insert("Time+",variantToString->Time_PlusToString(mySplice.WeldSettings.QualitySetting.Time.Plus));
+    SpliceModelHash.insert("Time-",variantToString->Time_MinusToString(mySplice.WeldSettings.QualitySetting.Time.Minus));
+    SpliceModelHash.insert("Power+",variantToString->Power_PlusToString(mySplice.WeldSettings.QualitySetting.Power.Plus));
+    SpliceModelHash.insert("Power-",variantToString->Power_MinusToString(mySplice.WeldSettings.QualitySetting.Power.Minus));
+    SpliceModelHash.insert("Pre-Height+",variantToString->PreHeight_PlusToString(mySplice.WeldSettings.QualitySetting.Preheight.Plus));
+    SpliceModelHash.insert("Pre-Height-",variantToString->PreHeight_MinusToString(mySplice.WeldSettings.QualitySetting.Preheight.Minus));
+    SpliceModelHash.insert("Height+",variantToString->Height_PlusToString(mySplice.WeldSettings.QualitySetting.Height.Plus));
+    SpliceModelHash.insert("Height-",variantToString->Height_MinusToString(mySplice.WeldSettings.QualitySetting.Height.Minus));
 
     if (key == "") {
         return SpliceModelHash;
@@ -521,6 +538,7 @@ PartModel::PartModel(QObject *parent) :
     QAbstractTableModel(parent)
 {
     m_partAdaptor = DBPartTable::Instance();
+    m_operatorAdaptor = DBOperatorTable::Instance();
     parts = new QMap<int, QString>();
 }
 
@@ -550,7 +568,9 @@ QVariant PartModel::data(const QModelIndex &index, int role) const
 //        list << "PartId" << "PartName" << "DateCreated" << "OperatorName" << "TotalSplices" << "ProcessMode" << "#ofWorkstation" << "#ofSplicesperWorkstation" << "Rows" << "Columns" << "MaxSplicesPerZone";
 
         PartElement myPart;
+        OperatorElement myOperator;
         m_partAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myPart);
+        m_operatorAdaptor->QueryOneRecordFromTable(myPart.OperatorID,&myOperator);
         if (columnIdx == 0)
             value = QVariant::fromValue(myPart.PartID);
         else if (columnIdx == 1)
@@ -558,7 +578,7 @@ QVariant PartModel::data(const QModelIndex &index, int role) const
         else if (columnIdx == 2)
             value = QVariant::fromValue(QDateTime::fromTime_t(myPart.CreatedDate).toString("MM/dd/yyyy hh:mm"));
         else if (columnIdx == 3)
-            value = QVariant::fromValue(myPart.OperatorID);
+            value = QVariant::fromValue(myOperator.OperatorName);
         else if (columnIdx == 4)
             value = QVariant::fromValue(myPart.NoOfSplice);
         else if (columnIdx == 5) {
@@ -658,12 +678,14 @@ QVariant PartModel::getValue(int index, QString key)
     }
     //        list << "PartId" << "PartName" << "DateCreated" << "OperatorName" << "TotalSplices" << "ProcessMode" << "#ofWorkstation" << "#ofSplicesperWorkstation" << "Rows" << "Columns" << "MaxSplicesPerZone";
     PartElement myPart;
+    OperatorElement myOperator;
     m_partAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myPart);
+    m_operatorAdaptor->QueryOneRecordFromTable(myPart.OperatorID,&myOperator);
     QHash<QString, QVariant> PartModelHash;
     PartModelHash.insert("PartId",myPart.PartID);
     PartModelHash.insert("PartName",myPart.PartName);
     PartModelHash.insert("DateCreated",QDateTime::fromTime_t(myPart.CreatedDate).toString("MM/dd/yyyy hh:mm"));
-    PartModelHash.insert("OperatorName",myPart.OperatorID);
+    PartModelHash.insert("OperatorName",myOperator.OperatorName);
     PartModelHash.insert("TotalSplices",myPart.NoOfSplice);
     QString processModel;
     if (myPart.PartTypeSetting.ProcessMode == BASIC)
@@ -686,6 +708,7 @@ QVariant PartModel::getValue(int index, QString key)
 void PartModel::removeValue(int id, QString name)
 {
     m_partAdaptor->DeleteOneRecordFromTable(id, name);
+    setModelList();
 }
 
 /*******************************OperaTorModel*****************************/
@@ -807,6 +830,7 @@ bool OperatorModel::login(QString passwd, OperatorElement *operatot)
 void OperatorModel::removeValue(int id, QString name)
 {
     m_operatorAdaptor->DeleteOneRecordFromTable(id,name);
+    setModelList();
 }
 
 
@@ -913,7 +937,9 @@ QVariant AlarmModel::data(const QModelIndex &index, int role) const
 //        list << "CreatedDate" << "Alarm/ErrorType" << "Alarm/ErrorLevel" << "Message" << "SpliceName";
 
         AlarmElement myAlarm;
+        WeldResultElement weldResult;
         m_alarmAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myAlarm);
+        m_weldHistoryAdaptor->QueryOneRecordFromTable(myAlarm.WeldResultID,&weldResult);
         QString temp;
         if (columnIdx == 0)
             value = QVariant::fromValue(myAlarm.AlarmID);
@@ -928,7 +954,7 @@ QVariant AlarmModel::data(const QModelIndex &index, int role) const
         } else if (columnIdx == 4)
             value = QVariant::fromValue(myAlarm.AlarmMsg);
         else if (columnIdx == 5) {
-            value = QVariant::fromValue(myAlarm.WeldResultID);
+            value = QVariant::fromValue(weldResult.CurrentSplice.SpliceName);
         }
     }
     return value;
@@ -1008,14 +1034,16 @@ QVariant AlarmModel::getAlarmValue(int index, QString key)
     //        list << "CreatedDate" << "Alarm/ErrorType" << "Alarm/ErrorLevel" << "Message" << "SpliceName";
 
     AlarmElement myAlarm;
+    WeldResultElement weldResult;
     m_alarmAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myAlarm);
+    m_weldHistoryAdaptor->QueryOneRecordFromTable(myAlarm.WeldResultID,&weldResult);
     QHash<QString, QVariant> AlarmModelHash;
     AlarmModelHash.insert("AlarmId",myAlarm.AlarmID);
     AlarmModelHash.insert("CreatedDate",QDateTime::fromTime_t(myAlarm.CreatedDate).toString("MM/dd/yyyy hh:mm"));
     AlarmModelHash.insert("Alarm/ErrorType",variantToString->AlarmTypeToString(myAlarm.AlarmType));
     AlarmModelHash.insert("Alarm/ErrorLevel",variantToString->AlarmLevelToString(myAlarm.AlarmType));
     AlarmModelHash.insert("Message",myAlarm.AlarmMsg);//myOperator.PermissionLevel;
-    AlarmModelHash.insert("SpliceName",myAlarm.WeldResultID);//myOperator.PermissionLevel;
+    AlarmModelHash.insert("SpliceName",weldResult.CurrentSplice.SpliceName);//myOperator.PermissionLevel;
 
     if (key == "") {
         return AlarmModelHash;
@@ -1027,6 +1055,7 @@ QVariant AlarmModel::getAlarmValue(int index, QString key)
 void AlarmModel::removeValue(int id, QString name)
 {
     m_alarmAdaptor->DeleteOneRecordFromTable(id,name);
+    setModelList();
 }
 
 /*****************WorkOrderHistory************************/
@@ -1099,33 +1128,40 @@ QVariant WeldHistoryModel::data(const QModelIndex &index, int role) const
             temp = variantToString->WeldPressureToString(myHistory.ActualResult.ActualPressure).Current;
             value = QVariant::fromValue(temp);
         }
-        else if (columnIdx == 13)
-            value = QVariant::fromValue(myHistory.ActualResult.ActualTime);
-        else if (columnIdx == 14)
-            value = QVariant::fromValue(myHistory.ActualResult.ActualTime);
-        else if (columnIdx == 15) {
+        else if (columnIdx == 13) {
+            temp = variantToString->Time_PlusToString(presetElement.WeldSettings.QualitySetting.Time.Plus);
+            value = QVariant::fromValue(temp);
+        } else if (columnIdx == 14) {
+            temp = variantToString->Time_MinusToString(presetElement.WeldSettings.QualitySetting.Time.Minus);
+            value = QVariant::fromValue(temp);
+        } else if (columnIdx == 15) {
             temp = variantToString->ActualTimeToString(myHistory.ActualResult.ActualTime);
             value = QVariant::fromValue(temp);
         } else if (columnIdx == 16) {
-            value = QVariant::fromValue(myHistory.ActualResult.ActualPeakPower);
-        }
-        else if (columnIdx == 17)
-            value = QVariant::fromValue(myHistory.ActualResult.ActualPeakPower);
-        else if (columnIdx == 18) {
+            temp = variantToString->Power_PlusToString(presetElement.WeldSettings.QualitySetting.Power.Plus);
+            value = QVariant::fromValue(temp);
+        } else if (columnIdx == 17) {
+            temp = variantToString->Power_MinusToString(presetElement.WeldSettings.QualitySetting.Power.Minus);
+            value = QVariant::fromValue(temp);
+        } else if (columnIdx == 18) {
             temp = variantToString->ActualPowerToString(myHistory.ActualResult.ActualPeakPower);
             value = QVariant::fromValue(temp);
         } else if (columnIdx == 19) {
+            temp = variantToString->PreHeight_PlusToString(presetElement.WeldSettings.QualitySetting.Preheight.Plus);
+            value = QVariant::fromValue(temp);
+        } else if (columnIdx == 20) {
+            temp = variantToString->PreHeight_MinusToString(presetElement.WeldSettings.QualitySetting.Preheight.Minus);
             value = QVariant::fromValue(myHistory.ActualResult.ActualPreheight);
-        } else if (columnIdx == 20)
-            value = QVariant::fromValue(myHistory.ActualResult.ActualPreheight);
-        else if (columnIdx == 21) {
+        } else if (columnIdx == 21) {
             temp = variantToString->ActualPreHeightToString(myHistory.ActualResult.ActualPreheight);
             value = QVariant::fromValue(temp);
-        } else if (columnIdx == 22)
+        } else if (columnIdx == 22) {
+            temp = variantToString->Height_PlusToString(presetElement.WeldSettings.QualitySetting.Height.Plus);
+            value = QVariant::fromValue(temp);
+        } else if (columnIdx == 23) {
+            temp = variantToString->Height_MinusToString(presetElement.WeldSettings.QualitySetting.Height.Minus);
             value = QVariant::fromValue(myHistory.ActualResult.ActualPostheight);
-        else if (columnIdx == 23)
-            value = QVariant::fromValue(myHistory.ActualResult.ActualPostheight);
-        else if (columnIdx == 24) {
+        } else if (columnIdx == 24) {
             temp = variantToString->ActualHeightToString(myHistory.ActualResult.ActualPostheight);
             value = QVariant::fromValue(temp);
         } else if (columnIdx == 25) {
@@ -1135,7 +1171,8 @@ QVariant WeldHistoryModel::data(const QModelIndex &index, int role) const
             temp = variantToString->SampleRatioToString(myHistory.SampleRatio);
             value = QVariant::fromValue(temp);
         } else if (columnIdx == 27) {
-            value = QVariant::fromValue(myHistory.ActualResult.ActualPostheight);
+            temp = "GraphData";
+            value = QVariant::fromValue(temp);
         }
     }
     return value;
@@ -1174,6 +1211,7 @@ int WeldHistoryModel::count()
 void WeldHistoryModel::removeValue(int id, QString name)
 {
     m_weldHistoryAdaptor->DeleteOneRecordFromTable(id,name);
+    setModelList();
 }
 
 
@@ -1236,17 +1274,17 @@ QVariant WeldHistoryModel::getValue(int index, QString key)
     WeldHistoryModelHash.insert("Width",variantToString->WidthToString(myHistory.ActualResult.ActualWidth).Current);
     WeldHistoryModelHash.insert("TriggerPressure",variantToString->TriggerPressureToString(myHistory.ActualResult.ActualTPressure).Current);
     WeldHistoryModelHash.insert("WeldPressure",variantToString->WeldPressureToString(myHistory.ActualResult.ActualPressure).Current);
-    WeldHistoryModelHash.insert("Time+",myHistory.ActualResult.ActualTime); //contain in splice QUALITYWINDONSETTING
-    WeldHistoryModelHash.insert("Timer-",myHistory.ActualResult.ActualTime);
+    WeldHistoryModelHash.insert("Time+",variantToString->Time_PlusToString(presetElement.WeldSettings.QualitySetting.Time.Plus)); //contain in splice QUALITYWINDONSETTING
+    WeldHistoryModelHash.insert("Timer-",variantToString->Time_MinusToString(presetElement.WeldSettings.QualitySetting.Time.Minus));
     WeldHistoryModelHash.insert("Time",variantToString->ActualTimeToString(myHistory.ActualResult.ActualTime));
-    WeldHistoryModelHash.insert("Power+",myHistory.ActualResult.ActualPeakPower);
-    WeldHistoryModelHash.insert("Power-",myHistory.ActualResult.ActualPeakPower);
+    WeldHistoryModelHash.insert("Power+",variantToString->Power_PlusToString(presetElement.WeldSettings.QualitySetting.Power.Plus));
+    WeldHistoryModelHash.insert("Power-",variantToString->Power_MinusToString(presetElement.WeldSettings.QualitySetting.Power.Minus));
     WeldHistoryModelHash.insert("Power",variantToString->ActualPowerToString(myHistory.ActualResult.ActualPeakPower));
-    WeldHistoryModelHash.insert("Pre-Height+",myHistory.ActualResult.ActualPreheight);
-    WeldHistoryModelHash.insert("Pre-Height-",myHistory.ActualResult.ActualPreheight);
+    WeldHistoryModelHash.insert("Pre-Height+",variantToString->PreHeight_PlusToString(presetElement.WeldSettings.QualitySetting.Preheight.Plus));
+    WeldHistoryModelHash.insert("Pre-Height-",variantToString->PreHeight_MinusToString(presetElement.WeldSettings.QualitySetting.Preheight.Minus));
     WeldHistoryModelHash.insert("Pre-Height",variantToString->ActualPreHeightToString(myHistory.ActualResult.ActualPreheight));
-    WeldHistoryModelHash.insert("Height+",myHistory.ActualResult.ActualPostheight);
-    WeldHistoryModelHash.insert("Height-",myHistory.ActualResult.ActualPostheight);
+    WeldHistoryModelHash.insert("Height+",variantToString->Height_PlusToString(presetElement.WeldSettings.QualitySetting.Height.Plus));
+    WeldHistoryModelHash.insert("Height-",variantToString->Height_MinusToString(presetElement.WeldSettings.QualitySetting.Height.Minus));
     WeldHistoryModelHash.insert("Height",variantToString->ActualHeightToString(myHistory.ActualResult.ActualPostheight));
     WeldHistoryModelHash.insert("Alarm",variantToString->AlarmTypeToString((ALARMTYPE)myHistory.ActualResult.ActualAlarmflags)); //myHistory.ActualResult.ActualAlarmflags
     WeldHistoryModelHash.insert("SampleRatio",variantToString->SampleRatioToString(myHistory.SampleRatio));
@@ -1264,6 +1302,7 @@ WireModel::WireModel(QObject *parent) :
     QAbstractTableModel(parent)
 {
     m_wireAdaptor = DBWireTable::Instance();
+    m_operatorAdaptor = DBOperatorTable::Instance();
     wires = new QMap<int, QString>();
     variantToString = VariantToString::Instance();
     stringToVariant = StringToVariant::Instance();
@@ -1292,9 +1331,11 @@ QVariant WireModel::data(const QModelIndex &index, int role) const
             }
         }
         WireElement myWire;
+        OperatorElement myOperator;
         //    list <<"WireId" << "WireName" << "DateCreated" << "OperatorName" << "Color" << "StripeType" << "StripeColor" << "Gauge" << "MetalType" << "HorizontalLocation" << "VerticalLocation" << "VerticalPosition";
 
         m_wireAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myWire);
+        m_operatorAdaptor->QueryOneRecordFromTable(myWire.OperatorID,&myOperator);
         QString temp;
         if (columnIdx == 0)
             value = QVariant::fromValue(myWire.WireID);
@@ -1303,7 +1344,7 @@ QVariant WireModel::data(const QModelIndex &index, int role) const
         else if (columnIdx == 2)
             value = QVariant::fromValue(QDateTime::fromTime_t(myWire.CreatedDate).toString("MM/dd/yyyy hh:mm"));
         else if (columnIdx == 3)
-            value = QVariant::fromValue(myWire.OperatorID);
+            value = QVariant::fromValue(myOperator.OperatorName);
         else if (columnIdx == 4)
             value = QVariant::fromValue(myWire.Color);
         else if (columnIdx == 5)
@@ -1313,9 +1354,15 @@ QVariant WireModel::data(const QModelIndex &index, int role) const
         else if (columnIdx == 7) {
             temp = variantToString->GaugeToString(myWire.Gauge,myWire.GaugeAWG).Current;
             value = QVariant::fromValue(temp);
-        } else if (columnIdx == 8)
-            value = QVariant::fromValue((int)myWire.TypeOfWire);
-        else if (columnIdx == 9)
+        } else if (columnIdx == 8) {
+            QString metalType;
+            if (myWire.TypeOfWire == 0) {
+                metalType = "Copper";
+            } else {
+                metalType = "Aluminum";
+            }
+            value = QVariant::fromValue(metalType);
+        } else if (columnIdx == 9)
             value = QVariant::fromValue((int)myWire.Side);
         else if (columnIdx == 10)
             value = QVariant::fromValue((int)myWire.VerticalSide);
@@ -1357,6 +1404,7 @@ int WireModel::count()
 void WireModel::removeValue(int id, QString name)
 {
     m_wireAdaptor->DeleteOneRecordFromTable(id,name);
+    setModelList();
 }
 void WireModel::insertValueToTable()//QString type,QString wireName,int wireId,int operatorId,QString color,QString stripeColor,QString stripeType,QString gauge,int wireType,int side,int verside,int position)
 
@@ -1391,7 +1439,13 @@ QVariant WireModel::getStructValue(QString key)
     QHash<QString, QVariant> WireModelHash;
     WireModelHash.insert("Gauge",wireElement.Gauge);
     WireModelHash.insert("AWG",wireElement.GaugeAWG);
-    WireModelHash.insert("WireType",(int)wireElement.TypeOfWire);
+    QString metalType;
+    if (wireElement.TypeOfWire == 0) {
+        metalType = "Copper";
+    } else {
+        metalType = "Aluminum";
+    }
+    WireModelHash.insert("WireType",metalType);
 
 //    WireModelHash.insert("OperatorName",myWire.OperatorID);
 //    WireModelHash.insert("Color",myWire.Color);
@@ -1484,19 +1538,28 @@ QVariant WireModel::getValue(int index, QString key)
             i++;
         }
     }
+
     WireElement myWire;
+    OperatorElement myOperator;
     m_wireAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myWire);
+    m_operatorAdaptor->QueryOneRecordFromTable(myWire.OperatorID,&myOperator);
     //    list <<"WireId" << "WireName" << "DateCreated" << "OperatorName" << "Color" << "StripeType" << "StripeColor" << "Gauge" << "MetalType" << "HorizontalLocation" << "VerticalLocation" << "VerticalPosition";
     QHash<QString, QVariant> WireModelHash;
     WireModelHash.insert("WireId",myWire.WireID);
     WireModelHash.insert("WireName",myWire.WireName);
     WireModelHash.insert("DateCreated",QDateTime::fromTime_t(myWire.CreatedDate).toString("MM/dd/yyyy hh:mm"));
-    WireModelHash.insert("OperatorName",myWire.OperatorID);
+    WireModelHash.insert("OperatorName",myOperator.OperatorName);
     WireModelHash.insert("Color",myWire.Color);
     WireModelHash.insert("StripeType",(int)myWire.Stripe.TypeOfStripe);
     WireModelHash.insert("StripeColor",myWire.Stripe.Color);
     WireModelHash.insert("Gauge",myWire.Gauge);
-    WireModelHash.insert("MetalType",(int)myWire.TypeOfWire);
+    QString metalType;
+    if (myWire.TypeOfWire == 0) {
+        metalType = "Copper";
+    } else {
+        metalType = "Aluminum";
+    }
+    WireModelHash.insert("MetalType",metalType);
     WireModelHash.insert("HorizontalLocation",(int)myWire.Side);
     WireModelHash.insert("VerticalLocation",(int)myWire.VerticalSide);
     WireModelHash.insert("VerticalPosition",(int)myWire.Position);
@@ -1590,6 +1653,7 @@ int MaintenanceLogModel::count()
 void MaintenanceLogModel::removeValue(int id, QString name)
 {
     m_maintenanceLogAdaptor->DeleteOneRecordFromTable(id,name);
+    setModelList();
 }
 
 int MaintenanceLogModel::columnCount(const QModelIndex &parent) const
