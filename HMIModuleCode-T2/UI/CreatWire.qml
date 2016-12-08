@@ -1501,10 +1501,6 @@ Item {
                             onInputFocusChanged: {
                                 if (inputText.inputFocus) {
                                     weldSetting.weldSetVisible = true
-                                    widthSetting.widthSetVisible = false
-                                    heightSetting.heightSetVisible = false
-                                    stepTimeSet.visible = false
-
                                     creatWire.selectIndex = index
                                     backGround.visible = true
                                     backGround.opacity = 0.5
@@ -1586,10 +1582,6 @@ Item {
                                     return
                                 if (widthValue.inputFocus) {
                                     widthSetting.widthSetVisible = true
-                                    weldSetting.weldSetVisible = false
-                                    heightSetting.heightSetVisible = false
-                                    stepTimeSet.visible = false
-
                                     creatWire.selectIndex = index
                                     backGround.visible = true
                                     backGround.opacity = 0.5
@@ -1671,10 +1663,6 @@ Item {
                                     return
                                 if (heightValue.inputFocus) {
                                     heightSetting.heightSetVisible = true
-                                    weldSetting.weldSetVisible = false
-                                    widthSetting.widthSetVisible = false
-                                    stepTimeSet.visible = false
-
                                     creatWire.selectIndex = index
                                     backGround.visible = true
                                     backGround.opacity = 0.5
@@ -2037,12 +2025,15 @@ Item {
                 } else if (heightSetting.heightSetVisible) {
                     heightModel.set(creatWire.selectIndex,{"textValue":keyNum.inputText})
                     heightRepeater.itemAt(creatWire.selectIndex).myfocus = false
+                    heightSetting.heightSetVisible = false
                 } else if (widthSetting.widthSetVisible) {
                     widthModel.set(creatWire.selectIndex,{"textValue":keyNum.inputText})
                     widthRepeater.itemAt(creatWire.selectIndex).myfocus = false
+                    widthSetting.widthSetVisible = false
                 } else if (weldSetting.weldSetVisible) {
                     weldSettingModel.set(creatWire.selectIndex,{"textValue":keyNum.inputText})
                     weldRepeater.itemAt(creatWire.selectIndex).myfocus = false
+                    weldSetting.weldSetVisible = false
                 } else if (stepTimeSet.visible) {
                     stepRepeater.model.set(creatWire.selectIndex,{"centerText":keyNum.inputText})
                     stepRepeater.itemAt(creatWire.selectIndex).localbordercolor = "#0079c1"
@@ -2070,10 +2061,13 @@ Item {
                     loadValue.inputFocus = false
                 } else if (heightSetting.heightSetVisible) {
                     heightRepeater.itemAt(creatWire.selectIndex).myfocus = false
+                    heightSetting.heightSetVisible = false
                 } else if (widthSetting.widthSetVisible) {
                     widthRepeater.itemAt(creatWire.selectIndex).myfocus = false
+                    widthSetting.widthSetVisible = false
                 } else if (weldSetting.weldSetVisible) {
                     weldRepeater.itemAt(creatWire.selectIndex).myfocus = false
+                    weldSetting.weldSetVisible = false
                 } else if (stepTimeSet.visible) {
                     stepRepeater.itemAt(creatWire.selectIndex).localbordercolor = "#0079c1"
                     keyNum.visible = false
