@@ -4,6 +4,7 @@
 #include "DataBase/DBMaintenanceLogTable.h"
 #include "Modules/UtilityClass.h"
 #include <QDateTime>
+#include <QDebug>
 MaintenanceCounter::MaintenanceCounter()
 {
 
@@ -292,7 +293,7 @@ bool MaintenanceCounter::_recall()
     {
         QDateTime TimeLabel = QDateTime::fromTime_t(
             _Interface->StatusData.MaintenanceDateStarted[ACTUATOR/2]);
-        CurrentMaintenanceCounter.ConverterDateStarted
+        CurrentMaintenanceCounter.ActuatorDateStarted
             = TimeLabel.toString("MM/dd/yyyy");
     }
 
