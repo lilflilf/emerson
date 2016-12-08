@@ -360,4 +360,9 @@ bool DBOperatorTable::QueryOnlyUseTime(unsigned int time_from, unsigned int time
     return bResult;
 }
 
-
+bool DBOperatorTable::QueryUseNameAndTime(QString Name, unsigned int time_from,
+                unsigned int time_to, QMap<int, QString>* _obj)
+{
+    bool bResult = true;
+    return bResult;
+}

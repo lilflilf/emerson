@@ -874,3 +874,10 @@ bool DBPresetTable::QueryOnlyUseTime(unsigned int time_from, unsigned int time_t
     SpliceDBObj.close();
     return bResult;
 }
+
+bool DBPresetTable::QueryUseNameAndTime(QString Name, unsigned int time_from,
+                unsigned int time_to, QMap<int, QString>* _obj)
+{
+    bool bResult = true;
+    return bResult;
+}

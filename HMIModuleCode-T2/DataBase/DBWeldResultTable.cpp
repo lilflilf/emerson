@@ -538,6 +538,13 @@ bool DBWeldResultTable::QueryOnlyUseTime(unsigned int time_from, unsigned int ti
     return bResult;
 }
 
+bool DBWeldResultTable::QueryUseNameAndTime(QString Name, unsigned int time_from,
+                unsigned int time_to, QMap<int, QString>* _obj)
+{
+    bool bResult = true;
+    return bResult;
+}
+
 bool DBWeldResultTable::QueryOnlyUseField(QString FieldName, QMap<int, QString> *_obj, bool Orderby)
 {
     QString queryStr;
@@ -570,9 +577,9 @@ bool DBWeldResultTable::QueryOnlyUseField(QString FieldName, QMap<int, QString> 
 
 }
 
-bool DBWeldResultTable::QueryBySomeFields(QString WorkOrderName, QString PartName, QString SpliceName,
+bool DBWeldResultTable::QueryBySomeFields(QMap<int, QString> *_obj, QString WorkOrderName, QString PartName, QString SpliceName,
                        unsigned int time_from, unsigned int time_to,
-                       enum FieldType OrderField, bool Orderby, QMap<int, QString> *_obj)
+                       enum FieldType OrderField, bool Orderby)
 {
     if(_obj == NULL)
         return false;

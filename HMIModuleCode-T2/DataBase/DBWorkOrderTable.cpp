@@ -446,3 +446,10 @@ bool DBWorkOrderTable::QueryOnlyUseTime(unsigned int time_from, unsigned int tim
     WorkOrderDBObj.close();
     return bResult;
 }
+
+bool DBWorkOrderTable::QueryUseNameAndTime(QString Name, unsigned int time_from,
+                unsigned int time_to, QMap<int, QString>* _obj)
+{
+    bool bResult = true;
+    return bResult;
+}

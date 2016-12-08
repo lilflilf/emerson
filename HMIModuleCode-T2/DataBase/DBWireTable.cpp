@@ -389,3 +389,10 @@ bool DBWireTable::QueryOnlyUseTime(unsigned int time_from, unsigned int time_to,
     WireDBObj.close();
     return bResult;
 }
+
+bool DBWireTable::QueryUseNameAndTime(QString Name, unsigned int time_from,
+                unsigned int time_to, QMap<int, QString>* _obj)
+{
+    bool bResult = true;
+    return bResult;
+}

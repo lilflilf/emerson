@@ -310,3 +310,10 @@ bool DBAlarmLogTable::QueryOnlyUseTime(unsigned int time_from, unsigned int time
     AlarmLogDBObj.close();
     return bResult;
 }
+
+bool DBAlarmLogTable::QueryUseNameAndTime(QString Name, unsigned int time_from,
+                unsigned int time_to, QMap<int, QString>* _obj)
+{
+    bool bResult = true;
+    return bResult;
+}

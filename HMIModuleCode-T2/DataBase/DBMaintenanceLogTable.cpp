@@ -306,3 +306,10 @@ bool DBMaintenanceLogTable::QueryOnlyUseTime(unsigned int time_from, unsigned in
     MaintenanceLogDBObj.close();
     return bResult;
 }
+
+bool DBMaintenanceLogTable::QueryUseNameAndTime(QString Name, unsigned int time_from,
+                unsigned int time_to, QMap<int, QString>* _obj)
+{
+    bool bResult = true;
+    return bResult;
+}

@@ -35,11 +35,13 @@ public:
 
     virtual bool QueryOnlyUseName(QString Name, QMap<int, QString> *_obj);
     virtual bool QueryOnlyUseTime(unsigned int time_from, unsigned int time_to, QMap<int, QString> *_obj);
+    virtual bool QueryUseNameAndTime(QString Name, unsigned int time_from,
+                unsigned int time_to, QMap<int, QString>* _obj);
 
     bool QueryOnlyUseField(QString FieldName, QMap<int, QString> *_obj, bool Orderby = true);
-    bool QueryBySomeFields(QString WorkOrderName, QString PartName, QString SpliceName,
+    bool QueryBySomeFields(QMap<int, QString> *_obj, QString WorkOrderName, QString PartName, QString SpliceName,
                            unsigned int time_from, unsigned int time_to,
-                           enum FieldType OrderField, bool Orderby, QMap<int, QString> *_obj);
+                           enum FieldType OrderField = CreatedDateType, bool Orderby = true);
     bool QueryOneRecordWithGraph(int ID, QString Name, void* _obj);
     bool QueryBySomeFields(QString SpliceName, unsigned int HashCode,
                            unsigned int time_from, unsigned int time_to, QMap<int, QString> *_obj);
