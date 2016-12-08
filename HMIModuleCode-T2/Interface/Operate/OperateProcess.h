@@ -7,7 +7,6 @@
 
 class OperateProcess : public QObject
 {
-    Q_OBJECT
 public:
     PresetElement CurrentSplice;
 private:

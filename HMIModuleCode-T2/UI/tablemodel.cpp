@@ -482,6 +482,85 @@ QString SpliceModel::getStructValue(QString valueKey, QString valueType)
         else if (valueType == "min")
             return variantToString->PreHeightPlusToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.Amplitude2).Minimum;
     }
+    else if (valueKey == "Pre Burst") {
+        if (valueType == "current")
+            return variantToString->PreBurstTimeToString(presetElement.WeldSettings.AdvanceSetting.PreBurst).Current;
+        else if (valueType == "max")
+            return variantToString->PreBurstTimeToString(presetElement.WeldSettings.AdvanceSetting.PreBurst).Maximum;
+        else if (valueType == "min")
+            return variantToString->PreBurstTimeToString(presetElement.WeldSettings.AdvanceSetting.PreBurst).Minimum;
+    }
+    else if (valueKey == "Hold Time") {
+        if (valueType == "current")
+            return variantToString->HoldTimeToString(presetElement.WeldSettings.AdvanceSetting.HoldTime).Current;
+        else if (valueType == "max")
+            return variantToString->HoldTimeToString(presetElement.WeldSettings.AdvanceSetting.HoldTime).Maximum;
+        else if (valueType == "min")
+            return variantToString->HoldTimeToString(presetElement.WeldSettings.AdvanceSetting.HoldTime).Minimum;
+    }
+    else if (valueKey == "After Burst") {
+        if (valueType == "current")
+            return variantToString->AfterBurstDuringToString(presetElement.WeldSettings.AdvanceSetting.ABDur).Current;
+        else if (valueType == "max")
+            return variantToString->AfterBurstDuringToString(presetElement.WeldSettings.AdvanceSetting.ABDur).Maximum;
+        else if (valueType == "min")
+            return variantToString->AfterBurstDuringToString(presetElement.WeldSettings.AdvanceSetting.ABDur).Minimum;
+    }
+    else if (valueKey == "Squeeze Time") {
+        if (valueType == "current")
+            return variantToString->SqueezeTimeToString(presetElement.WeldSettings.AdvanceSetting.SqzTime).Current;
+        else if (valueType == "max")
+            return variantToString->SqueezeTimeToString(presetElement.WeldSettings.AdvanceSetting.SqzTime).Maximum;
+        else if (valueType == "min")
+            return variantToString->SqueezeTimeToString(presetElement.WeldSettings.AdvanceSetting.SqzTime).Minimum;
+    }
+    else if (valueKey == "ActualWidth") {
+        if (valueType == "current")
+            return variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.MeasuredWidth).Current;
+        else if (valueType == "max")
+            return variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.MeasuredWidth).Maximum;
+        else if (valueType == "min")
+            return variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.MeasuredWidth).Minimum;
+    }
+    else if (valueKey == "ActualHeight") {
+        if (valueType == "current")
+            return variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.MeasuredHeight).Current;
+        else if (valueType == "max")
+            return variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.MeasuredHeight).Maximum;
+        else if (valueType == "min")
+            return variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.MeasuredHeight).Minimum;
+    }
+    else if (valueKey == "Unload Time") {
+        if (valueType == "current")
+            return variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.AntiSideSpliceTime).Current;
+        else if (valueType == "max")
+            return variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.AntiSideSpliceTime).Maximum;
+        else if (valueType == "min")
+            return variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.AntiSideSpliceTime).Minimum;
+    }
+    else if (valueKey == "Load Time") {
+        if (valueType == "current")
+            return variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.CutOffSpliceTime).Current;
+        else if (valueType == "max")
+            return variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.CutOffSpliceTime).Maximum;
+        else if (valueType == "min")
+            return variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.CutOffSpliceTime).Minimum;
+    }
+    else if (valueKey == "Anti-Side") {
+        if (presetElement.WeldSettings.AdvanceSetting.AntiSide)
+            return "left";
+        else
+            return "right";
+    }
+    else if (valueKey == "Cutf Off") {
+        if (presetElement.WeldSettings.AdvanceSetting.CutOff)
+            return "left";
+        else
+            return "right";
+    }
+    else if (valueKey == "Insulation") {
+            return "right";
+    }
     else
         return "";
 }
