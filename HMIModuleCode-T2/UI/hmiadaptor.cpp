@@ -6,6 +6,7 @@
 #include <QAxObject>
 #include <QAxWidget>
 
+
 HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
 {
     workOrderModel = new WorkOrderModel(this);
@@ -99,7 +100,6 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
 //    query.exec();
 //    qDebug() << query.lastError();
 //    db.close();
-    getPoint();
 }
 
 void HmiAdaptor::openFileDialog()
@@ -412,20 +412,21 @@ QString HmiAdaptor::copyFileToPath(QString source)
     return "";
 }
 
-QString HmiAdaptor::getPoint()
+QList<int> HmiAdaptor::getPoint()
 {
-//    QAxWidget excel("Excel.Application");
-//    QAxObject *workbooks;
-//    workbooks->dynamicCall("Open (const QString&)", QString("C:\BransonData\point.xlsx"));
-//    QAxObject * worksheets = workbooks->querySubObject("WorkSheets");
-//    int intCount = worksheets->property("Count").toInt();
-//    QAxObject * worksheetss = workbooks->querySubObject("Worksheets(int)", 1);
-//    QAxObject * range = worksheetss->querySubObject("Cells(int,int)", 1, 1 );
-//    int val = range->property("Value").toInt();
-//    qDebug() << "getPoint" << val;
-    return "";
+    QString pointStr = "0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	20	20	20	40	60	60	60	80	80	100	100	120	120	140	160	160	160	180	180	200	220	220	240	260	280	300	300	320	340	340	380	400	420	440	460	480	480	500	520	520	540	540	560	560	580	580	580	580	580	580	580	580	580	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	580	580	580	580	580	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	580	580	580	580	580	580	600	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	600	600	600	600	600	600	600	600	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	600	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	560	560	560	560	560	580	580	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	540	540	540	540	540	540	540	540	540	540	540	540	540	540	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	540	540	540	540	540	540	540	540	540	540	540	540	540	540	540	540	520	520	520	520	520	520	520	520	520	540	540	540	540	540	540	540	520	520	520	520	520	520	520	540	540	540	540	540	540	540	540	520	520	540	0";
+    char s = '\t';
+    QString temp;
+    bool ok;
+    QStringList list = pointStr.split(s);
+    QList<int> pointList;
+    for (int i = 0; i < list.count(); i++)
+    {
+        temp = list[i];
+        pointList.append(temp.toInt(&ok, 10));
+    }
+    return pointList;
 }
-
 
 bool HmiAdaptor::permissionsettingExecute(QString code)
 {

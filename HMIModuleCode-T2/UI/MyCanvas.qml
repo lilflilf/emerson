@@ -9,18 +9,27 @@ Item {
     ListModel {
         id: listModel
         Component.onCompleted: {
-            listModel.append({"x":0,"y":0})
-            listModel.append({"x":20,"y":20})
-            listModel.append({"x":40,"y":40})
-            listModel.append({"x":80,"y":50})
-            listModel.append({"x":115,"y":60})
-            listModel.append({"x":145,"y":70})
-            listModel.append({"x":170,"y":80})
-            listModel.append({"x":190,"y":90})
-            listModel.append({"x":205,"y":100})
-            listModel.append({"x":215,"y":110})
-            listModel.append({"x":210,"y":120})
-            listModel.append({"x":213,"y":130})
+            var list = new Array;
+            list = hmiAdaptor.getPoint()
+            var pointx = canvas.width / list.length;
+            var pointy = canvas.height / 700
+            for (var i = 0; i < list.length; i++)
+            {
+                listModel.append({"x":i * pointx,"y":canvas.height - list[i] * pointy})
+            }
+
+//            listModel.append({"x":0,"y":0})
+//            listModel.append({"x":20,"y":20})
+//            listModel.append({"x":40,"y":40})
+//            listModel.append({"x":80,"y":50})
+//            listModel.append({"x":115,"y":60})
+//            listModel.append({"x":145,"y":70})
+//            listModel.append({"x":170,"y":80})
+//            listModel.append({"x":190,"y":90})
+//            listModel.append({"x":205,"y":100})
+//            listModel.append({"x":215,"y":110})
+//            listModel.append({"x":210,"y":120})
+//            listModel.append({"x":213,"y":130})
 
         }
     }
@@ -161,10 +170,10 @@ Item {
         onPaint: {
             var ctx = getContext("2d")
             ctx.lineWidth = 2
-            ctx.strokeStyle = "blue"
+            ctx.strokeStyle = "lightblue"
 //            ctx.fillStyle = "steelblue"
             ctx.beginPath()
-            ctx.moveTo(0,0)
+            ctx.moveTo(0,canvas.height)
 //            ctx.lineTo(width,0)
 //            ctx.lineTo(width,height)
 //            ctx.lineTo(0,height)

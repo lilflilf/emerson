@@ -208,9 +208,15 @@ Item {
                         hmiAdaptor.maintenanceCountReset(mytitle)
                     }
                 }
-                Item {
+                Text {
                     width: 160
                     height: 79
+                    text: qsTr("-")
+                    color: "white"
+                    font.family: "arial"
+                    font.pointSize: 14
+                    verticalAlignment: Qt.AlignVCenter
+                    horizontalAlignment: Qt.AlignHCenter
                     visible: index == 5 ? true : false
                 }
                 Switch2 {

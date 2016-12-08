@@ -85,6 +85,7 @@ public:
     Q_INVOKABLE void calibrationMaintenanceExecute(int code);
     Q_INVOKABLE int randPoint();
     Q_INVOKABLE QString copyFileToPath(QString source);
+    Q_INVOKABLE QList<int> getPoint();
 
     /********permissionsetting func**************/
     Q_INVOKABLE bool permissionsettingExecute(QString code);
