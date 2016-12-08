@@ -3,7 +3,9 @@
 #include "Modules/M2010.h"
 #include "Modules/ModRunSetup.h"
 #include "Interface/Interface.h"
+#include <QDebug>
 OperateProcess* OperateProcess::_instance = NULL;
+ThreadClass* OperateProcess::m_Thread = NULL;
 OperateProcess* OperateProcess::Instance()
 {
     if(_instance == NULL){
@@ -14,7 +16,9 @@ OperateProcess* OperateProcess::Instance()
 
 OperateProcess::OperateProcess(QObject *parent) : QObject(parent)
 {
-
+    M102IA* _M102IA = M102IA::Instance();
+    connect(_M102IA, SIGNAL(WeldResultFeedback()),
+            this,SLOT(WeldResultFeedbackEventSlot()));
 }
 
 void OperateProcess::UpdateIAFields()
@@ -54,6 +58,39 @@ void OperateProcess::UpdateIAFields()
     _M102IA->IAsetup.TimeToStep = CurrentSplice.WeldSettings.AdvanceSetting.StepWeld.TimeToStep;
 }
 
+void OperateProcess::UpdateWeldResult()
+{
+    M102IA *_M102IA = M102IA::Instance();
+    CurrentWeldResult.ActualResult.ActualEnergy = _M102IA->IAactual.Energy;
+    CurrentWeldResult.ActualResult.ActualWidth = _M102IA->IAactual.Width;
+    CurrentWeldResult.ActualResult.ActualTime = _M102IA->IAactual.Time;
+    CurrentWeldResult.ActualResult.ActualPeakPower = _M102IA->IAactual.Power;
+    CurrentWeldResult.ActualResult.ActualPreheight = _M102IA->IAactual.Preheight;
+    CurrentWeldResult.ActualResult.ActualAmplitude = _M102IA->IAactual.Amplitude;
+    CurrentWeldResult.ActualResult.ActualPostheight = _M102IA->IAactual.Height;
+    CurrentWeldResult.ActualResult.ActualAmplitude2 = _M102IA->IAactual.Amplitude2;
+    CurrentWeldResult.ActualResult.ActualPressure = _M102IA->IAactual.Pressure;
+    CurrentWeldResult.ActualResult.ActualTPressure = _M102IA->IAactual.TPressure;
+    CurrentWeldResult.ActualResult.ActualAlarmflags = _M102IA->IAactual.Alarmflags;
+
+
+}
+
+void OperateProcess::WeldCycleDaemonHandle(void* _obj)
+{
+
+}
+
+void OperateProcess::WeldResultFeedbackEventSlot()
+{
+    InterfaceClass *_Interface = InterfaceClass::Instance();
+    if (_Interface->StatusData.KeepDailyHistory == true)
+    {
+//       _Statistics->HistoryEvent();
+    }
+    //        get_weld
+}
+
 void OperateProcess::_start()
 {
     M102IA *_M102IA = M102IA::Instance();
@@ -66,6 +103,10 @@ void OperateProcess::_start()
         tmpMsgBox.TipsMode = Critical;
         tmpMsgBox.func_ptr = NULL;
         _Interface->cMsgBox(&tmpMsgBox);
+    }else{
+        m_Thread = new ThreadClass(0, (void*)(OperateProcess::WeldCycleDaemonHandle), this);
+        m_Thread->setStopEnabled(false);
+        m_Thread->setSuspendEnabled(false);
     }
 
 }
@@ -82,6 +123,14 @@ void OperateProcess::_stop()
         tmpMsgBox.TipsMode = Critical;
         tmpMsgBox.func_ptr = NULL;
         _Interface->cMsgBox(&tmpMsgBox);
+    }
+    if(m_Thread != NULL)
+    {
+        m_Thread->setSuspendEnabled(true);
+        m_Thread->setStopEnabled(true);
+        qDebug()<<"Thread stop"<<m_Thread->wait();
+        delete m_Thread;
+        m_Thread = NULL;
     }
 }
 

@@ -22,7 +22,8 @@ M102IA* M102IA::Instance()
     return _instance;
 }
 
-M102IA::M102IA()
+M102IA::M102IA(QObject *parent)
+    :QObject(parent)
 {
     CalibHeight = 0;
     OpenChkHeight = 0;
@@ -614,8 +615,8 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
 {
     M10INI *_M10INI   = M10INI::Instance();
     M2010  *_M2010    = M2010 ::Instance();
-    MDefine *_MDefine = MDefine::Instance();
-    Statistics *_Statistics = Statistics::Instance();
+//    MDefine *_MDefine = MDefine::Instance();
+//    Statistics *_Statistics = Statistics::Instance();
     ModRunSetup *_ModRunSetup = ModRunSetup::Instance();
     UtilityClass* _Utility = UtilityClass::Instance();
     InterfaceClass *_Interface = InterfaceClass::Instance();
@@ -672,22 +673,11 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         IAactual.Pressure = MakeHexWordNumber(HexString.mid(74, 4));
         //IAactual.Alarmflags = MakeHexWordNumber(HexString.mid(78, 4));
         IAactual.Alarmflags = MakeHexWordNumberLong(HexString.mid(82, 8));
-        if ((IAactual.Alarmflags & 0x4000) == 0x4000)
-            IACommand(IAComHostReady, 1);
+//        if ((IAactual.Alarmflags & 0x4000) == 0x4000)
+//            IACommand(IAComHostReady, 1);
         //--Set Correct Flag
         _M2010->ReceiveFlags.WELDdata = true;
-//        if (ptr_M2010->Child_Mode == Graph_SCREEN)
-//        {
-           //Actual Procedure to plot the weld data
-//           frmGraph.GraphOutline
-//           frmGraph.DisplayWeldData
-//        }
-        if (_MDefine->WriteHistoryFlag == true)
-        {
-           _Statistics->HistoryEvent();
-           _MDefine->WriteHistoryFlag = false;
-        }
-//        get_weld
+        emit WeldResultFeedback(_M2010->ReceiveFlags.WELDdata);
         break;
     case IASigPower:           //Data Signature = "04"
         //Data is in an unknown number of strings, all but last is 16 Bytes of data

@@ -5,6 +5,7 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "m10definitions.h"
+#include <QObject>
 using namespace std;
 
 #define IAPRESET0  0x8000
@@ -291,8 +292,9 @@ enum IACommands{
    IAComEnd                   = IAComLim - 1,
 };
 
-class M102IA
+class M102IA : public QObject
 {
+    Q_OBJECT
 private:
     INTELhexRECORD hexRecord;
 public:
@@ -390,10 +392,12 @@ public:
     bool SendCommandSetRunMode(int CommandData);
     void SendPresetToIA(int PresetNo);
     bool WaitForResponseAfterSent(int TimeOut = 3000, bool *CheckResponseFlag = NULL);
+signals:
+    void WeldResultFeedback(const bool &_status);
 public:
     static M102IA* Instance();
 protected:
-    M102IA();
+    M102IA(QObject *parent = 0);
 private:
     static M102IA* _instance;
 public:
