@@ -674,18 +674,6 @@ Item {
                 spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
                 spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
                 spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
 
                 spliceDetailItem.setState("topLeft",200,"0.75","red")
                 spliceDetailItem.setState("bottomLeft",200,"0.75","red")
@@ -697,18 +685,40 @@ Item {
             visible: wireSwitch.state == "left" ? false : true
             anchors.fill: spliceDetailItem
             Image {
+                id: spliceImage
                 anchors.fill: parent
                 source: "qrc:/images/images/bg.png"
             }
             Text {
-                anchors.centerIn: parent
+                anchors.right: parent.right
                 font.pointSize: 20
                 font.family: "arial"
                 color: "white"
                 text: qsTr("Click to Select Picture")
             }
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    imageLoader.source = "qrc:/UI/MyFileDialog.qml"
+                }
+                Connections {
+                    target: imageLoader.item
+                    onSignalFileDialogCancel: {
+                        imageLoader.source = ""
+                    }
+                    onSignalChoseFile: {
+                        imageLoader.source = ""
+                        var path = hmiAdaptor.copyFileToPath(fileName)
+                        if (path != "")
+                            spliceImage.source = "file:///"+path
+                    }
+                }
+            }
         }
-
+        Loader {
+            id: imageLoader
+            anchors.fill: parent
+        }
 
         BoardLayOut {
             id: boardlayout

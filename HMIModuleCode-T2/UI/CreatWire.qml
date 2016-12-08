@@ -9,6 +9,7 @@ Item {
     width: Screen.width
     height: Screen.height
     signal signalSaveSplice()
+    property bool crossSection: true
     property int selectIndex: 0
     property bool detailIsChang: true
     property bool bIsStep: false
@@ -1210,6 +1211,13 @@ Item {
             font.family: "arial"
             color: "white"
             opacity: 0.5
+            onTextChanged: {
+                if (crossSection)
+                {
+                    spliceModel.calculateSpliceData()
+                    initSettings()
+                }
+            }
         }
 
         SpliceDetails {
@@ -1353,6 +1361,8 @@ Item {
             }
             ListModel {
                 id: weldListModel
+                property var model1: -1
+                property var model2: -1
                 Component.onCompleted: {
                     weldListModel.append({"buttonName":"Energy"})
                     weldListModel.append({"buttonName":"Time"})
@@ -1361,6 +1371,7 @@ Item {
                     weldListModel.append({"buttonName":"Step-Energy"})
                     weldListModel.append({"buttonName":"Step-Time"})
                     weldListModel.append({"buttonName":"Step-Power"})
+
                 }
             }
 
@@ -1389,7 +1400,7 @@ Item {
                             id: weldModelCheck
                             exclusiveGroup: index < 4 ? tabPositionGroup : tabPositionGroup2
                             visible: false
-                            checked: index == 0 ? true : false
+                            checked: index < 4 ? spliceModel.getWeldMode("weld",index) : spliceModel.getWeldMode("step",index - 4)  //index == 0 ? true : false
                             onCheckedChanged: {
                                 if (weldModelCheck.checked)
                                     weldModelButton.backgroundComponent = buttonBackBlue
@@ -1398,13 +1409,21 @@ Item {
                             }
                         }
                         onClicked: {
-                            stepSetText =  buttonName
+                            if (index >=4 )
+                                stepSetText =  buttonName
                             weldModelCheck.checked = !weldModelCheck.checked
                             if (index >= 4 && weldModelCheck.checked) {
                                 bIsStep = true
-                            } else {
-                                bIsStep = false
+                                weldListModel.model2 = index - 4
                             }
+                            else if (index >= 4 && !weldModelCheck.checked){
+                                bIsStep = false
+                                weldListModel.model2 = -1
+                            }
+                            else if (index < 4 && weldModelCheck.checked)
+                                weldListModel.model1 = index
+                            else if (index < 4 && !weldModelCheck.checked)
+                                weldListModel.model1 = -1
                         }
                     }
                 }
@@ -1554,6 +1573,8 @@ Item {
                             clip: true
                             inputText: qsTr(textValue)
                             onInputFocusChanged: {
+                                if (widthText == "Displayed:")
+                                    return
                                 if (widthValue.inputFocus) {
                                     widthSetting.widthSetVisible = true
                                     creatWire.selectIndex = index
@@ -1633,6 +1654,8 @@ Item {
                             clip: true
                             inputText: qsTr(textValue)
                             onInputFocusChanged: {
+                                if (heightText == "Displayed:")
+                                    return
                                 if (heightValue.inputFocus) {
                                     heightSetting.heightSetVisible = true
                                     creatWire.selectIndex = index
@@ -1874,6 +1897,22 @@ Item {
         height: 525
         source: "qrc:/images/images/dialogbg.png"
         visible: false
+        onVisibleChanged: {
+            if (visible)
+            {
+                stepSetModel.clear()
+                if (stepSetText == "Step-Energy")
+                    stepSetModel.append({"topText":"Step-Energy","centerText":spliceModel.getStructValue("Step-Energy","current"),"maxText":spliceModel.getStructValue("Step-Energy","max"),"minText":spliceModel.getStructValue("Step-Energy","min")})
+                else if (stepSetText == "Step-Time")
+                    stepSetModel.append({"topText":"Step-Time","centerText":spliceModel.getStructValue("Step-Time","current"),"maxText":spliceModel.getStructValue("Step-Time","max"),"minText":spliceModel.getStructValue("Step-Time","min")})
+                else if (stepSetText == "Step-Power")
+                    stepSetModel.append({"topText":"Step-Power","centerText":spliceModel.getStructValue("Step-Power","current"),"maxText":spliceModel.getStructValue("Step-Power","max"),"minText":spliceModel.getStructValue("Step-Power","min")})
+                stepSetModel.append({"topText":"Amplitude A","centerText":spliceModel.getStructValue("Amplitude A","current"),"maxText":spliceModel.getStructValue("Amplitude A","max"),"minText":spliceModel.getStructValue("Amplitude A","min")})
+                stepSetModel.append({"topText":"Amplitude B","centerText":spliceModel.getStructValue("Amplitude B","current"),"maxText":spliceModel.getStructValue("Amplitude B","max"),"minText":spliceModel.getStructValue("Amplitude B","min")})
+            }
+        }
+
+
         Text {
             id: stepTitle
             anchors.top: parent.top
@@ -1886,11 +1925,6 @@ Item {
         }
         ListModel {
             id: stepSetModel
-            Component.onCompleted: {
-                stepSetModel.append({"topText":"Step Point","centerText":"0.00s"})
-                stepSetModel.append({"topText":"Amplitude A","centerText":"1μm"})
-                stepSetModel.append({"topText":"Amplitude B","centerText":"2μm"})
-            }
         }
         Row {
             id: stepRow
@@ -1915,8 +1949,8 @@ Item {
                         keyNum.visible = true
                         keyNum.titleText = topText
                         keyNum.currentValue = centerText
-                        keyNum.minvalue = "0"
-                        keyNum.maxvalue = "100"
+                        keyNum.minvalue = minText
+                        keyNum.maxvalue = maxText
                     }
                 }
             }
@@ -1976,6 +2010,8 @@ Item {
                     keyNum.tempValue = ""
                     return
                 } else {
+                    if (repeater.model == settingsModel)
+                        crossSection = false
                     repeater.model.set(creatWire.selectIndex,{"bottomText":keyNum.inputText})
                     repeater.itemAt(creatWire.selectIndex).localbordercolor = "#0079c1"
                 }
