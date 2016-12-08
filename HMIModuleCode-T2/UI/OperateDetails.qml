@@ -66,9 +66,20 @@ Item {
         anchors.topMargin: 15
         centerVisable: false
         Component.onCompleted: {
-            spliceDetailsItem.leftModel.append({"myLineLength":200,"mycolor":"red","isCheck":false,"linetext":"0"})
-            spliceDetailsItem.leftModel.append({"myLineLength":200,"mycolor":"black","isCheck":false,"linetext":"0"})
-            spliceDetailsItem.leftModel.append({"myLineLength":200,"mycolor":"blue","isCheck":false,"linetext":"0"})
+            spliceDetailsItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+            spliceDetailsItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+            spliceDetailsItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+            spliceDetailsItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+
+            spliceDetailsItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+            spliceDetailsItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+            spliceDetailsItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+            spliceDetailsItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+            spliceDetailsItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+            spliceDetailsItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+            spliceDetailsItem.setState("topLeft",200,"0.75","red")
+            spliceDetailsItem.setState("bottomLeft",200,"0.75","red")
+
         }
     }
 
@@ -80,7 +91,7 @@ Item {
         font.pointSize: 16
         font.family: "arial"
         //text: qsTr("Splice Locations and Status")
-        text: qsTr("Shrink Tube ID: xxxxx")
+        text: qsTr("Shrink Tube ID: shrink_1")
         color: "white"
     }
     Text {
@@ -119,40 +130,41 @@ Item {
             treeModel.append({"id":"G","level":0,"subNode":[]})
             treeModel.append({"id":"H","level":0,"subNode":[]})
             treeModel.append({"id":"I","level":0,"subNode":[]})
-            treeModel.append({"id":"J","level":0,"subNode":[]})
-            treeModel.append({"id":"K","level":0,"subNode":[]})
-            treeModel.append({"id":"L","level":0,"subNode":[]})
-            treeModel.append({"id":"M","level":0,"subNode":[]})
-            treeModel.append({"id":"N","level":0,"subNode":[]})
-            treeModel.append({"id":"O","level":0,"subNode":[]})
-            treeModel.append({"id":"P","level":0,"subNode":[]})
-            treeModel.get(0).subNode.append({"spliceNo":"99","spliceColor":"white","level":1,"subNode":[]})
-            treeModel.get(0).subNode.append({"spliceNo":"56","spliceColor":"white","level":1,"subNode":[]})
-            treeModel.get(0).subNode.append({"spliceNo":"55","spliceColor":"white","level":1,"subNode":[]})
-            treeModel.get(0).subNode.append({"spliceNo":"54","spliceColor":"white","level":1,"subNode":[]})
-            treeModel.get(0).subNode.append({"spliceNo":"53","spliceColor":"white","level":1,"subNode":[]})
-            treeModel.get(0).subNode.append({"spliceNo":"99","spliceColor":"white","level":1,"subNode":[]})
-            treeModel.get(0).subNode.append({"spliceNo":"56","spliceColor":"white","level":1,"subNode":[]})
-            treeModel.get(0).subNode.append({"spliceNo":"55","spliceColor":"white","level":1,"subNode":[]})
-            treeModel.get(0).subNode.append({"spliceNo":"54","spliceColor":"white","level":1,"subNode":[]})
-            treeModel.get(0).subNode.append({"spliceNo":"53","spliceColor":"white","level":1,"subNode":[]})
-            treeModel.get(0).subNode.append({"spliceNo":"54","spliceColor":"white","level":1,"subNode":[]})
-            treeModel.get(0).subNode.append({"spliceNo":"53","spliceColor":"white","level":1,"subNode":[]})
-            treeModel.get(1).subNode.append({"spliceNo":"52","spliceColor":"white","level":1,"subNode":[]})
-            treeModel.get(2).subNode.append({"spliceNo":"51","spliceColor":"white","level":1,"subNode":[]})
-            treeModel.get(3).subNode.append({"spliceNo":"7","spliceColor":"white","level":1,"subNode":[]})
-            treeModel.get(4).subNode.append({"spliceNo":"9","spliceColor":"white","level":1,"subNode":[]})
-            treeModel.get(5).subNode.append({"spliceNo":"11","spliceColor":"white","level":1,"subNode":[]})
-            treeModel.get(6).subNode.append({"spliceNo":"13","spliceColor":"white","level":1,"subNode":[]})
-            treeModel.get(7).subNode.append({"spliceNo":"14","spliceColor":"white","level":1,"subNode":[]})
-            treeModel.get(8).subNode.append({"spliceNo":"15","spliceColor":"white","level":1,"subNode":[]})
-            treeModel.get(9).subNode.append({"spliceNo":"88","spliceColor":"white","level":1,"subNode":[]})
-            treeModel.get(10).subNode.append({"spliceNo":"16","spliceColor":"white","level":1,"subNode":[]})
-            treeModel.get(11).subNode.append({"spliceNo":"17","spliceColor":"white","level":1,"subNode":[]})
-            treeModel.get(12).subNode.append({"spliceNo":"18","spliceColor":"white","level":1,"subNode":[]})
-            treeModel.get(13).subNode.append({"spliceNo":"19","spliceColor":"white","level":1,"subNode":[]})
-            treeModel.get(14).subNode.append({"spliceNo":"20","spliceColor":"white","level":1,"subNode":[]})
-            treeModel.get(15).subNode.append({"spliceNo":"22","spliceColor":"white","level":1,"subNode":[]})
+//            treeModel.append({"id":"J","level":0,"subNode":[]})
+//            treeModel.append({"id":"K","level":0,"subNode":[]})
+//            treeModel.append({"id":"L","level":0,"subNode":[]})
+//            treeModel.append({"id":"M","level":0,"subNode":[]})
+//            treeModel.append({"id":"N","level":0,"subNode":[]})
+//            treeModel.append({"id":"O","level":0,"subNode":[]})
+//            treeModel.append({"id":"P","level":0,"subNode":[]})
+//            treeModel.get(0).subNode.append({"spliceNo":"99","spliceColor":"white","level":1,"subNode":[]})
+//            treeModel.get(0).subNode.append({"spliceNo":"56","spliceColor":"white","level":1,"subNode":[]})
+//            treeModel.get(0).subNode.append({"spliceNo":"55","spliceColor":"white","level":1,"subNode":[]})
+//            treeModel.get(0).subNode.append({"spliceNo":"54","spliceColor":"white","level":1,"subNode":[]})
+//            treeModel.get(0).subNode.append({"spliceNo":"53","spliceColor":"white","level":1,"subNode":[]})
+//            treeModel.get(0).subNode.append({"spliceNo":"99","spliceColor":"white","level":1,"subNode":[]})
+//            treeModel.get(0).subNode.append({"spliceNo":"56","spliceColor":"white","level":1,"subNode":[]})
+//            treeModel.get(0).subNode.append({"spliceNo":"55","spliceColor":"white","level":1,"subNode":[]})
+//            treeModel.get(0).subNode.append({"spliceNo":"54","spliceColor":"white","level":1,"subNode":[]})
+//            treeModel.get(0).subNode.append({"spliceNo":"53","spliceColor":"white","level":1,"subNode":[]})
+//            treeModel.get(0).subNode.append({"spliceNo":"54","spliceColor":"white","level":1,"subNode":[]})
+//            treeModel.get(0).subNode.append({"spliceNo":"53","spliceColor":"white","level":1,"subNode":[]})
+            treeModel.get(1).subNode.append({"spliceNo":"72","spliceColor":"#00aa7e","level":1,"subNode":[]})
+//            treeModel.get(2).subNode.append({"spliceNo":"51","spliceColor":"white","level":1,"subNode":[]})
+            treeModel.get(3).subNode.append({"spliceNo":"71","spliceColor":"white","level":1,"subNode":[]})
+            treeModel.get(4).subNode.append({"spliceNo":"70","spliceColor":"white","level":1,"subNode":[]})
+            treeModel.get(4).subNode.append({"spliceNo":"69","spliceColor":"#00afe9","level":1,"subNode":[]})
+            treeModel.get(5).subNode.append({"spliceNo":"56","spliceColor":"#d31145","level":1,"subNode":[]})
+            treeModel.get(6).subNode.append({"spliceNo":"72","spliceColor":"white","level":1,"subNode":[]})
+//            treeModel.get(7).subNode.append({"spliceNo":"14","spliceColor":"white","level":1,"subNode":[]})
+//            treeModel.get(8).subNode.append({"spliceNo":"15","spliceColor":"white","level":1,"subNode":[]})
+//            treeModel.get(9).subNode.append({"spliceNo":"88","spliceColor":"white","level":1,"subNode":[]})
+//            treeModel.get(10).subNode.append({"spliceNo":"16","spliceColor":"white","level":1,"subNode":[]})
+//            treeModel.get(11).subNode.append({"spliceNo":"17","spliceColor":"white","level":1,"subNode":[]})
+//            treeModel.get(12).subNode.append({"spliceNo":"18","spliceColor":"white","level":1,"subNode":[]})
+//            treeModel.get(13).subNode.append({"spliceNo":"19","spliceColor":"white","level":1,"subNode":[]})
+//            treeModel.get(14).subNode.append({"spliceNo":"20","spliceColor":"white","level":1,"subNode":[]})
+//            treeModel.get(15).subNode.append({"spliceNo":"22","spliceColor":"white","level":1,"subNode":[]})
         }
     }
     SpliceLocation {
@@ -163,8 +175,8 @@ Item {
         anchors.bottomMargin: 10
         anchors.left: operateTitle.left
         width: Screen.width * 0.37
-        columns: 4
-        rows: 4
+        columns: 3
+        rows: 3
         visible: true
         listModel: treeModel
     }

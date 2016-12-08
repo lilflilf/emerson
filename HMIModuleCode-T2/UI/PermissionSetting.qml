@@ -155,7 +155,7 @@ Item {
 //            menuModel.append({name:"Advanced Maintenance",opacityValue:0})
 //            menuModel.append({name:"Maintenance Counter",opacityValue:0})
 //            menuModel.append({name:"Maintenance log",opacityValue:0})
-//            menuModel.append({name:"Word Order History",opacityValue:0})
+//            menuModel.append({name:"Work Order History",opacityValue:0})
 //            menuModel.append({name:"Statistical Trend",opacityValue:0})
 //            menuModel.append({name:"Error/Alarm Log",opacityValue:0})
 //            menuModel.append({name:"Library",opacityValue:0})

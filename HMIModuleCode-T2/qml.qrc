@@ -163,5 +163,6 @@
         <file>images/Mexcio.png</file>
         <file>images/United-Arab-Emirates.png</file>
         <file>images/us.png</file>
+        <file>images/alarm.png</file>
     </qresource>
 </RCC>
