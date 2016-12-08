@@ -2,7 +2,7 @@ TEMPLATE = app
 
 QT += qml quick
 QT += serialport
-QT += sql
+QT += sql axcontainer
 CONFIG += c++11
 RC_FILE = res.rc
 #static {

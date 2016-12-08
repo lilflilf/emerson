@@ -3,6 +3,9 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QFile>
+#include <QAxObject>
+#include <QAxWidget>
+
 HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
 {
     workOrderModel = new WorkOrderModel(this);
@@ -96,6 +99,7 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
 //    query.exec();
 //    qDebug() << query.lastError();
 //    db.close();
+    getPoint();
 }
 
 void HmiAdaptor::openFileDialog()
@@ -405,6 +409,20 @@ QString HmiAdaptor::copyFileToPath(QString source)
     reb = QFile::copy(source,toPath);
     if (reb)
         return toPath;
+    return "";
+}
+
+QString HmiAdaptor::getPoint()
+{
+//    QAxWidget excel("Excel.Application");
+//    QAxObject *workbooks;
+//    workbooks->dynamicCall("Open (const QString&)", QString("C:\BransonData\point.xlsx"));
+//    QAxObject * worksheets = workbooks->querySubObject("WorkSheets");
+//    int intCount = worksheets->property("Count").toInt();
+//    QAxObject * worksheetss = workbooks->querySubObject("Worksheets(int)", 1);
+//    QAxObject * range = worksheetss->querySubObject("Cells(int,int)", 1, 1 );
+//    int val = range->property("Value").toInt();
+//    qDebug() << "getPoint" << val;
     return "";
 }
 

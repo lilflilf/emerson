@@ -26,21 +26,21 @@ Item {
     }
     ListModel {
         id: listModelRight
-        Component.onCompleted: {
-            listModelRight.append({"x":canvas.width,"y":0})
-            listModelRight.append({"x":canvas.width - 6,"y":20})
-            listModelRight.append({"x":canvas.width - 10,"y":40})
-            listModelRight.append({"x":canvas.width - 20,"y":60})
-            listModelRight.append({"x":canvas.width - 25,"y":80})
-            listModelRight.append({"x":canvas.width - 35,"y":100})
-            listModelRight.append({"x":canvas.width - 50,"y":120})
-            listModelRight.append({"x":canvas.width - 70,"y":140})
-            listModelRight.append({"x":canvas.width - 100,"y":160})
-            listModelRight.append({"x":canvas.width - 150,"y":180})
-            listModelRight.append({"x":canvas.width - 200,"y":200})
-            listModelRight.append({"x":canvas.width - 300,"y":220})
+//        Component.onCompleted: {
+//            listModelRight.append({"x":canvas.width,"y":0})
+//            listModelRight.append({"x":canvas.width - 6,"y":20})
+//            listModelRight.append({"x":canvas.width - 10,"y":40})
+//            listModelRight.append({"x":canvas.width - 20,"y":60})
+//            listModelRight.append({"x":canvas.width - 25,"y":80})
+//            listModelRight.append({"x":canvas.width - 35,"y":100})
+//            listModelRight.append({"x":canvas.width - 50,"y":120})
+//            listModelRight.append({"x":canvas.width - 70,"y":140})
+//            listModelRight.append({"x":canvas.width - 100,"y":160})
+//            listModelRight.append({"x":canvas.width - 150,"y":180})
+//            listModelRight.append({"x":canvas.width - 200,"y":200})
+//            listModelRight.append({"x":canvas.width - 300,"y":220})
 
-        }
+//        }
     }
     Line {
         id: bottomLine
@@ -61,31 +61,16 @@ Item {
         }
         Row {
             id: bottomLineRow
-            spacing: bottomLine.width / 5
-            Text {
-                color: "#adaeae"
-                font.pixelSize: 14
-                text: qsTr("0")
-            }
-            Text {
-                text: qsTr("0.25")
-                color: "#adaeae"
-                font.pixelSize: 14
-            }
-            Text {
-                text: qsTr("0.5")
-                color: "#adaeae"
-                font.pixelSize: 14
-            }
-            Text {
-                text: qsTr("0.75")
-                color: "#adaeae"
-                font.pixelSize: 14
-            }
-            Text {
-                text: qsTr("1.0")
-                color: "#adaeae"
-                font.pixelSize: 14
+            width: parent.width + 100
+            Repeater {
+                model: 6
+                delegate: Text {
+                    width: bottomLine.width / 6
+                    color: "#adaeae"
+                    font.pixelSize: 14
+                    text: index * 100
+                    horizontalAlignment: Qt.AlignLeft
+                }
             }
         }
     }
@@ -98,32 +83,17 @@ Item {
         anchors.left: parent.left
         anchors.leftMargin: 20
         Column {
-            spacing: leftLine.height / 5
+            height: parent.height + 100
             anchors.right: leftLine.left
-            Text {
-                color: "#adaeae"
-                font.pixelSize: 14
-                text: qsTr("1800")
-            }
-            Text {
-                text: qsTr("1350")
-                color: "#adaeae"
-                font.pixelSize: 14
-            }
-            Text {
-                text: qsTr("900")
-                color: "#adaeae"
-                font.pixelSize: 14
-            }
-            Text {
-                text: qsTr("450")
-                color: "#adaeae"
-                font.pixelSize: 14
-            }
-            Text {
-                text: qsTr("0")
-                color: "#adaeae"
-                font.pixelSize: 14
+            Repeater {
+                model: 7
+                delegate: Text {
+                    height: leftLine.height / 7
+                    color: "#adaeae"
+                    font.pixelSize: 14
+                    text: (7 - index) * 100
+                    verticalAlignment: Qt.AlignTop
+                }
             }
         }
         Text {
@@ -143,44 +113,44 @@ Item {
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         anchors.rightMargin: 20
-        Text {
-            anchors.bottom: rightLine.top
-            anchors.bottomMargin: 5
-            color: "white"
-            font.pointSize: 12
-            text: qsTr("HEIGHT(mm)")
-            font.family: "arial"
-            anchors.right: rightLine.left
-        }
-        Column {
-            spacing: rightLine.height / 5
-            anchors.left: rightLine.right
-            Text {
-                color: "#adaeae"
-                font.pixelSize: 14
-                text: qsTr("1800")
-            }
-            Text {
-                text: qsTr("1350")
-                color: "#adaeae"
-                font.pixelSize: 14
-            }
-            Text {
-                text: qsTr("900")
-                color: "#adaeae"
-                font.pixelSize: 14
-            }
-            Text {
-                text: qsTr("450")
-                color: "#adaeae"
-                font.pixelSize: 14
-            }
-            Text {
-                text: qsTr("0")
-                color: "#adaeae"
-                font.pixelSize: 14
-            }
-        }
+//        Text {
+//            anchors.bottom: rightLine.top
+//            anchors.bottomMargin: 5
+//            color: "white"
+//            font.pointSize: 12
+//            text: qsTr("HEIGHT(mm)")
+//            font.family: "arial"
+//            anchors.right: rightLine.left
+//        }
+//        Column {
+//            spacing: rightLine.height / 5
+//            anchors.left: rightLine.right
+//            Text {
+//                color: "#adaeae"
+//                font.pixelSize: 14
+//                text: qsTr("1800")
+//            }
+//            Text {
+//                text: qsTr("1350")
+//                color: "#adaeae"
+//                font.pixelSize: 14
+//            }
+//            Text {
+//                text: qsTr("900")
+//                color: "#adaeae"
+//                font.pixelSize: 14
+//            }
+//            Text {
+//                text: qsTr("450")
+//                color: "#adaeae"
+//                font.pixelSize: 14
+//            }
+//            Text {
+//                text: qsTr("0")
+//                color: "#adaeae"
+//                font.pixelSize: 14
+//            }
+//        }
     }
 
     Canvas {
