@@ -111,7 +111,7 @@ void HmiAdaptor::advancedMaintenanceExecute(int code)
 
 void HmiAdaptor::maintenanceCountExecute(QString code)
 {
-    if (code == "_Recll")
+    if (code == "_Recall")
         maintenanceCount->_recall();
 }
 
