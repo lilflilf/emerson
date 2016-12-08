@@ -47,606 +47,241 @@ Item {
         source: "qrc:/images/images/bg.png"
     }
 
-    Item {
-        id: leftArea
+
+    Text {
+        id: networkText
         anchors.top: parent.top
-        width: Screen.width*0.3
-        height: parent.height
-        Text {
-            id: networkText
-            anchors.top: parent.top
-            anchors.topMargin: 24
-            anchors.left: parent.left
-            anchors.leftMargin: 10
-            verticalAlignment: Qt.AlignVCenter
-            font.family: "arial"
-            font.pixelSize: 20
-            color: "white"
-            text: qsTr("Network(Ethernet)")
-        }
-        Switch2 {
-            id: networkSwitch
-            anchors.verticalCenter: networkText.verticalCenter
-            anchors.right: parent.right
-            anchors.rightMargin: 10
-            width: parent.width*0.5
-            //            state: "right"
-            textLeft: qsTr("off")
-            textRight: qsTr("on")
-            clip: true
-        }
-        Text {
-            id: serverPort
-            anchors.left: networkText.left
-            anchors.top: networkText.bottom
-            anchors.topMargin: 35
-            verticalAlignment: Qt.AlignVCenter
-            font.family: "arial"
-            font.pixelSize: 20
-            color: "white"
-            text: qsTr("Server Port")
-        }
-        MyLineEdit {
-            id: serverPortEdit
-            anchors.verticalCenter: serverPort.verticalCenter
-            anchors.left: networkSwitch.left
-            width: parent.width*0.5
-            height: 50
-            inputWidth: parent.width*0.5
-            inputHeight: 48
-            horizontalAlignment: Qt.AlignHCenter
-            inputText: qsTr("4000")
-            //            regExp: RegExpValidator{regExp: /^[1-4000]$/}
-        }
-
-        CButton {
-            id: ipConfig
-            anchors.top: serverPort.bottom
-            anchors.topMargin: 24
-            anchors.left: networkText.left
-            anchors.right: networkSwitch.right
-            width: parent.width-20
-            textColor: "white"
-            text: qsTr("IP Configuration")
-        }
-        Text {
-            id: remoteText
-            anchors.top: ipConfig.bottom
-            anchors.topMargin: 14
-            anchors.left: networkText.left
-            verticalAlignment: Qt.AlignVCenter
-            font.family: "arial"
-            font.pixelSize: 20
-            color: "white"
-            text: qsTr("Remote Data\nLogging")
-        }
-        Switch2 {
-            id: remoteSwitch
-            anchors.left: networkSwitch.left
-            anchors.verticalCenter: remoteText.verticalCenter
-            width: parent.width*0.5
-            //            state: "left"
-            textLeft: qsTr("off")
-            textRight: qsTr("on")
-            clip: true
-        }
-        Text {
-            id: graphText
-            anchors.top: remoteText.bottom
-            anchors.topMargin: 34
-            anchors.right: remoteText.right
-            verticalAlignment: Qt.AlignVCenter
-            font.family: "arial"
-            font.pixelSize: 20
-            color: "white"
-            visible: remoteSwitch.on
-            text: qsTr("Graph Data")
-        }
-        Switch2 {
-            id: graphSwitch
-            anchors.left: networkSwitch.left
-            anchors.verticalCenter: graphText.verticalCenter
-            width: parent.width*0.5
-            //            state: "left"
-            textLeft: qsTr("off")
-            textRight: qsTr("on")
-            visible: remoteSwitch.on
-            clip: true
-        }
-        Text {
-            id: modularText
-            anchors.top: graphText.bottom
-            anchors.topMargin: 24
-            anchors.left: networkText.left
-            verticalAlignment: Qt.AlignVCenter
-            font.family: "arial"
-            font.pixelSize: 20
-            color: "white"
-            text: qsTr("Modular Producation\nMode")
-        }
-        Switch2 {
-            id: modularSwitch
-            anchors.left: networkSwitch.left
-            anchors.verticalCenter: modularText.verticalCenter
-            width: parent.width*0.5
-            //            state: "right"
-            textLeft: qsTr("off")
-            textRight: qsTr("on")
-            clip: true
-        }
-        Column {
-            id: columnButton
-            anchors.left: networkText.left
-            anchors.right: parent.right
-            anchors.rightMargin: 10
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 10
-            spacing: 10
-            CButton {
-                text: qsTr("Defalut Setting")
-                textColor: "white"
-                clip: true
-                width: columnButton.width
-                onClicked: {
-                    hmiAdaptor.dataCommunicationExecute("_Recall")
-                    initPage()
-                }
-            }
-            CButton {
-                iconSource: "qrc:/images/images/cancel.png"
-                text: qsTr("Cancel")
-                textColor: "white"
-                clip: true
-                width: columnButton.width
-            }
-            CButton {
-                iconSource: "qrc:/images/images/OK.png"
-                text: qsTr("OK")
-                textColor: "white"
-                clip: true
-                width: columnButton.width
-                onClicked: {
-
-                    var boolList = new Array()
-                    boolList.push(networkSwitch.state == "right")
-                    boolList.push(remoteSwitch.state == "right")
-                    boolList.push(graphSwitch.state == "right")
-                    boolList.push(modularSwitch.state == "right")
-                    var strList = new Array()
-                    for (var i = 0 ; i < testModel.count; i++)
-                    {
-                        strList.push(testModel.get(i).shrinkid)
-                        strList.push(testModel.get(i).temperature)
-                        strList.push(testModel.get(i).times)
-                    }
-                    hmiAdaptor.dataCommunicationSetValue(boolList,strList,ipConfig.text,serverPortEdit.inputText)
-                    hmiAdaptor.dataCommunicationExecute("_Set")
-                }
-            }
-        }
+        anchors.topMargin: 48
+        anchors.left: parent.left
+        anchors.leftMargin: 24
+        verticalAlignment: Qt.AlignVCenter
+        font.family: "arial"
+        font.pixelSize: 20
+        height: 70
+        color: "white"
+        text: qsTr("Network(Ethernet)")
+    }
+    Switch2 {
+        id: networkSwitch
+        anchors.verticalCenter: networkText.verticalCenter
+        anchors.left: modularText.right
+        anchors.leftMargin: 6
+        width: parent.width*0.26
+        //            state: "right"
+        textLeft: qsTr("off")
+        textRight: qsTr("on")
+        clip: true
+    }
+    Text {
+        id: remoteText
+        anchors.top: networkSwitch.bottom
+        anchors.topMargin: 24
+        anchors.left: networkText.left
+        verticalAlignment: Qt.AlignVCenter
+        font.family: "arial"
+        font.pixelSize: 20
+        color: "white"
+        height: 70
+        text: qsTr("Remote Data\nLogging")
+    }
+    Switch2 {
+        id: remoteSwitch
+        anchors.left: modularText.right
+        anchors.leftMargin: 6
+        anchors.verticalCenter: remoteText.verticalCenter
+        width: parent.width*0.26
+        //            state: "left"
+        textLeft: qsTr("off")
+        textRight: qsTr("on")
+        clip: true
+    }
+    Text {
+        id: graphText
+        anchors.top: remoteSwitch.bottom
+        anchors.topMargin: 24
+        anchors.right: remoteText.right
+        verticalAlignment: Qt.AlignVCenter
+        font.family: "arial"
+        font.pixelSize: 20
+        color: "white"
+        height: 70
+        visible: remoteSwitch.on
+        text: qsTr("Graph Data")
+    }
+    Switch2 {
+        id: graphSwitch
+        anchors.left: modularText.right
+        anchors.leftMargin: 6
+        anchors.verticalCenter: graphText.verticalCenter
+        width: parent.width*0.26
+        //            state: "left"
+        textLeft: qsTr("off")
+        textRight: qsTr("on")
+        visible: remoteSwitch.on
+        clip: true
+    }
+    Text {
+        id: modularText
+        anchors.top: graphSwitch.bottom
+        anchors.topMargin: 24
+        anchors.left: networkText.left
+        verticalAlignment: Qt.AlignVCenter
+        font.family: "arial"
+        font.pixelSize: 20
+        color: "white"
+        height: 70
+        text: qsTr("Modular Producation\nMode")
+    }
+    Switch2 {
+        id: modularSwitch
+        anchors.left: modularText.right
+        anchors.leftMargin: 6
+        anchors.verticalCenter: modularText.verticalCenter
+        width: parent.width*0.26
+        //            state: "right"
+        textLeft: qsTr("off")
+        textRight: qsTr("on")
+        clip: true
     }
 
-    ListModel {
-        id: listModel
-    }
-    Item {
-        id: rightArea
-        anchors.left: leftArea.right
-        anchors.leftMargin: 20
-        anchors.top: parent.top
-        width: Screen.width*0.7
-        height: parent.height
-        ListModel {
-            id: testModel
-        }
-        ListModel {
-            id: titleModel
-        }
-
-        Row {
-            id: headTitle
-            anchors.top: parent.top
-            anchors.topMargin: 15
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.rightMargin: 40
-            //            height: 50
-            spacing: 40
-            clip: true
-            Repeater {
-                model: titleModel
-                delegate:  Text {
-                    verticalAlignment: Qt.AlignVCenter
-                    width: (headTitle.width-80)/3
-                    font.family: "arial"
-                    font.pixelSize: 25
-                    color: "white"
-                    clip: true
-                    text: qsTr(title)
-                }
-            }
-        }
-        Line {
-            id: line1
-            anchors.top: headTitle.bottom
-            anchors.topMargin: 10
-            anchors.left: parent.left
-            width: parent.width-20
-            height: 1
-            lineColor: "#ffffff"
-        }
-        Line {
-            id: line2
-            anchors.top: line1.bottom
-            anchors.left: parent.left
-            width: parent.width-20
-            height: 1
-            lineColor: "#0d0f11"
-        }
-        ExclusiveGroup {
-            id: listviewPositionGroup
-        }
-
-        ListView {
-            id: listView
-            anchors.top: line2.bottom
-            anchors.topMargin: 5
-            anchors.left: parent.left
-            anchors.leftMargin: 40
-            anchors.right: parent.right
-            anchors.rightMargin: 40
-            anchors.bottom: bottomTip.top
-            clip: true
-            model: testModel
-            delegate: Component {
-                id: shrinkDelegate
-                Item {
-                    width: listView.width
-                    height: 50
-                    Text {
-                        id: shrinkId
-                        anchors.left: parent.left
-                        anchors.verticalCenter: parent.verticalCenter
-                        verticalAlignment: Qt.AlignVCenter
-                        width: (listView.width-80)/3
-                        font.family: "arial"
-                        font.pixelSize: 20
-                        elide: Text.ElideRight
-                        color: "white"
-                        text: qsTr(shrinkid)
-                    }
-                    Text {
-                        id: temp
-                        anchors.left: shrinkId.right
-                        anchors.leftMargin: 40
-                        anchors.verticalCenter: parent.verticalCenter
-                        verticalAlignment: Qt.AlignVCenter
-                        width: (listView.width-80)/3
-                        font.family: "arial"
-                        font.pixelSize: 20
-                        color: "white"
-                        elide: Text.ElideRight
-                        text: qsTr(temperature)
-                        renderType : Text.NativeRendering
-                    }
-                    Text {
-                        id: time
-                        anchors.left: temp.right
-                        anchors.leftMargin: 40
-                        anchors.verticalCenter: parent.verticalCenter
-                        verticalAlignment: Qt.AlignVCenter
-                        width: (listView.width-80)/3
-                        font.family: "arial"
-                        font.pixelSize: 20
-                        color: "white"
-                        elide: Text.ElideRight
-                        text: qsTr(times)
-                    }
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: {
-                            selectIndx = index
-                            selectCheck.checked = !selectCheck.checked
-                        }
-                    }
-                    Rectangle {
-                        id: backGround
-                        anchors.fill: parent
-                        color: "black"
-                        opacity: 0//opacityValue
-                        RadioButton {
-                            id: selectCheck
-                            exclusiveGroup: listviewPositionGroup
-                            visible: false
-                            onCheckedChanged: {
-                                if (checked)
-                                    backGround.opacity = 0.3
-                                else
-                                    backGround.opacity = 0
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        Image {
-            id: scrollUp
-            anchors.top: line1.bottom
-            anchors.topMargin: 2
-            anchors.left: listView.right
-            width: 17
-            height: 10
-            visible: listView.contentHeight > listView.height ? true : false
-            source: "qrc:/images/images/up.png"
-        }
-        Image {
-            id: scrollDown
-            anchors.bottom: bottomTip.top
-            anchors.bottomMargin: 2
-            anchors.left: listView.right
-            width: 17
-            height: 10
-            visible: listView.contentHeight > listView.height ? true : false
-            source: "qrc:/images/images/down.png"
-        }
-        Rectangle {
-            id: scrollbar
-            width: 10
-            height: listView.height-24
-            anchors.top: scrollUp.bottom
-            anchors.left: listView.right
-            anchors.leftMargin: 4
-            color: "#585858"
-            radius: 10
-            visible: listView.contentHeight > listView.height ? true : false
-            Rectangle {
-                id: button
-                anchors.left: parent.left
-                y: (listView.visibleArea.yPosition < 0 ) ? 0 : (listView.contentY+listView.height>listView.contentHeight) ?
-                                                               scrollbar.height - button.height : listView.visibleArea.yPosition * scrollbar.height
-                width: 10
-                height: listView.visibleArea.heightRatio * scrollbar.height;
-                color: "#ccbfbf"
-                radius: 10
-                // 鼠标区域
-                MouseArea {
-                    id: mouseArea
-                    anchors.fill: button
-                    drag.target: button
-                    drag.axis: Drag.YAxis
-                    drag.minimumY: 0
-                    drag.maximumY: scrollbar.height - button.height
-                    // 拖动
-                    onMouseYChanged: {
-                        listView.contentY = button.y / scrollbar.height * listView.contentHeight
-                    }
-                }
-            }
-        }
-        Rectangle {
-            id: bottomTip
-            anchors.bottom: bottomTip2.top
-            anchors.left: parent.left
-            anchors.leftMargin: 20
-            width: parent.width - 20
-            clip: true
-            height: 1
-            color: "#ffffff"
-        }
-        Rectangle {
-            id: bottomTip2
-            anchors.bottom: addnew.top
-            anchors.bottomMargin: 24
-            anchors.left: parent.left
-            anchors.leftMargin: 20
-            width: parent.width - 20
-            clip: true
-            height: 1
-            color: "#0d0f11"
-        }
+    Row {
+        id: rownButton
+        anchors.left: parent.left
+        anchors.leftMargin: 24
+        anchors.right: parent.right
+        anchors.rightMargin: 24
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 10
+        spacing: 48
         CButton {
-            id: addnew
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 10
-            anchors.left: parent.left
-            anchors.leftMargin: 20
-            width: (bottomTip2.width-72)/3
-            spacing: 10
-            iconSource: "qrc:/images/images/Add.png"
-            text: qsTr("ADD NEW SHRINK")
-            pointSize: 20
-            clip: true
+            text: qsTr("Defalut Setting")
             textColor: "white"
+            clip: true
+            width: (rownButton.width-96)/3
             onClicked: {
-                backGround.visible = true
-                backGround.opacity = 0.5
-                dialog.bIsEdit = false
-                dialog.visible = true
+                hmiAdaptor.dataCommunicationExecute("_Recall")
+                initPage()
             }
         }
         CButton {
-            id: edit
-            anchors.bottom: addnew.bottom
-            anchors.left: addnew.right
-            anchors.leftMargin: 24
-            width: (bottomTip2.width-72)/3
-            iconSource: "qrc:/images/images/stting.png"
-            text: qsTr("EDIT SHRINK")
-            pointSize: 20
-            clip: true
-            textColor: "white"
-            onClicked: {
-                if(workOrderModel.count() == 0 || selectIndx == -1) {
-                    return
-                }
-                backGround.visible = true
-                backGround.opacity = 0.5
-                dialog.bIsEdit = true
-                dialog.visible = true
-            }
-        }
-        CButton {
-            id: dele
-            anchors.bottom: addnew.bottom
-            anchors.left: edit.right
-            anchors.leftMargin: 24
-            width: (bottomTip2.width-72)/3
-            text: qsTr("DELETE SHRINK")
-            pointSize: 20
-            clip: true
-            textColor: "white"
-            onClicked: {
-            }
-        }
-    }
-    Rectangle {
-        id: backGround
-        anchors.fill: parent
-        color: "black"
-        opacity: 0
-        visible: false
-        MouseArea {
-            anchors.fill: parent
-            onClicked: {
-            }
-        }
-
-    }
-    Image {
-        id: dialog
-        visible: false
-        anchors.centerIn: parent
-        property bool bIsEdit: false
-        property var oldWorkOrderName: ""
-        width: 639
-        height: 390
-        source: "qrc:/images/images/dialogbg.png"
-        Text {
-            id: shrinkId
-            anchors.top: parent.top
-            anchors.topMargin: 60
-            anchors.right: inputshrinkId.left
-            anchors.rightMargin: 20
-            width: 150
-            height: 60
-            font.pointSize: 18
-            font.family: "arial"
-            text: qsTr("Shrink Tube ID")
-            verticalAlignment: Qt.AlignVCenter
-            horizontalAlignment: Qt.AlignRight
-            color: "white"
-        }
-        MyLineEdit {
-            id: inputshrinkId
-            anchors.top: parent.top
-            anchors.topMargin: 60
-            anchors.right: parent.right
-            anchors.rightMargin: 72
-            horizontalAlignment: Qt.AlignHCenter
-            width: 375
-            height: 60
-            inputWidth: 375
-            inputColor: "white"
-            inputHeight: 60
-            inputText: dialog.bIsEdit ? testModel.get(selectIndx).shrinkid : ""
-        }
-        Text {
-            id: temperatureText
-            anchors.top: inputshrinkId.bottom
-            anchors.topMargin: 20
-            anchors.right: inputTemperature.left
-            anchors.rightMargin: 20
-            width: 150
-            height: 60
-            font.pointSize: 18
-            font.family: "arial"
-            text: qsTr("Temp")
-            verticalAlignment: Qt.AlignVCenter
-            horizontalAlignment: Qt.AlignRight
-            color: "white"
-        }
-        MyLineEdit {
-            id: inputTemperature
-            property var partId: 1
-            anchors.top: inputshrinkId.bottom
-            anchors.topMargin: 20
-            anchors.right: parent.right
-            anchors.rightMargin: 72
-            horizontalAlignment: Qt.AlignHCenter
-            width: 375
-            height: 60
-            inputWidth: 375
-            inputColor: "white"
-            inputHeight: 60
-            inputText: dialog.bIsEdit ? testModel.get(selectIndx).temperature : ""
-        }
-        Text {
-            id: timeText
-            anchors.top: temperatureText.bottom
-            anchors.topMargin: 20
-            anchors.right: inputtimeText.left
-            anchors.rightMargin: 20
-            width: 150
-            height: 60
-            font.pointSize: 18
-            font.family: "arial"
-            text: qsTr("Time")
-            verticalAlignment: Qt.AlignVCenter
-            horizontalAlignment: Qt.AlignRight
-            color: "white"
-        }
-        MyLineEdit {
-            id: inputtimeText
-            anchors.top: temperatureText.bottom
-            anchors.topMargin: 20
-            anchors.right: parent.right
-            anchors.rightMargin: 72
-            width: 375
-            height: 60
-            inputWidth: 375
-            inputHeight: 60
-            inputColor: "white"
-            horizontalAlignment: Qt.AlignHCenter
-            inputText: dialog.bIsEdit ? testModel.get(selectIndx).times : ""
-        }
-        CButton {
-            id: cancel
-            anchors.right: sure.left
-            anchors.rightMargin: 15
-            anchors.top: timeText.bottom
-            anchors.topMargin: 16
-            width: 180
-            text: qsTr("CANCEL")
-            textColor: "white"
             iconSource: "qrc:/images/images/cancel.png"
-            onClicked: {
-                backGround.visible = false
-                backGround.opacity = 0
-                dialog.visible = false
-                dialog.bIsEdit = false
-                //                if (!dialog.bIsEdit) {
-                //                    selectPart.text = "SELECT PART"
-                //                }
-            }
+            text: qsTr("Cancel")
+            textColor: "white"
+            clip: true
+            width: (rownButton.width-96)/3
         }
-
         CButton {
-            id: sure
-            anchors.right: parent.right
-            anchors.rightMargin: 72
-            anchors.top: timeText.bottom
-            anchors.topMargin: 16
-            width: 180
+            iconSource: "qrc:/images/images/OK.png"
             text: qsTr("OK")
             textColor: "white"
-            iconSource: "qrc:/images/images/OK.png"
+            clip: true
+            width: (rownButton.width-96)/3
             onClicked: {
-                backGround.visible = false
-                backGround.opacity = 0
-                dialog.visible = false
-                testModel.set(selectIndx,{shrinkid:inputshrinkId.inputText,temperature:inputTemperature.inputText,times:inputtimeText.inputText})
-                dialog.bIsEdit = false
+
+                var boolList = new Array()
+                boolList.push(networkSwitch.state == "right")
+                boolList.push(remoteSwitch.state == "right")
+                boolList.push(graphSwitch.state == "right")
+                boolList.push(modularSwitch.state == "right")
+                var strList = new Array()
+                for (var i = 0 ; i < testModel.count; i++)
+                {
+                    strList.push(testModel.get(i).shrinkid)
+                    strList.push(testModel.get(i).temperature)
+                    strList.push(testModel.get(i).times)
+                }
+                hmiAdaptor.dataCommunicationSetValue(boolList,strList,ipConfig.text,serverPortEdit.inputText)
+                hmiAdaptor.dataCommunicationExecute("_Set")
             }
         }
+    }
+    Text {
+        id: shrinkText
+        anchors.right: shrinkButton.left
+        anchors.rightMargin: 10
+        anchors.top: parent.top
+        anchors.topMargin: 48
+        font.family: "arial"
+        font.pixelSize: 20
+        verticalAlignment: Qt.AlignVCenter
+        height: 70
+        color: "white"
+        text: qsTr("Shrink Tube")
+    }
+    CButton {
+        id: shrinkButton
+        anchors.right: parent.right
+        anchors.rightMargin: 24
+        anchors.verticalCenter: shrinkText.verticalCenter
+        text: qsTr("Shrink Tube Test")
+        width: parent.width*0.3
+    }
+    Text {
+        id: ipsetText
+        anchors.top: shrinkButton.bottom
+        anchors.topMargin: 24
+        anchors.right: ipsetButton.left
+        anchors.rightMargin: 10
+        font.family: "arial"
+        font.pixelSize: 20
+        height: 70
+        verticalAlignment: Qt.AlignVCenter
+        color: "white"
+        text: qsTr("Network(Ethernet)")
+    }
+    CButton {
+        id: ipsetButton
+        anchors.verticalCenter: ipsetText.verticalCenter
+        anchors.right: parent.right
+        anchors.rightMargin: 24
+        text: qsTr("Client IP Setting")
+        width: parent.width*0.3
+    }
+    Text {
+        id: serverPort
+        anchors.top: ipsetButton.bottom
+        anchors.topMargin: 24
+        anchors.right: serverPortEdit.left
+        anchors.rightMargin: 10
+        height: 70
+        verticalAlignment: Qt.AlignVCenter
+        font.family: "arial"
+        font.pixelSize: 20
+        color: "white"
+        text: qsTr("Server Port")
+    }
+    MyLineEdit {
+        id: serverPortEdit
+        anchors.verticalCenter: serverPort.verticalCenter
+        anchors.right: parent.right
+        anchors.rightMargin: 24
+        width: parent.width*0.3
+        height: 50
+        inputWidth: parent.width*0.3
+        inputHeight: 48
+        horizontalAlignment: Qt.AlignHCenter
+        inputText: qsTr("4000")
+        //            regExp: RegExpValidator{regExp: /^[1-4000]$/}
+    }
+
+    CButton {
+        id: ipConfig
+        anchors.top: serverPortEdit.bottom
+        anchors.topMargin: 24
+        anchors.right: parent.right
+        anchors.rightMargin: 24
+        width: parent.width*0.3
+        textColor: "white"
+        text: qsTr("IP Configuration")
+    }
+
+    CButton {
+        id: pingButton
+        anchors.top: ipConfig.bottom
+        anchors.topMargin: 24
+        anchors.right: parent.right
+        anchors.rightMargin: 24
+        text: qsTr("Ping Test")
+        width: parent.width*0.3
     }
 }

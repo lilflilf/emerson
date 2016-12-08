@@ -295,7 +295,9 @@ QVariant SpliceModel::data(const QModelIndex &index, int role) const
             value = QVariant::fromValue(temp);
         } else if (columnIdx == 20) {
             temp = variantToString->Height_MinusToString(mySplice.WeldSettings.QualitySetting.Height.Minus);
-            value = QVariant::fromValue(2);
+            value = QVariant::fromValue(temp);
+        } else if (columnIdx == 21) {
+            value = QVariant::fromValue(mySplice.TestSetting.Qutanty);
         }
     }
     return value;
@@ -504,7 +506,6 @@ QVariant SpliceModel::getValue(int index, QString key)
     m_spliceAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&mySplice);
     m_operatorAdaptor->QueryOneRecordFromTable(mySplice.OperatorID,&myOperator);
     QHash<QString, QVariant> SpliceModelHash;
-    qDebug()<<"33333333333333333333333"<<mySplice.SpliceID;
     SpliceModelHash.insert("SpliceId",mySplice.SpliceID);
     SpliceModelHash.insert("SpliceName",mySplice.SpliceName);
     SpliceModelHash.insert("DateCreated",QDateTime::fromTime_t(mySplice.CreatedDate).toString("MM/dd/yyyy hh:mm"));
@@ -526,7 +527,7 @@ QVariant SpliceModel::getValue(int index, QString key)
     SpliceModelHash.insert("Pre-Height-",variantToString->PreHeight_MinusToString(mySplice.WeldSettings.QualitySetting.Preheight.Minus));
     SpliceModelHash.insert("Height+",variantToString->Height_PlusToString(mySplice.WeldSettings.QualitySetting.Height.Plus));
     SpliceModelHash.insert("Height-",variantToString->Height_MinusToString(mySplice.WeldSettings.QualitySetting.Height.Minus));
-
+    SpliceModelHash.insert("count",mySplice.TestSetting.Qutanty);
     if (key == "") {
         return SpliceModelHash;
     } else {
@@ -809,8 +810,8 @@ void OperatorModel::insertValue(QString name, QString passwd)
     myOperator.Password = passwd;
     myOperator.PermissionLevel = PASSWORDCONTROL::OPEN;
     myOperator.CreatedDate = QDateTime::currentDateTime().toTime_t();
-
     m_operatorAdaptor->InsertRecordIntoTable(&myOperator);
+    setModelList();
 }
 
 bool OperatorModel::login(QString passwd, OperatorElement *operatot)

@@ -275,6 +275,35 @@ QString HmiAdaptor::getMaintenanceVerson(int index)
     return value;
 }
 
+QString HmiAdaptor::getSoftVerson(int index)
+{
+    QString value = "";
+    InterfaceClass* _Interface = InterfaceClass::Instance();
+    switch (index) {
+    case 0:
+        value = _Interface->StatusData.ActuatorPartNumber;
+        break;
+    case 1:
+        value = _Interface->StatusData.ActuatorSerialNumber;
+        break;
+    case 2:
+    case 3:
+        break;
+    case 4:
+        value = _Interface->CurrentVersions.ControllerVersion;
+        break;
+    case 5:
+        value = _Interface->CurrentVersions.SoftwareVersion;
+        break;
+    case 6:
+        value = _Interface->CurrentVersions.ActuatorVersion;
+        break;
+    default:
+        break;
+    }
+    return value;
+}
+
 //listModel.append({mytitle:"Horn"})
 //listModel.append({mytitle:"AnvilTip"})
 //listModel.append({mytitle:"Gather"})

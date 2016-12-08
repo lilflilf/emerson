@@ -9,26 +9,7 @@ Item {
         anchors.fill: parent
         source: "qrc:/images/images/bg.png"
     }
-    ListModel {
-        id: testModel
-        Component.onCompleted: {
-            testModel.append({"name":"splice test title 11111111111222","date":"2016/10/13","middle":"1111111111VW","count":"YES"})
-            testModel.append({"name":"splice test title 1111111111122","date":"2016/10/13","middle":"VW1111111213123213123123111111111111","count":"YES"})
-            testModel.append({"name":"splice test title 11111111111","date":"2016/10/13","middle":"VW","count":"YES"})
-            testModel.append({"name":"splice test title 11111111111","date":"2016/10/13","middle":"VW","count":"YES"})
-            testModel.append({"name":"splice test title 1111111111133333333333333","date":"2016/10/13","middle":"VW","count":"YES"})
-            testModel.append({"name":"splice test title 11111111111222","date":"2016/10/13","middle":"VW","count":"YES"})
-            testModel.append({"name":"splice test title 1111111111122","date":"2016/10/13","middle":"VW","count":"YES"})
-            testModel.append({"name":"splice test title 11111111111","date":"2016/10/13","middle":"VW","count":"YES"})
-            testModel.append({"name":"splice test title 11111111111","date":"2016/10/13","middle":"VW","count":"YES"})
-            testModel.append({"name":"splice test title 1111111111133333333333333","date":"2016/10/13","middle":"VW","count":"YES"})
-            testModel.append({"name":"splice test title 11111111111222","date":"2016/10/13","middle":"VW","count":"YES"})
-            testModel.append({"name":"splice test title 1111111111122","date":"2016/10/13","middle":"VW","count":"YES"})
-            testModel.append({"name":"splice test title 11111111111","date":"2016/10/13","middle":"VW","count":"YES"})
-            testModel.append({"name":"splice test title 11111111111","date":"2016/10/13","middle":"VW","count":"YES"})
-            testModel.append({"name":"splice test title 1111111111133333333333333","date":"2016/10/13","middle":"VW","count":"YES"})
-        }
-    }
+
     ExclusiveGroup {
         id: listviewPositionGroup;
     }
@@ -112,7 +93,7 @@ Item {
         anchors.bottom: line3.top
         clip: true
         delegate: listDelegate
-        model: operatorModel //testModel
+        model: operatorModel
     }
     Image {
         id: scrollUp
@@ -479,7 +460,6 @@ Item {
                 backGround.visible = false
                 backGround.opacity = 0
                 operatorDialog.visible = false
-
                 operatorModel.insertValue(operatorNameInput.inputText,passwordInput.inputText);
             }
         }

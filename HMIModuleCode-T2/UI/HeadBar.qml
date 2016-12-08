@@ -243,7 +243,7 @@ Item {
         ListElement {menuKey:"Weld Defaults"}
         ListElement {menuKey:"Operator Library"}
         ListElement {menuKey:"Data/Communication"}
-        ListElement {menuKey:"Branson Setting"}
+//        ListElement {menuKey:"Branson Setting"}
 
     }
 
@@ -370,10 +370,10 @@ Item {
                                     root.menuInit(17)
                                     title.text = qsTr("Data Communication")
                                 }
-                                else if (menuKey == "Branson Setting") {
-                                    root.menuInit(18)
-                                    title.text = qsTr("Branson Setting")
-                                }
+//                                else if (menuKey == "Branson Setting") {
+//                                    root.menuInit(18)
+//                                    title.text = qsTr("Branson Setting")
+//                                }
                             }
                         }
                     }

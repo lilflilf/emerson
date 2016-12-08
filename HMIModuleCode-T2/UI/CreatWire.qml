@@ -1211,6 +1211,11 @@ Item {
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 14
             text: qsTr("WIRE LIBRARY")
+            onClicked: {
+                backGround.visible = true
+                backGround.opacity = 0.5
+                addWireLibrary.visible = true
+            }
         }
         CButton {
             id: wirelibrary
@@ -1911,6 +1916,30 @@ Item {
                 backGround.visible = false
                 stepTimeSet.visible = false
             }
+        }
+    }
+    AddExistingSpliceWire {
+        id: addWireLibrary
+        anchors.centerIn: parent
+        width: parent.width*0.9
+        height: parent.width*0.4
+        visible: false
+        listModel: wireModel
+        titleName: ("Wire Library")
+        componentName: qsTr("WireName")
+        componentData: qsTr("DateCreated")
+        componentMiddle: qsTr("OperatorName")
+        componenttype: qsTr("Color")
+        componentCount: qsTr("Gauge")
+        onSignalAddExistCancel: {
+            backGround.visible = false
+            backGround.opacity = 0
+            addWireLibrary.visible = false
+        }
+        onSignalAddExistSelectClick: {
+            backGround.visible = false
+            backGround.opacity = 0
+            addWireLibrary.visible = false
         }
     }
 

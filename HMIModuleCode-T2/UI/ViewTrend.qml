@@ -335,6 +335,7 @@ Item {
     }
 
     Rectangle {
+        id: fiveLine
         anchors.fill: qualityListViewTwo
         color: "#6d6e71"
         visible: qualityListViewTwo.visible
@@ -373,6 +374,12 @@ Item {
             width: parent.width
             height: 2
         }
+        Line {
+            id: scrollLine
+            width: 2
+            height: parent.height
+            lineColor: "green"
+        }
     }
 
     ListView {
@@ -381,13 +388,61 @@ Item {
         anchors.leftMargin: 20
         anchors.right: parent.right
         anchors.rightMargin: 30
-        height: Screen.height *0.35
+        height: Screen.height *0.32
         orientation: Qt.Horizontal
         interactive: false
         anchors.top: parent.top
         anchors.topMargin: 20
         delegate: qualityListViewTwoDelegate
         model: 100
+    }
+    Rectangle {
+        id: scrollbar
+        anchors.left: scrollLeft.right
+        anchors.top: qualityListViewTwo.bottom
+        anchors.bottom: selectButton.top
+        anchors.topMargin: 10
+        anchors.bottomMargin: 10
+        anchors.right: scrollRight.left
+        color: "#585858"
+        radius: 10
+        Rectangle {
+            id: button
+            anchors.top: parent.top
+            x: 0
+            width: 50
+            height: scrollbar.height
+            color: "#ccbfbf"
+            radius: 10
+            MouseArea {
+                id: mouseArea
+                anchors.fill: button
+                drag.target: button
+                drag.axis: Drag.XAxis
+                drag.minimumX: 0
+                drag.maximumX: scrollbar.width - button.width
+            }
+            onXChanged: {
+                scrollLine.x = button.x/(scrollbar.width-50)*qualityListViewTwo.width
+            }
+        }
+    }
+
+    Image {
+        id: scrollLeft
+        anchors.left: qualityListViewTwo.left
+        anchors.verticalCenter: scrollbar.verticalCenter
+        width: 11
+        height: 17
+        source: "qrc:/images/images/left.png"
+    }
+    Image {
+        id: scrollRight
+        anchors.right: qualityListViewTwo.right
+        anchors.verticalCenter: scrollbar.verticalCenter
+        width: 11
+        height: 17
+        source: "qrc:/images/images/right.png"
     }
     Component {
         id: qualityListViewTwoDelegate
@@ -413,7 +468,7 @@ Item {
         anchors.left: back.right
         anchors.leftMargin: 20
         anchors.top: qualityListViewTwo.bottom
-        anchors.topMargin: 20
+        anchors.topMargin: 50
         spacing: 30
         CButton {
             width: (qualityListViewTwo.width - 90) / 4
@@ -436,7 +491,6 @@ Item {
         id: bottomText
         anchors.left: qualityListViewTwo.left
         anchors.top: selectButton.bottom
-        anchors.topMargin: 10
         font.family: "arial"
         font.pointSize: 16
         color: "white"
@@ -501,7 +555,6 @@ Item {
         anchors.left: leftTextList.right
         anchors.leftMargin: 30 //qualityListViewTwo.width / 4 * 3
         anchors.top: selectButton.bottom
-        anchors.topMargin: 10
         font.family: "arial"
         font.pointSize: 16
         color: "white"

@@ -9,7 +9,6 @@ Item {
     id: viewLib
     property int selectIndx: -1
     property int count: partTitleModel.count
-
     function shrinkGetValue(index1,index2)
     {
         if (index2 == 0 )
@@ -68,6 +67,7 @@ Item {
                             part.backgroundItem.source = "qrc:/images/images/icon-bg.png"
                             headRepeater.model = partTitleModel
                             viewLib.count = partTitleModel.count
+                            button2.x = 0
                             listView.model = partModel
                         }
                         else {
@@ -125,6 +125,7 @@ Item {
                             splice.backgroundItem.source = "qrc:/images/images/icon-bg.png"
                             headRepeater.model = spliceTitleModel
                             viewLib.count = spliceTitleModel.count
+                            button2.x = 0
                             listView.model = spliceModel
                         }
                         else {
@@ -178,6 +179,7 @@ Item {
                             wire.backgroundItem.source = "qrc:/images/images/icon-bg.png"
                             headRepeater.model = wireTitleModel
                             viewLib.count = wireTitleModel.count
+                            button2.x = 0
                             listView.model = wireModel
                         }
                         else {
@@ -230,6 +232,7 @@ Item {
                             shrink.backgroundItem.source = "qrc:/images/images/icon-bg.png"
                             headRepeater.model = shrinkTitleModel
                             viewLib.count = shrinkTitleModel.count
+                            button2.x = 0
                             listView.model = shrinkModel
                         }
                         else {
@@ -550,7 +553,7 @@ Item {
         Rectangle {
             id: button2
             anchors.top: parent.top
-            x: 0
+            x: viewLib.buttonX
             width: scrollbar2.width / headTitle.width * scrollbar2.width
             height: 17
             color: "#ccbfbf"
@@ -565,6 +568,7 @@ Item {
                 drag.maximumX: scrollbar2.width - button2.width
             }
             onXChanged: {
+                console.log("1111111111111111",button2.x)
                 listView.anchors.leftMargin = -button2.x/scrollbar2.width*headTitle.width + 20
                 headTitle.anchors.leftMargin = -button2.x/scrollbar2.width*headTitle.width + 20
             }
