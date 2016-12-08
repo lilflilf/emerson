@@ -7,7 +7,7 @@
 #include "m10definitions.h"
 using namespace std;
 
-#define IApreset0  0x8000
+#define IAPRESET0  0x8000
 
 enum AuxSubCommand{
     DO_AUX1_OFF = 1,        //0x01
@@ -42,10 +42,10 @@ enum ACTIONMODE{
 //Data from the IA is sent via Intel hex strings
 struct INTELhexRECORD{
    int Count;                 //     First byte
-   long Address;              //     2 bytes, big endian address
-   int RecordType;            //     1 byte
-   int ByteData[32];          //     0 to 32 bytes as data
-   int CheckSum;              //     Last byte
+   unsigned short Address;              //     2 bytes, big endian address
+   unsigned char RecordType;            //     1 byte
+   char ByteData[32];          //     0 to 32 bytes as data
+   char CheckSum;              //     Last byte
 };
 
 struct QualWindow{
@@ -293,6 +293,8 @@ enum IACommands{
 
 class M102IA
 {
+private:
+    INTELhexRECORD hexRecord;
 public:
     int CalibHeight;
     int OpenChkHeight;
@@ -358,20 +360,19 @@ public:
     QString IAstructure;
 
     QString OutStructure;
-    INTELhexRECORD hexRecord;
 private:
     void PackHexRecord();
     void SetHighByte(int ByteNo, unsigned short Data);
     void SetLowByte(int ByteNo, unsigned short Data);
     void LittleEndianWord(int HighByte, unsigned short Data);
-    void sndPreset2IA(int PresetNo);
+
 public:
     void Generate_Beep(int BeepTime = 100);
     void HexLineCheck(QString HexLineData, bool &HexLineFlag);
     void HexLineBufferCheck(QString InputLine);
 
     char MakeHexNibble(int InNumber);
-    QString MakeHexByte(int InNumber);
+    QString MakeHexByte(unsigned char InNumber);
     QString MakeHexWord(int InNumber);
     void IACommand(IACommands CommandNumber, int SimNo = 0);
     void SendIACommand(IACommands CommandNumber, int CommandData);
@@ -386,7 +387,8 @@ public:
     bool SetIAWidth(int WidthSet = -1, bool SettingCheck = true);
     void CheckIAControl();
     void SendCommandData(int CommandData);
-    void SendCommandSetRunMode(int CommandData);
+    bool SendCommandSetRunMode(int CommandData);
+    void SendPresetToIA(int PresetNo);
     bool WaitForResponseAfterSent(int TimeOut = 3000, bool *CheckResponseFlag = NULL);
 public:
     static M102IA* Instance();

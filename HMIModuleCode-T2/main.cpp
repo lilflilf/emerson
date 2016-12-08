@@ -46,7 +46,9 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("maintenanceLogModel",hmiAdaptor->maintenanceLogModel);
 
 
-    DataBaseTest *_TestPtr = new DataBaseTest();
+//    DataBaseTest *_TestPtr = new DataBaseTest();
+
+
 //    _TestPtr->TestInsertOneRecordIntoWireTable();
 //    _TestPtr->TestQueryOnlyUseFieldWeldResult();
 //    _TestPtr->TestMapJsonToString();

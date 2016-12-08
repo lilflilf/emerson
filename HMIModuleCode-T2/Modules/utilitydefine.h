@@ -39,7 +39,7 @@
 
 #define MAXPREHEIGHT     1500               //mm * 100
 #define MAXHEIGHT        1500               //mm * 100
-#define MAXTRIGPRESSURE  MAXWELDPRESSURE    //PSI * 10
+#define MAXTRIGPRESSURE  500                //PSI * 10
 #define MAXABDELAY       50                 //Seconds * 100
 #define MAXABDURATION    200                //Seconds * 100
 #define MAXPARTCOUNT     30000              //Pieces

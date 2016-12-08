@@ -141,33 +141,66 @@ M102IA::M102IA()
     memset(hexRecord.ByteData,0,sizeof(hexRecord.ByteData));          //     0 to 32 bytes as data
     hexRecord.CheckSum = 0;
 }
+
 //Following Private Functions
+//Sends data stored in hexRecord to the IA
 void M102IA::PackHexRecord()
 {
-    if(RawDataGraph != 0)
-        delete []RawDataGraph;
+    int i = 0;
+    QString SendStr;
+    unsigned char Abyte;
+    hexRecord.Count = 0;
+    for(i = 0; i < 16; i++)
+    {
+        if(hexRecord.ByteData[i] != -1)
+            hexRecord.Count++;
+        else
+            break;
+    }
+    SendStr = ":";
+    SendStr += MakeHexByte(hexRecord.Count);
+
+    hexRecord.CheckSum = hexRecord.Count;
+    //High part of address
+    //Caution: Vbasic is doing something that requires these operations
+    Abyte = (unsigned char)(hexRecord.Address >> 8);
+    hexRecord.CheckSum += Abyte;
+    SendStr += MakeHexByte(Abyte);
+    //Low part of address
+    Abyte = (unsigned char)(hexRecord.Address & 0x00ff);
+    hexRecord.CheckSum += Abyte;
+    SendStr += MakeHexByte(Abyte);
+
+    hexRecord.CheckSum += hexRecord.RecordType;
+    SendStr += MakeHexByte(hexRecord.RecordType);
+    for (i = 0; i< hexRecord.Count; i++)
+    {
+        hexRecord.CheckSum += hexRecord.ByteData[i];
+        SendStr += MakeHexByte(hexRecord.ByteData[i]);
+    }
+    hexRecord.CheckSum = (0 - hexRecord.CheckSum) & 0xFF;
+    SendStr += MakeHexByte(hexRecord.CheckSum);
+    OutStructure += (SendStr + "\r");
 }
 
-//void M102IA::SetHighByte(int ByteNo, unsigned short Data)
-//{
+void M102IA::SetHighByte(int ByteNo, unsigned short Data)
+{
+    //Set a byte in the hex record to the high part of Data
+    hexRecord.ByteData[ByteNo] = (Data >> 8) & 0xff;
+}
 
-//}
+void M102IA::SetLowByte(int ByteNo, unsigned short Data)
+{
+    //Set a byte in the hex record to the low part of Data
+    hexRecord.ByteData[ByteNo] = Data & 0xff;
+}
 
-//void M102IA::SetLowByte(int ByteNo, unsigned short Data)
-//{
-
-//}
-
-//void M102IA::LittleEndianWord(int HighByte, unsigned short Data)
-//{
-
-//}
-
-//void M102IA::sndPreset2IA(int PresetNo)
-//{
-
-//}
-
+void M102IA::LittleEndianWord(int HighByte, unsigned short Data)
+{
+    //Set a short of data into the hex structure
+    SetLowByte(HighByte, Data);
+    SetHighByte(HighByte + 1, Data);
+}
 
 //Following is the Public Functions
 void M102IA::Generate_Beep(int BeepTime)
@@ -268,7 +301,7 @@ char M102IA::MakeHexNibble(int InNumber)
     return Result;
 }
 
-QString M102IA::MakeHexByte(int InNumber)
+QString M102IA::MakeHexByte(unsigned char InNumber)
 {
     InNumber = InNumber & 0xFF;
     QByteArray Buffer(2, 0);
@@ -433,7 +466,7 @@ void M102IA::SendIACommand(IACommands CommandNumber, int CommandData)
     for (i = 0; i < (OutStr.length() / 2); i++)
     {
           strTemp = OutStr.mid(2 * i + 1, 2);
-          SumCheck = SumCheck + strTemp.toInt(&bResult, 16);
+          SumCheck += strTemp.toInt(&bResult, 16);
     }
     SumCheck = (0 - SumCheck) & 0xFF;
     OutStr = OutStr + MakeHexByte(SumCheck) + "\r\n";
@@ -1052,4 +1085,98 @@ bool M102IA::SetIAWidth(int WidthSet, bool SettingCheck)
     _M10runMode->WidthError = false;
     bResult = true;
     return bResult;
+}
+
+bool M102IA::SendCommandSetRunMode(int CommandData)
+{
+    M2010   *_M2010   = M2010::Instance();
+    SendIACommand(IAComSetRunMode, CommandData);
+    WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.FootPadelDATA);
+    return _M2010->ReceiveFlags.FootPadelDATA;
+}
+
+void M102IA::SendPresetToIA(int PresetNo)
+{
+    int NameLen = -1;
+    ModRunSetup *_ModRunSetup = ModRunSetup::Instance();
+    unsigned short PresetAddress;
+    if(PresetNo != 0)
+        return;
+    if(PresetNo == 0)
+        PresetAddress = IAPRESET0;
+    SendIACommand(IAAmpStepParameters, 0);
+
+    memset(hexRecord.ByteData, 0, sizeof(hexRecord.ByteData));
+    //1st record
+    hexRecord.Address = PresetAddress;
+    hexRecord.RecordType = 0;
+    LittleEndianWord(0, IAsetup.ModeFlags);
+    LittleEndianWord(2, IAsetup.Energy);
+    LittleEndianWord(4, IAsetup.Width);
+    LittleEndianWord(6, IAsetup.WeldPressure);
+    LittleEndianWord(8, IAsetup.TriggerPressure);
+    LittleEndianWord(10, IAsetup.Amplitude);
+    LittleEndianWord(12, IAsetup.SqueezeTime);
+    LittleEndianWord(14, IAsetup.Time.min);
+    PackHexRecord();
+    //2nd record
+    hexRecord.Address = PresetAddress + 0x10;
+    LittleEndianWord(0, IAsetup.Time.max);
+    LittleEndianWord(2, IAsetup.Power.min);
+    LittleEndianWord(4, IAsetup.Power.max);
+    LittleEndianWord(6, IAsetup.Preheight.min);
+    LittleEndianWord(8, IAsetup.Preheight.max);
+    LittleEndianWord(10, IAsetup.Height.min);
+    LittleEndianWord(12, IAsetup.Height.max);
+    LittleEndianWord(14, IAsetup.PartCounter);
+    PackHexRecord();
+    //3rd record
+    //Note: Sending this record triggers the controller function SaveData()
+    //to execute SetUpNextWeld() and multiply Time.min and Time.max by 10.
+    //See the controller code V0901
+    hexRecord.Address = PresetAddress + 0x20;
+    LittleEndianWord(0, IAsetup.StopCount);
+    LittleEndianWord(2, IAsetup.HoldTime);
+    LittleEndianWord(4, IAsetup.ABDelay);
+    LittleEndianWord(6, IAsetup.ABDuration);
+
+    //Constuct hex string(s) data from part name
+    NameLen = IAsetup.PartName.size();
+    if (NameLen > PartNameLength) NameLen = PartNameLength;
+    for (int i = 0; i < NameLen; i++)
+    {
+        QString str = IAsetup.PartName.mid(i, 1);
+        QByteArray Buffer = OutStructure.toLatin1();
+        hexRecord.ByteData[i + 8] = Buffer.at(0);
+        if (i == 7) break; //String is full
+    }
+    if (NameLen < 8) hexRecord.ByteData[NameLen + 8] = 0;
+    if (NameLen < 7) hexRecord.ByteData[NameLen + 9] = -1;
+    PackHexRecord();
+    //Continue the name into next record if needed
+    if (NameLen >= 8){
+        hexRecord.Address = PresetAddress + 0x30;
+
+        for(int i = 8; i < NameLen; i++)
+        {
+            QString str = IAsetup.PartName.mid(i, 1);
+            QByteArray Buffer = OutStructure.toLatin1();
+            hexRecord.ByteData[i - 8] = Buffer.at(0);
+        }
+
+        //Terminate the smaller strings
+        if(NameLen < 19) hexRecord.ByteData[NameLen - 7] = 0;
+        //Clear the balance of the hex record
+        if (NameLen == PartNameLength)
+            hexRecord.ByteData[12] = -1;
+        else
+            hexRecord.ByteData[NameLen - 6] = -1;
+        PackHexRecord();
+    }
+
+    if (_ModRunSetup->OfflineModeEnabled == false)
+    {
+        QByteArray Buffer = OutStructure.toLatin1();
+        BransonSerial::IAportSend(Buffer);
+    }
 }
