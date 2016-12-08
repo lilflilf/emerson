@@ -115,7 +115,7 @@ void HmiAdaptor::advancedMaintenanceExecute(int code)
 
 void HmiAdaptor::maintenanceCountExecute(QString code)
 {
-    if (code == "_Recll")
+    if (code == "_Recall")
         maintenanceCount->_recall();
 }
 
@@ -273,6 +273,35 @@ QString HmiAdaptor::getMaintenanceVerson(int index)
         break;
     case 3:
         value = maintenanceCount->CurrentMaintenanceCounter.ActuatorModuleNumber;
+        break;
+    default:
+        break;
+    }
+    return value;
+}
+
+QString HmiAdaptor::getSoftVerson(int index)
+{
+    QString value = "";
+    InterfaceClass* _Interface = InterfaceClass::Instance();
+    switch (index) {
+    case 0:
+        value = _Interface->StatusData.ActuatorPartNumber;
+        break;
+    case 1:
+        value = _Interface->StatusData.ActuatorSerialNumber;
+        break;
+    case 2:
+    case 3:
+        break;
+    case 4:
+        value = _Interface->CurrentVersions.ControllerVersion;
+        break;
+    case 5:
+        value = _Interface->CurrentVersions.SoftwareVersion;
+        break;
+    case 6:
+        value = _Interface->CurrentVersions.ActuatorVersion;
         break;
     default:
         break;

@@ -36,7 +36,7 @@ Item {
         font.family: "arial"
         font.pixelSize: 24
         color: "white"
-        text: qsTr("Actuator Part Number: ")+hmiAdaptor.getMaintenanceVerson(0)
+        text: qsTr("Actuator Part Number: ")+hmiAdaptor.getSoftVerson(0)
     }
     Text {
         id: serialNumber
@@ -46,7 +46,7 @@ Item {
         font.family: "arial"
         font.pixelSize: 24
         color: "white"
-        text: qsTr("Actuator Serial Number: ")+hmiAdaptor.getMaintenanceVerson(2)
+        text: qsTr("Actuator Serial Number: ")+hmiAdaptor.getSoftVerson(1)
     }
     Text {
         id: supplyPartNumber
@@ -56,7 +56,7 @@ Item {
         font.family: "arial"
         font.pixelSize: 24
         color: "white"
-        text: qsTr("Power Supply Part Number: xxx-xxx")
+        text: qsTr("Power Supply Part Number:")
     }
     Text {
         id: supplySerialNumber
@@ -66,7 +66,7 @@ Item {
         font.family: "arial"
         font.pixelSize: 24
         color: "white"
-        text: qsTr("Power Supply Serial Number: xxx-xxx")
+        text: qsTr("Power Supply Serial Number:")
     }
     Text {
         id: versionlNumber
@@ -76,7 +76,7 @@ Item {
         font.family: "arial"
         font.pixelSize: 24
         color: "white"
-        text: qsTr("Soft Version Number:")
+        text: qsTr("Software Version Number:")
     }
     Text {
         id: controller
@@ -87,7 +87,7 @@ Item {
         font.family: "arial"
         font.pixelSize: 24
         color: "white"
-        text: qsTr("Controller: xxx-xxx")
+        text: qsTr("Controller: ") + hmiAdaptor.getSoftVerson(4)
     }
     Text {
         id: versaGraphiX
@@ -98,7 +98,7 @@ Item {
         font.family: "arial"
         font.pixelSize: 24
         color: "white"
-        text: qsTr("VersaGraphiX: xxx-xxx")
+        text: qsTr("New HMI: ") + hmiAdaptor.getSoftVerson(5)
     }
     Text {
         id: actuatorModule
@@ -109,6 +109,6 @@ Item {
         font.family: "arial"
         font.pixelSize: 24
         color: "white"
-        text: qsTr("Actuator Module: ")+hmiAdaptor.getMaintenanceVerson(3)
+        text: qsTr("Actuator: ")+hmiAdaptor.getSoftVerson(6)
     }
 }

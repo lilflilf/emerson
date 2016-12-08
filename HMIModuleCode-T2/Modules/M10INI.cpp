@@ -442,17 +442,44 @@ void M10INI::Init_StatusData()
     _Interface->DefaultStatusData.RemoteGraphData = false;
 //    _Interface->StatusData.AntisideSpliceTime = DEFAULTUNLOADTIME; //Default Unload time should be 1.5s
 
-    for(int i = 0; i<= 7; i++)
-    {
-        _Interface->DefaultStatusData.MaintenanceLimits[i] = 0;
-        _Interface->DefaultStatusData.CurrentMaintenanceLimits[i] = 0;
-        _Interface->DefaultStatusData.MaintenanceDateStarted[i] = 0;
-    }
+//    for(int i = 0; i<= 7; i++)
+//    {
+//        _Interface->DefaultStatusData.MaintenanceLimits[i] = 0;
+//        _Interface->DefaultStatusData.CurrentMaintenanceLimits[i] = 0;
+//        _Interface->DefaultStatusData.MaintenanceDateStarted[i] = 0;
+//    }
+    _Interface->DefaultStatusData.MaintenanceLimits[0] = 200000;
+    _Interface->DefaultStatusData.MaintenanceLimits[1] = 400000;
+    _Interface->DefaultStatusData.MaintenanceLimits[2] = 400000;
+    _Interface->DefaultStatusData.MaintenanceLimits[3] = 400000;
+    _Interface->DefaultStatusData.MaintenanceLimits[4] = 400000;
+
+    _Interface->DefaultStatusData.CurrentMaintenanceLimits[0] = 105009;
+    _Interface->DefaultStatusData.CurrentMaintenanceLimits[1] = 15001;
+    _Interface->DefaultStatusData.CurrentMaintenanceLimits[2] = 25111;
+    _Interface->DefaultStatusData.CurrentMaintenanceLimits[3] = 35222;
+    _Interface->DefaultStatusData.CurrentMaintenanceLimits[4] = 35224;
+    _Interface->DefaultStatusData.CurrentMaintenanceLimits[5] = 53098086;
+
+    QDateTime tmp = QDateTime::fromString("10/20/2016","MM/dd/yyyy");
+    _Interface->DefaultStatusData.MaintenanceDateStarted[0] = tmp.toTime_t();
+    tmp = QDateTime::fromString("01/20/2015", "MM/dd/yyyy");
+    _Interface->DefaultStatusData.MaintenanceDateStarted[1] = tmp.toTime_t();
+    tmp = QDateTime::fromString("10/02/2013", "MM/dd/yyyy");
+    _Interface->DefaultStatusData.MaintenanceDateStarted[2] = tmp.toTime_t();
+    tmp = QDateTime::fromString("08/10/2014", "MM/dd/yyyy");
+    _Interface->DefaultStatusData.MaintenanceDateStarted[3] = tmp.toTime_t();
+    tmp = QDateTime::fromString("08/10/2014", "MM/dd/yyyy");
+    _Interface->DefaultStatusData.MaintenanceDateStarted[4] = tmp.toTime_t();
+    tmp = QDateTime::fromString("05/05/2002", "MM/dd/yyyy");
+    _Interface->DefaultStatusData.MaintenanceDateStarted[5] = tmp.toTime_t();
 
     _Interface->DefaultStatusData.ActuatorVersion.clear();
     _Interface->DefaultStatusData.ActuatorPartNumber.clear();
     _Interface->DefaultStatusData.ActuatorSerialNumber.clear();
     _Interface->DefaultStatusData.ActuatorModuleNumber.clear();
+
+    QString str = _Interface->CurrentVersions.ActuatorVersion;
 
     SetDefaultWeldFormula(&_Interface->DefaultStatusData);
     SetDefaultPassword(&_Interface->DefaultStatusData);

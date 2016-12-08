@@ -15,8 +15,13 @@ Item {
     property int selectIndex: -1
     property alias listModel: listView.model
     property bool bIsOnlyOne: false
-    signal signalAddExistSelectClick(var partId, var name)
+    signal signalAddExistSelectClick(int modelId, string name)
     signal signalAddExistCancel()
+
+    ListModel {
+        id: selectList
+    }
+
     Rectangle {
         width: parent.width
         height: parent.height
@@ -134,10 +139,6 @@ Item {
             clip: true
             delegate: listDelegate
         }
-//        list << "PartId" << "PartName" << "DateCreated" << "OperatorName" << "TotalSplices" << "ProcessMode" << "#ofWorkstation" << "#ofSplicesperWorkstation" << "Rows" << "Columns" << "MaxSplicesPerZone";
-//        list << "SpliceId" << "SpliceName" << "DateCreated" << "OperatorName" << "CrossSection" << "TotalWires" << "Verified" << "WeldMode" << "Energy" << "Amplitude"
-//             << "Width" << "TriggerPressure" << "WeldPressure" << "Time+" << "Time-" << "Power+" << "Power-" << "Pre-Height+" << "Pre-Height-" << "Height+" << "Height-" << "count";
-
         Component {
             id: listDelegate
             Item {
@@ -150,7 +151,7 @@ Item {
                     anchors.left: parent.left
                     width: (parent.width-40)/5
                     elide: Text.ElideRight
-                    text: (listModel == spliceModel) ? SpliceName : PartName
+                    text: (listModel == spliceModel) ? SpliceName : (listModel == wireModel) ? WireName : PartName
                     clip: true
                     color: "white"
                     font.pixelSize: 14
@@ -164,7 +165,7 @@ Item {
                     anchors.leftMargin: 10
                     elide: Text.ElideRight
                     width: (parent.width-40)/5
-                    text: (listModel == spliceModel) ? DateCreated : DateCreated
+                    text: (listModel == spliceModel) ? DateCreated : (listModel == wireModel) ? DateCreated : DateCreated
                     clip: true
                     color: "white"
                     font.pixelSize: 14
@@ -178,7 +179,7 @@ Item {
                     anchors.leftMargin: 10
                     width: (parent.width-40)/5
                     elide: Text.ElideRight
-                    text: (listModel == spliceModel) ? TotalWires : TotalSplices
+                    text: (listModel == spliceModel) ? TotalWires : (listModel == wireModel) ? OperatorName : TotalSplices
                     clip: true
                     color: "white"
                     font.pixelSize: 14
@@ -192,7 +193,7 @@ Item {
                     anchors.leftMargin: 10
                     elide: Text.ElideRight
                     width: (parent.width-40)/5
-                    text: (listModel == spliceModel) ? CrossSection : ProcessMode
+                    text: (listModel == spliceModel) ? CrossSection : (listModel == wireModel) ? Color : ProcessMode
                     color: "white"
                     clip: true
                     font.pixelSize: 14
@@ -206,7 +207,7 @@ Item {
                     anchors.leftMargin: 10
                     width: (parent.width-40)/5
                     elide: Text.ElideRight
-                    text: (listModel == spliceModel) ? count : ProcessMode
+                    text: (listModel == spliceModel) ? count : (listModel == wireModel) ? Gauge : ProcessMode
                     color: "white"
                     clip: true
                     font.pixelSize: 14
@@ -221,10 +222,17 @@ Item {
                             selectCheck.checked = !selectCheck.checked
                         } else {
                             if (!backGround.visible) {
+                                selectList.append({"selectNum":index})
                                 selectCount++
                                 backGround.opacity = 0.3
                                 backGround.visible = true
                             } else {
+                                for (var i = 0; i < selectList.count; i++) {
+                                    if (selectList.get(i).selectNum == index) {
+                                        selectList.remove(i)
+                                        break;
+                                    }
+                                }
                                 selectCount--
                                 backGround.opacity = 0
                                 backGround.visible = false
@@ -338,9 +346,17 @@ Item {
             text: bIsOnlyOne ? qsTr("Select") : qsTr("Select(" + selectCount + ")")
             textColor: "white"
             onClicked: {
-                if (selectIndex != -1)
+
+                if (selectIndex != -1) {
                     signalAddExistSelectClick(listModel.getValue(selectIndex,"PartId"),listModel.getValue(selectIndex,"PartName"))
-            }
+                } else if (listModel == spliceModel) {
+                } else if (listModel == wireModel) {
+                    for (var i = 0; i < selectList.count; i++) {
+                        var num = selectList.get(i).selectNum
+                        signalAddExistSelectClick(listModel.getValue(num,"WireId"),listModel.getValue(num,"WireName"))
+                    }
+                }
+             }
         }
 
         CButton {
