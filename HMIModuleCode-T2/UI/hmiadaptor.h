@@ -18,6 +18,7 @@
 #include "Interface/Settings/WeldDefaults.h"
 #include "Interface/Settings/DataCommunication.h"
 
+#define TOPATH "C:/BransonData/Library/"
 #define HMI_PRINT (qDebug() <<"HMI adapter:" << __FILE__ << __FUNCTION__ << __LINE__ << ": ")
 
 class HmiAdaptor : public QObject
@@ -84,6 +85,7 @@ public:
     Q_INVOKABLE bool login(QString passwd);
     Q_INVOKABLE void calibrationMaintenanceExecute(int code);
     Q_INVOKABLE int randPoint();
+    Q_INVOKABLE QString copyFileToPath(QString source);
 
     /********permissionsetting func**************/
     Q_INVOKABLE bool permissionsettingExecute(QString code);

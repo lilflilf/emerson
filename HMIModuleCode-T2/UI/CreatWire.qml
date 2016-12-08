@@ -9,6 +9,7 @@ Item {
     width: Screen.width
     height: Screen.height
     signal signalSaveSplice()
+    property bool crossSection: true
     property int selectIndex: 0
     property bool detailIsChang: true
     property bool bIsStep: false
@@ -80,6 +81,9 @@ Item {
                     else if (type == "sub")
                         totalGauge-= value
                     spliceDetailsTip2.text = spliceModel.getString("CrossSection",totalGauge)
+                }
+                onWireDetailHide: {
+                    forground.visible = true
                 }
             }
 
@@ -892,7 +896,28 @@ Item {
                 anchors.right: parent.right
                 anchors.rightMargin: 10
                 onClicked: {
+// QString type,QString wireName,int wireId,int operatorId,QString color,QString stripeColor,QString stripeType,QString gauge,int wireType,int side,int verside,int position
+                    var wireType = typeSwitch.state == "left" ? 0 : 1
+                    var side = wireDirection.state == "left" ? 0 : 1
+                    var verside = basicSwitch.state == "left" ? 0 : 1
+                    var positionside;
+                    if (topRadio.checked)
+                        positionside = 0;
+                    else if (midRadio.checked)
+                        positionside = 1;
+                    else if (bottomRadio.checked)
+                        positionside = 2;
+                    if (spliceDetailsItem.selectWireId == -1)
+                    {
+                        //insert
+//                        wireModel.insertValueToTable("insert",-1,1,rectcolor.color,itemStripe.color,itemStripe.stripeType,edit2.inputText,wireType,side,verside,positionside)
+                    }
+                    else
+                    {
+                        //update
+//                        wireModel.insertValueToTable("update",spliceDetailsItem.selectWireId,1,rectcolor.color,itemStripe.color,itemStripe.stripeType,edit2.inputText,wireType,side,verside,positionside)
 
+                    }
                 }
             }
 
@@ -1186,6 +1211,13 @@ Item {
             font.family: "arial"
             color: "white"
             opacity: 0.5
+            onTextChanged: {
+                if (crossSection)
+                {
+                    spliceModel.calculateSpliceData()
+                    initSettings()
+                }
+            }
         }
 
         SpliceDetails {
@@ -1334,6 +1366,8 @@ Item {
             }
             ListModel {
                 id: weldListModel
+                property var model1: -1
+                property var model2: -1
                 Component.onCompleted: {
                     weldListModel.append({"buttonName":"Energy"})
                     weldListModel.append({"buttonName":"Time"})
@@ -1342,6 +1376,7 @@ Item {
                     weldListModel.append({"buttonName":"Step-Energy"})
                     weldListModel.append({"buttonName":"Step-Time"})
                     weldListModel.append({"buttonName":"Step-Power"})
+
                 }
             }
 
@@ -1370,7 +1405,7 @@ Item {
                             id: weldModelCheck
                             exclusiveGroup: index < 4 ? tabPositionGroup : tabPositionGroup2
                             visible: false
-                            checked: index == 0 ? true : false
+                            checked: index < 4 ? spliceModel.getWeldMode("weld",index) : spliceModel.getWeldMode("step",index - 4)  //index == 0 ? true : false
                             onCheckedChanged: {
                                 if (weldModelCheck.checked)
                                     weldModelButton.backgroundComponent = buttonBackBlue
@@ -1379,13 +1414,21 @@ Item {
                             }
                         }
                         onClicked: {
-                            stepSetText =  buttonName
+                            if (index >=4 )
+                                stepSetText =  buttonName
                             weldModelCheck.checked = !weldModelCheck.checked
                             if (index >= 4 && weldModelCheck.checked) {
                                 bIsStep = true
-                            } else {
-                                bIsStep = false
+                                weldListModel.model2 = index - 4
                             }
+                            else if (index >= 4 && !weldModelCheck.checked){
+                                bIsStep = false
+                                weldListModel.model2 = -1
+                            }
+                            else if (index < 4 && weldModelCheck.checked)
+                                weldListModel.model1 = index
+                            else if (index < 4 && !weldModelCheck.checked)
+                                weldListModel.model1 = -1
                         }
                     }
                 }
@@ -1403,10 +1446,10 @@ Item {
             ListModel {
                 id: weldSettingModel
                 Component.onCompleted: {
-                    weldSettingModel.append({"headText":"Pre Burst:","textValue":"0.00s"})
-                    weldSettingModel.append({"headText":"Hold Time:","textValue":"0.00s"})
-                    weldSettingModel.append({"headText":"After Burst:","textValue":"0.00s"})
-                    weldSettingModel.append({"headText":"Squeeze Time:","textValue":"0.00s"})
+                    weldSettingModel.append({"headText":"Pre Burst:","textValue":spliceModel.getStructValue("Pre Burst","current"),"maxText":spliceModel.getStructValue("Pre Burst","max"),"minText":spliceModel.getStructValue("Pre Burst","min")})
+                    weldSettingModel.append({"headText":"Hold Time:","textValue":spliceModel.getStructValue("Hold Time","current"),"maxText":spliceModel.getStructValue("Hold Time","max"),"minText":spliceModel.getStructValue("Hold Time","min")})
+                    weldSettingModel.append({"headText":"After Burst:","textValue":spliceModel.getStructValue("After Burst","current"),"maxText":spliceModel.getStructValue("After Burst","max"),"minText":spliceModel.getStructValue("After Burst","min")})
+                    weldSettingModel.append({"headText":"Squeeze Time:","textValue":spliceModel.getStructValue("Squeeze Time","current"),"maxText":spliceModel.getStructValue("Squeeze Time","max"),"minText":spliceModel.getStructValue("Squeeze Time","min")})
                 }
             }
             Grid {
@@ -1458,14 +1501,18 @@ Item {
                             onInputFocusChanged: {
                                 if (inputText.inputFocus) {
                                     weldSetting.weldSetVisible = true
+                                    widthSetting.widthSetVisible = false
+                                    heightSetting.heightSetVisible = false
+                                    stepTimeSet.visible = false
+
                                     creatWire.selectIndex = index
                                     backGround.visible = true
                                     backGround.opacity = 0.5
                                     keyNum.visible = true
                                     keyNum.titleText = headText
                                     keyNum.currentValue = textValue
-                                    keyNum.minvalue = "0.00mm"
-                                    keyNum.maxvalue = "20.00mm"
+                                    keyNum.minvalue = minText
+                                    keyNum.maxvalue = maxText
                                 }
                             }
                         }
@@ -1486,8 +1533,8 @@ Item {
             ListModel {
                 id: widthModel
                 Component.onCompleted: {
-                    widthModel.append({"widthText":"Displayed:","textValue":"0.00mm"})
-                    widthModel.append({"widthText":"Actual:","textValue":"0.00mm"})
+                    widthModel.append({"widthText":"Displayed:","textValue":"0.00mm","maxText":"","minText":""})
+                    widthModel.append({"widthText":"Actual:","textValue":spliceModel.getStructValue("ActualWidth","current"),"maxText":spliceModel.getStructValue("ActualWidth","max"),"minText":spliceModel.getStructValue("ActualWidth","min")})
                 }
             }
             Grid {
@@ -1535,16 +1582,22 @@ Item {
                             clip: true
                             inputText: qsTr(textValue)
                             onInputFocusChanged: {
+                                if (widthText == "Displayed:")
+                                    return
                                 if (widthValue.inputFocus) {
                                     widthSetting.widthSetVisible = true
+                                    weldSetting.weldSetVisible = false
+                                    heightSetting.heightSetVisible = false
+                                    stepTimeSet.visible = false
+
                                     creatWire.selectIndex = index
                                     backGround.visible = true
                                     backGround.opacity = 0.5
                                     keyNum.visible = true
                                     keyNum.titleText = widthText
                                     keyNum.currentValue = textValue
-                                    keyNum.minvalue = "0.00mm"
-                                    keyNum.maxvalue = "20.00mm"
+                                    keyNum.minvalue = minText
+                                    keyNum.maxvalue = maxText
                                 }
                             }
                         }
@@ -1565,8 +1618,8 @@ Item {
             ListModel {
                 id: heightModel
                 Component.onCompleted: {
-                    heightModel.append({"heightText":"Displayed:","textValue":"0.00mm"})
-                    heightModel.append({"heightText":"Actual:","textValue":"0.00mm"})
+                    heightModel.append({"heightText":"Displayed:","textValue":"0.00mm","maxText":"","minText":""})
+                    heightModel.append({"heightText":"Actual:","textValue":spliceModel.getStructValue("ActualHeight","current"),"maxText":spliceModel.getStructValue("ActualHeight","max"),"minText":spliceModel.getStructValue("ActualHeight","min")})
                 }
             }
             Grid {
@@ -1614,16 +1667,22 @@ Item {
                             clip: true
                             inputText: qsTr(textValue)
                             onInputFocusChanged: {
+                                if (heightText == "Displayed:")
+                                    return
                                 if (heightValue.inputFocus) {
                                     heightSetting.heightSetVisible = true
+                                    weldSetting.weldSetVisible = false
+                                    widthSetting.widthSetVisible = false
+                                    stepTimeSet.visible = false
+
                                     creatWire.selectIndex = index
                                     backGround.visible = true
                                     backGround.opacity = 0.5
                                     keyNum.visible = true
                                     keyNum.titleText = heightText
                                     keyNum.currentValue = textValue
-                                    keyNum.minvalue = "0.00mm"
-                                    keyNum.maxvalue = "20.00mm"
+                                    keyNum.minvalue = minText
+                                    keyNum.maxvalue = maxText
                                 }
                             }
                         }
@@ -1633,9 +1692,9 @@ Item {
             ListModel {
                 id: thirdSwitchModel
                 Component.onCompleted: {
-                    thirdSwitchModel.append({"thirdSwitchText":"Anti-Side:"})
-                    thirdSwitchModel.append({"thirdSwitchText":"Cutf Off:"})
-                    thirdSwitchModel.append({"thirdSwitchText":"Shrink Tube:"})
+                    thirdSwitchModel.append({"thirdSwitchText":"Anti-Side:","switchState":spliceModel.getStructValue("Anti-Side","current")})
+                    thirdSwitchModel.append({"thirdSwitchText":"Cutf Off:","switchState":spliceModel.getStructValue("Cutf Off","current")})
+                    thirdSwitchModel.append({"thirdSwitchText":"Insulation:","switchState":spliceModel.getStructValue("Insulation","current")})
                 }
             }
             Column {
@@ -1674,7 +1733,7 @@ Item {
                             height: parent.height
                             textLeft: qsTr("ON")
                             textRight: qsTr("OFF")
-                            state: "left"
+                            state: switchState
                             clip: true
                         }
                     }
@@ -1690,7 +1749,7 @@ Item {
                 verticalAlignment: Qt.AlignVCenter
                 font.pointSize: 16
                 font.family: "arial"
-                text: qsTr("unload Time:")
+                text: qsTr("Unload Time:")
                 color: "white"
                 clip: true
             }
@@ -1705,7 +1764,7 @@ Item {
 //                inputHeight: parent.height*0.12
 //                inputColor: "white"
                 clip: true
-                inputText: qsTr("0.00mm")
+                inputText: spliceModel.getStructValue("Unload Time","current")  //qsTr("0.00mm")
                 onInputFocusChanged: {
                     if (loadValue.inputFocus) {
                         backGround.visible = true
@@ -1713,8 +1772,8 @@ Item {
                         keyNum.visible = true
                         keyNum.titleText = loadName.text
                         keyNum.currentValue = loadValue.inputText
-                        keyNum.minvalue = "0.00mm"
-                        keyNum.maxvalue = "20.00mm"
+                        keyNum.minvalue = spliceModel.getStructValue("Unload Time","min")
+                        keyNum.maxvalue = spliceModel.getStructValue("Unload Time","max")
                     }
                 }
             }
@@ -1728,7 +1787,7 @@ Item {
                 verticalAlignment: Qt.AlignVCenter
                 font.pointSize: 16
                 font.family: "arial"
-                text: qsTr("unload Time:")
+                text: qsTr("Load Time:")
                 color: "white"
                 clip: true
             }
@@ -1743,7 +1802,7 @@ Item {
 //                inputHeight: parent.height*0.12
 //                inputColor: "white"
                 clip: true
-                inputText: qsTr("0.00mm")
+                inputText: spliceModel.getStructValue("Load Time","current") //qsTr("0.00mm")
                 onInputFocusChanged: {
                     if (loadValue2.inputFocus) {
                         backGround.visible = true
@@ -1751,8 +1810,8 @@ Item {
                         keyNum.visible = true
                         keyNum.titleText = loadName2.text
                         keyNum.currentValue = loadValue2.inputText
-                        keyNum.minvalue = "0.00mm"
-                        keyNum.maxvalue = "20.00mm"
+                        keyNum.minvalue = spliceModel.getStructValue("Load Time","min")
+                        keyNum.maxvalue = spliceModel.getStructValue("Load Time","max")
                     }
                 }
             }
@@ -1764,7 +1823,7 @@ Item {
                 width: (parent.width/2-40)/3
                 height: thirdSwitch.height/3-6
                 verticalAlignment: Qt.AlignVCenter
-                text: qsTr("Insulation:")
+                text: qsTr("")
                 color: "white"
                 font.pointSize: 16
                 font.family: "arial"
@@ -1775,7 +1834,7 @@ Item {
                 anchors.left: instulationText.right
                 width: parent.width/4-20
                 height: parent.height*0.12
-                text: qsTr("Insulation")
+                text: qsTr("Insulation Setting")
                 onClicked: {
                     backGround.visible = true
                     backGround.opacity = 0.5
@@ -1855,6 +1914,22 @@ Item {
         height: 525
         source: "qrc:/images/images/dialogbg.png"
         visible: false
+        onVisibleChanged: {
+            if (visible)
+            {
+                stepSetModel.clear()
+                if (stepSetText == "Step-Energy")
+                    stepSetModel.append({"topText":"Step-Energy","centerText":spliceModel.getStructValue("Step-Energy","current"),"maxText":spliceModel.getStructValue("Step-Energy","max"),"minText":spliceModel.getStructValue("Step-Energy","min")})
+                else if (stepSetText == "Step-Time")
+                    stepSetModel.append({"topText":"Step-Time","centerText":spliceModel.getStructValue("Step-Time","current"),"maxText":spliceModel.getStructValue("Step-Time","max"),"minText":spliceModel.getStructValue("Step-Time","min")})
+                else if (stepSetText == "Step-Power")
+                    stepSetModel.append({"topText":"Step-Power","centerText":spliceModel.getStructValue("Step-Power","current"),"maxText":spliceModel.getStructValue("Step-Power","max"),"minText":spliceModel.getStructValue("Step-Power","min")})
+                stepSetModel.append({"topText":"Amplitude A","centerText":spliceModel.getStructValue("Amplitude A","current"),"maxText":spliceModel.getStructValue("Amplitude A","max"),"minText":spliceModel.getStructValue("Amplitude A","min")})
+                stepSetModel.append({"topText":"Amplitude B","centerText":spliceModel.getStructValue("Amplitude B","current"),"maxText":spliceModel.getStructValue("Amplitude B","max"),"minText":spliceModel.getStructValue("Amplitude B","min")})
+            }
+        }
+
+
         Text {
             id: stepTitle
             anchors.top: parent.top
@@ -1867,11 +1942,6 @@ Item {
         }
         ListModel {
             id: stepSetModel
-            Component.onCompleted: {
-                stepSetModel.append({"topText":"Step Point","centerText":"0.00s"})
-                stepSetModel.append({"topText":"Amplitude A","centerText":"1μm"})
-                stepSetModel.append({"topText":"Amplitude B","centerText":"2μm"})
-            }
         }
         Row {
             id: stepRow
@@ -1896,8 +1966,8 @@ Item {
                         keyNum.visible = true
                         keyNum.titleText = topText
                         keyNum.currentValue = centerText
-                        keyNum.minvalue = "0"
-                        keyNum.maxvalue = "100"
+                        keyNum.minvalue = minText
+                        keyNum.maxvalue = maxText
                     }
                 }
             }
@@ -1981,6 +2051,8 @@ Item {
                     keyNum.tempValue = ""
                     return
                 } else {
+                    if (repeater.model == settingsModel)
+                        crossSection = false
                     repeater.model.set(creatWire.selectIndex,{"bottomText":keyNum.inputText})
                     repeater.itemAt(creatWire.selectIndex).localbordercolor = "#0079c1"
                 }

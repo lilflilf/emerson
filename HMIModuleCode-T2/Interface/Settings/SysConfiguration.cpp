@@ -86,7 +86,7 @@ Status_Data &Status_Data::operator= (const Status_Data &StatusDataObj)
     }
 
 //    for (int i = 0; i< WDSI_SIZE; i++)
-//        Obj.WeldSettingsDefault4Build[i] = StatusDataObj.WeldSettingsDefault4Build[i];
+//        this->WeldSettingsDefault4Build[i] = StatusDataObj.WeldSettingsDefault4Build[i];
 //    Obj.WeldSettingDefaultWeldMode = StatusDataObj.WeldSettingDefaultWeldMode;
 //    Obj.WeldSettingDefaultTrigPress = StatusDataObj.WeldSettingDefaultTrigPress;
 //    Obj.AutoStartLastPart = StatusDataObj.AutoStartLastPart;

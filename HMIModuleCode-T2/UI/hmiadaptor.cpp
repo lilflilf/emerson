@@ -2,6 +2,10 @@
 #include <qdebug.h>
 #include <QSqlQuery>
 #include <QSqlError>
+#include <QFile>
+#include <QAxObject>
+#include <QAxWidget>
+
 HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
 {
     workOrderModel = new WorkOrderModel(this);
@@ -95,6 +99,7 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
 //    query.exec();
 //    qDebug() << query.lastError();
 //    db.close();
+    getPoint();
 }
 
 void HmiAdaptor::openFileDialog()
@@ -110,7 +115,7 @@ void HmiAdaptor::advancedMaintenanceExecute(int code)
 
 void HmiAdaptor::maintenanceCountExecute(QString code)
 {
-    if (code == "_Recll")
+    if (code == "_Recall")
         maintenanceCount->_recall();
 }
 
@@ -422,6 +427,32 @@ void HmiAdaptor::calibrationMaintenanceExecute(int code)
 int HmiAdaptor::randPoint()
 {
     return qrand() % 40;
+}
+
+QString HmiAdaptor::copyFileToPath(QString source)
+{
+    bool reb;
+    if (source.contains("file:///"))
+        source = source.mid(8);
+    QString toPath = TOPATH + QDateTime::currentDateTime().toString("yyMMddhhmmss") + ".png";
+    reb = QFile::copy(source,toPath);
+    if (reb)
+        return toPath;
+    return "";
+}
+
+QString HmiAdaptor::getPoint()
+{
+//    QAxWidget excel("Excel.Application");
+//    QAxObject *workbooks;
+//    workbooks->dynamicCall("Open (const QString&)", QString("C:\BransonData\point.xlsx"));
+//    QAxObject * worksheets = workbooks->querySubObject("WorkSheets");
+//    int intCount = worksheets->property("Count").toInt();
+//    QAxObject * worksheetss = workbooks->querySubObject("Worksheets(int)", 1);
+//    QAxObject * range = worksheetss->querySubObject("Cells(int,int)", 1, 1 );
+//    int val = range->property("Value").toInt();
+//    qDebug() << "getPoint" << val;
+    return "";
 }
 
 

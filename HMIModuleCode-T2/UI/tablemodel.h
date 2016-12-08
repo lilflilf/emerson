@@ -95,10 +95,12 @@ public slots:
     Q_INVOKABLE QVariant getValue(int index, QString key); // table
     Q_INVOKABLE void removeValue(int id, QString name);
     Q_INVOKABLE int count();
+    Q_INVOKABLE void calculateSpliceData();
 
     Q_INVOKABLE QString getStructValue(QString valueKey, QString valueType); // create wire
     Q_INVOKABLE void createNew();
     Q_INVOKABLE QString getString(QString type, int value);
+    Q_INVOKABLE bool getWeldMode(QString type,int index);
 //    Q_INVOKABLE void setNewValue();
 
 private:
@@ -279,6 +281,7 @@ public slots:
     Q_INVOKABLE QVariant getValue(int index, QString key);
     Q_INVOKABLE int count();
     Q_INVOKABLE void removeValue(int id, QString name);
+    Q_INVOKABLE void insertValueToTable();
 
     Q_INVOKABLE void createNew();
     Q_INVOKABLE QVariant getStructValue(QString key);
