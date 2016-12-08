@@ -127,8 +127,7 @@ Item {
         id: title
         anchors.top: parent.top
         anchors.topMargin: 30
-        anchors.left: buttonCoumn.right
-        anchors.leftMargin: 20
+        anchors.left: rowButton.left
         font.family: "arial"
         font.pixelSize: 20
         color: "white"
@@ -136,54 +135,61 @@ Item {
     }
     Grid {
         id: testSetting
+        anchors.horizontalCenter: rowButton.horizontalCenter
         anchors.top: title.bottom
-        anchors.topMargin: 20
-        anchors.left: title.left
-        anchors.right: parent.right
-        anchors.rightMargin: 20
-        anchors.bottom: test1.top
-        anchors.bottomMargin: 20
-        spacing: 20
+        rowSpacing: 20
+        columnSpacing: (rowButton3.width - 20) / 2 - 240
+//        anchors.bottom: rowButton3.top
+//        anchors.bottomMargin: 20
+//        anchors.top: title.bottom
+//        anchors.topMargin: 20
+//        anchors.left: title.left
+//        anchors.right: parent.right
+//        anchors.rightMargin: 20
+//        anchors.bottom: rowButton3.top
+//        anchors.bottomMargin: 20
         columns: 2
         rows: 2
         Repeater {
+            anchors.right: parent.right
             model: listModel
             delegate: Recsetting {
-                width: (testSetting.width-20)/2
-                height: (testSetting.height-20)/2
+                width: 250 //(rowButton3.width-20)/3
+                height: 130 //(testSetting.height-20)/3
                 headTitle: qsTr(titleHead)
                 centervalue: qsTr(value)
             }
         }
     }
-    CButton {
-        id: test1
-        anchors.left: testSetting.left
-        anchors.bottom: progressBar2.top
+    Row {
+        id: rowButton3
+        anchors.bottom: powerText.top
         anchors.bottomMargin: 20
-        text: qsTr("Run Sonics")
-        width: testSetting.width/2-10
-    }
-    CButton {
-        id: test2
-        anchors.left: test1.right
-        anchors.leftMargin: 20
-        anchors.bottom: progressBar2.top
-        anchors.bottomMargin: 20
-        text: qsTr("Run Sonics 100%")
-        width: testSetting.width/2-10
+        anchors.right: rowButton.right
+        anchors.left: rowButton.left
+        spacing: 20
+        CButton {
+            id: test1
+            text: qsTr("Run Sonics")
+            width: (rowButton3.width -20)/2
+        }
+        CButton {
+            id: test2
+            text: qsTr("Run Sonics 100%")
+            width: (rowButton3.width -20)/2
+        }
     }
     Text {
         id: powerText
-        anchors.bottom: rowButton.top
+        anchors.bottom: rowButton2.top
         anchors.bottomMargin: 20
-        anchors.left: testSetting.left
+        anchors.left: rowButton2.left
         verticalAlignment: Qt.AlignVCenter
         height: 40
         font.family: "arial"
         font.pixelSize: 20
         color: "white"
-        text: qsTr("power")
+        text: qsTr("Power")
     }
     Row {
         id: progressBar2
@@ -221,35 +227,47 @@ Item {
         anchors.verticalCenter: powerText.verticalCenter
         anchors.left: powerText.right
         anchors.leftMargin: 10
+        anchors.right: rowButton2.right
         maximum: 100
         value: 50
         minimum: 1
     }
+
+
+    Row {
+        id: rowButton2
+        anchors.bottom: rowButton.top
+        anchors.bottomMargin: 20
+        anchors.right: rowButton.right
+        anchors.left: rowButton.left
+        spacing: 20
+        CButton {
+            text: qsTr("Reset")
+            width: (rowButton2.width-20)/2
+        }
+        CButton {
+            text: qsTr("Default Setting")
+            width: (rowButton2.width-20)/2
+        }
+    }
     Row {
         id: rowButton
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 10
-        anchors.left: buttonCoumn.left
+        anchors.bottomMargin: 20
+        anchors.left: buttonCoumn.right
+        anchors.leftMargin: 20
         anchors.right: parent.right
         anchors.rightMargin: 20
         spacing: 20
         CButton {
-            text: qsTr("Reset")
-            width: (rowButton.width-60)/4
-        }
-        CButton {
-            text: qsTr("Default Setting")
-            width: (rowButton.width-60)/4
-        }
-        CButton {
             iconSource: "qrc:/images/images/cancel.png"
             text: qsTr("Cancel")
-            width: (rowButton.width-60)/4
+            width: (rowButton.width-20)/2
         }
         CButton {
             iconSource: "qrc:/images/images/OK.png"
             text: qsTr("OK")
-            width: (rowButton.width-60)/4
+            width: (rowButton.width-20)/2
         }
     }
 }

@@ -504,7 +504,7 @@ Item {
             leftTextModel.append({"mytitle":"Weld Pressure:","myvalue":"xxxxxx","mytitle2":"Pre-Heigh:","myvalue2":"xxxxxx"})
             leftTextModel.append({"mytitle":"Trigger Pressure:","myvalue":"xxxxxx","mytitle2":"Post-Heigh:","myvalue2":"xxxxxx"})
             leftTextModel.append({"mytitle":"Amplitude:","myvalue":"xxxxxx","mytitle2":"Part Name:","myvalue2":"xxxxxx"})
-            leftTextModel.append({"mytitle":"Width:","myvalue":"xxxxxx","mytitle2":"Part Created:","myvalue2":"xxxxxx"})
+            leftTextModel.append({"mytitle":"Width:","myvalue":"xxxxxx","mytitle2":"Date Created:","myvalue2":"xxxxxx"})
             leftTextModel.append({"mytitle":"Work Order Name:","myvalue":"xxxxxx","mytitle2":"","myvalue2":""})
 
 
