@@ -2,6 +2,7 @@
 #include <qdebug.h>
 #include <QSqlQuery>
 #include <QSqlError>
+#include <QFile>
 HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
 {
     workOrderModel = new WorkOrderModel(this);
@@ -393,6 +394,18 @@ void HmiAdaptor::calibrationMaintenanceExecute(int code)
 int HmiAdaptor::randPoint()
 {
     return qrand() % 40;
+}
+
+QString HmiAdaptor::copyFileToPath(QString source)
+{
+    bool reb;
+    if (source.contains("file:///"))
+        source = source.mid(8);
+    QString toPath = TOPATH + QDateTime::currentDateTime().toString("yyMMddhhmmss") + ".png";
+    reb = QFile::copy(source,toPath);
+    if (reb)
+        return toPath;
+    return "";
 }
 
 
