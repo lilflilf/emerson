@@ -24,7 +24,7 @@ public:
     struct TESTSETTING TestSetting;
 public:
     PresetElement operator=(const PresetElement &PresetObject);
-    void CalculateSpliceData();
+    bool CalculateSpliceData();
 public:
     PresetElement();
     ~PresetElement();

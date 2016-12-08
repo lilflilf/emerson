@@ -1,16 +1,28 @@
 #ifndef OPERATEPROCESS_H
 #define OPERATEPROCESS_H
+#include <QObject>
 #include "Interface/PresetElement.h"
 
-class OperateProcess
+class OperateProcess : public QObject
 {
+    Q_OBJECT
 public:
     PresetElement CurrentSplice;
 //    OperatorElement CurrentOperator;
+private:
+    void UpdateIAFields();
+public:
+    void _start();
+    void _stop();
+    void _execute();
+signals:
+
+public slots:
+
 public:
     static OperateProcess* Instance();
 private:
-    OperateProcess();
+    explicit OperateProcess(QObject *parent = 0);
 private:
     static OperateProcess* _instance;
 };

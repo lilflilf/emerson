@@ -1,7 +1,11 @@
 #include "PresetElement.h"
-
+#include "Interface.h"
+#include "Modules/M2010.h"
+#include "Modules/UtilityClass.h"
 PresetElement::PresetElement()
 {
+    UtilityClass *_Utility = UtilityClass::Instance();
+    InterfaceClass *_Interface = InterfaceClass::Instance();
     RevCode = -1;
     SpliceID = -1;
     SpliceName.clear();
@@ -17,14 +21,14 @@ PresetElement::PresetElement()
     WeldSettings.BasicSetting.Pressure = -1;
     WeldSettings.BasicSetting.TrigPres = -1;
     WeldSettings.BasicSetting.Width = -1;
-    WeldSettings.QualitySetting.Time.Minus = 0;
-    WeldSettings.QualitySetting.Time.Plus = 1000;               //Seconds * 200
-    WeldSettings.QualitySetting.Power.Minus = 0;
-    WeldSettings.QualitySetting.Power.Plus = 4800;
-    WeldSettings.QualitySetting.Preheight.Minus = 0;
-    WeldSettings.QualitySetting.Preheight.Plus = 1500;               //mm * 100
-    WeldSettings.QualitySetting.Height.Minus = 0;
-    WeldSettings.QualitySetting.Height.Plus = 1500;
+    WeldSettings.QualitySetting.Time.Minus = MINTIME;
+    WeldSettings.QualitySetting.Time.Plus = MAXTIME;               //Seconds * 200
+    WeldSettings.QualitySetting.Power.Minus = MINPOWER;
+    WeldSettings.QualitySetting.Power.Plus = _Utility->Maxpower;
+    WeldSettings.QualitySetting.Preheight.Minus = MINHEIGHT;
+    WeldSettings.QualitySetting.Preheight.Plus = MAXHEIGHT;               //mm * 100
+    WeldSettings.QualitySetting.Height.Minus = MINHEIGHT;
+    WeldSettings.QualitySetting.Height.Plus = MAXHEIGHT;
     WeldSettings.AdvanceSetting.ABDelay = 0;
     WeldSettings.AdvanceSetting.ABDur = 0;
     WeldSettings.AdvanceSetting.AntiSide = false;
@@ -41,9 +45,11 @@ PresetElement::PresetElement()
     WeldSettings.AdvanceSetting.StepWeld.PowerToStep = -1;
     WeldSettings.AdvanceSetting.StepWeld.TimeToStep = -1;
     WeldSettings.AdvanceSetting.ShrinkTube.ShrinkOption = false;
-    WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTemperature = -1;
-    WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime = -1;
-    WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID = -1;
+    WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTemperature
+            = _Interface->StatusData.ShrinkTubeDefaults.at(0).temp;
+    WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime
+            = _Interface->StatusData.ShrinkTubeDefaults.at(0).Time;
+    WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID = 1;
     HashCode = qHashBits(&WeldSettings, sizeof(WeldSettings), 0);
     WireIndex.clear();
     NoOfWires = WireIndex.size();
@@ -171,7 +177,88 @@ PresetElement PresetElement::operator=(const PresetElement &PresetObject)
     return *this;
 }
 
-void PresetElement::CalculateSpliceData()
+bool PresetElement::CalculateSpliceData()
 {
+    InterfaceClass *_Interface = InterfaceClass::Instance();
+    M2010 *_M2010 = M2010::Instance();
+    int TempMaxWidth;
+    bool bResult = true;
+    float Area = (float)CrossSection/100;
+    unsigned int Index = -1;
+    if ((Area >= _Interface->StatusData.WeldSettings4Build[0].MinRange) &&
+        (Area <= _Interface->StatusData.WeldSettings4Build[0].MaxRange))
+        Index = 0;
+    else if((Area >= _Interface->StatusData.WeldSettings4Build[1].MinRange) &&
+        (Area <= _Interface->StatusData.WeldSettings4Build[1].MaxRange))
+        Index = 1;
+    else if((Area >= _Interface->StatusData.WeldSettings4Build[2].MinRange) &&
+        (Area <= _Interface->StatusData.WeldSettings4Build[2].MaxRange))
+        Index = 2;
+    else
+    {
+        Index = -1;
+        bResult = false;
 
+    }
+    if(bResult == false)
+        return bResult;
+    int MAXwatts = (int)(1.2 * _Interface->StatusData.Soft_Settings.SonicGenWatts);
+
+    if(_M2010->Machine == Welder)
+    {
+        WeldSettings.BasicSetting.Energy = MINENERGY;
+        WeldSettings.BasicSetting.Width  = MINWIDTH;
+        WeldSettings.BasicSetting.Pressure = DEFAULTPRESSURE;
+        WeldSettings.BasicSetting.Amplitude = DEFAULTAMPLITUDE;
+        WeldSettings.AdvanceSetting.StepWeld.Amplitude2 =
+                DEFAULTAMPLITUDE;
+    }else{
+        WeldSettings.BasicSetting.Energy =
+                (int)(Area * _Interface->StatusData.WeldSettings4Build[Index].Multplier +
+                      _Interface->StatusData.WeldSettings4Build[Index].Offset);
+        if (WeldSettings.BasicSetting.Energy < MINENERGY)
+            WeldSettings.BasicSetting.Energy = MINENERGY;
+        if (WeldSettings.BasicSetting.Energy > MAXwatts)
+            WeldSettings.BasicSetting.Energy = MAXwatts;
+
+        double SqrtArea = sqrt(Area);
+        WeldSettings.BasicSetting.Width =
+            (int)(100 * SqrtArea *
+                  _Interface->StatusData.WeldSettings4Build[3 + Index].Multplier);
+        if (WeldSettings.BasicSetting.Width < MINWIDTH)
+            WeldSettings.BasicSetting.Width = MINWIDTH;
+        if ((_Interface->StatusData.MachineType != ACT2032) &&
+            (_Interface->StatusData.MachineType != ACTNEWSPLICER))
+            TempMaxWidth = MAXWIDTH;
+        else
+            TempMaxWidth = MAXWIDTH2032;
+        if (WeldSettings.BasicSetting.Width > TempMaxWidth)
+            WeldSettings.BasicSetting.Width = TempMaxWidth;
+
+        float Pressure = Area * _Interface->StatusData.WeldSettings4Build[6 + Index].Multplier +
+                _Interface->StatusData.WeldSettings4Build[6 + Index].Offset;
+        WeldSettings.BasicSetting.Pressure = (int)(10 * Pressure);
+        if (WeldSettings.BasicSetting.Pressure < MINWELDPRESSURE)
+            WeldSettings.BasicSetting.Pressure = MINWELDPRESSURE;
+        if (WeldSettings.BasicSetting.Pressure > MAXWELDPRESSURE)
+            WeldSettings.BasicSetting.Pressure = MAXWELDPRESSURE;
+
+        WeldSettings.BasicSetting.TrigPres = WeldSettings.BasicSetting.Pressure;
+        if (WeldSettings.BasicSetting.TrigPres < MINTRIGPRESSURE)
+            WeldSettings.BasicSetting.TrigPres = MINTRIGPRESSURE;
+        if (WeldSettings.BasicSetting.TrigPres > MAXTRIGPRESSURE)
+            WeldSettings.BasicSetting.TrigPres = MAXTRIGPRESSURE;
+
+        WeldSettings.BasicSetting.Amplitude =
+                (int)(Area * _Interface->StatusData.WeldSettings4Build[9 + Index].Multplier +
+                _Interface->StatusData.WeldSettings4Build[9 + Index].Offset);
+        if (WeldSettings.BasicSetting.Amplitude < MINAMPLITUDE)
+            WeldSettings.BasicSetting.Amplitude = MINAMPLITUDE;
+        if (WeldSettings.BasicSetting.Amplitude > _Interface->StatusData.Soft_Settings.Horn_Calibrate)
+            WeldSettings.BasicSetting.Amplitude =
+                    _Interface->StatusData.Soft_Settings.Horn_Calibrate;
+        WeldSettings.AdvanceSetting.StepWeld.Amplitude2 =
+                WeldSettings.BasicSetting.Amplitude;
+    }
+    return bResult;
 }
