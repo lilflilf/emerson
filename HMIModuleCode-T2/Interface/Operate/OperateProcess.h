@@ -6,7 +6,6 @@
 #include "Modules/UtilityClass.h"
 struct NecessaryInfo
 {
-    QString OperatorName;
     struct WorkOrderIndex CurrentWorkOrder;
     struct PartIndex CurrentPart;
 };

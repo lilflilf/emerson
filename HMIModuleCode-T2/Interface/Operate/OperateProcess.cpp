@@ -61,6 +61,7 @@ void OperateProcess::UpdateIAFields()
 void OperateProcess::UpdateWeldResult()
 {
     M102IA *_M102IA = M102IA::Instance();
+    InterfaceClass *_Interface = InterfaceClass::Instance();
     CurrentWeldResult.ActualResult.ActualEnergy = _M102IA->IAactual.Energy;
     CurrentWeldResult.ActualResult.ActualWidth = _M102IA->IAactual.Width;
     CurrentWeldResult.ActualResult.ActualTime = _M102IA->IAactual.Time;
@@ -73,6 +74,19 @@ void OperateProcess::UpdateWeldResult()
     CurrentWeldResult.ActualResult.ActualTPressure = _M102IA->IAactual.TPressure;
     CurrentWeldResult.ActualResult.ActualAlarmflags = _M102IA->IAactual.Alarmflags;
 
+    CurrentWeldResult.OperatorName = _Interface->CurrentOperator.OperatorName;
+    CurrentWeldResult.CurrentWorkOrder.WorkOrderID
+            = CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderID;
+    CurrentWeldResult.CurrentWorkOrder.WorkOrderName
+            = CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderName;
+    CurrentWeldResult.CurrentPart.PartID = CurrentNecessaryInfo.CurrentPart.PartID;
+    CurrentWeldResult.CurrentPart.PartName = CurrentNecessaryInfo.CurrentPart.PartName;
+
+    CurrentWeldResult.CurrentSplice.SpliceID = CurrentSplice.SpliceID;
+    CurrentWeldResult.CurrentSplice.SpliceName = CurrentSplice.SpliceName;
+    CurrentWeldResult.CurrentSplice.SpliceHash = CurrentSplice.HashCode;
+
+    CurrentWeldResult.SampleRatio = _Interface->StatusData.GraphSampleRatio;
 
 }
 

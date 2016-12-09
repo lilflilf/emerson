@@ -892,8 +892,8 @@ QList<int> PartModel::getWorkStationCorlor(int id, QString name)
     QList<int> corlorList;
     PartElement myPart;
     m_partAdaptor->QueryOneRecordFromTable(id,name,&myPart);
-    for (int i = 0; i < myPart.SpliceIndex.count(); i++) {
-        corlorList.append(myPart.SpliceIndex.value(myPart.SpliceIndex.keys().at(i)).CurrentWorkstation);
+    for (int i = 0; i < myPart.SpliceList.count(); i++) {
+        corlorList.append(myPart.SpliceList.value(myPart.SpliceList.keys().at(i)).CurrentWorkstation);
     }
     return corlorList;
 }
@@ -903,8 +903,8 @@ QList<int> PartModel::geteWorkStationZone(int id, QString name)
     QList<int> zoneList;
     PartElement myPart;
     m_partAdaptor->QueryOneRecordFromTable(id,name,&myPart);
-    for (int i = 0; i < myPart.SpliceIndex.count(); i++) {
-        zoneList.append(myPart.SpliceIndex.value(myPart.SpliceIndex.keys().at(i)).CurrentBoardLayoutZone);
+    for (int i = 0; i < myPart.SpliceList.count(); i++) {
+        zoneList.append(myPart.SpliceList.value(myPart.SpliceList.keys().at(i)).CurrentBoardLayoutZone);
     }
     return zoneList;
 }

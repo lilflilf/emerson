@@ -1,6 +1,7 @@
 #include "Interface.h"
-#include "Modules/Modstart.h"
+
 #include "Modules/M10INI.h"
+#include <QtConcurrent/QtConcurrent>
 InterfaceClass* InterfaceClass::_instance = 0;
 
 InterfaceClass* InterfaceClass::Instance()
@@ -11,11 +12,11 @@ InterfaceClass* InterfaceClass::Instance()
     return _instance;
 }
 
-
 InterfaceClass::InterfaceClass(QObject *parent)
     :QObject(parent)
 {
-
+//    MODstart *_ModStart = MODstart::Instance();
+//    QtConcurrent::run(QThreadPool::globalInstance(), UpdateInfoWithController);
 }
 
 InterfaceClass::~InterfaceClass()
@@ -64,3 +65,4 @@ void InterfaceClass::BackupStatusData()
     M10INI* _M10INI = M10INI::Instance();
     _M10INI->Save_StatusData();
 }
+
