@@ -828,7 +828,7 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
     case IASigPWRrating:         //"0F"
         _Interface->StatusData.Soft_Settings.SonicGenWatts =
                 MakeHexWordNumber(HexString.mid(9, 4));
-        _Utility->Maxpower = float(1.2 * _Interface->StatusData.Soft_Settings.SonicGenWatts);
+        _Utility->Maxpower = (float)(1.2 * _Interface->StatusData.Soft_Settings.SonicGenWatts);
         for (Index = 0; Index <= 6; Index++)
         {
              _M10INI->Pwr_Prefix_Data[Index] = Index *

@@ -9,7 +9,8 @@ public:
     int AlarmID;
     QString AlarmMsg;
     unsigned int CreatedDate;
-    enum ALARMTYPE AlarmType;
+//    enum ALARMTYPE AlarmType;
+    QString AlarmType;
     int WeldResultID;
     int OperatorID;
 public:

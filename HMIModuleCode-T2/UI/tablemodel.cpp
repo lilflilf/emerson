@@ -1094,7 +1094,7 @@ QVariant AlarmModel::data(const QModelIndex &index, int role) const
         else if (columnIdx == 1)
             value = QVariant::fromValue(QDateTime::fromTime_t(myAlarm.CreatedDate).toString("MM/dd/yyyy hh:mm"));
         else if (columnIdx == 2) {
-            temp = variantToString->AlarmTypeToString(myAlarm.AlarmType);
+            temp = myAlarm.AlarmType;
             value = QVariant::fromValue(temp);
         } else if (columnIdx == 3) {
             temp = variantToString->AlarmLevelToString(myAlarm.AlarmType);
@@ -1188,7 +1188,7 @@ QVariant AlarmModel::getAlarmValue(int index, QString key)
     QHash<QString, QVariant> AlarmModelHash;
     AlarmModelHash.insert("AlarmId",myAlarm.AlarmID);
     AlarmModelHash.insert("CreatedDate",QDateTime::fromTime_t(myAlarm.CreatedDate).toString("MM/dd/yyyy hh:mm"));
-    AlarmModelHash.insert("Alarm/ErrorType",variantToString->AlarmTypeToString(myAlarm.AlarmType));
+    AlarmModelHash.insert("Alarm/ErrorType",myAlarm.AlarmType);
     AlarmModelHash.insert("Alarm/ErrorLevel",variantToString->AlarmLevelToString(myAlarm.AlarmType));
     AlarmModelHash.insert("Message",myAlarm.AlarmMsg);//myOperator.PermissionLevel;
     AlarmModelHash.insert("SpliceName",weldResult.CurrentSplice.SpliceName);//myOperator.PermissionLevel;
@@ -1256,8 +1256,8 @@ QVariant WeldHistoryModel::data(const QModelIndex &index, int role) const
             value = QVariant::fromValue(myHistory.OperatorName);
         else if (columnIdx == 5)
             value = QVariant::fromValue(QDateTime::fromTime_t(myHistory.CreatedDate).toString("MM/dd/yyyy hh:mm"));
-        else if (columnIdx == 6)
-            value = QVariant::fromValue(variantToString->CrossSectionToString(myHistory.CrossSection));
+//        else if (columnIdx == 6)
+//            value = QVariant::fromValue(variantToString->CrossSectionToString(myHistory.CrossSection));
         else if (columnIdx == 7)
             value = QVariant::fromValue(variantToString->WeldModeToString(presetElement.WeldSettings.AdvanceSetting.WeldMode,presetElement.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode));
         else if (columnIdx == 8) {
@@ -1415,7 +1415,7 @@ QVariant WeldHistoryModel::getValue(int index, QString key)
     WeldHistoryModelHash.insert("OperatorName",myHistory.OperatorName);
     WeldHistoryModelHash.insert("DateCreated",QDateTime::fromTime_t(myHistory.CreatedDate).toString("MM/dd/yyyy hh:mm"));
 
-    WeldHistoryModelHash.insert("CrossSection",variantToString->CrossSectionToString(myHistory.CrossSection)); //contain in splice
+//    WeldHistoryModelHash.insert("CrossSection",variantToString->CrossSectionToString(myHistory.CrossSection)); //contain in splice
     WeldHistoryModelHash.insert("WeldMode",variantToString->WeldModeToString(presetElement.WeldSettings.AdvanceSetting.WeldMode,presetElement.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode));     //contain in splice
     WeldHistoryModelHash.insert("Energy",variantToString->EnergyToString(myHistory.ActualResult.ActualEnergy).Current);
     WeldHistoryModelHash.insert("Amplitude",variantToString->AmplitudeToString(myHistory.ActualResult.ActualAmplitude).Current);

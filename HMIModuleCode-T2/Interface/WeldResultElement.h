@@ -15,12 +15,11 @@ public:
     struct SpliceIndex CurrentSplice;
     int WeldCount;//just for the test mode
     int PartCount;//just for the operate mode
-    int CrossSection;
     struct WELDRESULT ActualResult;
     enum SAMPLERATIO SampleRatio;
     int NoOfSamples;
-    QMap<int, QString> PowerGraph;
-    QMap<int, QString> PostHeightGraph;
+    QList<int> PowerGraph;
+    QList<int> PostHeightGraph;
 public:
     WeldResultElement operator=(const WeldResultElement &WeldResultObject);
 public:

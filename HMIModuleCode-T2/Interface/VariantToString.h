@@ -72,6 +72,7 @@ public:
     //Alarm History
     QString AlarmTypeToString(enum ALARMTYPE);
     QString AlarmLevelToString(enum ALARMTYPE);
+    QString AlarmLevelToString(QString AlarmType);
 
 public:
     static VariantToString* Instance();

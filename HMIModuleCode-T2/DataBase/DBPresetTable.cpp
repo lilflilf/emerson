@@ -878,6 +878,37 @@ bool DBPresetTable::QueryOnlyUseTime(unsigned int time_from, unsigned int time_t
 bool DBPresetTable::QueryUseNameAndTime(QString Name, unsigned int time_from,
                 unsigned int time_to, QMap<int, QString>* _obj)
 {
-    bool bResult = true;
+    if(_obj == NULL)
+        return false;
+
+    QSqlQuery query(SpliceDBObj);
+    bool bResult = SpliceDBObj.open();
+    if(bResult == false)
+        return bResult;
+
+//    query.prepare(SQLSentence[QUERY_ONE_RECORD_WIRE_TABLE]);
+    query.prepare("SELECT ID, SpliceName FROM Splice "
+                  "WHERE SpliceName = ? AND CreatedDate >= ? "
+                  "AND CreatedDate <= ?");
+    query.addBindValue(Name);
+    QDateTime TimeLabel = QDateTime::fromTime_t(time_from);
+    query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
+    TimeLabel = QDateTime::fromTime_t(time_to);
+    query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
+
+    bResult = query.exec();
+    if(bResult == true)
+    {
+        _obj->clear();
+        while(query.next())
+            _obj->insert(query.value("ID").toInt(),
+                           query.value("SpliceName").toString());
+    }
+    else
+    {
+        qDebug() << "SQL ERROR:"<< query.lastError();
+    }
+
+    SpliceDBObj.close();
     return bResult;
 }
