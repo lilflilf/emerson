@@ -13,7 +13,7 @@ public:
 
     int NoOfSplice;
     //#define SEQ_MAX_SPLICES  250
-    QMap<int, struct PARTATTRIBUTE> SpliceIndex;
+    QMap<int, struct PARTATTRIBUTE> SpliceList;
 public:
     PartElement operator=(const PartElement &PartObject);
 public:

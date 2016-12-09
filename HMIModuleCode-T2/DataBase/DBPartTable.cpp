@@ -96,16 +96,16 @@ void DBPartTable::InsertTestDataIntoTable()
         PartAttribute.SpliceName = "WangYIBIN";
         PartAttribute.CurrentBoardLayoutZone = 1;
         PartAttribute.CurrentWorkstation = 2;
-        tmpPart.SpliceIndex.insert(0,PartAttribute);
+        tmpPart.SpliceList.insert(0,PartAttribute);
         PartAttribute.SpliceName = "JWang";
         PartAttribute.CurrentBoardLayoutZone = 2;
         PartAttribute.CurrentWorkstation = 3;
-        tmpPart.SpliceIndex.insert(1,PartAttribute);
+        tmpPart.SpliceList.insert(1,PartAttribute);
         PartAttribute.SpliceName = "JW";
         PartAttribute.CurrentBoardLayoutZone = 3;
         PartAttribute.CurrentWorkstation = 4;
-        tmpPart.SpliceIndex.insert(2,PartAttribute);
-        tmpPart.NoOfSplice = tmpPart.SpliceIndex.size();
+        tmpPart.SpliceList.insert(2,PartAttribute);
+        tmpPart.NoOfSplice = tmpPart.SpliceList.size();
 
         InsertRecordIntoTable(&tmpPart);
     }
@@ -168,7 +168,7 @@ int DBPartTable::InsertRecordIntoTable(void *_obj)
 
 
     QString tmpJson;
-    _Utility->MapJsonToString(&((PartElement*)_obj)->SpliceIndex,tmpJson);
+    _Utility->MapJsonToString(&((PartElement*)_obj)->SpliceList,tmpJson);
     query.addBindValue(tmpJson);
 
     bResult = query.exec();
@@ -262,9 +262,9 @@ bool DBPartTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
     ((PartElement*)_obj)->PartTypeSetting.BoardLayout.MaxSplicesPerZone =
             query.value("MaxSplicesPerZone").toInt();
     QString tmpStr = query.value("JSONSplice").toString();
-    _Utility->StringJsonToMap(tmpStr, &((PartElement*)_obj)->SpliceIndex);
+    _Utility->StringJsonToMap(tmpStr, &((PartElement*)_obj)->SpliceList);
 
-    ((PartElement*)_obj)->NoOfSplice = ((PartElement*)_obj)->SpliceIndex.size();
+    ((PartElement*)_obj)->NoOfSplice = ((PartElement*)_obj)->SpliceList.size();
 
     PartDBObj.close();
     return bResult;
@@ -319,9 +319,9 @@ bool DBPartTable::QueryOneRecordFromTable(int ID, void *_obj)
     ((PartElement*)_obj)->PartTypeSetting.BoardLayout.MaxSplicesPerZone =
             query.value("MaxSplicesPerZone").toInt();
     QString tmpStr = query.value("JSONSplice").toString();
-    _Utility->StringJsonToMap(tmpStr, &((PartElement*)_obj)->SpliceIndex);
+    _Utility->StringJsonToMap(tmpStr, &((PartElement*)_obj)->SpliceList);
 
-    ((PartElement*)_obj)->NoOfSplice = ((PartElement*)_obj)->SpliceIndex.size();
+    ((PartElement*)_obj)->NoOfSplice = ((PartElement*)_obj)->SpliceList.size();
 
     PartDBObj.close();
     return bResult;
@@ -394,9 +394,9 @@ bool DBPartTable::UpdateRecordIntoTable(void *_obj)
     query.addBindValue(((PartElement*)_obj)->PartTypeSetting.BoardLayout.Rows);
     query.addBindValue(((PartElement*)_obj)->PartTypeSetting.BoardLayout.Columns);
     query.addBindValue(((PartElement*)_obj)->PartTypeSetting.BoardLayout.MaxSplicesPerZone);
-    query.addBindValue(((PartElement*)_obj)->SpliceIndex.size());
+    query.addBindValue(((PartElement*)_obj)->SpliceList.size());
     QString tmpStr;
-    _Utility->MapJsonToString(&((PartElement*)_obj)->SpliceIndex, tmpStr);
+    _Utility->MapJsonToString(&((PartElement*)_obj)->SpliceList, tmpStr);
     query.addBindValue(tmpStr);
     query.addBindValue(((PartElement*)_obj)->PartID);
 

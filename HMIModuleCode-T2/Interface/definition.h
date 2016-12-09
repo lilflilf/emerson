@@ -230,6 +230,7 @@ struct PARTTYPE
 
 struct PARTATTRIBUTE
 {
+    int SpliceID;
     QString SpliceName;
     int CurrentWorkstation;
     int CurrentBoardLayoutZone;

@@ -13,13 +13,13 @@ PartElement::PartElement()
     PartTypeSetting.ProcessMode = BASIC;
     PartTypeSetting.WorkStations.MaxSplicesPerWorkstation = -1;
     PartTypeSetting.WorkStations.TotalWorkstation = -1;
-    SpliceIndex.clear();
-    NoOfSplice = SpliceIndex.size();
+    SpliceList.clear();
+    NoOfSplice = SpliceList.size();
 }
 
 PartElement::~PartElement()
 {
-    SpliceIndex.clear();
+    SpliceList.clear();
 }
 
 PartElement PartElement::operator=(const PartElement &PartObject)
@@ -43,12 +43,19 @@ PartElement PartElement::operator=(const PartElement &PartObject)
     this->PartTypeSetting.WorkStations.TotalWorkstation
             = PartObject.PartTypeSetting.WorkStations.TotalWorkstation;
     QMap<int, struct PARTATTRIBUTE>::const_iterator i
-            = PartObject.SpliceIndex.constBegin();
-    while(i != PartObject.SpliceIndex.constEnd())
+            = PartObject.SpliceList.constBegin();
+    struct PARTATTRIBUTE tmpSplice;
+    while(i != PartObject.SpliceList.constEnd())
     {
-        this->SpliceIndex.insert(i.key(),i.value());
+        tmpSplice.SpliceID = i.value().SpliceID;
+        tmpSplice.SpliceName = i.value().SpliceName;
+        tmpSplice.CurrentBoardLayoutZone =
+                i.value().CurrentBoardLayoutZone;
+        tmpSplice.CurrentWorkstation =
+                i.value().CurrentWorkstation;
+        this->SpliceList.insert(i.key(),tmpSplice);
         ++i;
     }
-    this->NoOfSplice = this->SpliceIndex.size();
+    this->NoOfSplice = this->SpliceList.size();
     return *this;
 }

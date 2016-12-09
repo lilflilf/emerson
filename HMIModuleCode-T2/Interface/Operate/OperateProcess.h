@@ -4,12 +4,19 @@
 #include "Interface/PresetElement.h"
 #include "Interface/WeldResultElement.h"
 #include "Modules/UtilityClass.h"
+struct NecessaryInfo
+{
+    QString OperatorName;
+    struct WorkOrderIndex CurrentWorkOrder;
+    struct PartIndex CurrentPart;
+};
 
 class OperateProcess : public QObject
 {
     Q_OBJECT
 public:
     PresetElement CurrentSplice;
+    struct NecessaryInfo CurrentNecessaryInfo;
 private:
     WeldResultElement CurrentWeldResult;
     static ThreadClass* m_Thread;

@@ -7,7 +7,6 @@ class WeldResultElement
 public:
     int RevCode;
     int WeldResultID;
-    QString TableName;
     QString OperatorName;
     unsigned int CreatedDate;
     struct WorkOrderIndex CurrentWorkOrder;
