@@ -887,6 +887,7 @@ Item {
                 color: "#375566"
                 height: 1
             }
+
             CButton {
                 id: save
                 text: qsTr("SAVE TO WIRE\nLIBRARY")
