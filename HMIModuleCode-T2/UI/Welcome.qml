@@ -216,8 +216,8 @@ Item {
                         } else {
                             mima.text += listModel.get(index).value
                             if (mima.text.length == 4) {
-                                if (hmiAdaptor.login(mima.text))
-                                    passWordInputOk()
+//                                if (hmiAdaptor.login(mima.text))
+//                                    passWordInputOk()
                             }
                         }
                     }

@@ -24,16 +24,15 @@ public:
         Password.clear();
         PermissionLevel = OPEN;
     }
-    OperatorElement operator=(const OperatorElement &OperatorObject) const
+    OperatorElement * operator = (OperatorElement const &OperatorObject)
     {
-        OperatorElement Obj;
-        Obj.RevCode = OperatorObject.RevCode;
-        Obj.OperatorID = OperatorObject.OperatorID;
-        Obj.OperatorName = OperatorObject.OperatorName;
-        Obj.CreatedDate = OperatorObject.CreatedDate;
-        Obj.Password = OperatorObject.Password;
-        Obj.PermissionLevel = OperatorObject.PermissionLevel;
-        return Obj;
+        this->RevCode = OperatorObject.RevCode;
+        this->OperatorID = OperatorObject.OperatorID;
+        this->OperatorName = OperatorObject.OperatorName;
+        this->CreatedDate = OperatorObject.CreatedDate;
+        this->Password = OperatorObject.Password;
+        this->PermissionLevel = OperatorObject.PermissionLevel;
+        return this;
     }
     ~OperatorElement(){}
 };

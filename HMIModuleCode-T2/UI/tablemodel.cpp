@@ -963,7 +963,12 @@ bool OperatorModel::login(QString passwd, OperatorElement *operatot)
     for ( it = operators->begin(); it != operators->end(); ++it ) {
         m_operatorAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myOperator);
         if (myOperator.Password == passwd) {
-            operatot = &myOperator;
+            operatot->RevCode = myOperator.RevCode;
+            operatot->OperatorID = myOperator.OperatorID;
+            operatot->OperatorName = myOperator.OperatorName;
+            operatot->CreatedDate = myOperator.CreatedDate;
+            operatot->Password = myOperator.Password;
+            operatot->PermissionLevel = myOperator.PermissionLevel;
             return true;
         }
     }
@@ -1549,10 +1554,10 @@ void WireModel::removeValue(int id, QString name)
     m_wireAdaptor->DeleteOneRecordFromTable(id,name);
     setModelList();
 }
-void WireModel::insertValueToTable()//QString type,QString wireName,int wireId,int operatorId,QString color,QString stripeColor,QString stripeType,QString gauge,int wireType,int side,int verside,int position)
 
-//void WireModel::insertValueToTable(QString type,QString wireName,int wireId,int operatorId,QString color,QString stripeColor,QString stripeType,QString gauge,int wireType,int side,int verside,int position)
+int WireModel::insertValueToTable(QString type,QString wireName,int wireId,int operatorId,QString color,QString stripeColor,int stripeType,QString gauge,int wireType,int side,int verside,int position)
 {
+
 //    QString WireName;
 //    int     WireID;
 //    unsigned int CreatedDate;
@@ -1568,7 +1573,27 @@ void WireModel::insertValueToTable()//QString type,QString wireName,int wireId,i
 //    enum VerticalPosition Position;
 
     WireElement insertWire;
-//    insertWire.WireName =
+    insertWire.WireName = wireName;
+    insertWire.WireID = wireId;
+    insertWire.OperatorID = operatorId;
+    insertWire.Color = color;
+    insertWire.Stripe.Color = stripeColor;
+    insertWire.Stripe.TypeOfStripe = (StripeType)stripeType;
+    stringToVariant->GaugeToInt(gauge,insertWire.GaugeAWG,insertWire.Gauge);
+    insertWire.TypeOfWire = (MetalType)wireType;
+    insertWire.Side = (HorizontalLocation)side;
+    insertWire.VerticalSide = (VerticalLocation)verside;
+    insertWire.Position = (VerticalPosition)position;
+
+    if (type == "insert"){
+        int wireId = m_wireAdaptor->InsertRecordIntoTable(&insertWire);
+        setModelList();
+        return wireId;
+    }
+    else if (type == "update") {
+        m_wireAdaptor->UpdateRecordIntoTable(&insertWire);
+    }
+    return 1;
 }
 
 void WireModel::createNew()
@@ -1577,18 +1602,30 @@ void WireModel::createNew()
     wireElement = temp;
 }
 
+void WireModel::addFromLibrary(int wireId)
+{
+    WireElement temp;
+    m_wireAdaptor->QueryOneRecordFromTable(wireId,&temp);
+    wireElement = temp;
+}
+
 QVariant WireModel::getStructValue(QString key)
 {
     QHash<QString, QVariant> WireModelHash;
     WireModelHash.insert("Gauge",wireElement.Gauge);
     WireModelHash.insert("AWG",wireElement.GaugeAWG);
-    QString metalType;
+    int metalType;
     if (wireElement.TypeOfWire == 0) {
-        metalType = "Copper";
+        metalType = 0;
     } else {
-        metalType = "Aluminum";
+        metalType = 1;
     }
     WireModelHash.insert("WireType",metalType);
+    WireModelHash.insert("WireColor",wireElement.Color);
+    WireModelHash.insert("WireName",wireElement.WireName);
+    WireModelHash.insert("WireDirection",(int)wireElement.Side);
+    WireModelHash.insert("WirePosition",wireElement.Position);
+    WireModelHash.insert("WireBasic",wireElement.VerticalSide);
 
 //    WireModelHash.insert("OperatorName",myWire.OperatorID);
 //    WireModelHash.insert("Color",myWire.Color);

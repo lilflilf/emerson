@@ -257,7 +257,6 @@ class WireModel : public QAbstractTableModel
 public:
     explicit WireModel(QObject *parent = 0);
     void setModelList(unsigned int time_from, unsigned int time_to);
-    void setModelList();
 
     QStringList m_idList;
     DBWireTable *m_wireAdaptor;
@@ -278,12 +277,15 @@ protected:
 
 public slots:
     void setRoles(const QStringList &names);
+    Q_INVOKABLE void setModelList();
+
     Q_INVOKABLE QVariant getValue(int index, QString key);
     Q_INVOKABLE int count();
     Q_INVOKABLE void removeValue(int id, QString name);
-    Q_INVOKABLE void insertValueToTable();
+    Q_INVOKABLE int insertValueToTable(QString type, QString wireName, int wireId, int operatorId, QString color, QString stripeColor, int stripeType, QString gauge, int wireType, int side, int verside, int position);
 
     Q_INVOKABLE void createNew();
+    Q_INVOKABLE void addFromLibrary(int wireId);
     Q_INVOKABLE QVariant getStructValue(QString key);
     Q_INVOKABLE QString getStructValue2(QString key, QString type);
     Q_INVOKABLE int getStructValue3(QString key, QString value);
