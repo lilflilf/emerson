@@ -15,7 +15,6 @@ public:
     struct SpliceIndex CurrentSplice;
     int WeldCount;//just for the test mode
     int PartCount;//just for the operate mode
-    int CrossSection;
     struct WELDRESULT ActualResult;
     enum SAMPLERATIO SampleRatio;
     int NoOfSamples;

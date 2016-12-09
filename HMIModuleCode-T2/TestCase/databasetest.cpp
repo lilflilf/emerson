@@ -200,7 +200,6 @@ void DataBaseTest::TestInsertOneRecordIntoWeldResultTable()
     tmpWeldResult.CurrentSplice.SpliceName = "SpliceName";
     tmpWeldResult.WeldCount = 0;
     tmpWeldResult.PartCount = 0;
-    tmpWeldResult.CrossSection = 100;
     tmpWeldResult.ActualResult.ActualAlarmflags = 0x55;
     tmpWeldResult.ActualResult.ActualAmplitude = 1;
     tmpWeldResult.ActualResult.ActualAmplitude2 = 2;

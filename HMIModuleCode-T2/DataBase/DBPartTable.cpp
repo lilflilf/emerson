@@ -478,6 +478,37 @@ bool DBPartTable::QueryOnlyUseTime(unsigned int time_from, unsigned int time_to,
 bool DBPartTable::QueryUseNameAndTime(QString Name, unsigned int time_from,
                 unsigned int time_to, QMap<int, QString>* _obj)
 {
-    bool bResult = true;
+    if(_obj == NULL)
+        return false;
+
+    QSqlQuery query(PartDBObj);
+    bool bResult = PartDBObj.open();
+    if(bResult == false)
+        return bResult;
+
+//    query.prepare(SQLSentence[QUERY_ONE_RECORD_WIRE_TABLE]);
+    query.prepare("SELECT ID, PartName FROM Part "
+                  "WHERE PartName = ? AND CreatedDate >= ?"
+                  " AND CreatedDate <= ?");
+    query.addBindValue(Name);
+    QDateTime TimeLabel = QDateTime::fromTime_t(time_from);
+    query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
+    TimeLabel = QDateTime::fromTime_t(time_to);
+    query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
+
+    bResult = query.exec();
+    if(bResult == true)
+    {
+        _obj->clear();
+        while(query.next())
+            _obj->insert(query.value("ID").toInt(),
+                           query.value("PartName").toString());
+    }
+    else
+    {
+        qDebug() << "SQL ERROR:"<< query.lastError();
+    }
+
+    PartDBObj.close();
     return bResult;
 }
