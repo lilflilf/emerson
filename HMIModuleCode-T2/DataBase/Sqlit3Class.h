@@ -34,6 +34,8 @@ public:
 
     virtual bool QueryOnlyUseName(QString Name, QMap<int, QString>* _obj) = 0;
     virtual bool QueryOnlyUseTime(unsigned int time_from, unsigned int time_to, QMap<int, QString>* _obj) = 0;
+    virtual bool QueryUseNameAndTime(QString Name, unsigned int time_from,
+                unsigned int time_to, QMap<int, QString>* _obj) = 0;
 };
 
 #endif // SQLITCLASS_H

@@ -572,10 +572,10 @@ QString VariantToString::AlarmTypeToString(enum ALARMTYPE type)
     return str;
 }
 
-QString VariantToString::AlarmLevelToString(enum ALARMTYPE type)
+QString VariantToString::AlarmLevelToString(enum ALARMTYPE Alarmtype)
 {
     QString str;
-    switch(type)
+    switch(Alarmtype)
     {
     case OVERLOADALARM:
     case MOTORERROR:
@@ -593,8 +593,38 @@ QString VariantToString::AlarmLevelToString(enum ALARMTYPE type)
         str = QObject::tr("Mid-level");
         break;
     default:
-        str = QObject::tr("Low-level");
+        str = QObject::tr("None-level");
         break;
     }
+    return str;
+}
+
+QString VariantToString::AlarmLevelToString(QString AlarmType)
+{
+    QString str;
+    if ( AlarmType == QObject::tr("Weld time alarm"))
+        str = QObject::tr("Mid-level");
+    else if(AlarmType == QObject::tr("Weld Peak Power alarm"))
+        str = QObject::tr("Mid-level");
+    else if(AlarmType == QObject::tr("Weld Pre-height alarm"))
+        str = QObject::tr("Mid-level");
+    else if(AlarmType == QObject::tr("Weld Post-height alarm"))
+        str = QObject::tr("Mid-level");
+    else if(AlarmType == QObject::tr("24V checking"))
+        str = QObject::tr("Mid-level");
+    else if(AlarmType == QObject::tr("Overload"))
+        str = QObject::tr("High-level");
+    else if(AlarmType == QObject::tr("Motor error"))
+        str = QObject::tr("High-level");
+    else if(AlarmType == QObject::tr("Height encoder error"))
+        str = QObject::tr("High-level");
+    else if(AlarmType == QObject::tr("Safety cover error"))
+        str = QObject::tr("High-level");
+    else if(AlarmType == QObject::tr("Cutter error"))
+        str = QObject::tr("High-level");
+    else if(AlarmType == QObject::tr("E-Stop"))
+        str = QObject::tr("High-level");
+    else
+        str = QObject::tr("None-level");
     return str;
 }

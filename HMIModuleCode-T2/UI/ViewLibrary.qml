@@ -44,6 +44,15 @@ Item {
         ExclusiveGroup {
             id: checkGroup
         }
+        CButton {
+            width: parent.width - 40
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 20
+            anchors.left: parent.left
+            anchors.leftMargin: 20
+            text: "IMPORT"
+
+        }
 
         Column {
             id: column
@@ -262,7 +271,7 @@ Item {
                     source: "qrc:/images/images/right.png"
                 }
                 Text {
-                    text: qsTr("Shrink")
+                    text: qsTr("Insulation")
                     font.pointSize: 20
                     font.family: "arial"
                     color: "white"
@@ -308,7 +317,7 @@ Item {
             partKeyModel.append({"title":"columns"})
             partKeyModel.append({"title":"maxSplicesPerZone"})
 
-            shrinkTitleModel.append({title:qsTr("InsulationName")})
+            shrinkTitleModel.append({title:qsTr("Insulation Name")})
             shrinkTitleModel.append({title:qsTr("Temp(℃)")})
             shrinkTitleModel.append({title:qsTr("Time(S)")})
 

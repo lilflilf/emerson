@@ -157,6 +157,47 @@ bool UtilityClass::StringJsonToMap(QString SourceString, QMap<int, struct PARTAT
     return bResult;
 }
 
+bool UtilityClass::ListJsonToString(QList<int>* _SourceList, QString &DestString)
+{
+    QJsonObject json;
+    if(_SourceList == NULL)
+        return false;
+    for(int i = 0; i < _SourceList->size(); i++)
+        json.insert(QString::number(i,10),  QString::number(_SourceList->at(i), 10));
+    QJsonDocument document;
+    document.setObject(json);
+    QByteArray byte_array = document.toJson(QJsonDocument::Compact);
+    DestString = byte_array.data();
+    return true;
+}
+
+bool UtilityClass::StringJsonToList(QString SourceString, QList<int> *_DestList)
+{
+    bool bResult = false;
+    if(_DestList == NULL)
+        return false;
+    QByteArray byte_array = SourceString.toLatin1();
+    QJsonParseError json_error;
+    QJsonDocument parse_document = QJsonDocument::fromJson(byte_array, &json_error);
+    if(json_error.error == QJsonParseError::NoError)
+    {
+        if(parse_document.isObject())
+        {
+            QJsonObject obj = parse_document.object();
+            if(_DestList->isEmpty() == false)
+                _DestList->clear();
+            QJsonObject::const_iterator i = obj.constBegin();
+            while(i != obj.constEnd()){
+                _DestList->insert(i.key().toInt(), i.value().toInt());
+                ++i;
+            }
+            bResult = true;
+
+        }
+    }
+    return bResult;
+}
+
 /**************************************************************************************/
 /* This is the central point for keeping track of all data, mins, maxs, and formatters*/
 /* It receives Splice data and stores in the corresponding data structure.            */

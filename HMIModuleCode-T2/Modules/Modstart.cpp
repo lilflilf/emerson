@@ -238,7 +238,7 @@ void MODstart::GlobalInitM10()
     ptr_M2010->M10Run.Select_Seq_file = false;
     ptr_M2010->M10Run.Alarm_found = false;
     ptr_M10INI->Power_to_Watts = _Interface->StatusData.Soft_Settings.SonicGenWatts / 200;
-    _Utility->Maxpower = float(1.20 * _Interface->StatusData.Soft_Settings.SonicGenWatts);
+    _Utility->Maxpower = (float)(1.2 * _Interface->StatusData.Soft_Settings.SonicGenWatts);
     for (i = 0; i <= 6; i++)
         ptr_M10INI->Pwr_Prefix_Data[i] = i * float(0.2 * _Interface->StatusData.Soft_Settings.SonicGenWatts);
 
@@ -289,6 +289,11 @@ void MODstart::CheckBransonFolder()
 
         if (objDriveSystem.exists("c:\\BransonData\\Library\\") == false)
            objDriveSystem.mkdir("c:\\BransonData\\Library\\");
+        else
+        {
+            if(objDriveSystem.exists("c:\\BransonData\\Library\\SpliceImage\\") == false)
+                objDriveSystem.mkdir("c:\\BransonData\\Library\\SpliceImage\\");
+        }
 
     }
 

@@ -5,6 +5,35 @@
 DBMaintenanceLogTable* DBMaintenanceLogTable::_instance = NULL;
 QString DBMaintenanceLogTable::MaintenanceLogDBFile = "MaintenanceLog.db";
 QString DBMaintenanceLogTable::DatabaseDir = "c:\\BransonData\\History\\";
+
+const QString SQLSentence[] = {
+    "CREATE TABLE MaintenanceLog ("                 /*0 Create Maintenance Table*/
+    "ID INTEGER PRIMARY KEY AUTOINCREMENT, "
+    "MaintenanceType VARCHAR, MaintenanceMsg VARCHAR, "
+    "CreatedDate VARCHAR, OperatorID INT)",
+
+    "INSERT INTO MaintenanceLog ("                       /*1 Insert record into Maintenance Table*/
+    "MaintenanceType, MaintenanceMsg, CreatedDate, "
+    "OperatorID) "
+    "VALUES (?, ?, ?, ?)",
+
+    "SELECT ID, MaintenanceType FROM MaintenanceLog",    /*2 Query Entire Maintenance Table */
+
+    "SELECT * FROM MaintenanceLog WHERE ID = ? AND MaintenanceType = ?",
+                                                      /*3 Query One Record From Maintenance Table */
+    "SELECT * FROM MaintenanceLog WHERE ID = ?",         /*4 Query One Record Only Use ID */
+
+    "DELETE FROM MaintenanceLog",                        /*5 Delete Entire Maintenance Table*/
+
+    "DELETE FROM MaintenanceLog WHERE ID = ? AND MaintenanceType = ?",
+                                                /*6 Delete One Record from Maintenance Table*/
+
+    "UPDATE MaintenanceLog SET MaintenanceType = ?, MaintenanceMsg = ?, CreatedDate = ?, "
+    "OperatorID = ? WHERE ID = ?",
+                                                /*7 Update One Record to Maintenance Table*/
+
+};
+
 DBMaintenanceLogTable* DBMaintenanceLogTable::Instance()
 {
     if(_instance == 0){
@@ -34,14 +63,10 @@ bool DBMaintenanceLogTable::CreateNewTable()
 {
     QSqlQuery query(MaintenanceLogDBObj);
     bool bResult = MaintenanceLogDBObj.open();
-
-//    bResult = query.exec(SQLSentence[CREATE_OPERATOR_TABLE]);   //run SQL
-
+    bResult = query.exec(SQLSentence[CREATE]);   //run SQL
     if(bResult == false)
-        qDebug() << "SQL ERROR:"<< query.lastError();
-
+        qDebug() << "Maintenance SQL ERROR:"<< query.lastError();
     MaintenanceLogDBObj.close();
-
     return bResult;
 }
 
@@ -56,11 +81,11 @@ int DBMaintenanceLogTable::InsertRecordIntoTable(void *_obj)
     bResult = MaintenanceLogDBObj.open();
     if(bResult == false)
     {
-        qDebug() << "SQL Open:"<< query.lastError();
+        qDebug() << "Maintenance SQL Open:"<< query.lastError();
         return bResult;
     }
 
-//    query.prepare(SQLSentence[INSERT_OPERATOR_TABLE]);
+    query.prepare(SQLSentence[INSERT]);
     query.addBindValue(((MaintenanceLogElement*)_obj)->MaintenanceType);
     query.addBindValue(((MaintenanceLogElement*)_obj)->MaintenanceMsg);
     QDateTime TimeLabel = QDateTime::currentDateTime();
@@ -69,7 +94,7 @@ int DBMaintenanceLogTable::InsertRecordIntoTable(void *_obj)
 
     bResult = query.exec();
     if (bResult == false)   //run SQL
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Maintenance Table SQL ERROR:"<< query.lastError();
     else
         iResult = query.lastInsertId().toInt(&bResult);
     if(bResult == false)
@@ -88,7 +113,7 @@ bool DBMaintenanceLogTable::QueryEntireTable(QMap<int, QString> *_obj)
     if(bResult == false)
         return bResult;
 
-//    bResult = query.exec(SQLSentence[QUERY_ENTIRE_OPERATOR_TABLE]);
+    bResult = query.exec(SQLSentence[QUERY_ENTIRE_TABLE]);
     if (bResult == true)
     {
         _obj->clear();
@@ -100,7 +125,7 @@ bool DBMaintenanceLogTable::QueryEntireTable(QMap<int, QString> *_obj)
     }
     else
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Maintenance Table SQL ERROR:"<< query.lastError();
     }
 
     MaintenanceLogDBObj.close();
@@ -121,7 +146,7 @@ bool DBMaintenanceLogTable::QueryOneRecordFromTable(int ID, QString TypeDefine, 
         return bResult;
     }
 
-//    query.prepare(SQLSentence[QUERY_ONE_RECORD_OPERATOR_TABLE]);
+    query.prepare(SQLSentence[QUERY_ONE_RECORD]);
     query.addBindValue(ID);
     query.addBindValue(TypeDefine);
 
@@ -129,7 +154,7 @@ bool DBMaintenanceLogTable::QueryOneRecordFromTable(int ID, QString TypeDefine, 
     if(bResult == false)
     {
         MaintenanceLogDBObj.close();
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Maintenance Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
@@ -160,18 +185,18 @@ bool DBMaintenanceLogTable::QueryOneRecordFromTable(int ID, void *_obj)
     bool bResult = MaintenanceLogDBObj.open();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Maintenance Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
-//    query.prepare(SQLSentence[QUERY_ONE_RECORD_OPERATOR_TABLE]);
+    query.prepare(SQLSentence[QUERY_ONE_RECORD_ONLY_ID]);
     query.addBindValue(ID);
 
     bResult = query.exec();
     if(bResult == false)
     {
         MaintenanceLogDBObj.close();
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Maintenance Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
@@ -199,14 +224,14 @@ bool DBMaintenanceLogTable::DeleteEntireTable()
     bool bResult = MaintenanceLogDBObj.open();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Maintenance Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
-//    bResult = query.exec(SQLSentence[DELETE_ENTIRE_OPERATOR_TABLE]);
+    bResult = query.exec(SQLSentence[DELETE_ENTIRE_TABLE]);
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Maintenance Table SQL ERROR:"<< query.lastError();
     }
 
     MaintenanceLogDBObj.close();
@@ -219,18 +244,18 @@ bool DBMaintenanceLogTable::DeleteOneRecordFromTable(int ID, QString TypeDefine)
     bool bResult = MaintenanceLogDBObj.open();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Maintenance Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
-//    query.prepare(SQLSentence[DELETE_ONE_RECORD_OPERATOR_TABLE]);
+    query.prepare(SQLSentence[DELETE_ONE_RECORD]);
     query.addBindValue(ID);
     query.addBindValue(TypeDefine);
 
     bResult = query.exec();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Maintenance Table SQL ERROR:"<< query.lastError();
     }
     MaintenanceLogDBObj.close();
     return bResult;
@@ -245,21 +270,22 @@ bool DBMaintenanceLogTable::UpdateRecordIntoTable(void *_obj)
     bool bResult = MaintenanceLogDBObj.open();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR1:"<< query.lastError();
+        qDebug() << "Maintenance Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
-//    query.prepare(SQLSentence[UPDATE_ONE_RECORD_OPERATOR_TABLE]);
+    query.prepare(SQLSentence[UPDATE_ONE_RECORD]);
     query.addBindValue(((MaintenanceLogElement*)_obj)->MaintenanceType);
     query.addBindValue(((MaintenanceLogElement*)_obj)->MaintenanceMsg);
     QDateTime TimeLabel = QDateTime::fromTime_t(((MaintenanceLogElement*)_obj)->CreatedDate);
     query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
     query.addBindValue(((MaintenanceLogElement*)_obj)->OperatorID);
+    query.addBindValue(((MaintenanceLogElement*)_obj)->MaintenanceLogID);
 
     bResult = query.exec();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Maintenance Table SQL ERROR:"<< query.lastError();
     }
     MaintenanceLogDBObj.close();
     return bResult;
@@ -283,8 +309,8 @@ bool DBMaintenanceLogTable::QueryOnlyUseTime(unsigned int time_from, unsigned in
         return bResult;
 
 //    query.prepare(SQLSentence[QUERY_ONE_RECORD_WIRE_TABLE]);
-//    query.prepare("SELECT ID, OperatorName FROM Operator WHERE CreatedDate >= ?"
-//                  " AND CreatedDate <= ?");
+    query.prepare("SELECT ID, MaintenanceType FROM MaintenanceLog WHERE CreatedDate >= ?"
+                  " AND CreatedDate <= ?");
     QDateTime TimeLabel = QDateTime::fromTime_t(time_from);
     query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
     TimeLabel = QDateTime::fromTime_t(time_to);
@@ -300,7 +326,45 @@ bool DBMaintenanceLogTable::QueryOnlyUseTime(unsigned int time_from, unsigned in
     }
     else
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Maintenance Table SQL ERROR:"<< query.lastError();
+    }
+
+    MaintenanceLogDBObj.close();
+    return bResult;
+}
+
+bool DBMaintenanceLogTable::QueryUseNameAndTime(QString TypeDefine, unsigned int time_from,
+                unsigned int time_to, QMap<int, QString>* _obj)
+{
+    if(_obj == NULL)
+        return false;
+
+    QSqlQuery query(MaintenanceLogDBObj);
+    bool bResult = MaintenanceLogDBObj.open();
+    if(bResult == false)
+        return bResult;
+
+//    query.prepare(SQLSentence[QUERY_ONE_RECORD_WIRE_TABLE]);
+    query.prepare("SELECT ID, MaintenanceType FROM MaintenanceLog WHERE "
+                  "MaintenanceType = ? AND CreatedDate >= ? "
+                  "AND CreatedDate <= ?");
+    query.addBindValue(TypeDefine);
+    QDateTime TimeLabel = QDateTime::fromTime_t(time_from);
+    query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
+    TimeLabel = QDateTime::fromTime_t(time_to);
+    query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
+
+    bResult = query.exec();
+    if(bResult == true)
+    {
+        _obj->clear();
+        while(query.next())
+            _obj->insert(query.value("ID").toInt(),
+                           query.value("MaintenanceType").toString());
+    }
+    else
+    {
+        qDebug() << "Maintenance Table SQL ERROR:"<< query.lastError();
     }
 
     MaintenanceLogDBObj.close();

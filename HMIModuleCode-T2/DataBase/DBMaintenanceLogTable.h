@@ -22,6 +22,8 @@ public:
 
     virtual bool QueryOnlyUseName(QString Name, QMap<int, QString> *_obj);
     virtual bool QueryOnlyUseTime(unsigned int time_from, unsigned int time_to, QMap<int, QString> *_obj);
+    virtual bool QueryUseNameAndTime(QString Name, unsigned int time_from,
+                unsigned int time_to, QMap<int, QString>* _obj);
 public:
     static DBMaintenanceLogTable* Instance();
 protected:

@@ -62,7 +62,7 @@ bool DBOperatorTable::CreateNewTable()
     bResult = query.exec(SQLSentence[CREATE]);   //run SQL
 
     if(bResult == false)
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Operator Table SQL ERROR:"<< query.lastError();
 
     OperatorDBObj.close();
 
@@ -94,7 +94,7 @@ int DBOperatorTable::InsertRecordIntoTable(void *_obj)
 
     bResult = query.exec();
     if (bResult == false)   //run SQL
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Operator Table SQL ERROR:"<< query.lastError();
     else
         iResult = query.lastInsertId().toInt(&bResult);
     if(bResult == false)
@@ -125,7 +125,7 @@ bool DBOperatorTable::QueryEntireTable(QMap<int, QString> *_obj)
     }
     else
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Operator Table SQL ERROR:"<< query.lastError();
     }
 
     OperatorDBObj.close();
@@ -142,7 +142,7 @@ bool DBOperatorTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
     bool bResult = OperatorDBObj.open();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Operator Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
@@ -154,7 +154,7 @@ bool DBOperatorTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
     if(bResult == false)
     {
         OperatorDBObj.close();
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Operator Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
@@ -186,7 +186,7 @@ bool DBOperatorTable::QueryOneRecordFromTable(int ID, void *_obj)
     bool bResult = OperatorDBObj.open();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Operator Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
@@ -197,7 +197,7 @@ bool DBOperatorTable::QueryOneRecordFromTable(int ID, void *_obj)
     if(bResult == false)
     {
         OperatorDBObj.close();
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Operator Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
@@ -226,14 +226,14 @@ bool DBOperatorTable::DeleteEntireTable()
     bool bResult = OperatorDBObj.open();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Operator Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
     bResult = query.exec(SQLSentence[DELETE_ENTIRE_TABLE]);
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Operator Table SQL ERROR:"<< query.lastError();
     }
 
     OperatorDBObj.close();
@@ -246,7 +246,7 @@ bool DBOperatorTable::DeleteOneRecordFromTable(int ID, QString Name)
     bool bResult = OperatorDBObj.open();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Operator Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
@@ -257,7 +257,7 @@ bool DBOperatorTable::DeleteOneRecordFromTable(int ID, QString Name)
     bResult = query.exec();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Operator Table SQL ERROR:"<< query.lastError();
     }
     OperatorDBObj.close();
     return bResult;
@@ -360,4 +360,40 @@ bool DBOperatorTable::QueryOnlyUseTime(unsigned int time_from, unsigned int time
     return bResult;
 }
 
+bool DBOperatorTable::QueryUseNameAndTime(QString Name, unsigned int time_from,
+                unsigned int time_to, QMap<int, QString>* _obj)
+{
+    if(_obj == NULL)
+        return false;
 
+    QSqlQuery query(OperatorDBObj);
+    bool bResult = OperatorDBObj.open();
+    if(bResult == false)
+        return bResult;
+
+//    query.prepare(SQLSentence[QUERY_ONE_RECORD_WIRE_TABLE]);
+    query.prepare("SELECT ID, OperatorName FROM Operator "
+                  "WHERE OperatorName = ? AND CreatedDate >= ?"
+                  " AND CreatedDate <= ?");
+    query.addBindValue(Name);
+    QDateTime TimeLabel = QDateTime::fromTime_t(time_from);
+    query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
+    TimeLabel = QDateTime::fromTime_t(time_to);
+    query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
+
+    bResult = query.exec();
+    if(bResult == true)
+    {
+        _obj->clear();
+        while(query.next())
+            _obj->insert(query.value("ID").toInt(),
+                           query.value("OperatorName").toString());
+    }
+    else
+    {
+        qDebug() << "SQL ERROR:"<< query.lastError();
+    }
+
+    OperatorDBObj.close();
+    return bResult;
+}

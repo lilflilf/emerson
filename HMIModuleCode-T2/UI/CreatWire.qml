@@ -887,6 +887,7 @@ Item {
                 color: "#375566"
                 height: 1
             }
+
             CButton {
                 id: save
                 text: qsTr("SAVE TO WIRE\nLIBRARY")
@@ -910,12 +911,12 @@ Item {
                     if (spliceDetailsItem.selectWireId == -1)
                     {
                         //insert
-//                        wireModel.insertValueToTable("insert",-1,1,rectcolor.color,itemStripe.color,itemStripe.stripeType,edit2.inputText,wireType,side,verside,positionside)
+                        wireModel.insertValueToTable("insert",wireName.inputText,-1,hmiAdaptor.getCurrentOperatorId(),rectcolor.color,itemStripe.color,itemStripe.stripeType,edit2.inputText,wireType,side,verside,positionside)
                     }
                     else
                     {
                         //update
-//                        wireModel.insertValueToTable("update",spliceDetailsItem.selectWireId,1,rectcolor.color,itemStripe.color,itemStripe.stripeType,edit2.inputText,wireType,side,verside,positionside)
+                        wireModel.insertValueToTable("update",wireName.inputText,spliceDetailsItem.selectWireId,hmiAdaptor.getCurrentOperatorId(),rectcolor.color,itemStripe.color,itemStripe.stripeType,edit2.inputText,wireType,side,verside,positionside)
 
                     }
                 }
@@ -1247,6 +1248,8 @@ Item {
                 backGround.visible = true
                 backGround.opacity = 0.5
                 addWireLibrary.visible = true
+                wireModel.setModelList()
+
             }
         }
         CButton {
@@ -1998,6 +2001,14 @@ Item {
             backGround.visible = false
             backGround.opacity = 0
             addWireLibrary.visible = false
+            //modelId
+            wireModel.addFromLibrary(modelId)
+            spliceDetailsItem.addWireFromLibrary()
+
+        }
+        onVisibleChanged: {
+            if (addWireLibrary.visible)
+                addWireLibrary.clearSelect()
         }
     }
 

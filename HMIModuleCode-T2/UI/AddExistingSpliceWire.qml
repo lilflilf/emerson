@@ -22,6 +22,11 @@ Item {
         id: selectList
     }
 
+    function clearSelect()
+    {
+        selectList.clear()
+    }
+
     Rectangle {
         width: parent.width
         height: parent.height

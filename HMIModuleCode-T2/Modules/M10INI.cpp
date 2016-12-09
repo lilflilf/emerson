@@ -223,8 +223,8 @@ void M10INI::SetAWGToMMTable(Status_Data* _DataStruct)
     {
         _DataStruct->AWGToAreaTable.insert(i + 1,
             settings.value(QString::number(i+1,10) + "AWG").value<int>());
-        qDebug()<<"i: "<<(i+1)<<QString::number(i+1,10) + "AWG"
-                << settings.value(QString::number(i+1,10) + "AWG").value<int>();
+//        qDebug()<<"i: "<<(i+1)<<QString::number(i+1,10) + "AWG"
+//                << settings.value(QString::number(i+1,10) + "AWG").value<int>();
     }
 
     settings.endGroup();
@@ -565,7 +565,7 @@ void M10INI::Get_INI_File()
      SetStoragePaths(); //Required for networking applications
 
      //This data is usually initialized from the control input
-     _Utility->Maxpower = int(1.2 * _Interface->StatusData.Soft_Settings.SonicGenWatts);
+     _Utility->Maxpower = (float)(1.2 * _Interface->StatusData.Soft_Settings.SonicGenWatts);
 }
 
 void M10INI::Save_StatusData(bool WithUpdate)

@@ -402,6 +402,7 @@ void HmiAdaptor::maintenanceStop(int page)
     }
 }
 
+
 bool HmiAdaptor::login(QString passwd)
 {
     OperatorElement myOperator;
@@ -417,6 +418,12 @@ bool HmiAdaptor::login(QString passwd)
     }
 
     return isLog;
+}
+
+int HmiAdaptor::getCurrentOperatorId()
+{
+    qDebug() << "getCurrentOperatorId" << interfaceClass->CurrentOperator.OperatorID << interfaceClass->CurrentOperator.OperatorName;
+    return interfaceClass->CurrentOperator.OperatorID;
 }
 
 void HmiAdaptor::calibrationMaintenanceExecute(int code)

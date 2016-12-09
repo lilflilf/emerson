@@ -183,7 +183,7 @@ void BransonSerial::SetCommandTimer(int Time)
         killTimer(m_nCurrentTimer);
         m_nCurrentTimer = 0;
     }
-    qDebug()<<"Utility::start() called";
+//    qDebug()<<"Utility::start() called";
     m_nCurrentTimer = startTimer(Time);
     b_Timeout = false;
 }

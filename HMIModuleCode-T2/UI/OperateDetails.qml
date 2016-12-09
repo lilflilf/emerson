@@ -90,10 +90,10 @@ Item {
         anchors.top: spliceDetailsItem.bottom
         anchors.topMargin: 10
         anchors.left: operateTitle.left
-        font.pointSize: 16
+        font.pointSize: 14
         font.family: "arial"
         //text: qsTr("Splice Locations and Status")
-        text: qsTr("Shrink Tube ID: shrink_1")
+        text: qsTr("Insulation: 1 Temp(℃):260 Time(s):09.0")
         color: "white"
     }
     Text {
@@ -123,7 +123,6 @@ Item {
     ListModel {
         id: treeModel
         Component.onCompleted: {
-            console.log("333333333333",spliceLocation.rows,spliceLocation.columns)
             var array = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P"]
             for (var i = 0; i < spliceLocation.rows*spliceLocation.columns; i++) {
                 treeModel.append({"id":array[i],"level":0,"subNode":[]})
@@ -140,12 +139,6 @@ Item {
                     treeModel.get(zoneList[j]).subNode.append({"spliceNo":j+1,"spliceColor":"white","level":1,"subNode":[]})
                 }
             }
-//            treeModel.get(1).subNode.append({"spliceNo":"72","spliceColor":"#00aa7e","level":1,"subNode":[]})
-//            treeModel.get(3).subNode.append({"spliceNo":"71","spliceColor":"white","level":1,"subNode":[]})
-//            treeModel.get(4).subNode.append({"spliceNo":"70","spliceColor":"white","level":1,"subNode":[]})
-//            treeModel.get(4).subNode.append({"spliceNo":"69","spliceColor":"#00afe9","level":1,"subNode":[]})
-//            treeModel.get(5).subNode.append({"spliceNo":"56","spliceColor":"#d31145","level":1,"subNode":[]})
-//            treeModel.get(6).subNode.append({"spliceNo":"72","spliceColor":"white","level":1,"subNode":[]})
         }
     }
 

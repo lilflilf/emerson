@@ -446,3 +446,40 @@ bool DBWorkOrderTable::QueryOnlyUseTime(unsigned int time_from, unsigned int tim
     WorkOrderDBObj.close();
     return bResult;
 }
+
+bool DBWorkOrderTable::QueryUseNameAndTime(QString Name, unsigned int time_from,
+                unsigned int time_to, QMap<int, QString>* _obj)
+{
+    if(_obj == NULL)
+        return false;
+
+    QSqlQuery query(WorkOrderDBObj);
+    bool bResult = WorkOrderDBObj.open();
+    if(bResult == false)
+        return bResult;
+
+//    query.prepare(SQLSentence[QUERY_ONE_RECORD_WIRE_TABLE]);
+    query.prepare("SELECT ID, WorkOrderName FROM WorkOrder "
+                  "WHERE WorkOrderName = ? AND CreatedDate >= ? AND CreatedDate <= ?");
+    query.addBindValue(Name);
+    QDateTime TimeLabel = QDateTime::fromTime_t(time_from);
+    query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
+    TimeLabel = QDateTime::fromTime_t(time_to);
+    query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
+
+    bResult = query.exec();
+    if(bResult == true)
+    {
+        _obj->clear();
+        while(query.next())
+            _obj->insert(query.value("ID").toInt(),
+                           query.value("WorkOrderName").toString());
+    }
+    else
+    {
+        qDebug() << "SQL ERROR:"<< query.lastError();
+    }
+
+    WorkOrderDBObj.close();
+    return bResult;
+}

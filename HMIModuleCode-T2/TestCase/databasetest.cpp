@@ -200,7 +200,6 @@ void DataBaseTest::TestInsertOneRecordIntoWeldResultTable()
     tmpWeldResult.CurrentSplice.SpliceName = "SpliceName";
     tmpWeldResult.WeldCount = 0;
     tmpWeldResult.PartCount = 0;
-    tmpWeldResult.CrossSection = 100;
     tmpWeldResult.ActualResult.ActualAlarmflags = 0x55;
     tmpWeldResult.ActualResult.ActualAmplitude = 1;
     tmpWeldResult.ActualResult.ActualAmplitude2 = 2;
@@ -214,10 +213,10 @@ void DataBaseTest::TestInsertOneRecordIntoWeldResultTable()
     tmpWeldResult.ActualResult.ActualWidth = 10;
     tmpWeldResult.SampleRatio = SampleWith1ms;
     tmpWeldResult.NoOfSamples = 2;
-    tmpWeldResult.PowerGraph.insert(1, "500");
-    tmpWeldResult.PowerGraph.insert(2, "1000");
-    tmpWeldResult.PostHeightGraph.insert(1, "120");
-    tmpWeldResult.PostHeightGraph.insert(2, "240");
+    tmpWeldResult.PowerGraph.insert(1, 500);
+    tmpWeldResult.PowerGraph.insert(2, 1000);
+    tmpWeldResult.PostHeightGraph.insert(1, 120);
+    tmpWeldResult.PostHeightGraph.insert(2, 240);
     _SQLITCLASS->InsertRecordIntoTable(&tmpWeldResult);
 }
 
