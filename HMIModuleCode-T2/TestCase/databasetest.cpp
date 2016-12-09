@@ -213,10 +213,10 @@ void DataBaseTest::TestInsertOneRecordIntoWeldResultTable()
     tmpWeldResult.ActualResult.ActualWidth = 10;
     tmpWeldResult.SampleRatio = SampleWith1ms;
     tmpWeldResult.NoOfSamples = 2;
-    tmpWeldResult.PowerGraph.insert(1, "500");
-    tmpWeldResult.PowerGraph.insert(2, "1000");
-    tmpWeldResult.PostHeightGraph.insert(1, "120");
-    tmpWeldResult.PostHeightGraph.insert(2, "240");
+    tmpWeldResult.PowerGraph.insert(1, 500);
+    tmpWeldResult.PowerGraph.insert(2, 1000);
+    tmpWeldResult.PostHeightGraph.insert(1, 120);
+    tmpWeldResult.PostHeightGraph.insert(2, 240);
     _SQLITCLASS->InsertRecordIntoTable(&tmpWeldResult);
 }
 

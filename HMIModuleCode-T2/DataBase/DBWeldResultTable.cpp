@@ -150,8 +150,8 @@ int DBWeldResultTable::InsertRecordIntoTable(void *_obj)
         UtilityClass *_Utility = UtilityClass::Instance();
         QString PowerJson;
         QString HeightJson;
-        _Utility->MapJsonToString(&((WeldResultElement*)_obj)->PowerGraph,PowerJson);
-        _Utility->MapJsonToString(&((WeldResultElement*)_obj)->PostHeightGraph, HeightJson);
+        _Utility->ListJsonToString(&((WeldResultElement*)_obj)->PowerGraph,PowerJson);
+        _Utility->ListJsonToString(&((WeldResultElement*)_obj)->PostHeightGraph, HeightJson);
         JsonStringToQSetting(sPathName, PowerJson, HeightJson);
         query.prepare(SQLSentence[INSERT]);
         query.addBindValue(((WeldResultElement*)_obj)->OperatorName);
@@ -468,9 +468,9 @@ bool DBWeldResultTable::UpdateRecordIntoTable(void *_obj)
     query.addBindValue(((WeldResultElement*)_obj)->PowerGraph.size()); //NoOfSamples
     UtilityClass *_Utility = UtilityClass::Instance();
     QString tmpJson;
-    _Utility->MapJsonToString(&((WeldResultElement*)_obj)->PowerGraph,tmpJson);
+    _Utility->ListJsonToString(&((WeldResultElement*)_obj)->PowerGraph,tmpJson);
     query.addBindValue(tmpJson);
-    _Utility->MapJsonToString(&((WeldResultElement*)_obj)->PostHeightGraph, tmpJson);
+    _Utility->ListJsonToString(&((WeldResultElement*)_obj)->PostHeightGraph, tmpJson);
     query.addBindValue(tmpJson);
     query.addBindValue(((WeldResultElement*)_obj)->WeldResultID);
     bResult = query.exec();
@@ -980,8 +980,8 @@ bool DBWeldResultTable::QueryOneRecordWithGraph(int ID, QString OperatorName, vo
     QString PowerJson;
     QString HeightJson;
     QSettingToJsonString(sPathName, PowerJson, HeightJson);
-    _Utility->StringJsonToMap(PowerJson,&((WeldResultElement*)_obj)->PowerGraph);
-    _Utility->StringJsonToMap(HeightJson,&((WeldResultElement*)_obj)->PostHeightGraph);
+    _Utility->StringJsonToList(PowerJson,&((WeldResultElement*)_obj)->PowerGraph);
+    _Utility->StringJsonToList(HeightJson,&((WeldResultElement*)_obj)->PostHeightGraph);
     ((WeldResultElement*)_obj)->NoOfSamples
             = ((WeldResultElement*)_obj)->PowerGraph.size();
     WeldResultDBObj.close();

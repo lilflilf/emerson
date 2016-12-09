@@ -69,18 +69,9 @@ WeldResultElement WeldResultElement::operator=(const WeldResultElement &WeldResu
     this->ActualResult.ActualWidth = WeldResultObject.ActualResult.ActualWidth;
     this->SampleRatio = WeldResultObject.SampleRatio;
 
-    QMap<int, QString>::const_iterator i = WeldResultObject.PowerGraph.constBegin();
-    while(i != WeldResultObject.PowerGraph.constEnd())
-    {
-        this->PowerGraph.insert(i.key(),i.value());
-        ++i;
-    }
-    i = WeldResultObject.PostHeightGraph.constBegin();
-    while(i != WeldResultObject.PostHeightGraph.constEnd())
-    {
-        this->PostHeightGraph.insert(i.key(),i.value());
-        ++i;
-    }
+    this->PowerGraph = WeldResultObject.PowerGraph;
+    this->PostHeightGraph = WeldResultObject.PostHeightGraph;
+
     this->NoOfSamples = PowerGraph.size();
     return *this;
 }
