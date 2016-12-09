@@ -65,7 +65,8 @@ private:
 
 
 signals:
-    void ErrorMessageSignal(struct BransonMessageBox &MsgBox);
+    void EnableErrorMessageSignal(struct BransonMessageBox &MsgBox);
+    void DisableErrorMessageSignal(struct BransonMessageBox &MsgBox);
 protected:
     InterfaceClass(QObject *parent = 0);
 private:
