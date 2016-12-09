@@ -202,7 +202,7 @@ bool PresetElement::CalculateSpliceData()
     }
     if(bResult == false)
         return bResult;
-    int MAXwatts = (int)(1.2 * _Interface->StatusData.Soft_Settings.SonicGenWatts);
+    int MAXwatts = (float)(1.2 * _Interface->StatusData.Soft_Settings.SonicGenWatts);
 
     if(_M2010->Machine == Welder)
     {

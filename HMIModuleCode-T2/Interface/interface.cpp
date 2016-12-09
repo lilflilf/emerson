@@ -30,6 +30,7 @@ void InterfaceClass::cMsgBox(struct BransonMessageBox* MsgBox)
     tmpMsgBox.MsgTitle = MsgBox->MsgTitle;
     tmpMsgBox.TipsMode = MsgBox->TipsMode;
     tmpMsgBox.func_ptr = MsgBox->func_ptr;
+    emit ErrorMessageSignal(tmpMsgBox);
 }
 
 void InterfaceClass::dlgMaintWarning()
