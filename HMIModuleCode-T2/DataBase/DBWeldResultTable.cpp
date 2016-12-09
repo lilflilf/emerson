@@ -630,6 +630,7 @@ bool DBWeldResultTable::QueryBySomeFields(QMap<int, QString> *_obj, QString Work
     if(bResult == true){
         if((WorkOrderName.isEmpty() == true) && (PartName.isEmpty() == true) && (SpliceName.isEmpty() == true))
         {
+            qDebug()<<"111111111111111111";
             if(Orderby == true)
                 query.prepare("SELECT ID, OperatorName FROM WeldResultHistory WHERE CreatedDate >= ?"
                     " AND CreatedDate <= ? ORDER BY CreatedDate ASC");
@@ -643,6 +644,7 @@ bool DBWeldResultTable::QueryBySomeFields(QMap<int, QString> *_obj, QString Work
             query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
         }else if((WorkOrderName.isEmpty() == true) && (PartName.isEmpty() == true))
         {
+            qDebug()<<"22222222222222222222";
             QString FieldName;
             switch (OrderField) {
             case SpliceType:
@@ -669,6 +671,7 @@ bool DBWeldResultTable::QueryBySomeFields(QMap<int, QString> *_obj, QString Work
             query.addBindValue(SpliceName);
         }else if((WorkOrderName.isEmpty() == true) && (SpliceName.isEmpty() == true))
         {
+            qDebug()<<"333333333333333333333333";
             QString FieldName;
             switch (OrderField) {
             case PartType:
@@ -695,6 +698,7 @@ bool DBWeldResultTable::QueryBySomeFields(QMap<int, QString> *_obj, QString Work
             query.addBindValue(PartName);
         }else if((PartName.isEmpty() == true) && (SpliceName.isEmpty() == true))
         {
+            qDebug()<<"4444444444444444";
             QString FieldName;
             switch (OrderField) {
             case WorkOrderType:
@@ -721,6 +725,7 @@ bool DBWeldResultTable::QueryBySomeFields(QMap<int, QString> *_obj, QString Work
             query.addBindValue(WorkOrderName);
         }else if(WorkOrderName.isEmpty() == true)
         {
+            qDebug()<<"5555555555555555555";
             QString FieldName;
             switch (OrderField) {
             case SpliceType:
@@ -751,6 +756,7 @@ bool DBWeldResultTable::QueryBySomeFields(QMap<int, QString> *_obj, QString Work
             query.addBindValue(PartName);
         }else if(PartName.isEmpty() == true)
         {
+            qDebug()<<"56666666666666666666666";
             QString FieldName;
             switch (OrderField) {
             case SpliceType:
@@ -781,6 +787,7 @@ bool DBWeldResultTable::QueryBySomeFields(QMap<int, QString> *_obj, QString Work
             query.addBindValue(WorkOrderName);
         }else if(SpliceName.isEmpty() == true)
         {
+            qDebug()<<"77777777777777";
             QString FieldName;
             switch (OrderField) {
             case WorkOrderType:
@@ -810,6 +817,7 @@ bool DBWeldResultTable::QueryBySomeFields(QMap<int, QString> *_obj, QString Work
             query.addBindValue(WorkOrderName);
             query.addBindValue(PartName);
         }else{
+            qDebug()<<"888888888888";
             QString FieldName;
             switch (OrderField) {
             case SpliceType:
@@ -828,6 +836,7 @@ bool DBWeldResultTable::QueryBySomeFields(QMap<int, QString> *_obj, QString Work
                 FieldName = "CreatedDate";
                 break;
             }
+            qDebug()<<"yyyyyyyyyyyyyyyyy"<<time_from<<time_to<<SpliceName<<PartName<<WorkOrderName<<FieldName;
             QString QueryStr;
             if (Orderby == true)
                 QueryStr = QString("SELECT ID, OperatorName FROM WeldResultHistory WHERE CreatedDate >= ? "

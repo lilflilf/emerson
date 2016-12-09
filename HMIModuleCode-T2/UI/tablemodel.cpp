@@ -1322,8 +1322,8 @@ QVariant WeldHistoryModel::data(const QModelIndex &index, int role) const
             value = QVariant::fromValue(myHistory.OperatorName);
         else if (columnIdx == 5)
             value = QVariant::fromValue(QDateTime::fromTime_t(myHistory.CreatedDate).toString("MM/dd/yyyy hh:mm"));
-//        else if (columnIdx == 6)
-//            value = QVariant::fromValue(variantToString->CrossSectionToString(myHistory.CrossSection));
+        else if (columnIdx == 6)
+            value = QVariant::fromValue(variantToString->CrossSectionToString(presetElement.CrossSection));
         else if (columnIdx == 7)
             value = QVariant::fromValue(variantToString->WeldModeToString(presetElement.WeldSettings.AdvanceSetting.WeldMode,presetElement.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode));
         else if (columnIdx == 8) {
@@ -1401,6 +1401,17 @@ void WeldHistoryModel::setModelList(unsigned int time_from, unsigned int time_to
     endResetModel();
 }
 
+void WeldHistoryModel::setModelList(QString WorkOrderName, QString PartName, QString SpliceName,
+                                    unsigned int time_from, unsigned int time_to,
+                                    enum FieldType OrderField, bool Orderby)
+{
+    beginResetModel();
+    historys->clear();
+    if (m_weldHistoryAdaptor->QueryBySomeFields(historys,WorkOrderName,PartName,SpliceName,time_from,time_to,OrderField,Orderby))
+        qDebug( )<< "WeldHistoryModel " << historys->count();
+    endResetModel();
+}
+
 void WeldHistoryModel::setModelList()
 {
     beginResetModel();
@@ -1454,6 +1465,10 @@ QHash<int, QByteArray> WeldHistoryModel::roleNames() const
     return m_roleNames;
 }
 
+void WeldHistoryModel::weldResultSearch(QString WorkOrderName, QString PartName, QString SpliceName, unsigned int time_from, unsigned int time_to, FieldType OrderField, bool Orderby)
+{
+    setModelList(WorkOrderName,PartName,SpliceName,time_from,time_to,OrderField,Orderby);
+}
 
 QVariant WeldHistoryModel::getValue(int index, QString key)
 {
@@ -1481,7 +1496,7 @@ QVariant WeldHistoryModel::getValue(int index, QString key)
     WeldHistoryModelHash.insert("OperatorName",myHistory.OperatorName);
     WeldHistoryModelHash.insert("DateCreated",QDateTime::fromTime_t(myHistory.CreatedDate).toString("MM/dd/yyyy hh:mm"));
 
-//    WeldHistoryModelHash.insert("CrossSection",variantToString->CrossSectionToString(myHistory.CrossSection)); //contain in splice
+    WeldHistoryModelHash.insert("CrossSection",variantToString->CrossSectionToString(presetElement.CrossSection)); //contain in splice
     WeldHistoryModelHash.insert("WeldMode",variantToString->WeldModeToString(presetElement.WeldSettings.AdvanceSetting.WeldMode,presetElement.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode));     //contain in splice
     WeldHistoryModelHash.insert("Energy",variantToString->EnergyToString(myHistory.ActualResult.ActualEnergy).Current);
     WeldHistoryModelHash.insert("Amplitude",variantToString->AmplitudeToString(myHistory.ActualResult.ActualAmplitude).Current);

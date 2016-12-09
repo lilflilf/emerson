@@ -226,6 +226,9 @@ class WeldHistoryModel : public QAbstractTableModel
     Q_OBJECT
 public:
     explicit WeldHistoryModel(QObject *parent = 0);
+    void setModelList(QString WorkOrderName, QString PartName, QString SpliceName,
+                      unsigned int time_from, unsigned int time_to,
+                      enum FieldType OrderField = CreatedDateType, bool Orderby = true);
     void setModelList(unsigned int time_from, unsigned int time_to);
     void setModelList();
 
@@ -247,6 +250,9 @@ signals:
 public slots:
     void setRoles(const QStringList &names);
     Q_INVOKABLE QVariant getValue(int index, QString key);
+    Q_INVOKABLE void weldResultSearch(QString WorkOrderName, QString PartName, QString SpliceName,
+                                 unsigned int time_from, unsigned int time_to,
+                                 enum FieldType OrderField = CreatedDateType, bool Orderby = true);
     Q_INVOKABLE int count();
     Q_INVOKABLE void removeValue(int id, QString name);
 
