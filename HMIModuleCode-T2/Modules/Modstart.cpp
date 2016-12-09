@@ -289,6 +289,11 @@ void MODstart::CheckBransonFolder()
 
         if (objDriveSystem.exists("c:\\BransonData\\Library\\") == false)
            objDriveSystem.mkdir("c:\\BransonData\\Library\\");
+        else
+        {
+            if(objDriveSystem.exists("c:\\BransonData\\Library\\SpliceImage\\") == false)
+                objDriveSystem.mkdir("c:\\BransonData\\Library\\SpliceImage\\");
+        }
 
     }
 

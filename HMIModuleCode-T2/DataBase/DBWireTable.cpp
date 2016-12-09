@@ -11,15 +11,15 @@ const QString SQLSentence[] = {
     "ID INTEGER PRIMARY KEY AUTOINCREMENT, "
     "WireName VARCHAR, "
     "CreatedDate VARCHAR, OperatorID INT, Color VARCHAR, "
-    "StripeType INT, StripeColor VARCHAR, Gauge INT, "
+    "StripeType INT, StripeColor VARCHAR, Gauge INT, GaugeAWG INT, "
     "MetalType INT, HorizontalLocation INT, VerticalLocation INT, "
     "VerticalPosition INT)",
 
     "INSERT INTO Wire ("                    /*1 Insert record into Wire Table*/
     "WireName, CreatedDate, OperatorID, Color, "
-    "StripeType, StripeColor, Gauge, MetalType, "
+    "StripeType, StripeColor, Gauge, GaugeAWG, MetalType, "
     "HorizontalLocation, VerticalLocation, VerticalPosition)"
-    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 
     "SELECT ID, WireName FROM Wire",        /*2 Query Entire Wire Table */
 
@@ -30,7 +30,7 @@ const QString SQLSentence[] = {
     "DELETE FROM Wire WHERE ID = ? AND WireName = ?",
                                             /*6 Delete One Record from Wire Table*/
     "UPDATE Wire Set WireName = ?, CreatedDate = ?, OperatorID = ?, "
-    "Color = ?, StripeType = ?, StripeColor = ?, Gauge = ?, MetalType = ?, "
+    "Color = ?, StripeType = ?, StripeColor = ?, Gauge = ?, GaugeAWG = ?, MetalType = ?, "
     "HorizontalLocation = ?, VerticalLocation = ?, VerticalPosition = ? "
     "WHERE ID = ?",                         /*7 Update One Record to Wire Table*/
 };
@@ -100,6 +100,7 @@ int DBWireTable::InsertRecordIntoTable(void *_obj)
     query.addBindValue(((WireElement*)_obj)->Stripe.TypeOfStripe);
     query.addBindValue(((WireElement*)_obj)->Stripe.Color);
     query.addBindValue(((WireElement*)_obj)->Gauge);
+    query.addBindValue(((WireElement*)_obj)->GaugeAWG);
     query.addBindValue(((WireElement*)_obj)->TypeOfWire);
     query.addBindValue(((WireElement*)_obj)->Side);
     query.addBindValue(((WireElement*)_obj)->VerticalSide);
@@ -184,6 +185,7 @@ bool DBWireTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
     ((WireElement*)_obj)->Stripe.Color = query.value("StripeColor").toString();
     ((WireElement*)_obj)->Stripe.TypeOfStripe = (enum StripeType)query.value("StripeType").toInt();
     ((WireElement*)_obj)->Gauge = query.value("Gauge").toInt();
+    ((WireElement*)_obj)->GaugeAWG = query.value("GaugeAWG").toInt();
     ((WireElement*)_obj)->TypeOfWire = (enum MetalType)query.value("MetalType").toInt();
     ((WireElement*)_obj)->Side = (enum HorizontalLocation)query.value("HorizontalLocation").toInt();
     ((WireElement*)_obj)->VerticalSide = (enum VerticalLocation)query.value("VerticalLocation").toInt();
@@ -235,6 +237,7 @@ bool DBWireTable::QueryOneRecordFromTable(int ID, void *_obj)
     ((WireElement*)_obj)->Stripe.Color = query.value("StripeColor").toString();
     ((WireElement*)_obj)->Stripe.TypeOfStripe = (enum StripeType)query.value("StripeType").toInt();
     ((WireElement*)_obj)->Gauge = query.value("Gauge").toInt();
+    ((WireElement*)_obj)->GaugeAWG = query.value("GaugeAWG").toInt();
     ((WireElement*)_obj)->TypeOfWire = (enum MetalType)query.value("MetalType").toInt();
     ((WireElement*)_obj)->Side = (enum HorizontalLocation)query.value("HorizontalLocation").toInt();
     ((WireElement*)_obj)->VerticalSide = (enum VerticalLocation)query.value("VerticalLocation").toInt();
@@ -308,6 +311,7 @@ bool DBWireTable::UpdateRecordIntoTable(void *_obj)
     query.addBindValue(((WireElement*)_obj)->Stripe.TypeOfStripe);
     query.addBindValue(((WireElement*)_obj)->Stripe.Color);
     query.addBindValue(((WireElement*)_obj)->Gauge);
+    query.addBindValue(((WireElement*)_obj)->GaugeAWG);
     query.addBindValue(((WireElement*)_obj)->TypeOfWire);
     query.addBindValue(((WireElement*)_obj)->Side);
     query.addBindValue(((WireElement*)_obj)->VerticalSide);
