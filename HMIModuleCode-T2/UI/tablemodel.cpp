@@ -134,6 +134,25 @@ bool WorkOrderModel::insertRecordIntoTable(QString workName, int partId, QString
     setModelList();
 }
 
+int WorkOrderModel::getPartId(int index)
+{
+    QMap<int,QString>::iterator it; //遍历map
+    int i = 0;
+    int orderId;
+    for ( it = workOrders->begin(); it != workOrders->end(); ++it ) {
+        if (i == index){
+            orderId = it.key();
+            break;
+        }
+        else {
+            i++;
+        }
+    }
+    WorkOrderElement myWorkOrder;
+    m_workOrderAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myWorkOrder);
+    return myWorkOrder.PartIndex.begin().key();
+}
+
 QVariant WorkOrderModel::getWorkOrderValue(int index, QString key)
 {
     QMap<int,QString>::iterator it; //遍历map
@@ -854,6 +873,53 @@ void PartModel::removeValue(int id, QString name)
     setModelList();
 }
 
+int PartModel::getWorkStationRows(int id, QString name)
+{
+    PartElement myPart;
+    m_partAdaptor->QueryOneRecordFromTable(id,name,&myPart);
+    return myPart.PartTypeSetting.BoardLayout.Rows;
+}
+
+int PartModel::getWorkStationColumns(int id, QString name)
+{
+    PartElement myPart;
+    m_partAdaptor->QueryOneRecordFromTable(id,name,&myPart);
+    return myPart.PartTypeSetting.BoardLayout.Columns;
+}
+
+QList<int> PartModel::getWorkStationCorlor(int id, QString name)
+{
+    QList<int> corlorList;
+    PartElement myPart;
+    m_partAdaptor->QueryOneRecordFromTable(id,name,&myPart);
+    for (int i = 0; i < myPart.SpliceIndex.count(); i++) {
+        corlorList.append(myPart.SpliceIndex.value(myPart.SpliceIndex.keys().at(i)).CurrentWorkstation);
+    }
+    return corlorList;
+}
+
+QList<int> PartModel::geteWorkStationZone(int id, QString name)
+{
+    QList<int> zoneList;
+    PartElement myPart;
+    m_partAdaptor->QueryOneRecordFromTable(id,name,&myPart);
+    for (int i = 0; i < myPart.SpliceIndex.count(); i++) {
+        zoneList.append(myPart.SpliceIndex.value(myPart.SpliceIndex.keys().at(i)).CurrentBoardLayoutZone);
+    }
+    return zoneList;
+}
+
+bool PartModel::getPartOnlineOrOffLine(int id, QString name)
+{
+    PartElement myPart;
+    m_partAdaptor->QueryOneRecordFromTable(id,name,&myPart);
+    if (myPart.PartTypeSetting.ProcessMode == BASIC) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
 /*******************************OperaTorModel*****************************/
 
 
@@ -1495,27 +1561,53 @@ QVariant WireModel::data(const QModelIndex &index, int role) const
             value = QVariant::fromValue(myOperator.OperatorName);
         else if (columnIdx == 4)
             value = QVariant::fromValue(myWire.Color);
-        else if (columnIdx == 5)
-            value = QVariant::fromValue((int)myWire.Stripe.TypeOfStripe);
-        else if (columnIdx == 6)
+        else if (columnIdx == 5) {
+            if (myWire.Stripe.TypeOfStripe == 0) {
+                temp = "Horizontal";
+            } else if (myWire.Stripe.TypeOfStripe == 1) {
+                temp = "Slash";
+            } else if (myWire.Stripe.TypeOfStripe == 2) {
+                temp = "OneVertical";
+            } else {
+                temp = "TwoVertical";
+            }
+            value = QVariant::fromValue(temp);
+        } else if (columnIdx == 6)
             value = QVariant::fromValue(myWire.Stripe.Color);
         else if (columnIdx == 7) {
             temp = variantToString->GaugeToString(myWire.Gauge,myWire.GaugeAWG).Current;
             value = QVariant::fromValue(temp);
         } else if (columnIdx == 8) {
-            QString metalType;
             if (myWire.TypeOfWire == 0) {
-                metalType = "Copper";
+                temp = "Copper";
             } else {
-                metalType = "Aluminum";
+                temp = "Aluminum";
             }
-            value = QVariant::fromValue(metalType);
-        } else if (columnIdx == 9)
-            value = QVariant::fromValue((int)myWire.Side);
-        else if (columnIdx == 10)
-            value = QVariant::fromValue((int)myWire.VerticalSide);
-        else if (columnIdx == 11)
-            value = QVariant::fromValue((int)myWire.Position);
+            value = QVariant::fromValue(temp);
+        } else if (columnIdx == 9) {
+            if (myWire.Side == 0) {
+                temp = "Left";
+            } else {
+                temp = "Right";
+            }
+            value = QVariant::fromValue(temp);
+        } else if (columnIdx == 10) {
+            if (myWire.VerticalSide == 0) {
+                temp = "Basic";
+            } else {
+                temp = "Advance";
+            }
+            value = QVariant::fromValue(temp);
+        } else if (columnIdx == 11) {
+            if (myWire.Position == 0) {
+                temp = "Top";
+            } else if (myWire.Position == 1) {
+                temp = "Middle";
+            } else {
+                temp = "Bottom";
+            }
+            value = QVariant::fromValue(temp);
+        }
 
     }
     return value;
@@ -1723,6 +1815,7 @@ QVariant WireModel::getValue(int index, QString key)
     OperatorElement myOperator;
     m_wireAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myWire);
     m_operatorAdaptor->QueryOneRecordFromTable(myWire.OperatorID,&myOperator);
+    QString temp;
     //    list <<"WireId" << "WireName" << "DateCreated" << "OperatorName" << "Color" << "StripeType" << "StripeColor" << "Gauge" << "MetalType" << "HorizontalLocation" << "VerticalLocation" << "VerticalPosition";
     QHash<QString, QVariant> WireModelHash;
     WireModelHash.insert("WireId",myWire.WireID);
@@ -1730,19 +1823,44 @@ QVariant WireModel::getValue(int index, QString key)
     WireModelHash.insert("DateCreated",QDateTime::fromTime_t(myWire.CreatedDate).toString("MM/dd/yyyy hh:mm"));
     WireModelHash.insert("OperatorName",myOperator.OperatorName);
     WireModelHash.insert("Color",myWire.Color);
-    WireModelHash.insert("StripeType",(int)myWire.Stripe.TypeOfStripe);
+    if (myWire.Stripe.TypeOfStripe == 0) {
+        temp = "Horizontal";
+    } else if (myWire.Stripe.TypeOfStripe == 1) {
+        temp = "Slash";
+    } else if (myWire.Stripe.TypeOfStripe == 2) {
+        temp = "OneVertical";
+    } else {
+        temp = "TwoVertical";
+    }
+    WireModelHash.insert("StripeType",temp);
     WireModelHash.insert("StripeColor",myWire.Stripe.Color);
     WireModelHash.insert("Gauge",myWire.Gauge);
-    QString metalType;
     if (myWire.TypeOfWire == 0) {
-        metalType = "Copper";
+        temp = "Copper";
     } else {
-        metalType = "Aluminum";
+        temp = "Aluminum";
     }
-    WireModelHash.insert("MetalType",metalType);
-    WireModelHash.insert("HorizontalLocation",(int)myWire.Side);
-    WireModelHash.insert("VerticalLocation",(int)myWire.VerticalSide);
-    WireModelHash.insert("VerticalPosition",(int)myWire.Position);
+    WireModelHash.insert("MetalType",temp);
+    if (myWire.Side == 0) {
+        temp = "Left";
+    } else {
+        temp = "Right";
+    }
+    WireModelHash.insert("HorizontalLocation",temp);
+    if (myWire.VerticalSide == 0) {
+        temp = "Basic";
+    } else {
+        temp = "Advance";
+    }
+    WireModelHash.insert("VerticalLocation",temp);
+    if (myWire.Position == 0) {
+        temp = "Top";
+    } else if (myWire.Position == 1) {
+        temp = "Middle";
+    } else {
+        temp = "Bottom";
+    }
+    WireModelHash.insert("VerticalPosition",temp);
     if (key == "") {
         return WireModelHash;
     } else {

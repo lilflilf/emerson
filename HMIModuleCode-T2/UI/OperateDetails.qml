@@ -5,6 +5,8 @@ import QtQuick.Window 2.2
 
 Item {
     id: operateDetail
+    property string partName: ""
+    property int partId: -1
     Rectangle {
         anchors.fill: parent
         color: "#626465"
@@ -121,51 +123,25 @@ Item {
     ListModel {
         id: treeModel
         Component.onCompleted: {
-            treeModel.append({"id":"A","level":0,"subNode":[]})
-            treeModel.append({"id":"B","level":0,"subNode":[]})
-            treeModel.append({"id":"C","level":0,"subNode":[]})
-            treeModel.append({"id":"D","level":0,"subNode":[]})
-            treeModel.append({"id":"E","level":0,"subNode":[]})
-            treeModel.append({"id":"F","level":0,"subNode":[]})
-            treeModel.append({"id":"G","level":0,"subNode":[]})
-            treeModel.append({"id":"H","level":0,"subNode":[]})
-            treeModel.append({"id":"I","level":0,"subNode":[]})
-//            treeModel.append({"id":"J","level":0,"subNode":[]})
-//            treeModel.append({"id":"K","level":0,"subNode":[]})
-//            treeModel.append({"id":"L","level":0,"subNode":[]})
-//            treeModel.append({"id":"M","level":0,"subNode":[]})
-//            treeModel.append({"id":"N","level":0,"subNode":[]})
-//            treeModel.append({"id":"O","level":0,"subNode":[]})
-//            treeModel.append({"id":"P","level":0,"subNode":[]})
-//            treeModel.get(0).subNode.append({"spliceNo":"99","spliceColor":"white","level":1,"subNode":[]})
-//            treeModel.get(0).subNode.append({"spliceNo":"56","spliceColor":"white","level":1,"subNode":[]})
-//            treeModel.get(0).subNode.append({"spliceNo":"55","spliceColor":"white","level":1,"subNode":[]})
-//            treeModel.get(0).subNode.append({"spliceNo":"54","spliceColor":"white","level":1,"subNode":[]})
-//            treeModel.get(0).subNode.append({"spliceNo":"53","spliceColor":"white","level":1,"subNode":[]})
-//            treeModel.get(0).subNode.append({"spliceNo":"99","spliceColor":"white","level":1,"subNode":[]})
-//            treeModel.get(0).subNode.append({"spliceNo":"56","spliceColor":"white","level":1,"subNode":[]})
-//            treeModel.get(0).subNode.append({"spliceNo":"55","spliceColor":"white","level":1,"subNode":[]})
-//            treeModel.get(0).subNode.append({"spliceNo":"54","spliceColor":"white","level":1,"subNode":[]})
-//            treeModel.get(0).subNode.append({"spliceNo":"53","spliceColor":"white","level":1,"subNode":[]})
-//            treeModel.get(0).subNode.append({"spliceNo":"54","spliceColor":"white","level":1,"subNode":[]})
-//            treeModel.get(0).subNode.append({"spliceNo":"53","spliceColor":"white","level":1,"subNode":[]})
-            treeModel.get(1).subNode.append({"spliceNo":"68","spliceColor":"#00aa7e","level":1,"subNode":[]})
-//            treeModel.get(2).subNode.append({"spliceNo":"51","spliceColor":"white","level":1,"subNode":[]})
-            treeModel.get(3).subNode.append({"spliceNo":"67","spliceColor":"white","level":1,"subNode":[]})
-            treeModel.get(4).subNode.append({"spliceNo":"66","spliceColor":"white","level":1,"subNode":[]})
-            treeModel.get(4).subNode.append({"spliceNo":"69","spliceColor":"#00afe9","level":1,"subNode":[]})
-            treeModel.get(5).subNode.append({"spliceNo":"65","spliceColor":"#d31145","level":1,"subNode":[]})
-//            treeModel.get(7).subNode.append({"spliceNo":"14","spliceColor":"white","level":1,"subNode":[]})
-//            treeModel.get(8).subNode.append({"spliceNo":"15","spliceColor":"white","level":1,"subNode":[]})
-//            treeModel.get(9).subNode.append({"spliceNo":"88","spliceColor":"white","level":1,"subNode":[]})
-//            treeModel.get(10).subNode.append({"spliceNo":"16","spliceColor":"white","level":1,"subNode":[]})
-//            treeModel.get(11).subNode.append({"spliceNo":"17","spliceColor":"white","level":1,"subNode":[]})
-//            treeModel.get(12).subNode.append({"spliceNo":"18","spliceColor":"white","level":1,"subNode":[]})
-//            treeModel.get(13).subNode.append({"spliceNo":"19","spliceColor":"white","level":1,"subNode":[]})
-//            treeModel.get(14).subNode.append({"spliceNo":"20","spliceColor":"white","level":1,"subNode":[]})
-//            treeModel.get(15).subNode.append({"spliceNo":"22","spliceColor":"white","level":1,"subNode":[]})
+            var array = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P"]
+            for (var i = 0; i < spliceLocation.rows*spliceLocation.columns; i++) {
+                treeModel.append({"id":array[i],"level":0,"subNode":[]})
+            }
+            var zoneList = new Array();
+            zoneList = partModel.getWorkStationCorlor(partId,partName)
+            var j = 0
+            for ( j = 0; j < zoneList.count; j++) {
+                if (j == 0) {
+                    treeModel.get(zoneList[j]).subNode.append({"spliceNo":j+1,"spliceColor":"#00aa7e","level":1,"subNode":[]})
+                } else if (j == 1) {
+                    treeModel.get(zoneList[j]).subNode.append({"spliceNo":j+1,"spliceColor":"#00afe9","level":1,"subNode":[]})
+                } else {
+                    treeModel.get(zoneList[j]).subNode.append({"spliceNo":j+1,"spliceColor":"white","level":1,"subNode":[]})
+                }
+            }
         }
     }
+
     SpliceLocation {
         id: spliceLocation
         anchors.top: spliceTips.bottom
@@ -174,9 +150,9 @@ Item {
         anchors.bottomMargin: 10
         anchors.left: operateTitle.left
         width: Screen.width * 0.37
-        columns: 3
-        rows: 3
-        visible: true
+        columns: partModel.getWorkStationColumns(partId,partName)
+        rows: partModel.getWorkStationRows(partId,partName)
+        visible: partModel.getPartOnlineOrOffLine(partId,partName)
         listModel: treeModel
     }
     SpliceStatusOffLine {

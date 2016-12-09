@@ -351,7 +351,6 @@ Item {
             text: bIsOnlyOne ? qsTr("Select") : qsTr("Select(" + selectCount + ")")
             textColor: "white"
             onClicked: {
-
                 if (selectIndex != -1) {
                     signalAddExistSelectClick(listModel.getValue(selectIndex,"PartId"),listModel.getValue(selectIndex,"PartName"))
                 } else if (listModel == spliceModel) {
@@ -361,6 +360,7 @@ Item {
                         signalAddExistSelectClick(listModel.getValue(num,"WireId"),listModel.getValue(num,"WireName"))
                     }
                 }
+
              }
         }
 
