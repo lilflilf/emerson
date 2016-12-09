@@ -577,7 +577,6 @@ Item {
                 drag.maximumX: scrollbar2.width - button2.width
             }
             onXChanged: {
-                console.log("1111111111111111",button2.x)
                 listView.anchors.leftMargin = -button2.x/scrollbar2.width*headTitle.width + 20
                 headTitle.anchors.leftMargin = -button2.x/scrollbar2.width*headTitle.width + 20
             }
