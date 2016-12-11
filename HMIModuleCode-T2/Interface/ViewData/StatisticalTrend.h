@@ -12,14 +12,10 @@ struct WeldParameter
     QString WeldPressure;
     QString Amplitude;
     QString Width;
-    QString TimeUSL;
-    QString TimeLSL;
-    QString PowerUSL;
-    QString PowerLSL;
-    QString PreHeightUSL;
-    QString PreHeightLSL;
-    QString HeightUSL;
-    QString HeightLSL;
+    QString Time;
+    QString Power;
+    QString PreHeight;
+    QString Height;
 };
 struct StatisticsParameter
 {
