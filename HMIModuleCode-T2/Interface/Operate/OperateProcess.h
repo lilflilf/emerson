@@ -6,7 +6,6 @@
 #include "Modules/UtilityClass.h"
 struct NecessaryInfo
 {
-    QString OperatorName;
     struct WorkOrderIndex CurrentWorkOrder;
     struct PartIndex CurrentPart;
 };
@@ -26,7 +25,7 @@ private:
     void UpdateWeldResult();
     static void WeldCycleDaemonHandle(void*);
 private slots:
-    static void WeldResultFeedbackEventSlot();
+    void WeldResultFeedbackEventSlot();
 public:
     void _start();
     void _stop();

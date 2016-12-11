@@ -680,8 +680,14 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         emit WeldResultFeedback(_M2010->ReceiveFlags.WELDdata);
         break;
     case IASigPower:           //Data Signature = "04"
-        //Data is in an unknown number of strings, all but last is 16 Bytes of data
-        //  (length = 43 Characters)
+        // Frame head 3 bytes + ":" 7 characters
+        // Total 2 bytes            4 characters
+        // Index 2 bytes            4 characters
+        // One empty byte           2 characters
+        // Data is in an unknown number of strings, all but last is 16 Bytes of data
+        // Data                     32 characters
+        // Check sum 1 byte         2 characters
+        //  (length = 51 Characters)
         int StringLen, StringCount, LastString, StartData;
         int num, Total, tmpIndex, Datalen;
         StringLen = HexString.length();
@@ -694,14 +700,11 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         RawDataGraph = new QString[Total];
         for (i = 0; i < StringCount; i++)
         {
- //            PowerString = PowerString & Mid(HexString, StartData, 32)
- //            StartData = StartData + 51
             Total = MakeHexWordNumber(HexString.mid((tmpIndex + 10), 4));
             num = MakeHexWordNumber(HexString.mid(tmpIndex + 14, 4));
             RawDataGraph[num] = HexString.mid(tmpIndex + 1, 51);
             tmpIndex = tmpIndex + 51;
         }
-
         if (LastString > 0)
         {
             //Take off the overhead and tack the string onto the Power String
@@ -712,23 +715,12 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
             RawDataGraph[num] = HexString.mid(tmpIndex + 1, LastString);
             if ((Datalen - 4) != ((LastString - 19) / 2)) num = num - 1;
         }
-        if ((num = (Total - 1)) || (_Interface->StatusData.KeepDailyHistory == false))
+        if (num == (Total - 1))
         {
             for (i = 0; i < StringCount;i++)
                 PowerString = PowerString + RawDataGraph[i].mid(StartData, 32);
             PowerString = PowerString + RawDataGraph[i].mid(StartData, (RawDataGraph[i].length() - 19));
         }
-        else
-        {
-//             If dlgMsgScreen.DataGraphComplete = True Then
-//                 dlgMsgScreen.DataGraphComplete = False
-//                 dlgMsgScreen.DataGraphIndex = num
-//                 dlgMsgScreen.lblMsg = GetResString(892) & "......"
-//                 dlgMsgScreen.Show vbModeless, Screen.ActiveForm
-//             End If
-            return 0;
-        }
-//        If dlgMsgScreen.DataGraphComplete = False Then dlgMsgScreen.DataGraphComplete = True
         _M2010->ConvertGraphData(PowerString);
         _M2010->ReceiveFlags.PowerData = true;
         _M10INI->PowerDataReady = true;

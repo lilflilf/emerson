@@ -18,7 +18,7 @@ OperateProcess::OperateProcess(QObject *parent) : QObject(parent)
 {
     M102IA* _M102IA = M102IA::Instance();
     connect(_M102IA, SIGNAL(WeldResultFeedback()),
-            this,SLOT(WeldResultFeedbackEventSlot()));
+            this,SLOT(WeldResultFeedbackEventSlot));
 }
 
 void OperateProcess::UpdateIAFields()
@@ -61,6 +61,7 @@ void OperateProcess::UpdateIAFields()
 void OperateProcess::UpdateWeldResult()
 {
     M102IA *_M102IA = M102IA::Instance();
+    InterfaceClass *_Interface = InterfaceClass::Instance();
     CurrentWeldResult.ActualResult.ActualEnergy = _M102IA->IAactual.Energy;
     CurrentWeldResult.ActualResult.ActualWidth = _M102IA->IAactual.Width;
     CurrentWeldResult.ActualResult.ActualTime = _M102IA->IAactual.Time;
@@ -73,22 +74,48 @@ void OperateProcess::UpdateWeldResult()
     CurrentWeldResult.ActualResult.ActualTPressure = _M102IA->IAactual.TPressure;
     CurrentWeldResult.ActualResult.ActualAlarmflags = _M102IA->IAactual.Alarmflags;
 
+    CurrentWeldResult.OperatorName = _Interface->CurrentOperator.OperatorName;
+    CurrentWeldResult.CurrentWorkOrder.WorkOrderID
+            = CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderID;
+    CurrentWeldResult.CurrentWorkOrder.WorkOrderName
+            = CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderName;
+    CurrentWeldResult.CurrentPart.PartID = CurrentNecessaryInfo.CurrentPart.PartID;
+    CurrentWeldResult.CurrentPart.PartName = CurrentNecessaryInfo.CurrentPart.PartName;
 
+    CurrentWeldResult.CurrentSplice.SpliceID = CurrentSplice.SpliceID;
+    CurrentWeldResult.CurrentSplice.SpliceName = CurrentSplice.SpliceName;
+    CurrentWeldResult.CurrentSplice.SpliceHash = CurrentSplice.HashCode;
+
+    CurrentWeldResult.SampleRatio = _Interface->StatusData.GraphSampleRatio;
 }
 
 void OperateProcess::WeldCycleDaemonHandle(void* _obj)
 {
+    M2010 *_M2010 = M2010::Instance();
+    if(_M2010->ReceiveFlags.PowerData == true)
+    {
+        m_Thread->setSuspendEnabled(true);
+        m_Thread->setStopEnabled(true);
+        qDebug()<<"Thread stop"<<m_Thread->wait();
+        delete m_Thread;
+        m_Thread = NULL;
 
+//        if (_Interface->StatusData.KeepDailyHistory == true)
+//        {
+    //       _Statistics->HistoryEvent();
+//        }
+        //        get_weld
+    }
 }
 
 void OperateProcess::WeldResultFeedbackEventSlot()
 {
-    InterfaceClass *_Interface = InterfaceClass::Instance();
-    if (_Interface->StatusData.KeepDailyHistory == true)
-    {
-//       _Statistics->HistoryEvent();
-    }
-    //        get_weld
+    M102IA *_M102IA = M102IA::Instance();
+    M2010 *_M2010 = M2010::Instance();
+    UpdateWeldResult();
+    _M2010->ReceiveFlags.PowerData = false;
+    _M102IA->SendIACommand(IAComSendPowerGraph, 0);
+    m_Thread->start();
 }
 
 void OperateProcess::_start()
