@@ -1,6 +1,7 @@
 #include "Interface/Operate/OperateProcess.h"
 #include "Modules/M102IA.h"
 #include "Modules/M2010.h"
+#include "Modules/M10INI.h"
 #include "Modules/ModRunSetup.h"
 #include "Interface/Interface.h"
 #include <QDebug>
@@ -89,16 +90,49 @@ void OperateProcess::UpdateWeldResult()
     CurrentWeldResult.SampleRatio = _Interface->StatusData.GraphSampleRatio;
 }
 
-void OperateProcess::WeldCycleDaemonHandle(void* _obj)
+bool OperateProcess::PowerGraphReceive()
+{
+    bool bResult = false;
+    M102IA *_M102IA = M102IA::Instance();
+    M2010 *_M2010 = M2010::Instance();
+
+    int Index;
+
+    Index = _M102IA->RawPowerDataGraph.CurrentIndex;
+    _M102IA->SendIACommand(IAComSendPowerGraph, Index);
+    _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.PowerGraphData);
+    if(_M2010->ReceiveFlags.PowerGraphData == true)
+    {
+        bResult = true;
+    }
+    if(_M102IA->RawPowerDataGraph.GraphDataList.size() == 0)
+    {
+        bResult = false;
+    }
+    return bResult;
+}
+
+bool OperateProcess::HeightGraphReceive()
+{
+    bool bResult = false;
+    return bResult;
+}
+
+void OperateProcess::WeldCycleDaemonThread(void* _obj)
 {
     M2010 *_M2010 = M2010::Instance();
-    if(_M2010->ReceiveFlags.PowerData == true)
+    M102IA *_M102IA = M102IA::Instance();
+    if(_M2010->ReceiveFlags.PowerGraphData == true)
     {
-        m_Thread->setSuspendEnabled(true);
-        m_Thread->setStopEnabled(true);
-        qDebug()<<"Thread stop"<<m_Thread->wait();
-        delete m_Thread;
-        m_Thread = NULL;
+        if(_M102IA->RawPowerDataGraph.GraphDataList.size() ==
+                _M102IA->RawPowerDataGraph.TotalFrame)
+        {
+            m_Thread->setSuspendEnabled(true);
+            m_Thread->setStopEnabled(true);
+            qDebug()<<"Thread stop"<<m_Thread->wait();
+            delete m_Thread;
+            m_Thread = NULL;
+        }
 
 //        if (_Interface->StatusData.KeepDailyHistory == true)
 //        {
@@ -113,8 +147,12 @@ void OperateProcess::WeldResultFeedbackEventSlot()
     M102IA *_M102IA = M102IA::Instance();
     M2010 *_M2010 = M2010::Instance();
     UpdateWeldResult();
-    _M2010->ReceiveFlags.PowerData = false;
-    _M102IA->SendIACommand(IAComSendPowerGraph, 0);
+    _M2010->ReceiveFlags.PowerGraphData = false;
+    _M102IA->RawPowerDataGraph.GraphDataList.clear();
+    _M102IA->RawPowerDataGraph.CurrentIndex = 0;
+    _M2010->ReceiveFlags.HeightGraphData = false;
+    _M102IA->RawHeightDataGraph.GraphDataList.clear();
+    _M102IA->RawHeightDataGraph.CurrentIndex = 0;
     m_Thread->start();
 }
 
@@ -131,7 +169,7 @@ void OperateProcess::_start()
         tmpMsgBox.func_ptr = NULL;
         _Interface->cMsgBox(&tmpMsgBox);
     }else{
-        m_Thread = new ThreadClass(0, (void*)(OperateProcess::WeldCycleDaemonHandle), this);
+        m_Thread = new ThreadClass(0, (void*)(OperateProcess::WeldCycleDaemonThread), this);
         m_Thread->setStopEnabled(false);
         m_Thread->setSuspendEnabled(false);
     }

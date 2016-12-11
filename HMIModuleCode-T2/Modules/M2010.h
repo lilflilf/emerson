@@ -130,7 +130,8 @@ struct BitFlag{
     bool SETUPdata;
     bool PRESETdata;
     bool WELDdata;
-    bool PowerData;
+    bool PowerGraphData;
+    bool HeightGraphData;
     bool SNdata;
     bool IOdata;
     bool SonicHitsData;

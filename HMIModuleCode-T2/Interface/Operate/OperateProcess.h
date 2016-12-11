@@ -23,7 +23,9 @@ private:
 private:
     void UpdateIAFields();
     void UpdateWeldResult();
-    static void WeldCycleDaemonHandle(void*);
+    bool HeightGraphReceive();
+    bool PowerGraphReceive();
+    static void WeldCycleDaemonThread(void*);
 private slots:
     void WeldResultFeedbackEventSlot();
 public:

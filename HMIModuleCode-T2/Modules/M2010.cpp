@@ -24,7 +24,8 @@ M2010::M2010()
     ReceiveFlags.SETUPdata = false;
     ReceiveFlags.PRESETdata = false;
     ReceiveFlags.WELDdata = false;
-    ReceiveFlags.PowerData = false;
+    ReceiveFlags.PowerGraphData = false;
+    ReceiveFlags.HeightGraphData = false;
     ReceiveFlags.SNdata = false;
     ReceiveFlags.IOdata = false;
     ReceiveFlags.SonicHitsData = false;

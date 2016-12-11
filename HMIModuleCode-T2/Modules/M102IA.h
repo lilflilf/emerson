@@ -294,6 +294,13 @@ enum IACommands{
    IAComEnd                   = IAComLim - 1,
 };
 
+struct GraphData
+{
+    QStringList GraphDataList;
+    int         TotalFrame;
+    int         CurrentIndex;
+};
+
 class M102IA : public QObject
 {
     Q_OBJECT
@@ -307,7 +314,8 @@ public:
     int CalibHeightMaxGauge;
     bool EnableAbortButton1;
 
-    QString *RawDataGraph;
+    GraphData RawPowerDataGraph;
+    GraphData RawHeightDataGraph;
 
     ACTIONMODE ActDone;
 
