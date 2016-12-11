@@ -203,95 +203,103 @@ enum IACommands{
    IAComSetIA98System         = 17,
 #endif
 
-   IAComSetM10Mode            = 2,
-   IAComSendSerialNumber      = 4,
-   IAComSendSetup             = 6,
-   IAComSendPresetTable       = 8,    //Sends names and numbers in IA98
-   IAComSendWeldData          = 10,
-   IAComSendPowerGraph        = 12,
-   IAComSetACtap              = 14,
-   IAComSendIOdata            = 16,
-   IAComHornOpen              = 18,
-   IAComHornClose             = 20,
-   IAComAux1Open              = 22,
-   IAComAux1Close             = 24,
-   IAComSetGenPWR             = 26,
-   IAComCoolAirOn             = 28,
-   IAComCoolAirOff            = 30,
-   IAComSigLightOn            = 32,
-   IAComSigLightOff           = 34,
-   IAComSigLightBlink         = 36,
-   IAComSendSonicHits         = 38,
-   IAComSendPressure          = 40,
-   IAComSetRunMode            = 42,
-   IAComSetPressure           = 44,
-   IAComSetAmplitude          = 46,
-   IAComSetPreburst           = 48,
-   IAComHeightZero            = 50,
-   IAComSendMemory            = 52,
-   IAComSendHeights           = 54,
-   IAComSendWidths            = 56,
-   IAComSendPWRrating         = 58,
-   IAComClrM10mode            = 60,
-   IAComClrAlarms             = 62,
-   IAComHostReady             = 64,
-   IAComSetCoolTime           = 66,
-   IAComCalHeight             = 68,
-   IAComRecallPreset          = 70,
-   IAComSendSequenceTable     = 72,
-   IAComRunSequence           = 74,
-   IAComSetBaudRate           = 76,
-   IAComSetWidth              = 78,
-   IAComAuxMotion             = 80,
-   IAComSendHornAmplitude     = 82,
-   IAComSendSystemID          = 84,
-   IAComSendMaintCounters     = 86,
-   IAComSetMainDueCounter     = 88,
-   IAComRstMaintCounter       = 90,
-   IAComCalWidth              = 92,
-   IAComSetTunePoint          = 93,
-   IAComGetTunePoint          = 94,
-   IAComSetMachineFlags       = 96,  //0x60
-   IAComGetMachineFlags       = 97,  //0x61
-   IAComSetRunModeNew         = 98,  //0x62
-   IAComGetRunModeNew         = 99,  //0x63
-   IAComSetActuator           = 100, //0x64
-   IAComgetActuator           = 101, //0x65
-   IAComSetWidthZero          = 102, //0x66
-   IAComGetWidthZero          = 103, //0x67
-   IAComSetHeightZero         = 104, //0x68
-   IAComGetHeightZero         = 105, //0x69
-   IAComSetCooling            = 106, //0x6A
-   IAComGetCooling            = 107, //0x6B
-   IAComSetGenPower           = 108, //0x6C
-   IACOMWeldAbort             = 109, //0x6D
-   // Reserved                = 109, //0x6D,
-   IAComSetLockonAlarm        = 110, //0x6E
-   IAComGetLockonAlarm        = 111, //0x6F
-   IAComClearBBR              = 112, //0x70
-   IAComSystemRestart         = 113, //0x71
-   IAComSetMotor              = 114,
-   IAComSetHornCalibAmplitude = 118,
-   IAComGetMaintCntr          = 119, //0x77
-   IAComClearMaintCntr        = 120, //0x78
-   IAComGetCycleCntr          = 121, //0x79
-   IAComClearCycleCntr        = 122, //0x7A
-   IAComGetControllerVer      = 123, //0x7B
-   IAComBeep                  = 124, //0x7C
-   IAComReadPower             = 125, //0x7D
-   IADownSpeedofHorn          = 126, //0x7E
-   IAAmpStepParameters        = 127, //0x7F
-   IAComSetMaximumGauge       = 128, //0x80
-   IAComGetMaximumGauge       = 129, //0x81
-   IAComSetCutoff             = 130, //0x82
-   IAComGetCutoff             = 131, //0x83
-   IAComSetFrequencyOffset    = 132, //0x84
-   IAComGetFrequencyOffset    = 133, //0x85
-   IAComGetActuatorVer        = 134, //0x86
-   IAComGetActuatorPartNum    = 135, //0x87
-   IAComGetActuatorSerialNum  = 136, //0x88
-   IAComLim,
-   IAComEnd                   = IAComLim - 1,
+    IAComSetM10Mode            = 2,
+    IAComSendSerialNumber      = 4,
+    IAComSendSetup             = 6,
+    IAComSendPresetTable       = 8,    //Sends names and numbers in IA98
+    IAComSendWeldData          = 10,
+    IAComSendPowerGraph        = 12,
+    IAComSetACtap              = 14,
+    IAComSendIOdata            = 16,
+    IAComHornOpen              = 18,
+    IAComHornClose             = 20,
+    IAComAux1Open              = 22,
+    IAComAux1Close             = 24,
+    IAComSetGenPWR             = 26,
+    IAComCoolAirOn             = 28,
+    IAComCoolAirOff            = 30,
+    IAComSigLightOn            = 32,
+    IAComSigLightOff           = 34,
+    IAComSigLightBlink         = 36,
+    IAComSendSonicHits         = 38,
+    IAComSendPressure          = 40,
+    IAComSetRunMode            = 42,
+    IAComSetPressure           = 44,
+    IAComSetAmplitude          = 46,
+    IAComSetPreburst           = 48,
+    IAComHeightZero            = 50,
+    IAComSendMemory            = 52,
+    IAComSendHeights           = 54,
+    IAComSendWidths            = 56,
+    IAComSendPWRrating         = 58,
+    IAComClrM10mode            = 60,
+    IAComClrAlarms             = 62,
+    IAComHostReady             = 64,
+    IAComSetCoolTime           = 66,
+    IAComCalHeight             = 68,
+    IAComRecallPreset          = 70,
+    IAComSendSequenceTable     = 72,
+    IAComRunSequence           = 74,
+    IAComSetBaudRate           = 76,
+    IAComSetWidth              = 78,
+    IAComAuxMotion             = 80,
+    IAComSendHornAmplitude     = 82,
+    IAComSendSystemID          = 84,
+    IAComSendMaintCounters     = 86,
+    IAComSetMainDueCounter     = 88,
+    IAComRstMaintCounter       = 90,
+    IAComCalWidth              = 92,
+    IAComSetTunePoint          = 93,
+    IAComGetTunePoint          = 94,
+    IAComSetMachineFlags       = 96,  //0x60
+    IAComGetMachineFlags       = 97,  //0x61
+    IAComSetRunModeNew         = 98,  //0x62
+    IAComGetRunModeNew         = 99,  //0x63
+    IAComSetActuator           = 100, //0x64
+    IAComgetActuator           = 101, //0x65
+    IAComSetWidthZero          = 102, //0x66
+    IAComGetWidthZero          = 103, //0x67
+    IAComSetHeightZero         = 104, //0x68
+    IAComGetHeightZero         = 105, //0x69
+    IAComSetCooling            = 106, //0x6A
+    IAComGetCooling            = 107, //0x6B
+    IAComSetGenPower           = 108, //0x6C
+    IACOMWeldAbort             = 109, //0x6D
+    // Reserved                = 109, //0x6D,
+    IAComSetLockonAlarm        = 110, //0x6E
+    IAComGetLockonAlarm        = 111, //0x6F
+    IAComClearBBR              = 112, //0x70
+    IAComSystemRestart         = 113, //0x71
+    IAComSetMotor              = 114,
+    IAComSetHornCalibAmplitude = 118,
+    IAComGetMaintCntr          = 119, //0x77
+    IAComClearMaintCntr        = 120, //0x78
+    IAComGetCycleCntr          = 121, //0x79
+    IAComClearCycleCntr        = 122, //0x7A
+    IAComGetControllerVer      = 123, //0x7B
+    IAComBeep                  = 124, //0x7C
+    IAComReadPower             = 125, //0x7D
+    IADownSpeedofHorn          = 126, //0x7E
+    IAAmpStepParameters        = 127, //0x7F
+    IAComSetMaximumGauge       = 128, //0x80
+    IAComGetMaximumGauge       = 129, //0x81
+    IAComSetCutoff             = 130, //0x82
+    IAComGetCutoff             = 131, //0x83
+    IAComSetFrequencyOffset    = 132, //0x84
+    IAComGetFrequencyOffset    = 133, //0x85
+    IAComGetActuatorVer        = 134, //0x86
+    IAComGetActuatorPartNum    = 135, //0x87
+    IAComGetActuatorSerialNum  = 136, //0x88
+    IAComSendHeightGraph       = 137, //0x89
+    IAComLim,
+    IAComEnd                   = IAComLim - 1,
+};
+
+struct GraphData
+{
+    QStringList GraphDataList;
+    int         TotalFrame;
+    int         CurrentIndex;
 };
 
 class M102IA : public QObject
@@ -307,7 +315,8 @@ public:
     int CalibHeightMaxGauge;
     bool EnableAbortButton1;
 
-    QString *RawDataGraph;
+    GraphData RawPowerDataGraph;
+    GraphData RawHeightDataGraph;
 
     ACTIONMODE ActDone;
 

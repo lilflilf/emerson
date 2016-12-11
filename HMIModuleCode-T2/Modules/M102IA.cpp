@@ -31,7 +31,8 @@ M102IA::M102IA(QObject *parent)
     DownSpeed = 0;
     CalibHeightMaxGauge = 0;
     EnableAbortButton1 = false;
-    RawDataGraph = NULL;
+    RawPowerDataGraph.GraphDataList.clear();
+    RawHeightDataGraph.GraphDataList.clear();
     ActDone = No_Axn;
     ErrorFound = false;
     IACommandError = -1;
@@ -500,6 +501,8 @@ bool M102IA::WaitForResponseAfterSent(int TimeOut, bool *CheckResponseFlag)
                 (_Serial->IsCommandTimeout() == true))
             break;
     };
+    if(_ModRunSetup->OfflineModeEnabled == true)
+        *CheckResponseFlag = true;
     _Serial->ResetCommandTimer();
     return *CheckResponseFlag;
 }
@@ -694,37 +697,34 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         StringCount = int(StringLen / 51);
         LastString = StringLen % 51;
         PowerString = "";
-        StartData = 18;      //First data character
+        StartData = 17;      //First data character
         tmpIndex = 0;
-        Total = MakeHexWordNumber(HexString.mid((tmpIndex + 10), 4));
-        RawDataGraph = new QString[Total];
+        Total = MakeHexWordNumber(HexString.mid((tmpIndex + 9), 4));
+        RawPowerDataGraph.TotalFrame = Total;
         for (i = 0; i < StringCount; i++)
         {
-            Total = MakeHexWordNumber(HexString.mid((tmpIndex + 10), 4));
-            num = MakeHexWordNumber(HexString.mid(tmpIndex + 14, 4));
-            RawDataGraph[num] = HexString.mid(tmpIndex + 1, 51);
+            Total = MakeHexWordNumber(HexString.mid((tmpIndex + 9), 4));
+            num = MakeHexWordNumber(HexString.mid(tmpIndex + 13, 4));
+            RawPowerDataGraph.GraphDataList.insert(num,HexString.mid(tmpIndex, 51));
             tmpIndex = tmpIndex + 51;
         }
         if (LastString > 0)
         {
             //Take off the overhead and tack the string onto the Power String
-            //PowerString = PowerString & Mid(HexString, StartData, LastString - 19)
-            Total = MakeHexWordNumber(HexString.mid((tmpIndex + 10), 4));
-            num = MakeHexWordNumber(HexString.mid(tmpIndex + 14, 4));
-            Datalen = MakeHexByteNumber(HexString.mid(tmpIndex + 2, 4));
-            RawDataGraph[num] = HexString.mid(tmpIndex + 1, LastString);
-            if ((Datalen - 4) != ((LastString - 19) / 2)) num = num - 1;
+            Total = MakeHexWordNumber(HexString.mid((tmpIndex + 9), 4));
+            num = MakeHexWordNumber(HexString.mid(tmpIndex + 13, 4));
+            Datalen = MakeHexByteNumber(HexString.mid(tmpIndex + 1, 4));
+            if ((Datalen - 4) != ((LastString - 19) / 2))
+                num = num - 1;
+            else
+                RawPowerDataGraph.GraphDataList.insert(num, HexString.mid(tmpIndex, LastString));
         }
+        RawHeightDataGraph.CurrentIndex = num;
         if (num == (Total - 1))
-        {
-            for (i = 0; i < StringCount;i++)
-                PowerString = PowerString + RawDataGraph[i].mid(StartData, 32);
-            PowerString = PowerString + RawDataGraph[i].mid(StartData, (RawDataGraph[i].length() - 19));
-        }
-        _M2010->ConvertGraphData(PowerString);
-        _M2010->ReceiveFlags.PowerData = true;
-        _M10INI->PowerDataReady = true;
-        delete [] RawDataGraph;
+            _M2010->ReceiveFlags.PowerGraphData = true;
+        else
+            _M2010->ReceiveFlags.PowerGraphData = false;
+//        _M2010->ConvertGraphData(PowerString);
         break;
     case IASigSerialNumber:
         SerialNoData = _M2010->ParseSerialNumber(HexString.mid(9, 32));

@@ -130,7 +130,8 @@ struct BitFlag{
     bool SETUPdata;
     bool PRESETdata;
     bool WELDdata;
-    bool PowerData;
+    bool PowerGraphData;
+    bool HeightGraphData;
     bool SNdata;
     bool IOdata;
     bool SonicHitsData;
@@ -500,7 +501,7 @@ public:
     void MakeNormalSplice(M10Part ThisSplice);
     int DecPtrCircular(int ptr, int ptrMAX);
     int IncPtrCircular(int ptr, int ptrMAX);
-    void ConvertGraphData(QString GraphData);
+    void ConvertGraphData(QStringList SourceGraphDataList, QList<int> *DestList);
     QString ParseSerialNumber(QString SerialCode);
     string GetResString(long StringNo);
     void NumberOnly(int KeyAscii);

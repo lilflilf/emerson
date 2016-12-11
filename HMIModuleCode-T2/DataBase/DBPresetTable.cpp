@@ -820,7 +820,7 @@ bool DBPresetTable::QueryOnlyUseName(QString Name, QMap<int, QString> *_obj)
         return bResult;
 
 //    query.prepare(SQLSentence[QUERY_ONE_RECORD_WIRE_TABLE]);
-    query.prepare("SELECT ID, SpliceName FROM Splice WHERE SpliceName = ?");
+    query.prepare("SELECT ID, SpliceName FROM Preset WHERE SpliceName = ?");
     query.addBindValue(Name);
 
     bResult = query.exec();
@@ -851,7 +851,7 @@ bool DBPresetTable::QueryOnlyUseTime(unsigned int time_from, unsigned int time_t
         return bResult;
 
 //    query.prepare(SQLSentence[QUERY_ONE_RECORD_WIRE_TABLE]);
-    query.prepare("SELECT ID, SpliceName FROM Splice WHERE CreatedDate >= ?"
+    query.prepare("SELECT ID, SpliceName FROM Preset WHERE CreatedDate >= ?"
                   " AND CreatedDate <= ?");
     QDateTime TimeLabel = QDateTime::fromTime_t(time_from);
     query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
@@ -886,7 +886,7 @@ bool DBPresetTable::QueryUseNameAndTime(QString Name, unsigned int time_from,
     if(bResult == false)
         return bResult;
 
-    query.prepare("SELECT ID, SpliceName FROM Splice WHERE CreatedDate >= ? "
+    query.prepare("SELECT ID, SpliceName FROM Preset WHERE CreatedDate >= ? "
                   "AND CreatedDate <= ? AND SpliceName == ?");
     QDateTime TimeLabel = QDateTime::fromTime_t(time_from);
     query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
