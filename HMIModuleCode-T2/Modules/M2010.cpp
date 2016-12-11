@@ -149,10 +149,36 @@ int M2010::IncPtrCircular(int ptr, int ptrMAX)
     return ((ptr + 1) % (ptrMAX + 1));
 }
 
-void M2010::ConvertGraphData(QString GraphData)
+void M2010::ConvertGraphData(QStringList SourceGraphDataList, QList<int> *DestList)
 {
+    if(DestList == NULL)
+        return;
+    int StartData = 17;      //First data character
+    QString GraphString = "";
+    QString Str;
+    for (int i = 0; i < (SourceGraphDataList.size() - 1);i++)
+    {
+        Str = SourceGraphDataList.at(i);
+        GraphString += Str.mid(StartData, 32);
+    }
+    Str = SourceGraphDataList.last();
+    GraphString += Str.mid(StartData, (Str.length() - 19));
 
+    int WeldPoints, Points, LenString;
+    LenString = GraphString.length();
+    WeldPoints = (int)(LenString/2);
+    Points = WeldPoints - 5;
+    int j = 0;
+    bool bResult;
+    for(int i = 0; i < Points; i++)
+    {
+        Str = GraphString.mid(j, 2);
+        int value = Str.toInt(&bResult, 16);
+        DestList->insert(i, value);
+        j += 2;
+    }
 }
+
 
 QString M2010::ParseSerialNumber(QString SerialCode)
 {

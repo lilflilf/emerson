@@ -501,6 +501,8 @@ bool M102IA::WaitForResponseAfterSent(int TimeOut, bool *CheckResponseFlag)
                 (_Serial->IsCommandTimeout() == true))
             break;
     };
+    if(_ModRunSetup->OfflineModeEnabled == true)
+        *CheckResponseFlag = true;
     _Serial->ResetCommandTimer();
     return *CheckResponseFlag;
 }
@@ -719,14 +721,10 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         }
         RawHeightDataGraph.CurrentIndex = num;
         if (num == (Total - 1))
-        {
             _M2010->ReceiveFlags.PowerGraphData = true;
-//            for (i = 0; i < StringCount;i++)
-//                PowerString = PowerString + RawPowerDataGraph.GraphDataList.at([i])(mid(StartData, 32);
-//            PowerString = PowerString + RawPowerDataGraph[i].mid(StartData, (RawPowerDataGraph[i].length() - 19));
-        }
+        else
+            _M2010->ReceiveFlags.PowerGraphData = false;
 //        _M2010->ConvertGraphData(PowerString);
-//        _M2010->ReceiveFlags.PowerGraphData = true;
         break;
     case IASigSerialNumber:
         SerialNoData = _M2010->ParseSerialNumber(HexString.mid(9, 32));
