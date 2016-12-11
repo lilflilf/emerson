@@ -94,6 +94,8 @@ struct WELDdata{
    int Pressure;             // Weld Pressure, Uses Transducer if IN
    int TPressure;            // Weld Trigger Pressure.
    long Alarmflags;          // To store errors
+   QString PowerGraph;
+   QString HeightGraph;
 };
 
 

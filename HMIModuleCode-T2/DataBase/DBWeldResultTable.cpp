@@ -664,6 +664,7 @@ bool DBWeldResultTable::QueryBySomeFields(QMap<int, QString> *_obj, QString Work
             else
                 QueryStr = QString("SELECT ID, OperatorName FROM WeldResultHistory WHERE CreatedDate >= ?"
                 " AND CreatedDate <= ? AND SpliceName == ? ORDER BY %1 DESC").arg(FieldName);
+            query.prepare(QueryStr);
             QDateTime TimeLabel = QDateTime::fromTime_t(time_from);
             query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
             TimeLabel = QDateTime::fromTime_t(time_to);
@@ -691,6 +692,7 @@ bool DBWeldResultTable::QueryBySomeFields(QMap<int, QString> *_obj, QString Work
             else
                 QueryStr = QString("SELECT ID, OperatorName FROM WeldResultHistory WHERE CreatedDate >= ?"
                 " AND CreatedDate <= ? AND PartName == ? ORDER BY %1 DESC").arg(FieldName);
+            query.prepare(QueryStr);
             QDateTime TimeLabel = QDateTime::fromTime_t(time_from);
             query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
             TimeLabel = QDateTime::fromTime_t(time_to);
@@ -718,6 +720,7 @@ bool DBWeldResultTable::QueryBySomeFields(QMap<int, QString> *_obj, QString Work
             else
                 QueryStr = QString("SELECT ID, OperatorName FROM WeldResultHistory WHERE CreatedDate >= ?"
                 " AND CreatedDate <= ? AND WorkOrderName == ? ORDER BY %1 DESC").arg(FieldName);
+            query.prepare(QueryStr);
             QDateTime TimeLabel = QDateTime::fromTime_t(time_from);
             query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
             TimeLabel = QDateTime::fromTime_t(time_to);
@@ -748,6 +751,7 @@ bool DBWeldResultTable::QueryBySomeFields(QMap<int, QString> *_obj, QString Work
             else
                 QueryStr = QString("SELECT ID, OperatorName FROM WeldResultHistory WHERE CreatedDate >= ?"
                 " AND CreatedDate <= ? AND SpliceName == ? AND PartName == ? ORDER BY %1 DESC").arg(FieldName);
+            query.prepare(QueryStr);
             QDateTime TimeLabel = QDateTime::fromTime_t(time_from);
             query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
             TimeLabel = QDateTime::fromTime_t(time_to);
@@ -779,6 +783,7 @@ bool DBWeldResultTable::QueryBySomeFields(QMap<int, QString> *_obj, QString Work
             else
                 QueryStr = QString("SELECT ID, OperatorName FROM WeldResultHistory WHERE CreatedDate >= ?"
                 " AND CreatedDate <= ? AND SpliceName == ? AND WorkOrderName == ? ORDER BY %1 DESC").arg(FieldName);
+            query.prepare(QueryStr);
             QDateTime TimeLabel = QDateTime::fromTime_t(time_from);
             query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
             TimeLabel = QDateTime::fromTime_t(time_to);
@@ -810,6 +815,7 @@ bool DBWeldResultTable::QueryBySomeFields(QMap<int, QString> *_obj, QString Work
             else
                 QueryStr = QString("SELECT ID, OperatorName FROM WeldResultHistory WHERE CreatedDate >= ?"
                 " AND CreatedDate <= ? AND WorkOrderName == ? AND PartName == ? ORDER BY %1 DESC").arg(FieldName);
+            query.prepare(QueryStr);
             QDateTime TimeLabel = QDateTime::fromTime_t(time_from);
             query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
             TimeLabel = QDateTime::fromTime_t(time_to);
@@ -839,13 +845,14 @@ bool DBWeldResultTable::QueryBySomeFields(QMap<int, QString> *_obj, QString Work
             qDebug()<<"yyyyyyyyyyyyyyyyy"<<time_from<<time_to<<SpliceName<<PartName<<WorkOrderName<<FieldName;
             QString QueryStr;
             if (Orderby == true)
-                QueryStr = QString("SELECT ID, OperatorName FROM WeldResultHistory WHERE CreatedDate >= ? "
-                "AND CreatedDate <= ? AND SpliceName == ? "
-                "AND PartName == ? AND WorkOrderName == ? ORDER BY %1 ASC").arg(FieldName);
+                QueryStr = QString("SELECT ID, OperatorName FROM WeldResultHistory WHERE (CreatedDate >= ? "
+                "AND CreatedDate <= ? AND SpliceName = ? "
+                "AND PartName = ? AND WorkOrderName = ?) ORDER BY %1 ASC").arg(FieldName);
             else
-                QueryStr = QString("SELECT ID, OperatorName FROM WeldResultHistory WHERE CreatedDate >= ? "
-                "AND CreatedDate <= ? AND SpliceName == ? "
-                "AND PartName == ? AND WorkOrderName == ? ORDER BY %1 DESC").arg(FieldName);
+                QueryStr = QString("SELECT ID, OperatorName FROM WeldResultHistory WHERE (CreatedDate >= ? "
+                "AND CreatedDate <= ? AND SpliceName = ? "
+                "AND PartName = ? AND WorkOrderName = ?) ORDER BY %1 DESC").arg(FieldName);
+            query.prepare(QueryStr);
             QDateTime TimeLabel = QDateTime::fromTime_t(time_from);
             query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
             TimeLabel = QDateTime::fromTime_t(time_to);
@@ -864,7 +871,7 @@ bool DBWeldResultTable::QueryBySomeFields(QMap<int, QString> *_obj, QString Work
         }
         else
         {
-            qDebug() << "SQL ERROR:"<< query.lastError();
+            qDebug() << "Weld Result SQL ERROR:"<< query.lastError();
         }
     }
     WeldResultDBObj.close();
