@@ -1,6 +1,7 @@
 #include "Interface.h"
 #include "Modules/Modstart.h"
 #include "Modules/M10INI.h"
+#include <QDebug>
 InterfaceClass* InterfaceClass::_instance = 0;
 
 InterfaceClass* InterfaceClass::Instance()
@@ -25,6 +26,7 @@ InterfaceClass::~InterfaceClass()
 
 void InterfaceClass::cMsgBox(struct BransonMessageBox* MsgBox)
 {
+    qDebug() << "InterfaceClass::cMsgBox";
     BransonMessageBox tmpMsgBox;
     tmpMsgBox.MsgPrompt = MsgBox->MsgPrompt;
     tmpMsgBox.MsgTitle = MsgBox->MsgTitle;

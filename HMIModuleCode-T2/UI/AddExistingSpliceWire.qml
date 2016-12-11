@@ -25,6 +25,7 @@ Item {
     function clearSelect()
     {
         selectList.clear()
+        selectCount = 0;
     }
 
     Rectangle {
@@ -184,7 +185,7 @@ Item {
                     anchors.leftMargin: 10
                     width: (parent.width-40)/5
                     elide: Text.ElideRight
-                    text: (listModel == spliceModel) ? TotalWires : (listModel == wireModel) ? OperatorName : TotalSplices
+                    text: (listModel == spliceModel) ? OperatorName : (listModel == wireModel) ? OperatorName : TotalSplices
                     clip: true
                     color: "white"
                     font.pixelSize: 14
@@ -212,7 +213,7 @@ Item {
                     anchors.leftMargin: 10
                     width: (parent.width-40)/5
                     elide: Text.ElideRight
-                    text: (listModel == spliceModel) ? count : (listModel == wireModel) ? Gauge : ProcessMode
+                    text: (listModel == spliceModel) ? TotalWires : (listModel == wireModel) ? Gauge : ProcessMode
                     color: "white"
                     clip: true
                     font.pixelSize: 14

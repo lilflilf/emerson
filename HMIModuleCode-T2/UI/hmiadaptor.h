@@ -139,7 +139,12 @@ public:
 signals:
     void widthCalibrationFinish(const bool &_Result);
     void heightCalibrationFinish(const bool &_Result);
+    void signalEnableDialog(bool okVisable, bool cancelVisable, QString okText, QString cancelText, QString typeIco,QString titleText,QString centerText);
+    void signalDisableDialog();
 public slots:
+    void slotEnableDialog(struct BransonMessageBox &MsgBox);
+    void slotDisableDialog(struct BransonMessageBox &MsgBox);
+
 };
 
 #endif // HMIADAPTOR_H

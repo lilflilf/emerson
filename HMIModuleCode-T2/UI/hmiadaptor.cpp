@@ -6,7 +6,6 @@
 #include <QAxObject>
 #include <QAxWidget>
 
-
 HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
 {
     workOrderModel = new WorkOrderModel(this);
@@ -19,9 +18,6 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
     list.clear();
     list << "SpliceId" << "SpliceName" << "DateCreated" << "OperatorName" << "CrossSection" << "TotalWires" << "Verified" << "WeldMode" << "Energy" << "Amplitude"
          << "Width" << "TriggerPressure" << "WeldPressure" << "Time+" << "Time-" << "Power+" << "Power-" << "Pre-Height+" << "Pre-Height-" << "Height+" << "Height-" << "count";
-
-//    list << "spliceId" << "name" << "date" << "middle" << "count" << "SpliceName" << "DateCreated" << "OperatorName" << "CrossSection" << "TotalWires" << "Verified" << "WeldMode" << "Energy" << "Amplitude"
-//         << "Width" << "TriggerPressure" << "WeldPressure" << "Time+" << "Time-" << "Power+" << "Power-" << "Pre-Height+" << "Pre-Height-" << "Height+" << "Height-";
     spliceModel->setRoles(list);
     spliceModel->setModelList();
 
@@ -72,6 +68,8 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
     toolChange = new ToolChange;
     interfaceClass = InterfaceClass::Instance();
 
+    connect(interfaceClass, SIGNAL(EnableErrorMessageSignal(BransonMessageBox&)), this, SLOT(slotEnableDialog(BransonMessageBox&)));
+    connect(interfaceClass, SIGNAL(DisableErrorMessageSignal(BransonMessageBox&)), this, SLOT(slotDisableDialog(BransonMessageBox&)));
 
     permissionSetting = new PermissionSetting(this);
     weldDefaults = new WeldDefaults(this);
@@ -422,7 +420,6 @@ bool HmiAdaptor::login(QString passwd)
 
 int HmiAdaptor::getCurrentOperatorId()
 {
-    qDebug() << "getCurrentOperatorId" << interfaceClass->CurrentOperator.OperatorID << interfaceClass->CurrentOperator.OperatorName;
     return interfaceClass->CurrentOperator.OperatorID;
 }
 
@@ -772,6 +769,55 @@ bool HmiAdaptor::dataCommunicationSetValue(QList<bool> boolList, QStringList str
         dataCommunication->CurrentDataCommunication.ShrinkTubeDefault[i].Time = strList[i*3+2];
     }
     return true;
+}
+
+void HmiAdaptor::slotEnableDialog(BransonMessageBox &MsgBox)
+{
+    qDebug() << "slotEnableDialog";
+    bool okVisable = true;
+    bool cancelVisable = false;
+    QString okText;
+    QString typeIco;
+    if (MsgBox.TipsMode & OKCancel)
+    {
+        cancelVisable = true;
+        okText = "OK";
+    }
+    else if (MsgBox.TipsMode & OKCancel)
+    {
+        cancelVisable = true;
+        okText = "RESET";
+    }
+    else if (MsgBox.TipsMode & Critical)
+    {
+        cancelVisable = false;
+        okText = "OK";
+        typeIco = "qrc:/images/images/error.ico";
+    }
+    else if (MsgBox.TipsMode & Exclamation)
+    {
+        cancelVisable = false;
+        okText = "OK";
+        typeIco = "qrc:/images/images/alarm.ico";
+    }
+    else if (MsgBox.TipsMode & Information)
+    {
+        cancelVisable = false;
+        okText = "OK";
+        typeIco = "qrc:/images/images/information.ico";
+    }
+    else if (MsgBox.TipsMode & Alarm)
+    {
+        cancelVisable = false;
+        okText = "OK";
+        typeIco = "qrc:/images/images/alarm.ico";
+    }
+    emit signalEnableDialog(okVisable, cancelVisable, okText, "CANCEL", typeIco, MsgBox.MsgTitle, MsgBox.MsgPrompt);
+}
+
+void HmiAdaptor::slotDisableDialog(BransonMessageBox &MsgBox)
+{
+
 }
 
 bool HmiAdaptor::stringRegexMatch(QString exp, QString value)

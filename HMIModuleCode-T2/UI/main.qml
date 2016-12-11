@@ -111,13 +111,15 @@ Window {
 //        w.showMaximized();
         root.showFullScreen()
     }
-    function showDialog(okVisable,cancelVisable,okText,cancelText,centerText)
+    function showDialog(okVisable,cancelVisable,okText,cancelText,typeIco,titleText,centerText)
     {
         cdialog.okvisible = okVisable
         cdialog.cancelvisible = cancelVisable
         cdialog.okText = okText
         cdialog.cancelText = cancelText
         cdialog.centerText = centerText
+        cdialog.msgTypeIco = typeIco
+        cdialog.titleText = titleText
         cdialog.visible = true
     }
 
@@ -128,6 +130,19 @@ Window {
         z: 20
         onCliceTo: {
             dialogReturn(reb)
+        }
+        Connections {
+            target: hmiAdaptor
+            onSignalEnableDialog: {
+                cdialog.okvisible = okVisable
+                cdialog.cancelvisible = cancelVisable
+                cdialog.okText = okText
+                cdialog.cancelText = cancelText
+                cdialog.centerText = centerText
+                cdialog.msgTypeIco = typeIco
+                cdialog.titleText = titleText
+                cdialog.visible = true
+            }
         }
     }
 

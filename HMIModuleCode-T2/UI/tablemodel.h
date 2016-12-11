@@ -87,6 +87,7 @@ public:
 
     PresetElement presetElement;
     VariantToString *variantToString;
+    StringToVariant *stringToVariant;
 signals:
 
 
@@ -98,10 +99,12 @@ public slots:
     Q_INVOKABLE void calculateSpliceData();
 
     Q_INVOKABLE QString getStructValue(QString valueKey, QString valueType); // create wire
+    Q_INVOKABLE void setStructValue(QString valueKey, QVariant value);
+    Q_INVOKABLE void saveSplice();
+
     Q_INVOKABLE void createNew();
     Q_INVOKABLE QString getString(QString type, int value);
     Q_INVOKABLE bool getWeldMode(QString type,int index);
-//    Q_INVOKABLE void setNewValue();
 
 private:
     QHash<int, QByteArray> m_roleNames;
