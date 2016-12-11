@@ -333,6 +333,15 @@ void SpliceModel::setModelList(unsigned int time_from, unsigned int time_to)
     endResetModel();
 }
 
+void SpliceModel::setModelList(QString Name, unsigned int time_from, unsigned int time_to)
+{
+    beginResetModel();
+    splices->clear();
+    if (m_spliceAdaptor->QueryUseNameAndTime(Name,time_from,time_to,splices))
+        qDebug( )<< "setModelList SpliceModel" << splices->count();
+    endResetModel();
+}
+
 void SpliceModel::setModelList()
 {
     beginResetModel();
@@ -614,6 +623,11 @@ bool SpliceModel::getWeldMode(QString type, int index)
         else
             return false;
     }
+}
+
+void SpliceModel::seachSpliceModel(QString Name, unsigned int time_from, unsigned int time_to)
+{
+    setModelList(Name,time_from,time_to);
 }
 
 void SpliceModel::removeValue(int id, QString name)
