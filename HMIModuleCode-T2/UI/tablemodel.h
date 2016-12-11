@@ -71,6 +71,7 @@ class SpliceModel : public QAbstractTableModel
     Q_OBJECT
 public:
     explicit SpliceModel(QObject *parent = 0);
+    void setModelList(QString Name, unsigned int time_from, unsigned int time_to);
     void setModelList(unsigned int time_from, unsigned int time_to);
     void setModelList();
 
@@ -102,6 +103,7 @@ public slots:
     Q_INVOKABLE void createNew();
     Q_INVOKABLE QString getString(QString type, int value);
     Q_INVOKABLE bool getWeldMode(QString type,int index);
+    Q_INVOKABLE void seachSpliceModel(QString Name, unsigned int time_from, unsigned int time_to);
 //    Q_INVOKABLE void setNewValue();
 
 private:
