@@ -18,49 +18,17 @@ Item {
         id: loader
         z: 10
         anchors.fill: parent
+        onLoaded: {
+            if (selectIndx != -1) {
+                loader.item.partName = workOrderModel.getWorkOrderValue(selectIndx,"middle")
+                loader.item.partId = workOrderModel.getPartId(selectIndx)
+            }
+        }
     }
     Connections{
         target: loader.item
         onSignalFileDialogCancel: {
             loader.source = ""
-        }
-    }
-
-    ListModel {
-        id: testModel
-    }
-
-    ListModel {
-        id: listModel
-        Component.onCompleted: {
-            listModel.append({"name":"work order id111111111111111111111111","date":"2016/10/13","middle":"part65487911111111111111111111111","count":"10011111111111111111111111","opacityValue":"0"})
-            listModel.append({"name":"work order id211111111111111111111111","date":"2016/10/13","middle":"part65487911111111111111111111111","count":"10011111111111111111111111","opacityValue":"0"})
-            listModel.append({"name":"work order id311111111111111111111111","date":"2016/10/13","middle":"part65487911111111111111111111111","count":"10011111111111111111111111","opacityValue":"0"})
-            listModel.append({"name":"work order id411111111111111111111111","date":"2016/10/13","middle":"part65487911111111111111111111111","count":"10011111111111111111111111","opacityValue":"0"})
-            listModel.append({"name":"work order","date":"2016/10/13","middle":"part65487911","count":"10","opacityValue":"0"})
-            listModel.append({"name":"work order","date":"2016/10/13","middle":"part6548791","count":"10","opacityValue":"0"})
-            listModel.append({"name":"work order","date":"2016/10/13","middle":"part6548","count":"100111","opacityValue":"0"})
-            listModel.append({"name":"work order id511111111111111111111111","date":"2016/10/13","middle":"part65487911111111111111111111111","count":"10011111111111111111111111","opacityValue":"0"})
-            listModel.append({"name":"work order id511111111111111111111111","date":"2016/10/13","middle":"part65487911111111111111111111111","count":"10011111111111111111111111","opacityValue":"0"})
-            listModel.append({"name":"work order id511111111111111111111111","date":"2016/10/13","middle":"part65487911111111111111111111111","count":"10011111111111111111111111","opacityValue":"0"})
-            listModel.append({"name":"work order id511111111111111111111111","date":"2016/10/13","middle":"part65487911111111111111111111111","count":"10011111111111111111111111","opacityValue":"0"})
-            listModel.append({"name":"work order id511111111111111111111111","date":"2016/10/13","middle":"part65487911111111111111111111111","count":"10011111111111111111111111","opacityValue":"0"})
-            listModel.append({"name":"work order id511111111111111111111111","date":"2016/10/13","middle":"part65487911111111111111111111111","count":"10011111111111111111111111","opacityValue":"0"})
-            listModel.append({"name":"work order id511111111111111111111111","date":"2016/10/13","middle":"part65487911111111111111111111111","count":"10011111111111111111111111","opacityValue":"0"})
-            listModel.append({"name":"work order id511111111111111111111111","date":"2016/10/13","middle":"part65487911111111111111111111111","count":"10011111111111111111111111","opacityValue":"0"})
-            listModel.append({"name":"work order id511111111111111111111111","date":"2016/10/13","middle":"part65487911111111111111111111111","count":"10011111111111111111111111","opacityValue":"0"})
-            listModel.append({"name":"work order id511111111111111111111111","date":"2016/10/13","middle":"part65487911111111111111111111111","count":"10011111111111111111111111","opacityValue":"0"})
-            listModel.append({"name":"work order id511111111111111111111111","date":"2016/10/13","middle":"part65487911111111111111111111111","count":"10011111111111111111111111","opacityValue":"0"})
-            listModel.append({"name":"work order id511111111111111111111111","date":"2016/10/13","middle":"part65487911111111111111111111111","count":"10011111111111111111111111","opacityValue":"0"})
-            listModel.append({"name":"work order id511111111111111111111111","date":"2016/10/13","middle":"part65487911111111111111111111111","count":"10011111111111111111111111","opacityValue":"0"})
-            listModel.append({"name":"work order id511111111111111111111111","date":"2016/10/13","middle":"part65487911111111111111111111111","count":"10011111111111111111111111","opacityValue":"0"})
-            listModel.append({"name":"work order id511111111111111111111111","date":"2016/10/13","middle":"part65487911111111111111111111111","count":"10011111111111111111111111","opacityValue":"0"})
-            listModel.append({"name":"work order id511111111111111111111111","date":"2016/10/13","middle":"part65487911111111111111111111111","count":"10011111111111111111111111","opacityValue":"0"})
-            testModel.append({"name":"splice test title 11111111111222","date":"2016/10/13","middle":"VW","type":"YES"})
-            testModel.append({"name":"splice test title 1111111111122","date":"2016/10/13","middle":"VW","type":"YES"})
-            testModel.append({"name":"splice test title 11111111111","date":"2016/10/13","middle":"VW","type":"YES"})
-            testModel.append({"name":"splice test title 11111111111","date":"2016/10/13","middle":"VW","type":"YES"})
-            testModel.append({"name":"splice test title 1111111111133333333333333","date":"2016/10/13","middle":"VW","type":"YES"})
         }
     }
     Row {
@@ -353,6 +321,7 @@ Item {
         clip: true
         textColor: "white"
         onClicked: {
+            workOrderModel.removeValue(workOrderModel.getWorkOrderValue(selectIndx,"workOrderId"),workOrderModel.getWorkOrderValue(selectIndx,"name"))
         }
     }
     CButton {
@@ -384,8 +353,9 @@ Item {
         clip: true
         textColor: "white"
         onClicked: {
-            if (selectIndx != -1)
+            if (selectIndx != -1) {
                 loader.source = "qrc:/UI/OperateDetails.qml"
+            }
         }
     }
     Rectangle {
@@ -577,7 +547,7 @@ Item {
             addExit.visible = false
         }
         onSignalAddExistSelectClick: {
-            selectPart.partId = partId
+            selectPart.partId = modelId
             selectPart.text = name
             addExit.visible = false
         }

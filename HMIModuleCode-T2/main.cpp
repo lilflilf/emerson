@@ -3,11 +3,10 @@
 #include <QtQml>
 #include <QDebug>
 #include <QFile>
-
+#include "Modules/Modstart.h"
 #include <QQuickView>
 #include <QQmlEngine>
 //  ↵
-#include "Modules/Modstart.h"
 #include "TestCase/databasetest.h"
 #include "UI/alpainteditem.h"
 #include "UI/hmiadaptor.h"
@@ -27,9 +26,13 @@ int main(int argc, char *argv[])
     bool success = translator.load("displayChinese_zh_CN.qm");
     app.installTranslator(&translator);
 
-    MODstart *_ModStart = MODstart::Instance();
+    int a = (int)(52/51);
 
     QQmlApplicationEngine engine;
+    engine.load(QUrl(QStringLiteral("qrc:/UI/main.qml")));
+    ALPaintedItem *alpaint = new ALPaintedItem;
+    engine.rootContext()->setContextProperty("alpaint",alpaint);
+    MODstart* _ModStart = MODstart::Instance();
     HmiAdaptor *hmiAdaptor = new HmiAdaptor;
 
 

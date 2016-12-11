@@ -4,7 +4,6 @@ WeldResultElement::WeldResultElement()
 {
     RevCode = -1;
     WeldResultID = -1;
-    TableName.clear();
     OperatorName.clear();
     CreatedDate = 0;
     CurrentWorkOrder.WorkOrderID = -1;

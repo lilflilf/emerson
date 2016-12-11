@@ -337,7 +337,7 @@ Item {
             anchors.rightMargin: 48
             text: qsTr("All")
             clip: true
-            height: mytimeSelect.height
+            height: mytimeSelect1.height
             backgroundComponent: Rectangle {
                 anchors.fill: parent
                 color: "black"
@@ -385,7 +385,7 @@ Item {
             id: timeSelectGroup
         }
         MyCalendar {
-            id: mycalendar
+            id: mycalendar1
             anchors.left: from.left
             anchors.top: from.bottom
             bIsdate: true
@@ -396,8 +396,9 @@ Item {
         }
 
         MyCalendar {
-            anchors.top: mycalendar.top
-            anchors.left: mycalendar.right
+            id: mycalendar2
+            anchors.top: mycalendar1.top
+            anchors.left: mycalendar1.right
             anchors.leftMargin: 20
             bIsdate: false
             selecter: newCalendar
@@ -412,12 +413,12 @@ Item {
             font.family: "arial"
             color: "white"
             font.pointSize: 16
-            anchors.top: mycalendar.bottom
+            anchors.top: mycalendar1.bottom
             anchors.left: parent.left
             anchors.leftMargin: 20
         }
         MyCalendar {
-            id: mycalendar2
+            id: mytimeSelect1
             anchors.left: from.left
             anchors.top: to.bottom
             bIsdate: true
@@ -428,9 +429,9 @@ Item {
         }
 
         MyCalendar {
-            id: mytimeSelect
-            anchors.top: mycalendar2.top
-            anchors.left: mycalendar2.right
+            id: mytimeSelect2
+            anchors.top: mytimeSelect1.top
+            anchors.left: mytimeSelect1.right
             anchors.leftMargin: 20
             bIsdate: false
             selecter: newCalendar
@@ -443,7 +444,7 @@ Item {
             id: line3
             anchors.left: parent.left
             anchors.leftMargin: 10
-            anchors.top: mytimeSelect.bottom
+            anchors.top: mytimeSelect1.bottom
             anchors.topMargin: 10
             width: parent.width-58
             lineColor: "#375566"
@@ -466,8 +467,8 @@ Item {
             width: 250
             text: qsTr("All")
             clip: true
-            height: mytimeSelect.height
-            anchors.right: mytimeSelect.right
+            height: mytimeSelect1.height
+            anchors.right: mytimeSelect2.right
             backgroundComponent: Rectangle {
                 anchors.fill: parent
                 color: "black"
@@ -497,8 +498,8 @@ Item {
             width: 250
             text: qsTr("All")
             clip: true
-            height: mytimeSelect.height
-            anchors.right: mytimeSelect.right
+            height: mytimeSelect1.height
+            anchors.right: mytimeSelect2.right
             backgroundComponent: Rectangle {
                 anchors.fill: parent
                 color: "black"
@@ -523,6 +524,11 @@ Item {
                 id: applyButton
                 width: spliceName.width
                 text: qsTr("APPLY")
+                onClicked: {
+                    var fromtime = hmiAdaptor.timeChangeToInt(mycalendar1.text + " " + mycalendar2.text)
+                    var totime = hmiAdaptor.timeChangeToInt(mytimeSelect1.text + " " + mytimeSelect2.text)
+                    weldHistoryModel.weldResultSearch(workOrderName.text,partName.text,spliceName.text,fromtime,totime)
+                }
             }
             CButton {
                 id: backButton

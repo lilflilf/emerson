@@ -6,28 +6,28 @@ DBAlarmLogTable* DBAlarmLogTable::_instance = NULL;
 QString DBAlarmLogTable::AlarmLogDBFile = "AlarmLog.db";
 QString DBAlarmLogTable::DatabaseDir = "c:\\BransonData\\History\\";
 const QString SQLSentence[] = {
-    "CREATE TABLE Alarm ("                       /*0 Create Alarm Table*/
+    "CREATE TABLE AlarmLog ("                       /*0 Create Alarm Table*/
     "ID INTEGER PRIMARY KEY AUTOINCREMENT, "
     "AlarmMsg VARCHAR, CreatedDate VARCHAR, "
     "AlarmType VARCHAR, WeldResultID INT, OperatorID INT)",
 
-    "INSERT INTO Alarm ("                        /*1 Insert record into Alarm Table*/
+    "INSERT INTO AlarmLog ("                        /*1 Insert record into Alarm Table*/
     "AlarmMsg, CreatedDate, AlarmType, "
     "WeldResultID, OperatorID) "
     "VALUES (?, ?, ?, ?, ?)",
 
-    "SELECT ID, AlarmType FROM Alarm",           /*2 Query Entire Alarm Table */
+    "SELECT ID, AlarmType FROM AlarmLog",           /*2 Query Entire Alarm Table */
 
-    "SELECT * FROM Alarm WHERE ID = ? AND AlarmType = ?",
+    "SELECT * FROM AlarmLog WHERE ID = ? AND AlarmType = ?",
                                                 /*3 Query One Record From Alarm Table */
-    "SELECT * FROM Alarm WHERE ID = ?",         /*4 Query One Record Only Use ID */
+    "SELECT * FROM AlarmLog WHERE ID = ?",         /*4 Query One Record Only Use ID */
 
-    "DELETE FROM Alarm",                        /*5 Delete Entire Alarm Table*/
+    "DELETE FROM AlarmLog",                        /*5 Delete Entire Alarm Table*/
 
-    "DELETE FROM Alarm WHERE ID = ? AND AlarmType = ?",
+    "DELETE FROM AlarmLog WHERE ID = ? AND AlarmType = ?",
                                                 /*6 Delete One Record from Alarm Table*/
 
-    "UPDATE Alarm SET AlarmMsg = ?, CreatedDate = ?, AlarmType = ?, "
+    "UPDATE AlarmLog SET AlarmMsg = ?, CreatedDate = ?, AlarmType = ?, "
     "WeldResultID = ?, OperatorID = ? WHERE ID = ?",
                                                 /*7 Update One Record to Alarm Table*/
 
@@ -311,7 +311,7 @@ bool DBAlarmLogTable::QueryOnlyUseTime(unsigned int time_from, unsigned int time
         return bResult;
 
 //    query.prepare(SQLSentence[QUERY_ONE_RECORD_WIRE_TABLE]);
-    query.prepare("SELECT ID, AlarmType FROM Alarm WHERE CreatedDate >= ?"
+    query.prepare("SELECT ID, AlarmType FROM AlarmLog WHERE CreatedDate >= ?"
                   " AND CreatedDate <= ?");
     QDateTime TimeLabel = QDateTime::fromTime_t(time_from);
     query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
@@ -347,14 +347,13 @@ bool DBAlarmLogTable::QueryUseNameAndTime(QString AlarmType, unsigned int time_f
         return bResult;
 
 //    query.prepare(SQLSentence[QUERY_ONE_RECORD_WIRE_TABLE]);
-    query.prepare("SELECT ID, AlarmType FROM Alarm WHERE "
+    query.prepare("SELECT ID, AlarmType FROM AlarmLog WHERE "
                   "AlarmType = ? AND CreatedDate >= ? AND CreatedDate <= ?");
     query.addBindValue(AlarmType);
     QDateTime TimeLabel = QDateTime::fromTime_t(time_from);
     query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
     TimeLabel = QDateTime::fromTime_t(time_to);
     query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
-
     bResult = query.exec();
     if(bResult == true)
     {

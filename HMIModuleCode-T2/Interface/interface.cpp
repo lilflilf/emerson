@@ -1,7 +1,7 @@
 #include "Interface.h"
-#include "Modules/Modstart.h"
+
 #include "Modules/M10INI.h"
-#include <QDebug>
+#include <QtConcurrent/QtConcurrent>
 InterfaceClass* InterfaceClass::_instance = 0;
 
 InterfaceClass* InterfaceClass::Instance()
@@ -12,11 +12,11 @@ InterfaceClass* InterfaceClass::Instance()
     return _instance;
 }
 
-
 InterfaceClass::InterfaceClass(QObject *parent)
     :QObject(parent)
 {
-
+//    MODstart *_ModStart = MODstart::Instance();
+//    QtConcurrent::run(QThreadPool::globalInstance(), UpdateInfoWithController);
 }
 
 InterfaceClass::~InterfaceClass()
@@ -26,7 +26,6 @@ InterfaceClass::~InterfaceClass()
 
 void InterfaceClass::cMsgBox(struct BransonMessageBox* MsgBox)
 {
-    qDebug() << "InterfaceClass::cMsgBox";
     BransonMessageBox tmpMsgBox;
     tmpMsgBox.MsgPrompt = MsgBox->MsgPrompt;
     tmpMsgBox.MsgTitle = MsgBox->MsgTitle;
@@ -66,3 +65,4 @@ void InterfaceClass::BackupStatusData()
     M10INI* _M10INI = M10INI::Instance();
     _M10INI->Save_StatusData();
 }
+

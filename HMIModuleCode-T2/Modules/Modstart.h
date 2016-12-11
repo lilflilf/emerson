@@ -36,7 +36,7 @@ public:
     void SetDefaultIndicatorsForOperatorScreen();
     void StoreTopCoordinateCreateEditSpliceScreen();
 
-
+    bool UpdateInfoWithController();
     static void OfflineInitialization(void*);
 private:
     void CheckAWGAreaTable();

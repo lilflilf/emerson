@@ -4,22 +4,41 @@
 #include "Interface/PresetElement.h"
 #include "Interface/WeldResultElement.h"
 #include "Modules/UtilityClass.h"
+struct NecessaryInfo
+{
+    struct WorkOrderIndex CurrentWorkOrder;
+    struct PartIndex CurrentPart;
+};
+enum GRAPHSTEP
+{
+    POWERFst,
+    HEIGHTSnd,
+    STEPTrd,
+};
 
 class OperateProcess : public QObject
 {
     Q_OBJECT
 public:
     PresetElement CurrentSplice;
-private:
+    struct NecessaryInfo CurrentNecessaryInfo;
     WeldResultElement CurrentWeldResult;
+private:
     static ThreadClass* m_Thread;
+    int m_triedCount;
+    GRAPHSTEP CurrentStep;
+    bool WeldCycleStatus;
 //    OperatorElement CurrentOperator;
 private:
     void UpdateIAFields();
     void UpdateWeldResult();
-    static void WeldCycleDaemonHandle(void*);
+    bool HeightGraphReceive();
+    bool PowerGraphReceive();
+    static void WeldCycleDaemonThread(void*);
+signals:
+    void WeldCycleCompleted(const bool &_status);
 private slots:
-    static void WeldResultFeedbackEventSlot();
+    void WeldResultFeedbackEventSlot();
 public:
     void _start();
     void _stop();

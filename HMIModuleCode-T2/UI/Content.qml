@@ -34,36 +34,6 @@ Item {
     ListModel{
         id: listModel
     }
-    ListModel {
-        id: testModel
-    }
-    Component.onCompleted: {
-        listModel.append({"nameValue":"Splice1 test title hellow word! welcome ","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice2 test title hellow word! welcome ","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice2 test title hellow word! welcome ","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice3 test title hellow word! welcome ","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice4 test title hellow word! welcome ","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice5 test title hellow word! welcome ","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice6 test title hellow word! welcome ","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice7 test title hellow word! welcome ","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice8 test title hellow word! welcome ","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice9 test title hellow word! welcome ","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice10 test title hellow word! welcome ","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice11 test title hellow word! welcome ","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice12 test title hellow word! welcome ","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice13 test title hellow word! welcome ","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice14 test title hellow word! welcome ","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice15 test title hellow word! welcome ","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice16 test title hellow word! welcome ","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice17 test title hellow word! welcome ","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice18 test title hellow word! welcome ","stationColor":"white","station":"?"})
-        testModel.append({"name":"splice test title 11111111111222","date":"2016/10/13","middle":"VW","type":"YES","count":"3"})
-        testModel.append({"name":"splice test title 1111111111122","date":"2016/10/13","middle":"VW","type":"YES","count":"3"})
-        testModel.append({"name":"splice test title 11111111111","date":"2016/10/13","middle":"VW","type":"YES","count":"3"})
-        testModel.append({"name":"splice test title 11111111111","date":"2016/10/13","middle":"VW","type":"YES","count":"311"})
-        testModel.append({"name":"splice test title 1111111111133333333333333","date":"2016/10/13","middle":"VW","type":"YES","count":"3"})
-    }
-
     function getAllWorkstationColor(count)
     {
         var array = ["#ff6699","#ff0033","#33FFCC","#cc99ff","#cc0099","#930202","#99ccff","#f79428","#0000cc","Olive"]
@@ -131,7 +101,6 @@ Item {
                 anchors.bottom: tipsRec2.top
                 bIsWorkShow: !bIsBasic
                 onCurrentSelecte: {
-                    listModel.set(index,{"nameValue":"gggggggg"})
                 }
                 onCurrentWorkStation: {
                     stationSet.index = index
@@ -1003,11 +972,29 @@ Item {
         }
         onSignalAddExistSelectClick: {
             //que hanshu
+            if (addExit.listModel == partModel) {
+                spliceList.listModel = listModel
+                var corlorlist = new Array()
+                    corlorlist = partModel.getWorkStationCorlor(modelId,name)
+                var zoneList = new Array()
+                zoneList = partModel.geteWorkStationZone(modelId,name)
+                var nameList = new Array()
+                nameList = partModel.getCurrentPartOfSpliceName(modelId,name)
+                var array = ["#ff6699","#ff0033","#33FFCC","#cc99ff","#cc0099","#930202","#99ccff","#f79428","#0000cc","Olive"]
+                var arrayzone = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P"]
+                for (var i = 0; i < nameList.length; i++) {
+                    spliceList.listModel.append({"SpliceName":nameList[i],"stationColor":array[corlorlist[i]],"station":arrayzone[zoneList[i]]})
+                }
+                edit1.inputText = partModel.getWorkStationCount(modelId,name)
+                edit2.inputText = partModel.getWorkStationMaxSplicePerStation(modelId,name)
+                edit3.inputText = partModel.getWorkStationRows(modelId,name)
+                edit4.inputText = partModel.getWorkStationColumns(modelId,name)
+                edit5.inputText = partModel.getWorkStationMaxSplicePerZone(modelId,name)
+            }
             backGround.visible = false
             backGround.opacity = 0
             addExit.visible = false
             content.bIsEdit = false
-            spliceList.listModel = spliceModel
         }
     }
     Item {

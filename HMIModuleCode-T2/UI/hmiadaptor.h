@@ -88,6 +88,7 @@ public:
     Q_INVOKABLE int randPoint();
     Q_INVOKABLE QString copyFileToPath(QString source);
     Q_INVOKABLE QList<int> getPoint();
+    Q_INVOKABLE int timeChangeToInt(QString time);
 
     /********permissionsetting func**************/
     Q_INVOKABLE bool permissionsettingExecute(QString code);

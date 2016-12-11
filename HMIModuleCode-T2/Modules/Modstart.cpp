@@ -51,9 +51,9 @@ MODstart::MODstart()
     CheckBransonFolder(); //the routine checks whether Amtech folder exists on system drive or not
     CheckAWGAreaTable();
     _M10INI->Get_INI_File();
-    CheckIOStatus();
     GlobalInitM10();
-//    ptr_Statistics->start_data_structures();   //Initializes the stats bell curve only
+
+    CheckIOStatus();
     if (_Interface->StatusData.ComInfo.COMport == -1)
         check_result = 1;
     else
@@ -289,6 +289,11 @@ void MODstart::CheckBransonFolder()
 
         if (objDriveSystem.exists("c:\\BransonData\\Library\\") == false)
            objDriveSystem.mkdir("c:\\BransonData\\Library\\");
+        else
+        {
+            if(objDriveSystem.exists("c:\\BransonData\\Library\\SpliceImage\\") == false)
+                objDriveSystem.mkdir("c:\\BransonData\\Library\\SpliceImage\\");
+        }
 
     }
 

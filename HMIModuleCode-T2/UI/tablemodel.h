@@ -50,6 +50,7 @@ public slots:
     void setRoles(const QStringList &names);
     Q_INVOKABLE QVariant getWorkOrderValue(int index, QString key);
     Q_INVOKABLE void removeValue(int id, QString name);
+    Q_INVOKABLE int getPartId(int index);
 
     //    QString getContacterName(QString contacterId);
     Q_INVOKABLE int count();
@@ -135,11 +136,19 @@ protected:
 
 signals:
 
-
 public slots:
     void setRoles(const QStringList &names);
     Q_INVOKABLE QVariant getValue(int index, QString key);
     Q_INVOKABLE void removeValue(int id, QString name);
+    Q_INVOKABLE int getWorkStationRows(int id, QString name);
+    Q_INVOKABLE int getWorkStationColumns(int id, QString name);
+    Q_INVOKABLE int getWorkStationMaxSplicePerZone(int id, QString name);
+    Q_INVOKABLE int getWorkStationCount(int id, QString name);
+    Q_INVOKABLE int getWorkStationMaxSplicePerStation(int id, QString name);
+    Q_INVOKABLE QList<int> getWorkStationCorlor(int id, QString name);
+    Q_INVOKABLE QList<int> geteWorkStationZone(int id, QString name);
+    Q_INVOKABLE bool getPartOnlineOrOffLine(int id, QString name);
+    Q_INVOKABLE QStringList getCurrentPartOfSpliceName(int id, QString name);
     Q_INVOKABLE int count();
    // int getCurrentIndex(QString info);
 
@@ -190,6 +199,7 @@ class AlarmModel : public QAbstractTableModel
     Q_OBJECT
 public:
     explicit AlarmModel(QObject *parent = 0);
+    void setModelList(QString name, unsigned int time_from, unsigned int time_to);
     void setModelList(unsigned int time_from, unsigned int time_to);
     void setModelList();
 
@@ -212,6 +222,7 @@ public slots:
     void setRoles(const QStringList &names);
     Q_INVOKABLE QVariant getAlarmValue(int index, QString key);
     Q_INVOKABLE void removeValue(int id, QString name);
+    Q_INVOKABLE void searchAlarmLog(QString name, unsigned int time_from, unsigned int time_to);
     Q_INVOKABLE int count();
 private:
     QHash<int, QByteArray> m_roleNames;
@@ -224,6 +235,9 @@ class WeldHistoryModel : public QAbstractTableModel
     Q_OBJECT
 public:
     explicit WeldHistoryModel(QObject *parent = 0);
+    void setModelList(QString WorkOrderName, QString PartName, QString SpliceName,
+                      unsigned int time_from, unsigned int time_to,
+                      enum FieldType OrderField = CreatedDateType, bool Orderby = true);
     void setModelList(unsigned int time_from, unsigned int time_to);
     void setModelList();
 
@@ -245,6 +259,9 @@ signals:
 public slots:
     void setRoles(const QStringList &names);
     Q_INVOKABLE QVariant getValue(int index, QString key);
+    Q_INVOKABLE void weldResultSearch(QString WorkOrderName, QString PartName, QString SpliceName,
+                                 unsigned int time_from, unsigned int time_to,
+                                 enum FieldType OrderField = CreatedDateType, bool Orderby = true);
     Q_INVOKABLE int count();
     Q_INVOKABLE void removeValue(int id, QString name);
 

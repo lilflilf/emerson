@@ -246,7 +246,7 @@ Item {
             anchors.top: title2.bottom
             text: qsTr("All")
             clip: true
-            height: mytimeSelect.height
+            height: mytimeSelect1.height
             backgroundComponent: Rectangle {
                 anchors.fill: parent
                 color: "#052a40"
@@ -283,7 +283,7 @@ Item {
         }
 
         MyCalendar {
-            id: mycalendar
+            id: mycalendar1
             anchors.left: from.left
             anchors.leftMargin: 10
             anchors.top: from.bottom
@@ -294,10 +294,10 @@ Item {
         }
 
         MyCalendar {
-            id: mytimeSelect
+            id: mytimeSelect1
             width: (parent.width-98)/2
-            anchors.top: mycalendar.top
-            anchors.left: mycalendar.right
+            anchors.top: mycalendar1.top
+            anchors.left: mycalendar1.right
             anchors.leftMargin: 20
             bIsdate: false
             selecter: newCalendar
@@ -310,7 +310,7 @@ Item {
             font.family: "arial"
             color: "white"
             font.pointSize: 16
-            anchors.top: mycalendar.bottom
+            anchors.top: mycalendar1.bottom
             anchors.left: parent.left
             anchors.leftMargin: 20
         }
@@ -327,6 +327,7 @@ Item {
         }
 
         MyCalendar {
+            id: mytimeSelect2
             width: (parent.width-98)/2
             anchors.top: mycalendar2.top
             anchors.left: mycalendar2.right
@@ -348,6 +349,11 @@ Item {
                 id: applyButton
                 width: parent.width
                 text: qsTr("APPLY")
+                onClicked: {
+                    var fromtime = hmiAdaptor.timeChangeToInt(mycalendar1.text + " " + mytimeSelect1.text)
+                    var totime = hmiAdaptor.timeChangeToInt(mytimeSelect2.text + " " + mytimeSelect2.text)
+                    alarmModel.searchAlarmLog(workOrderName.text,fromtime,totime)
+                }
             }
 //            CButton {
 //                id: backButton

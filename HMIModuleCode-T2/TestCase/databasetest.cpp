@@ -130,16 +130,16 @@ void DataBaseTest::TestInsertOneRecordIntoPartTable()
     PartAttribute.SpliceName = "WangYIBIN";
     PartAttribute.CurrentBoardLayoutZone = 1;
     PartAttribute.CurrentWorkstation = 2;
-    tmpPart.SpliceIndex.insert(0,PartAttribute);
+    tmpPart.SpliceList.insert(0,PartAttribute);
     PartAttribute.SpliceName = "JWang";
     PartAttribute.CurrentBoardLayoutZone = 2;
     PartAttribute.CurrentWorkstation = 3;
-    tmpPart.SpliceIndex.insert(1,PartAttribute);
+    tmpPart.SpliceList.insert(1,PartAttribute);
     PartAttribute.SpliceName = "JW";
     PartAttribute.CurrentBoardLayoutZone = 3;
     PartAttribute.CurrentWorkstation = 4;
-    tmpPart.SpliceIndex.insert(2,PartAttribute);
-    tmpPart.NoOfSplice = tmpPart.SpliceIndex.size();
+    tmpPart.SpliceList.insert(2,PartAttribute);
+    tmpPart.NoOfSplice = tmpPart.SpliceList.size();
 
     _SQLITCLASS->InsertRecordIntoTable(&tmpPart);
 }
@@ -580,16 +580,16 @@ void DataBaseTest::TestUpdateOneRecordIntoPartTable()
     PartAttribute.SpliceName = "WangYIBIN";
     PartAttribute.CurrentBoardLayoutZone = 1;
     PartAttribute.CurrentWorkstation = 2;
-    tmpPart.SpliceIndex.insert(0,PartAttribute);
+    tmpPart.SpliceList.insert(0,PartAttribute);
     PartAttribute.SpliceName = "JWang";
     PartAttribute.CurrentBoardLayoutZone = 2;
     PartAttribute.CurrentWorkstation = 3;
-    tmpPart.SpliceIndex.insert(1,PartAttribute);
+    tmpPart.SpliceList.insert(1,PartAttribute);
     PartAttribute.SpliceName = "JW";
     PartAttribute.CurrentBoardLayoutZone = 3;
     PartAttribute.CurrentWorkstation = 4;
-    tmpPart.SpliceIndex.insert(2,PartAttribute);
-    tmpPart.NoOfSplice = tmpPart.SpliceIndex.size();
+    tmpPart.SpliceList.insert(2,PartAttribute);
+    tmpPart.NoOfSplice = tmpPart.SpliceList.size();
 
     _SQLITCLASS->UpdateRecordIntoTable(&tmpPart);
 }

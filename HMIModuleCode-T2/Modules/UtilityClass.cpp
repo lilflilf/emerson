@@ -107,9 +107,12 @@ bool UtilityClass::MapJsonToString(QMap<int, struct PARTATTRIBUTE> *_SourceMap, 
     QMap<int, struct PARTATTRIBUTE>::const_iterator i = _SourceMap->constBegin();
     while (i != _SourceMap->constEnd()) {
         QString key = QString::number(i.key(),10);
-        QString value = ((struct PARTATTRIBUTE)i.value()).SpliceName + ";";
-        int tmp = ((struct PARTATTRIBUTE)i.value()).CurrentWorkstation;
-        QString str = QString::number(tmp, 10) + ";";
+        int tmp = ((struct PARTATTRIBUTE)i.value()).SpliceID;
+        QString value = QString::number(tmp, 10) + ";";
+        QString str = ((struct PARTATTRIBUTE)i.value()).SpliceName + ";";
+        value += str;
+        tmp = ((struct PARTATTRIBUTE)i.value()).CurrentWorkstation;
+        str = QString::number(tmp, 10) + ";";
         value += str;
         tmp = ((struct PARTATTRIBUTE)i.value()).CurrentBoardLayoutZone;
         str = QString::number(tmp, 10) + ";";
@@ -144,9 +147,10 @@ bool UtilityClass::StringJsonToMap(QString SourceString, QMap<int, struct PARTAT
                 QString value = i.value().toString();
                 struct PARTATTRIBUTE PartAttribute;
                 QStringList strList = value.split(";");
-                PartAttribute.SpliceName = strList.at(0);
-                PartAttribute.CurrentWorkstation = ((QString)strList.at(1)).toInt();
-                PartAttribute.CurrentBoardLayoutZone = ((QString)strList.at(2)).toInt();
+                PartAttribute.SpliceID = ((QString)strList.at(0)).toInt();
+                PartAttribute.SpliceName = strList.at(1);
+                PartAttribute.CurrentWorkstation = ((QString)strList.at(2)).toInt();
+                PartAttribute.CurrentBoardLayoutZone = ((QString)strList.at(3)).toInt();
                 _DestMap->insert(i.key().toInt(), PartAttribute);
                 ++i;
             }

@@ -7,28 +7,28 @@ QString DBMaintenanceLogTable::MaintenanceLogDBFile = "MaintenanceLog.db";
 QString DBMaintenanceLogTable::DatabaseDir = "c:\\BransonData\\History\\";
 
 const QString SQLSentence[] = {
-    "CREATE TABLE Maintenance ("                 /*0 Create Maintenance Table*/
+    "CREATE TABLE MaintenanceLog ("                 /*0 Create Maintenance Table*/
     "ID INTEGER PRIMARY KEY AUTOINCREMENT, "
     "MaintenanceType VARCHAR, MaintenanceMsg VARCHAR, "
     "CreatedDate VARCHAR, OperatorID INT)",
 
-    "INSERT INTO Maintenance ("                       /*1 Insert record into Maintenance Table*/
+    "INSERT INTO MaintenanceLog ("                       /*1 Insert record into Maintenance Table*/
     "MaintenanceType, MaintenanceMsg, CreatedDate, "
     "OperatorID) "
     "VALUES (?, ?, ?, ?)",
 
-    "SELECT ID, MaintenanceType FROM Maintenance",    /*2 Query Entire Maintenance Table */
+    "SELECT ID, MaintenanceType FROM MaintenanceLog",    /*2 Query Entire Maintenance Table */
 
-    "SELECT * FROM Maintenance WHERE ID = ? AND MaintenanceType = ?",
+    "SELECT * FROM MaintenanceLog WHERE ID = ? AND MaintenanceType = ?",
                                                       /*3 Query One Record From Maintenance Table */
-    "SELECT * FROM Maintenance WHERE ID = ?",         /*4 Query One Record Only Use ID */
+    "SELECT * FROM MaintenanceLog WHERE ID = ?",         /*4 Query One Record Only Use ID */
 
-    "DELETE FROM Maintenance",                        /*5 Delete Entire Maintenance Table*/
+    "DELETE FROM MaintenanceLog",                        /*5 Delete Entire Maintenance Table*/
 
-    "DELETE FROM Maintenance WHERE ID = ? AND MaintenanceType = ?",
+    "DELETE FROM MaintenanceLog WHERE ID = ? AND MaintenanceType = ?",
                                                 /*6 Delete One Record from Maintenance Table*/
 
-    "UPDATE Maintenance SET MaintenanceType = ?, MaintenanceMsg = ?, CreatedDate = ?, "
+    "UPDATE MaintenanceLog SET MaintenanceType = ?, MaintenanceMsg = ?, CreatedDate = ?, "
     "OperatorID = ? WHERE ID = ?",
                                                 /*7 Update One Record to Maintenance Table*/
 
@@ -309,7 +309,7 @@ bool DBMaintenanceLogTable::QueryOnlyUseTime(unsigned int time_from, unsigned in
         return bResult;
 
 //    query.prepare(SQLSentence[QUERY_ONE_RECORD_WIRE_TABLE]);
-    query.prepare("SELECT ID, MaintenanceType FROM Maintenance WHERE CreatedDate >= ?"
+    query.prepare("SELECT ID, MaintenanceType FROM MaintenanceLog WHERE CreatedDate >= ?"
                   " AND CreatedDate <= ?");
     QDateTime TimeLabel = QDateTime::fromTime_t(time_from);
     query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
@@ -345,7 +345,7 @@ bool DBMaintenanceLogTable::QueryUseNameAndTime(QString TypeDefine, unsigned int
         return bResult;
 
 //    query.prepare(SQLSentence[QUERY_ONE_RECORD_WIRE_TABLE]);
-    query.prepare("SELECT ID, MaintenanceType FROM Maintenance WHERE "
+    query.prepare("SELECT ID, MaintenanceType FROM MaintenanceLog WHERE "
                   "MaintenanceType = ? AND CreatedDate >= ? "
                   "AND CreatedDate <= ?");
     query.addBindValue(TypeDefine);

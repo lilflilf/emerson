@@ -63,7 +63,6 @@ public:
     bool SQLDelete(void* _DBObj, int ID, QString Name);
 private:
 
-
 signals:
     void EnableErrorMessageSignal(struct BransonMessageBox &MsgBox);
     void DisableErrorMessageSignal(struct BransonMessageBox &MsgBox);

@@ -40,12 +40,6 @@ WireElement WireElement::operator=(const WireElement &WireObject)
 bool WireElement::operator==(const WireElement &WireObject)
 {
     bool bResult = false;
-//        if(this->WireName != WireObject.WireName)
-//            return bResult;
-//        if(this->WireID != WireObject.WireID)
-//            return bResult;
-//        if(this->CreatedDate != WireObject.CreatedDate)
-//            return bResult;
     if(this->OperatorID != WireObject.OperatorID)
         return bResult;
     if(this->Color != WireObject.Color)
