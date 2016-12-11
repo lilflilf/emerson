@@ -333,15 +333,6 @@ void SpliceModel::setModelList(unsigned int time_from, unsigned int time_to)
     endResetModel();
 }
 
-void SpliceModel::setModelList(QString Name, unsigned int time_from, unsigned int time_to)
-{
-    beginResetModel();
-    splices->clear();
-    if (m_spliceAdaptor->QueryUseNameAndTime(Name,time_from,time_to,splices))
-        qDebug( )<< "setModelList SpliceModel" << splices->count();
-    endResetModel();
-}
-
 void SpliceModel::setModelList()
 {
     beginResetModel();
@@ -625,11 +616,6 @@ bool SpliceModel::getWeldMode(QString type, int index)
     }
 }
 
-void SpliceModel::seachSpliceModel(QString Name, unsigned int time_from, unsigned int time_to)
-{
-    setModelList(Name,time_from,time_to);
-}
-
 void SpliceModel::removeValue(int id, QString name)
 {
     m_spliceAdaptor->DeleteOneRecordFromTable(id,name);
@@ -901,6 +887,27 @@ int PartModel::getWorkStationColumns(int id, QString name)
     return myPart.PartTypeSetting.BoardLayout.Columns;
 }
 
+int PartModel::getWorkStationMaxSplicePerZone(int id, QString name)
+{
+    PartElement myPart;
+    m_partAdaptor->QueryOneRecordFromTable(id,name,&myPart);
+    return myPart.PartTypeSetting.BoardLayout.MaxSplicesPerZone;
+}
+
+int PartModel::getWorkStationCount(int id, QString name)
+{
+    PartElement myPart;
+    m_partAdaptor->QueryOneRecordFromTable(id,name,&myPart);
+    return myPart.PartTypeSetting.WorkStations.TotalWorkstation;
+}
+
+int PartModel::getWorkStationMaxSplicePerStation(int id, QString name)
+{
+    PartElement myPart;
+    m_partAdaptor->QueryOneRecordFromTable(id,name,&myPart);
+    return myPart.PartTypeSetting.WorkStations.MaxSplicesPerWorkstation;
+}
+
 QList<int> PartModel::getWorkStationCorlor(int id, QString name)
 {
     QList<int> corlorList;
@@ -921,6 +928,17 @@ QList<int> PartModel::geteWorkStationZone(int id, QString name)
         zoneList.append(myPart.SpliceList.value(myPart.SpliceList.keys().at(i)).CurrentBoardLayoutZone);
     }
     return zoneList;
+}
+
+QStringList PartModel::getCurrentPartOfSpliceName(int id, QString name)
+{
+    QStringList list;
+    PartElement myPart;
+    m_partAdaptor->QueryOneRecordFromTable(id,name,&myPart);
+    for (int i = 0; i < myPart.SpliceList.count(); i++) {
+        list.append(myPart.SpliceList.value(myPart.SpliceList.keys().at(i)).SpliceName);
+    }
+    return list;
 }
 
 bool PartModel::getPartOnlineOrOffLine(int id, QString name)
@@ -1188,6 +1206,15 @@ QVariant AlarmModel::data(const QModelIndex &index, int role) const
     return value;
 }
 
+void AlarmModel::setModelList(QString name, unsigned int time_from, unsigned int time_to)
+{
+    beginResetModel();
+    alarms->clear();
+    if (m_alarmAdaptor->QueryUseNameAndTime(name,time_from,time_to,alarms))
+        qDebug( )<< "AlarmModel " << alarms->count();
+    endResetModel();
+}
+
 void AlarmModel::setModelList(unsigned int time_from, unsigned int time_to)
 {
     beginResetModel();
@@ -1206,6 +1233,10 @@ void AlarmModel::setModelList()
     endResetModel();
 }
 
+void AlarmModel::searchAlarmLog(QString name, unsigned int time_from, unsigned int time_to)
+{
+    setModelList(name,time_from,time_to);
+}
 
 int AlarmModel::rowCount(const QModelIndex & parent) const
 {

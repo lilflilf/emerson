@@ -56,6 +56,17 @@ Item {
             rec.itemAt(index).centerNum = selecteIndex
         }
     }
+    function boardLayoutColorInit(index,color,selecteIndex)
+    {
+        if (rec.itemAt(index).bIsCenterShow) {
+            rec.itemAt(index).zoneModel.append({"zonecolor":color,"selecteNum":selecteIndex})
+        } else {
+            rec.itemAt(index).bIsCenterShow = true
+            rec.itemAt(index).centerColor = color
+            rec.itemAt(index).centerNum = selecteIndex
+        }
+    }
+
     function setBoardLayoutYPosition(index)
     {
         if (index < 5) {

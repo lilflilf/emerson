@@ -71,7 +71,6 @@ class SpliceModel : public QAbstractTableModel
     Q_OBJECT
 public:
     explicit SpliceModel(QObject *parent = 0);
-    void setModelList(QString Name, unsigned int time_from, unsigned int time_to);
     void setModelList(unsigned int time_from, unsigned int time_to);
     void setModelList();
 
@@ -103,7 +102,6 @@ public slots:
     Q_INVOKABLE void createNew();
     Q_INVOKABLE QString getString(QString type, int value);
     Q_INVOKABLE bool getWeldMode(QString type,int index);
-    Q_INVOKABLE void seachSpliceModel(QString Name, unsigned int time_from, unsigned int time_to);
 //    Q_INVOKABLE void setNewValue();
 
 private:
@@ -141,9 +139,13 @@ public slots:
     Q_INVOKABLE void removeValue(int id, QString name);
     Q_INVOKABLE int getWorkStationRows(int id, QString name);
     Q_INVOKABLE int getWorkStationColumns(int id, QString name);
+    Q_INVOKABLE int getWorkStationMaxSplicePerZone(int id, QString name);
+    Q_INVOKABLE int getWorkStationCount(int id, QString name);
+    Q_INVOKABLE int getWorkStationMaxSplicePerStation(int id, QString name);
     Q_INVOKABLE QList<int> getWorkStationCorlor(int id, QString name);
     Q_INVOKABLE QList<int> geteWorkStationZone(int id, QString name);
     Q_INVOKABLE bool getPartOnlineOrOffLine(int id, QString name);
+    Q_INVOKABLE QStringList getCurrentPartOfSpliceName(int id, QString name);
     Q_INVOKABLE int count();
    // int getCurrentIndex(QString info);
 
@@ -194,6 +196,7 @@ class AlarmModel : public QAbstractTableModel
     Q_OBJECT
 public:
     explicit AlarmModel(QObject *parent = 0);
+    void setModelList(QString name, unsigned int time_from, unsigned int time_to);
     void setModelList(unsigned int time_from, unsigned int time_to);
     void setModelList();
 
@@ -216,6 +219,7 @@ public slots:
     void setRoles(const QStringList &names);
     Q_INVOKABLE QVariant getAlarmValue(int index, QString key);
     Q_INVOKABLE void removeValue(int id, QString name);
+    Q_INVOKABLE void searchAlarmLog(QString name, unsigned int time_from, unsigned int time_to);
     Q_INVOKABLE int count();
 private:
     QHash<int, QByteArray> m_roleNames;

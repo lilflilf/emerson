@@ -885,6 +885,7 @@ bool DBPresetTable::QueryUseNameAndTime(QString Name, unsigned int time_from,
     bool bResult = SpliceDBObj.open();
     if(bResult == false)
         return bResult;
+
     query.prepare("SELECT ID, SpliceName FROM Splice WHERE CreatedDate >= ? "
                   "AND CreatedDate <= ? AND SpliceName == ?");
     QDateTime TimeLabel = QDateTime::fromTime_t(time_from);
@@ -892,9 +893,7 @@ bool DBPresetTable::QueryUseNameAndTime(QString Name, unsigned int time_from,
     TimeLabel = QDateTime::fromTime_t(time_to);
     query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
     query.addBindValue(Name);
-    qDebug()<<"12311111111111111"<<Name<<time_from<<time_to;
     bResult = query.exec();
-    qDebug()<<"44444444444444444"<<bResult;
     if(bResult == true)
     {
         _obj->clear();
