@@ -1283,7 +1283,6 @@ Item {
             onClicked: spliceDetailsItem.deleteWire()
 
         }
-
         CButton {
             id: saveSplice
             pointSize: 14
@@ -1293,7 +1292,21 @@ Item {
             width: (spliceDetailsItem.width-72)/4
             text: qsTr("SAVE SPLICE")
             onClicked: {
+
                 var list = spliceDetailsItem.saveAllWire()
+
+                if (edit1.inputText.length == 0)
+                {
+                    dialog.visible = true
+                    backGround.visible = true
+                    backGround.opacity = 0.5
+                    return;
+                }
+                spliceModel.setStructValue("SpliceName",edit1.inputText);
+                spliceModel.setStructValue("OperatorId",hmiAdaptor.getCurrentOperatorId());
+                spliceModel.setStructValue("Total Cross",spliceDetailsTip2.text)
+                spliceModel.setStructValue("WireMap",list)
+
 
                 spliceModel.setStructValue("Energy",settingsModel.get(0).bottomText);
                 spliceModel.setStructValue("Trigger Pressure",settingsModel.get(1).bottomText);
@@ -1310,16 +1323,21 @@ Item {
                 spliceModel.setStructValue("Post-Height-",settingsModel2.get(6).bottomText);
                 spliceModel.setStructValue("Post-Height+",settingsModel2.get(7).bottomText);
 
-                spliceModel.setStructValue("Step-Energy",stepSetModel.get(0).bottomText);
-                spliceModel.setStructValue("Step-Time",stepSetModel.get(1).bottomText);
-                spliceModel.setStructValue("Step-Power",stepSetModel.get(2).bottomText);
-                spliceModel.setStructValue("Amplitude B",stepSetModel.get(4).bottomText);
+                spliceModel.setStructValue("Step-Energy",stepSetModel.get(0).centerText);
+                spliceModel.setStructValue("Step-Time",stepSetModel.get(1).centerText);
+                spliceModel.setStructValue("Step-Power",stepSetModel.get(2).centerText);
+                spliceModel.setStructValue("Amplitude B",stepSetModel.get(4).centerText);
+
+                spliceModel.setStructValue("ShrinkId",shrinkSet.shrinkId );
+                spliceModel.setStructValue("ShrinkTemp",shrinkSet.shrinkTemp);
+                spliceModel.setStructValue("ShrinkTime",shrinkSet.shrinkTime);
 
                 spliceModel.saveSplice()
                 signalSaveSplice()
             }
         }
     }
+
     Item {
         id: settingRightArea
         anchors.left: swipeView.right
@@ -1756,6 +1774,13 @@ Item {
                             clip: true
                             onStateChanged: {
                                 thirdSwitchModel.set(index,{"switchState":onoroff.state})
+                                if (thirdSwitchText == "Insulation:")
+                                {
+                                    if (onoroff.state == "left")
+                                        instulationButton.visible = true
+                                    else
+                                        instulationButton.visible = false
+                                }
                             }
                         }
                     }
@@ -1932,11 +1957,40 @@ Item {
             }
         }
     }
+    Image {
+        id: dialog
+        anchors.centerIn: parent
+        width: 639
+        height: 390
+        visible: false
+        source: "qrc:/images/images/dialogbg.png"
+        Text {
+            anchors.centerIn: parent
+            anchors.verticalCenterOffset: -30
+            font.family: "arial"
+            font.pixelSize: 24
+            color: "white"
+            text: qsTr("Please Input Splice Name")
+        }
+        CButton {
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 15
+            anchors.horizontalCenter: parent.horizontalCenter
+            width: parent.width/3
+            iconSource: "qrc:/images/images/OK.png"
+            text: qsTr("OK")
+            onClicked: {
+                dialog.visible = false
+                backGround.visible = false
+                backGround.opacity = 0
+            }
+        }
+    }
     ShrinkSet {
         id: shrinkSet
         anchors.centerIn: parent
-        width: parent.width*0.65
-        height: parent.height*0.5
+        width: 639
+        height: 390
         visible: false
         onSureClick: {
             shrinkSet.visible = false
@@ -1956,18 +2010,33 @@ Item {
         height: 525
         source: "qrc:/images/images/dialogbg.png"
         visible: false
+        Component.onCompleted: {
+            stepSetModel.append({"myVisable":false,"topText":"Step-Energy","centerText":spliceModel.getStructValue("Step-Energy","current"),"maxText":spliceModel.getStructValue("Step-Energy","max"),"minText":spliceModel.getStructValue("Step-Energy","min")})
+            stepSetModel.append({"myVisable":false,"topText":"Step-Time","centerText":spliceModel.getStructValue("Step-Time","current"),"maxText":spliceModel.getStructValue("Step-Time","max"),"minText":spliceModel.getStructValue("Step-Time","min")})
+            stepSetModel.append({"myVisable":false,"topText":"Step-Power","centerText":spliceModel.getStructValue("Step-Power","current"),"maxText":spliceModel.getStructValue("Step-Power","max"),"minText":spliceModel.getStructValue("Step-Power","min")})
+            stepSetModel.append({"myVisable":true,"topText":"Amplitude A","centerText":spliceModel.getStructValue("Amplitude A","current"),"maxText":spliceModel.getStructValue("Amplitude A","max"),"minText":spliceModel.getStructValue("Amplitude A","min")})
+            stepSetModel.append({"myVisable":true,"topText":"Amplitude B","centerText":spliceModel.getStructValue("Amplitude B","current"),"maxText":spliceModel.getStructValue("Amplitude B","max"),"minText":spliceModel.getStructValue("Amplitude B","min")})
+
+        }
+
         onVisibleChanged: {
             if (visible)
             {
-                stepSetModel.clear()
-                if (stepSetText == "Step-Energy")
-                    stepSetModel.append({"topText":"Step-Energy","centerText":spliceModel.getStructValue("Step-Energy","current"),"maxText":spliceModel.getStructValue("Step-Energy","max"),"minText":spliceModel.getStructValue("Step-Energy","min")})
-                else if (stepSetText == "Step-Time")
-                    stepSetModel.append({"topText":"Step-Time","centerText":spliceModel.getStructValue("Step-Time","current"),"maxText":spliceModel.getStructValue("Step-Time","max"),"minText":spliceModel.getStructValue("Step-Time","min")})
-                else if (stepSetText == "Step-Power")
-                    stepSetModel.append({"topText":"Step-Power","centerText":spliceModel.getStructValue("Step-Power","current"),"maxText":spliceModel.getStructValue("Step-Power","max"),"minText":spliceModel.getStructValue("Step-Power","min")})
-                stepSetModel.append({"topText":"Amplitude A","centerText":spliceModel.getStructValue("Amplitude A","current"),"maxText":spliceModel.getStructValue("Amplitude A","max"),"minText":spliceModel.getStructValue("Amplitude A","min")})
-                stepSetModel.append({"topText":"Amplitude B","centerText":spliceModel.getStructValue("Amplitude B","current"),"maxText":spliceModel.getStructValue("Amplitude B","max"),"minText":spliceModel.getStructValue("Amplitude B","min")})
+                if (stepSetText == "Step-Energy") {
+                    stepSetModel.set(0,{"myVisable":true})
+                    stepSetModel.set(1,{"myVisable":false})
+                    stepSetModel.set(2,{"myVisable":false})
+                }
+                else if (stepSetText == "Step-Time") {
+                    stepSetModel.set(1,{"myVisable":true})
+                    stepSetModel.set(0,{"myVisable":false})
+                    stepSetModel.set(2,{"myVisable":false})
+                }
+                else if (stepSetText == "Step-Power") {
+                    stepSetModel.set(2,{"myVisable":true})
+                    stepSetModel.set(0,{"myVisable":false})
+                    stepSetModel.set(1,{"myVisable":false})
+                }
             }
         }
 
@@ -1998,6 +2067,7 @@ Item {
                 id: stepRepeater
                 model: stepSetModel
                 Recsetting {
+                    visible: myVisable
                     headTitle: qsTr(topText)
                     centervalue: qsTr(centerText)
                     width: (stepRow.width-40)/3

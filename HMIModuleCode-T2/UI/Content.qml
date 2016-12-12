@@ -656,7 +656,7 @@ Item {
             Image {
                 id: spliceImage
                 anchors.fill: parent
-                source: "qrc:/images/images/bg.png"
+                source: spliceModel.getStructValue("PicPath","") == " " ? "qrc:/images/images/bg.png" : spliceModel.getStructValue("PicPath","")
             }
             Text {
                 anchors.right: parent.right
@@ -678,8 +678,10 @@ Item {
                     onSignalChoseFile: {
                         imageLoader.source = ""
                         var path = hmiAdaptor.copyFileToPath(fileName)
-                        if (path != "")
+                        if (path != "") {
                             spliceImage.source = "file:///"+path
+                            spliceModel.setStructValue("PicPath",spliceImage.source)
+                        }
                     }
                 }
             }

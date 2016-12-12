@@ -197,7 +197,7 @@ void DBPresetTable::InsertTestDataIntoTable()
         tmpSplice.WeldSettings.AdvanceSetting.MeasuredWidth = 100;
         tmpSplice.WeldSettings.AdvanceSetting.MeasuredHeight = 100;
         tmpSplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkOption = false;
-        tmpSplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID = 0;
+        tmpSplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID = "0";
         tmpSplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime = 10;
         tmpSplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTemperature = 260;
         tmpSplice.HashCode = qHashBits(&tmpSplice.WeldSettings, sizeof(tmpSplice.WeldSettings), 0);
@@ -405,7 +405,7 @@ bool DBPresetTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
                                                 "yyyy/MM/dd hh:mm:ss");
     ((PresetElement*)_obj)->CreatedDate = TimeLabel.toTime_t();
     ((PresetElement*)_obj)->OperatorID = query.value("OperatorID").toInt();
-    ((PresetElement*)_obj)->CrossSection = query.value("Color").toInt();
+    ((PresetElement*)_obj)->CrossSection = query.value("CrossSection").toInt();
     ((PresetElement*)_obj)->PresetPicNamePath = query.value("PresetPicPath").toString();
     ((PresetElement*)_obj)->Verified = query.value("Verified").toBool();
     ((PresetElement*)_obj)->WeldSettings.BasicSetting.Energy =

@@ -76,6 +76,7 @@ public:
 
     QStringList m_idList;
     DBPresetTable *m_spliceAdaptor;
+    DBWireTable * m_wireAdaptor;
     DBOperatorTable *m_operatorAdaptor;
     QMap<int, QString> *splices;
 
