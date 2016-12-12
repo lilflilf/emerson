@@ -82,28 +82,6 @@ Item {
                     currentSelecte(index)
                 }
             }
-            Rectangle {
-                id: background
-                anchors.left: numIndex.right
-                anchors.leftMargin: 2
-                width: parent.width - 55
-                height: parent.height
-                color: "black"
-                opacity: 0
-                clip: true
-                RadioButton {
-                    id: select
-                    visible: false
-                    exclusiveGroup: checkGroup
-                    onCheckedChanged: {
-                        if (select.checked) {
-                            background.opacity = 0.5
-                        } else {
-                            background.opacity = 0
-                        }
-                    }
-                }
-            }
             Text {
                 id: spliceName
                 anchors.top: parent.top
@@ -158,6 +136,28 @@ Item {
                 iconSource: "qrc:/images/images/close.png"
                 onClicked: {
                     listModel.remove(index)
+                }
+            }
+            Rectangle {
+                id: background
+                anchors.left: numIndex.right
+                anchors.leftMargin: 2
+                width: parent.width - 55
+                height: parent.height
+                color: "black"
+                opacity: 0
+                clip: true
+                RadioButton {
+                    id: select
+                    visible: false
+                    exclusiveGroup: checkGroup
+                    onCheckedChanged: {
+                        if (select.checked) {
+                            background.opacity = 0.5
+                        } else {
+                            background.opacity = 0
+                        }
+                    }
                 }
             }
         }

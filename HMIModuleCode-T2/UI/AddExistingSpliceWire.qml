@@ -17,15 +17,16 @@ Item {
     property bool bIsOnlyOne: false
     signal signalAddExistSelectClick(int modelId, string name)
     signal signalAddExistCancel()
-
     ListModel {
         id: selectList
     }
 
+
     function clearSelect()
     {
         selectList.clear()
-        selectCount = 0;
+        selectCount = 0
+        listView.delegate = listDelegate
     }
 
     Rectangle {
@@ -352,16 +353,20 @@ Item {
             text: bIsOnlyOne ? qsTr("Select") : qsTr("Select(" + selectCount + ")")
             textColor: "white"
             onClicked: {
-                if (selectIndex != -1) {
+                if (listModel == partModel) {
                     signalAddExistSelectClick(listModel.getValue(selectIndex,"PartId"),listModel.getValue(selectIndex,"PartName"))
                 } else if (listModel == spliceModel) {
+                    for (var i = 0; i < selectList.count; i++) {
+                        var num = selectList.get(i).selectNum
+                        signalAddExistSelectClick(listModel.getValue(num,"SpliceID"),listModel.getValue(num,"SpliceName"))
+                    }
                 } else if (listModel == wireModel) {
                     for (var i = 0; i < selectList.count; i++) {
                         var num = selectList.get(i).selectNum
                         signalAddExistSelectClick(listModel.getValue(num,"WireId"),listModel.getValue(num,"WireName"))
                     }
                 }
-
+                listView.delegate =null
              }
         }
 
@@ -377,6 +382,7 @@ Item {
             textColor: "white"
             onClicked: {
                 signalAddExistCancel()
+                listView.delegate =null
             }
         }
     }

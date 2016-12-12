@@ -150,6 +150,7 @@ public slots:
     Q_INVOKABLE QList<int> geteWorkStationZone(int id, QString name);
     Q_INVOKABLE bool getPartOnlineOrOffLine(int id, QString name);
     Q_INVOKABLE QStringList getCurrentPartOfSpliceName(int id, QString name);
+    Q_INVOKABLE QList<int> getCurrentPartOfSpliceId(int id, QString name);
     Q_INVOKABLE int count();
    // int getCurrentIndex(QString info);
 
