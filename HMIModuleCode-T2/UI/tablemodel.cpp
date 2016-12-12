@@ -941,6 +941,17 @@ QStringList PartModel::getCurrentPartOfSpliceName(int id, QString name)
     return list;
 }
 
+QList<int> PartModel::getCurrentPartOfSpliceId(int id, QString name)
+{
+    QList<int> idList;
+    PartElement myPart;
+    m_partAdaptor->QueryOneRecordFromTable(id,name,&myPart);
+    for (int i = 0; i < myPart.SpliceList.count(); i++) {
+        idList.append(myPart.SpliceList.value(myPart.SpliceList.keys().at(i)).SpliceID);
+    }
+    return idList;
+}
+
 bool PartModel::getPartOnlineOrOffLine(int id, QString name)
 {
     PartElement myPart;

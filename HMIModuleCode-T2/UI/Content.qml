@@ -95,7 +95,7 @@ Item {
             }
             SpliceListView {
                 id: spliceList
-                listModel: ""
+                listModel: listModel
                 anchors.top: tipsRec.bottom
                 anchors.topMargin: 6
                 anchors.bottom: tipsRec2.top
@@ -215,9 +215,26 @@ Item {
                 clip: true
                 onOnChanged: {
                     if (basicSwitch.state == "left") {
+                        borderSwitch.state = "right"
+                        borderSwitch.visible = false
                         bIsBasic = true
                     } else {
+                        borderSwitch.state = "left"
+                        borderSwitch.visible = true
                         bIsBasic = false
+                        var arrayzone = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P"]
+                        for (var i = 0; i < listModel.count; i++) {
+                            boardlayout.setBoardLayoutColor(arrayzone.indexOf(listModel.get(i).station),listModel.get(i).stationColor,i+1)
+                        }
+                    }
+                }
+                Component.onCompleted: {
+                    if (basicSwitch.state == "left") {
+                        borderSwitch.visible = false
+                        borderSwitch.state = "right"
+                    } else {
+                        borderSwitch.state = "left"
+                        borderSwitch.visible = true
                     }
                 }
             }
@@ -304,7 +321,7 @@ Item {
             }
             Label {
                 id: lab2
-                visible: bIsBoard
+                visible: !bIsBasic
                 anchors.top: edit2.bottom
                 anchors.topMargin: 6
                 anchors.left: parent.left
@@ -702,12 +719,8 @@ Item {
             visible: bIsBoard
             columns: 0
             rows: 0
-//            onColumnsChanged: {
-//                followArea.visible = false
-//            }
-//            onRowsChanged: {
-//                followArea.visible = false
-//            }
+            maxSplicePerWork: edit2.inputText
+            maxSplicePerZone: edit5.inputText
         }
 
 //        Component {
@@ -925,9 +938,9 @@ Item {
             if (stationSet.selecteZone == "") {
                 return
             }
-            listModel.set(stationSet.index,{"station":stationSet.selecteZone})
             if (stationSet.selecteColor != "") {
-                boardlayout.setBoardLayoutColor(stationSet.selecteIndex,stationSet.selecteColor,stationSet.index+1)
+                if (boardlayout.setBoardLayoutColor(stationSet.selecteIndex,stationSet.selecteColor,stationSet.index+1) != -1)
+                    listModel.set(stationSet.index,{"station":stationSet.selecteZone})
                 stationSet.visible = false
                 stationSet.selecteColor = ""
                 stationSet.selecteZone = ""
@@ -939,9 +952,9 @@ Item {
             if (stationSet.selecteColor == "") {
                 return
             }
-            listModel.set(stationSet.index,{"stationColor":stationSet.selecteColor})
             if (stationSet.selecteZone != "") {
-                boardlayout.setBoardLayoutColor(stationSet.selecteIndex,stationSet.selecteColor,stationSet.index+1)
+                if (boardlayout.setBoardLayoutColor(stationSet.selecteIndex,stationSet.selecteColor,stationSet.index+1) != -1)
+                    listModel.set(stationSet.index,{"stationColor":stationSet.selecteColor})
                 stationSet.visible = false
                 stationSet.selecteColor = ""
                 stationSet.selecteZone = ""
@@ -963,7 +976,7 @@ Item {
         componentMiddle: content.bIsEdit ? qsTr("# OF SPLICE") : qsTr("# OF WIRES")
         componenttype: qsTr("CROSS SECTION")
         componentCount: content.bIsEdit ? "" : qsTr("COUNT")
-        bIsOnlyOne: content.bIsEdit
+        bIsOnlyOne: (addExit.listModel == partModel) ? true : false
         onSignalAddExistCancel: {
             backGround.visible = false
             backGround.opacity = 0
@@ -973,28 +986,49 @@ Item {
         onSignalAddExistSelectClick: {
             //que hanshu
             if (addExit.listModel == partModel) {
-                spliceList.listModel = listModel
                 var corlorlist = new Array()
                     corlorlist = partModel.getWorkStationCorlor(modelId,name)
                 var zoneList = new Array()
                 zoneList = partModel.geteWorkStationZone(modelId,name)
                 var nameList = new Array()
                 nameList = partModel.getCurrentPartOfSpliceName(modelId,name)
+                var idList = new Array()
+                idList = partModel.getCurrentPartOfSpliceId(modelId,name)
                 var array = ["#ff6699","#ff0033","#33FFCC","#cc99ff","#cc0099","#930202","#99ccff","#f79428","#0000cc","Olive"]
                 var arrayzone = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P"]
                 for (var i = 0; i < nameList.length; i++) {
-                    spliceList.listModel.append({"SpliceName":nameList[i],"stationColor":array[corlorlist[i]],"station":arrayzone[zoneList[i]]})
+                    spliceList.listModel.append({"SpliceName":nameList[i],"stationColor":array[corlorlist[i]],"station":arrayzone[zoneList[i]],"SpliceId":idList[i]})
                 }
                 edit1.inputText = partModel.getWorkStationCount(modelId,name)
                 edit2.inputText = partModel.getWorkStationMaxSplicePerStation(modelId,name)
                 edit3.inputText = partModel.getWorkStationRows(modelId,name)
                 edit4.inputText = partModel.getWorkStationColumns(modelId,name)
                 edit5.inputText = partModel.getWorkStationMaxSplicePerZone(modelId,name)
+                if (partModel.getPartOnlineOrOffLine(modelId,name))
+                    basicSwitch.state = "right"
+                else
+                    basicSwitch.state = "left"
+            } else if (addExit.listModel == spliceModel) {
+                var bIsFind = false
+                for (var i = 0; i < listModel.count; i++) {
+                    if (listModel.get(i).SpliceName == name) {
+                        bIsFind = true;
+                        break;
+                    }
+                }
+                if (!bIsFind) {
+                    spliceList.listModel.append({"SpliceName":name,"stationColor":"white","station":"?","SpliceId":modelId})
+                }
             }
             backGround.visible = false
             backGround.opacity = 0
             addExit.visible = false
             content.bIsEdit = false
+        }
+        onVisibleChanged: {
+            if (addExit.visible) {
+                addExit.clearSelect()
+            }
         }
     }
     Item {
