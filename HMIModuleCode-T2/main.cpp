@@ -29,9 +29,6 @@ int main(int argc, char *argv[])
     int a = (int)(52/51);
 
     QQmlApplicationEngine engine;
-    engine.load(QUrl(QStringLiteral("qrc:/UI/main.qml")));
-    ALPaintedItem *alpaint = new ALPaintedItem;
-    engine.rootContext()->setContextProperty("alpaint",alpaint);
     MODstart* _ModStart = MODstart::Instance();
     HmiAdaptor *hmiAdaptor = new HmiAdaptor;
 

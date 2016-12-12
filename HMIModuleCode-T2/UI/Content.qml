@@ -939,22 +939,31 @@ Item {
                 return
             }
             if (stationSet.selecteColor != "") {
-                if (boardlayout.setBoardLayoutColor(stationSet.selecteIndex,stationSet.selecteColor,stationSet.index+1) != -1)
-                    listModel.set(stationSet.index,{"station":stationSet.selecteZone})
+                var reslut = boardlayout.setBoardLayoutColor(stationSet.selecteIndex,stationSet.selecteColor,stationSet.index+1)
+                if (reslut != -1) {
+                    listModel.set(stationSet.index,{"stationColor":stationSet.selecteColor,"station":stationSet.selecteZone})
+                } else {
+                    listModel.set(stationSet.index,{"stationColor":"white","station":"?"})
+                }
                 stationSet.visible = false
                 stationSet.selecteColor = ""
                 stationSet.selecteZone = ""
                 backGround2.visible = false
                 backGround2.opacity = 0
             }
+
         }
         onSelecteColorChanged: {
             if (stationSet.selecteColor == "") {
                 return
             }
             if (stationSet.selecteZone != "") {
-                if (boardlayout.setBoardLayoutColor(stationSet.selecteIndex,stationSet.selecteColor,stationSet.index+1) != -1)
-                    listModel.set(stationSet.index,{"stationColor":stationSet.selecteColor})
+               var reslut = boardlayout.setBoardLayoutColor(stationSet.selecteIndex,stationSet.selecteColor,stationSet.index+1)
+                if (reslut != -1) {
+                    listModel.set(stationSet.index,{"stationColor":stationSet.selecteColor,"station":stationSet.selecteZone})
+                } else {
+                    listModel.set(stationSet.index,{"stationColor":"white","station":"?"})
+                }
                 stationSet.visible = false
                 stationSet.selecteColor = ""
                 stationSet.selecteZone = ""
