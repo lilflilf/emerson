@@ -90,7 +90,7 @@ void DataBaseTest::TestInsertOneRecordIntoPresetTable()
     tmpSplice.WeldSettings.AdvanceSetting.MeasuredWidth = 100;
     tmpSplice.WeldSettings.AdvanceSetting.MeasuredHeight = 100;
     tmpSplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkOption = false;
-    tmpSplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID = 0;
+    tmpSplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID = "0";
     tmpSplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime = 10;
     tmpSplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTemperature = 260;
     tmpSplice.TestSetting.Qutanty = 10;
@@ -540,7 +540,7 @@ void DataBaseTest::TestUpdateOneRecordIntoPresetTable()
     tmpSplice.WeldSettings.AdvanceSetting.MeasuredWidth = 100;
     tmpSplice.WeldSettings.AdvanceSetting.MeasuredHeight = 100;
     tmpSplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkOption = false;
-    tmpSplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID = 0;
+    tmpSplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID = "0";
     tmpSplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime = 10;
     tmpSplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTemperature = 260;
     tmpSplice.TestSetting.Qutanty = 55;

@@ -194,12 +194,15 @@ SpliceModel::SpliceModel(QObject *parent) :
 {
     m_spliceAdaptor = DBPresetTable::Instance();
     m_operatorAdaptor = DBOperatorTable::Instance();
+    m_wireAdaptor = DBWireTable::Instance();
     splices = new QMap<int, QString>();
     variantToString = VariantToString::Instance();
 }
 
 QVariant SpliceModel::data(const QModelIndex &index, int role) const
 {
+    qDebug() << "gggggggggggggggggggggggg";// << mySplice.CrossSection;
+
     QVariant value;
     if(role < Qt::UserRole)
     {
@@ -227,6 +230,7 @@ QVariant SpliceModel::data(const QModelIndex &index, int role) const
         OperatorElement myOperator;
         m_spliceAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&mySplice);
         m_operatorAdaptor->QueryOneRecordFromTable(mySplice.OperatorID,&myOperator);
+
         QString temp;
         if (columnIdx == 0)
             value = QVariant::fromValue(mySplice.SpliceID);
@@ -555,12 +559,18 @@ QString SpliceModel::getStructValue(QString valueKey, QString valueType)
         else
             return "right";
     }
+    else if (valueKey == "PicPath") {
+        if (presetElement.PresetPicNamePath.isEmpty())
+            return " ";
+        return presetElement.PresetPicNamePath;
+    }
     else
         return "";
 }
 
 void SpliceModel::setStructValue(QString valueKey, QVariant value)
 {
+    qDebug() << "setStructValue" << valueKey << value;
     if (valueKey == "Energy") {
         presetElement.WeldSettings.BasicSetting.Energy = stringToVariant->EnergyToInt(value.toString());
     }
@@ -651,11 +661,57 @@ void SpliceModel::setStructValue(QString valueKey, QVariant value)
     else if (valueKey == "Insulation") {
         presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkOption = value.toBool();
     }
+    else if (valueKey == "ShrinkId") {
+        presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID = value.toString();
+    }
+    else if (valueKey == "ShrinkTemp") {
+        presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkOption = stringToVariant->ShrinkTemperatureToInt(value.toString());
+    }
+    else if (valueKey == "ShrinkTime") {
+        presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkOption = stringToVariant->ShrinkTimeToInt(value.toString());
+    }
+    else if (valueKey == "SpliceName") {
+        presetElement.SpliceName = value.toString();
+    }
+    else if (valueKey == "OperatorId") {
+        presetElement.OperatorID = value.toInt();
+    }
+    else if (valueKey == "Total Cross") {
+        qDebug() << "Total Cross " << value.toString();
+        presetElement.CrossSection = stringToVariant->CrossSectionToInt(value.toString());
+        qDebug() << "Total Cross " << presetElement.CrossSection;
+
+    }
+    else if (valueKey == "WireMap") {
+        QStringList list = value.toStringList();
+        qDebug() << "WireMap" << list;
+        presetElement.WireIndex.clear();
+        int wireId;
+        QString temp;
+        bool ok;
+        WireElement tempWire;
+        for (int i = 0; i < list.count(); i++) {
+            temp = list[i];
+            wireId = temp.toInt(&ok,10);
+            if (m_wireAdaptor->QueryOneRecordFromTable(wireId,&tempWire))
+                presetElement.WireIndex.insert(wireId,tempWire.WireName);
+        }
+        qDebug() << "WireMap end " << presetElement.NoOfWires;
+
+        presetElement.NoOfWires = list.count();
+    }
+    else if (valueKey == "PicPath") {
+        presetElement.PresetPicNamePath = value.toString();
+    }
 }
 
 void SpliceModel::saveSplice()
 {
-    m_spliceAdaptor->InsertRecordIntoTable(&presetElement);
+    int spliceId;
+//    presetElement.OperatorID =
+    spliceId = m_spliceAdaptor->InsertRecordIntoTable(&presetElement);
+    setModelList();
+    qDebug() << "SpliceModel InsertRecordIntoTable " << spliceId;
 }
 
 void SpliceModel::createNew()

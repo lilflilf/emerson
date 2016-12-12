@@ -88,7 +88,7 @@ struct SHRINKTUBE
 {
     //Added 30 June 2000 to accommodate the Raychem tube shrinker data
     bool ShrinkOption;
-    int ShrinkTubeID;     //Raychem tube index (0 for None,1,2,3,3A,Other)
+    QString ShrinkTubeID;     //Raychem tube index (0 for None,1,2,3,3A,Other)
     int ShrinkTime;           //Secs * 10
     int ShrinkTemperature;    //In Centigrade degrees
 
