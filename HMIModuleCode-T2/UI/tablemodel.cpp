@@ -189,36 +189,6 @@ void WorkOrderModel::removeValue(int id, QString name)
     setModelList();
 }
 
-//QString WorkOrderModel::getContacterName(QString contacterId)
-//{
-//    Contacter contacter;
-//    contacter = m_contacterAdaptor->getContacter(contacterId);
-//    return contacter.surname + contacter.name;
-//}
-
-/*info:id*/
-
-
-//void WorkOrderModel::removeContacter(QString info, int rows)
-//{
-//    int temp = 0;
-//    bool bIsFind = false;
-//    for (int i = 0; i < rows; i++) {
-//        if (m_idList.at(i) == info) {
-//            bIsFind = true;
-//            temp = i;
-//            break;
-//        }
-//    }
-//    if (bIsFind) {
-//        beginRemoveRows(QModelIndex(),temp,temp);
-//        m_idList.removeAt(temp);
-//        endRemoveRows();
-//    }
-//}
-
-
-
 SpliceModel::SpliceModel(QObject *parent) :
     QAbstractTableModel(parent)
 {
@@ -338,7 +308,7 @@ void SpliceModel::setModelList()
     beginResetModel();
     splices->clear();
     if (m_spliceAdaptor->QueryEntireTable(splices))
-        qDebug( )<< "setModelList WorkOrderModel" << splices->count();
+        qDebug( )<< "setModelList SpliceModel" << splices->count();
     endResetModel();
 }
 
@@ -573,17 +543,119 @@ QString SpliceModel::getStructValue(QString valueKey, QString valueType)
         else
             return "right";
     }
-    else if (valueKey == "Cutf Off") {
+    else if (valueKey == "Cut Off") {
         if (presetElement.WeldSettings.AdvanceSetting.CutOff)
             return "left";
         else
             return "right";
     }
     else if (valueKey == "Insulation") {
+        if (presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkOption)
+            return "left";
+        else
             return "right";
     }
     else
         return "";
+}
+
+void SpliceModel::setStructValue(QString valueKey, QVariant value)
+{
+    if (valueKey == "Energy") {
+        presetElement.WeldSettings.BasicSetting.Energy = stringToVariant->EnergyToInt(value.toString());
+    }
+    else if (valueKey == "Trigger Pressure") {
+        presetElement.WeldSettings.BasicSetting.TrigPres = stringToVariant->TriggerPressureToInt(value.toString());
+    }
+    else if (valueKey == "Amplitude") {
+        presetElement.WeldSettings.BasicSetting.Amplitude = stringToVariant->AmplitudeToInt(value.toString());
+    }
+    else if (valueKey == "Weld Pressure") {
+        presetElement.WeldSettings.BasicSetting.Pressure = stringToVariant->WeldPressureToInt(value.toString());
+    }
+    else if (valueKey == "Width") {
+        presetElement.WeldSettings.BasicSetting.Width = stringToVariant->WidthToInt(value.toString());
+    }
+    else if (valueKey == "Time-") {
+        presetElement.WeldSettings.QualitySetting.Time.Minus = stringToVariant->TimeMinusToInt(value.toString());
+    }
+    else if (valueKey == "Time+") {
+        presetElement.WeldSettings.QualitySetting.Time.Plus = stringToVariant->TimePlusToInt(value.toString());
+    }
+    else if (valueKey == "Power-") {
+        presetElement.WeldSettings.QualitySetting.Power.Minus = stringToVariant->PowerMinusToInt(value.toString());
+    }
+    else if (valueKey == "Power+") {
+        presetElement.WeldSettings.QualitySetting.Power.Plus = stringToVariant->PowerPlusToInt(value.toString());
+    }
+    else if (valueKey == "Pre-Height-") {
+        presetElement.WeldSettings.QualitySetting.Preheight.Minus = stringToVariant->PreHeightMinusToInt(value.toString());
+    }
+    else if (valueKey == "Pre-Height+") {
+        presetElement.WeldSettings.QualitySetting.Preheight.Plus = stringToVariant->PreHeightPlusToInt(value.toString());
+    }
+    else if (valueKey == "Post-Height-") {
+        presetElement.WeldSettings.QualitySetting.Height.Minus = stringToVariant->HeightMinusToInt(value.toString());
+    }
+    else if (valueKey == "Post-Height+") {
+        presetElement.WeldSettings.QualitySetting.Height.Plus = stringToVariant->HeightPlusToInt(value.toString());
+    }
+    else if (valueKey == "Step-Energy") {
+        presetElement.WeldSettings.AdvanceSetting.StepWeld.EnergyToStep = stringToVariant->StepEnergyToInt(value.toString());
+    }
+    else if (valueKey == "Step-Time") {
+        presetElement.WeldSettings.AdvanceSetting.StepWeld.TimeToStep = stringToVariant->StepTimeToInt(value.toString());
+    }
+    else if (valueKey == "Step-Power") {
+        presetElement.WeldSettings.AdvanceSetting.StepWeld.PowerToStep = stringToVariant->StepPowerToInt(value.toString());
+    }
+    else if (valueKey == "Amplitude B") {
+        presetElement.WeldSettings.AdvanceSetting.StepWeld.Amplitude2 = stringToVariant->Amplitude2ToInt(value.toString());
+    }
+    else if (valueKey == "WeldModel") {
+        presetElement.WeldSettings.AdvanceSetting.WeldMode = (WELDMODE)value.toInt();
+    }
+    else if (valueKey == "StepModel") {
+        presetElement.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode = (STEPWELDMODE)value.toInt();
+    }
+    else if (valueKey == "Pre Burst") {
+        presetElement.WeldSettings.AdvanceSetting.PreBurst = stringToVariant->PreBurstTimeToInt(value.toString());
+    }
+    else if (valueKey == "Hold Time") {
+        presetElement.WeldSettings.AdvanceSetting.HoldTime = stringToVariant->HoldTimeToInt(value.toString());
+    }
+    else if (valueKey == "After Burst") {
+        presetElement.WeldSettings.AdvanceSetting.ABDur = stringToVariant->AfterBurstDuringToInt(value.toString());
+    }
+    else if (valueKey == "Squeeze Time") {
+        presetElement.WeldSettings.AdvanceSetting.SqzTime = stringToVariant->SqueezeTimeToInt(value.toString());
+    }
+    else if (valueKey == "ActualWidth") {
+        presetElement.WeldSettings.AdvanceSetting.MeasuredWidth = stringToVariant->MeasureWidthToInt(value.toString());
+    }
+    else if (valueKey == "ActualHeight") {
+        presetElement.WeldSettings.AdvanceSetting.MeasuredHeight = stringToVariant->MeasureHeightToInt(value.toString());
+    }
+    else if (valueKey == "Unload Time") {
+        presetElement.WeldSettings.AdvanceSetting.AntiSideSpliceTime = stringToVariant->AntiSideSpliceTimeToInt(value.toString());
+    }
+    else if (valueKey == "Load Time") {
+        presetElement.WeldSettings.AdvanceSetting.CutOffSpliceTime = stringToVariant->CutOffSpliceTimeToInt(value.toString());
+    }
+    else if (valueKey == "Anti-Side") {
+        presetElement.WeldSettings.AdvanceSetting.AntiSide = value.toBool();
+    }
+    else if (valueKey == "Cut Off") {
+        presetElement.WeldSettings.AdvanceSetting.CutOff = value.toBool();
+    }
+    else if (valueKey == "Insulation") {
+        presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkOption = value.toBool();
+    }
+}
+
+void SpliceModel::saveSplice()
+{
+    m_spliceAdaptor->InsertRecordIntoTable(&presetElement);
 }
 
 void SpliceModel::createNew()
@@ -1734,7 +1806,7 @@ int WireModel::insertValueToTable(QString type,QString wireName,int wireId,int o
 //    enum HorizontalLocation Side;
 //    enum VerticalLocation VerticalSide;
 //    enum VerticalPosition Position;
-
+    int insertWireId;
     WireElement insertWire;
     insertWire.WireName = wireName;
     insertWire.WireID = wireId;
@@ -1749,12 +1821,20 @@ int WireModel::insertValueToTable(QString type,QString wireName,int wireId,int o
     insertWire.Position = (VerticalPosition)position;
 
     if (type == "insert"){
-        int wireId = m_wireAdaptor->InsertRecordIntoTable(&insertWire);
+        insertWireId = m_wireAdaptor->InsertRecordIntoTable(&insertWire);
         setModelList();
-        return wireId;
+        return insertWireId;
     }
     else if (type == "update") {
-        m_wireAdaptor->UpdateRecordIntoTable(&insertWire);
+        WireElement wireTemp;
+        m_wireAdaptor->QueryOneRecordFromTable(wireId,&wireTemp);
+        if (wireTemp == insertWire)
+            return wireId;
+        else
+        {
+            insertWireId = m_wireAdaptor->InsertRecordIntoTable(&insertWire);
+            return insertWireId;
+        }
     }
     return 1;
 }
@@ -1789,6 +1869,7 @@ QVariant WireModel::getStructValue(QString key)
     WireModelHash.insert("WireDirection",(int)wireElement.Side);
     WireModelHash.insert("WirePosition",wireElement.Position);
     WireModelHash.insert("WireBasic",wireElement.VerticalSide);
+    WireModelHash.insert("WireId",wireElement.WireID);
 
 //    WireModelHash.insert("OperatorName",myWire.OperatorID);
 //    WireModelHash.insert("Color",myWire.Color);

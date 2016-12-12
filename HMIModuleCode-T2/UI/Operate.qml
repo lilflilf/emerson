@@ -529,8 +529,11 @@ Item {
     AddExistingSpliceWire {
         id: addExit
         anchors.centerIn: parent
-        width: Screen.width*0.7
-        height: Screen.height*0.6
+//        width: Screen.width*0.7
+//        height: Screen.height*0.6
+        width: parent.width*0.9
+        height: parent.width*0.4
+
         visible: false
         listModel: partModel //testModel
         titleName: qsTr("ADD WORK ORDEAR")

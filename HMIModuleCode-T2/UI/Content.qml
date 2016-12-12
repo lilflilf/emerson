@@ -140,7 +140,7 @@ Item {
                 anchors.bottom: upload.top
                 anchors.left: parent.left
                 anchors.leftMargin: 10
-                text: "+ ADD EXITING SPLICE"
+                text: "+ ADD EXISTING SPLICE"
                 textColor: "white"
                 width: parent.width - 20
                 pointSize: 16
@@ -973,10 +973,10 @@ Item {
         titleName: content.bIsEdit ? qsTr("Add Part") : qsTr("Add Existing Splice")
         componentName: content.bIsEdit ? qsTr("Part Name") : qsTr("SPLICE NAME")
         componentData: qsTr("DATE CREATED")
-        componentMiddle: content.bIsEdit ? qsTr("# OF SPLICE") : qsTr("# OF WIRES")
+        componentMiddle: content.bIsEdit ? qsTr("# OF SPLICE") : qsTr("OperatorName")
         componenttype: qsTr("CROSS SECTION")
-        componentCount: content.bIsEdit ? "" : qsTr("COUNT")
         bIsOnlyOne: (addExit.listModel == partModel) ? true : false
+        componentCount: content.bIsEdit ? "" : qsTr("# OF WIRES")
         onSignalAddExistCancel: {
             backGround.visible = false
             backGround.opacity = 0

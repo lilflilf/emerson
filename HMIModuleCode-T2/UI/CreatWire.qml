@@ -8,6 +8,10 @@ Item {
     id: creatWire
     width: Screen.width
     height: Screen.height
+
+    property var weldModel: -1
+    property var stepModel: -1
+
     signal signalSaveSplice()
     property bool crossSection: true
     property int selectIndex: 0
@@ -752,7 +756,7 @@ Item {
                         property bool isDialog: false
                         onClicked: {
                             if (spliceDetailsItem.changeTop()) {
-                                root.showDialog(true,true,"OK","CANCEL","Would you want to move the activated wire to the selected position?")
+                                root.showDialog(true,true,"OK","CANCEL","","","Would you want to move the activated wire to the selected position?")
                                 isDialog = true
                                 return
                             }
@@ -843,7 +847,7 @@ Item {
                         property bool isDialog: false
                         onClicked: {
                             if (spliceDetailsItem.changeBottom()) {
-                                root.showDialog(true,true,"OK","CANCEL","Would you want to move the activated wire to the selected position?")
+                                root.showDialog(true,true,"OK","CANCEL","","","Would you want to move the activated wire to the selected position?")
                                 isDialog = true
                                 return
                             }
@@ -887,7 +891,6 @@ Item {
                 color: "#375566"
                 height: 1
             }
-
             CButton {
                 id: save
                 text: qsTr("SAVE TO WIRE\nLIBRARY")
@@ -908,6 +911,7 @@ Item {
                         positionside = 1;
                     else if (bottomRadio.checked)
                         positionside = 2;
+
                     if (spliceDetailsItem.selectWireId == -1)
                     {
                         //insert
@@ -1289,6 +1293,29 @@ Item {
             width: (spliceDetailsItem.width-72)/4
             text: qsTr("SAVE SPLICE")
             onClicked: {
+                var list = spliceDetailsItem.saveAllWire()
+
+                spliceModel.setStructValue("Energy",settingsModel.get(0).bottomText);
+                spliceModel.setStructValue("Trigger Pressure",settingsModel.get(1).bottomText);
+                spliceModel.setStructValue("Amplitude",settingsModel.get(2).bottomText);
+                spliceModel.setStructValue("Weld Pressure",settingsModel.get(3).bottomText);
+                spliceModel.setStructValue("Width",settingsModel.get(4).bottomText);
+
+                spliceModel.setStructValue("Time-",settingsModel2.get(0).bottomText);
+                spliceModel.setStructValue("Time+",settingsModel2.get(1).bottomText);
+                spliceModel.setStructValue("Power-",settingsModel2.get(2).bottomText);
+                spliceModel.setStructValue("Power+",settingsModel2.get(3).bottomText);
+                spliceModel.setStructValue("Pre-Height-",settingsModel2.get(4).bottomText);
+                spliceModel.setStructValue("Pre-Height+",settingsModel2.get(5).bottomText);
+                spliceModel.setStructValue("Post-Height-",settingsModel2.get(6).bottomText);
+                spliceModel.setStructValue("Post-Height+",settingsModel2.get(7).bottomText);
+
+                spliceModel.setStructValue("Step-Energy",stepSetModel.get(0).bottomText);
+                spliceModel.setStructValue("Step-Time",stepSetModel.get(1).bottomText);
+                spliceModel.setStructValue("Step-Power",stepSetModel.get(2).bottomText);
+                spliceModel.setStructValue("Amplitude B",stepSetModel.get(4).bottomText);
+
+                spliceModel.saveSplice()
                 signalSaveSplice()
             }
         }
@@ -1514,6 +1541,7 @@ Item {
                                     keyNum.maxvalue = maxText
                                 }
                             }
+
                         }
                     }
                 }
@@ -1684,7 +1712,7 @@ Item {
                 id: thirdSwitchModel
                 Component.onCompleted: {
                     thirdSwitchModel.append({"thirdSwitchText":"Anti-Side:","switchState":spliceModel.getStructValue("Anti-Side","current")})
-                    thirdSwitchModel.append({"thirdSwitchText":"Cutf Off:","switchState":spliceModel.getStructValue("Cutf Off","current")})
+                    thirdSwitchModel.append({"thirdSwitchText":"Cut Off:","switchState":spliceModel.getStructValue("Cut Off","current")})
                     thirdSwitchModel.append({"thirdSwitchText":"Insulation:","switchState":spliceModel.getStructValue("Insulation","current")})
                 }
             }
@@ -1726,6 +1754,9 @@ Item {
                             textRight: qsTr("OFF")
                             state: switchState
                             clip: true
+                            onStateChanged: {
+                                thirdSwitchModel.set(index,{"switchState":onoroff.state})
+                            }
                         }
                     }
                 }
@@ -1822,9 +1853,10 @@ Item {
             CButton {
                 id: instulationButton
                 anchors.verticalCenter: instulationText.verticalCenter
+                anchors.verticalCenterOffset: 8
                 anchors.left: instulationText.right
                 width: parent.width/4-20
-                height: parent.height*0.12
+                height: parent.height*0.12 + 10
                 text: qsTr("Insulation Setting")
                 onClicked: {
                     backGround.visible = true
@@ -1863,7 +1895,26 @@ Item {
                 text: qsTr("Save")
                 textColor: "white"
                 onClicked: {
+                    spliceModel.setStructValue("WeldModel",weldListModel.model1)
+                    spliceModel.setStructValue("StepModel",weldListModel.model2)
+                    spliceModel.setStructValue("Pre Burst",weldSettingModel.get(0).textValue)
+                    spliceModel.setStructValue("Hold Time",weldSettingModel.get(1).textValue)
+                    spliceModel.setStructValue("After Burst",weldSettingModel.get(2).textValue)
+                    spliceModel.setStructValue("Squeeze Time",weldSettingModel.get(3).textValue)
+
+                    spliceModel.setStructValue("ActualWidth",widthModel.get(1).textValue)
+                    spliceModel.setStructValue("ActualHeight",heightModel.get(1).textValue)
+
+                    spliceModel.setStructValue("Unload Time",loadValue.inputText)
+                    spliceModel.setStructValue("Load Time",loadValue2.inputText)
+
+                    spliceModel.setStructValue("Anti-Side",thirdSwitchModel.get(0).switchState == "left" ? true : false)
+                    spliceModel.setStructValue("Cut Off",thirdSwitchModel.get(1).switchState == "left" ? true : false)
+                    spliceModel.setStructValue("Insulation",thirdSwitchModel.get(2).switchState == "left" ? true : false)
+
+
                     settingRightArea.visible = false
+
                 }
             }
         }

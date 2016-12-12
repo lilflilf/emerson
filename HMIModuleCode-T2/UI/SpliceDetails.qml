@@ -19,7 +19,7 @@ Item {
     property var selectIndex: 0
     property var selectLocation: ""
     property var wireCount: 0
-    property var wireName: ""
+    property var wireName: " "
     property var selectWireType: -1
     property var selectWireGauge: -1
     property var selectWireAWG: -1
@@ -76,12 +76,16 @@ Item {
     }
     function addWireFromLibrary()
     {
-        if (wireCount < 19) {
+        if (wireCount < 22) {
             bIsLibrary = true
-            if (wireModel.getStructValue("WireDirection") == 0) // left
+            if (wireModel.getStructValue("WireDirection") == 0)
             {
-                if (wireModel.getStructValue("WirePosition") == 0) // top
+                if (wireModel.getStructValue("WirePosition") == 0)
                 {
+                    if (topLeft.sourceComponent != null || topRight.sourceComponent != null)
+                    {
+                        return;
+                    }
                     topLeft.sourceComponent = left
                     topLeft.item.lineLength = 200
                     topLeft.item.myColor = wireModel.getStructValue("WireColor")
@@ -95,14 +99,14 @@ Item {
                     topLeft.item.myStripeType = wireModel.getStructValue3("StripeType","")
                     topLeft.item.myWireId = wireModel.getStructValue("WireId")
                 }
-                else if (wireModel.getStructValue("WirePosition") == 1) //mid
+                else if (wireModel.getStructValue("WirePosition") == 1)
                 {
                     listModelLeft.append({"myLineLength":200,"mycolor":wireModel.getStructValue("WireColor"),"isCheck":false,"linetext":hmiAdaptor.getStringValue(wireModel.getStructValue2("Gauge","current")),
                                               "wireName":wireModel.getStructValue("WireName"),"wireType":wireModel.getStructValue("WireType"),"gauge":wireModel.getStructValue("Gauge"),"gaugeawg":wireModel.getStructValue("AWG"),
                                               "stripeColor":wireModel.getStructValue2("StripeColor",""),"stripeType":wireModel.getStructValue3("StripeType",""),"wireId":wireModel.getStructValue("WireId")})
 
                 }
-                else if (wireModel.getStructValue("WirePosition") == 2) // bottom
+                else if (wireModel.getStructValue("WirePosition") == 2)
                 {
                     bottomLeft.sourceComponent = left
                     bottomLeft.item.lineLength = 200
@@ -118,10 +122,14 @@ Item {
                     bottomLeft.item.myWireId = wireModel.getStructValue("WireId")
                 }
             }
-            else if (wireModel.getStructValue("WireDirection") == 1) // right
+            else if (wireModel.getStructValue("WireDirection") == 1)
             {
-                if (wireModel.getStructValue("WirePosition") == 0) // top
+                if (wireModel.getStructValue("WirePosition") == 0)
                 {
+                    if (topLeft.sourceComponent != null || topRight.sourceComponent != null)
+                    {
+                        return;
+                    }
                     topRight.sourceComponent = right
                     topRight.item.lineLength = 200
                     topRight.item.myColor = wireModel.getStructValue("WireColor")
@@ -135,14 +143,14 @@ Item {
                     topRight.item.myStripeType = wireModel.getStructValue3("StripeType","")
                     topRight.item.myWireId = wireModel.getStructValue("WireId")
                 }
-                else if (wireModel.getStructValue("WirePosition") == 1) //mid
+                else if (wireModel.getStructValue("WirePosition") == 1)
                 {
                     listModelRight.append({"myLineLength":200,"mycolor":wireModel.getStructValue("WireColor"),"isCheck":false,"linetext":hmiAdaptor.getStringValue(wireModel.getStructValue2("Gauge","current")),
                                               "wireName":wireModel.getStructValue("WireName"),"wireType":wireModel.getStructValue("WireType"),"gauge":wireModel.getStructValue("Gauge"),"gaugeawg":wireModel.getStructValue("AWG"),
                                               "stripeColor":wireModel.getStructValue2("StripeColor",""),"stripeType":wireModel.getStructValue3("StripeType",""),"wireId":wireModel.getStructValue("WireId")})
 
                 }
-                else if (wireModel.getStructValue("WirePosition") == 2) // bottom
+                else if (wireModel.getStructValue("WirePosition") == 2)
                 {
                     bottomRight.sourceComponent = right
                     bottomRight.item.lineLength = 200
@@ -167,9 +175,9 @@ Item {
 
     function addWire()
     {
-        if (wireCount < 19) {
+        if (wireCount < 19 && listModelRight.count < 10) {
             listModelRight.append({"myLineLength":200,"mycolor":wireModel.getStructValue("WireColor"),"isCheck":false,"linetext":hmiAdaptor.getStringValue(wireModel.getStructValue2("Gauge","current")),
-                                   "wireName":"","wireType":wireModel.getStructValue("WireType"),"gauge":wireModel.getStructValue("Gauge"),"gaugeawg":wireModel.getStructValue("AWG"),
+                                   "wireName":" ","wireType":wireModel.getStructValue("WireType"),"gauge":wireModel.getStructValue("Gauge"),"gaugeawg":wireModel.getStructValue("AWG"),
                                    "stripeColor":wireModel.getStructValue2("StripeColor",""),"stripeType":wireModel.getStructValue3("StripeType",""),"wireId":-1})
             wireCount++
             gaugeChanged("add",wireModel.getStructValue("Gauge"))
@@ -232,6 +240,91 @@ Item {
 
         }
     }
+
+    function saveAllWire()
+    {
+//        topLeft.sourceComponent = left
+        var type
+        var wireIdList = new Array;
+        var wireId;
+        if (topLeft.sourceComponent != null)
+        {
+            console.log("1")
+            if (topLeft.item.myWireId == -1)
+                type = "insert"
+            else
+                type ="update"
+            wireId = wireModel.insertValueToTable(type,topLeft.item.myWireName,topLeft.item.myWireId,hmiAdaptor.getCurrentOperatorId(),topLeft.item.myColor,
+                                         topLeft.item.myStripeColor,topLeft.item.myStripeType,topLeft.item.myText,topLeft.item.myWireType,0,1,0)
+            wireIdList.push(wireId)
+        }
+        if (listModelLeft.count > 0)
+        {
+            console.log("2")
+
+            for (var j = 0;j < listModelLeft.count;j++) {
+                if (listModelLeft.get(j).wireId == -1)
+                    type = "insert"
+                else
+                    type ="update"
+                wireId = wireModel.insertValueToTable(type,listModelLeft.get(j).wireName,listModelLeft.get(j).wireId,hmiAdaptor.getCurrentOperatorId(),listModelLeft.get(j).mycolor,
+                                         listModelLeft.get(j).stripeColor,listModelLeft.get(j).stripeType,listModelLeft.get(j).myText,listModelLeft.get(j).wireType,1,0,1)
+                wireIdList.push(wireId)
+            }
+        }
+        if (bottomLeft.sourceComponent != null)
+        {
+            console.log("3")
+
+            if (bottomLeft.item.myWireId == -1)
+                type = "insert"
+            else
+                type ="update"
+            wireId = wireModel.insertValueToTable(type,bottomLeft.item.myWireName,bottomLeft.item.myWireId,hmiAdaptor.getCurrentOperatorId(),bottomLeft.item.myColor,
+                                         bottomLeft.item.myStripeColor,bottomLeft.item.myStripeType,bottomLeft.item.myText,bottomLeft.item.myWireType,0,1,2)
+            wireIdList.push(wireId)
+        }
+
+        if (topRight.sourceComponent != null)
+        {
+            console.log("4")
+            if (topRight.item.myWireId == -1)
+                type = "insert"
+            else
+                type ="update"
+            wireId = wireModel.insertValueToTable(type,topRight.item.myWireName,topRight.item.myWireId,hmiAdaptor.getCurrentOperatorId(),topRight.item.myColor,
+                                         topRight.item.myStripeColor,topRight.item.myStripeType,topRight.item.myText,topRight.item.myWireType,1,1,0)
+            wireIdList.push(wireId)
+
+        }
+        if (listModelRight.count > 0)
+        {
+            console.log("5555555555555")
+            for (var i = 0;i < listModelRight.count;i++) {
+                if (listModelRight.get(i).wireId == -1)
+                    type = "insert"
+                else
+                    type ="update"
+                wireId = wireModel.insertValueToTable(type,listModelRight.get(i).wireName,listModelRight.get(i).wireId,hmiAdaptor.getCurrentOperatorId(),listModelRight.get(i).mycolor,listModelRight.get(i).stripeColor,listModelRight.get(i).stripeType,listModelRight.get(i).linetext,listModelRight.get(i).wireType,1,0,1)
+                wireIdList.push(wireId)
+            }
+        }
+        if (bottomRight.sourceComponent != null)
+        {
+            console.log("6")
+
+
+            if (bottomRight.item.myWireId == -1)
+                type = "insert"
+            else
+                type ="update"
+            wireId = wireModel.insertValueToTable(type,bottomRight.item.myWireName,bottomRight.item.myWireId,hmiAdaptor.getCurrentOperatorId(),bottomRight.item.myColor,
+                                         bottomRight.item.myStripeColor,bottomRight.item.myStripeType,bottomRight.item.myText,bottomRight.item.myWireType,1,1,2)
+            wireIdList.push(wireId)
+        }
+        return wireIdList;
+    }
+
     onSelectWireStripeTypeChanged: {
         if (selectPosition == "topRight") {
             topRight.item.myStripeType = selectWireStripeType
@@ -770,10 +863,7 @@ Item {
             height: 40
             visible: false
             onClicked: {
-                if (listModelRight.count < 19)
-                    listModelRight.append({"myLineLength":200,"mycolor":"#ff6699","isCheck":false,"linetext":"0","wireName":""})
-                //fileDialog.open()
-                //loadder.source = "qrc:/UI/MyFileDialog.qml"
+                addWire()
             }
         }
         FileDialog {
@@ -801,7 +891,7 @@ Item {
             property alias myText: mytextLeft.text
             property var position: "leftList"
             property alias isCheck: radioButtonLeft.checked
-            property var myWireName: myWireNameLeft.text
+            property alias myWireName: myWireNameLeft.text
             property var myGauge: -1
             property var myAwg: -1
             property var myWireType: 1
@@ -810,11 +900,11 @@ Item {
             property var myWireId: -1
             width: middle.width / 2 + 40
 //            height: listModelLeft.count <= 5 ? detail.height * 0.1 + 10 : 30
-            height: listModelLeft.count <= 5 ? detail.height * 0.1 + 10 : (listModelLeft.count > 5 && listModelLeft.count <= 10) ? 30 : index < (listModelLeft.count - 10) * 2 ? 15 : 30
+            height: position == "leftList" ? listModelLeft.count <= 5 ? detail.height * 0.1 + 10 : (listModelLeft.count > 5 && listModelLeft.count <= 10) ? 30 : index < (listModelLeft.count - 10) * 2 ? 15 : 30 : 30
 
             Rectangle {
                 id: leftLine
-                width: index % 2 && index < (listModelLeft.count - 10) * 2 ? myLineLength + 150 : myLineLength
+                width: leftItem.position == "leftList" ? index % 2 && index < (listModelLeft.count - 10) * 2 ? myLineLength + 150 : myLineLength : 200
                 height: 2
                 anchors.right: parent.right
                 anchors.verticalCenter: leftRec.verticalCenter
@@ -822,8 +912,8 @@ Item {
             Rectangle {
                 id: leftRec
                 width: 60
-                height: listModelLeft.count <= 5 ? detail.height * 0.1 : 20 //20
-                color: mycolor
+                height: leftItem.position == "leftList" ? listModelLeft.count <= 5 ? detail.height * 0.1 : 20 : detail.height * 0.1
+                color: leftItem.position == "leftList" ? mycolor : ""
                 anchors.right: leftLine.left
                 anchors.verticalCenter: parent.verticalCenter
                 MouseArea {
@@ -844,6 +934,7 @@ Item {
                             selectWireStripeColor = leftItem.myStripeColor
                             selectWireStripeType = leftItem.myStripeType
                             selectWireId = leftItem.myWireId
+                            wireName = leftItem.myWireName
                             wireSelected(leftRec.color,"left",leftItem.position,wireModel.getStructValue4(leftItem.myGauge,leftItem.myAwg),myWireNameLeft.text,leftItem.myWireType,leftItem.myStripeColor.toString(),leftItem.myStripeType)
                             changing(false)
 
@@ -861,6 +952,7 @@ Item {
                             selectWireId = listModelLeft.get(index).wireId
                             selectColor = leftRec.color
                             selectText = mytextLeft.text
+                            wireName = listModelLeft.get(index).wireName
                             listModelLeft.set(index,{"isCheck":radioButtonLeft.checked})
                             selectDirection = "left"
                             wireSelected(leftRec.color,"left",leftItem.position,wireModel.getStructValue4(listModelLeft.get(index).gauge,listModelLeft.get(index).gaugeawg),myWireNameLeft.text,listModelLeft.get(index).wireType,listModelLeft.get(index).stripeColor,listModelLeft.get(index).stripeType)
@@ -876,7 +968,7 @@ Item {
                 Text {
                     id: mytextLeft
                     anchors.centerIn: parent
-                    text: qsTr(linetext)
+                    text: leftItem.position == "leftList" ? qsTr(linetext) : ""
                     font.family: "arial"
                     font.pointSize: 16
                     color: "white"
@@ -898,7 +990,7 @@ Item {
 
             RadioButton {
                 id: radioButtonLeft
-                checked: listModelLeft.get(index).isCheck
+                checked: leftItem.position == "leftList" ? listModelLeft.get(index).isCheck : false
                 exclusiveGroup: wirePositionGroup
                 visible: false
                 onCheckedChanged: {
@@ -926,20 +1018,20 @@ Item {
             property alias myText: mytext.text
             property var position: "rightList"
             property alias isCheck: radioButton.checked
-            property var myWireName: myWireNameRight.text
+            property alias myWireName: myWireNameRight.text
             property var myGauge: -1
             property var myAwg: -1
             property var myWireType: 1 // wireTypeText.text
-            property var myStripeColor: stripeColor.color
+            property var myStripeColor:  "" // stripeColor.color
             property var myStripeType: -1
             property var myWireId: -1
             id: rightItem
 
             width: 300
-            height: listModelRight.count <= 5 ? detail.height * 0.1 + 10 : (listModelRight.count > 5 && listModelRight.count <= 10) ? 30 : index < (listModelRight.count - 10) * 2 ? 15 : 30
+            height: rightItem.position == "rightList" ? listModelRight.count <= 5 ? detail.height * 0.1 + 10 : 30 : 30//(listModelRight.count > 5 && listModelRight.count <= 10) ? 30 : index < (listModelRight.count - 10) * 2 ? 15 : 30 : 30
             Rectangle {
                 id: rightLine
-                width: index % 2 && index < (listModelRight.count - 10) * 2 ? myLineLength + 150 : myLineLength
+                width: 200 //rightItem.position == "rightList" ? index % 2 && index < (listModelRight.count - 10) * 2 ? myLineLength + 150 : myLineLength : 200
                 height: 2
                 anchors.left: parent.left
                 anchors.verticalCenter: rightRec.verticalCenter
@@ -947,7 +1039,7 @@ Item {
             Rectangle {
                 id: rightRec
                 width: 60
-                height: listModelRight.count <= 5 ? detail.height * 0.1 : 20
+                height: rightItem.position == "rightList" ? listModelRight.count <= 5 ? detail.height * 0.1 : 20 :  detail.height * 0.1
                 color: mycolor
                 anchors.left: rightLine.right
                 anchors.verticalCenter: parent.verticalCenter
@@ -967,6 +1059,7 @@ Item {
                             selectWireStripeColor = rightItem.myStripeColor
                             selectWireStripeType = rightItem.myStripeType
                             selectWireId = rightItem.myWireId
+                            wireName = rightItem.myWireName
                             wireSelected(rightRec.color,"right",rightItem.position,wireModel.getStructValue4(rightItem.myGauge,rightItem.myAwg),myWireNameRight.text,rightItem.myWireType,rightItem.myStripeColor.toString(),rightItem.myStripeType)
                             selectDirection = "right"
                             safeChange(false)
@@ -986,6 +1079,7 @@ Item {
                             selectWireId = listModelRight.get(index).wireId
                             selectColor = rightRec.color.toString()
                             selectText = mytext.text
+                            wireName = listModelRight.get(index).wireName
                             listModelRight.set(index,{"isCheck":radioButton.checked})
                             selectDirection = "right"
                             safeChange(false)
@@ -1020,7 +1114,7 @@ Item {
             }
             RadioButton {
                 id: radioButton
-                checked: listModelRight.get(index).isCheck
+                checked: rightItem.position == "rightList" ? listModelRight.get(index).isCheck : false
                 exclusiveGroup: wirePositionGroup
                 visible: false
                 onCheckedChanged: {

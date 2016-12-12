@@ -34,6 +34,8 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("alpaint",alpaint);
     MODstart* _ModStart = MODstart::Instance();
     HmiAdaptor *hmiAdaptor = new HmiAdaptor;
+
+
     engine.rootContext()->setContextProperty("hmiAdaptor",hmiAdaptor);
     engine.rootContext()->setContextProperty("workOrderModel",hmiAdaptor->workOrderModel);
     engine.rootContext()->setContextProperty("spliceModel",hmiAdaptor->spliceModel);
@@ -43,6 +45,13 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("weldHistoryModel",hmiAdaptor->weldHistoryModel);
     engine.rootContext()->setContextProperty("alarmModel",hmiAdaptor->alarmModel);
     engine.rootContext()->setContextProperty("maintenanceLogModel",hmiAdaptor->maintenanceLogModel);
+
+    engine.load(QUrl(QStringLiteral("qrc:/UI/main.qml")));
+    ALPaintedItem *alpaint = new ALPaintedItem;
+    engine.rootContext()->setContextProperty("alpaint",alpaint);
+
+
+
 
 
 //    DataBaseTest *_TestPtr = new DataBaseTest();

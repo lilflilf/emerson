@@ -164,5 +164,8 @@
         <file>images/United-Arab-Emirates.png</file>
         <file>images/us.png</file>
         <file>images/alarm.png</file>
+        <file>images/alarm.ico</file>
+        <file>images/error.ico</file>
+        <file>images/information.ico</file>
     </qresource>
 </RCC>
