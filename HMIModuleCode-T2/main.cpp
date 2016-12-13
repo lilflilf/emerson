@@ -25,9 +25,6 @@ int main(int argc, char *argv[])
     QTranslator translator;
     bool success = translator.load("displayChinese_zh_CN.qm");
     app.installTranslator(&translator);
-
-    int a = (int)(52/51);
-
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/UI/main.qml")));
     ALPaintedItem *alpaint = new ALPaintedItem;
