@@ -1170,8 +1170,6 @@ void PartModel::savePartInfo(bool bIsEdit)
 }
 
 /*******************************OperaTorModel*****************************/
-
-
 OperatorModel::OperatorModel(QObject *parent) :
     QAbstractTableModel(parent)
 {
