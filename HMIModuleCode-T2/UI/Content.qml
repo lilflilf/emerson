@@ -227,13 +227,14 @@ Item {
                         partModel.setPartSpliceListClear()
                         for (var i = 0; i < listModel.count; i++) {
                             if (listModel.get(i).station == "?") {
-                                continue
+                                partModel.setPartSpliceList(listModel.get(i).SpliceName,listModel.get(i).SpliceId,-1,-1,i+1)
                             } else {
                                 partModel.setPartSpliceList(listModel.get(i).SpliceName,listModel.get(i).SpliceId,arrayColor.indexOf(listModel.get(i).stationColor),arrayzone.indexOf(listModel.get(i).station),i+1)
                             }
                         }
                         partModel.savePartInfo(content.bIsEdit)
                     }
+                    root.menuInit(2)
                 }
             }
         }

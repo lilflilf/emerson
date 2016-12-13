@@ -34,7 +34,10 @@ public:
 
     QStringList m_idList;
     DBWorkOrderTable *m_workOrderAdaptor;
+    DBPartTable *m_partAdaptor;
     QMap<int, QString> *workOrders;
+    PartElement partElement;
+    WorkOrderElement workOrderElement;
 
 protected:
     int rowCount(const QModelIndex &parent) const;
@@ -51,6 +54,8 @@ public slots:
     Q_INVOKABLE QVariant getWorkOrderValue(int index, QString key);
     Q_INVOKABLE void removeValue(int id, QString name);
     Q_INVOKABLE int getPartId(int index);
+    Q_INVOKABLE QList<int> getSpliceList();
+    Q_INVOKABLE void editNew(int index);
 
     //    QString getContacterName(QString contacterId);
     Q_INVOKABLE int count();

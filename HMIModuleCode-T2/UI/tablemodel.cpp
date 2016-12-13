@@ -153,6 +153,41 @@ int WorkOrderModel::getPartId(int index)
     return myWorkOrder.PartIndex.begin().key();
 }
 
+QList<int> WorkOrderModel::getSpliceList()
+{
+    QMap<int,struct PARTATTRIBUTE>::iterator it; //遍历map
+    QList<int> list;
+    if (workOrderElement.PartIndex.count() > 0)
+        m_partAdaptor->QueryOneRecordFromTable(workOrderElement.PartIndex.begin().key(),&partElement);
+    else
+        return list;
+
+    for ( it = partElement.SpliceList.begin(); it != partElement.SpliceList.end(); ++it ) {
+        list.append(it.value().SpliceID);
+    }
+    return list;
+}
+
+void WorkOrderModel::editNew(int index)
+{
+    qDebug() << "bbbbbbbbbbbbbbbbbbbbb" << index;
+
+    QMap<int,QString>::iterator it; //遍历map
+    int i = 0;
+    int orderId;
+    for ( it = workOrders->begin(); it != workOrders->end(); ++it ) {
+        if (i == index){
+            qDebug() << it.key();
+            break;
+        }
+        else {
+            i++;
+        }
+    }
+    qDebug() << "bbbbbbbbbbbbbbbbbbbbb111111111" << index;
+//    m_workOrderAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&workOrderElement);
+}
+
 QVariant WorkOrderModel::getWorkOrderValue(int index, QString key)
 {
     QMap<int,QString>::iterator it; //遍历map
