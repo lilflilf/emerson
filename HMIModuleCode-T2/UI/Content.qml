@@ -585,8 +585,8 @@ Item {
             maxSize: 60
             clip: true
             onTextChange: {
-                if (template.text != Template) {
-                    partModel.setPartName(edit6.inputText + name.text)
+                if (template.text != "Template") {
+                    partModel.setPartName(edit6.inputText + template.text)
                 } else {
                     partModel.setPartName(edit6.inputText)
                 }
