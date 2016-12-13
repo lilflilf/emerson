@@ -12,7 +12,9 @@ Item {
     property bool bIsEdit: false
     property bool bIsBoard: true
     property string draColor: ""
+    property bool bIsEditSplice: false
     signal titleTextChanged(var myTitleText)
+    property var selectSpliceId: -1
     width: Screen.width
     height: Screen.height
     Image {
@@ -22,6 +24,11 @@ Item {
     Connections {
         target: loader.item
         onSignalSaveSplice: {
+            if (spliceId != -1)
+                spliceList.listModel.append({"SpliceName":spliceModel.getStructValue("SpliceName","") ,"stationColor":"white","station":"?","SpliceId":spliceId})
+            else if (spliceId == -1)
+                content.selectSplice(content.selectSpliceId)
+
             loader.source = ""
             titleTextChanged("Create Assembly")
         }
@@ -30,10 +37,32 @@ Item {
         id: loader
         z: 10
         anchors.fill: parent
+        onLoaded: {
+            if (bIsEditSplice)
+            {
+                loader.item.bIsEditSplice = true
+                var list = spliceModel.getWireIdList()
+                loader.item.editSplice(list)
+                bIsEditSplice = false
+            }
+        }
     }
     ListModel{
         id: listModel
     }
+    function selectSplice(spliceId)
+    {
+        spliceModel.editNew(spliceId)
+        var list = new Array
+        list = spliceModel.getWireIdList()
+        spliceDetailItem.clear()
+        for (var i = 0; i < list.length;i++)
+        {
+            wireModel.addFromLibrary(list[i])
+            spliceDetailItem.addWireFromSplice()
+        }
+    }
+
     function getAllWorkstationColor(count)
     {
         var array = ["#ff6699","#ff0033","#33FFCC","#cc99ff","#cc0099","#930202","#99ccff","#f79428","#0000cc","Olive"]
@@ -101,6 +130,13 @@ Item {
                 anchors.bottom: tipsRec2.top
                 bIsWorkShow: !bIsBasic
                 onCurrentSelecte: {
+//                    index
+                    if (index != -1) {
+                        content.selectSpliceId = listModel.get(index).SpliceId
+                        content.selectSplice(content.selectSpliceId)
+                    }
+                    else
+                        content.selectSpliceId = -1
                 }
                 onCurrentWorkStation: {
                     stationSet.index = index
@@ -134,7 +170,6 @@ Item {
                     spliceModel.createNew()
                 }
             }
-
             CButton {
                 id: addExitSplice
                 anchors.bottom: upload.top
@@ -634,8 +669,6 @@ Item {
             opacity: 0.5
         }
 
-
-
         SpliceDetails {
             id: spliceDetailItem
             anchors.top: spliceDetailsTips.bottom
@@ -648,21 +681,21 @@ Item {
             anchors.bottomMargin: 10
             visible: !bIsBoard
             Component.onCompleted: {
-                spliceDetailItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-                spliceDetailItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-                spliceDetailItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-                spliceDetailItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+//                spliceDetailItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+//                spliceDetailItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+//                spliceDetailItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+//                spliceDetailItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
 
-                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+//                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+//                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+//                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+//                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+//                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+//                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+//                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
 
-                spliceDetailItem.setState("topLeft",200,"0.75","red")
-                spliceDetailItem.setState("bottomLeft",200,"0.75","red")
+//                spliceDetailItem.setState("topLeft",200,"0.75","red")
+//                spliceDetailItem.setState("bottomLeft",200,"0.75","red")
             }
         }
 
@@ -822,6 +855,14 @@ Item {
             width: 250
             pointSize: 16
             onClicked: {
+                if (content.selectSpliceId != -1)
+                {
+                    bIsEditSplice = true
+                    spliceModel.editNew(content.selectSpliceId)
+                    loader.source = "qrc:/UI/CreatWire.qml"
+                    titleTextChanged("Edit Existing")
+                }
+
             }
 
         }

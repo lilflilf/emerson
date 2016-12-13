@@ -12,15 +12,28 @@ Item {
     property var weldModel: -1
     property var stepModel: -1
 
-    signal signalSaveSplice()
+    signal signalSaveSplice(var spliceId)
     property bool crossSection: true
     property int selectIndex: 0
     property bool detailIsChang: true
     property bool bIsStep: false
     property string stepSetText: ""
     property var totalGauge: 0
+    property bool bIsEditSplice: false
     property variant colorArray: ["#ff6699","#ff0033","#33FFCC","#cc99ff","#cc0099","#930202","#99ccff","#f79428",
         "#0000cc","Olive","#ffff33","#ffcc00","#cc9909","#66ff00","#009900","#00cc66","#3366ff","#cc33cc","#cc9966","#9400D3"]
+
+    function editSplice(editWireList)
+    {
+        var list = new Array
+        list = editWireList
+        for (var i = 0; i < list.length;i++)
+        {
+            wireModel.addFromLibrary(list[i])
+            spliceDetailsItem.addWireFromSplice()
+        }
+        edit1.inputText = spliceModel.getStructValue("SpliceName","");
+    }
 
     function wireChanged(selectColor,selectPosition,selectText)
     {
@@ -1332,8 +1345,9 @@ Item {
                 spliceModel.setStructValue("ShrinkTemp",shrinkSet.shrinkTemp);
                 spliceModel.setStructValue("ShrinkTime",shrinkSet.shrinkTime);
 
-                spliceModel.saveSplice()
-                signalSaveSplice()
+                var spliceId = spliceModel.saveSplice(creatWire.bIsEditSplice)
+//                if (spliceId != -1 && !creatWire.bIsEditSplice)
+                    signalSaveSplice(spliceId)
             }
         }
     }

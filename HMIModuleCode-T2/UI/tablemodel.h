@@ -102,11 +102,13 @@ public slots:
 
     Q_INVOKABLE QString getStructValue(QString valueKey, QString valueType); // create wire
     Q_INVOKABLE void setStructValue(QString valueKey, QVariant value);
-    Q_INVOKABLE void saveSplice();
+    Q_INVOKABLE int saveSplice(bool bIsEdit);
 
     Q_INVOKABLE void createNew();
+    Q_INVOKABLE void editNew(int spliceId);
     Q_INVOKABLE QString getString(QString type, int value);
     Q_INVOKABLE bool getWeldMode(QString type,int index);
+    Q_INVOKABLE QList<int> getWireIdList();
 
 private:
     QHash<int, QByteArray> m_roleNames;

@@ -358,7 +358,7 @@ Item {
                 } else if (listModel == spliceModel) {
                     for (var i = 0; i < selectList.count; i++) {
                         var num = selectList.get(i).selectNum
-                        signalAddExistSelectClick(listModel.getValue(num,"SpliceID"),listModel.getValue(num,"SpliceName"))
+                        signalAddExistSelectClick(listModel.getValue(num,"SpliceId"),listModel.getValue(num,"SpliceName"))
                     }
                 } else if (listModel == wireModel) {
                     for (var i = 0; i < selectList.count; i++) {

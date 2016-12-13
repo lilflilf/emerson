@@ -201,8 +201,6 @@ SpliceModel::SpliceModel(QObject *parent) :
 
 QVariant SpliceModel::data(const QModelIndex &index, int role) const
 {
-    qDebug() << "gggggggggggggggggggggggg";// << mySplice.CrossSection;
-
     QVariant value;
     if(role < Qt::UserRole)
     {
@@ -564,6 +562,9 @@ QString SpliceModel::getStructValue(QString valueKey, QString valueType)
             return " ";
         return presetElement.PresetPicNamePath;
     }
+    else if (valueKey == "SpliceName") {
+        return presetElement.SpliceName;
+    }
     else
         return "";
 }
@@ -705,19 +706,31 @@ void SpliceModel::setStructValue(QString valueKey, QVariant value)
     }
 }
 
-void SpliceModel::saveSplice()
+int SpliceModel::saveSplice(bool bIsEdit)
 {
     int spliceId;
-//    presetElement.OperatorID =
-    spliceId = m_spliceAdaptor->InsertRecordIntoTable(&presetElement);
+    if (bIsEdit)
+    {
+        m_spliceAdaptor->UpdateRecordIntoTable(&presetElement);
+        return -1;
+    }
+    else
+    {
+        spliceId = m_spliceAdaptor->InsertRecordIntoTable(&presetElement);
+    }
     setModelList();
-    qDebug() << "SpliceModel InsertRecordIntoTable " << spliceId;
+    return spliceId;
 }
 
 void SpliceModel::createNew()
 {
     PresetElement temp;
     presetElement = temp;
+}
+
+void SpliceModel::editNew(int spliceId)
+{
+    m_spliceAdaptor->QueryOneRecordFromTable(spliceId, &presetElement);
 }
 
 QString SpliceModel::getString(QString type, int value)
@@ -743,6 +756,17 @@ bool SpliceModel::getWeldMode(QString type, int index)
             return false;
     }
 }
+
+QList<int> SpliceModel::getWireIdList()
+{
+    QMap<int,QString>::iterator it; //遍历map
+    QList<int> list;
+    for ( it = presetElement.WireIndex.begin(); it != presetElement.WireIndex.end(); ++it ) {
+        list.append(it.key());
+    }
+    return list;
+}
+
 
 void SpliceModel::removeValue(int id, QString name)
 {

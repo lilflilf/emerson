@@ -79,7 +79,10 @@ Item {
                 anchors.fill: parent
                 onClicked: {
                     select.checked = !select.checked
-                    currentSelecte(index)
+                    if (select.checked)
+                        currentSelecte(index)
+                    else
+                        currentSelecte(-1)
                 }
             }
             Text {

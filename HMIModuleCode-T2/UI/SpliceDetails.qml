@@ -35,6 +35,18 @@ Item {
     signal gaugeChanged(var type, var value)
     signal wireDetailHide()
 
+    function clear()
+    {
+        listModelLeft.clear()
+        listModelRight.clear()
+        topLeft.sourceComponent = null
+        topRight.sourceComponent = null
+        bottomLeft.sourceComponent = null
+        bottomRight.sourceComponent = null
+        detail.wireCount = 0
+
+    }
+
     function setState(setPosition,setLine,setText,setColor)
     {
         selectColor = setColor
@@ -74,6 +86,107 @@ Item {
         else
             return false
     }
+
+    function addWireFromSplice()
+    {
+        if (listModelRight.count < 22) {
+            bIsLibrary = true
+            console.log("vvvvvvvvvvvvv",wireModel.getStructValue("WireDirection"),wireModel.getStructValue("WirePosition"))
+            if (wireModel.getStructValue("WireDirection") == 0)
+            {
+                if (wireModel.getStructValue("WirePosition") == 0)
+                {
+                    if (topLeft.sourceComponent != null || topRight.sourceComponent != null)
+                    {
+                        return;
+                    }
+                    topLeft.sourceComponent = left
+                    topLeft.item.lineLength = 200
+                    topLeft.item.myColor = wireModel.getStructValue("WireColor")
+                    topLeft.item.myText = hmiAdaptor.getStringValue(wireModel.getStructValue2("Gauge","current"))
+                    topLeft.item.position = "topLeft"
+                    topLeft.item.myWireName = wireModel.getStructValue("WireName")
+                    topLeft.item.myGauge = wireModel.getStructValue("Gauge")
+                    topLeft.item.myAwg = wireModel.getStructValue("AWG")
+                    topLeft.item.myWireType = wireModel.getStructValue("WireType")
+                    topLeft.item.myStripeColor = wireModel.getStructValue2("StripeColor","")
+                    topLeft.item.myStripeType = wireModel.getStructValue3("StripeType","")
+                    topLeft.item.myWireId = wireModel.getStructValue("WireId")
+                }
+                else if (wireModel.getStructValue("WirePosition") == 1)
+                {
+                    listModelLeft.append({"myLineLength":200,"mycolor":wireModel.getStructValue("WireColor"),"isCheck":false,"linetext":hmiAdaptor.getStringValue(wireModel.getStructValue2("Gauge","current")),
+                                              "wireName":wireModel.getStructValue("WireName"),"wireType":wireModel.getStructValue("WireType"),"gauge":wireModel.getStructValue("Gauge"),"gaugeawg":wireModel.getStructValue("AWG"),
+                                              "stripeColor":wireModel.getStructValue2("StripeColor",""),"stripeType":wireModel.getStructValue3("StripeType",""),"wireId":wireModel.getStructValue("WireId")})
+
+                }
+                else if (wireModel.getStructValue("WirePosition") == 2)
+                {
+                    bottomLeft.sourceComponent = left
+                    bottomLeft.item.lineLength = 200
+                    bottomLeft.item.myColor = wireModel.getStructValue("WireColor")
+                    bottomLeft.item.myText = hmiAdaptor.getStringValue(wireModel.getStructValue2("Gauge","current"))
+                    bottomLeft.item.position = "bottomLeft"
+                    bottomLeft.item.myWireName = wireModel.getStructValue("WireName")
+                    bottomLeft.item.myGauge = wireModel.getStructValue("Gauge")
+                    bottomLeft.item.myAwg = wireModel.getStructValue("AWG")
+                    bottomLeft.item.myWireType = wireModel.getStructValue("WireType")
+                    bottomLeft.item.myStripeColor = wireModel.getStructValue2("StripeColor","")
+                    bottomLeft.item.myStripeType = wireModel.getStructValue3("StripeType","")
+                    bottomLeft.item.myWireId = wireModel.getStructValue("WireId")
+                }
+            }
+            else if (wireModel.getStructValue("WireDirection") == 1)
+            {
+                if (wireModel.getStructValue("WirePosition") == 0)
+                {
+                    if (topLeft.sourceComponent != null || topRight.sourceComponent != null)
+                    {
+                        return;
+                    }
+                    topRight.sourceComponent = right
+                    topRight.item.lineLength = 200
+                    topRight.item.myColor = wireModel.getStructValue("WireColor")
+                    topRight.item.myText = hmiAdaptor.getStringValue(wireModel.getStructValue2("Gauge","current"))
+                    topRight.item.position = "topRight"
+                    topRight.item.myWireName = wireModel.getStructValue("WireName")
+                    topRight.item.myGauge = wireModel.getStructValue("Gauge")
+                    topRight.item.myAwg = wireModel.getStructValue("AWG")
+                    topRight.item.myWireType = wireModel.getStructValue("WireType")
+                    topRight.item.myStripeColor = wireModel.getStructValue2("StripeColor","")
+                    topRight.item.myStripeType = wireModel.getStructValue3("StripeType","")
+                    topRight.item.myWireId = wireModel.getStructValue("WireId")
+                }
+                else if (wireModel.getStructValue("WirePosition") == 1)
+                {
+                    listModelRight.append({"myLineLength":200,"mycolor":wireModel.getStructValue("WireColor"),"isCheck":false,"linetext":hmiAdaptor.getStringValue(wireModel.getStructValue2("Gauge","current")),
+                                              "wireName":wireModel.getStructValue("WireName"),"wireType":wireModel.getStructValue("WireType"),"gauge":wireModel.getStructValue("Gauge"),"gaugeawg":wireModel.getStructValue("AWG"),
+                                              "stripeColor":wireModel.getStructValue2("StripeColor",""),"stripeType":wireModel.getStructValue3("StripeType",""),"wireId":wireModel.getStructValue("WireId")})
+
+                }
+                else if (wireModel.getStructValue("WirePosition") == 2)
+                {
+                    bottomRight.sourceComponent = right
+                    bottomRight.item.lineLength = 200
+                    bottomRight.item.myColor = wireModel.getStructValue("WireColor")
+                    bottomRight.item.myText = hmiAdaptor.getStringValue(wireModel.getStructValue2("Gauge","current"))
+                    bottomRight.item.position = "bottomRight"
+                    bottomRight.item.myWireName = wireModel.getStructValue("WireName")
+                    bottomRight.item.myGauge = wireModel.getStructValue("Gauge")
+                    bottomRight.item.myAwg = wireModel.getStructValue("AWG")
+                    bottomRight.item.myWireType = wireModel.getStructValue("WireType")
+                    bottomRight.item.myStripeColor = wireModel.getStructValue2("StripeColor","")
+                    bottomRight.item.myStripeType = wireModel.getStructValue3("StripeType","")
+                    bottomRight.item.myWireId = wireModel.getStructValue("WireId")
+                }
+            }
+
+            wireCount++
+            gaugeChanged("add",wireModel.getStructValue("Gauge"))
+            bIsLibrary = false
+        }
+    }
+
     function addWireFromLibrary()
     {
         if (listModelRight.count < 10) {
@@ -272,7 +385,7 @@ Item {
 //                else
 //                    type ="update"
                 wireId = wireModel.insertValueToTable(type,listModelLeft.get(j).wireName,listModelLeft.get(j).wireId,hmiAdaptor.getCurrentOperatorId(),listModelLeft.get(j).mycolor,
-                                         listModelLeft.get(j).stripeColor,listModelLeft.get(j).stripeType,listModelLeft.get(j).myText,listModelLeft.get(j).wireType,1,0,1)
+                                         listModelLeft.get(j).stripeColor,listModelLeft.get(j).stripeType,listModelLeft.get(j).myText,listModelLeft.get(j).wireType,0,0,1)
                 wireIdList.push(wireId)
             }
         }
