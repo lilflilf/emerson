@@ -34,7 +34,10 @@ public:
 
     QStringList m_idList;
     DBWorkOrderTable *m_workOrderAdaptor;
+    DBPartTable *m_partAdaptor;
     QMap<int, QString> *workOrders;
+    PartElement partElement;
+    WorkOrderElement workOrderElement;
 
 protected:
     int rowCount(const QModelIndex &parent) const;
@@ -51,6 +54,8 @@ public slots:
     Q_INVOKABLE QVariant getWorkOrderValue(int index, QString key);
     Q_INVOKABLE void removeValue(int id, QString name);
     Q_INVOKABLE int getPartId(int index);
+    Q_INVOKABLE QList<int> getSpliceList();
+    Q_INVOKABLE void editNew(int index);
 
     //    QString getContacterName(QString contacterId);
     Q_INVOKABLE int count();
@@ -71,12 +76,12 @@ class SpliceModel : public QAbstractTableModel
     Q_OBJECT
 public:
     explicit SpliceModel(QObject *parent = 0);
-    void setModelList(QString Name, unsigned int time_from, unsigned int time_to);
     void setModelList(unsigned int time_from, unsigned int time_to);
     void setModelList();
 
     QStringList m_idList;
     DBPresetTable *m_spliceAdaptor;
+    DBWireTable * m_wireAdaptor;
     DBOperatorTable *m_operatorAdaptor;
     QMap<int, QString> *splices;
 
@@ -89,6 +94,7 @@ public:
 
     PresetElement presetElement;
     VariantToString *variantToString;
+    StringToVariant *stringToVariant;
 signals:
 
 
@@ -100,11 +106,14 @@ public slots:
     Q_INVOKABLE void calculateSpliceData();
 
     Q_INVOKABLE QString getStructValue(QString valueKey, QString valueType); // create wire
+    Q_INVOKABLE void setStructValue(QString valueKey, QVariant value);
+    Q_INVOKABLE int saveSplice(bool bIsEdit);
+
     Q_INVOKABLE void createNew();
+    Q_INVOKABLE void editNew(int spliceId);
     Q_INVOKABLE QString getString(QString type, int value);
     Q_INVOKABLE bool getWeldMode(QString type,int index);
-    Q_INVOKABLE void seachSpliceModel(QString Name, unsigned int time_from, unsigned int time_to);
-//    Q_INVOKABLE void setNewValue();
+    Q_INVOKABLE QList<int> getWireIdList();
 
 private:
     QHash<int, QByteArray> m_roleNames;
@@ -125,6 +134,7 @@ public:
     DBPartTable *m_partAdaptor;
     DBOperatorTable *m_operatorAdaptor;
     QMap<int, QString> *parts;
+    PartElement *m_Part;
 
 protected:
     int rowCount(const QModelIndex &parent) const;
@@ -138,12 +148,28 @@ signals:
 public slots:
     void setRoles(const QStringList &names);
     Q_INVOKABLE QVariant getValue(int index, QString key);
+    Q_INVOKABLE void getPartInfo(bool bIsEdit, int id, QString name);
     Q_INVOKABLE void removeValue(int id, QString name);
-    Q_INVOKABLE int getWorkStationRows(int id, QString name);
-    Q_INVOKABLE int getWorkStationColumns(int id, QString name);
-    Q_INVOKABLE QList<int> getWorkStationCorlor(int id, QString name);
-    Q_INVOKABLE QList<int> geteWorkStationZone(int id, QString name);
-    Q_INVOKABLE bool getPartOnlineOrOffLine(int id, QString name);
+    Q_INVOKABLE int getWorkStationRows();
+    Q_INVOKABLE int getWorkStationColumns();
+    Q_INVOKABLE int getWorkStationMaxSplicePerZone();
+    Q_INVOKABLE int getWorkStationCount();
+    Q_INVOKABLE int getWorkStationMaxSplicePerStation();
+    Q_INVOKABLE QList<int> getWorkStationCorlor();
+    Q_INVOKABLE QList<int> geteWorkStationZone();
+    Q_INVOKABLE bool getPartOnlineOrOffLine();
+    Q_INVOKABLE QStringList getCurrentPartOfSpliceName();
+    Q_INVOKABLE QList<int> getCurrentPartOfSpliceId();
+    Q_INVOKABLE void setPartOffLineOrOnLine(bool bIsLine);
+    Q_INVOKABLE void setPartName(QString name);
+    Q_INVOKABLE void setPartColumns(int columns);
+    Q_INVOKABLE void setPartRows(int rows);
+    Q_INVOKABLE void setPartMaxSplicePerWorkStation(int maxNum);
+    Q_INVOKABLE void setPartMaxSplicePerZone(int maxNum);
+    Q_INVOKABLE void setPartWorkStationNum(int num);
+    Q_INVOKABLE void setPartSpliceListClear();
+    Q_INVOKABLE void setPartSpliceList(QString name, int id, int station, int zone, int index);
+    Q_INVOKABLE void savePartInfo(bool bIsEdit);
     Q_INVOKABLE int count();
    // int getCurrentIndex(QString info);
 
@@ -194,6 +220,7 @@ class AlarmModel : public QAbstractTableModel
     Q_OBJECT
 public:
     explicit AlarmModel(QObject *parent = 0);
+    void setModelList(QString name, unsigned int time_from, unsigned int time_to);
     void setModelList(unsigned int time_from, unsigned int time_to);
     void setModelList();
 
@@ -216,6 +243,7 @@ public slots:
     void setRoles(const QStringList &names);
     Q_INVOKABLE QVariant getAlarmValue(int index, QString key);
     Q_INVOKABLE void removeValue(int id, QString name);
+    Q_INVOKABLE void searchAlarmLog(QString name, unsigned int time_from, unsigned int time_to);
     Q_INVOKABLE int count();
 private:
     QHash<int, QByteArray> m_roleNames;

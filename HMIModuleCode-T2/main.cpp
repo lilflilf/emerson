@@ -26,9 +26,6 @@ int main(int argc, char *argv[])
     bool success = translator.load("displayChinese_zh_CN.qm");
     app.installTranslator(&translator);
     QQmlApplicationEngine engine;
-    engine.load(QUrl(QStringLiteral("qrc:/UI/main.qml")));
-    ALPaintedItem *alpaint = new ALPaintedItem;
-    engine.rootContext()->setContextProperty("alpaint",alpaint);
     MODstart* _ModStart = MODstart::Instance();
     HmiAdaptor *hmiAdaptor = new HmiAdaptor;
     engine.rootContext()->setContextProperty("hmiAdaptor",hmiAdaptor);
@@ -40,6 +37,8 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("weldHistoryModel",hmiAdaptor->weldHistoryModel);
     engine.rootContext()->setContextProperty("alarmModel",hmiAdaptor->alarmModel);
     engine.rootContext()->setContextProperty("maintenanceLogModel",hmiAdaptor->maintenanceLogModel);
+    engine.load(QUrl(QStringLiteral("qrc:/UI/main.qml")));
+
 
 
 //    DataBaseTest *_TestPtr = new DataBaseTest();

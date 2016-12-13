@@ -11,18 +11,55 @@ Item {
     property int rows: 0
     property int theIndex: 0
     property int count: 0
+    property int maxSplicePerWork: 0
+    property int maxSplicePerZone: 0
     property string selecte: ""
     property var array: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P"]
-    function getStationColor(index)
+    property variant arrayColor: ["#ff6699","#ff0033","#33FFCC","#cc99ff","#cc0099","#930202","#99ccff","#f79428",
+        "#0000cc","Olive","#ffff33","#ffcc00","#cc9909","#66ff00","#009900","#00cc66","#3366ff","#cc33cc","#cc9966","#9400D3"]
+    signal spliceModelUpdata(int index)
+
+    function checkBoardLayout(index,color,selecteIndex)
     {
-        var array = ["#ff6699","#ff0033","#33FFCC","#cc99ff","#cc0099","#930202","#99ccff","#f79428","#0000cc","Olive"]
-        return array[index]
+        var maxSplicePerWork = 0,maxSplicePerZone = 0
+        maxSplicePerZone = rec.itemAt(index).zoneModel.count
+        if (rec.itemAt(index).bIsCenterShow) {
+            ++maxSplicePerZone
+        }
+        var i
+        for (i = 0; i < boardLayout.columns*boardLayout.rows; i++) {
+            if (rec.itemAt(i).zoneModel.count != 0) {
+
+                for (var j = 0; j < rec.itemAt(i).zoneModel.count; j++) {
+                    if (color == rec.itemAt(i).zoneModel.get(j).zonecolor) {
+                        ++maxSplicePerWork
+                    }
+                }
+            }
+            if (rec.itemAt(i).bIsCenterShow) {
+                if (rec.itemAt(i).centerColor == color) {
+                    ++maxSplicePerWork
+                }
+            }
+        }
+        if (maxSplicePerWork == boardLayout.maxSplicePerWork) {
+                return -1;
+        }
+        if (maxSplicePerZone == boardLayout.maxSplicePerZone) {
+            return -1;
+        }
+        return 0
     }
-    function setBoardLayoutColor(index,color,selecteIndex)
+
+    function setBoardLayoutColor(bIsInsert,index,color,selecteIndex)
     {
+        if (!bIsInsert) {
+            if (checkBoardLayout(index,color,selecteIndex) == -1)
+                return -1
+        }
         var i;
         for ( i = 0; i < boardLayout.columns*boardLayout.rows; i++) {
-            if (selecteIndex == rec.itemAt(i).centerNum) {
+            if (selecteIndex == rec.itemAt(i).centerNum && rec.itemAt(i).bIsCenterShow) {
                 rec.itemAt(i).bIsCenterShow = false
                 break
             }
@@ -35,18 +72,21 @@ Item {
                 }
             }
         }
-
-        if (rec.itemAt(index).centerNum == selecteIndex) {
+        if (rec.itemAt(index).centerNum == selecteIndex && rec.itemAt(index).bIsCenterShow) {
             rec.itemAt(index).centerColor = color
             rec.itemAt(index).bIsCenterShow = true
-            return
+            return 0
         }
         for (var i = 0; i < rec.itemAt(index).zoneModel.count; i++) {
             if (rec.itemAt(index).zoneModel.get(i).selecteNum == selecteIndex) {
                 rec.itemAt(index).zoneModel.remove(i);
                 rec.itemAt(index).zoneModel.insert(i,{"zonecolor":color,"selecteNum":selecteIndex})
-                return
+                return 0
             }
+        }
+        if (bIsInsert) {
+            if (checkBoardLayout(index,color,selecteIndex) == -1)
+                return -1
         }
         if (rec.itemAt(index).bIsCenterShow) {
             rec.itemAt(index).zoneModel.append({"zonecolor":color,"selecteNum":selecteIndex})
@@ -55,7 +95,55 @@ Item {
             rec.itemAt(index).centerColor = color
             rec.itemAt(index).centerNum = selecteIndex
         }
+        return 0
     }
+    function reSetBoardLayoutColor(maxSplicePerWork,WorkNum)
+    {
+        var i,k
+        for (k = 0; k < WorkNum; k++) {
+            var splicePerWork = 0
+            for (i = 0; i < boardLayout.columns*boardLayout.rows; i++) {
+                if (rec.itemAt(i).zoneModel.count != 0) {
+                    for (var j = 0; j < rec.itemAt(i).zoneModel.count; j++) {
+                        if (arrayColor[k] == rec.itemAt(i).zoneModel.get(j).zonecolor) {
+                            ++splicePerWork
+                            if (splicePerWork > maxSplicePerWork) {
+                                rec.itemAt(i).zoneModel.remove(j)
+                                spliceModelUpdata(rec.itemAt(i).zoneModel.get(j).selecteNum)
+                            }
+                        }
+                    }
+                }
+                if (rec.itemAt(i).bIsCenterShow) {
+                    if (rec.itemAt(i).centerColor == arrayColor[k]) {
+                        ++splicePerWork
+                        if (splicePerWork > maxSplicePerWork) {
+                            rec.itemAt(i).bIsCenterShow = false
+                            spliceModelUpdata(rec.itemAt(i).centerNum)
+                        }
+                    }
+                }
+            }
+        }
+    }
+    function reSetBoardLayoutStation(maxSplicePerZone)
+    {
+        var i
+        for (i = 0; i < boardLayout.columns*boardLayout.rows; i++) {
+            var splicePerZone = 0
+            splicePerZone = rec.itemAt(i).zoneModel.count
+            if (rec.itemAt(i).bIsCenterShow) {
+                maxSplicePerZone -= 1
+            }
+            if (splicePerZone > maxSplicePerZone) {
+                for (var j = maxSplicePerZone; j < splicePerZone; j++) {
+                    spliceModelUpdata(rec.itemAt(i).zoneModel.get(j).selecteNum)
+                    rec.itemAt(i).zoneModel.remove(j)
+                }
+            }
+        }
+    }
+
     function setBoardLayoutYPosition(index)
     {
         if (index < 5) {

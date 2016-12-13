@@ -153,6 +153,41 @@ int WorkOrderModel::getPartId(int index)
     return myWorkOrder.PartIndex.begin().key();
 }
 
+QList<int> WorkOrderModel::getSpliceList()
+{
+    QMap<int,struct PARTATTRIBUTE>::iterator it; //遍历map
+    QList<int> list;
+    if (workOrderElement.PartIndex.count() > 0)
+        m_partAdaptor->QueryOneRecordFromTable(workOrderElement.PartIndex.begin().key(),&partElement);
+    else
+        return list;
+
+    for ( it = partElement.SpliceList.begin(); it != partElement.SpliceList.end(); ++it ) {
+        list.append(it.value().SpliceID);
+    }
+    return list;
+}
+
+void WorkOrderModel::editNew(int index)
+{
+    qDebug() << "bbbbbbbbbbbbbbbbbbbbb" << index;
+
+    QMap<int,QString>::iterator it; //遍历map
+    int i = 0;
+    int orderId;
+    for ( it = workOrders->begin(); it != workOrders->end(); ++it ) {
+        if (i == index){
+            qDebug() << it.key();
+            break;
+        }
+        else {
+            i++;
+        }
+    }
+    qDebug() << "bbbbbbbbbbbbbbbbbbbbb111111111" << index;
+//    m_workOrderAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&workOrderElement);
+}
+
 QVariant WorkOrderModel::getWorkOrderValue(int index, QString key)
 {
     QMap<int,QString>::iterator it; //遍历map
@@ -189,41 +224,12 @@ void WorkOrderModel::removeValue(int id, QString name)
     setModelList();
 }
 
-//QString WorkOrderModel::getContacterName(QString contacterId)
-//{
-//    Contacter contacter;
-//    contacter = m_contacterAdaptor->getContacter(contacterId);
-//    return contacter.surname + contacter.name;
-//}
-
-/*info:id*/
-
-
-//void WorkOrderModel::removeContacter(QString info, int rows)
-//{
-//    int temp = 0;
-//    bool bIsFind = false;
-//    for (int i = 0; i < rows; i++) {
-//        if (m_idList.at(i) == info) {
-//            bIsFind = true;
-//            temp = i;
-//            break;
-//        }
-//    }
-//    if (bIsFind) {
-//        beginRemoveRows(QModelIndex(),temp,temp);
-//        m_idList.removeAt(temp);
-//        endRemoveRows();
-//    }
-//}
-
-
-
 SpliceModel::SpliceModel(QObject *parent) :
     QAbstractTableModel(parent)
 {
     m_spliceAdaptor = DBPresetTable::Instance();
     m_operatorAdaptor = DBOperatorTable::Instance();
+    m_wireAdaptor = DBWireTable::Instance();
     splices = new QMap<int, QString>();
     variantToString = VariantToString::Instance();
 }
@@ -257,6 +263,7 @@ QVariant SpliceModel::data(const QModelIndex &index, int role) const
         OperatorElement myOperator;
         m_spliceAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&mySplice);
         m_operatorAdaptor->QueryOneRecordFromTable(mySplice.OperatorID,&myOperator);
+
         QString temp;
         if (columnIdx == 0)
             value = QVariant::fromValue(mySplice.SpliceID);
@@ -333,21 +340,12 @@ void SpliceModel::setModelList(unsigned int time_from, unsigned int time_to)
     endResetModel();
 }
 
-void SpliceModel::setModelList(QString Name, unsigned int time_from, unsigned int time_to)
-{
-    beginResetModel();
-    splices->clear();
-    if (m_spliceAdaptor->QueryUseNameAndTime(Name,time_from,time_to,splices))
-        qDebug( )<< "setModelList SpliceModel" << splices->count();
-    endResetModel();
-}
-
 void SpliceModel::setModelList()
 {
     beginResetModel();
     splices->clear();
     if (m_spliceAdaptor->QueryEntireTable(splices))
-        qDebug( )<< "setModelList WorkOrderModel" << splices->count();
+        qDebug( )<< "setModelList SpliceModel" << splices->count();
     endResetModel();
 }
 
@@ -582,23 +580,192 @@ QString SpliceModel::getStructValue(QString valueKey, QString valueType)
         else
             return "right";
     }
-    else if (valueKey == "Cutf Off") {
+    else if (valueKey == "Cut Off") {
         if (presetElement.WeldSettings.AdvanceSetting.CutOff)
             return "left";
         else
             return "right";
     }
     else if (valueKey == "Insulation") {
+        if (presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkOption)
+            return "left";
+        else
             return "right";
+    }
+    else if (valueKey == "PicPath") {
+        if (presetElement.PresetPicNamePath.isEmpty())
+            return " ";
+        return presetElement.PresetPicNamePath;
+    }
+    else if (valueKey == "SpliceName") {
+        return presetElement.SpliceName;
     }
     else
         return "";
+}
+
+void SpliceModel::setStructValue(QString valueKey, QVariant value)
+{
+    qDebug() << "setStructValue" << valueKey << value;
+    if (valueKey == "Energy") {
+        presetElement.WeldSettings.BasicSetting.Energy = stringToVariant->EnergyToInt(value.toString());
+    }
+    else if (valueKey == "Trigger Pressure") {
+        presetElement.WeldSettings.BasicSetting.TrigPres = stringToVariant->TriggerPressureToInt(value.toString());
+    }
+    else if (valueKey == "Amplitude") {
+        presetElement.WeldSettings.BasicSetting.Amplitude = stringToVariant->AmplitudeToInt(value.toString());
+    }
+    else if (valueKey == "Weld Pressure") {
+        presetElement.WeldSettings.BasicSetting.Pressure = stringToVariant->WeldPressureToInt(value.toString());
+    }
+    else if (valueKey == "Width") {
+        presetElement.WeldSettings.BasicSetting.Width = stringToVariant->WidthToInt(value.toString());
+    }
+    else if (valueKey == "Time-") {
+        presetElement.WeldSettings.QualitySetting.Time.Minus = stringToVariant->TimeMinusToInt(value.toString());
+    }
+    else if (valueKey == "Time+") {
+        presetElement.WeldSettings.QualitySetting.Time.Plus = stringToVariant->TimePlusToInt(value.toString());
+    }
+    else if (valueKey == "Power-") {
+        presetElement.WeldSettings.QualitySetting.Power.Minus = stringToVariant->PowerMinusToInt(value.toString());
+    }
+    else if (valueKey == "Power+") {
+        presetElement.WeldSettings.QualitySetting.Power.Plus = stringToVariant->PowerPlusToInt(value.toString());
+    }
+    else if (valueKey == "Pre-Height-") {
+        presetElement.WeldSettings.QualitySetting.Preheight.Minus = stringToVariant->PreHeightMinusToInt(value.toString());
+    }
+    else if (valueKey == "Pre-Height+") {
+        presetElement.WeldSettings.QualitySetting.Preheight.Plus = stringToVariant->PreHeightPlusToInt(value.toString());
+    }
+    else if (valueKey == "Post-Height-") {
+        presetElement.WeldSettings.QualitySetting.Height.Minus = stringToVariant->HeightMinusToInt(value.toString());
+    }
+    else if (valueKey == "Post-Height+") {
+        presetElement.WeldSettings.QualitySetting.Height.Plus = stringToVariant->HeightPlusToInt(value.toString());
+    }
+    else if (valueKey == "Step-Energy") {
+        presetElement.WeldSettings.AdvanceSetting.StepWeld.EnergyToStep = stringToVariant->StepEnergyToInt(value.toString());
+    }
+    else if (valueKey == "Step-Time") {
+        presetElement.WeldSettings.AdvanceSetting.StepWeld.TimeToStep = stringToVariant->StepTimeToInt(value.toString());
+    }
+    else if (valueKey == "Step-Power") {
+        presetElement.WeldSettings.AdvanceSetting.StepWeld.PowerToStep = stringToVariant->StepPowerToInt(value.toString());
+    }
+    else if (valueKey == "Amplitude B") {
+        presetElement.WeldSettings.AdvanceSetting.StepWeld.Amplitude2 = stringToVariant->Amplitude2ToInt(value.toString());
+    }
+    else if (valueKey == "WeldModel") {
+        presetElement.WeldSettings.AdvanceSetting.WeldMode = (WELDMODE)value.toInt();
+    }
+    else if (valueKey == "StepModel") {
+        presetElement.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode = (STEPWELDMODE)value.toInt();
+    }
+    else if (valueKey == "Pre Burst") {
+        presetElement.WeldSettings.AdvanceSetting.PreBurst = stringToVariant->PreBurstTimeToInt(value.toString());
+    }
+    else if (valueKey == "Hold Time") {
+        presetElement.WeldSettings.AdvanceSetting.HoldTime = stringToVariant->HoldTimeToInt(value.toString());
+    }
+    else if (valueKey == "After Burst") {
+        presetElement.WeldSettings.AdvanceSetting.ABDur = stringToVariant->AfterBurstDuringToInt(value.toString());
+    }
+    else if (valueKey == "Squeeze Time") {
+        presetElement.WeldSettings.AdvanceSetting.SqzTime = stringToVariant->SqueezeTimeToInt(value.toString());
+    }
+    else if (valueKey == "ActualWidth") {
+        presetElement.WeldSettings.AdvanceSetting.MeasuredWidth = stringToVariant->MeasureWidthToInt(value.toString());
+    }
+    else if (valueKey == "ActualHeight") {
+        presetElement.WeldSettings.AdvanceSetting.MeasuredHeight = stringToVariant->MeasureHeightToInt(value.toString());
+    }
+    else if (valueKey == "Unload Time") {
+        presetElement.WeldSettings.AdvanceSetting.AntiSideSpliceTime = stringToVariant->AntiSideSpliceTimeToInt(value.toString());
+    }
+    else if (valueKey == "Load Time") {
+        presetElement.WeldSettings.AdvanceSetting.CutOffSpliceTime = stringToVariant->CutOffSpliceTimeToInt(value.toString());
+    }
+    else if (valueKey == "Anti-Side") {
+        presetElement.WeldSettings.AdvanceSetting.AntiSide = value.toBool();
+    }
+    else if (valueKey == "Cut Off") {
+        presetElement.WeldSettings.AdvanceSetting.CutOff = value.toBool();
+    }
+    else if (valueKey == "Insulation") {
+        presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkOption = value.toBool();
+    }
+    else if (valueKey == "ShrinkId") {
+        presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID = value.toString();
+    }
+    else if (valueKey == "ShrinkTemp") {
+        presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkOption = stringToVariant->ShrinkTemperatureToInt(value.toString());
+    }
+    else if (valueKey == "ShrinkTime") {
+        presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkOption = stringToVariant->ShrinkTimeToInt(value.toString());
+    }
+    else if (valueKey == "SpliceName") {
+        presetElement.SpliceName = value.toString();
+    }
+    else if (valueKey == "OperatorId") {
+        presetElement.OperatorID = value.toInt();
+    }
+    else if (valueKey == "Total Cross") {
+        qDebug() << "Total Cross " << value.toString();
+        presetElement.CrossSection = stringToVariant->CrossSectionToInt(value.toString());
+        qDebug() << "Total Cross " << presetElement.CrossSection;
+
+    }
+    else if (valueKey == "WireMap") {
+        QStringList list = value.toStringList();
+        qDebug() << "WireMap" << list;
+        presetElement.WireIndex.clear();
+        int wireId;
+        QString temp;
+        bool ok;
+        WireElement tempWire;
+        for (int i = 0; i < list.count(); i++) {
+            temp = list[i];
+            wireId = temp.toInt(&ok,10);
+            if (m_wireAdaptor->QueryOneRecordFromTable(wireId,&tempWire))
+                presetElement.WireIndex.insert(wireId,tempWire.WireName);
+        }
+        qDebug() << "WireMap end " << presetElement.NoOfWires;
+
+        presetElement.NoOfWires = list.count();
+    }
+    else if (valueKey == "PicPath") {
+        presetElement.PresetPicNamePath = value.toString();
+    }
+}
+
+int SpliceModel::saveSplice(bool bIsEdit)
+{
+    int spliceId;
+    if (bIsEdit)
+    {
+        m_spliceAdaptor->UpdateRecordIntoTable(&presetElement);
+        return -1;
+    }
+    else
+    {
+        spliceId = m_spliceAdaptor->InsertRecordIntoTable(&presetElement);
+    }
+    setModelList();
+    return spliceId;
 }
 
 void SpliceModel::createNew()
 {
     PresetElement temp;
     presetElement = temp;
+}
+
+void SpliceModel::editNew(int spliceId)
+{
+    m_spliceAdaptor->QueryOneRecordFromTable(spliceId, &presetElement);
 }
 
 QString SpliceModel::getString(QString type, int value)
@@ -625,10 +792,16 @@ bool SpliceModel::getWeldMode(QString type, int index)
     }
 }
 
-void SpliceModel::seachSpliceModel(QString Name, unsigned int time_from, unsigned int time_to)
+QList<int> SpliceModel::getWireIdList()
 {
-    setModelList(Name,time_from,time_to);
+    QMap<int,QString>::iterator it; //遍历map
+    QList<int> list;
+    for ( it = presetElement.WireIndex.begin(); it != presetElement.WireIndex.end(); ++it ) {
+        list.append(it.key());
+    }
+    return list;
 }
+
 
 void SpliceModel::removeValue(int id, QString name)
 {
@@ -716,6 +889,7 @@ PartModel::PartModel(QObject *parent) :
     m_partAdaptor = DBPartTable::Instance();
     m_operatorAdaptor = DBOperatorTable::Instance();
     parts = new QMap<int, QString>();
+    m_Part = new PartElement();
 }
 
 QVariant PartModel::data(const QModelIndex &index, int role) const
@@ -887,56 +1061,150 @@ void PartModel::removeValue(int id, QString name)
     setModelList();
 }
 
-int PartModel::getWorkStationRows(int id, QString name)
+void PartModel::getPartInfo(bool bIsEdit, int id, QString name)
 {
-    PartElement myPart;
-    m_partAdaptor->QueryOneRecordFromTable(id,name,&myPart);
-    return myPart.PartTypeSetting.BoardLayout.Rows;
+    if (bIsEdit) {
+        m_partAdaptor->QueryOneRecordFromTable(id,name,m_Part);
+    } else {
+        m_Part = NULL;
+        m_Part = new PartElement();
+    }
 }
 
-int PartModel::getWorkStationColumns(int id, QString name)
+int PartModel::getWorkStationRows()
 {
-    PartElement myPart;
-    m_partAdaptor->QueryOneRecordFromTable(id,name,&myPart);
-    return myPart.PartTypeSetting.BoardLayout.Columns;
+    return m_Part->PartTypeSetting.BoardLayout.Rows;
 }
 
-QList<int> PartModel::getWorkStationCorlor(int id, QString name)
+int PartModel::getWorkStationColumns()
+{
+    return m_Part->PartTypeSetting.BoardLayout.Columns;
+}
+
+int PartModel::getWorkStationMaxSplicePerZone()
+{
+    return m_Part->PartTypeSetting.BoardLayout.MaxSplicesPerZone;
+}
+
+int PartModel::getWorkStationCount()
+{
+    return m_Part->PartTypeSetting.WorkStations.TotalWorkstation;
+}
+
+int PartModel::getWorkStationMaxSplicePerStation()
+{
+    return m_Part->PartTypeSetting.WorkStations.MaxSplicesPerWorkstation;
+}
+
+QList<int> PartModel::getWorkStationCorlor()
 {
     QList<int> corlorList;
-    PartElement myPart;
-    m_partAdaptor->QueryOneRecordFromTable(id,name,&myPart);
-    for (int i = 0; i < myPart.SpliceList.count(); i++) {
-        corlorList.append(myPart.SpliceList.value(myPart.SpliceList.keys().at(i)).CurrentWorkstation);
+    for (int i = 0; i < m_Part->SpliceList.count(); i++) {
+        corlorList.append( m_Part->SpliceList.value( m_Part->SpliceList.keys().at(i)).CurrentWorkstation);
     }
     return corlorList;
 }
 
-QList<int> PartModel::geteWorkStationZone(int id, QString name)
+QList<int> PartModel::geteWorkStationZone()
 {
     QList<int> zoneList;
-    PartElement myPart;
-    m_partAdaptor->QueryOneRecordFromTable(id,name,&myPart);
-    for (int i = 0; i < myPart.SpliceList.count(); i++) {
-        zoneList.append(myPart.SpliceList.value(myPart.SpliceList.keys().at(i)).CurrentBoardLayoutZone);
+    for (int i = 0; i < m_Part->SpliceList.count(); i++) {
+        zoneList.append(m_Part->SpliceList.value(m_Part->SpliceList.keys().at(i)).CurrentBoardLayoutZone);
     }
     return zoneList;
 }
 
-bool PartModel::getPartOnlineOrOffLine(int id, QString name)
+QStringList PartModel::getCurrentPartOfSpliceName()
 {
-    PartElement myPart;
-    m_partAdaptor->QueryOneRecordFromTable(id,name,&myPart);
-    if (myPart.PartTypeSetting.ProcessMode == BASIC) {
+    QStringList list;
+    for (int i = 0; i < m_Part->SpliceList.count(); i++) {
+        list.append(m_Part->SpliceList.value(m_Part->SpliceList.keys().at(i)).SpliceName);
+    }
+    return list;
+}
+
+QList<int> PartModel::getCurrentPartOfSpliceId()
+{
+    QList<int> idList;
+    for (int i = 0; i < m_Part->SpliceList.count(); i++) {
+        idList.append(m_Part->SpliceList.value(m_Part->SpliceList.keys().at(i)).SpliceID);
+    }
+    return idList;
+}
+
+bool PartModel::getPartOnlineOrOffLine()
+{
+    if (m_Part->PartTypeSetting.ProcessMode == BASIC) {
         return false;
     } else {
         return true;
     }
 }
 
+void PartModel::setPartOffLineOrOnLine(bool bIsLine)
+{
+    if (bIsLine) {
+        m_Part->PartTypeSetting.ProcessMode = ADVANCE;
+    } else {
+        m_Part->PartTypeSetting.ProcessMode = BASIC;
+    }
+}
+
+void PartModel::setPartName(QString name)
+{
+   m_Part->PartName =  name;
+}
+
+void PartModel::setPartColumns(int columns)
+{
+    m_Part->PartTypeSetting.BoardLayout.Columns = columns;
+}
+
+void PartModel::setPartRows(int rows)
+{
+   m_Part->PartTypeSetting.BoardLayout.Rows = rows;
+}
+
+void PartModel::setPartMaxSplicePerZone(int maxNum)
+{
+    m_Part->PartTypeSetting.BoardLayout.MaxSplicesPerZone = maxNum;
+}
+
+void PartModel::setPartWorkStationNum(int num)
+{
+    m_Part->PartTypeSetting.WorkStations.TotalWorkstation = num;
+}
+
+void PartModel::setPartMaxSplicePerWorkStation(int maxNum)
+{
+     m_Part->PartTypeSetting.WorkStations.MaxSplicesPerWorkstation = maxNum;
+}
+
+void PartModel::setPartSpliceListClear()
+{
+    m_Part->SpliceList.clear();
+}
+
+void PartModel::setPartSpliceList(QString name, int id, int station, int zone, int index)
+{
+    m_Part->SpliceList[index].SpliceID = id;
+    m_Part->SpliceList[index].SpliceName = name;
+    m_Part->SpliceList[index].CurrentWorkstation = station;
+    m_Part->SpliceList[index].CurrentBoardLayoutZone = zone;
+}
+
+void PartModel::savePartInfo(bool bIsEdit)
+{
+    if (bIsEdit) {
+        m_partAdaptor->UpdateRecordIntoTable(m_Part);
+    } else {
+        int partId = m_partAdaptor->InsertRecordIntoTable(m_Part);
+        qDebug()<<"savePartInfo insert id: "<< partId;
+    }
+    setModelList();
+}
+
 /*******************************OperaTorModel*****************************/
-
-
 OperatorModel::OperatorModel(QObject *parent) :
     QAbstractTableModel(parent)
 {
@@ -1188,6 +1456,15 @@ QVariant AlarmModel::data(const QModelIndex &index, int role) const
     return value;
 }
 
+void AlarmModel::setModelList(QString name, unsigned int time_from, unsigned int time_to)
+{
+    beginResetModel();
+    alarms->clear();
+    if (m_alarmAdaptor->QueryUseNameAndTime(name,time_from,time_to,alarms))
+        qDebug( )<< "AlarmModel " << alarms->count();
+    endResetModel();
+}
+
 void AlarmModel::setModelList(unsigned int time_from, unsigned int time_to)
 {
     beginResetModel();
@@ -1206,6 +1483,10 @@ void AlarmModel::setModelList()
     endResetModel();
 }
 
+void AlarmModel::searchAlarmLog(QString name, unsigned int time_from, unsigned int time_to)
+{
+    setModelList(name,time_from,time_to);
+}
 
 int AlarmModel::rowCount(const QModelIndex & parent) const
 {
@@ -1692,7 +1973,7 @@ int WireModel::insertValueToTable(QString type,QString wireName,int wireId,int o
 //    enum HorizontalLocation Side;
 //    enum VerticalLocation VerticalSide;
 //    enum VerticalPosition Position;
-
+    int insertWireId;
     WireElement insertWire;
     insertWire.WireName = wireName;
     insertWire.WireID = wireId;
@@ -1707,12 +1988,20 @@ int WireModel::insertValueToTable(QString type,QString wireName,int wireId,int o
     insertWire.Position = (VerticalPosition)position;
 
     if (type == "insert"){
-        int wireId = m_wireAdaptor->InsertRecordIntoTable(&insertWire);
+        insertWireId = m_wireAdaptor->InsertRecordIntoTable(&insertWire);
         setModelList();
-        return wireId;
+        return insertWireId;
     }
     else if (type == "update") {
-        m_wireAdaptor->UpdateRecordIntoTable(&insertWire);
+        WireElement wireTemp;
+        m_wireAdaptor->QueryOneRecordFromTable(wireId,&wireTemp);
+        if (wireTemp == insertWire)
+            return wireId;
+        else
+        {
+            insertWireId = m_wireAdaptor->InsertRecordIntoTable(&insertWire);
+            return insertWireId;
+        }
     }
     return 1;
 }
@@ -1747,6 +2036,7 @@ QVariant WireModel::getStructValue(QString key)
     WireModelHash.insert("WireDirection",(int)wireElement.Side);
     WireModelHash.insert("WirePosition",wireElement.Position);
     WireModelHash.insert("WireBasic",wireElement.VerticalSide);
+    WireModelHash.insert("WireId",wireElement.WireID);
 
 //    WireModelHash.insert("OperatorName",myWire.OperatorID);
 //    WireModelHash.insert("Color",myWire.Color);

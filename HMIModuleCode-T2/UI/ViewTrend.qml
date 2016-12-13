@@ -328,7 +328,6 @@ Item {
                 onClicked: {
                     var fromtime = hmiAdaptor.timeChangeToInt(mycalendar1.text + " " + mytimeSelect1.text)
                     var totime = hmiAdaptor.timeChangeToInt(mytimeSelect2.text + " " + mytimeSelect2.text)
-                    spliceModel.seachSpliceModel(workOrderName.text,fromtime,totime)
                 }
             }
 //            CButton {

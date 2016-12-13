@@ -79,29 +79,10 @@ Item {
                 anchors.fill: parent
                 onClicked: {
                     select.checked = !select.checked
-                    currentSelecte(index)
-                }
-            }
-            Rectangle {
-                id: background
-                anchors.left: numIndex.right
-                anchors.leftMargin: 2
-                width: parent.width - 55
-                height: parent.height
-                color: "black"
-                opacity: 0
-                clip: true
-                RadioButton {
-                    id: select
-                    visible: false
-                    exclusiveGroup: checkGroup
-                    onCheckedChanged: {
-                        if (select.checked) {
-                            background.opacity = 0.5
-                        } else {
-                            background.opacity = 0
-                        }
-                    }
+                    if (select.checked)
+                        currentSelecte(index)
+                    else
+                        currentSelecte(-1)
                 }
             }
             Text {
@@ -114,7 +95,7 @@ Item {
                 height: 28
                 font.pointSize: 14
                 font.family: "arial"
-                text: qsTr(SpliceName)
+                text: SpliceName
                 elide: Text.ElideRight
                 color: "white"
                 clip: true
@@ -158,6 +139,28 @@ Item {
                 iconSource: "qrc:/images/images/close.png"
                 onClicked: {
                     listModel.remove(index)
+                }
+            }
+            Rectangle {
+                id: background
+                anchors.left: numIndex.right
+                anchors.leftMargin: 2
+                width: parent.width - 55
+                height: parent.height
+                color: "black"
+                opacity: 0
+                clip: true
+                RadioButton {
+                    id: select
+                    visible: false
+                    exclusiveGroup: checkGroup
+                    onCheckedChanged: {
+                        if (select.checked) {
+                            background.opacity = 0.5
+                        } else {
+                            background.opacity = 0
+                        }
+                    }
                 }
             }
         }

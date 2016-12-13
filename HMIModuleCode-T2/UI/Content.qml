@@ -12,7 +12,13 @@ Item {
     property bool bIsEdit: false
     property bool bIsBoard: true
     property string draColor: ""
+    property bool bIsEditSplice: false
+    property bool bIsFirst: false
+    property variant arrayzone: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P"]
+    property variant arrayColor: ["#ff6699","#ff0033","#33FFCC","#cc99ff","#cc0099","#930202","#99ccff","#f79428",
+        "#0000cc","Olive","#ffff33","#ffcc00","#cc9909","#66ff00","#009900","#00cc66","#3366ff","#cc33cc","#cc9966","#9400D3"]
     signal titleTextChanged(var myTitleText)
+    property var selectSpliceId: -1
     width: Screen.width
     height: Screen.height
     Image {
@@ -22,6 +28,11 @@ Item {
     Connections {
         target: loader.item
         onSignalSaveSplice: {
+            if (spliceId != -1)
+                spliceList.listModel.append({"SpliceName":spliceModel.getStructValue("SpliceName","") ,"stationColor":"white","station":"?","SpliceId":spliceId})
+            else if (spliceId == -1)
+                content.selectSplice(content.selectSpliceId)
+
             loader.source = ""
             titleTextChanged("Create Assembly")
         }
@@ -30,38 +41,30 @@ Item {
         id: loader
         z: 10
         anchors.fill: parent
+        onLoaded: {
+            if (bIsEditSplice)
+            {
+                loader.item.bIsEditSplice = true
+                var list = spliceModel.getWireIdList()
+                loader.item.editSplice(list)
+                bIsEditSplice = false
+            }
+        }
     }
     ListModel{
         id: listModel
     }
-    ListModel {
-        id: testModel
-    }
-    Component.onCompleted: {
-        listModel.append({"nameValue":"Splice1 test title hellow word! welcome ","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice2 test title hellow word! welcome ","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice2 test title hellow word! welcome ","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice3 test title hellow word! welcome ","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice4 test title hellow word! welcome ","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice5 test title hellow word! welcome ","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice6 test title hellow word! welcome ","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice7 test title hellow word! welcome ","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice8 test title hellow word! welcome ","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice9 test title hellow word! welcome ","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice10 test title hellow word! welcome ","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice11 test title hellow word! welcome ","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice12 test title hellow word! welcome ","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice13 test title hellow word! welcome ","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice14 test title hellow word! welcome ","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice15 test title hellow word! welcome ","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice16 test title hellow word! welcome ","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice17 test title hellow word! welcome ","stationColor":"white","station":"?"})
-        listModel.append({"nameValue":"Splice18 test title hellow word! welcome ","stationColor":"white","station":"?"})
-        testModel.append({"name":"splice test title 11111111111222","date":"2016/10/13","middle":"VW","type":"YES","count":"3"})
-        testModel.append({"name":"splice test title 1111111111122","date":"2016/10/13","middle":"VW","type":"YES","count":"3"})
-        testModel.append({"name":"splice test title 11111111111","date":"2016/10/13","middle":"VW","type":"YES","count":"3"})
-        testModel.append({"name":"splice test title 11111111111","date":"2016/10/13","middle":"VW","type":"YES","count":"311"})
-        testModel.append({"name":"splice test title 1111111111133333333333333","date":"2016/10/13","middle":"VW","type":"YES","count":"3"})
+    function selectSplice(spliceId)
+    {
+        spliceModel.editNew(spliceId)
+        var list = new Array
+        list = spliceModel.getWireIdList()
+        spliceDetailItem.clear()
+        for (var i = 0; i < list.length;i++)
+        {
+            wireModel.addFromLibrary(list[i])
+            spliceDetailItem.addWireFromSplice()
+        }
     }
 
     function getAllWorkstationColor(count)
@@ -125,13 +128,19 @@ Item {
             }
             SpliceListView {
                 id: spliceList
-                listModel: ""
+                listModel: listModel
                 anchors.top: tipsRec.bottom
                 anchors.topMargin: 6
                 anchors.bottom: tipsRec2.top
                 bIsWorkShow: !bIsBasic
                 onCurrentSelecte: {
-                    listModel.set(index,{"nameValue":"gggggggg"})
+//                    index
+                    if (index != -1) {
+                        content.selectSpliceId = listModel.get(index).SpliceId
+                        content.selectSplice(content.selectSpliceId)
+                    }
+                    else
+                        content.selectSpliceId = -1
                 }
                 onCurrentWorkStation: {
                     stationSet.index = index
@@ -165,13 +174,12 @@ Item {
                     spliceModel.createNew()
                 }
             }
-
             CButton {
                 id: addExitSplice
                 anchors.bottom: upload.top
                 anchors.left: parent.left
                 anchors.leftMargin: 10
-                text: "+ ADD EXITING SPLICE"
+                text: "+ ADD EXISTING SPLICE"
                 textColor: "white"
                 width: parent.width - 20
                 pointSize: 16
@@ -209,7 +217,18 @@ Item {
                         dialog.visible = true
                         backGround.visible = true
                         backGround.opacity = 0.5
+                    } else {
+                        partModel.setPartSpliceListClear()
+                        for (var i = 0; i < listModel.count; i++) {
+                            if (listModel.get(i).station == "?") {
+                                partModel.setPartSpliceList(listModel.get(i).SpliceName,listModel.get(i).SpliceId,-1,-1,i+1)
+                            } else {
+                                partModel.setPartSpliceList(listModel.get(i).SpliceName,listModel.get(i).SpliceId,arrayColor.indexOf(listModel.get(i).stationColor),arrayzone.indexOf(listModel.get(i).station),i+1)
+                            }
+                        }
+                        partModel.savePartInfo(content.bIsEdit)
                     }
+                    root.menuInit(2)
                 }
             }
         }
@@ -241,14 +260,32 @@ Item {
                 width: parent.width * 0.6
                 textLeft: qsTr("Basic")
                 textRight: qsTr("Adv")
-                state: "left"
+                state: partModel.getPartOnlineOrOffLine() ? "right" : "left"
                 opacity: 0.8
                 clip: true
                 onOnChanged: {
                     if (basicSwitch.state == "left") {
+                        borderSwitch.state = "right"
+                        borderSwitch.visible = false
                         bIsBasic = true
+                        partModel.setPartOffLineOrOnLine(false)
                     } else {
+                        borderSwitch.state = "left"
+                        borderSwitch.visible = true
                         bIsBasic = false
+                        partModel.setPartOffLineOrOnLine(true)
+                        for (var i = 0; i < listModel.count; i++) {
+                            boardlayout.setBoardLayoutColor(true,arrayzone.indexOf(listModel.get(i).station),listModel.get(i).stationColor,i+1)
+                        }
+                    }
+                }
+                Component.onCompleted: {
+                    if (basicSwitch.state == "left") {
+                        borderSwitch.visible = false
+                        borderSwitch.state = "right"
+                    } else {
+                        borderSwitch.state = "left"
+                        borderSwitch.visible = true
                     }
                 }
             }
@@ -284,6 +321,7 @@ Item {
 //                regExp: RegExpValidator{regExp: /([1-9]|1[0-9]|20)/}
 //                opacity: 0.7
 //                tipsSize: 14
+                inputText: partModel.getWorkStationCount()
                 onInputFocusChanged: {
                     if (edit1.inputFocus) {
                         backGround.visible = true
@@ -296,8 +334,10 @@ Item {
                     }
                 }
                 onInputTextChanged: {
+                    partModel.setPartWorkStationNum(edit1.inputText)
                     getAllWorkstationColor(edit1.inputText)
                     workStationcolor.allWorkTotal = edit1.inputText
+                    boardlayout
                 }
             }
             MiniKeyNumInput {
@@ -308,16 +348,12 @@ Item {
                 anchors.left: parent.left
                 anchors.leftMargin: 10
                 width: parent.width-20
-//                borderColor: "#375566"
                 height: 50
                 inputWidth: edit2.width/3
-//                inputHeight: 45
-//                horizontalAlignment: Qt.AlignHCenter
                 tipsText: qsTr("#of Splices per Workstations")
-//                maxSize: 20
 //                regExp: RegExpValidator{regExp: /([1-9]|1[0-9]|20)/}
                 opacity: 0.7
-//                tipsSize: 14
+                inputText: partModel.getWorkStationMaxSplicePerStation()
                 onInputFocusChanged: {
                     if (edit2.inputFocus) {
                         backGround.visible = true
@@ -330,12 +366,14 @@ Item {
                     }
                 }
                 onInputTextChanged: {
+                    partModel.setPartMaxSplicePerWorkStation(edit2.inputText)
                     workStationcolor.maxSpliceNum = edit2.inputText
+                    boardlayout.reSetBoardLayoutColor(edit2.inputText,edit1.inputText)
                 }
             }
             Label {
                 id: lab2
-                visible: bIsBoard
+                visible: !bIsBasic
                 anchors.top: edit2.bottom
                 anchors.topMargin: 6
                 anchors.left: parent.left
@@ -362,6 +400,7 @@ Item {
 //                regExp: RegExpValidator{regExp: /^[1-4]{1}$/}
 //                maxSize: 20
                 opacity: 0.7
+                inputText: partModel.getWorkStationRows()
 //                tipsSize: 14
                 onInputFocusChanged: {
                     if (edit3.inputFocus) {
@@ -375,6 +414,7 @@ Item {
                     }
                 }
                 onInputTextChanged: {
+                    partModel.setPartRows(edit3.inputText)
                     boardlayout.rows = edit3.inputText
                     for (var i = 0; i< workModel.count; i++) {
                         workModel.get(i).workStation.destroy()
@@ -390,17 +430,14 @@ Item {
                 anchors.topMargin: 12
                 anchors.left: edit3.right
                 anchors.leftMargin: 10
-//                horizontalAlignment: Qt.AlignHCenter
                 width: (parent.width-30)/2
                 height: 50
-//                borderColor: "#375566"
                 inputWidth: edit4.width/2
-//                inputHeight: 45
                 tipsText: qsTr("Columns")
 //                regExp: RegExpValidator{regExp: /^[1-4]{1}$/}
 //                maxSize: 20
                 opacity: 0.7
-//                tipsSize: 14
+                inputText: partModel.getWorkStationColumns()
                 onInputFocusChanged: {
                     if (edit4.inputFocus) {
                         backGround.visible = true
@@ -413,6 +450,7 @@ Item {
                     }
                 }
                 onInputTextChanged: {
+                    partModel.setPartColumns(edit4.inputText)
                     boardlayout.columns = edit4.inputText
                     for (var i = 0; i< workModel.count; i++) {
                         workModel.get(i).workStation.destroy()
@@ -437,6 +475,7 @@ Item {
 //                regExp: RegExpValidator{regExp: /([1-9]|1[0-2])/}
 //                maxSize: 20
                 opacity: 0.7
+                inputText: partModel.getWorkStationMaxSplicePerZone()
 //                tipsSize: 14
                 onInputFocusChanged: {
                     if (edit5.inputFocus) {
@@ -450,6 +489,8 @@ Item {
                     }
                 }
                 onInputTextChanged: {
+                    partModel.setPartMaxSplicePerZone(edit5.inputText)
+                    boardlayout.reSetBoardLayoutStation(edit5.inputText)
                 }
             }
         }
@@ -542,6 +583,11 @@ Item {
             maxSize: 60
             clip: true
             onTextChange: {
+                if (template.text != "Template") {
+                    partModel.setPartName(edit6.inputText + template.text)
+                } else {
+                    partModel.setPartName(edit6.inputText)
+                }
             }
         }
         Rectangle {
@@ -566,6 +612,9 @@ Item {
                 font.family: "arial"
                 font.pixelSize: 27
                 color: "#969ea5"
+                onTextChanged: {
+                    partModel.setPartName(edit6.inputText + name.text)
+                }
             }
             Image {
                 anchors.left: name.right
@@ -648,8 +697,6 @@ Item {
             opacity: 0.5
         }
 
-
-
         SpliceDetails {
             id: spliceDetailItem
             anchors.top: spliceDetailsTips.bottom
@@ -662,21 +709,21 @@ Item {
             anchors.bottomMargin: 10
             visible: !bIsBoard
             Component.onCompleted: {
-                spliceDetailItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-                spliceDetailItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-                spliceDetailItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-                spliceDetailItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+//                spliceDetailItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+//                spliceDetailItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+//                spliceDetailItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+//                spliceDetailItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
 
-                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+//                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+//                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+//                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+//                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+//                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+//                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+//                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
 
-                spliceDetailItem.setState("topLeft",200,"0.75","red")
-                spliceDetailItem.setState("bottomLeft",200,"0.75","red")
+//                spliceDetailItem.setState("topLeft",200,"0.75","red")
+//                spliceDetailItem.setState("bottomLeft",200,"0.75","red")
             }
         }
 
@@ -687,7 +734,7 @@ Item {
             Image {
                 id: spliceImage
                 anchors.fill: parent
-                source: "qrc:/images/images/bg.png"
+                source: spliceModel.getStructValue("PicPath","") == " " ? "qrc:/images/images/bg.png" : spliceModel.getStructValue("PicPath","")
             }
             Text {
                 anchors.right: parent.right
@@ -709,8 +756,10 @@ Item {
                     onSignalChoseFile: {
                         imageLoader.source = ""
                         var path = hmiAdaptor.copyFileToPath(fileName)
-                        if (path != "")
+                        if (path != "") {
                             spliceImage.source = "file:///"+path
+                            spliceModel.setStructValue("PicPath",spliceImage.source)
+                        }
                     }
                 }
             }
@@ -733,12 +782,11 @@ Item {
             visible: bIsBoard
             columns: 0
             rows: 0
-//            onColumnsChanged: {
-//                followArea.visible = false
-//            }
-//            onRowsChanged: {
-//                followArea.visible = false
-//            }
+            maxSplicePerWork: edit2.inputText
+            maxSplicePerZone: edit5.inputText
+            onSpliceModelUpdata: {
+                listModel.set(index-1,{"stationColor":"white","station":"?"})
+            }
         }
 
 //        Component {
@@ -838,6 +886,14 @@ Item {
             width: 250
             pointSize: 16
             onClicked: {
+                if (content.selectSpliceId != -1)
+                {
+                    bIsEditSplice = true
+                    spliceModel.editNew(content.selectSpliceId)
+                    loader.source = "qrc:/UI/CreatWire.qml"
+                    titleTextChanged("Edit Existing")
+                }
+
             }
 
         }
@@ -956,23 +1012,46 @@ Item {
             if (stationSet.selecteZone == "") {
                 return
             }
-            listModel.set(stationSet.index,{"station":stationSet.selecteZone})
             if (stationSet.selecteColor != "") {
-                boardlayout.setBoardLayoutColor(stationSet.selecteIndex,stationSet.selecteColor,stationSet.index+1)
+                var reslut
+                if (listModel.get(stationSet.index).station == "?") {
+                    reslut = boardlayout.setBoardLayoutColor(true,stationSet.selecteIndex,stationSet.selecteColor,stationSet.index+1)
+                } else {
+                    reslut = boardlayout.setBoardLayoutColor(false,stationSet.selecteIndex,stationSet.selecteColor,stationSet.index+1)
+                }
+                if (reslut != -1) {
+                    listModel.set(stationSet.index,{"stationColor":stationSet.selecteColor,"station":stationSet.selecteZone})
+                } else {
+                    if (listModel.get(stationSet.index).station == "?") {
+                        listModel.set(stationSet.index,{"stationColor":"white","station":"?"})
+                    }
+                }
                 stationSet.visible = false
                 stationSet.selecteColor = ""
                 stationSet.selecteZone = ""
                 backGround2.visible = false
                 backGround2.opacity = 0
             }
+
         }
         onSelecteColorChanged: {
             if (stationSet.selecteColor == "") {
                 return
             }
-            listModel.set(stationSet.index,{"stationColor":stationSet.selecteColor})
             if (stationSet.selecteZone != "") {
-                boardlayout.setBoardLayoutColor(stationSet.selecteIndex,stationSet.selecteColor,stationSet.index+1)
+                var reslut
+                if (listModel.get(stationSet.index).station == "?") {
+                    reslut = boardlayout.setBoardLayoutColor(true,stationSet.selecteIndex,stationSet.selecteColor,stationSet.index+1)
+                } else {
+                    reslut = boardlayout.setBoardLayoutColor(false,stationSet.selecteIndex,stationSet.selecteColor,stationSet.index+1)
+                }
+                if (reslut != -1) {
+                    listModel.set(stationSet.index,{"stationColor":stationSet.selecteColor,"station":stationSet.selecteZone})
+                } else {
+                    if (listModel.get(stationSet.index).station == "?") {
+                        listModel.set(stationSet.index,{"stationColor":"white","station":"?"})
+                    }
+                }
                 stationSet.visible = false
                 stationSet.selecteColor = ""
                 stationSet.selecteZone = ""
@@ -986,28 +1065,71 @@ Item {
         anchors.centerIn: parent
         width: parent.width*0.9
         height: parent.width*0.4
-        visible: content.bIsEdit ? true : false
-        listModel: content.bIsEdit ? partModel : spliceModel
-        titleName: content.bIsEdit ? qsTr("Add Part") : qsTr("Add Existing Splice")
-        componentName: content.bIsEdit ? qsTr("Part Name") : qsTr("SPLICE NAME")
+        visible: content.bIsFirst ? true : false
+        listModel: content.bIsFirst ? partModel : spliceModel
+        titleName: content.bIsFirst ? qsTr("Add Part") : qsTr("Add Existing Splice")
+        componentName: content.bIsFirst ? qsTr("Part Name") : qsTr("SPLICE NAME")
         componentData: qsTr("DATE CREATED")
-        componentMiddle: content.bIsEdit ? qsTr("# OF SPLICE") : qsTr("# OF WIRES")
+        componentMiddle: content.bIsFirst ? qsTr("# OF SPLICE") : qsTr("OperatorName")
         componenttype: qsTr("CROSS SECTION")
-        componentCount: content.bIsEdit ? "" : qsTr("COUNT")
-        bIsOnlyOne: content.bIsEdit
+        bIsOnlyOne: (addExit.listModel == partModel) ? true : false
+        componentCount: content.bIsFirst ? "" : qsTr("# OF WIRES")
         onSignalAddExistCancel: {
             backGround.visible = false
             backGround.opacity = 0
             addExit.visible = false
-            content.bIsEdit = false
+            content.bIsFirst = false
         }
         onSignalAddExistSelectClick: {
             //que hanshu
+            if (addExit.listModel == partModel) {
+                partModel.getPartInfo(true,modelId,name)
+                var corlorlist = new Array()
+                    corlorlist = partModel.getWorkStationCorlor()
+                var zoneList = new Array()
+                zoneList = partModel.geteWorkStationZone()
+                var nameList = new Array()
+                nameList = partModel.getCurrentPartOfSpliceName()
+                var idList = new Array()
+                idList = partModel.getCurrentPartOfSpliceId()
+                for (var i = 0; i < nameList.length; i++) {
+                    if (corlorlist[i] == -1 || zoneList[i] == -1) {
+                        spliceList.listModel.append({"SpliceName":nameList[i],"stationColor":"white","station":"?","SpliceId":idList[i]})
+                    } else {
+                        spliceList.listModel.append({"SpliceName":nameList[i],"stationColor":arrayColor[corlorlist[i]],"station":arrayzone[zoneList[i]],"SpliceId":idList[i]})
+                    }
+                }
+                edit1.inputText = partModel.getWorkStationCount()
+                edit2.inputText = partModel.getWorkStationMaxSplicePerStation()
+                edit3.inputText = partModel.getWorkStationRows()
+                edit4.inputText = partModel.getWorkStationColumns()
+                edit5.inputText = partModel.getWorkStationMaxSplicePerZone()
+                edit6.inputText = name
+                if (partModel.getPartOnlineOrOffLine())
+                    basicSwitch.state = "right"
+                else
+                    basicSwitch.state = "left"
+            } else if (addExit.listModel == spliceModel) {
+                var bIsFind = false
+                for (var i = 0; i < listModel.count; i++) {
+                    if (listModel.get(i).SpliceName == name) {
+                        bIsFind = true;
+                        break;
+                    }
+                }
+                if (!bIsFind) {
+                    spliceList.listModel.append({"SpliceName":name,"stationColor":"white","station":"?","SpliceId":modelId})
+                }
+            }
             backGround.visible = false
             backGround.opacity = 0
             addExit.visible = false
-            content.bIsEdit = false
-            spliceList.listModel = spliceModel
+            content.bIsFirst = false
+        }
+        onVisibleChanged: {
+            if (addExit.visible) {
+                addExit.clearSelect()
+            }
         }
     }
     Item {
@@ -1023,25 +1145,11 @@ Item {
             anchors.fill: parent
             source: "qrc:/images/images/dialogbg.png"
         }
-//        Text {
-//            id: addNew
-//            anchors.top: parent.top
-//            anchors.left: parent.left
-//            anchors.leftMargin: 20
-//            verticalAlignment: Qt.AlignVCenter
-//            height: 40
-//            width: parent.width-30
-//            font.pixelSize: 20
-//            font.family: "arial"
-//            color: "white"
-//            text: qsTr("Add New")
-//        }
         CButton {
             id: addNew
             anchors.top: parent.top
             anchors.left: parent.left
             anchors.leftMargin: 20
-//            verticalAlignment: Qt.AlignVCenter
             height: 40
             width: parent.width / 2
             pixelSize: 20

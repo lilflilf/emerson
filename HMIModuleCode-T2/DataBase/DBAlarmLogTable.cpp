@@ -354,7 +354,6 @@ bool DBAlarmLogTable::QueryUseNameAndTime(QString AlarmType, unsigned int time_f
     query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
     TimeLabel = QDateTime::fromTime_t(time_to);
     query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
-
     bResult = query.exec();
     if(bResult == true)
     {

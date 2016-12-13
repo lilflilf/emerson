@@ -38,7 +38,7 @@ PresetElement::PresetElement()
     WeldSettings.AdvanceSetting.MeasuredWidth = 0;
     WeldSettings.AdvanceSetting.PreBurst = 0;
     WeldSettings.AdvanceSetting.SqzTime = 0;
-    WeldSettings.AdvanceSetting.WeldMode = ENERGY;
+    WeldSettings.AdvanceSetting.WeldMode = TIME;
     WeldSettings.AdvanceSetting.StepWeld.StepWeldMode = STEPDISABLE;
     WeldSettings.AdvanceSetting.StepWeld.Amplitude2 = -1;
     WeldSettings.AdvanceSetting.StepWeld.EnergyToStep = -1;

@@ -12,6 +12,8 @@ Item {
     property alias cancelvisible: cancelButton.visible
     property alias cancelText: cancelButton.text
     property alias centerText: title.text
+    property alias msgTypeIco: msgType.source
+    property alias titleText: headText.text
     signal cliceTo(bool reb)
     Rectangle {
         id: backGround
@@ -33,6 +35,18 @@ Item {
         width: 700
         height: 525
         source: "qrc:/images/images/dialogbg.png"
+        Image {
+            id: msgType
+            width: 80
+            height: 80
+        }
+        Text {
+            id: headText
+            font.family: "arial"
+            font.pixelSize: 25
+            wrapMode: Text.WordWrap
+            color: "white"
+        }
         Text {
             id: title
             anchors.centerIn: parent

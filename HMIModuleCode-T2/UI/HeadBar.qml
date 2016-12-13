@@ -418,7 +418,7 @@ Item {
                 dialog.visible = true
                 okButton.visible = false
                 helpTitle.visible = true
-                helpTitle.text = "Current Operator: Jerry Wang"
+                helpTitle.text = "Current Operator: " + hmiAdaptor.getCurrentOperatorId() //Jerry Wang"
                 personColumn.visible = true
                 background.opacity = 0.5
             }

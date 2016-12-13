@@ -133,7 +133,6 @@ Item {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    console.log("clickkkkkk")
                     if (index == 0)
                         clickType = 20
                     else if (index == 1)

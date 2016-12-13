@@ -30,7 +30,6 @@ Item {
                 shrinkModel.append({shrinkid:list[i*3],temperature:list[i*3+1],times:list[i*3+2]})
             }
         }
-
     }
 
     Rectangle {

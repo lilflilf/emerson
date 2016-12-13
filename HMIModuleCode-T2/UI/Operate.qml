@@ -6,6 +6,7 @@ import QtQuick.Controls 1.4
 import QtQuick.Dialogs 1.2
 
 Item {
+    id: operate
     property int selectIndx: -1
     Image {
         anchors.fill: parent
@@ -19,8 +20,19 @@ Item {
         z: 10
         anchors.fill: parent
         onLoaded: {
+            if (loader.source == "qrc:/UI/OperateDetails.qml")
+            {
+                var list = new Array
+                list =  workOrderModel.getSpliceList(selectIndx)
+                if (list.length > 0) {
+                    loader.item.spliceList = workOrderModel.getSpliceList(selectIndx)
+                    loader.item.selectSplice(workOrderModel.getSpliceList(selectIndx)[0])
+                }
+
+            }
+
             if (selectIndx != -1) {
-                loader.item.partName = workOrderModel.getWorkOrderValue(selectIndx,"middle")
+                loader.item.partName = workOrderModel.getWorkOrderValue(selectIndx,"name")
                 loader.item.partId = workOrderModel.getPartId(selectIndx)
             }
         }
@@ -223,7 +235,7 @@ Item {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    selectIndx = index
+                    operate.selectIndx = index
                     selectCheck.checked = !selectCheck.checked
                 }
             }
@@ -353,7 +365,10 @@ Item {
         clip: true
         textColor: "white"
         onClicked: {
+            if (operate.selectIndx != -1) {
+                workOrderModel.editNew(workOrderModel.getPartId(operate.selectIndx))
             if (selectIndx != -1) {
+                partModel.getPartInfo(true,workOrderModel.getPartId(selectIndx),workOrderModel.getWorkOrderValue(selectIndx,"middle"))
                 loader.source = "qrc:/UI/OperateDetails.qml"
             }
         }
@@ -520,7 +535,6 @@ Item {
                     workOrderModel.insertRecordIntoTable(inputworkId.inputText,selectPart.partId,selectPart.text,inputquantity.inputText)
                     selectPart.text = "SELECT PART"
                 }
-//                selectIndx = -1
                 dialog.bIsEdit = false
             }
         }
@@ -529,8 +543,11 @@ Item {
     AddExistingSpliceWire {
         id: addExit
         anchors.centerIn: parent
-        width: Screen.width*0.7
-        height: Screen.height*0.6
+//        width: Screen.width*0.7
+//        height: Screen.height*0.6
+        width: parent.width*0.9
+        height: parent.width*0.4
+
         visible: false
         listModel: partModel //testModel
         titleName: qsTr("ADD WORK ORDEAR")
