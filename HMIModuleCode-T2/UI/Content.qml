@@ -12,6 +12,9 @@ Item {
     property bool bIsEdit: false
     property bool bIsBoard: true
     property string draColor: ""
+    property variant arrayzone: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P"]
+    property variant arrayColor: ["#ff6699","#ff0033","#33FFCC","#cc99ff","#cc0099","#930202","#99ccff","#f79428",
+        "#0000cc","Olive","#ffff33","#ffcc00","#cc9909","#66ff00","#009900","#00cc66","#3366ff","#cc33cc","#cc9966","#9400D3"]
     signal titleTextChanged(var myTitleText)
     width: Screen.width
     height: Screen.height
@@ -148,6 +151,13 @@ Item {
                     backGround.visible = true
                     backGround.opacity = 0.7
                     addExit.visible = true
+                    addExit.listModel = spliceModel
+                    addExit.componentName = qsTr("Add Existing Splice")
+                    addExit.componentData = qsTr("DATE CREATED")
+                    addExit.componentMiddle = qsTr("OperatorName")
+                    addExit.componenttype = qsTr("CROSS SECTION")
+                    addExit.componentCount = qsTr("# OF WIRES")
+                    addExit.bIsOnlyOne = false
                 }
             }
             CButton {
@@ -178,6 +188,16 @@ Item {
                         dialog.visible = true
                         backGround.visible = true
                         backGround.opacity = 0.5
+                    } else {
+                        partModel.setPartSpliceListClear()
+                        for (var i = 0; i < listModel.count; i++) {
+                            if (listModel.get(i).station == "?") {
+                                continue
+                            } else {
+                                partModel.setPartSpliceList(listModel.get(i).SpliceName,listModel.get(i).SpliceId,arrayColor.indexOf(listModel.get(i).stationColor),arrayzone.indexOf(listModel.get(i).station),i+1)
+                            }
+                        }
+                        partModel.savePartInfo(content.bIsEdit)
                     }
                 }
             }
@@ -210,7 +230,7 @@ Item {
                 width: parent.width * 0.6
                 textLeft: qsTr("Basic")
                 textRight: qsTr("Adv")
-                state: "left"
+                state: partModel.getPartOnlineOrOffLine() ? "right" : "left"
                 opacity: 0.8
                 clip: true
                 onOnChanged: {
@@ -218,11 +238,12 @@ Item {
                         borderSwitch.state = "right"
                         borderSwitch.visible = false
                         bIsBasic = true
+                        partModel.setPartOffLineOrOnLine(false)
                     } else {
                         borderSwitch.state = "left"
                         borderSwitch.visible = true
                         bIsBasic = false
-                        var arrayzone = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P"]
+                        partModel.setPartOffLineOrOnLine(true)
                         for (var i = 0; i < listModel.count; i++) {
                             boardlayout.setBoardLayoutColor(arrayzone.indexOf(listModel.get(i).station),listModel.get(i).stationColor,i+1)
                         }
@@ -270,6 +291,7 @@ Item {
 //                regExp: RegExpValidator{regExp: /([1-9]|1[0-9]|20)/}
 //                opacity: 0.7
 //                tipsSize: 14
+                inputText: partModel.getWorkStationCount()
                 onInputFocusChanged: {
                     if (edit1.inputFocus) {
                         backGround.visible = true
@@ -282,6 +304,7 @@ Item {
                     }
                 }
                 onInputTextChanged: {
+                    partModel.setPartWorkStationNum(edit1.inputText)
                     getAllWorkstationColor(edit1.inputText)
                     workStationcolor.allWorkTotal = edit1.inputText
                 }
@@ -294,16 +317,12 @@ Item {
                 anchors.left: parent.left
                 anchors.leftMargin: 10
                 width: parent.width-20
-//                borderColor: "#375566"
                 height: 50
                 inputWidth: edit2.width/3
-//                inputHeight: 45
-//                horizontalAlignment: Qt.AlignHCenter
                 tipsText: qsTr("#of Splices per Workstations")
-//                maxSize: 20
 //                regExp: RegExpValidator{regExp: /([1-9]|1[0-9]|20)/}
                 opacity: 0.7
-//                tipsSize: 14
+                inputText: partModel.getWorkStationMaxSplicePerStation()
                 onInputFocusChanged: {
                     if (edit2.inputFocus) {
                         backGround.visible = true
@@ -316,6 +335,7 @@ Item {
                     }
                 }
                 onInputTextChanged: {
+                    partModel.setPartMaxSplicePerWorkStation(edit2.inputText)
                     workStationcolor.maxSpliceNum = edit2.inputText
                 }
             }
@@ -348,6 +368,7 @@ Item {
 //                regExp: RegExpValidator{regExp: /^[1-4]{1}$/}
 //                maxSize: 20
                 opacity: 0.7
+                inputText: partModel.getWorkStationRows()
 //                tipsSize: 14
                 onInputFocusChanged: {
                     if (edit3.inputFocus) {
@@ -361,6 +382,7 @@ Item {
                     }
                 }
                 onInputTextChanged: {
+                    partModel.setPartRows(edit3.inputText)
                     boardlayout.rows = edit3.inputText
                     for (var i = 0; i< workModel.count; i++) {
                         workModel.get(i).workStation.destroy()
@@ -376,17 +398,14 @@ Item {
                 anchors.topMargin: 12
                 anchors.left: edit3.right
                 anchors.leftMargin: 10
-//                horizontalAlignment: Qt.AlignHCenter
                 width: (parent.width-30)/2
                 height: 50
-//                borderColor: "#375566"
                 inputWidth: edit4.width/2
-//                inputHeight: 45
                 tipsText: qsTr("Columns")
 //                regExp: RegExpValidator{regExp: /^[1-4]{1}$/}
 //                maxSize: 20
                 opacity: 0.7
-//                tipsSize: 14
+                inputText: partModel.getWorkStationColumns()
                 onInputFocusChanged: {
                     if (edit4.inputFocus) {
                         backGround.visible = true
@@ -399,6 +418,7 @@ Item {
                     }
                 }
                 onInputTextChanged: {
+                    partModel.setPartColumns(edit4.inputText)
                     boardlayout.columns = edit4.inputText
                     for (var i = 0; i< workModel.count; i++) {
                         workModel.get(i).workStation.destroy()
@@ -423,6 +443,7 @@ Item {
 //                regExp: RegExpValidator{regExp: /([1-9]|1[0-2])/}
 //                maxSize: 20
                 opacity: 0.7
+                inputText: partModel.getWorkStationMaxSplicePerZone()
 //                tipsSize: 14
                 onInputFocusChanged: {
                     if (edit5.inputFocus) {
@@ -436,6 +457,7 @@ Item {
                     }
                 }
                 onInputTextChanged: {
+                    partModel.setPartMaxSplicePerZone(edit5.inputText)
                 }
             }
         }
@@ -528,6 +550,11 @@ Item {
             maxSize: 60
             clip: true
             onTextChange: {
+                if (template.text != Template) {
+                    partModel.setPartName(edit6.inputText + name.text)
+                } else {
+                    partModel.setPartName(edit6.inputText)
+                }
             }
         }
         Rectangle {
@@ -552,6 +579,9 @@ Item {
                 font.family: "arial"
                 font.pixelSize: 27
                 color: "#969ea5"
+                onTextChanged: {
+                    partModel.setPartName(edit6.inputText + name.text)
+                }
             }
             Image {
                 anchors.left: name.right
@@ -992,30 +1022,29 @@ Item {
             backGround.visible = false
             backGround.opacity = 0
             addExit.visible = false
-            content.bIsEdit = false
         }
         onSignalAddExistSelectClick: {
             //que hanshu
             if (addExit.listModel == partModel) {
+                partModel.getPartInfo(true,modelId,name)
                 var corlorlist = new Array()
-                    corlorlist = partModel.getWorkStationCorlor(modelId,name)
+                    corlorlist = partModel.getWorkStationCorlor()
                 var zoneList = new Array()
-                zoneList = partModel.geteWorkStationZone(modelId,name)
+                zoneList = partModel.geteWorkStationZone()
                 var nameList = new Array()
-                nameList = partModel.getCurrentPartOfSpliceName(modelId,name)
+                nameList = partModel.getCurrentPartOfSpliceName()
                 var idList = new Array()
-                idList = partModel.getCurrentPartOfSpliceId(modelId,name)
-                var array = ["#ff6699","#ff0033","#33FFCC","#cc99ff","#cc0099","#930202","#99ccff","#f79428","#0000cc","Olive"]
-                var arrayzone = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P"]
+                idList = partModel.getCurrentPartOfSpliceId()
                 for (var i = 0; i < nameList.length; i++) {
-                    spliceList.listModel.append({"SpliceName":nameList[i],"stationColor":array[corlorlist[i]],"station":arrayzone[zoneList[i]],"SpliceId":idList[i]})
+                    spliceList.listModel.append({"SpliceName":nameList[i],"stationColor":arrayColor[corlorlist[i]],"station":arrayzone[zoneList[i]],"SpliceId":idList[i]})
                 }
-                edit1.inputText = partModel.getWorkStationCount(modelId,name)
-                edit2.inputText = partModel.getWorkStationMaxSplicePerStation(modelId,name)
-                edit3.inputText = partModel.getWorkStationRows(modelId,name)
-                edit4.inputText = partModel.getWorkStationColumns(modelId,name)
-                edit5.inputText = partModel.getWorkStationMaxSplicePerZone(modelId,name)
-                if (partModel.getPartOnlineOrOffLine(modelId,name))
+                edit1.inputText = partModel.getWorkStationCount()
+                edit2.inputText = partModel.getWorkStationMaxSplicePerStation()
+                edit3.inputText = partModel.getWorkStationRows()
+                edit4.inputText = partModel.getWorkStationColumns()
+                edit5.inputText = partModel.getWorkStationMaxSplicePerZone()
+                edit6.inputText = name
+                if (partModel.getPartOnlineOrOffLine())
                     basicSwitch.state = "right"
                 else
                     basicSwitch.state = "left"
@@ -1034,7 +1063,6 @@ Item {
             backGround.visible = false
             backGround.opacity = 0
             addExit.visible = false
-            content.bIsEdit = false
         }
         onVisibleChanged: {
             if (addExit.visible) {
@@ -1055,25 +1083,11 @@ Item {
             anchors.fill: parent
             source: "qrc:/images/images/dialogbg.png"
         }
-//        Text {
-//            id: addNew
-//            anchors.top: parent.top
-//            anchors.left: parent.left
-//            anchors.leftMargin: 20
-//            verticalAlignment: Qt.AlignVCenter
-//            height: 40
-//            width: parent.width-30
-//            font.pixelSize: 20
-//            font.family: "arial"
-//            color: "white"
-//            text: qsTr("Add New")
-//        }
         CButton {
             id: addNew
             anchors.top: parent.top
             anchors.left: parent.left
             anchors.leftMargin: 20
-//            verticalAlignment: Qt.AlignVCenter
             height: 40
             width: parent.width / 2
             pixelSize: 20

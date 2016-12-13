@@ -15,11 +15,6 @@ Item {
     property int maxSplicePerZone: 0
     property string selecte: ""
     property var array: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P"]
-    function getStationColor(index)
-    {
-        var array = ["#ff6699","#ff0033","#33FFCC","#cc99ff","#cc0099","#930202","#99ccff","#f79428","#0000cc","Olive"]
-        return array[index]
-    }
     function setBoardLayoutColor(index,color,selecteIndex)
     {
         var i;

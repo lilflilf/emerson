@@ -31,6 +31,7 @@ Window {
         switch (index) {
         case 0:
         case 1:
+            partModel.getPartInfo(false,0,"")
             contentLoader.source = "qrc:/UI/Content.qml"
             headBar.titleText = qsTr("Create Assembly")
             break;
