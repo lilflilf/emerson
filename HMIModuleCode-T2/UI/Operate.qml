@@ -354,6 +354,7 @@ Item {
         textColor: "white"
         onClicked: {
             if (selectIndx != -1) {
+                partModel.getPartInfo(true,workOrderModel.getPartId(selectIndx),workOrderModel.getWorkOrderValue(selectIndx,"middle"))
                 loader.source = "qrc:/UI/OperateDetails.qml"
             }
         }

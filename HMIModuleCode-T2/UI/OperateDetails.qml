@@ -128,9 +128,9 @@ Item {
                 treeModel.append({"id":array[i],"level":0,"subNode":[]})
             }
             var zoneList = new Array();
-            zoneList = partModel.getWorkStationCorlor(partId,partName)
+            zoneList = partModel.getWorkStationCorlor()
             var j = 0
-            for ( j = 0; j < zoneList.count; j++) {
+            for ( j = 0; j < zoneList.length; j++) {
                 if (j == 0) {
                     treeModel.get(zoneList[j]).subNode.append({"spliceNo":j+1,"spliceColor":"#00aa7e","level":1,"subNode":[]})
                 } else if (j == 1) {
@@ -150,10 +150,13 @@ Item {
         anchors.bottomMargin: 10
         anchors.left: operateTitle.left
         width: Screen.width * 0.37
-        columns: partModel.getWorkStationColumns(partId,partName)
-        rows: partModel.getWorkStationRows(partId,partName)
-        visible: partModel.getPartOnlineOrOffLine(partId,partName)
+        columns: partModel.getWorkStationColumns()
+        rows: partModel.getWorkStationRows()
+        visible: partModel.getPartOnlineOrOffLine()
         listModel: treeModel
+        Component.onCompleted: {
+            console.log("xxxxxxxxxxxxxxxxxxx",partModel.getWorkStationColumns(),partModel.getWorkStationRows())
+        }
     }
     SpliceStatusOffLine {
         id: offline

@@ -179,6 +179,7 @@ Window {
         onLoaded: {
             if (initIndex == 1) {
                 contentLoader.item.bIsEdit = true
+                contentLoader.item.bIsFirst = true
             }
         }
     }
