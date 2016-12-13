@@ -13,6 +13,7 @@ Item {
     property bool bIsBoard: true
     property string draColor: ""
     property bool bIsEditSplice: false
+    property bool bIsFirst: false
     property variant arrayzone: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P"]
     property variant arrayColor: ["#ff6699","#ff0033","#33FFCC","#cc99ff","#cc0099","#930202","#99ccff","#f79428",
         "#0000cc","Olive","#ffff33","#ffcc00","#cc9909","#66ff00","#009900","#00cc66","#3366ff","#cc33cc","#cc9966","#9400D3"]
@@ -186,13 +187,6 @@ Item {
                     backGround.visible = true
                     backGround.opacity = 0.7
                     addExit.visible = true
-                    addExit.listModel = spliceModel
-                    addExit.componentName = qsTr("Add Existing Splice")
-                    addExit.componentData = qsTr("DATE CREATED")
-                    addExit.componentMiddle = qsTr("OperatorName")
-                    addExit.componenttype = qsTr("CROSS SECTION")
-                    addExit.componentCount = qsTr("# OF WIRES")
-                    addExit.bIsOnlyOne = false
                 }
             }
             CButton {
@@ -281,7 +275,7 @@ Item {
                         bIsBasic = false
                         partModel.setPartOffLineOrOnLine(true)
                         for (var i = 0; i < listModel.count; i++) {
-                            boardlayout.setBoardLayoutColor(arrayzone.indexOf(listModel.get(i).station),listModel.get(i).stationColor,i+1)
+                            boardlayout.setBoardLayoutColor(true,arrayzone.indexOf(listModel.get(i).station),listModel.get(i).stationColor,i+1)
                         }
                     }
                 }
@@ -343,6 +337,7 @@ Item {
                     partModel.setPartWorkStationNum(edit1.inputText)
                     getAllWorkstationColor(edit1.inputText)
                     workStationcolor.allWorkTotal = edit1.inputText
+                    boardlayout
                 }
             }
             MiniKeyNumInput {
@@ -373,6 +368,7 @@ Item {
                 onInputTextChanged: {
                     partModel.setPartMaxSplicePerWorkStation(edit2.inputText)
                     workStationcolor.maxSpliceNum = edit2.inputText
+                    boardlayout.reSetBoardLayoutColor(edit2.inputText,edit1.inputText)
                 }
             }
             Label {
@@ -494,6 +490,7 @@ Item {
                 }
                 onInputTextChanged: {
                     partModel.setPartMaxSplicePerZone(edit5.inputText)
+                    boardlayout.reSetBoardLayoutStation(edit5.inputText)
                 }
             }
         }
@@ -787,6 +784,9 @@ Item {
             rows: 0
             maxSplicePerWork: edit2.inputText
             maxSplicePerZone: edit5.inputText
+            onSpliceModelUpdata: {
+                listModel.set(index-1,{"stationColor":"white","station":"?"})
+            }
         }
 
 //        Component {
@@ -1013,11 +1013,18 @@ Item {
                 return
             }
             if (stationSet.selecteColor != "") {
-                var reslut = boardlayout.setBoardLayoutColor(stationSet.selecteIndex,stationSet.selecteColor,stationSet.index+1)
+                var reslut
+                if (listModel.get(stationSet.index).station == "?") {
+                    reslut = boardlayout.setBoardLayoutColor(true,stationSet.selecteIndex,stationSet.selecteColor,stationSet.index+1)
+                } else {
+                    reslut = boardlayout.setBoardLayoutColor(false,stationSet.selecteIndex,stationSet.selecteColor,stationSet.index+1)
+                }
                 if (reslut != -1) {
                     listModel.set(stationSet.index,{"stationColor":stationSet.selecteColor,"station":stationSet.selecteZone})
                 } else {
-                    listModel.set(stationSet.index,{"stationColor":"white","station":"?"})
+                    if (listModel.get(stationSet.index).station == "?") {
+                        listModel.set(stationSet.index,{"stationColor":"white","station":"?"})
+                    }
                 }
                 stationSet.visible = false
                 stationSet.selecteColor = ""
@@ -1032,11 +1039,18 @@ Item {
                 return
             }
             if (stationSet.selecteZone != "") {
-               var reslut = boardlayout.setBoardLayoutColor(stationSet.selecteIndex,stationSet.selecteColor,stationSet.index+1)
+                var reslut
+                if (listModel.get(stationSet.index).station == "?") {
+                    reslut = boardlayout.setBoardLayoutColor(true,stationSet.selecteIndex,stationSet.selecteColor,stationSet.index+1)
+                } else {
+                    reslut = boardlayout.setBoardLayoutColor(false,stationSet.selecteIndex,stationSet.selecteColor,stationSet.index+1)
+                }
                 if (reslut != -1) {
                     listModel.set(stationSet.index,{"stationColor":stationSet.selecteColor,"station":stationSet.selecteZone})
                 } else {
-                    listModel.set(stationSet.index,{"stationColor":"white","station":"?"})
+                    if (listModel.get(stationSet.index).station == "?") {
+                        listModel.set(stationSet.index,{"stationColor":"white","station":"?"})
+                    }
                 }
                 stationSet.visible = false
                 stationSet.selecteColor = ""
@@ -1051,19 +1065,20 @@ Item {
         anchors.centerIn: parent
         width: parent.width*0.9
         height: parent.width*0.4
-        visible: content.bIsEdit ? true : false
-        listModel: content.bIsEdit ? partModel : spliceModel
-        titleName: content.bIsEdit ? qsTr("Add Part") : qsTr("Add Existing Splice")
-        componentName: content.bIsEdit ? qsTr("Part Name") : qsTr("SPLICE NAME")
+        visible: content.bIsFirst ? true : false
+        listModel: content.bIsFirst ? partModel : spliceModel
+        titleName: content.bIsFirst ? qsTr("Add Part") : qsTr("Add Existing Splice")
+        componentName: content.bIsFirst ? qsTr("Part Name") : qsTr("SPLICE NAME")
         componentData: qsTr("DATE CREATED")
-        componentMiddle: content.bIsEdit ? qsTr("# OF SPLICE") : qsTr("OperatorName")
+        componentMiddle: content.bIsFirst ? qsTr("# OF SPLICE") : qsTr("OperatorName")
         componenttype: qsTr("CROSS SECTION")
         bIsOnlyOne: (addExit.listModel == partModel) ? true : false
-        componentCount: content.bIsEdit ? "" : qsTr("# OF WIRES")
+        componentCount: content.bIsFirst ? "" : qsTr("# OF WIRES")
         onSignalAddExistCancel: {
             backGround.visible = false
             backGround.opacity = 0
             addExit.visible = false
+            content.bIsFirst = false
         }
         onSignalAddExistSelectClick: {
             //que hanshu
@@ -1078,7 +1093,11 @@ Item {
                 var idList = new Array()
                 idList = partModel.getCurrentPartOfSpliceId()
                 for (var i = 0; i < nameList.length; i++) {
-                    spliceList.listModel.append({"SpliceName":nameList[i],"stationColor":arrayColor[corlorlist[i]],"station":arrayzone[zoneList[i]],"SpliceId":idList[i]})
+                    if (corlorlist[i] == -1 || zoneList[i] == -1) {
+                        spliceList.listModel.append({"SpliceName":nameList[i],"stationColor":"white","station":"?","SpliceId":idList[i]})
+                    } else {
+                        spliceList.listModel.append({"SpliceName":nameList[i],"stationColor":arrayColor[corlorlist[i]],"station":arrayzone[zoneList[i]],"SpliceId":idList[i]})
+                    }
                 }
                 edit1.inputText = partModel.getWorkStationCount()
                 edit2.inputText = partModel.getWorkStationMaxSplicePerStation()
@@ -1105,6 +1124,7 @@ Item {
             backGround.visible = false
             backGround.opacity = 0
             addExit.visible = false
+            content.bIsFirst = false
         }
         onVisibleChanged: {
             if (addExit.visible) {

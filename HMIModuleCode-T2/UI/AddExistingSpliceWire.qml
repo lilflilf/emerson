@@ -353,20 +353,22 @@ Item {
             text: bIsOnlyOne ? qsTr("Select") : qsTr("Select(" + selectCount + ")")
             textColor: "white"
             onClicked: {
-                if (listModel == partModel) {
-                    signalAddExistSelectClick(listModel.getValue(selectIndex,"PartId"),listModel.getValue(selectIndex,"PartName"))
-                } else if (listModel == spliceModel) {
-                    for (var i = 0; i < selectList.count; i++) {
-                        var num = selectList.get(i).selectNum
-                        signalAddExistSelectClick(listModel.getValue(num,"SpliceId"),listModel.getValue(num,"SpliceName"))
+                if ((bIsOnlyOne && selectIndex != -1) || selectList.count) {
+                    if (listModel == partModel) {
+                        signalAddExistSelectClick(listModel.getValue(selectIndex,"PartId"),listModel.getValue(selectIndex,"PartName"))
+                    } else if (listModel == spliceModel) {
+                        for (var i = 0; i < selectList.count; i++) {
+                            var num = selectList.get(i).selectNum
+                            signalAddExistSelectClick(listModel.getValue(num,"SpliceId"),listModel.getValue(num,"SpliceName"))
+                        }
+                    } else if (listModel == wireModel) {
+                        for (var i = 0; i < selectList.count; i++) {
+                            var num = selectList.get(i).selectNum
+                            signalAddExistSelectClick(listModel.getValue(num,"WireId"),listModel.getValue(num,"WireName"))
+                        }
                     }
-                } else if (listModel == wireModel) {
-                    for (var i = 0; i < selectList.count; i++) {
-                        var num = selectList.get(i).selectNum
-                        signalAddExistSelectClick(listModel.getValue(num,"WireId"),listModel.getValue(num,"WireName"))
-                    }
+                    listView.delegate =null
                 }
-                listView.delegate =null
              }
         }
 
