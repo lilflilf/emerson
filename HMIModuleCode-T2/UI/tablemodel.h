@@ -129,6 +129,7 @@ public:
     DBPartTable *m_partAdaptor;
     DBOperatorTable *m_operatorAdaptor;
     QMap<int, QString> *parts;
+    PartElement *m_Part;
 
 protected:
     int rowCount(const QModelIndex &parent) const;
@@ -142,17 +143,28 @@ signals:
 public slots:
     void setRoles(const QStringList &names);
     Q_INVOKABLE QVariant getValue(int index, QString key);
+    Q_INVOKABLE void getPartInfo(bool bIsEdit, int id, QString name);
     Q_INVOKABLE void removeValue(int id, QString name);
-    Q_INVOKABLE int getWorkStationRows(int id, QString name);
-    Q_INVOKABLE int getWorkStationColumns(int id, QString name);
-    Q_INVOKABLE int getWorkStationMaxSplicePerZone(int id, QString name);
-    Q_INVOKABLE int getWorkStationCount(int id, QString name);
-    Q_INVOKABLE int getWorkStationMaxSplicePerStation(int id, QString name);
-    Q_INVOKABLE QList<int> getWorkStationCorlor(int id, QString name);
-    Q_INVOKABLE QList<int> geteWorkStationZone(int id, QString name);
-    Q_INVOKABLE bool getPartOnlineOrOffLine(int id, QString name);
-    Q_INVOKABLE QStringList getCurrentPartOfSpliceName(int id, QString name);
-    Q_INVOKABLE QList<int> getCurrentPartOfSpliceId(int id, QString name);
+    Q_INVOKABLE int getWorkStationRows();
+    Q_INVOKABLE int getWorkStationColumns();
+    Q_INVOKABLE int getWorkStationMaxSplicePerZone();
+    Q_INVOKABLE int getWorkStationCount();
+    Q_INVOKABLE int getWorkStationMaxSplicePerStation();
+    Q_INVOKABLE QList<int> getWorkStationCorlor();
+    Q_INVOKABLE QList<int> geteWorkStationZone();
+    Q_INVOKABLE bool getPartOnlineOrOffLine();
+    Q_INVOKABLE QStringList getCurrentPartOfSpliceName();
+    Q_INVOKABLE QList<int> getCurrentPartOfSpliceId();
+    Q_INVOKABLE void setPartOffLineOrOnLine(bool bIsLine);
+    Q_INVOKABLE void setPartName(QString name);
+    Q_INVOKABLE void setPartColumns(int columns);
+    Q_INVOKABLE void setPartRows(int rows);
+    Q_INVOKABLE void setPartMaxSplicePerWorkStation(int maxNum);
+    Q_INVOKABLE void setPartMaxSplicePerZone(int maxNum);
+    Q_INVOKABLE void setPartWorkStationNum(int num);
+    Q_INVOKABLE void setPartSpliceListClear();
+    Q_INVOKABLE void setPartSpliceList(QString name, int id, int station, int zone, int index);
+    Q_INVOKABLE void savePartInfo(bool bIsEdit);
     Q_INVOKABLE int count();
    // int getCurrentIndex(QString info);
 

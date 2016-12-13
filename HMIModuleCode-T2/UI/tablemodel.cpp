@@ -854,6 +854,7 @@ PartModel::PartModel(QObject *parent) :
     m_partAdaptor = DBPartTable::Instance();
     m_operatorAdaptor = DBOperatorTable::Instance();
     parts = new QMap<int, QString>();
+    m_Part = new PartElement();
 }
 
 QVariant PartModel::data(const QModelIndex &index, int role) const
@@ -1025,94 +1026,147 @@ void PartModel::removeValue(int id, QString name)
     setModelList();
 }
 
-int PartModel::getWorkStationRows(int id, QString name)
+void PartModel::getPartInfo(bool bIsEdit, int id, QString name)
 {
-    PartElement myPart;
-    m_partAdaptor->QueryOneRecordFromTable(id,name,&myPart);
-    return myPart.PartTypeSetting.BoardLayout.Rows;
+    if (bIsEdit) {
+        m_partAdaptor->QueryOneRecordFromTable(id,name,m_Part);
+    } else {
+        m_Part = NULL;
+        m_Part = new PartElement();
+    }
 }
 
-int PartModel::getWorkStationColumns(int id, QString name)
+int PartModel::getWorkStationRows()
 {
-    PartElement myPart;
-    m_partAdaptor->QueryOneRecordFromTable(id,name,&myPart);
-    return myPart.PartTypeSetting.BoardLayout.Columns;
+    return m_Part->PartTypeSetting.BoardLayout.Rows;
 }
 
-int PartModel::getWorkStationMaxSplicePerZone(int id, QString name)
+int PartModel::getWorkStationColumns()
 {
-    PartElement myPart;
-    m_partAdaptor->QueryOneRecordFromTable(id,name,&myPart);
-    return myPart.PartTypeSetting.BoardLayout.MaxSplicesPerZone;
+    return m_Part->PartTypeSetting.BoardLayout.Columns;
 }
 
-int PartModel::getWorkStationCount(int id, QString name)
+int PartModel::getWorkStationMaxSplicePerZone()
 {
-    PartElement myPart;
-    m_partAdaptor->QueryOneRecordFromTable(id,name,&myPart);
-    return myPart.PartTypeSetting.WorkStations.TotalWorkstation;
+    return m_Part->PartTypeSetting.BoardLayout.MaxSplicesPerZone;
 }
 
-int PartModel::getWorkStationMaxSplicePerStation(int id, QString name)
+int PartModel::getWorkStationCount()
 {
-    PartElement myPart;
-    m_partAdaptor->QueryOneRecordFromTable(id,name,&myPart);
-    return myPart.PartTypeSetting.WorkStations.MaxSplicesPerWorkstation;
+    return m_Part->PartTypeSetting.WorkStations.TotalWorkstation;
 }
 
-QList<int> PartModel::getWorkStationCorlor(int id, QString name)
+int PartModel::getWorkStationMaxSplicePerStation()
+{
+    return m_Part->PartTypeSetting.WorkStations.MaxSplicesPerWorkstation;
+}
+
+QList<int> PartModel::getWorkStationCorlor()
 {
     QList<int> corlorList;
-    PartElement myPart;
-    m_partAdaptor->QueryOneRecordFromTable(id,name,&myPart);
-    for (int i = 0; i < myPart.SpliceList.count(); i++) {
-        corlorList.append(myPart.SpliceList.value(myPart.SpliceList.keys().at(i)).CurrentWorkstation);
+    for (int i = 0; i < m_Part->SpliceList.count(); i++) {
+        corlorList.append( m_Part->SpliceList.value( m_Part->SpliceList.keys().at(i)).CurrentWorkstation);
     }
     return corlorList;
 }
 
-QList<int> PartModel::geteWorkStationZone(int id, QString name)
+QList<int> PartModel::geteWorkStationZone()
 {
     QList<int> zoneList;
-    PartElement myPart;
-    m_partAdaptor->QueryOneRecordFromTable(id,name,&myPart);
-    for (int i = 0; i < myPart.SpliceList.count(); i++) {
-        zoneList.append(myPart.SpliceList.value(myPart.SpliceList.keys().at(i)).CurrentBoardLayoutZone);
+    for (int i = 0; i < m_Part->SpliceList.count(); i++) {
+        zoneList.append(m_Part->SpliceList.value(m_Part->SpliceList.keys().at(i)).CurrentBoardLayoutZone);
     }
     return zoneList;
 }
 
-QStringList PartModel::getCurrentPartOfSpliceName(int id, QString name)
+QStringList PartModel::getCurrentPartOfSpliceName()
 {
     QStringList list;
-    PartElement myPart;
-    m_partAdaptor->QueryOneRecordFromTable(id,name,&myPart);
-    for (int i = 0; i < myPart.SpliceList.count(); i++) {
-        list.append(myPart.SpliceList.value(myPart.SpliceList.keys().at(i)).SpliceName);
+    for (int i = 0; i < m_Part->SpliceList.count(); i++) {
+        list.append(m_Part->SpliceList.value(m_Part->SpliceList.keys().at(i)).SpliceName);
     }
     return list;
 }
 
-QList<int> PartModel::getCurrentPartOfSpliceId(int id, QString name)
+QList<int> PartModel::getCurrentPartOfSpliceId()
 {
     QList<int> idList;
-    PartElement myPart;
-    m_partAdaptor->QueryOneRecordFromTable(id,name,&myPart);
-    for (int i = 0; i < myPart.SpliceList.count(); i++) {
-        idList.append(myPart.SpliceList.value(myPart.SpliceList.keys().at(i)).SpliceID);
+    for (int i = 0; i < m_Part->SpliceList.count(); i++) {
+        idList.append(m_Part->SpliceList.value(m_Part->SpliceList.keys().at(i)).SpliceID);
     }
     return idList;
 }
 
-bool PartModel::getPartOnlineOrOffLine(int id, QString name)
+bool PartModel::getPartOnlineOrOffLine()
 {
-    PartElement myPart;
-    m_partAdaptor->QueryOneRecordFromTable(id,name,&myPart);
-    if (myPart.PartTypeSetting.ProcessMode == BASIC) {
+    if (m_Part->PartTypeSetting.ProcessMode == BASIC) {
         return false;
     } else {
         return true;
     }
+}
+
+void PartModel::setPartOffLineOrOnLine(bool bIsLine)
+{
+    if (bIsLine) {
+        m_Part->PartTypeSetting.ProcessMode = ADVANCE;
+    } else {
+        m_Part->PartTypeSetting.ProcessMode = BASIC;
+    }
+}
+
+void PartModel::setPartName(QString name)
+{
+   m_Part->PartName =  name;
+}
+
+void PartModel::setPartColumns(int columns)
+{
+    m_Part->PartTypeSetting.BoardLayout.Columns = columns;
+}
+
+void PartModel::setPartRows(int rows)
+{
+   m_Part->PartTypeSetting.BoardLayout.Rows = rows;
+}
+
+void PartModel::setPartMaxSplicePerZone(int maxNum)
+{
+    m_Part->PartTypeSetting.BoardLayout.MaxSplicesPerZone = maxNum;
+}
+
+void PartModel::setPartWorkStationNum(int num)
+{
+    m_Part->PartTypeSetting.WorkStations.TotalWorkstation = num;
+}
+
+void PartModel::setPartMaxSplicePerWorkStation(int maxNum)
+{
+     m_Part->PartTypeSetting.WorkStations.MaxSplicesPerWorkstation = maxNum;
+}
+
+void PartModel::setPartSpliceListClear()
+{
+    m_Part->SpliceList.clear();
+}
+
+void PartModel::setPartSpliceList(QString name, int id, int station, int zone, int index)
+{
+    m_Part->SpliceList[index].SpliceID = id;
+    m_Part->SpliceList[index].SpliceName = name;
+    m_Part->SpliceList[index].CurrentWorkstation = station;
+    m_Part->SpliceList[index].CurrentBoardLayoutZone = zone;
+}
+
+void PartModel::savePartInfo(bool bIsEdit)
+{
+    if (bIsEdit) {
+        m_partAdaptor->UpdateRecordIntoTable(m_Part);
+    } else {
+        int partId = m_partAdaptor->InsertRecordIntoTable(m_Part);
+        qDebug()<<"savePartInfo insert id: "<< partId;
+    }
+    setModelList();
 }
 
 /*******************************OperaTorModel*****************************/

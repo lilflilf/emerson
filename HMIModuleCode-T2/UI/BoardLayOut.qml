@@ -15,43 +15,9 @@ Item {
     property int maxSplicePerZone: 0
     property string selecte: ""
     property var array: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P"]
-    function getStationColor(index)
-    {
-        var array = ["#ff6699","#ff0033","#33FFCC","#cc99ff","#cc0099","#930202","#99ccff","#f79428","#0000cc","Olive"]
-        return array[index]
-    }
     function setBoardLayoutColor(index,color,selecteIndex)
     {
         var i;
-        var maxSplicePerWork = 0,maxSplicePerZone = 0
-        maxSplicePerZone = rec.itemAt(index).zoneModel.count
-        if (rec.itemAt(index).bIsCenterShow) {
-            ++maxSplicePerZone
-        }
-        for (i = 0; i < boardLayout.columns*boardLayout.rows; i++) {
-            if (rec.itemAt(i).zoneModel.count != 0) {
-
-                for (var j = 0; j < rec.itemAt(i).zoneModel.count; j++) {
-                    if (color == rec.itemAt(i).zoneModel.get(j).zonecolor) {
-                        ++maxSplicePerWork
-                    }
-                }
-            }
-            if (rec.itemAt(i).bIsCenterShow) {
-                if (rec.itemAt(i).centerColor == color) {
-                    ++maxSplicePerWork
-                }
-            }
-        }
-        console.log("1111111111111111111111",maxSplicePerZone,boardLayout.maxSplicePerZone)
-        if (maxSplicePerWork == boardLayout.maxSplicePerWork) {
-            console.log("222222222222222222222222")
-                return -1;
-        }
-        if (maxSplicePerZone == boardLayout.maxSplicePerZone) {
-            console.log("333333333333333333333333")
-            return -1;
-        }
         for ( i = 0; i < boardLayout.columns*boardLayout.rows; i++) {
             if (selecteIndex == rec.itemAt(i).centerNum) {
                 rec.itemAt(i).bIsCenterShow = false
@@ -77,6 +43,34 @@ Item {
                 rec.itemAt(index).zoneModel.insert(i,{"zonecolor":color,"selecteNum":selecteIndex})
                 return 0
             }
+        }
+        var maxSplicePerWork = 0,maxSplicePerZone = 0
+        maxSplicePerZone = rec.itemAt(index).zoneModel.count
+        if (rec.itemAt(index).bIsCenterShow) {
+            ++maxSplicePerZone
+        }
+        for (i = 0; i < boardLayout.columns*boardLayout.rows; i++) {
+            if (rec.itemAt(i).zoneModel.count != 0) {
+
+                for (var j = 0; j < rec.itemAt(i).zoneModel.count; j++) {
+                    if (color == rec.itemAt(i).zoneModel.get(j).zonecolor) {
+                        ++maxSplicePerWork
+                    }
+                }
+            }
+            if (rec.itemAt(i).bIsCenterShow) {
+                if (rec.itemAt(i).centerColor == color) {
+                    ++maxSplicePerWork
+                }
+            }
+        }
+        if (maxSplicePerWork == boardLayout.maxSplicePerWork) {
+            console.log("222222222222222222222222")
+                return -1;
+        }
+        if (maxSplicePerZone == boardLayout.maxSplicePerZone) {
+            console.log("333333333333333333333333")
+            return -1;
         }
         if (rec.itemAt(index).bIsCenterShow) {
             rec.itemAt(index).zoneModel.append({"zonecolor":color,"selecteNum":selecteIndex})
