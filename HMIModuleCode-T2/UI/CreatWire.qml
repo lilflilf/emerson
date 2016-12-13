@@ -1963,7 +1963,7 @@ Item {
         anchors.fill: parent
         color: "black"
         opacity: 0.7
-        visible: content.bIsEdit ? true : false
+        visible: false
         MouseArea {
             anchors.fill: parent
             onClicked: {
@@ -1971,6 +1971,7 @@ Item {
             }
         }
     }
+
     Image {
         id: dialog
         anchors.centerIn: parent
