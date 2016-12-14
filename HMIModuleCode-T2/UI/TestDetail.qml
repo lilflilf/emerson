@@ -8,6 +8,22 @@ Item {
     signal signalSaveSplice()
     width: Screen.width
     height: Screen.height * 0.8
+
+    function selectSplice(spliceId)
+    {
+        spliceModel.editNew(spliceId)
+        var list = new Array
+        list = spliceModel.getWireIdList()
+        spliceDetailsItem.clear()
+        spliceName.text = spliceModel.getStructValue("SpliceName","")
+        spliceDetailsImage.source = spliceModel.getStructValue("PicPath","")
+        for (var i = 0; i < list.length;i++)
+        {
+            wireModel.addFromLibrary(list[i])
+            spliceDetailsItem.addWireFromSplice()
+        }
+    }
+
     Rectangle {
         anchors.fill: parent
         color: "#626465"
@@ -15,12 +31,19 @@ Item {
 
     Text {
         id: operateTitle
-        text: qsTr("Splice:mod_70742305_proc_1")
+        text: qsTr("Splice:")
         font.pointSize: 16
         font.family: "arial"
         color: "white"
         anchors.left: parent.left
         anchors.leftMargin: 25
+    }
+    Text {
+        id: spliceName
+        font.pointSize: 16
+        font.family: "arial"
+        color: "white"
+        anchors.left: operateTitle.right
     }
 
     Switch2 {
@@ -83,19 +106,19 @@ Item {
         anchors.topMargin: 15
         centerVisable: false
         Component.onCompleted: {
-            spliceDetailsItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-            spliceDetailsItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-            spliceDetailsItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-            spliceDetailsItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+//            spliceDetailsItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+//            spliceDetailsItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+//            spliceDetailsItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+//            spliceDetailsItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
 
-            spliceDetailsItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-            spliceDetailsItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-            spliceDetailsItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-            spliceDetailsItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-            spliceDetailsItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-            spliceDetailsItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-            spliceDetailsItem.setState("topLeft",200,"0.75","red")
-            spliceDetailsItem.setState("bottomLeft",200,"0.75","red")
+//            spliceDetailsItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+//            spliceDetailsItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+//            spliceDetailsItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+//            spliceDetailsItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+//            spliceDetailsItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+//            spliceDetailsItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
+//            spliceDetailsItem.setState("topLeft",200,"0.75","red")
+//            spliceDetailsItem.setState("bottomLeft",200,"0.75","red")
         }
     }
     Item {

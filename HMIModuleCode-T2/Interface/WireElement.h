@@ -9,6 +9,7 @@ public:
     int     WireID;
     unsigned int CreatedDate;
     int OperatorID;
+    int SpliceID;
 
     QString Color;
     struct STRIPE Stripe;

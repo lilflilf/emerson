@@ -17,6 +17,10 @@ Item {
         id: loader
         z: 10
         anchors.fill: parent
+        onLoaded: {
+            if (loader.source == "qrc:/UI/TestDetail.qml")
+                loader.item.selectSplice(spliceModel.getValue(selectIndx,"SpliceId"))
+        }
     }
     Connections {
         target: loader.item
@@ -331,6 +335,7 @@ Item {
             testDialog.visible = false
             backGround.visible = false
             loader.source = "qrc:/UI/TestDetail.qml"
+
         }
     }
 }

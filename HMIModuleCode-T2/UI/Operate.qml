@@ -6,6 +6,7 @@ import QtQuick.Controls 1.4
 import QtQuick.Dialogs 1.2
 
 Item {
+    id: operate
     property int selectIndx: -1
     Image {
         anchors.fill: parent
@@ -18,6 +19,18 @@ Item {
         id: loader
         z: 10
         anchors.fill: parent
+        onLoaded: {
+            if (loader.source == "qrc:/UI/OperateDetails.qml")
+            {
+                var list = new Array
+                list =  workOrderModel.getSpliceList(selectIndx)
+                if (list.length > 0) {
+                    loader.item.spliceList = workOrderModel.getSpliceList(selectIndx)
+                    loader.item.selectSplice(workOrderModel.getSpliceList(selectIndx)[0])
+                }
+
+            }
+        }
     }
     Connections{
         target: loader.item
@@ -217,7 +230,7 @@ Item {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    selectIndx = index
+                    operate.selectIndx = index
                     selectCheck.checked = !selectCheck.checked
                 }
             }
@@ -347,7 +360,8 @@ Item {
         clip: true
         textColor: "white"
         onClicked: {
-            if (selectIndx != -1) {
+            if (operate.selectIndx != -1) {
+                workOrderModel.editNew(workOrderModel.getPartId(operate.selectIndx))
                 partModel.getPartInfo(true,workOrderModel.getPartId(selectIndx),workOrderModel.getWorkOrderValue(selectIndx,"middle"))
                 loader.source = "qrc:/UI/OperateDetails.qml"
             }
@@ -515,7 +529,6 @@ Item {
                     workOrderModel.insertRecordIntoTable(inputworkId.inputText,selectPart.partId,selectPart.text,inputquantity.inputText)
                     selectPart.text = "SELECT PART"
                 }
-//                selectIndx = -1
                 dialog.bIsEdit = false
             }
         }

@@ -36,6 +36,7 @@ Window {
             headBar.titleText = qsTr("Create Assembly")
             break;
         case 2:
+            headBar.titleText = qsTr("Operate")
             contentLoader.source = "qrc:/UI/Operate.qml"
             break;
         case 3:

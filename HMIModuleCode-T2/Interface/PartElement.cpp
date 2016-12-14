@@ -7,8 +7,8 @@ PartElement::PartElement()
     PartName.clear();
     CreatedDate = 0;
     OperatorID = -1;
-    PartTypeSetting.BoardLayout.Columns = -1;
-    PartTypeSetting.BoardLayout.Rows = -1;
+    PartTypeSetting.BoardLayout.Columns = 1;
+    PartTypeSetting.BoardLayout.Rows = 1;
     PartTypeSetting.BoardLayout.MaxSplicesPerZone = -1;
     PartTypeSetting.ProcessMode = BASIC;
     PartTypeSetting.WorkStations.MaxSplicesPerWorkstation = -1;

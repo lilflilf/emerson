@@ -6,6 +6,7 @@ WorkOrderModel::WorkOrderModel(QObject *parent) :
     QAbstractTableModel(parent)
 {
     m_workOrderAdaptor = DBWorkOrderTable::Instance();
+    m_partAdaptor = DBPartTable::Instance();
     workOrders = new QMap<int, QString>();
 }
 
@@ -151,6 +152,24 @@ int WorkOrderModel::getPartId(int index)
     WorkOrderElement myWorkOrder;
     m_workOrderAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myWorkOrder);
     return myWorkOrder.PartIndex.begin().key();
+}
+
+QList<int> WorkOrderModel::getSpliceList()
+{
+    QMap<int,struct PARTATTRIBUTE>::iterator it; //遍历map
+    QList<int> list;
+    for ( it = partElement.SpliceList.begin(); it != partElement.SpliceList.end(); ++it ) {
+        list.append(it.value().SpliceID);
+    }
+    return list;
+}
+
+void WorkOrderModel::editNew(int index)
+{
+    qDebug() << "cccccccccccccccccccc" << index;
+    m_partAdaptor->QueryOneRecordFromTable(index,&partElement);
+    qDebug() << "cccccccccccccccccccc" << index;
+
 }
 
 QVariant WorkOrderModel::getWorkOrderValue(int index, QString key)
