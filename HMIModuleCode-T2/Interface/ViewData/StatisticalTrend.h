@@ -4,7 +4,7 @@
 #include <QObject>
 #include "Interface/PresetElement.h"
 
-struct WeldParameter
+struct WeldActualParameter
 {
     QString CrossSection;
     QString Energy;
@@ -13,9 +13,12 @@ struct WeldParameter
     QString Amplitude;
     QString Width;
     QString Time;
-    QString Power;
+    QString PeakPower;
     QString PreHeight;
-    QString Height;
+    QString PostHeight;
+    QString WorkOrderName;
+    QString PartName;
+    QString DateCreated;
 };
 struct StatisticsParameter
 {
@@ -38,7 +41,8 @@ class StatisticalTrend : public QObject
     Q_OBJECT
 private:
     PresetElement CurrentPreset;
-    QMap<int, QString> RetrievedWeldResultIndex;
+    QMap<int, QString> RetrievedWeldResultIndexList;
+    QList<float> DataList[4];
 private:
     bool GetCurrentPresetFromLibrary(int SpliceID, QString SpliceName);
     bool GetCurrentWeldResultList(QString SpliceName, unsigned int HashCode,
@@ -46,8 +50,7 @@ private:
     bool GetCurrentWeldResultOneByOne(QMap<int, QString>* ResultIndex);
     bool GetStatisticsParameter();
 public:
-    QList<int> DataList[4];
-    struct WeldParameter CurrentWeldParameter;
+    QList<struct WeldActualParameter> CurrentWeldParameterList;
     struct StatisticsParameter CurrentStatisticsParameter[4];
 public:
     void _apply(int, QString, unsigned int time_from, unsigned int time_to);
