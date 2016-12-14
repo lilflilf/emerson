@@ -65,6 +65,7 @@ Item {
             wireModel.addFromLibrary(list[i])
             spliceDetailItem.addWireFromSplice()
         }
+        spliceImage.source = spliceModel.getStructValue("PicPath","") == " " ? "qrc:/images/images/bg.png" : spliceModel.getStructValue("PicPath","")
     }
 
     function getAllWorkstationColor(count)
@@ -226,9 +227,9 @@ Item {
                                 partModel.setPartSpliceList(listModel.get(i).SpliceName,listModel.get(i).SpliceId,arrayColor.indexOf(listModel.get(i).stationColor),arrayzone.indexOf(listModel.get(i).station),i+1)
                             }
                         }
-                        partModel.savePartInfo(content.bIsEdit)
+                        partModel.savePartInfo(content.bIsEdit, hmiAdaptor.getCurrentOperatorId())
+                        root.menuInit(2)
                     }
-                    root.menuInit(2)
                 }
             }
         }
@@ -731,38 +732,43 @@ Item {
             id: selectImage
             visible: wireSwitch.state == "left" ? false : true
             anchors.fill: spliceDetailItem
+            onVisibleChanged: {
+                if (visible)
+                    spliceImage.source = spliceModel.getStructValue("PicPath","") == " " ? "qrc:/images/images/bg.png" : spliceModel.getStructValue("PicPath","")
+            }
+
             Image {
                 id: spliceImage
                 anchors.fill: parent
-                source: spliceModel.getStructValue("PicPath","") == " " ? "qrc:/images/images/bg.png" : spliceModel.getStructValue("PicPath","")
+//                source: spliceModel.getStructValue("PicPath","") == " " ? "qrc:/images/images/bg.png" : spliceModel.getStructValue("PicPath","")
             }
-            Text {
-                anchors.right: parent.right
-                font.pointSize: 20
-                font.family: "arial"
-                color: "white"
-                text: qsTr("Click to Select Picture")
-            }
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    imageLoader.source = "qrc:/UI/MyFileDialog.qml"
-                }
-                Connections {
-                    target: imageLoader.item
-                    onSignalFileDialogCancel: {
-                        imageLoader.source = ""
-                    }
-                    onSignalChoseFile: {
-                        imageLoader.source = ""
-                        var path = hmiAdaptor.copyFileToPath(fileName)
-                        if (path != "") {
-                            spliceImage.source = "file:///"+path
-                            spliceModel.setStructValue("PicPath",spliceImage.source)
-                        }
-                    }
-                }
-            }
+//            Text {
+//                anchors.right: parent.right
+//                font.pointSize: 20
+//                font.family: "arial"
+//                color: "white"
+//                text: qsTr("Click to Select Picture")
+//            }
+//            MouseArea {
+//                anchors.fill: parent
+//                onClicked: {
+//                    imageLoader.source = "qrc:/UI/MyFileDialog.qml"
+//                }
+//                Connections {
+//                    target: imageLoader.item
+//                    onSignalFileDialogCancel: {
+//                        imageLoader.source = ""
+//                    }
+//                    onSignalChoseFile: {
+//                        imageLoader.source = ""
+//                        var path = hmiAdaptor.copyFileToPath(fileName)
+//                        if (path != "") {
+//                            spliceImage.source = "file:///"+path
+//                            spliceModel.setStructValue("PicPath",spliceImage.source)
+//                        }
+//                    }
+//                }
+//            }
         }
         Loader {
             id: imageLoader

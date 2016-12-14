@@ -446,9 +446,10 @@ bool DBWireTable::QueryOnlyUseField(QString FieldName, QString value, QMap<int, 
     if(bResult == true)
     {
         if(Orderby == true)
-            queryStr = QString("SELECT DISTINCT ID, WireName FROM Wire WHERE %1 = %2 ORDER BY %1 ASC").arg(FieldName, value );
+            queryStr = QString("SELECT ID, WireName FROM Wire WHERE %1 == '%2' ORDER BY %1 ASC").arg(FieldName, value );
         else
-            queryStr = QString("SELECT DISTINCT ID, WireName FROM Wire WHERE %1 = %2 ORDER BY %1 DESC").arg(FieldName, value);
+            queryStr = QString("SELECT ID, WireName FROM Wire WHERE %1 = %2 ORDER BY %1 DESC").arg(FieldName, value);
+        qDebug() << "queryStr<<" << queryStr;
         query.prepare(queryStr);
         bResult = query.exec();
     }
@@ -458,7 +459,7 @@ bool DBWireTable::QueryOnlyUseField(QString FieldName, QString value, QMap<int, 
         while(query.next())
         {
             _obj->insert(query.value("ID").toInt(),
-                                   query.value(FieldName).toString());
+                                   query.value("WireName").toString());
         }
     }
 

@@ -169,7 +169,7 @@ public slots:
     Q_INVOKABLE void setPartWorkStationNum(int num);
     Q_INVOKABLE void setPartSpliceListClear();
     Q_INVOKABLE void setPartSpliceList(QString name, int id, int station, int zone, int index);
-    Q_INVOKABLE void savePartInfo(bool bIsEdit);
+    Q_INVOKABLE void savePartInfo(bool bIsEdit, int operatorId);
     Q_INVOKABLE int count();
    // int getCurrentIndex(QString info);
 
@@ -319,11 +319,14 @@ protected:
 public slots:
     void setRoles(const QStringList &names);
     Q_INVOKABLE void setModelList();
+    Q_INVOKABLE void setTemplateModelList();
+
 
     Q_INVOKABLE QVariant getValue(int index, QString key);
     Q_INVOKABLE int count();
     Q_INVOKABLE void removeValue(int id, QString name);
     Q_INVOKABLE int insertValueToTable(QString type, QString wireName, int wireId, int operatorId, QString color, QString stripeColor, int stripeType, QString gauge, int wireType, int side, int verside, int position);
+    Q_INVOKABLE void updateSpliceIdToWire(QList<int> wireList, int spliceId);
 
     Q_INVOKABLE void createNew();
     Q_INVOKABLE void addFromLibrary(int wireId);

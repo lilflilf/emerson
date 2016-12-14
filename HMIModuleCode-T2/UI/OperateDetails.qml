@@ -75,7 +75,7 @@ Item {
     Image {
         id: spliceDetailsImage
         anchors.fill: spliceDetailsItem
-        source: "qrc:/images/images/wiredemo.jpg"
+//        source: "qrc:/images/images/wiredemo.jpg"
     }
     QualityWindow {
         id: qualityWindow

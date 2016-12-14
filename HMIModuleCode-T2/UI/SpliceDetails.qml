@@ -91,7 +91,6 @@ Item {
     {
         if (listModelRight.count < 22) {
             bIsLibrary = true
-            console.log("vvvvvvvvvvvvv",wireModel.getStructValue("WireDirection"),wireModel.getStructValue("WirePosition"))
             if (wireModel.getStructValue("WireDirection") == 0)
             {
                 if (wireModel.getStructValue("WirePosition") == 0)
@@ -369,68 +368,74 @@ Item {
         var wireId;
         if (topLeft.sourceComponent != null)
         {
-//            if (topLeft.item.myWireId == -1)
-//                type = "insert"
-//            else
-//                type ="update"
+            if (topLeft.item.myWireId == -1)
+                type = "insert"
+            else
+                type ="update"
             wireId = wireModel.insertValueToTable(type,topLeft.item.myWireName,topLeft.item.myWireId,hmiAdaptor.getCurrentOperatorId(),topLeft.item.myColor,
                                          topLeft.item.myStripeColor,topLeft.item.myStripeType,topLeft.item.myText,topLeft.item.myWireType,0,1,0)
-            wireIdList.push(wireId)
+            if (wireId != -1)
+                wireIdList.push(wireId)
         }
         if (listModelLeft.count > 0)
         {
             for (var j = 0;j < listModelLeft.count;j++) {
-//                if (listModelLeft.get(j).wireId == -1)
-//                    type = "insert"
-//                else
-//                    type ="update"
+                if (listModelLeft.get(j).wireId == -1)
+                    type = "insert"
+                else
+                    type ="update"
                 wireId = wireModel.insertValueToTable(type,listModelLeft.get(j).wireName,listModelLeft.get(j).wireId,hmiAdaptor.getCurrentOperatorId(),listModelLeft.get(j).mycolor,
                                          listModelLeft.get(j).stripeColor,listModelLeft.get(j).stripeType,listModelLeft.get(j).myText,listModelLeft.get(j).wireType,0,0,1)
-                wireIdList.push(wireId)
+                if (wireId != -1)
+                    wireIdList.push(wireId)
             }
         }
         if (bottomLeft.sourceComponent != null)
         {
-//            if (bottomLeft.item.myWireId == -1)
-//                type = "insert"
-//            else
-//                type ="update"
+            if (bottomLeft.item.myWireId == -1)
+                type = "insert"
+            else
+                type ="update"
             wireId = wireModel.insertValueToTable(type,bottomLeft.item.myWireName,bottomLeft.item.myWireId,hmiAdaptor.getCurrentOperatorId(),bottomLeft.item.myColor,
                                          bottomLeft.item.myStripeColor,bottomLeft.item.myStripeType,bottomLeft.item.myText,bottomLeft.item.myWireType,0,1,2)
-            wireIdList.push(wireId)
+            if (wireId != -1)
+                wireIdList.push(wireId)
         }
 
         if (topRight.sourceComponent != null)
         {
-//            if (topRight.item.myWireId == -1)
-//                type = "insert"
-//            else
-//                type ="update"
+            if (topRight.item.myWireId == -1)
+                type = "insert"
+            else
+                type ="update"
             wireId = wireModel.insertValueToTable(type,topRight.item.myWireName,topRight.item.myWireId,hmiAdaptor.getCurrentOperatorId(),topRight.item.myColor,
                                          topRight.item.myStripeColor,topRight.item.myStripeType,topRight.item.myText,topRight.item.myWireType,1,1,0)
-            wireIdList.push(wireId)
+            if (wireId != -1)
+                wireIdList.push(wireId)
 
         }
         if (listModelRight.count > 0)
         {
             for (var i = 0;i < listModelRight.count;i++) {
-//                if (listModelRight.get(i).wireId == -1)
-//                    type = "insert"
-//                else
-//                    type ="update"
+                if (listModelRight.get(i).wireId == -1)
+                    type = "insert"
+                else
+                    type ="update"
                 wireId = wireModel.insertValueToTable(type,listModelRight.get(i).wireName,listModelRight.get(i).wireId,hmiAdaptor.getCurrentOperatorId(),listModelRight.get(i).mycolor,listModelRight.get(i).stripeColor,listModelRight.get(i).stripeType,listModelRight.get(i).linetext,listModelRight.get(i).wireType,1,0,1)
-                wireIdList.push(wireId)
+                if (wireId != -1)
+                    wireIdList.push(wireId)
             }
         }
         if (bottomRight.sourceComponent != null)
         {
-//            if (bottomRight.item.myWireId == -1)
-//                type = "insert"
-//            else
-//                type ="update"
+            if (bottomRight.item.myWireId == -1)
+                type = "insert"
+            else
+                type ="update"
             wireId = wireModel.insertValueToTable(type,bottomRight.item.myWireName,bottomRight.item.myWireId,hmiAdaptor.getCurrentOperatorId(),bottomRight.item.myColor,
                                          bottomRight.item.myStripeColor,bottomRight.item.myStripeType,bottomRight.item.myText,bottomRight.item.myWireType,1,1,2)
-            wireIdList.push(wireId)
+            if (wireId != -1)
+                wireIdList.push(wireId)
         }
         return wireIdList;
     }
@@ -1086,7 +1091,7 @@ Item {
             }
             Text {
                 id: myWireNameLeft
-                width: leftRec.width
+                width: leftRec.width * 2
                 anchors.right: leftRec.left
                 anchors.verticalCenter: leftRec.verticalCenter
                 anchors.rightMargin: 8
@@ -1211,7 +1216,7 @@ Item {
             }
             Text {
                 id: myWireNameRight
-                width: rightRec.width
+                width: rightRec.width * 2
                 anchors.left: rightRec.right
                 anchors.verticalCenter: rightRec.verticalCenter
                 anchors.leftMargin: 8

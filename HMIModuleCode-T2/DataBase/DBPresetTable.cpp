@@ -465,8 +465,8 @@ bool DBPresetTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
     ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.MeasuredHeight = query.value("MeasuredHeight").toInt();
     ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkOption =
             query.value("ShrinkOption").toBool();
-    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID = query.value("ShrinkTubeID").toInt();
-    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime = query.value("ShrinkTubeTime").toInt();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID = query.value("ShrinkTubeID").toString();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime = query.value("ShrinkTime").toInt();
     ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTemperature =
             query.value("ShrinkTemperature").toInt();
     ((PresetElement*)_obj)->HashCode = query.value("HashCode").toInt();
@@ -621,8 +621,8 @@ bool DBPresetTable::QueryOneRecordFromTable(int ID, void *_obj)
     ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.MeasuredHeight = query.value("MeasuredHeight").toInt();
     ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkOption =
             query.value("ShrinkOption").toBool();
-    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID = query.value("ShrinkTubeID").toInt();
-    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime = query.value("ShrinkTubeTime").toInt();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID = query.value("ShrinkTubeID").toString();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime = query.value("ShrinkTime").toInt();
     ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTemperature =
             query.value("ShrinkTemperature").toInt();
     ((PresetElement*)_obj)->HashCode = query.value("HashCode").toInt();
