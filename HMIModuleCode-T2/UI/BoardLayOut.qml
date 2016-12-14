@@ -17,7 +17,7 @@ Item {
     property var array: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P"]
     property variant arrayColor: ["#ff6699","#ff0033","#33FFCC","#cc99ff","#cc0099","#930202","#99ccff","#f79428",
         "#0000cc","Olive","#ffff33","#ffcc00","#cc9909","#66ff00","#009900","#00cc66","#3366ff","#cc33cc","#cc9966","#9400D3"]
-    signal spliceModelUpdata(int index)
+    signal spliceModelUpdata(int index,string color)
 
     function checkBoardLayout(index,color,selecteIndex)
     {
@@ -109,7 +109,7 @@ Item {
                             ++splicePerWork
                             if (splicePerWork > maxSplicePerWork) {
                                 rec.itemAt(i).zoneModel.remove(j)
-                                spliceModelUpdata(rec.itemAt(i).zoneModel.get(j).selecteNum)
+                                spliceModelUpdata(rec.itemAt(i).zoneModel.get(j).selecteNum,arrayColor[k])
                             }
                         }
                     }
@@ -119,7 +119,7 @@ Item {
                         ++splicePerWork
                         if (splicePerWork > maxSplicePerWork) {
                             rec.itemAt(i).bIsCenterShow = false
-                            spliceModelUpdata(rec.itemAt(i).centerNum)
+                            spliceModelUpdata(rec.itemAt(i).centerNum,arrayColor[k])
                         }
                     }
                 }
@@ -137,7 +137,7 @@ Item {
             }
             if (splicePerZone > maxSplicePerZone) {
                 for (var j = maxSplicePerZone; j < splicePerZone; j++) {
-                    spliceModelUpdata(rec.itemAt(i).zoneModel.get(j).selecteNum)
+                    spliceModelUpdata(rec.itemAt(i).zoneModel.get(j).selecteNum,rec.itemAt(i).zoneModel.get(j).zonecolor)
                     rec.itemAt(i).zoneModel.remove(j)
                 }
             }
@@ -224,6 +224,8 @@ Item {
                         Repeater {
                             id: zoneRepeater
                             model: testModel
+                            property string zonecolor: ""
+                            property string selecteNum: ""
                             Rectangle {
                                 anchors.top: parent.top
                                 anchors.topMargin: setBoardLayoutYPosition(index)
@@ -234,11 +236,11 @@ Item {
                                 radius: 35
                                 border.color: "white"
                                 border.width: 1
-                                color: testModel.get(index).zonecolor
+                                color: zonecolor
                                 Text {
                                     anchors.centerIn: parent
                                     color: "white"
-                                    text: testModel.get(index).selecteNum
+                                    text: selecteNum
                                     font.pointSize: 16
                                     font.family: "arial"
                                 }

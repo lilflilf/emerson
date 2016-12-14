@@ -18,12 +18,6 @@ Item {
         id: loader
         z: 10
         anchors.fill: parent
-        onLoaded: {
-            if (selectIndx != -1) {
-                loader.item.partName = workOrderModel.getWorkOrderValue(selectIndx,"middle")
-                loader.item.partId = workOrderModel.getPartId(selectIndx)
-            }
-        }
     }
     Connections{
         target: loader.item
