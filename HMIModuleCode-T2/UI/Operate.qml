@@ -30,11 +30,6 @@ Item {
                 }
 
             }
-
-            if (selectIndx != -1) {
-                loader.item.partName = workOrderModel.getWorkOrderValue(selectIndx,"name")
-                loader.item.partId = workOrderModel.getPartId(selectIndx)
-            }
         }
     }
     Connections{

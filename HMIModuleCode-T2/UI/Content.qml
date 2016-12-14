@@ -19,6 +19,7 @@ Item {
         "#0000cc","Olive","#ffff33","#ffcc00","#cc9909","#66ff00","#009900","#00cc66","#3366ff","#cc33cc","#cc9966","#9400D3"]
     signal titleTextChanged(var myTitleText)
     property var selectSpliceId: -1
+
     width: Screen.width
     height: Screen.height
     Image {
@@ -68,16 +69,6 @@ Item {
         spliceImage.source = spliceModel.getStructValue("PicPath","") == " " ? "qrc:/images/images/bg.png" : spliceModel.getStructValue("PicPath","")
     }
 
-    function getAllWorkstationColor(count)
-    {
-        var array = ["#ff6699","#ff0033","#33FFCC","#cc99ff","#cc0099","#930202","#99ccff","#f79428","#0000cc","Olive"]
-        colorModel.clear()
-        if (count > 8)
-            count = 8
-        for (var i = 0; i < count; i++) {
-            colorModel.append({"workcolor":array[i]});
-        }
-    }
     SwipeView {
         width: Screen.width * 0.3
         height: parent.height
@@ -135,7 +126,6 @@ Item {
                 anchors.bottom: tipsRec2.top
                 bIsWorkShow: !bIsBasic
                 onCurrentSelecte: {
-//                    index
                     if (index != -1) {
                         content.selectSpliceId = listModel.get(index).SpliceId
                         content.selectSplice(content.selectSpliceId)
@@ -275,8 +265,10 @@ Item {
                         borderSwitch.visible = true
                         bIsBasic = false
                         partModel.setPartOffLineOrOnLine(true)
+                        workStationcolor.getAllWorkstationColor(partModel.getWorkStationCount())
                         for (var i = 0; i < listModel.count; i++) {
                             boardlayout.setBoardLayoutColor(true,arrayzone.indexOf(listModel.get(i).station),listModel.get(i).stationColor,i+1)
+                            workStationcolor.setCurrentStationSPliceCountInit(listModel.get(i).stationColor,partModel.getWorkStationCount())
                         }
                     }
                 }
@@ -336,9 +328,8 @@ Item {
                 }
                 onInputTextChanged: {
                     partModel.setPartWorkStationNum(edit1.inputText)
-                    getAllWorkstationColor(edit1.inputText)
+                    workStationcolor.getAllWorkstationColor(edit1.inputText)
                     workStationcolor.allWorkTotal = edit1.inputText
-                    boardlayout
                 }
             }
             MiniKeyNumInput {
@@ -792,6 +783,7 @@ Item {
             maxSplicePerZone: edit5.inputText
             onSpliceModelUpdata: {
                 listModel.set(index-1,{"stationColor":"white","station":"?"})
+                workStationcolor.setCurrentStationSPliceCount(false,color)
             }
         }
 
@@ -932,11 +924,27 @@ Item {
             id: workStationcolor
             visible: bIsBoard
             anchors.top: workStation.bottom
-//            anchors.topMargin: 4
             anchors.left: boardlayout.left
-            listModel: colorModel
             allWorkTotal: 0
             maxSpliceNum: 0
+            onLeftClick: {
+                var count = 0
+                for (var i = 0; i < listModel.count; i++) {
+                    if (listModel.get(i).stationColor == color) {
+                        ++count
+                    }
+                }
+                workStationcolor.leftClickSetCurrentStationSPliceCount(index,count)
+            }
+            onRightClick: {
+                var count = 0
+                for (var i = 0; i < listModel.count; i++) {
+                    if (listModel.get(i).stationColor == color) {
+                        ++count
+                    }
+                }
+                workStationcolor.rightClickSetCurrentStationSpliceCount(index,count)
+            }
         }
     }
     Rectangle {
@@ -1022,8 +1030,15 @@ Item {
                 var reslut
                 if (listModel.get(stationSet.index).station == "?") {
                     reslut = boardlayout.setBoardLayoutColor(true,stationSet.selecteIndex,stationSet.selecteColor,stationSet.index+1)
+                    if (reslut != -1) {
+                        workStationcolor.setCurrentStationSPliceCount(true,stationSet.selecteColor)
+                    }
                 } else {
                     reslut = boardlayout.setBoardLayoutColor(false,stationSet.selecteIndex,stationSet.selecteColor,stationSet.index+1)
+                    if (reslut != -1) {
+                        workStationcolor.setCurrentStationSPliceCount(false,listModel.get(stationSet.index).stationColor)
+                        workStationcolor.setCurrentStationSPliceCount(true,stationSet.selecteColor)
+                    }
                 }
                 if (reslut != -1) {
                     listModel.set(stationSet.index,{"stationColor":stationSet.selecteColor,"station":stationSet.selecteZone})
@@ -1048,8 +1063,15 @@ Item {
                 var reslut
                 if (listModel.get(stationSet.index).station == "?") {
                     reslut = boardlayout.setBoardLayoutColor(true,stationSet.selecteIndex,stationSet.selecteColor,stationSet.index+1)
+                    if (reslut != -1) {
+                        workStationcolor.setCurrentStationSPliceCount(true,stationSet.selecteColor)
+                    }
                 } else {
                     reslut = boardlayout.setBoardLayoutColor(false,stationSet.selecteIndex,stationSet.selecteColor,stationSet.index+1)
+                    if (reslut != -1) {
+                        workStationcolor.setCurrentStationSPliceCount(false,listModel.get(stationSet.index).stationColor)
+                        workStationcolor.setCurrentStationSPliceCount(true,stationSet.selecteColor)
+                    }
                 }
                 if (reslut != -1) {
                     listModel.set(stationSet.index,{"stationColor":stationSet.selecteColor,"station":stationSet.selecteZone})
@@ -1090,6 +1112,12 @@ Item {
             //que hanshu
             if (addExit.listModel == partModel) {
                 partModel.getPartInfo(true,modelId,name)
+                edit1.inputText = partModel.getWorkStationCount()
+                edit2.inputText = partModel.getWorkStationMaxSplicePerStation()
+                edit3.inputText = partModel.getWorkStationRows()
+                edit4.inputText = partModel.getWorkStationColumns()
+                edit5.inputText = partModel.getWorkStationMaxSplicePerZone()
+                edit6.inputText = name
                 var corlorlist = new Array()
                     corlorlist = partModel.getWorkStationCorlor()
                 var zoneList = new Array()
@@ -1105,12 +1133,6 @@ Item {
                         spliceList.listModel.append({"SpliceName":nameList[i],"stationColor":arrayColor[corlorlist[i]],"station":arrayzone[zoneList[i]],"SpliceId":idList[i]})
                     }
                 }
-                edit1.inputText = partModel.getWorkStationCount()
-                edit2.inputText = partModel.getWorkStationMaxSplicePerStation()
-                edit3.inputText = partModel.getWorkStationRows()
-                edit4.inputText = partModel.getWorkStationColumns()
-                edit5.inputText = partModel.getWorkStationMaxSplicePerZone()
-                edit6.inputText = name
                 if (partModel.getPartOnlineOrOffLine())
                     basicSwitch.state = "right"
                 else

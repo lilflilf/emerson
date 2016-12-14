@@ -7,13 +7,68 @@ Item {
     id: workStation
     width: Screen.width * 0.65
     height: Screen.height*0.18
-    property alias listModel: color.model
     property variant array: ["#ff6699","#ff0033","#33FFCC","#cc99ff","#cc0099","#930202","#99ccff","#f79428",
         "#0000cc","Olive","#ffff33","#ffcc00","#cc9909","#66ff00","#009900","#00cc66","#3366ff","#cc33cc","#cc9966","#9400D3"]
     property int currentIndex : 7
     property int allWorkTotal: 0
     property int clickCount: 0
     property int maxSpliceNum: 0
+    signal leftClick(int index, string color)
+    signal rightClick(int index, string color)
+
+    function getAllWorkstationColor(count)
+    {
+        var array = ["#ff6699","#ff0033","#33FFCC","#cc99ff","#cc0099","#930202","#99ccff","#f79428","#0000cc","Olive"]
+        listModel.clear()
+        if (count > 8)
+            count = 8
+        for (var i = 0; i < count; i++) {
+            listModel.append({"workcolor":array[i]});
+        }
+    }
+
+    function leftClickSetCurrentStationSPliceCount(index,count)
+    {
+        colorRepeater.itemAt(index).currentWorkSpliceCount = count
+    }
+
+    function rightClickSetCurrentStationSpliceCount(index,count)
+    {
+        colorRepeater.itemAt(index).currentWorkSpliceCount = count
+    }
+
+    function setCurrentStationSPliceCount(bIsInsert,color)
+    {
+        if (bIsInsert) {
+            for (var i = 0; i < listModel.count; i++) {
+                if (listModel.get(i).workcolor == color) {
+                    console.log("add ++++++++++++++++++++",color,i)
+                    ++colorRepeater.itemAt(i).currentWorkSpliceCount
+                    break;
+                }
+            }
+        } else {
+            for (var i = 0; i < listModel.count; i++) {
+                if (listModel.get(i).workcolor == color) {
+                    console.log("-----------------------",color,i)
+                    --colorRepeater.itemAt(i).currentWorkSpliceCount
+                    break;
+                }
+            }
+        }
+    }
+
+    function setCurrentStationSPliceCountInit(color,count)
+    {
+        if (count > 8) {
+           count = 8
+        }
+        for (var i = 0 ; i < count; i++) {
+            if (listModel.get(i).workcolor === color) {
+                ++colorRepeater.itemAt(i).currentWorkSpliceCount
+            }
+        }
+    }
 
     onAllWorkTotalChanged: {
         if (allWorkTotal < 9)
@@ -21,6 +76,10 @@ Item {
         else
             rightButton.visible = true
         leftButton.visible = false
+    }
+
+    ListModel {
+        id: listModel
     }
 
     CButton {
@@ -42,6 +101,7 @@ Item {
             } else {
                 listModel.insert(7,{"workcolor":array[clickCount]})
             }
+            leftClick(7,listModel.get(7).workcolor)
             if (clickCount == 0) {
                 leftButton.visible = false
             }
@@ -64,6 +124,7 @@ Item {
             clickCount++
             listModel.remove(7)
             listModel.insert(0,{"workcolor":array[currentIndex+clickCount]})
+            rightClick(0,listModel.get(0).workcolor)
             if ((currentIndex+clickCount+1) == allWorkTotal) {
                 rightButton.visible = false
             }
@@ -78,10 +139,10 @@ Item {
         clip: true
         spacing: 10
         Repeater {
-            id: color
-            model: allWorkTotal > 8 ? 8 : allWorkTotal
+            id: colorRepeater
+            model: listModel
             delegate: Item {
-                id: station
+                property int currentWorkSpliceCount: 0
                 width: 55
                 height: workStation.height
                 Rectangle {
@@ -91,7 +152,7 @@ Item {
                     width: 35
                     height: 35
                     radius: 35
-                    color: listModel.get(index).workcolor
+                    color: workcolor
                     border.color: "white"
                     border.width: 1
 //                    Drag.active: dragArea.drag.active;
@@ -126,7 +187,7 @@ Item {
                     visible: maxSpliceNum == 0 ? false : true
                     font.pointSize: 15
                     font.family: "arial"
-                    text: qsTr("3/" + numToString(maxSpliceNum))
+                    text: currentWorkSpliceCount + "/" + maxSpliceNum
                 }
                 Text {
                     id: stationText
@@ -140,15 +201,9 @@ Item {
                     visible: maxSpliceNum == 0 ? false : true
                     font.pointSize: 10
                     font.family: "arial"
-                    text: qsTr("Station" + numToString(index+1+clickCount))
+                    text: "Station" + (index+1+clickCount)
                 }
             }
         }
-    }
-    function numToString(num)
-    {
-        var name = "1"
-        name = num
-        return name
     }
 }
