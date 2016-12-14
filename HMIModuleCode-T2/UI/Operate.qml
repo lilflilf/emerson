@@ -30,11 +30,6 @@ Item {
                 }
 
             }
-
-            if (selectIndx != -1) {
-                loader.item.partName = workOrderModel.getWorkOrderValue(selectIndx,"name")
-                loader.item.partId = workOrderModel.getPartId(selectIndx)
-            }
         }
     }
     Connections{
@@ -367,7 +362,6 @@ Item {
         onClicked: {
             if (operate.selectIndx != -1) {
                 workOrderModel.editNew(workOrderModel.getPartId(operate.selectIndx))
-            if (selectIndx != -1) {
                 partModel.getPartInfo(true,workOrderModel.getPartId(selectIndx),workOrderModel.getWorkOrderValue(selectIndx,"middle"))
                 loader.source = "qrc:/UI/OperateDetails.qml"
             }

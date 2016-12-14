@@ -5,8 +5,6 @@ import QtQuick.Window 2.2
 
 Item {
     id: operateDetail
-    property string partName: ""
-    property int partId: -1
     property var spliceList: null
     Rectangle {
         anchors.fill: parent
@@ -75,7 +73,7 @@ Item {
     Image {
         id: spliceDetailsImage
         anchors.fill: spliceDetailsItem
-        source: "qrc:/images/images/wiredemo.jpg"
+//        source: "qrc:/images/images/wiredemo.jpg"
     }
     QualityWindow {
         id: qualityWindow
@@ -153,7 +151,7 @@ Item {
                 treeModel.append({"id":array[i],"level":0,"subNode":[]})
             }
             var zoneList = new Array();
-            zoneList = partModel.getWorkStationCorlor()
+            zoneList = partModel.geteWorkStationZone()
             var j = 0
             for ( j = 0; j < zoneList.length; j++) {
                 if (j == 0) {
@@ -179,9 +177,6 @@ Item {
         rows: partModel.getWorkStationRows()
         visible: partModel.getPartOnlineOrOffLine()
         listModel: treeModel
-        Component.onCompleted: {
-            console.log("xxxxxxxxxxxxxxxxxxx",partModel.getWorkStationColumns(),partModel.getWorkStationRows())
-        }
     }
     SpliceStatusOffLine {
         id: offline

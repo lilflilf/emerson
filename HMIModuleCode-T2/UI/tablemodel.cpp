@@ -6,6 +6,7 @@ WorkOrderModel::WorkOrderModel(QObject *parent) :
     QAbstractTableModel(parent)
 {
     m_workOrderAdaptor = DBWorkOrderTable::Instance();
+    m_partAdaptor = DBPartTable::Instance();
     workOrders = new QMap<int, QString>();
 }
 
@@ -157,11 +158,6 @@ QList<int> WorkOrderModel::getSpliceList()
 {
     QMap<int,struct PARTATTRIBUTE>::iterator it; //遍历map
     QList<int> list;
-    if (workOrderElement.PartIndex.count() > 0)
-        m_partAdaptor->QueryOneRecordFromTable(workOrderElement.PartIndex.begin().key(),&partElement);
-    else
-        return list;
-
     for ( it = partElement.SpliceList.begin(); it != partElement.SpliceList.end(); ++it ) {
         list.append(it.value().SpliceID);
     }
@@ -170,22 +166,10 @@ QList<int> WorkOrderModel::getSpliceList()
 
 void WorkOrderModel::editNew(int index)
 {
-    qDebug() << "bbbbbbbbbbbbbbbbbbbbb" << index;
+    qDebug() << "cccccccccccccccccccc" << index;
+    m_partAdaptor->QueryOneRecordFromTable(index,&partElement);
+    qDebug() << "cccccccccccccccccccc" << index;
 
-    QMap<int,QString>::iterator it; //遍历map
-    int i = 0;
-    int orderId;
-    for ( it = workOrders->begin(); it != workOrders->end(); ++it ) {
-        if (i == index){
-            qDebug() << it.key();
-            break;
-        }
-        else {
-            i++;
-        }
-    }
-    qDebug() << "bbbbbbbbbbbbbbbbbbbbb111111111" << index;
-//    m_workOrderAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&workOrderElement);
 }
 
 QVariant WorkOrderModel::getWorkOrderValue(int index, QString key)
@@ -600,6 +584,16 @@ QString SpliceModel::getStructValue(QString valueKey, QString valueType)
     else if (valueKey == "SpliceName") {
         return presetElement.SpliceName;
     }
+    else if (valueKey == "ShrinkId") {
+        qDebug() << "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" << presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID;
+        return presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID;
+    }
+    else if (valueKey == "ShrinkTemp") {
+        return variantToString->ShrinkTemperatureToString(presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTemperature).Current;
+    }
+    else if (valueKey == "ShrinkTime") {
+        return variantToString->ShrinkTimeToString(presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime).Current;
+    }
     else
         return "";
 }
@@ -701,10 +695,10 @@ void SpliceModel::setStructValue(QString valueKey, QVariant value)
         presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID = value.toString();
     }
     else if (valueKey == "ShrinkTemp") {
-        presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkOption = stringToVariant->ShrinkTemperatureToInt(value.toString());
+        presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTemperature = stringToVariant->ShrinkTemperatureToInt(value.toString());
     }
     else if (valueKey == "ShrinkTime") {
-        presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkOption = stringToVariant->ShrinkTimeToInt(value.toString());
+        presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime = stringToVariant->ShrinkTimeToInt(value.toString());
     }
     else if (valueKey == "SpliceName") {
         presetElement.SpliceName = value.toString();
@@ -713,14 +707,10 @@ void SpliceModel::setStructValue(QString valueKey, QVariant value)
         presetElement.OperatorID = value.toInt();
     }
     else if (valueKey == "Total Cross") {
-        qDebug() << "Total Cross " << value.toString();
         presetElement.CrossSection = stringToVariant->CrossSectionToInt(value.toString());
-        qDebug() << "Total Cross " << presetElement.CrossSection;
-
     }
     else if (valueKey == "WireMap") {
         QStringList list = value.toStringList();
-        qDebug() << "WireMap" << list;
         presetElement.WireIndex.clear();
         int wireId;
         QString temp;
@@ -732,8 +722,6 @@ void SpliceModel::setStructValue(QString valueKey, QVariant value)
             if (m_wireAdaptor->QueryOneRecordFromTable(wireId,&tempWire))
                 presetElement.WireIndex.insert(wireId,tempWire.WireName);
         }
-        qDebug() << "WireMap end " << presetElement.NoOfWires;
-
         presetElement.NoOfWires = list.count();
     }
     else if (valueKey == "PicPath") {
@@ -1193,8 +1181,10 @@ void PartModel::setPartSpliceList(QString name, int id, int station, int zone, i
     m_Part->SpliceList[index].CurrentBoardLayoutZone = zone;
 }
 
-void PartModel::savePartInfo(bool bIsEdit)
+void PartModel::savePartInfo(bool bIsEdit, int operatorId)
 {
+    m_Part->OperatorID = operatorId;
+    m_Part->NoOfSplice = m_Part->SpliceList.count();
     if (bIsEdit) {
         m_partAdaptor->UpdateRecordIntoTable(m_Part);
     } else {
@@ -1932,6 +1922,15 @@ void WireModel::setModelList(unsigned int time_from, unsigned int time_to)
     endResetModel();
 }
 
+void WireModel::setTemplateModelList()
+{
+    beginResetModel();
+    wires->clear();
+    if (m_wireAdaptor->QueryOnlyUseField("SpliceID","-1",wires))
+        qDebug( )<< "setTemplateModelList " << wires->count();
+    endResetModel();
+}
+
 void WireModel::setModelList()
 {
     beginResetModel();
@@ -1986,6 +1985,7 @@ int WireModel::insertValueToTable(QString type,QString wireName,int wireId,int o
     insertWire.Side = (HorizontalLocation)side;
     insertWire.VerticalSide = (VerticalLocation)verside;
     insertWire.Position = (VerticalPosition)position;
+    insertWire.SpliceID = -1;
 
     if (type == "insert"){
         insertWireId = m_wireAdaptor->InsertRecordIntoTable(&insertWire);
@@ -1999,11 +1999,27 @@ int WireModel::insertValueToTable(QString type,QString wireName,int wireId,int o
             return wireId;
         else
         {
-            insertWireId = m_wireAdaptor->InsertRecordIntoTable(&insertWire);
-            return insertWireId;
+            if (m_wireAdaptor->UpdateRecordIntoTable(&insertWire))
+                return wireId;
+            return -1;
         }
     }
-    return 1;
+    return -1;
+}
+
+void WireModel::updateSpliceIdToWire(QList<int> wireList, int spliceId)
+{
+    if (spliceId == -1)
+        return;
+    WireElement temp;
+    for (int i = 0; i < wireList.count(); i++)
+    {
+        if (m_wireAdaptor->QueryOneRecordFromTable(wireList[i], &temp))
+        {
+            temp.SpliceID = spliceId;
+            m_wireAdaptor->UpdateRecordIntoTable(&temp);
+        }
+    }
 }
 
 void WireModel::createNew()
