@@ -925,17 +925,19 @@ Item {
                     else if (bottomRadio.checked)
                         positionside = 2;
 
-                    if (spliceDetailsItem.selectWireId == -1)
-                    {
-                        //insert
-                        wireModel.insertValueToTable("insert",wireName.inputText,-1,hmiAdaptor.getCurrentOperatorId(),rectcolor.color,itemStripe.color,itemStripe.stripeType,edit2.inputText,wireType,side,verside,positionside)
-                    }
-                    else
-                    {
-                        //update
-                        wireModel.insertValueToTable("update",wireName.inputText,spliceDetailsItem.selectWireId,hmiAdaptor.getCurrentOperatorId(),rectcolor.color,itemStripe.color,itemStripe.stripeType,edit2.inputText,wireType,side,verside,positionside)
+                    wireModel.insertValueToTable("insert",wireName.inputText,-1,hmiAdaptor.getCurrentOperatorId(),rectcolor.color,itemStripe.color,itemStripe.stripeType,edit2.inputText,wireType,side,verside,positionside)
 
-                    }
+//                    if (spliceDetailsItem.selectWireId == -1)
+//                    {
+//                        //insert
+//                        wireModel.insertValueToTable("insert",wireName.inputText,-1,hmiAdaptor.getCurrentOperatorId(),rectcolor.color,itemStripe.color,itemStripe.stripeType,edit2.inputText,wireType,side,verside,positionside)
+//                    }
+//                    else
+//                    {
+//                        //update
+//                        wireModel.insertValueToTable("update",wireName.inputText,spliceDetailsItem.selectWireId,hmiAdaptor.getCurrentOperatorId(),rectcolor.color,itemStripe.color,itemStripe.stripeType,edit2.inputText,wireType,side,verside,positionside)
+
+//                    }
                 }
             }
 
@@ -1237,6 +1239,30 @@ Item {
                 }
             }
         }
+        Text {
+            id: insulation
+            anchors.top: spliceDetails.bottom
+            anchors.topMargin: 10
+            anchors.left: spliceDetailsTip2.right
+            font.pointSize: 12
+            font.family: "arial"
+            color: "white"
+            opacity: 0.5
+        }
+
+        Switch2 {
+            id: wireSwitch
+//            anchors.top: spliceDetails.bottom
+//            anchors.topMargin: 10
+            anchors.bottom: spliceDetailsItem.top
+            anchors.bottomMargin: 10
+            anchors.right: parent.right
+            anchors.rightMargin: 20
+            textLeft: qsTr("Wire")
+            textRight: qsTr("Image")
+            state: "left"
+            width: parent.width * 0.25
+        }
 
         SpliceDetails {
             id: spliceDetailsItem
@@ -1252,6 +1278,49 @@ Item {
 
         }
 
+        Item {
+            id: selectImage
+            visible: wireSwitch.state == "left" ? false : true
+            anchors.fill: spliceDetailsItem
+            onVisibleChanged: {
+                if (visible)
+                    spliceImage.source = spliceModel.getStructValue("PicPath","") == " " ? "qrc:/images/images/bg.png" : spliceModel.getStructValue("PicPath","")
+            }
+
+            Image {
+                id: spliceImage
+                anchors.fill: parent
+//                source: spliceModel.getStructValue("PicPath","") == " " ? "qrc:/images/images/bg.png" : spliceModel.getStructValue("PicPath","")
+            }
+            Text {
+                anchors.right: parent.right
+                font.pointSize: 20
+                font.family: "arial"
+                color: "white"
+                text: qsTr("Click to Select Picture")
+            }
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    imageLoader.source = "qrc:/UI/MyFileDialog.qml"
+                }
+                Connections {
+                    target: imageLoader.item
+                    onSignalFileDialogCancel: {
+                        imageLoader.source = ""
+                    }
+                    onSignalChoseFile: {
+                        imageLoader.source = ""
+                        var path = hmiAdaptor.copyFileToPath(fileName)
+                        if (path != "") {
+                            spliceImage.source = "file:///"+path
+                            spliceModel.setStructValue("PicPath",spliceImage.source)
+                        }
+                    }
+                }
+            }
+        }
+
         CButton {
             id: wireLibrary
             pointSize: 14
@@ -1265,8 +1334,7 @@ Item {
                 backGround.visible = true
                 backGround.opacity = 0.5
                 addWireLibrary.visible = true
-                wireModel.setModelList()
-
+                wireModel.setTemplateModelList()
             }
         }
         CButton {
@@ -1346,6 +1414,7 @@ Item {
                 spliceModel.setStructValue("ShrinkTime",shrinkSet.shrinkTime);
 
                 var spliceId = spliceModel.saveSplice(creatWire.bIsEditSplice)
+                wireModel.updateSpliceIdToWire(list, spliceId)
 //                if (spliceId != -1 && !creatWire.bIsEditSplice)
                     signalSaveSplice(spliceId)
             }
@@ -2007,10 +2076,18 @@ Item {
         width: 639
         height: 390
         visible: false
+        Component.onCompleted: {
+            console.log("ccccccccccccccccccccccccccc")
+            shrinkSet.shrinkId = spliceModel.getStructValue("ShrinkId","");
+            shrinkSet.shrinkTemp = spliceModel.getStructValue("ShrinkTemp","")
+            shrinkSet.shrinkTime = spliceModel.getStructValue("ShrinkTime","")
+        }
+
         onSureClick: {
             shrinkSet.visible = false
             backGround.opacity = 0
             backGround.visible = false
+            insulation.text = "  Insulation: " + shrinkSet.shrinkId + shrinkSet.shrinkTemp + shrinkSet.shrinkTime
         }
         onCancelClick: {
             shrinkSet.visible = false

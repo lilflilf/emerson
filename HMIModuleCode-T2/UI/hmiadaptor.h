@@ -18,7 +18,7 @@
 #include "Interface/Settings/WeldDefaults.h"
 #include "Interface/Settings/DataCommunication.h"
 
-#define TOPATH "C:/BransonData/Library/"
+#define TOPATH "C:/BransonData/Library/SpliceImage/"
 #define HMI_PRINT (qDebug() <<"HMI adapter:" << __FILE__ << __FUNCTION__ << __LINE__ << ": ")
 
 class HmiAdaptor : public QObject
