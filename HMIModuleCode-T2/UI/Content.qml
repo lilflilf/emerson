@@ -349,7 +349,12 @@ Item {
                 onInputTextChanged: {
                     partModel.setPartWorkStationNum(edit1.inputText)
                     workStationcolor.getAllWorkstationColor(edit1.inputText)
+                    workStationcolor.clearCurrentStationCount(edit1.inputText)
                     workStationcolor.allWorkTotal = edit1.inputText
+                    for (var i = 0; i < listModel.count; i++) {
+                        listModel.set(i,{"station":"?","stationColor":"white"})
+                    }
+                    boardlayout.clearBoardLayout()
                 }
             }
             MiniKeyNumInput {
@@ -403,17 +408,12 @@ Item {
                 anchors.left: parent.left
                 anchors.leftMargin: 10
                 width: (parent.width-30) / 2
-//                borderColor: "#375566"
                 height: 50
-//                horizontalAlignment: Qt.AlignHCenter
                 inputWidth: edit3.width/2
-//                inputHeight: 45
                 tipsText: qsTr("Rows")
 //                regExp: RegExpValidator{regExp: /^[1-4]{1}$/}
-//                maxSize: 20
                 opacity: 0.7
                 inputText: partModel.getWorkStationRows()
-//                tipsSize: 14
                 onInputFocusChanged: {
                     if (edit3.inputFocus) {
                         backGround.visible = true
@@ -428,10 +428,15 @@ Item {
                 onInputTextChanged: {
                     partModel.setPartRows(edit3.inputText)
                     boardlayout.rows = edit3.inputText
-                    for (var i = 0; i< workModel.count; i++) {
-                        workModel.get(i).workStation.destroy()
+                    for (var i = 0; i < listModel.count; i++) {
+                        listModel.set(i,{"station":"?","stationColor":"white"})
                     }
-                    workModel.clear()
+                    workStationcolor.getAllWorkstationColor(edit1.inputText)
+                    workStationcolor.clearCurrentStationCount(edit1.inputText)
+//                    for (var i = 0; i< workModel.count; i++) {
+//                        workModel.get(i).workStation.destroy()
+//                    }
+//                    workModel.clear()
                 }
             }
 
@@ -464,10 +469,15 @@ Item {
                 onInputTextChanged: {
                     partModel.setPartColumns(edit4.inputText)
                     boardlayout.columns = edit4.inputText
-                    for (var i = 0; i< workModel.count; i++) {
-                        workModel.get(i).workStation.destroy()
+                    for (var i = 0; i < listModel.count; i++) {
+                        listModel.set(i,{"station":"?","stationColor":"white"})
                     }
-                    workModel.clear()
+                    workStationcolor.getAllWorkstationColor(edit1.inputText)
+                    workStationcolor.clearCurrentStationCount(edit1.inputText)
+//                    for (var i = 0; i< workModel.count; i++) {
+//                        workModel.get(i).workStation.destroy()
+//                    }
+//                    workModel.clear()
                 }
             }
             MiniKeyNumInput {
@@ -1239,13 +1249,6 @@ Item {
                 templateModel.append({name:"Toyota"})
                 templateModel.append({name:"Volks Wagen"})
                 templateModel.append({name:"BYD"})
-                templateModel.append({name:"BYD"})
-                templateModel.append({name:"BYD"})
-                templateModel.append({name:"BYD"})
-                templateModel.append({name:"BYD"})
-                templateModel.append({name:"BYD"})
-                templateModel.append({name:"BYD"})
-                templateModel.append({name:"BYD"})
             }
         }
         Image {
@@ -1356,7 +1359,7 @@ Item {
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
-
+                            templateModel.remove(index)
                         }
                     }
                 }
@@ -1446,6 +1449,17 @@ Item {
             width: (partNumberInput.width-20)/2
             text: qsTr("Save")
             textColor: "white"
+            onClicked: {
+                edit6.inputText = partNumberInput.inputText
+                template.text = templateNameInput.inputText
+                templateModel.append({name:templateNameInput.inputText})
+                temPlateDialog.visible = false
+                backGround.visible = false
+                template2.visible = false
+                backGround.opacity = 0
+                addNewBack.opacity = 0
+                addnewBlack.visible = false
+            }
         }
         CButton {
             id: cancelButton

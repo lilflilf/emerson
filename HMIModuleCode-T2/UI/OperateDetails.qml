@@ -188,7 +188,7 @@ Item {
         width: Screen.width * 0.37
         height: Screen.height *0.2
         listModel: testModel
-        visible: false
+        visible: !partModel.getPartOnlineOrOffLine()
     }
 
     Rectangle {

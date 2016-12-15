@@ -26,6 +26,14 @@ Item {
             listModel.append({"workcolor":array[i]});
         }
     }
+    function clearCurrentStationCount(count)
+    {
+        if (count > 8)
+            count = 8
+        for (var i = 0; i < count; i++) {
+            colorRepeater.itemAt(i).currentWorkSpliceCount = 0
+        }
+    }
 
     function leftClickSetCurrentStationSPliceCount(index,count)
     {
