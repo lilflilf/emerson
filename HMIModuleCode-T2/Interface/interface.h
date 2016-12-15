@@ -25,6 +25,7 @@ struct BransonMessageBox{
     QString MsgTitle;
     QString MsgPrompt;
     int TipsMode;
+    void* _Object;
     void (*func_ptr)(void*);
 };
 
@@ -42,6 +43,7 @@ public:
     VersionList PreviousVersions;
     VersionList CurrentVersions;
     OperatorElement CurrentOperator;
+    bool FirstScreenComesUp;
 public:
     void cMsgBox(struct BransonMessageBox* MsgBox);
     void dlgMaintWarning();

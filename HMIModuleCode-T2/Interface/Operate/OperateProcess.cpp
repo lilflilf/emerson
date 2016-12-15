@@ -5,6 +5,10 @@
 #include "Modules/ModRunSetup.h"
 #include "Interface/Interface.h"
 #include "DataBase/DBWeldResultTable.h"
+#include "Modules/M10runMode.h"
+#include "Modules/UtilityClass.h"
+#include "Modules/StatisticalFunction.h"
+#include <QDateTime>
 #include <QDebug>
 OperateProcess* OperateProcess::_instance = NULL;
 ThreadClass* OperateProcess::m_Thread = NULL;
@@ -144,7 +148,9 @@ void OperateProcess::WeldCycleDaemonThread(void* _obj)
     M102IA *_M102IA = M102IA::Instance();
     InterfaceClass *_Interface = InterfaceClass::Instance();
     OperateProcess* _ObjectPtr = (OperateProcess*)_obj;
+    M10runMode* _M10runMode = M10runMode::Instance();
     DBWeldResultTable* _WeldResultDB = DBWeldResultTable::Instance();
+    //1. Receive Power and Height Graph Data
     switch(_ObjectPtr->CurrentStep)
     {
     case POWERFst:
@@ -190,7 +196,7 @@ void OperateProcess::WeldCycleDaemonThread(void* _obj)
         {
             struct BransonMessageBox tmpMsgBox;
             tmpMsgBox.MsgTitle = QObject::tr("ERROR");
-            tmpMsgBox.MsgPrompt = QObject::tr("Can't get any Response from controller!");
+            tmpMsgBox.MsgPrompt = QObject::tr("Can't get full Power & Post Height Graph from controller!");
             tmpMsgBox.TipsMode = Critical;
             tmpMsgBox.func_ptr = NULL;
             _Interface->cMsgBox(&tmpMsgBox);
@@ -201,11 +207,17 @@ void OperateProcess::WeldCycleDaemonThread(void* _obj)
         }
         m_Thread->setStopEnabled(true);
         m_Thread->setSuspendEnabled(true);
-        _WeldResultDB->InsertRecordIntoTable(&_ObjectPtr->CurrentWeldResult);
-
         m_Thread->wait();
         delete m_Thread;
         m_Thread = NULL;
+        //2. Save the Weld result into the Database
+        _WeldResultDB->InsertRecordIntoTable(&_ObjectPtr->CurrentWeldResult);
+        //3. Update Maintenance Count
+        _M10runMode->UpdateMaintenanceData();
+        //4. Alarm handle
+        _M10runMode->CheckWeldData();
+        //5. Shrink Tube
+        //6. Remote Data sending
         emit _ObjectPtr->WeldCycleCompleted(&_ObjectPtr->WeldCycleStatus);
     }
 }
@@ -232,6 +244,7 @@ void OperateProcess::_start()
     M102IA *_M102IA = M102IA::Instance();
     InterfaceClass* _Interface = InterfaceClass::Instance();
     struct BransonMessageBox tmpMsgBox;
+    _Interface->FirstScreenComesUp = true;
     if(_M102IA->SendCommandSetRunMode(1) == false)
     {
         tmpMsgBox.MsgTitle = QObject::tr("ERROR");
@@ -336,5 +349,97 @@ void OperateProcess::_execute()
             tmpMsgBox.func_ptr = NULL;
             _Interface->cMsgBox(&tmpMsgBox);
         }
+    }
+}
+
+//this functio is only for the UCL & LCL calculation.
+// the UCL & LCL is the middle point of the USL & LSL +/- 3 standard deviation
+void OperateProcess::ControlLimitProcess(QUALITYTYPE Type, QList<int> &RawList,
+                                         int USL, int LSL,
+                                         int *UCL, int *LCL)
+{
+    UtilityClass *_Utility = UtilityClass::Instance();
+    QList<float> tmpList;
+    float tmpValue = 0;
+    float UpperSpecValue = 0;
+    float LowerSpecValue = 0;
+    float UpperControlValue = 0;
+    float LowerControlValue = 0;
+    float CentralValue;
+    float AverageValue;
+    float Sigam;
+    tmpList.clear();
+    *UCL = USL;
+    *LCL = LSL;
+    switch(Type)
+    {
+    case QUALITYTIME:
+        UpperSpecValue = _Utility->FormatedDataToFloat(DINTimePl,
+                    USL);
+        LowerSpecValue = _Utility->FormatedDataToFloat(DINTimeMs,
+                    LSL);
+        break;
+    case QUALITYPOWER:
+        UpperSpecValue = _Utility->FormatedDataToFloat(DINPowerPl,
+                    USL);
+        LowerSpecValue = _Utility->FormatedDataToFloat(DINPowerMs,
+                    LSL);
+        break;
+    case QUALITYPREHEIGHT:
+        UpperSpecValue = _Utility->FormatedDataToFloat(DINPre_HgtPl,
+                    USL);
+        LowerSpecValue = _Utility->FormatedDataToFloat(DINPre_HgtMs,
+                    LSL);
+        break;
+    case QUALITYPOSTHEIGHT:
+        UpperSpecValue = _Utility->FormatedDataToFloat(DINPre_HgtPl,
+                    USL);
+        LowerSpecValue = _Utility->FormatedDataToFloat(DINPre_HgtMs,
+                    LSL);
+        break;
+    }
+    CentralValue = (UpperSpecValue + LowerSpecValue)/ 2;
+    for(int i = 0; i< RawList.size(); i++)
+    {
+        switch(Type)
+        {
+        case QUALITYTIME:
+            tmpValue = _Utility->FormatedDataToFloat(DINActTime, RawList.at(i));
+            break;
+        case QUALITYPOWER:
+            tmpValue = _Utility->FormatedDataToFloat(DINActPower, RawList.at(i));
+            break;
+        case QUALITYPREHEIGHT:
+            tmpValue = _Utility->FormatedDataToFloat(DINActPreHgt, RawList.at(i));
+            break;
+        case QUALITYPOSTHEIGHT:
+            tmpValue = _Utility->FormatedDataToFloat(DINActHgt, RawList.at(i));
+            break;
+        }
+        tmpList.push_back(tmpValue);
+    }
+
+    AverageValue = StatisticalFunction::Mean(tmpList);
+    Sigam = StatisticalFunction::StandardDeviation(tmpList,AverageValue);
+    UpperControlValue = CentralValue + 3 * Sigam;
+    LowerControlValue = CentralValue - 3 * Sigam;
+    switch(Type)
+    {
+    case QUALITYTIME:
+        *UCL = UpperControlValue / _Utility->txtData[DINActTime].Factor;
+        *LCL = LowerControlValue / _Utility->txtData[DINActTime].Factor;
+        break;
+    case QUALITYPOWER:
+        *UCL = UpperControlValue / _Utility->txtData[DINActPower].Factor;
+        *LCL = LowerControlValue / _Utility->txtData[DINActPower].Factor;
+        break;
+    case QUALITYPREHEIGHT:
+        *UCL = UpperControlValue / _Utility->txtData[DINActPreHgt].Factor;
+        *LCL = LowerControlValue / _Utility->txtData[DINActPreHgt].Factor;
+        break;
+    case QUALITYPOSTHEIGHT:
+        *UCL = UpperControlValue / _Utility->txtData[DINActHgt].Factor;
+        *LCL = LowerControlValue / _Utility->txtData[DINActHgt].Factor;
+        break;
     }
 }

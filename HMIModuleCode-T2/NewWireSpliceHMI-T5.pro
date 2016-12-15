@@ -54,7 +54,9 @@ SOURCES += main.cpp \
     Interface/WorkOrderElement.cpp \
     Interface/WeldResultElement.cpp \
     Interface/AlarmElement.cpp \
-    Interface/Operate/OperateProcess.cpp
+    Interface/Operate/OperateProcess.cpp \
+    Modules/AlarmMessage.cpp \
+    Modules/StatisticalFunction.cpp
 
 
 
@@ -118,7 +120,9 @@ HEADERS += \
     Interface/WorkOrderElement.h \
     Interface/WeldResultElement.h \
     Interface/AlarmElement.h \
-    Interface/Operate/OperateProcess.h
+    Interface/Operate/OperateProcess.h \
+    Modules/AlarmMessage.h \
+    Modules/StatisticalFunction.h
 
 DISTFILES += \
     UI/displayChinese_zh_CN.qm \

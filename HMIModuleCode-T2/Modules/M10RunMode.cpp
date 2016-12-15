@@ -6,6 +6,8 @@
 #include "UtilityClass.h"
 #include "MODstart.h"
 #include "Interface/Interface.h"
+#include "AlarmMessage.h"
+#include <QDateTime>
 
 M10runMode* M10runMode::_instance = 0;
 M10runMode* M10runMode::Instance()
@@ -67,56 +69,64 @@ void M10runMode::init_m20_data_events()
     }
 }
 
-
-
-
 void M10runMode::UpdateMaintenanceData()
 {
-    int i = 0;
-    bool tempflag = false;
-    M10INI* ptr_M10INI = M10INI::Instance();
-    M102IA* ptr_M102IA = M102IA::Instance();
+    M10INI *_M10INI = M10INI::Instance();
     InterfaceClass* _Interface = InterfaceClass::Instance();
-
-    for (i = 0; i< 7;i++)
+    QDateTime TimeLabel = QDateTime::currentDateTime();
+    for(int i = 0; i < 8; i++)
     {
-        if (i <= 3)
+        if(_Interface->StatusData.CurrentMaintenanceLimits[i] == 0)
         {
-            if (MODstart::ApplicationFirstStartFlag == false)
-            {
-                _Interface->StatusData.CurrentMaintenanceLimits[i] =
-                        _Interface->StatusData.CurrentMaintenanceLimits[i] +
-                        ptr_M102IA->IAactual.Energy;
-            }
-            if (_Interface->StatusData.MaintenanceLimits[i] != 0)
-            {
-                if (MODstart::Checkmaintenancelimit_EaWeld == true)
-                {
-                    if (_Interface->StatusData.CurrentMaintenanceLimits[i] >=
-                            _Interface->StatusData.MaintenanceLimits[i])
-                     //display warning msg
-                        tempflag = true;
-                }
-            }
+            _Interface->StatusData.MaintenanceDateStarted[i] = TimeLabel.toTime_t();
         }
-        else
-        {
-            if (MODstart::ApplicationFirstStartFlag == false)
-                _Interface->StatusData.CurrentMaintenanceLimits[i] =
-                    _Interface->StatusData.CurrentMaintenanceLimits[i] + 1;
-            if (_Interface->StatusData.MaintenanceLimits[i] != 0)
-            {
-                if (MODstart::Checkmaintenancelimit_EaWeld == true)
-                {
-                    if (_Interface->StatusData.CurrentMaintenanceLimits[i] >=
-                        _Interface->StatusData.MaintenanceLimits[i])
-                        //display warning msg
-                        tempflag = true;
-                }
-            }
-        }
+        _Interface->StatusData.CurrentMaintenanceLimits[i]++;
     }
-    if ((tempflag == true) && (MODstart::Checkmaintenancelimit_EaWeld == true))
-        _Interface->dlgMaintWarning();
-    ptr_M10INI->Save_StatusData(false);
+    _M10INI->Save_StatusData(false);
+}
+
+bool M10runMode::CheckForOverLoad(bool ShowAlarm)
+{
+    M102IA *_M102IA = M102IA::Instance();
+    M2010  *_M2010  = M2010::Instance();
+    InterfaceClass *_Interface = InterfaceClass::Instance();
+    AlarmMessage *_AlarmMsg = AlarmMessage::Instance();
+    bool bResult = false;
+    if((_M102IA->IAactual.Alarmflags & 0x01) == 0x01)
+    {
+        _M2010->M10Run.Alarm_found = true;
+        if((_Interface->FirstScreenComesUp == true) && (ShowAlarm == true))
+            _AlarmMsg->Initialization();
+
+
+    }
+}
+
+void M10runMode::CheckWeldData()
+{
+    //This routine must control all of the data checks including alarm checks.
+    bool Done, tmpAlarmFound, Invalidweld = false;
+    int i;
+    M2010 *_M2010 = M2010::Instance();
+    M10INI *_M10INI = M10INI::Instance();
+    InterfaceClass *_Interface = InterfaceClass::Instance();
+    M102IA* _M102IA = M102IA::Instance();
+    AlarmMessage* _AlarmMsg = AlarmMessage::Instance();
+    _M2010->M10Run.Pre_Hght_Error = false;
+    _M10INI->ValidWeldData = false;
+    WidthError = false;
+    //If width encoder is checked
+    if((_Interface->StatusData.Machineflags.Word[0] & 0x4000) != 0x4000)
+    {
+        if((_M102IA->IAactual.Alarmflags & 0x800) == 0x800)
+        {
+            _M2010->M10Run.Alarm_found = true;
+            if(_Interface->FirstScreenComesUp == true)
+                _AlarmMsg->Initialization();
+        }
+
+    }
+
+
+
 }
