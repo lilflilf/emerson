@@ -1859,10 +1859,14 @@ Item {
                                 thirdSwitchModel.set(index,{"switchState":onoroff.state})
                                 if (thirdSwitchText == "Insulation:")
                                 {
-                                    if (onoroff.state == "left")
+                                    if (onoroff.state == "left"){
                                         instulationButton.visible = true
-                                    else
+                                        insulation.visible = true
+                                    }
+                                    else {
                                         instulationButton.visible = false
+                                        insulation.visible = false
+                                    }
                                 }
                             }
                         }
@@ -2077,17 +2081,17 @@ Item {
         height: 390
         visible: false
         Component.onCompleted: {
-            console.log("ccccccccccccccccccccccccccc")
             shrinkSet.shrinkId = spliceModel.getStructValue("ShrinkId","");
             shrinkSet.shrinkTemp = spliceModel.getStructValue("ShrinkTemp","")
             shrinkSet.shrinkTime = spliceModel.getStructValue("ShrinkTime","")
+            insulation.text = "  Insulation: " + shrinkSet.shrinkId + " Temp:" + shrinkSet.shrinkTemp + " Time:" + shrinkSet.shrinkTime
         }
 
         onSureClick: {
             shrinkSet.visible = false
             backGround.opacity = 0
             backGround.visible = false
-            insulation.text = "  Insulation: " + shrinkSet.shrinkId + shrinkSet.shrinkTemp + shrinkSet.shrinkTime
+            insulation.text = "  Insulation: " + shrinkSet.shrinkId + " Temp:" + shrinkSet.shrinkTemp + " Time:" + shrinkSet.shrinkTime
         }
         onCancelClick: {
             shrinkSet.visible = false

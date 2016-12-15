@@ -561,7 +561,7 @@ bool DBPresetTable::QueryOneRecordFromTable(int ID, void *_obj)
                                                 "yyyy/MM/dd hh:mm:ss");
     ((PresetElement*)_obj)->CreatedDate = TimeLabel.toTime_t();
     ((PresetElement*)_obj)->OperatorID = query.value("OperatorID").toInt();
-    ((PresetElement*)_obj)->CrossSection = query.value("Color").toInt();
+    ((PresetElement*)_obj)->CrossSection = query.value("CrossSection").toInt();
     ((PresetElement*)_obj)->PresetPicNamePath = query.value("PresetPicPath").toString();
     ((PresetElement*)_obj)->Verified = query.value("Verified").toBool();
     ((PresetElement*)_obj)->WeldSettings.BasicSetting.Energy =

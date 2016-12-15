@@ -585,7 +585,6 @@ QString SpliceModel::getStructValue(QString valueKey, QString valueType)
         return presetElement.SpliceName;
     }
     else if (valueKey == "ShrinkId") {
-        qDebug() << "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" << presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID;
         return presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID;
     }
     else if (valueKey == "ShrinkTemp") {
@@ -593,6 +592,10 @@ QString SpliceModel::getStructValue(QString valueKey, QString valueType)
     }
     else if (valueKey == "ShrinkTime") {
         return variantToString->ShrinkTimeToString(presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime).Current;
+    }
+    else if (valueKey == "Cross Section") {
+        qDebug() << "aaaaaaaaaaaaaaaaaaaaa" << presetElement.CrossSection << variantToString->CrossSectionToString(presetElement.CrossSection);
+        return variantToString->CrossSectionToString(presetElement.CrossSection);
     }
     else
         return "";

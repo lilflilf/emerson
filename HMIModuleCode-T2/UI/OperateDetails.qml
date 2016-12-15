@@ -5,7 +5,9 @@ import QtQuick.Window 2.2
 
 Item {
     id: operateDetail
-    property var spliceList: null
+    property var spliceList: new Array
+    property var cycleCount: 0
+    property var qliantity: 0
     Rectangle {
         anchors.fill: parent
         color: "#626465"
@@ -346,7 +348,7 @@ Item {
         anchors.bottomMargin: 6
         font.pointSize: 13
         font.family: "arial"
-        text: qsTr("PART TASKS: 68-72")
+        text: qsTr("PART TASKS: ") + progressBar.current + "-" + progressBar.total
         color: "white"
     }
     CButton {
@@ -359,6 +361,13 @@ Item {
         iconSource: "qrc:/images/images/you.png"
         backgroundEnabled: false
         clip: true
+        onClicked: {
+            if (progressBar.current > 1) {
+                progressBar.current--
+                progressBar.jumpToAbove()
+                selectSplice(spliceList[progressBar.current-1])
+            }
+        }
     }
     Progressbar {
         id: progressBar
@@ -370,7 +379,8 @@ Item {
         anchors.bottomMargin: 4
         width: Screen.width*0.4-150
         height: 64
-        total: 125
+        total: operateDetail.spliceList.length
+        current: 1
     }
     CButton {
         id: rightButton
@@ -383,9 +393,11 @@ Item {
         backgroundEnabled: false
         clip: true
         onClicked: {
-            progressBar.finishNo++
+//            progressBar.finishNo++
             progressBar.current++
+            progressBar.jumpToNext()
             offline.setSatusOffLineNum(testModel.get(testModel.count-1).theNo+1)
+            selectSplice(spliceList[progressBar.current-1])
         }
     }
     Text {
@@ -395,8 +407,16 @@ Item {
         anchors.bottomMargin: 6
         font.pointSize: 13
         font.family: "arial"
-        text: qsTr("PART COUNTER 68/125")
+        text: qsTr("PART COUNTER 0/")+ qliantity
         color: "white"
+        Connections {
+            target: progressBar
+            onCycleDone: {
+                cycleCount++
+                selectSplice(spliceList[0])
+                partCount.text = qsTr("PART COUNTER ") + cycleCount + "/" + qliantity;
+            }
+        }
     }
     CProgressBar {
         id: progressBar4
