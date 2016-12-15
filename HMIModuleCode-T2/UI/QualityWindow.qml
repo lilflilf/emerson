@@ -130,9 +130,10 @@ Item {
                 }
                 Rectangle {
                     color: "#6d6e71"
-
+                    anchors.top: bottomText.bottom
                     width: 50
                     height: 50
+                    rotation: 90
                 }
             }
             MouseArea {
