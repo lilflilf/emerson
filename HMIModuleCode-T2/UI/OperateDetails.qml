@@ -185,8 +185,9 @@ Item {
         anchors.top: spliceTips.bottom
         anchors.topMargin: 10
         anchors.left: operateTitle.left
+        anchors.bottom: partCount2.top
+        anchors.bottomMargin: 20
         width: Screen.width * 0.37
-        height: Screen.height *0.2
         listModel: testModel
         visible: !partModel.getPartOnlineOrOffLine()
     }
@@ -201,6 +202,7 @@ Item {
         width: 15
         height: 15
         color: "#00aa7e"
+        visible: partModel.getPartOnlineOrOffLine()
     }
     Text {
         id: currentspliceTips
@@ -212,6 +214,7 @@ Item {
         font.family: "arial"
         color: "white"
         text: qsTr("CURRENT SPLICE")
+        visible: partModel.getPartOnlineOrOffLine()
     }
     Rectangle {
         id: nextSPlice
@@ -223,6 +226,7 @@ Item {
         width: 15
         height: 15
         color: "#00afe9"
+        visible: partModel.getPartOnlineOrOffLine()
     }
     Text {
         id: nextSPliceTips
@@ -234,6 +238,7 @@ Item {
         font.family: "arial"
         color: "white"
         text: qsTr("NEXT SPLICE")
+        visible: partModel.getPartOnlineOrOffLine()
     }
     Rectangle {
         id: missSplice
@@ -245,6 +250,7 @@ Item {
         width: 15
         height: 15
         color: "#d31145"
+        visible: partModel.getPartOnlineOrOffLine()
     }
     Text {
         id: missSpliceTips
@@ -256,15 +262,17 @@ Item {
         font.family: "arial"
         color: "white"
         text: qsTr("MISSED SPLICE")
+        visible: partModel.getPartOnlineOrOffLine()
     }
     Rectangle {
         id: completeMiss
-        anchors.top: missSpliceTips.bottom
-        anchors.topMargin: 24
+        anchors.top: partModel.getPartOnlineOrOffLine() ? missSpliceTips.bottom : spliceTips.bottom
+        anchors.topMargin: partModel.getPartOnlineOrOffLine() ? 24 : 12
         anchors.left: spliceLocation.right
         anchors.leftMargin: 10
+        anchors.bottom: partModel.getPartOnlineOrOffLine() ? parent.bottom : partCount2.top
+        anchors.bottomMargin: partModel.getPartOnlineOrOffLine() ? 10 : 20
         width: spliceDetailsItem.width-spliceLocation.width-10
-        height: spliceDetailsItem.height/ 4.3
         color: "#6d6e71"
         opacity: 1
         Rectangle {
@@ -299,21 +307,21 @@ Item {
     Text {
         id: partCount2
         anchors.left: offline.left
-        anchors.top: offline.bottom
-        anchors.topMargin: 10
+        anchors.bottom: progressBar2.top
+        anchors.bottomMargin: 6
         font.pointSize: 13
         font.family: "arial"
         text: qsTr("PART COUNTER 68/125")
         color: "white"
-        visible: false
+        visible: !partModel.getPartOnlineOrOffLine()
     }
     CProgressBar {
         id: progressBar2
-        visible: false
-        anchors.top: partCount2.bottom
-        anchors.topMargin: 10
+        visible: !partModel.getPartOnlineOrOffLine()
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 20
         anchors.left: offline.left
-        width: 200
+        anchors.right: completeMiss.right
         height: 10
         maximum: 125
         minimum: 1
@@ -337,7 +345,7 @@ Item {
         anchors.left: qualityWindow.left
         font.pointSize: 13
         font.family: "arial"
-        text: qsTr("Work Station: B")
+        text: partModel.getPartOnlineOrOffLine() ? qsTr("Work Station: B") : qsTr("PART TASKS: 68-72")
         color: "white"
     }
     Text {
@@ -348,6 +356,7 @@ Item {
         anchors.bottomMargin: 6
         font.pointSize: 13
         font.family: "arial"
+        visible: partModel.getPartOnlineOrOffLine()
         text: qsTr("PART TASKS: ") + progressBar.current + "-" + progressBar.total
         color: "white"
     }
@@ -363,7 +372,8 @@ Item {
         clip: true
         onClicked: {
             if (progressBar.current > 1) {
-                progressBar.current--
+            	spliceLocation.setTreeModelBack()
+				progressBar.current--
                 progressBar.jumpToAbove()
                 selectSplice(spliceList[progressBar.current-1])
             }
@@ -395,6 +405,7 @@ Item {
         onClicked: {
 //            progressBar.finishNo++
             progressBar.current++
+            spliceLocation.setTreeModelOver()
             progressBar.jumpToNext()
             offline.setSatusOffLineNum(testModel.get(testModel.count-1).theNo+1)
             selectSplice(spliceList[progressBar.current-1])
@@ -407,7 +418,7 @@ Item {
         anchors.bottomMargin: 6
         font.pointSize: 13
         font.family: "arial"
-        text: qsTr("PART COUNTER 0/")+ qliantity
+        text: partModel.getPartOnlineOrOffLine() ? qsTr("PART COUNTER 0/")+ qliantity : qsTr("MAINTENANCE COUNTER 68K/125K")
         color: "white"
         Connections {
             target: progressBar
@@ -423,7 +434,7 @@ Item {
         anchors.left: qualityWindow.left
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 20
-        width: Screen.width*0.2
+        width: partModel.getPartOnlineOrOffLine() ? qualityWindow.width/2-20 : qualityWindow.width
         height: 10
         maximum: 125
         minimum: 1
@@ -437,6 +448,7 @@ Item {
         font.pointSize: 13
         font.family: "arial"
         text: qsTr("MAINTENANCE COUNTER 68K/125K")
+        visible: partModel.getPartOnlineOrOffLine()
         color: "white"
     }
     CProgressBar {
@@ -444,9 +456,10 @@ Item {
         anchors.right: qualityWindow.right
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 20
-        width: Screen.width*0.2
+        width: qualityWindow.width/2-20
         height: 10
         maximum: 125
+        visible: partModel.getPartOnlineOrOffLine()
         minimum: 1
         value: 60
     }
