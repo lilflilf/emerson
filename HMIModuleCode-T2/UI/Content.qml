@@ -55,6 +55,14 @@ Item {
     ListModel{
         id: listModel
     }
+    function unSelect()
+    {
+        content.selectSpliceId = -1
+        insulation.visible = false
+        spliceDetailsTips.visible = false
+        spliceImage.source = "qrc:/images/images/bg.png"
+    }
+
     function selectSplice(spliceId)
     {
         spliceModel.editNew(spliceId)
@@ -67,6 +75,16 @@ Item {
             spliceDetailItem.addWireFromSplice()
         }
         spliceImage.source = spliceModel.getStructValue("PicPath","") == " " ? "qrc:/images/images/bg.png" : spliceModel.getStructValue("PicPath","")
+
+        var shrinkId = spliceModel.getStructValue("ShrinkId","");
+        var shrinkTemp = spliceModel.getStructValue("ShrinkTemp","")
+        var shrinkTime = spliceModel.getStructValue("ShrinkTime","")
+
+        insulation.visible = true
+        spliceDetailsTips.visible = true
+        insulation.text = "  Insulation: " + shrinkId + " Temp:" + shrinkTemp + " Time:" + shrinkTime
+
+        spliceDetailsTips.text = qsTr("TOTAL CROSS SECTION ") + spliceModel.getStructValue("Cross Section","")
     }
 
     SwipeView {
@@ -130,8 +148,10 @@ Item {
                         content.selectSpliceId = listModel.get(index).SpliceId
                         content.selectSplice(content.selectSpliceId)
                     }
-                    else
+                    else {
+                        content.unSelect()
                         content.selectSpliceId = -1
+                    }
                 }
                 onCurrentWorkStation: {
                     stationSet.index = index
@@ -693,6 +713,17 @@ Item {
             anchors.left: parent.left
             anchors.leftMargin: 20
             text: qsTr("TOTAL CROSS SECTION ")
+            font.pointSize: 12
+            font.family: "arial"
+            color: "white"
+            opacity: 0.5
+        }
+
+        Text {
+            id: insulation
+            anchors.top: borderSwitch.bottom
+            anchors.topMargin: 10
+            anchors.left: spliceDetailsTips.right
             font.pointSize: 12
             font.family: "arial"
             color: "white"
