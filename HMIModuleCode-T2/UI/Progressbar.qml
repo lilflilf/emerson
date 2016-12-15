@@ -17,7 +17,10 @@ Item {
     signal cycleDone()
     function jumpToNext()
     {
+
         finishedProgress.anchors.leftMargin = (current - 1) * (progressBar.width/progressBar.total)
+        if (current < 2)
+            return
         repeater.itemAt(current-2).color = "#ED1C24"
     }
     function jumpToAbove()

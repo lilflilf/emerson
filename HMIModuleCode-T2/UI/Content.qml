@@ -229,13 +229,17 @@ Item {
                         backGround.visible = true
                         backGround.opacity = 0.5
                     } else {
+                        if (partModel.getPartOnlineOrOffLine()) {
+                            for (var i = 0; i < listModel.count; i++) {
+                                if (listModel.get(i).station == "?") {
+                                    root.showDialog(true,false,qsTr("OK"),"","","",qsTr("Please Set WorkStation!"))
+                                    return
+                                }
+                            }
+                        }
                         partModel.setPartSpliceListClear()
                         for (var i = 0; i < listModel.count; i++) {
-                            if (listModel.get(i).station == "?") {
-                                partModel.setPartSpliceList(listModel.get(i).SpliceName,listModel.get(i).SpliceId,-1,-1,i+1)
-                            } else {
-                                partModel.setPartSpliceList(listModel.get(i).SpliceName,listModel.get(i).SpliceId,arrayColor.indexOf(listModel.get(i).stationColor),arrayzone.indexOf(listModel.get(i).station),i+1)
-                            }
+                            partModel.setPartSpliceList(listModel.get(i).SpliceName,listModel.get(i).SpliceId,arrayColor.indexOf(listModel.get(i).stationColor),arrayzone.indexOf(listModel.get(i).station),i+1)
                         }
                         partModel.savePartInfo(content.bIsEdit, hmiAdaptor.getCurrentOperatorId())
                         root.menuInit(2)
@@ -326,14 +330,7 @@ Item {
                 height: 50
                 inputWidth: edit1.width/3
                 opacity: 0.7
-//                inputHeight: 45
-//                borderColor: "#375566"
-//                horizontalAlignment: Qt.AlignHCenter
                 tipsText: qsTr("#of Workstations")
-//                maxSize: 20
-//                regExp: RegExpValidator{regExp: /([1-9]|1[0-9]|20)/}
-//                opacity: 0.7
-//                tipsSize: 14
                 inputText: partModel.getWorkStationCount()
                 onInputFocusChanged: {
                     if (edit1.inputFocus) {
