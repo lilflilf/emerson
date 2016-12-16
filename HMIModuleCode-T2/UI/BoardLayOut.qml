@@ -144,6 +144,20 @@ Item {
         }
     }
 
+    function clearBoardLayout()
+    {   var i
+        for (i = 0; i < boardLayout.columns*boardLayout.rows; i++) {
+            if (rec.itemAt(i).zoneModel.count != 0) {
+                for (var j = 0; j < rec.itemAt(i).zoneModel.count; j++) {
+                    rec.itemAt(i).zoneModel.remove(j)
+                }
+            }
+            if (rec.itemAt(i).bIsCenterShow) {
+                rec.itemAt(i).bIsCenterShow = false
+            }
+        }
+    }
+
     function setBoardLayoutYPosition(index)
     {
         if (index < 5) {

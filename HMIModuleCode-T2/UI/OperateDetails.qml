@@ -1,11 +1,15 @@
-import QtQuick 2.7
+import QtQuick 2.0
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.0
 import QtQuick.Window 2.2
 
 Item {
     id: operateDetail
-    property var spliceList: null
+    property var spliceList: new Array
+    property int showFlag: -1
+    property int cycleCount: 0
+    property int qliantity: 0
+
     Rectangle {
         anchors.fill: parent
         color: "#626465"
@@ -155,6 +159,7 @@ Item {
             var j = 0
             for ( j = 0; j < zoneList.length; j++) {
                 if (j == 0) {
+                    spliceLocation.workStation = array[zoneList[j]]
                     treeModel.get(zoneList[j]).subNode.append({"spliceNo":j+1,"spliceColor":"#00aa7e","level":1,"subNode":[]})
                 } else if (j == 1) {
                     treeModel.get(zoneList[j]).subNode.append({"spliceNo":j+1,"spliceColor":"#00afe9","level":1,"subNode":[]})
@@ -175,18 +180,20 @@ Item {
         width: Screen.width * 0.37
         columns: partModel.getWorkStationColumns()
         rows: partModel.getWorkStationRows()
-        visible: partModel.getPartOnlineOrOffLine()
+        visible: showFlag == 1 ? true : false
         listModel: treeModel
+        maxNum: spliceList.length
     }
     SpliceStatusOffLine {
         id: offline
         anchors.top: spliceTips.bottom
         anchors.topMargin: 10
         anchors.left: operateTitle.left
+        anchors.bottom: partCount2.top
+        anchors.bottomMargin: 20
         width: Screen.width * 0.37
-        height: Screen.height *0.2
         listModel: testModel
-        visible: false
+        visible: showFlag == 2 ? true : false
     }
 
     Rectangle {
@@ -199,6 +206,7 @@ Item {
         width: 15
         height: 15
         color: "#00aa7e"
+        visible:  showFlag == 1 ? true : false
     }
     Text {
         id: currentspliceTips
@@ -210,6 +218,7 @@ Item {
         font.family: "arial"
         color: "white"
         text: qsTr("CURRENT SPLICE")
+        visible:  showFlag == 1 ? true : false
     }
     Rectangle {
         id: nextSPlice
@@ -221,6 +230,7 @@ Item {
         width: 15
         height: 15
         color: "#00afe9"
+        visible:   showFlag == 1 ? true : false
     }
     Text {
         id: nextSPliceTips
@@ -232,6 +242,7 @@ Item {
         font.family: "arial"
         color: "white"
         text: qsTr("NEXT SPLICE")
+        visible:   showFlag == 1 ? true : false
     }
     Rectangle {
         id: missSplice
@@ -243,6 +254,7 @@ Item {
         width: 15
         height: 15
         color: "#d31145"
+        visible:   showFlag == 1 ? true : false
     }
     Text {
         id: missSpliceTips
@@ -254,17 +266,20 @@ Item {
         font.family: "arial"
         color: "white"
         text: qsTr("MISSED SPLICE")
+        visible:   showFlag == 1 ? true : false
     }
     Rectangle {
         id: completeMiss
-        anchors.top: missSpliceTips.bottom
-        anchors.topMargin: 24
+        anchors.top: partModel.getPartOnlineOrOffLine() ? missSpliceTips.bottom : spliceTips.bottom
+        anchors.topMargin: partModel.getPartOnlineOrOffLine() ? 24 : 12
         anchors.left: spliceLocation.right
         anchors.leftMargin: 10
+        anchors.bottom: partModel.getPartOnlineOrOffLine() ? parent.bottom : partCount2.top
+        anchors.bottomMargin: partModel.getPartOnlineOrOffLine() ? 10 : 20
         width: spliceDetailsItem.width-spliceLocation.width-10
-        height: spliceDetailsItem.height/ 4.3
         color: "#6d6e71"
         opacity: 1
+        visible: showFlag != 3 ? true : false
         Rectangle {
             id: tipsRec
             anchors.left: parent.left
@@ -296,28 +311,45 @@ Item {
     }
     Text {
         id: partCount2
-        anchors.left: offline.left
-        anchors.top: offline.bottom
-        anchors.topMargin: 10
+        anchors.left: showFlag != 1 ? offline.left : qualityWindow.left
+        anchors.bottom: progressBar2.top
+        anchors.bottomMargin: 6
         font.pointSize: 13
         font.family: "arial"
-        text: qsTr("PART COUNTER 68/125")
+        text: qsTr("PART COUNTER 0/")+ qliantity
         color: "white"
-        visible: false
+        Connections {
+            target: showFlag != 3 ?  progressBar : ""
+            onCycleDone: {
+                cycleCount++
+                selectSplice(spliceList[0])
+                partCount2.text = qsTr("PART COUNTER ") + cycleCount + "/" + qliantity;
+                progressBar2.value = cycleCount
+            }
+        }
     }
     CProgressBar {
         id: progressBar2
-        visible: false
-        anchors.top: partCount2.bottom
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 20
+        anchors.left: showFlag != 1 ? offline.left : qualityWindow.left
+        width: showFlag != 1 ? spliceDetailsItem.width : qualityWindow.width/2 - 20
+        height: 10
+        maximum: qliantity
+        minimum: 1
+        value: 1
+    }
+    Text {
+        id: progresstracking2
+        anchors.top: offline.top
         anchors.topMargin: 10
         anchors.left: offline.left
-        width: 200
-        height: 10
-        maximum: 125
-        minimum: 1
-        value: 60
+        font.pointSize: 16
+        font.family: "arial"
+        text: qsTr("Progress and Tracking")
+        color: "white"
+        visible: showFlag == 3 ? true : false
     }
-
     Text {
         id: progresstracking
         anchors.bottom: workStation.top
@@ -327,6 +359,7 @@ Item {
         font.family: "arial"
         text: qsTr("Progress and Tracking")
         color: "white"
+        visible: showFlag != 3 ? true : false
     }
     Text {
         id: workStation
@@ -335,8 +368,9 @@ Item {
         anchors.left: qualityWindow.left
         font.pointSize: 13
         font.family: "arial"
-        text: qsTr("Work Station: B")
+        text: partModel.getPartOnlineOrOffLine() ? qsTr("Work Station: ") + spliceLocation.workStation : qsTr("PART TASKS: ") + progressBar.current + "-" + progressBar.total
         color: "white"
+        visible: showFlag != 3 ? true : false
     }
     Text {
         id: partTask
@@ -346,12 +380,13 @@ Item {
         anchors.bottomMargin: 6
         font.pointSize: 13
         font.family: "arial"
-        text: qsTr("PART TASKS: 68-72")
+        visible: partModel.getPartOnlineOrOffLine()
+        text: qsTr("PART TASKS: ") + progressBar.current + "-" + progressBar.total
         color: "white"
     }
     CButton {
         id: leftButton
-        anchors.bottom: partCount.top
+        anchors.bottom: partCount2.top
         anchors.bottomMargin: 20
         anchors.left: qualityWindow.left
         width: 50
@@ -359,6 +394,15 @@ Item {
         iconSource: "qrc:/images/images/you.png"
         backgroundEnabled: false
         clip: true
+        visible: showFlag != 3 ? true : false
+        onClicked: {
+            if (progressBar.current > 1) {
+				progressBar.current--
+                progressBar.jumpToAbove()
+                selectSplice(spliceList[progressBar.current-1])
+                spliceLocation.setTreeModelBack(progressBar.current)
+            }
+        }
     }
     Progressbar {
         id: progressBar
@@ -366,15 +410,17 @@ Item {
         anchors.leftMargin: 25
         anchors.right: rightButton.left
         anchors.rightMargin: 25
-        anchors.bottom: partCount.top
+        anchors.bottom: partCount2.top
         anchors.bottomMargin: 4
         width: Screen.width*0.4-150
         height: 64
-        total: 125
+        total: operateDetail.spliceList.length
+        current: 1
+        visible: showFlag != 3 ? true : false
     }
     CButton {
         id: rightButton
-        anchors.bottom: partCount.top
+        anchors.bottom: partCount2.top
         anchors.bottomMargin: 20
         anchors.right: qualityWindow.right
         width: 50
@@ -382,36 +428,20 @@ Item {
         iconSource: "qrc:/images/images/zuo.png"
         backgroundEnabled: false
         clip: true
+        visible: showFlag != 3 ? true : false
         onClicked: {
-            progressBar.finishNo++
             progressBar.current++
+            progressBar.jumpToNext()
             offline.setSatusOffLineNum(testModel.get(testModel.count-1).theNo+1)
+            selectSplice(spliceList[progressBar.current-1])
+            spliceLocation.setTreeModelOver(progressBar.current)
         }
     }
     Text {
-        id: partCount
-        anchors.left: qualityWindow.left
-        anchors.bottom: progressBar4.top
-        anchors.bottomMargin: 6
-        font.pointSize: 13
-        font.family: "arial"
-        text: qsTr("PART COUNTER 68/125")
-        color: "white"
-    }
-    CProgressBar {
-        id: progressBar4
-        anchors.left: qualityWindow.left
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 20
-        width: Screen.width*0.2
-        height: 10
-        maximum: 125
-        minimum: 1
-        value: 60
-    }
-    Text {
         id: maintenance
-        anchors.right: qualityWindow.right
+        anchors.right: showFlag != 3 ? qualityWindow.right : spliceDetailsItem.right
+        anchors.left: showFlag == 1 ? partCount2.right : (showFlag == 2 ? qualityWindow.left : spliceDetailsItem.left)
+        horizontalAlignment: showFlag == 1 ? Qt.AlignRight : Qt.AlignLeft
         anchors.bottom: progressBar3.top
         anchors.bottomMargin: 6
         font.pointSize: 13
@@ -421,10 +451,10 @@ Item {
     }
     CProgressBar {
         id: progressBar3
-        anchors.right: qualityWindow.right
-        anchors.bottom: parent.bottom
+        anchors.right: showFlag != 3 ? qualityWindow.right : spliceDetailsItem.right
+        anchors.bottom: showFlag != 3 ? parent.bottom : partCount2.top
         anchors.bottomMargin: 20
-        width: Screen.width*0.2
+        width: showFlag == 1 ? qualityWindow.width/2-20 : (showFlag == 2 ? qualityWindow.width : spliceDetailsItem.width)
         height: 10
         maximum: 125
         minimum: 1

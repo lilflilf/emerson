@@ -27,8 +27,17 @@ Item {
                 if (list.length > 0) {
                     loader.item.spliceList = workOrderModel.getSpliceList(selectIndx)
                     loader.item.selectSplice(workOrderModel.getSpliceList(selectIndx)[0])
+                    loader.item.qliantity = workOrderModel.getWorkOrderValue(selectIndx, "count")
+                        if (partModel.getPartOnlineOrOffLine()) {
+                            loader.item.showFlag = 1
+                        } else {
+                            if (loader.item.spliceList.length == 1) {
+                                loader.item.showFlag = 3
+                            } else {
+                                loader.item.showFlag = 2
+                            }
+                        }
                 }
-
             }
         }
     }
@@ -469,7 +478,7 @@ Item {
             height: 60
             font.pointSize: 18
             font.family: "arial"
-            text: qsTr("Quantity")
+            text: qsTr("Qliantity")
             verticalAlignment: Qt.AlignVCenter
             horizontalAlignment: Qt.AlignRight
             color: "white"

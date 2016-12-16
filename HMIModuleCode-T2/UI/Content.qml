@@ -55,6 +55,14 @@ Item {
     ListModel{
         id: listModel
     }
+    function unSelect()
+    {
+        content.selectSpliceId = -1
+        insulation.visible = false
+        spliceDetailsTips.visible = false
+        spliceImage.source = "qrc:/images/images/bg.png"
+    }
+
     function selectSplice(spliceId)
     {
         spliceModel.editNew(spliceId)
@@ -67,6 +75,16 @@ Item {
             spliceDetailItem.addWireFromSplice()
         }
         spliceImage.source = spliceModel.getStructValue("PicPath","") == " " ? "qrc:/images/images/bg.png" : spliceModel.getStructValue("PicPath","")
+
+        var shrinkId = spliceModel.getStructValue("ShrinkId","");
+        var shrinkTemp = spliceModel.getStructValue("ShrinkTemp","")
+        var shrinkTime = spliceModel.getStructValue("ShrinkTime","")
+
+        insulation.visible = true
+        spliceDetailsTips.visible = true
+        insulation.text = "  Insulation: " + shrinkId + " Temp:" + shrinkTemp + " Time:" + shrinkTime
+
+        spliceDetailsTips.text = qsTr("TOTAL CROSS SECTION ") + spliceModel.getStructValue("Cross Section","")
     }
 
     SwipeView {
@@ -130,8 +148,10 @@ Item {
                         content.selectSpliceId = listModel.get(index).SpliceId
                         content.selectSplice(content.selectSpliceId)
                     }
-                    else
+                    else {
+                        content.unSelect()
                         content.selectSpliceId = -1
+                    }
                 }
                 onCurrentWorkStation: {
                     stationSet.index = index
@@ -209,13 +229,17 @@ Item {
                         backGround.visible = true
                         backGround.opacity = 0.5
                     } else {
+                        if (partModel.getPartOnlineOrOffLine()) {
+                            for (var i = 0; i < listModel.count; i++) {
+                                if (listModel.get(i).station == "?") {
+                                    root.showDialog(true,false,qsTr("OK"),"","","",qsTr("Please Set WorkStation!"))
+                                    return
+                                }
+                            }
+                        }
                         partModel.setPartSpliceListClear()
                         for (var i = 0; i < listModel.count; i++) {
-                            if (listModel.get(i).station == "?") {
-                                partModel.setPartSpliceList(listModel.get(i).SpliceName,listModel.get(i).SpliceId,-1,-1,i+1)
-                            } else {
-                                partModel.setPartSpliceList(listModel.get(i).SpliceName,listModel.get(i).SpliceId,arrayColor.indexOf(listModel.get(i).stationColor),arrayzone.indexOf(listModel.get(i).station),i+1)
-                            }
+                            partModel.setPartSpliceList(listModel.get(i).SpliceName,listModel.get(i).SpliceId,arrayColor.indexOf(listModel.get(i).stationColor),arrayzone.indexOf(listModel.get(i).station),i+1)
                         }
                         partModel.savePartInfo(content.bIsEdit, hmiAdaptor.getCurrentOperatorId())
                         root.menuInit(2)
@@ -306,14 +330,7 @@ Item {
                 height: 50
                 inputWidth: edit1.width/3
                 opacity: 0.7
-//                inputHeight: 45
-//                borderColor: "#375566"
-//                horizontalAlignment: Qt.AlignHCenter
                 tipsText: qsTr("#of Workstations")
-//                maxSize: 20
-//                regExp: RegExpValidator{regExp: /([1-9]|1[0-9]|20)/}
-//                opacity: 0.7
-//                tipsSize: 14
                 inputText: partModel.getWorkStationCount()
                 onInputFocusChanged: {
                     if (edit1.inputFocus) {
@@ -329,7 +346,12 @@ Item {
                 onInputTextChanged: {
                     partModel.setPartWorkStationNum(edit1.inputText)
                     workStationcolor.getAllWorkstationColor(edit1.inputText)
+                    workStationcolor.clearCurrentStationCount(edit1.inputText)
                     workStationcolor.allWorkTotal = edit1.inputText
+                    for (var i = 0; i < listModel.count; i++) {
+                        listModel.set(i,{"station":"?","stationColor":"white"})
+                    }
+                    boardlayout.clearBoardLayout()
                 }
             }
             MiniKeyNumInput {
@@ -383,17 +405,12 @@ Item {
                 anchors.left: parent.left
                 anchors.leftMargin: 10
                 width: (parent.width-30) / 2
-//                borderColor: "#375566"
                 height: 50
-//                horizontalAlignment: Qt.AlignHCenter
                 inputWidth: edit3.width/2
-//                inputHeight: 45
                 tipsText: qsTr("Rows")
 //                regExp: RegExpValidator{regExp: /^[1-4]{1}$/}
-//                maxSize: 20
                 opacity: 0.7
                 inputText: partModel.getWorkStationRows()
-//                tipsSize: 14
                 onInputFocusChanged: {
                     if (edit3.inputFocus) {
                         backGround.visible = true
@@ -408,10 +425,15 @@ Item {
                 onInputTextChanged: {
                     partModel.setPartRows(edit3.inputText)
                     boardlayout.rows = edit3.inputText
-                    for (var i = 0; i< workModel.count; i++) {
-                        workModel.get(i).workStation.destroy()
+                    for (var i = 0; i < listModel.count; i++) {
+                        listModel.set(i,{"station":"?","stationColor":"white"})
                     }
-                    workModel.clear()
+                    workStationcolor.getAllWorkstationColor(edit1.inputText)
+                    workStationcolor.clearCurrentStationCount(edit1.inputText)
+//                    for (var i = 0; i< workModel.count; i++) {
+//                        workModel.get(i).workStation.destroy()
+//                    }
+//                    workModel.clear()
                 }
             }
 
@@ -444,10 +466,15 @@ Item {
                 onInputTextChanged: {
                     partModel.setPartColumns(edit4.inputText)
                     boardlayout.columns = edit4.inputText
-                    for (var i = 0; i< workModel.count; i++) {
-                        workModel.get(i).workStation.destroy()
+                    for (var i = 0; i < listModel.count; i++) {
+                        listModel.set(i,{"station":"?","stationColor":"white"})
                     }
-                    workModel.clear()
+                    workStationcolor.getAllWorkstationColor(edit1.inputText)
+                    workStationcolor.clearCurrentStationCount(edit1.inputText)
+//                    for (var i = 0; i< workModel.count; i++) {
+//                        workModel.get(i).workStation.destroy()
+//                    }
+//                    workModel.clear()
                 }
             }
             MiniKeyNumInput {
@@ -683,6 +710,17 @@ Item {
             anchors.left: parent.left
             anchors.leftMargin: 20
             text: qsTr("TOTAL CROSS SECTION ")
+            font.pointSize: 12
+            font.family: "arial"
+            color: "white"
+            opacity: 0.5
+        }
+
+        Text {
+            id: insulation
+            anchors.top: borderSwitch.bottom
+            anchors.topMargin: 10
+            anchors.left: spliceDetailsTips.right
             font.pointSize: 12
             font.family: "arial"
             color: "white"
@@ -1208,13 +1246,6 @@ Item {
                 templateModel.append({name:"Toyota"})
                 templateModel.append({name:"Volks Wagen"})
                 templateModel.append({name:"BYD"})
-                templateModel.append({name:"BYD"})
-                templateModel.append({name:"BYD"})
-                templateModel.append({name:"BYD"})
-                templateModel.append({name:"BYD"})
-                templateModel.append({name:"BYD"})
-                templateModel.append({name:"BYD"})
-                templateModel.append({name:"BYD"})
             }
         }
         Image {
@@ -1325,7 +1356,7 @@ Item {
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
-
+                            templateModel.remove(index)
                         }
                     }
                 }
@@ -1415,6 +1446,17 @@ Item {
             width: (partNumberInput.width-20)/2
             text: qsTr("Save")
             textColor: "white"
+            onClicked: {
+                edit6.inputText = partNumberInput.inputText
+                template.text = templateNameInput.inputText
+                templateModel.append({name:templateNameInput.inputText})
+                temPlateDialog.visible = false
+                backGround.visible = false
+                template2.visible = false
+                backGround.opacity = 0
+                addNewBack.opacity = 0
+                addnewBlack.visible = false
+            }
         }
         CButton {
             id: cancelButton

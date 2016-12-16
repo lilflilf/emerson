@@ -137,6 +137,7 @@ Item {
                             if (zone.num == -1) {
                                 zone.num = index
                             } else {
+                                console.log("11111111111111111111",zone.num)
                                 zoneRepeater.itemAt(zone.num).bIsShow = false
                                 zone.num = index
                             }

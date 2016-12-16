@@ -57,6 +57,7 @@ Item {
             font.pixelSize: 25
             wrapMode: Text.WordWrap
             color: "white"
+            horizontalAlignment: Qt.AlignHCenter
             text: qsTr("aaaaaaaaaaaaaaaaaa")
         }
         CButton {
