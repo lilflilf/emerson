@@ -16,8 +16,8 @@
 
 int main(int argc, char *argv[])
 {
+    qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
 
-//    qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
     qmlRegisterType<ALPaintedItem>("ALPaintedItem", 1, 0, "ALPaintedItem");
 
     QGuiApplication app(argc, argv);

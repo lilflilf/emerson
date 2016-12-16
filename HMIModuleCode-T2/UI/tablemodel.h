@@ -56,6 +56,7 @@ public slots:
     Q_INVOKABLE int getPartId(int index);
     Q_INVOKABLE QList<int> getSpliceList();
     Q_INVOKABLE void editNew(int index);
+    Q_INVOKABLE QVariant getStructValue(QString key);
 
     //    QString getContacterName(QString contacterId);
     Q_INVOKABLE int count();
@@ -106,6 +107,7 @@ public slots:
     Q_INVOKABLE void calculateSpliceData();
 
     Q_INVOKABLE QString getStructValue(QString valueKey, QString valueType); // create wire
+    Q_INVOKABLE int getRawData(QString key);
     Q_INVOKABLE void setStructValue(QString valueKey, QVariant value);
     Q_INVOKABLE int saveSplice(bool bIsEdit);
 
@@ -171,6 +173,7 @@ public slots:
     Q_INVOKABLE void setPartSpliceList(QString name, int id, int station, int zone, int index);
     Q_INVOKABLE void savePartInfo(bool bIsEdit, int operatorId);
     Q_INVOKABLE int count();
+    Q_INVOKABLE QVariant getStruceValue(QString key);
    // int getCurrentIndex(QString info);
 
 //    Q_INVOKABLE bool updateRecordIntoTable(int workId, QString oldWorkName, QString workName, int partId, QString partName, int count);
@@ -229,6 +232,8 @@ public:
     QMap<int, QString> *alarms;
     DBWeldResultTable *m_weldHistoryAdaptor;
 
+    WeldResultElement weldResultElement;
+
 protected:
     int rowCount(const QModelIndex &parent) const;
     int columnCount(const QModelIndex &parent) const;
@@ -245,6 +250,10 @@ public slots:
     Q_INVOKABLE void removeValue(int id, QString name);
     Q_INVOKABLE void searchAlarmLog(QString name, unsigned int time_from, unsigned int time_to);
     Q_INVOKABLE int count();
+    Q_INVOKABLE QList<int> getPoint();
+    Q_INVOKABLE QList<int> getPoint2();
+    Q_INVOKABLE int getAxes(QString key);
+
 private:
     QHash<int, QByteArray> m_roleNames;
     VariantToString *variantToString;

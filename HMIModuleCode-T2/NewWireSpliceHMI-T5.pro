@@ -5,10 +5,10 @@ QT += serialport
 QT += sql axcontainer
 CONFIG += c++11
 RC_FILE = res.rc
-#static {
-#    QT += svg
-#    QTPLUGIN += qtvirtualkeyboardplugin
-#}
+static {
+    QT += svg
+    QTPLUGIN += qtvirtualkeyboardplugin
+}
 SOURCES += main.cpp \
     UI/Utility.cpp \
     Modules/Modstart.cpp \
@@ -126,5 +126,4 @@ DISTFILES += \
     UI/displayChinese_zh_CN.qm \
     cmake.exe.stackdump \
     UI/displayChinese_zh_CN.ts \
-    UI/displayFrench_zh_CN.ts \
-    mainba.qml
+    UI/displayFrench_zh_CN.ts

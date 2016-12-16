@@ -116,7 +116,6 @@ Item {
 //        font.pointSize: 24
 //        text: qsTr("Scan ID")
 //    }
-
     TextInput {
         id: mima
         anchors.left: title4.horizontalCenter
@@ -124,28 +123,86 @@ Item {
         anchors.right: parent.right
         anchors.verticalCenter: title1.verticalCenter
         anchors.verticalCenterOffset: -100
-        maximumLength: 4
-        font.pixelSize: 35
-        height: 40
-        font.family: "arial"
-        color: "white"
-        text: qsTr("")
-        echoMode: TextInput.Password
-//        Keys.enabled: true
-//        Keys.onReturnPressed: {
-//        }
-//        Keys.onPressed: {
-//        }
-        Component.onCompleted: {
-            mima.forceActiveFocus()
-            mima.cursorVisible = false
-        }
+        visible: false
         onTextChanged: {
             if (mima.text.length == 4) {
                 if (hmiAdaptor.login(mima.text))
                     passWordInputOk()
             }
         }
+    }
+
+    Text {
+        id: mimaShow
+        anchors.left: title4.horizontalCenter
+        anchors.leftMargin: -50
+        anchors.right: parent.right
+        anchors.verticalCenter: title1.verticalCenter
+        anchors.verticalCenterOffset: -100
+//        maximumLength: 4
+        font.pixelSize: 35
+        height: 40
+        font.family: "arial"
+        color: "white"
+        text: qsTr("")
+//        echoMode: TextInput.Password
+        Keys.enabled: true
+        Keys.onReturnPressed: {
+        }
+        Keys.onPressed: {
+            if (event.key == Qt.Key_Backspace) {
+                mima.remove(mima.text.length-1,mima.text.length)
+                mimaShow.text = mimaShow.text.substring(0,mimaShow.text.length - 1)
+            }
+            if (mimaShow.text.length >= 4 )
+                return
+            if (event.key == Qt.Key_0) {
+                mimaShow.text = mimaShow.text + "●"
+                mima.text = mima.text + "0"
+            }
+            else if (event.key == Qt.Key_1) {
+                mimaShow.text = mimaShow.text + "●"
+                mima.text = mima.text + "1"
+            }
+            else if (event.key == Qt.Key_2) {
+                mimaShow.text = mimaShow.text + "●"
+                mima.text = mima.text + "2"
+            }
+            else if (event.key == Qt.Key_3) {
+                mimaShow.text = mimaShow.text + "●"
+                mima.text = mima.text + "3"
+            }
+            else if (event.key == Qt.Key_4) {
+                mimaShow.text = mimaShow.text + "●"
+                mima.text = mima.text + "4"
+            }
+            else if (event.key == Qt.Key_5) {
+                mimaShow.text = mimaShow.text + "●"
+                mima.text = mima.text + "5"
+            }
+            else if (event.key == Qt.Key_6) {
+                mimaShow.text = mimaShow.text + "●"
+                mima.text = mima.text + "6"
+            }
+            else if (event.key == Qt.Key_7) {
+                mimaShow.text = mimaShow.text + "●"
+                mima.text = mima.text + "7"
+            }
+            else if (event.key == Qt.Key_8) {
+                mimaShow.text = mimaShow.text + "●"
+                mima.text = mima.text + "8"
+            }
+            else if (event.key == Qt.Key_9) {
+                mimaShow.text = mimaShow.text + "●"
+                mima.text = mima.text + "9"
+            }
+
+        }
+        Component.onCompleted: {
+            forceActiveFocus()
+//            mima.cursorVisible = false
+        }
+
     }
     Row {
         anchors.left: mima.left
@@ -211,10 +268,15 @@ Item {
                     onClicked: {
                         if (index == 9) {
                             mima.text = ""
+                            mimaShow.text = ""
                         } else if (index == 11) {
                             mima.remove(mima.text.length-1,mima.text.length)
+                            mimaShow.text = mimaShow.text.substring(0,mimaShow.text.length - 1)
                         } else {
+                            if (mimaShow.text.length >= 4)
+                                return
                             mima.text += listModel.get(index).value
+                            mimaShow.text = mimaShow.text + "●"
                             if (mima.text.length == 4) {
 //                                if (hmiAdaptor.login(mima.text))
 //                                    passWordInputOk()

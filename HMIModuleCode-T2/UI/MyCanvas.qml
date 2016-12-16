@@ -6,50 +6,65 @@ import QtQuick.Window 2.2
 Item {
     id: myCanvas
     property alias canvasModel: listModel
+    property var timeMax: 0
+    property var powerMax: 0
+    property var heightMax: 0
+    Connections {
+        target: hmiAdaptor
+        onSignalWeldCycleCompleted: {
+            if (result)
+            {
+                setPoint()
+            }
+        }
+    }
+
+    function setPoint()
+    {
+        timeMax = alarmModel.getAxes("Time") * 1.1
+        powerMax = alarmModel.getAxes("Power") * 1.1
+        heightMax = alarmModel.getAxes("Post-Height") * 1.1
+        leftRepeater.model = 0
+        rightRepeater.model = 0
+        bottomRepeater.model = 0
+        leftRepeater.model = 7
+        rightRepeater.model = 7
+        bottomRepeater.model = 6
+        var powerList = new Array;
+        var heightList = new Array;
+        var pointx
+        var pointy
+        var i
+        powerList = alarmModel.getPoint()
+        pointx = canvas.width / timeMax;
+        pointy = canvas.height / powerMax
+        for (i = 0; i < powerList.length; i++)
+        {
+            listModel.append({"x":i * pointx,"y":canvas.height - list[i] * pointy})
+        }
+        heightList = alarmModel.getPoint2()
+        pointy = canvas.height / heightMax
+        for (i = 0; i < heightList.length; i++)
+        {
+            listModelRight.append({"x":i * pointx,"y":canvas.height - list[i] * pointy})
+        }
+    }
+
     ListModel {
         id: listModel
-        Component.onCompleted: {
-            var list = new Array;
-            list = hmiAdaptor.getPoint()
-            var pointx = canvas.width / list.length;
-            var pointy = canvas.height / 700
-            for (var i = 0; i < list.length; i++)
-            {
-                listModel.append({"x":i * pointx,"y":canvas.height - list[i] * pointy})
-            }
-
-//            listModel.append({"x":0,"y":0})
-//            listModel.append({"x":20,"y":20})
-//            listModel.append({"x":40,"y":40})
-//            listModel.append({"x":80,"y":50})
-//            listModel.append({"x":115,"y":60})
-//            listModel.append({"x":145,"y":70})
-//            listModel.append({"x":170,"y":80})
-//            listModel.append({"x":190,"y":90})
-//            listModel.append({"x":205,"y":100})
-//            listModel.append({"x":215,"y":110})
-//            listModel.append({"x":210,"y":120})
-//            listModel.append({"x":213,"y":130})
-
-        }
+//        Component.onCompleted: {
+//            var list = new Array;
+//            list = hmiAdaptor.getPoint()
+//            var pointx = canvas.width / 600;
+//            var pointy = canvas.height / 700
+//            for (var i = 0; i < list.length; i++)
+//            {
+//                listModel.append({"x":i * pointx,"y":canvas.height - list[i] * pointy})
+//            }
+//        }
     }
     ListModel {
         id: listModelRight
-//        Component.onCompleted: {
-//            listModelRight.append({"x":canvas.width,"y":0})
-//            listModelRight.append({"x":canvas.width - 6,"y":20})
-//            listModelRight.append({"x":canvas.width - 10,"y":40})
-//            listModelRight.append({"x":canvas.width - 20,"y":60})
-//            listModelRight.append({"x":canvas.width - 25,"y":80})
-//            listModelRight.append({"x":canvas.width - 35,"y":100})
-//            listModelRight.append({"x":canvas.width - 50,"y":120})
-//            listModelRight.append({"x":canvas.width - 70,"y":140})
-//            listModelRight.append({"x":canvas.width - 100,"y":160})
-//            listModelRight.append({"x":canvas.width - 150,"y":180})
-//            listModelRight.append({"x":canvas.width - 200,"y":200})
-//            listModelRight.append({"x":canvas.width - 300,"y":220})
-
-//        }
     }
     Line {
         id: bottomLine
@@ -64,7 +79,7 @@ Item {
             anchors.topMargin: 5
             color: "white"
             font.pointSize: 12
-            text: qsTr("TIME(sec)")
+            text: qsTr("TIME(msec)")
             font.family: "arial"
 
         }
@@ -72,12 +87,13 @@ Item {
             id: bottomLineRow
             width: parent.width + 100
             Repeater {
+                id: bottomRepeater
                 model: 6
                 delegate: Text {
                     width: bottomLine.width / 6
                     color: "#adaeae"
                     font.pixelSize: 14
-                    text: index * 100
+                    text: index / 6 * myCanvas.timeMax //index * 100
                     horizontalAlignment: Qt.AlignLeft
                 }
             }
@@ -95,12 +111,13 @@ Item {
             height: parent.height + 100
             anchors.right: leftLine.left
             Repeater {
+                id: leftRepeater
                 model: 7
                 delegate: Text {
                     height: leftLine.height / 7
                     color: "#adaeae"
                     font.pixelSize: 14
-                    text: (7 - index) * 100
+                    text: (7 - index) / 7 * myCanvas.powerMax  //(7 - index) * 100
                     verticalAlignment: Qt.AlignTop
                 }
             }
@@ -122,72 +139,60 @@ Item {
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         anchors.rightMargin: 20
-//        Text {
-//            anchors.bottom: rightLine.top
-//            anchors.bottomMargin: 5
-//            color: "white"
-//            font.pointSize: 12
-//            text: qsTr("HEIGHT(mm)")
-//            font.family: "arial"
-//            anchors.right: rightLine.left
-//        }
-//        Column {
-//            spacing: rightLine.height / 5
-//            anchors.left: rightLine.right
-//            Text {
-//                color: "#adaeae"
-//                font.pixelSize: 14
-//                text: qsTr("1800")
-//            }
-//            Text {
-//                text: qsTr("1350")
-//                color: "#adaeae"
-//                font.pixelSize: 14
-//            }
-//            Text {
-//                text: qsTr("900")
-//                color: "#adaeae"
-//                font.pixelSize: 14
-//            }
-//            Text {
-//                text: qsTr("450")
-//                color: "#adaeae"
-//                font.pixelSize: 14
-//            }
-//            Text {
-//                text: qsTr("0")
-//                color: "#adaeae"
-//                font.pixelSize: 14
-//            }
-//        }
+        Text {
+            anchors.bottom: rightLine.top
+            anchors.bottomMargin: 5
+            color: "white"
+            font.pointSize: 12
+            text: qsTr("POST-HEIGHT(mm)")
+            font.family: "arial"
+            anchors.right: rightLine.left
+        }
+        Column {
+            height: parent.height + 100
+            anchors.left: rightLine.right
+            Repeater {
+                id: rightRepeater
+                model: 7
+                delegate: Text {
+                    height: rightLine.height / 7
+                    color: "#adaeae"
+                    font.pixelSize: 14
+                    text: (7 - index) / 7 * myCanvas.heightMax //(7 - index) * 100
+                    verticalAlignment: Qt.AlignTop
+                }
+            }
+        }
     }
 
     Canvas {
         id: canvas
-        width: parent.width * 0.8
-        height: parent.height * 0.8
-        anchors.centerIn: parent
+        anchors.left: leftLine.right
+        anchors.right: rightLine.left
+        anchors.bottom: bottomLine.bottom
+        anchors.top: parent.top
         onPaint: {
+            var i
             var ctx = getContext("2d")
             ctx.lineWidth = 2
             ctx.strokeStyle = "lightblue"
 //            ctx.fillStyle = "steelblue"
             ctx.beginPath()
-            ctx.moveTo(0,canvas.height)
+            ctx.moveTo(listModel.get(0).x,listModel.get(0).y)
 //            ctx.lineTo(width,0)
 //            ctx.lineTo(width,height)
 //            ctx.lineTo(0,height)
 //            ctx.closePath()
 //            ctx.stroke()
-            for (var i = 0; i < listModel.count; i++)
+            for (i = 0; i < listModel.count; i++)
             {
                 ctx.lineTo(listModel.get(i).x,listModel.get(i).y)
             }
             ctx.stroke()
             ctx.strokeStyle = "red"
             ctx.beginPath()
-            ctx.moveTo(width,0)
-            for (var i = 0; i < listModelRight.count; i++)
+            ctx.moveTo(listModelRight.get(0).x,listModelRight.get(0).y)
+            for (i = 0; i < listModelRight.count; i++)
             {
                 ctx.lineTo(listModelRight.get(i).x,listModelRight.get(i).y)
             }
