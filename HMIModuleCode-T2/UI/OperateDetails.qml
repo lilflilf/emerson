@@ -6,10 +6,10 @@ import QtQuick.Window 2.2
 Item {
     id: operateDetail
     property var spliceList: new Array
-    property int showFlag: -1
+    property int showFlag: -1 /*1:inLine 2:offLine 3:signal*/
     property int cycleCount: 0
     property int qliantity: 0
-
+    property int maxCount: partModel.getCurrentPartSpliceCount()
     Rectangle {
         anchors.fill: parent
         color: "#626465"
@@ -133,19 +133,6 @@ Item {
         text: qsTr("TOTAL CROSS SECTION: 2.3mm")
         color: "white"
     }
-    ListModel {
-        id: testModel
-        Component.onCompleted: {
-            testModel.append({"theNo":1})
-            testModel.append({"theNo":2})
-            testModel.append({"theNo":3})
-            testModel.append({"theNo":4})
-            testModel.append({"theNo":5})
-            testModel.append({"theNo":6})
-            testModel.append({"theNo":7})
-            testModel.append({"theNo":8})
-        }
-    }
 
     ListModel {
         id: treeModel
@@ -182,7 +169,7 @@ Item {
         rows: partModel.getWorkStationRows()
         visible: showFlag == 1 ? true : false
         listModel: treeModel
-        maxNum: spliceList.length
+        maxNum: maxCount
     }
     SpliceStatusOffLine {
         id: offline
@@ -192,8 +179,12 @@ Item {
         anchors.bottom: partCount2.top
         anchors.bottomMargin: 20
         width: Screen.width * 0.37
-        listModel: testModel
+        maxNum: maxCount
+        listModel: maxCount > 8 ? 8 : maxCount
         visible: showFlag == 2 ? true : false
+        Component.onCompleted: {
+            offLineInit()
+        }
     }
 
     Rectangle {
@@ -401,6 +392,7 @@ Item {
                 progressBar.jumpToAbove()
                 selectSplice(spliceList[progressBar.current-1])
                 spliceLocation.setTreeModelBack(progressBar.current)
+                offline.setStusOffLineBack(progressBar.current)
             }
         }
     }
@@ -432,9 +424,9 @@ Item {
         onClicked: {
             progressBar.current++
             progressBar.jumpToNext()
-            offline.setSatusOffLineNum(testModel.get(testModel.count-1).theNo+1)
             selectSplice(spliceList[progressBar.current-1])
             spliceLocation.setTreeModelOver(progressBar.current)
+            offline.setSatusOffLineOver(progressBar.current)
         }
     }
     Text {

@@ -1087,6 +1087,11 @@ int PartModel::getWorkStationMaxSplicePerStation()
     return m_Part->PartTypeSetting.WorkStations.MaxSplicesPerWorkstation;
 }
 
+int PartModel::getCurrentPartSpliceCount()
+{
+    return m_Part->SpliceList.count();
+}
+
 QList<int> PartModel::getWorkStationCorlor()
 {
     QList<int> corlorList;

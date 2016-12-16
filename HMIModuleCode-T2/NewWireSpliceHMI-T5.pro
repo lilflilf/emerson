@@ -9,6 +9,12 @@ RC_FILE = res.rc
 #    QT += svg
 #    QTPLUGIN += qtvirtualkeyboardplugin
 #}
+TRANSLATIONS = displayChinese_zh_CN.ts \
+               displayFrench_zh_CN.ts
+
+lupdate_only{
+    SOURCES += UI/*.qml
+}
 SOURCES += main.cpp \
     UI/Utility.cpp \
     Modules/Modstart.cpp \
@@ -67,7 +73,6 @@ QML_IMPORT_PATH =
 
 # Default rules for deployment.
 include(deployment.pri)
-
 HEADERS += \
     UI/Utility.h \
     Modules/Modstart.h \

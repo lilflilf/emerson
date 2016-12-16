@@ -155,6 +155,7 @@ public slots:
     Q_INVOKABLE int getWorkStationMaxSplicePerZone();
     Q_INVOKABLE int getWorkStationCount();
     Q_INVOKABLE int getWorkStationMaxSplicePerStation();
+    Q_INVOKABLE int getCurrentPartSpliceCount();
     Q_INVOKABLE QList<int> getWorkStationCorlor();
     Q_INVOKABLE QList<int> geteWorkStationZone();
     Q_INVOKABLE bool getPartOnlineOrOffLine();
