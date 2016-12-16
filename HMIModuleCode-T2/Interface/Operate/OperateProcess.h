@@ -16,6 +16,14 @@ enum GRAPHSTEP
     STEPTrd,
 };
 
+enum QUALITYTYPE
+{
+    QUALITYTIME,
+    QUALITYPOWER,
+    QUALITYPREHEIGHT,
+    QUALITYPOSTHEIGHT,
+};
+
 class OperateProcess : public QObject
 {
     Q_OBJECT
@@ -43,10 +51,8 @@ public:
     void _start();
     void _stop();
     void _execute();
-signals:
-
-public slots:
-
+    void ControlLimitProcess(enum QUALITYTYPE Type, QList<int> &RawList, int USL, int LSL,
+                             int* UCL, int* LCL);
 public:
     static OperateProcess* Instance();
 private:

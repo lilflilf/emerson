@@ -4,7 +4,7 @@
 #include <QList>
 class StatisticalFunction
 {
-private:
+public:
     static float Mean(QList<float>&);
     static float Median(QList<float> & RawSample, float mean);
     static float StandardDeviation(QList<float>& RawSample, float mean);

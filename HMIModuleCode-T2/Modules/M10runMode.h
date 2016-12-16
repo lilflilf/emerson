@@ -87,9 +87,9 @@ public:
 
     int GetPressureFromString(string InString, int ShowPressureUnit);
     string MakePressureToString(int PressureData, int ShowPressureUnit);
-    bool CheckForOverLoad(bool ShowAlarm);
+
     void CheckWeldData();
-    void Update_Errors_Log(M20_ERROR_TYPE error_type, int data_value);
+
     void SafetyAlertMsg();
     void FootPedalMsg();
     void Run_E_Stop_Screen();
@@ -109,6 +109,8 @@ private:
     void Escape_Teach_Auto_Invalid_Welds(bool Alarm_found);
     void RestartSeqOnAlarm();
     void TeachModeProcess();
+    bool CheckForOverLoad(bool ShowAlarm);
+    void Update_Errors_Log(M20_ERROR_TYPE error_type, int data_value);
 
 public:
     static M10runMode* Instance();

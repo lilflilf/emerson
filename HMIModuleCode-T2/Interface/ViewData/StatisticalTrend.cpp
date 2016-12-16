@@ -4,7 +4,8 @@
 #include "Interface/WeldResultElement.h"
 //#include "Interface/Definition.h"
 #include "Modules/UtilityClass.h"
-#include "StatisticalFunction.h"
+#include "Modules/StatisticalFunction.h"
+#include <QDateTime>
 StatisticalTrend::StatisticalTrend(QObject *parent) : QObject(parent)
 {
 
@@ -55,7 +56,8 @@ bool StatisticalTrend::GetCurrentWeldResultOneByOne(QMap<int, QString>* ResultIn
                         CurrentWeldResultRecord.ActualResult.ActualAmplitude);
             CurrentWeldActual.CrossSection = _Utility->FormatedDataToString(DINCrossSection,
                         CurrentPreset.CrossSection);
-            CurrentWeldActual.DateCreated  = CurrentWeldActual.DateCreated;
+            QDateTime TimeLabel = QDateTime::fromTime_t(CurrentWeldResultRecord.CreatedDate);
+            CurrentWeldActual.DateCreated  = TimeLabel.toString("MM/dd/yyyy hh:mm:ss");
             CurrentWeldActual.Energy = _Utility->FormatedDataToString(DINEnergy,
                         CurrentWeldResultRecord.ActualResult.ActualEnergy);
             CurrentWeldActual.PartName = CurrentWeldResultRecord.CurrentPart.PartName;

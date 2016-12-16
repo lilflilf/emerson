@@ -17,6 +17,7 @@ Item {
     signal cycleDone()
     function jumpToNext()
     {
+
         finishedProgress.anchors.leftMargin = (current - 1) * (progressBar.width/progressBar.total)
         if (current < 2)
             return
