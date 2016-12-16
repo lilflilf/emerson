@@ -78,26 +78,9 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
     connect(calibration,SIGNAL(WidthCalibrationFinish(bool)),this,SIGNAL(widthCalibrationFinish(bool)));
     connect(calibration,SIGNAL(HeightCalibrationFinish(bool)),this,SIGNAL(heightCalibrationFinish(bool)));
 
-//    QSqlDatabase db;
-//    db = QSqlDatabase::addDatabase("QSQLITE", "hmiconnect");
-//    db.setDatabaseName("./hmi.db");
-//    if (!db.open())
-//    {
-//        qDebug() << "Cannot open contact database" << db.lastError().text();
-//    }
-
-//    QSqlQuery query(db);
-//    if(!db.tables().contains("wire"))
-//    {
-//        query.exec("create table wire (id INTEGER PRIMARY KEY AUTOINCREMENT, surname varchar(20))");
-//    }
-//    qDebug() << query.lastError();
-
-//    query.prepare("INSERT INTO wire (surname) VALUES (?)");
-//    query.addBindValue("zhangjy");
-//    query.exec();
-//    qDebug() << query.lastError();
-//    db.close();
+    operateProcess = OperateProcess::Instance();
+    connect(operateProcess,SIGNAL(WeldCycleCompleted(bool)),this,SLOT(slotWeldCycleCompleted(bool)));
+    m_spliceAdaptor = DBPresetTable::Instance();
 }
 
 void HmiAdaptor::openFileDialog()
@@ -445,22 +428,6 @@ QString HmiAdaptor::copyFileToPath(QString source)
     return "";
 }
 
-QList<int> HmiAdaptor::getPoint()
-{
-    QString pointStr = "0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	20	20	20	40	60	60	60	80	80	100	100	120	120	140	160	160	160	180	180	200	220	220	240	260	280	300	300	320	340	340	380	400	420	440	460	480	480	500	520	520	540	540	560	560	580	580	580	580	580	580	580	580	580	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	580	580	580	580	580	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	580	580	580	580	580	580	600	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	600	600	600	600	600	600	600	600	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	600	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	560	560	560	560	560	580	580	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	540	540	540	540	540	540	540	540	540	540	540	540	540	540	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	540	540	540	540	540	540	540	540	540	540	540	540	540	540	540	540	520	520	520	520	520	520	520	520	520	540	540	540	540	540	540	540	520	520	520	520	520	520	520	540	540	540	540	540	540	540	540	520	520	540	0";
-    char s = '\t';
-    QString temp;
-    bool ok;
-    QStringList list = pointStr.split(s);
-    QList<int> pointList;
-    for (int i = 0; i < list.count(); i++)
-    {
-        temp = list[i];
-        pointList.append(temp.toInt(&ok, 10));
-    }
-    return pointList;
-}
-
 bool HmiAdaptor::permissionsettingExecute(QString code)
 {
     if (code == "_Recall")
@@ -771,6 +738,12 @@ bool HmiAdaptor::dataCommunicationSetValue(QList<bool> boolList, QStringList str
     return true;
 }
 
+void HmiAdaptor::slotWeldCycleCompleted(bool result)
+{
+    alarmModel->weldResultElement = operateProcess->CurrentWeldResult;
+    emit signalWeldCycleCompleted(result);
+}
+
 void HmiAdaptor::slotEnableDialog(BransonMessageBox &MsgBox)
 {
     qDebug() << "slotEnableDialog";
@@ -893,4 +866,23 @@ int HmiAdaptor::timeChangeToInt(QString time)
 {
     QDateTime temptime = QDateTime::fromString(time, "yyyy-MM-dd hh:mm:ss");
     return temptime.toTime_t();
+}
+
+void HmiAdaptor::setOperateProcess(int spliceId)
+{
+    m_spliceAdaptor->QueryOneRecordFromTable(spliceId,&operateProcess->CurrentSplice);
+    operateProcess->CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderID = workOrderModel->getStructValue("WorkOrderId").toInt();
+    operateProcess->CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderName = workOrderModel->getStructValue("WorkOrderName").toString();
+    operateProcess->CurrentNecessaryInfo.CurrentPart.PartID = partModel->getStruceValue("PartId").toInt();
+    operateProcess->CurrentNecessaryInfo.CurrentPart.PartName = partModel->getStruceValue("PartName").toString();
+}
+
+void HmiAdaptor::operateProcessExec(QString type)
+{
+    if (type == "Start")
+        operateProcess->_start();
+    else if (type == "Stop")
+        operateProcess->_stop();
+    else if (type == "Execute")
+        operateProcess->_execute();
 }

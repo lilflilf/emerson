@@ -17,8 +17,10 @@
 #include "Interface/Settings/PermissionSetting.h"
 #include "Interface/Settings/WeldDefaults.h"
 #include "Interface/Settings/DataCommunication.h"
+#include "Interface/Operate/OperateProcess.h"
 
 #define TOPATH "C:/BransonData/Library/SpliceImage/"
+
 #define HMI_PRINT (qDebug() <<"HMI adapter:" << __FILE__ << __FUNCTION__ << __LINE__ << ": ")
 
 class HmiAdaptor : public QObject
@@ -87,8 +89,12 @@ public:
     Q_INVOKABLE void calibrationMaintenanceExecute(int code);
     Q_INVOKABLE int randPoint();
     Q_INVOKABLE QString copyFileToPath(QString source);
-    Q_INVOKABLE QList<int> getPoint();
+
+
     Q_INVOKABLE int timeChangeToInt(QString time);
+
+    Q_INVOKABLE void setOperateProcess(int spliceId);
+    Q_INVOKABLE void operateProcessExec(QString type);
 
     /********permissionsetting func**************/
     Q_INVOKABLE bool permissionsettingExecute(QString code);
@@ -115,7 +121,10 @@ public:
     Q_INVOKABLE QStringList dataCommunicationGetValue(QString index);
     Q_INVOKABLE bool dataCommunicationSetValue(QList<bool> boolList, QStringList strList, QString ip, QString port);
 
+
     InterfaceClass *interfaceClass;
+    OperateProcess *operateProcess;
+    DBPresetTable *m_spliceAdaptor;
 
     WorkOrderModel *workOrderModel;
     SpliceModel *spliceModel;
@@ -142,7 +151,9 @@ signals:
     void heightCalibrationFinish(const bool &_Result);
     void signalEnableDialog(bool okVisable, bool cancelVisable, QString okText, QString cancelText, QString typeIco,QString titleText,QString centerText);
     void signalDisableDialog();
+    void signalWeldCycleCompleted(bool result);
 public slots:
+    void slotWeldCycleCompleted(bool result);
     void slotEnableDialog(struct BransonMessageBox &MsgBox);
     void slotDisableDialog(struct BransonMessageBox &MsgBox);
 

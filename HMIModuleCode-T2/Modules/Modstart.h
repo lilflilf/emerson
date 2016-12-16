@@ -18,7 +18,6 @@ class MODstart
 {
 public:
     struct HMISOFTWARE App;
-    bool FirstScreenComesUp;
     //Private objDriveSystem As Object
     bool UnLoad_KeyPadFlag;
     static bool Checkmaintenancelimit_EaWeld;

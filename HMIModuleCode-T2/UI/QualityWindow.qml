@@ -8,6 +8,11 @@ Item {
     width: Screen.width * 0.43
     height: Screen.height *0.4
     property var clickType: 0
+    property alias qualityModel: qualityModel
+    property alias timeModel : timeModel
+    property alias powerModel: powerModel
+    property alias preModel: preModel
+    property alias postModel: postModel
     Text {
         id: qualityWindowTitle
         text: qsTr("QualityWindow")
@@ -41,6 +46,18 @@ Item {
     ListModel {
         id: qualityModel
     }
+    ListModel {
+        id: timeModel
+    }
+    ListModel {
+        id: powerModel
+    }
+    ListModel {
+        id: preModel
+    }
+    ListModel {
+        id: postModel
+    }
     ListView {
         id: qualityListView
         width: Screen.width * 0.45
@@ -50,7 +67,12 @@ Item {
         anchors.top: qualityWindowTitle.bottom
         anchors.topMargin: 20
         delegate: qualityDelegate
-        model: 4
+        anchors.left: parent.left
+        anchors.leftMargin: 10
+        model: qualityModel
+    }
+    ExclusiveGroup {
+        id: bottomGroup
     }
     Component {
         id: qualityDelegate
@@ -66,20 +88,30 @@ Item {
                 border.color: "white"
                 border.width: 1
                 color: Qt.rgba(0,0,0,0)
+                Image {
+                    id: currentArrow
+                    anchors.left: parent.right
+                    source: "qrc:/images/images/current_operate.png"
+                    visible: current == -1 ? false : true
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: ((current - redMin) / redMax * (parent.height * 0.8) + (parent.height * 0.1) - currentArrow.height / 2) > parent.height ?
+                                              parent.height - currentArrow.height / 2 : (current - redMin) / redMax * (parent.height * 0.8) + (parent.height * 0.1) - currentArrow.height / 2
+
+                    Text {
+                        id: lineValue
+                        text: current //qsTr("170")
+                        font.family: "arial"
+                        color: "white"
+                        font.pointSize: 16
+                        anchors.left: parent.right
+                    }
+                }
                 Line {
                     anchors.top: parent.top
                     anchors.topMargin: parent.height / 2
                     lineColor: "white"
                     width: parent.width
                     height: 2
-                    Text {
-                        id: lineValue
-                        text: qsTr("170")
-                        font.family: "arial"
-                        color: "white"
-                        font.pointSize: 12
-                        anchors.left: parent.right
-                    }
                 }
                 Line {
                     anchors.top: parent.top
@@ -87,6 +119,15 @@ Item {
                     lineColor: "red"
                     width: parent.width
                     height: 2
+                    Text {
+                        text: redMax //qsTr("170")
+                        font.family: "arial"
+                        color: "white"
+                        font.pointSize: 12
+                        anchors.right: parent.left
+                        anchors.verticalCenter: parent.verticalCenter
+                        opacity: 0.5
+                    }
                 }
                 Line {
                     anchors.top: parent.top
@@ -94,6 +135,15 @@ Item {
                     lineColor: "yellow"
                     width: parent.width
                     height: 2
+                    Text {
+                        text: yellowMax //qsTr("170")
+                        font.family: "arial"
+                        color: "white"
+                        font.pointSize: 12
+                        anchors.right: parent.left
+                        anchors.verticalCenter: parent.verticalCenter
+                        opacity: 0.5
+                    }
                 }
                 Line {
                     anchors.bottom: parent.bottom
@@ -101,6 +151,15 @@ Item {
                     lineColor: "yellow"
                     width: parent.width
                     height: 2
+                    Text {
+                        text: yellowMin //qsTr("170")
+                        font.family: "arial"
+                        color: "white"
+                        font.pointSize: 12
+                        anchors.right: parent.left
+                        anchors.verticalCenter: parent.verticalCenter
+                        opacity: 0.5
+                    }
                 }
                 Line {
                     anchors.bottom: parent.bottom
@@ -108,6 +167,15 @@ Item {
                     lineColor: "red"
                     width: parent.width
                     height: 2
+                    Text {
+                        text: redMin //qsTr("170")
+                        font.family: "arial"
+                        color: "white"
+                        font.pointSize: 12
+                        anchors.right: parent.left
+                        anchors.verticalCenter: parent.verticalCenter
+                        opacity: 0.5
+                    }
                 }
                 Text {
                     id: bottomText
@@ -119,26 +187,46 @@ Item {
                     text: qsTr("POWER")
                     Component.onCompleted: {
                         if (index == 0)
-                            bottomText.text = qsTr("POWER")
-                        else if (index == 1)
-                            bottomText.text = qsTr("PRE-HEIGHT")
-                        else if (index == 2)
-                            bottomText.text = qsTr("POST-HEIGHT")
-                        else if (index == 3)
                             bottomText.text = qsTr("TIME")
+                        else if (index == 1)
+                            bottomText.text = qsTr("POWER")
+                        else if (index == 2)
+                            bottomText.text = qsTr("PRE-HEIGHT")
+                        else if (index == 3)
+                            bottomText.text = qsTr("POST-HEIGHT")
                     }
                 }
-                Rectangle {
-                    color: "#6d6e71"
+                Item {
+                    id: bottomItem
+                    width: parent.width
                     anchors.top: bottomText.bottom
-                    width: 50
-                    height: 50
-                    rotation: 90
+                    visible: radioButton.checked
+                    Rectangle {
+                        id: bottomItem1
+                        width: parent.width
+                        height: 3
+                        color: "#f79428"
+                    }
+                    Rectangle {
+                        color: "#6d6e71"
+                        anchors.top: bottomItem1.bottom
+                        anchors.topMargin: 10
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        width: 40
+                        height: 40
+                        rotation: 45
+                    }
+                    RadioButton {
+                        id: radioButton
+                        visible: false
+                        exclusiveGroup: bottomGroup
+                    }
                 }
             }
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
+                    radioButton.checked = true
                     if (index == 0)
                         clickType = 20
                     else if (index == 1)
@@ -161,7 +249,7 @@ Item {
         width: qualityParent.width //Screen.width * 0.35
         height: Screen.height *0.25
         anchors.top: qualityListView.bottom
-        anchors.topMargin: 40
+        anchors.topMargin: 45
         Line {
             anchors.top: parent.top
             anchors.topMargin: parent.height / 2

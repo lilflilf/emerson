@@ -17,6 +17,32 @@ Item {
             anchors.fill: parent
         }
     }
+    Connections {
+        target: hmiAdaptor
+        onSignalWeldCycleCompleted: {
+            progressBar.current++
+            spliceLocation.setTreeModelOver()
+            progressBar.moveToNext()
+            offline.setSatusOffLineNum(testModel.get(testModel.count-1).theNo+1)
+            selectSplice(spliceList[progressBar.current-1])
+        }
+    }
+
+    Component.onCompleted: {
+//        hmiAdaptor.operateProcessExec("Start")
+    }
+    Component.onDestruction: {
+//        hmiAdaptor.operateProcessExec("Stop")
+    }
+
+    function setData()
+    {
+        qualityWindow.qualityModel.clear()
+        qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Time+"),"redMin":spliceModel.getRawData("Time-"),"yellowMax":4,"yellowMin":1,"current":6,"currentText":""})
+        qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Power+"),"redMin":spliceModel.getRawData("Power-"),"yellowMax":4,"yellowMin":1,"current":123,"currentText":""})
+        qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Pre-Height+"),"redMin":spliceModel.getRawData("Pre-Height-"),"yellowMax":4,"yellowMin":1,"current":2512,"currentText":""})
+        qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Post-Height+"),"redMin":spliceModel.getRawData("Post-Height-"),"yellowMax":4,"yellowMin":1,"current":43,"currentText":""})
+    }
 
     function selectSplice(spliceId)
     {
@@ -31,6 +57,10 @@ Item {
             wireModel.addFromLibrary(list[i])
             spliceDetailsItem.addWireFromSplice()
         }
+        setData()
+        hmiAdaptor.setOperateProcess(spliceId)
+//        hmiAdaptor.operateProcessExec("Execute")
+
     }
 
     Text {
@@ -377,12 +407,12 @@ Item {
     }
     CButton {
         id: leftButton
-        anchors.bottom: partCount2.top
-        anchors.bottomMargin: 20
+        anchors.bottom: partCount.top
+        anchors.bottomMargin: 0
         anchors.left: qualityWindow.left
-        width: 50
-        height: 32
-        iconSource: "qrc:/images/images/you.png"
+        width: 41
+        height: 63
+        iconSource: "qrc:/images/images/left_operate.png"
         backgroundEnabled: false
         clip: true
         visible: showFlag != 3 ? true : false
@@ -412,12 +442,12 @@ Item {
     }
     CButton {
         id: rightButton
-        anchors.bottom: partCount2.top
-        anchors.bottomMargin: 20
+        anchors.bottom: partCount.top
+        anchors.bottomMargin: 0
         anchors.right: qualityWindow.right
-        width: 50
-        height: 32
-        iconSource: "qrc:/images/images/zuo.png"
+        width: 41
+        height: 63
+        iconSource: "qrc:/images/images/right_operate.png"
         backgroundEnabled: false
         clip: true
         visible: showFlag != 3 ? true : false

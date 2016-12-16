@@ -43,7 +43,7 @@ MODstart::MODstart()
     App.Minor    = "73";
     App.Revision = "815-Level1-T1";
 
-    FirstScreenComesUp = false;
+    _Interface->FirstScreenComesUp = false;
     _MDefine->ModeChangeFlag = false;
     _MDefine->WriteHistoryFlag = false;
     _MDefine->MessageFlag.DataGraphComplete = true;
@@ -66,6 +66,7 @@ MODstart::MODstart()
         tmpMsgBox.MsgTitle = QObject::tr("Warning");
         tmpMsgBox.TipsMode = (OKCancel + Exclamation);
         tmpMsgBox.func_ptr = MODstart::OfflineInitialization;
+        tmpMsgBox._Object = this;
         _Interface->cMsgBox(&tmpMsgBox);
     }
     else

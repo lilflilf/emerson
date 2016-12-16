@@ -311,6 +311,7 @@ Item {
     Image {
         id: operatorDialog
         anchors.centerIn: parent
+        anchors.verticalCenterOffset: -80
         width: 570
         height: 480
         visible: false

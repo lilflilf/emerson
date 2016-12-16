@@ -13,11 +13,12 @@
 #include "Interface/Maintenance/AdvancedMaintenance.h"
 #include "Interface/Interface.h"
 #include <QHash>
+#include <QDateTime>
 
 int main(int argc, char *argv[])
 {
+    qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
 
-//    qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
     qmlRegisterType<ALPaintedItem>("ALPaintedItem", 1, 0, "ALPaintedItem");
 
     QGuiApplication app(argc, argv);
@@ -38,8 +39,6 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("alarmModel",hmiAdaptor->alarmModel);
     engine.rootContext()->setContextProperty("maintenanceLogModel",hmiAdaptor->maintenanceLogModel);
     engine.load(QUrl(QStringLiteral("qrc:/UI/main.qml")));
-
-
 
 //    DataBaseTest *_TestPtr = new DataBaseTest();
 

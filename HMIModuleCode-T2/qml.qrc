@@ -167,5 +167,8 @@
         <file>images/alarm.ico</file>
         <file>images/error.ico</file>
         <file>images/information.ico</file>
+        <file>images/current_operate.png</file>
+        <file>images/left_operate.png</file>
+        <file>images/right_operate.png</file>
     </qresource>
 </RCC>

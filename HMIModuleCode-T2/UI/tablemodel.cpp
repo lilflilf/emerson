@@ -166,10 +166,15 @@ QList<int> WorkOrderModel::getSpliceList()
 
 void WorkOrderModel::editNew(int index)
 {
-    qDebug() << "cccccccccccccccccccc" << index;
     m_partAdaptor->QueryOneRecordFromTable(index,&partElement);
-    qDebug() << "cccccccccccccccccccc" << index;
+}
 
+QVariant WorkOrderModel::getStructValue(QString key)
+{
+    if (key == "WorkOrderId")
+        return workOrderElement.WorkOrderID;
+    else if (key == "WorkOrderName")
+        return workOrderElement.WorkOrderName;
 }
 
 QVariant WorkOrderModel::getWorkOrderValue(int index, QString key)
@@ -601,6 +606,26 @@ QString SpliceModel::getStructValue(QString valueKey, QString valueType)
         return "";
 }
 
+int SpliceModel::getRawData(QString key)
+{
+    if (key == "Time-")
+        return presetElement.WeldSettings.QualitySetting.Time.Minus;
+    else if (key == "Time+")
+        return presetElement.WeldSettings.QualitySetting.Time.Plus;
+    else if (key == "Power-")
+        return presetElement.WeldSettings.QualitySetting.Power.Minus;
+    else if (key == "Power+")
+        return presetElement.WeldSettings.QualitySetting.Power.Plus;
+    else if (key == "Pre-Height-")
+        return presetElement.WeldSettings.QualitySetting.Preheight.Minus;
+    else if (key == "Pre-Height+")
+        return presetElement.WeldSettings.QualitySetting.Preheight.Plus;
+    else if (key == "Post-Height-")
+        return presetElement.WeldSettings.QualitySetting.Height.Minus;
+    else if (key == "Post-Height+")
+        return presetElement.WeldSettings.QualitySetting.Height.Plus;
+}
+
 void SpliceModel::setStructValue(QString valueKey, QVariant value)
 {
     qDebug() << "setStructValue" << valueKey << value;
@@ -974,6 +999,14 @@ int PartModel::rowCount(const QModelIndex & parent) const
 int PartModel::count()
 {
     return parts->count();
+}
+
+QVariant PartModel::getStruceValue(QString key)
+{
+    if (key == "PartId")
+        return m_Part->PartID;
+    else if (key == "PartName")
+        return m_Part->PartName;
 }
 
 
@@ -1404,6 +1437,41 @@ AlarmModel::AlarmModel(QObject *parent) :
     m_weldHistoryAdaptor = DBWeldResultTable::Instance();
     alarms = new QMap<int, QString>();
     variantToString = VariantToString::Instance();
+}
+
+QList<int> AlarmModel::getPoint()
+{
+//    QString pointStr = "0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	20	20	20	40	60	60	60	80	80	100	100	120	120	140	160	160	160	180	180	200	220	220	240	260	280	300	300	320	340	340	380	400	420	440	460	480	480	500	520	520	540	540	560	560	580	580	580	580	580	580	580	580	580	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	580	580	580	580	580	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	580	580	580	580	580	580	600	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	600	600	600	600	600	600	600	600	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	600	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	560	560	560	560	560	580	580	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	540	540	540	540	540	540	540	540	540	540	540	540	540	540	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	540	540	540	540	540	540	540	540	540	540	540	540	540	540	540	540	520	520	520	520	520	520	520	520	520	540	540	540	540	540	540	540	520	520	520	520	520	520	520	540	540	540	540	540	540	540	540	520	520	540	0";
+//    char s = '\t';
+//    QString temp;
+//    bool ok;
+//    QStringList list = pointStr.split(s);
+//    QList<int> pointList;
+//    for (int i = 0; i < list.count(); i++)
+//    {
+//        temp = list[i];
+//        pointList.append(temp.toInt(&ok, 10));
+//    }
+    QList<int> pointList;
+    pointList = weldResultElement.PowerGraph;
+    return pointList;
+}
+
+QList<int> AlarmModel::getPoint2()
+{
+    QList<int> pointList;
+    pointList = weldResultElement.PostHeightGraph;
+    return pointList;
+}
+
+int AlarmModel::getAxes(QString key)
+{
+    if (key == "Time")
+        return weldResultElement.ActualResult.ActualTime;
+    else if (key == "Power")
+        return weldResultElement.ActualResult.ActualPeakPower;
+    else if (key == "Post-Height")
+        return weldResultElement.ActualResult.ActualPreheight;
 }
 
 QVariant AlarmModel::data(const QModelIndex &index, int role) const
