@@ -8,6 +8,7 @@
 #include "Modules/M10runMode.h"
 #include "Modules/UtilityClass.h"
 #include "Modules/StatisticalFunction.h"
+#include "Modules/Statistics.h"
 #include <QDateTime>
 #include <QDebug>
 OperateProcess* OperateProcess::_instance = NULL;
@@ -149,6 +150,7 @@ void OperateProcess::WeldCycleDaemonThread(void* _obj)
     InterfaceClass *_Interface = InterfaceClass::Instance();
     OperateProcess* _ObjectPtr = (OperateProcess*)_obj;
     M10runMode* _M10runMode = M10runMode::Instance();
+    Statistics* _Statistics = Statistics::Instance();
     DBWeldResultTable* _WeldResultDB = DBWeldResultTable::Instance();
     //1. Receive Power and Height Graph Data
     switch(_ObjectPtr->CurrentStep)
@@ -211,13 +213,18 @@ void OperateProcess::WeldCycleDaemonThread(void* _obj)
         delete m_Thread;
         m_Thread = NULL;
         //2. Save the Weld result into the Database
-        _WeldResultDB->InsertRecordIntoTable(&_ObjectPtr->CurrentWeldResult);
-        //3. Update Maintenance Count
-        _M10runMode->UpdateMaintenanceData();
+        int iResult =
+            _WeldResultDB->InsertRecordIntoTable(&_ObjectPtr->CurrentWeldResult);
+        if(iResult != -1)
+            _ObjectPtr->CurrentWeldResult.WeldResultID = iResult;
+//        //3. Update Maintenance Count
+//        _M10runMode->UpdateMaintenanceData();
         //4. Alarm handle
         _M10runMode->CheckWeldData();
         //5. Shrink Tube
         //6. Remote Data sending
+        _Statistics->HistoryEvent(_ObjectPtr->CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderName,
+                _ObjectPtr->CurrentNecessaryInfo.CurrentPart.PartName, &_ObjectPtr->CurrentWeldResult, &_ObjectPtr->CurrentSplice);
         emit _ObjectPtr->WeldCycleCompleted(&_ObjectPtr->WeldCycleStatus);
     }
 }

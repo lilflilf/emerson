@@ -5,6 +5,8 @@
 #include "M102IA.h"
 #include "M10runMode.h"
 #include "Interface/Interface.h"
+#include "UtilityClass.h"
+#include "QDateTime"
 Statistics* Statistics::_instance = 0;
 Statistics* Statistics::Instance()
 {
@@ -226,12 +228,158 @@ void Statistics::Open_Maint_Log()
 
 }
 
+QString Statistics::HeaderString()
+{
+    QString sHeader;
+    QString WidthString;
+    M2010 *_M2010 = M2010::Instance();
+    if(_M2010->Machine != Welder)
+        WidthString = "\t" + QObject::tr("Width") + "\t";
+    else
+        WidthString = "\t";
+    sHeader = QObject::tr("Cycle count") + "\t" + QObject::tr("Date") + "\t" +
+            QObject::tr("Time") + "\t" + QObject::tr("Work Order Name") + "\t" +
+            QObject::tr("Part Name") + "\t" + QObject::tr("Splice Name") + "\t" +
+            QObject::tr("Process Parameters") + "\t" +
+            QObject::tr("Energy") + WidthString + QObject::tr("Trigger Pressure") + "\t" +
+            QObject::tr("Pressure") + "\t" + QObject::tr("Amplitude") + "\t" +
+            QObject::tr("Quality Windows") + "\t" + QObject::tr("Time+") + "\t" +
+            QObject::tr("Time-") + "\t" + QObject::tr("Power+") + "\t" +
+            QObject::tr("Power-") + "\t" + QObject::tr("PreHeight+") + "\t" +
+            QObject::tr("PreHeight-") + "\t" + QObject::tr("Height+") + "\t" +
+            QObject::tr("Height-") + "\t" + QObject::tr("Weld result") + "\t" +
+            QObject::tr("Time") + "\t" + QObject::tr("Power") + "\t" +
+            QObject::tr("Pre-Height") + "\t" + QObject::tr("Height") + "\t" +
+            QObject::tr("Alarm") + "\t" + QObject::tr("Graph Data Ratio") + "\t" +
+            QObject::tr("Graph Data");
+
+     return sHeader;
+}
+
+QString Statistics::GraphData(enum ScreenShowDataType DataType, QList<int> *_GraphData)
+{
+    UtilityClass *_Utility = UtilityClass::Instance();
+    QString sGraphData;
+
+    for(int i = 0; i< _GraphData->size(); i++)
+        sGraphData += (_Utility->FormatedDataToString(DataType,
+                    _GraphData->at(i))) + "\t";
+    return sGraphData;
+}
+
 //Create a tab deliminated file for loading into an Excel worksheet
 //It stores all the Actual data regarding a Preset in the .tsv file during welding.
 //Also Displays Amplitude2 along with Amplitude1 if Amplitude Step is enabled
-void Statistics::HistoryEvent()
+void Statistics::HistoryEvent(QString WorkOrderName, QString PartName,
+                WeldResultElement *_WeldResult, PresetElement *_Splice)
 {
+    InterfaceClass *_Interface = InterfaceClass::Instance();
+    UtilityClass *_Utility = UtilityClass::Instance();
+    M2010 *_M2010 = M2010::Instance();
+    QString sDate, sTime, sEvent, sAlarms, sMode, sCut, sGraph, sStatus, sSampleRatio;
+    QString sHeader;
+    sHeader = HeaderString();
+    if(_Interface->StatusData.NetworkingEnabled == false)
+        return;
+    //Build alarm string, Overload precludes any other and pre-hiehgt can't get here
+    if ((_WeldResult->ActualResult.ActualAlarmflags & iAlarms) == 0)
+    {
+        sAlarms = "-";
+        sStatus = "OK";
+    }else
+    {
+        sStatus = "NOK";
+        if((_WeldResult->ActualResult.ActualAlarmflags & iOverLoadFault) == iOverLoadFault)
+            sAlarms = "O";
+        else
+        {
+            sAlarms = "";
+            if((_WeldResult->ActualResult.ActualAlarmflags & iTimeFault) == iTimeFault)
+                sAlarms = "T";
+            if((_WeldResult->ActualResult.ActualAlarmflags & iPowerFault) == iPowerFault)
+                sAlarms = "P";
+            if((_WeldResult->ActualResult.ActualAlarmflags & iHeightFault) == iHeightFault)
+                sAlarms = "H";
+            if((_WeldResult->ActualResult.ActualAlarmflags & iWidthFault) == iWidthFault)
+                sAlarms = "W";
+        }
+    }
+    switch(_Interface->StatusData.GraphSampleRatio)
+    {
+    case SampleWith1ms:
+        sSampleRatio = "1ms";
+        break;
+    case SampleWith5ms:
+        sSampleRatio = "5ms";
+        break;
+    case SampleWith10ms:
+        sSampleRatio = "10ms";
+        break;
+    case SampleWith20ms:
+        sSampleRatio = "20ms";
+        break;
+    default:
+        sSampleRatio = "1ms";
+        break;
+    }
+    QDateTime CurrentTime = QDateTime::currentDateTime();
+    sDate = CurrentTime.toString("yyyy/MM/dd");
+    sTime = CurrentTime.toString("hh:mm:ss");
 
+    if (sAlarms == "-")
+        sEvent = _Interface->StatusData.CycleCount + "\t" + sDate + "\t" + sTime;
+    else
+        sEvent = _Interface->StatusData.CycleCount + "*\t" + sDate + "\t" + sTime;
+
+    sEvent += WorkOrderName + "\t" + PartName + "\t" + _Splice->SpliceName;
+    sEvent += "\t\t" + _Utility->FormatedDataToString(DINEnergy,
+            _WeldResult->ActualResult.ActualEnergy);
+    if(_M2010->Machine != Welder)
+        sEvent += "\t" + _Utility->FormatedDataToString(DINWidth,
+                _WeldResult->ActualResult.ActualWidth);
+    sEvent += "\t" + _Utility->FormatedDataToString(DINTriggerPressure,
+            _WeldResult->ActualResult.ActualTPressure);
+    sEvent += "\t" + _Utility->FormatedDataToString(DINPressure,
+            _WeldResult->ActualResult.ActualPressure);
+    if(_Splice->WeldSettings.AdvanceSetting.StepWeld.StepWeldMode != STEPDISABLE)
+        sEvent += "\t" + _Utility->FormatedDataToString(DINAmplitude, _WeldResult->ActualResult.ActualAmplitude) +
+                "/" + _Utility->FormatedDataToString(DINAmplitude2, _WeldResult->ActualResult.ActualAmplitude2);
+    else
+        sEvent += "\t" + _Utility->FormatedDataToString(DINAmplitude,
+                _WeldResult->ActualResult.ActualAmplitude);
+    sEvent += "\t\t" + _Utility->FormatedDataToString(DINTimePl,
+            _Splice->WeldSettings.QualitySetting.Time.Plus);
+    sEvent += "\t" + _Utility->FormatedDataToString(DINTimeMs,
+            _Splice->WeldSettings.QualitySetting.Time.Minus);
+    sEvent += "\t" + _Utility->FormatedDataToString(DINPowerPl,
+            _Splice->WeldSettings.QualitySetting.Power.Plus);
+    sEvent += "\t" + _Utility->FormatedDataToString(DINPowerMs,
+            _Splice->WeldSettings.QualitySetting.Power.Minus);
+    sEvent += "\t" + _Utility->FormatedDataToString(DINPre_HgtPl,
+            _Splice->WeldSettings.QualitySetting.Preheight.Plus);
+    sEvent += "\t" + _Utility->FormatedDataToString(DINPre_HgtMs,
+            _Splice->WeldSettings.QualitySetting.Preheight.Minus);
+    sEvent += "\t" + _Utility->FormatedDataToString(DINHeightPl,
+            _Splice->WeldSettings.QualitySetting.Height.Plus);
+    sEvent += "\t" + _Utility->FormatedDataToString(DINHeightMs,
+            _Splice->WeldSettings.QualitySetting.Height.Minus);
+
+    sEvent += "\t\t" + _Utility->FormatedDataToString(DINActTime,
+            _WeldResult->ActualResult.ActualTime);
+    sEvent += "\t" + _Utility->FormatedDataToString(DINActPower,
+            _WeldResult->ActualResult.ActualPeakPower);
+    sEvent += "\t" + _Utility->FormatedDataToString(DINActPreHgt,
+            _WeldResult->ActualResult.ActualPreheight);
+    sEvent += "\t" + _Utility->FormatedDataToString(DINActHgt,
+            _WeldResult->ActualResult.ActualPostheight);
+
+    sEvent += "\t" + sAlarms;
+    sEvent += "\t" + sSampleRatio;
+
+    //Now handle Graph Data
+    sGraph = GraphData(DINActPower, &_WeldResult->PowerGraph);
+    sGraph += GraphData(DINActHgt, &_WeldResult->PostHeightGraph);
+    QString sRecord = sEvent + "\t" + sGraph + "\r\n";
 }
 
 //string Statistics::HeaderString()

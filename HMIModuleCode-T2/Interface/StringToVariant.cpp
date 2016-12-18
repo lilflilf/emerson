@@ -185,3 +185,13 @@ int StringToVariant::ShrinkTimeToInt(QString strTime)
 {
     return (int)_Utility->StringToFormatedData(DINShrinkTubeTime, strTime);
 }
+
+int StringToVariant::PercentTeachModeToInt(QString strPercent)
+{
+    return (int)_Utility->StringToFormatedData(DINPercentTeachMode, strPercent);
+}
+
+int StringToVariant::SigmaTeachModeToInt(QString strSigma)
+{
+    return (int)_Utility->StringToFormatedData(DINSigmaTeachMode, strSigma);
+}

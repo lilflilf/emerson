@@ -46,6 +46,9 @@ public:
     struct BRANSONDATA ShrinkTemperatureToString(int);
     struct BRANSONDATA ShrinkTimeToString(int);
 
+    struct BRANSONDATA StandardAutoTeachModeToString(int);
+    struct BRANSONDATA SigmaTeachModeToString(int);
+
 
 
 

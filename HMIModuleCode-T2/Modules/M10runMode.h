@@ -66,6 +66,8 @@ struct FIXED_INFO
 
 class M10runMode
 {
+private:
+    int WeldResultID;
 public:
     bool PreviousWeldValid;
     bool Teach_Auto_Stage2;
@@ -88,7 +90,7 @@ public:
     int GetPressureFromString(string InString, int ShowPressureUnit);
     string MakePressureToString(int PressureData, int ShowPressureUnit);
 
-    void CheckWeldData();
+    void CheckWeldData(int weldresult = -1);
 
     void SafetyAlertMsg();
     void FootPedalMsg();
@@ -110,7 +112,6 @@ private:
     void RestartSeqOnAlarm();
     void TeachModeProcess();
     bool CheckForOverLoad(bool ShowAlarm);
-    void Update_Errors_Log(M20_ERROR_TYPE error_type, int data_value);
 
 public:
     static M10runMode* Instance();

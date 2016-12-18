@@ -37,6 +37,8 @@ public:
     int StepTimeToInt(QString);
     int ShrinkTemperatureToInt(QString);
     int ShrinkTimeToInt(QString);
+    int SigmaTeachModeToInt(QString);
+    int PercentTeachModeToInt(QString);
 public:
     static StringToVariant* Instance();
 private:
