@@ -28,15 +28,15 @@ Item {
                     loader.item.spliceList = workOrderModel.getSpliceList(selectIndx)
                     loader.item.selectSplice(workOrderModel.getSpliceList(selectIndx)[0])
                     loader.item.qliantity = workOrderModel.getWorkOrderValue(selectIndx, "count")
-                        if (partModel.getPartOnlineOrOffLine()) {
-                            loader.item.showFlag = 1
+                    if (partModel.getPartOnlineOrOffLine()) {
+                        loader.item.showFlag = 1
+                    } else {
+                        if (loader.item.spliceList.length == 1) {
+                            loader.item.showFlag = 3
                         } else {
-                            if (loader.item.spliceList.length == 1) {
-                                loader.item.showFlag = 3
-                            } else {
-                                loader.item.showFlag = 2
-                            }
+                            loader.item.showFlag = 2
                         }
+                    }
                 }
             }
         }
@@ -400,12 +400,15 @@ Item {
         height: 390
         source: "qrc:/images/images/dialogbg.png"
         onBIsEditChanged: {
-            if (bIsEdit)
+            if (bIsEdit) {
                selectPart.text = workOrderModel.getWorkOrderValue(selectIndx, "middle")
+               inputquantity.inputText = workOrderModel.getWorkOrderValue( selectIndx, "count")
+            }
         }
         onVisibleChanged: {
-            if (dialog.bIsEdit && dialog.visible)
+            if (dialog.bIsEdit && dialog.visible) {
                 dialog.oldWorkOrderName = workOrderModel.getWorkOrderValue(selectIndx, "name")
+            }
         }
 
         Text {
@@ -483,7 +486,7 @@ Item {
             horizontalAlignment: Qt.AlignRight
             color: "white"
         }
-        MyLineEdit {
+        MiniKeyNumInput {
             id: inputquantity
             anchors.top: selectTips.bottom
             anchors.topMargin: 20
@@ -492,10 +495,17 @@ Item {
             width: 375
             height: 60
             inputWidth: 375
-            inputHeight: 60
-            inputColor: "white"
-            horizontalAlignment: Qt.AlignHCenter
             inputText: dialog.bIsEdit ? workOrderModel.getWorkOrderValue( selectIndx, "count") : "" //.get(selectIndx).count : ""
+            onInputFocusChanged: {
+                if (inputquantity.inputFocus) {
+                    keyNum.visible = true
+                    keyNum.titleText = quantity.text
+                    console.log("11111111111111111111",selectIndx,workOrderModel.getWorkOrderValue( selectIndx, "count"))
+                    keyNum.currentValue = workOrderModel.getWorkOrderValue( selectIndx, "count")
+                    keyNum.minvalue = "1"
+                    keyNum.maxvalue = "20"
+                }
+            }
         }
         CButton {
             id: cancel
@@ -567,6 +577,46 @@ Item {
             selectPart.partId = modelId
             selectPart.text = name
             addExit.visible = false
+        }
+    }
+    KeyBoardNum {
+        id: keyNum
+        anchors.centerIn: parent
+        width: 962
+        height: 526
+        visible: false
+        titleText: qsTr("")
+        maxvalue: "4"
+        minvalue: "1"
+        currentValue: "4"
+        onCurrentClickIndex: {
+            if (index == 15) {
+                if (hmiAdaptor.comepareCurrentValue(keyNum.minvalue,keyNum.maxvalue,keyNum.inputText)) {
+                    if (inputquantity.inputFocus) {
+                        inputquantity.inputText = keyNum.inputText
+                        inputquantity.inputFocus = false
+                    }
+                    keyNum.visible = false
+                    keyNum.inputText = ""
+                    keyNum.tempValue = ""
+                } else {
+                    keyNum.timeRun = true
+                }
+            } else if (index == 11) {
+                if (inputquantity.inputFocus) {
+                    inputquantity.inputFocus = false
+                }
+                keyNum.visible = false
+                keyNum.inputText = ""
+                keyNum.tempValue = ""
+            }
+        }
+        onInputTextChanged: {
+            if (keyNum.inputText != "") {
+                if (inputquantity.inputFocus) {
+                    inputquantity.inputText = keyNum.inputText
+                }
+            }
         }
     }
 }

@@ -29,7 +29,7 @@ Item {
         font.family: "arial"
         font.pixelSize: 27
         color: "white"
-        text: qsTr("text")
+        text: ""
     }
     Text {
         id: waring
@@ -108,7 +108,7 @@ Item {
             font.pixelSize: 21
             elide: Text.ElideRight
             color: "white"
-            text: qsTr(inputText)
+            text: inputText
         }
     }
     Text {

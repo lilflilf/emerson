@@ -6,11 +6,22 @@ import ALPaintedItem 1.0
 
 Window {
     id: root
+    width: Screen.width // 1366
+    height: Screen.height - 1 //767
     visible: true
     title: qsTr("NewWireSplice")
-    flags: Qt.FramelessWindowHint |Qt.Window //| Qt.WindowSystemMenuHint | 0x00800000 | Qt.WindowFullscreenButtonHint
+    flags: Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint|Qt.Window
+//    flags: Qt.FramelessWindowHint |Qt.Window //| Qt.WindowSystemMenuHint | 0x00800000 | Qt.WindowFullscreenButtonHint
     signal dialogReturn(bool reb)
     //     flags: Qt.Window | 0x00800000
+
+    Component.onCompleted: {
+//        root.showMaximized()
+        //w.setWindowFlags(w.windowFlags()& ~Qt::WindowMaximizeButtonHint&  ~Qt::WindowMinimizeButtonHint);
+//        w.showMaximized();
+//        root.showFullScreen()
+    }
+
     property var initIndex: 0
     /*0-- create
       1-- edit
@@ -40,6 +51,7 @@ Window {
             contentLoader.source = "qrc:/UI/Operate.qml"
             break;
         case 3:
+            headBar.titleText = qsTr("Test")
             contentLoader.source = "qrc:/UI/TestSpliceLibrary.qml"
             break;
         case 4:
@@ -107,12 +119,6 @@ Window {
         welcome.source = "qrc:/UI/Welcome.qml"
     }
 
-    Component.onCompleted: {
-//        root.showMaximized()
-        //w.setWindowFlags(w.windowFlags()& ~Qt::WindowMaximizeButtonHint&  ~Qt::WindowMinimizeButtonHint);
-//        w.showMaximized();
-        root.showFullScreen()
-    }
     function showDialog(okVisable,cancelVisable,okText,cancelText,typeIco,titleText,centerText)
     {
         cdialog.okvisible = okVisable

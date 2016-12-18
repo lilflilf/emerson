@@ -79,7 +79,7 @@ Item {
                 inputHeight: 48
                 inputColor: "#8295a0"
                 borderColor: "#375566"
-                defaultText: "WIRE NAME"
+                defaultText: qsTr("WIRE NAME")
                 maxSize: 20
             }
             Label {
@@ -795,7 +795,7 @@ Item {
         width: 962
         height: 526
         visible: false
-        titleText: qsTr("")
+        titleText: ""
         maxvalue: "4"
         minvalue: "1"
         currentValue: "4"

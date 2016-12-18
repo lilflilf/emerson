@@ -18,7 +18,6 @@
         <file>UI/SpliceDetails.qml</file>
         <file>UI/SpliceListView.qml</file>
         <file>UI/Switch2.qml</file>
-        <file>UI/test.rc</file>
         <file>UI/WorkStationColor.qml</file>
         <file>UI/WorkStationSet.qml</file>
         <file>UI/main.qml</file>
@@ -167,5 +166,8 @@
         <file>images/alarm.ico</file>
         <file>images/error.ico</file>
         <file>images/information.ico</file>
+        <file>images/current_operate.png</file>
+        <file>images/left_operate.png</file>
+        <file>images/right_operate.png</file>
     </qresource>
 </RCC>

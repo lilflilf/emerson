@@ -5,9 +5,15 @@ QT += serialport
 QT += sql axcontainer
 CONFIG += c++11
 RC_FILE = res.rc
-#static {
-#    QT += svg
-#    QTPLUGIN += qtvirtualkeyboardplugin
+static {
+    QT += svg
+    QTPLUGIN += qtvirtualkeyboardplugin
+}
+TRANSLATIONS = displayChinese_zh_CN.ts \
+               displayFrench_zh_CN.ts
+
+#lupdate_only{
+#    SOURCES += UI/*.qml
 #}
 SOURCES += main.cpp \
     UI/Utility.cpp \
@@ -122,11 +128,11 @@ HEADERS += \
     Interface/AlarmElement.h \
     Interface/Operate/OperateProcess.h \
     Modules/AlarmMessage.h \
+#    UI/displayChinese_zh_CN.qm \
     Modules/StatisticalFunction.h
 
 DISTFILES += \
-    UI/displayChinese_zh_CN.qm \
+#    UI/displayChinese_zh_CN.qm \
     cmake.exe.stackdump \
-    UI/displayChinese_zh_CN.ts \
-    UI/displayFrench_zh_CN.ts \
-    mainba.qml
+#    UI/displayChinese_zh_CN.ts \
+#    UI/displayFrench_zh_CN.ts

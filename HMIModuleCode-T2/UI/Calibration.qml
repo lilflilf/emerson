@@ -145,9 +145,9 @@ Item {
                 width: 200
                 text: qsTr("Cancel")
                 onClicked: {
-                    if (button2.text == "Back")
+                    if (button2.text == qsTr("Back"))
                         calibration.currentIndex--
-                    else if (button2.text == "Save")
+                    else if (button2.text == qsTr("Save"))
                         root.menuInit(0)
                 }
             }

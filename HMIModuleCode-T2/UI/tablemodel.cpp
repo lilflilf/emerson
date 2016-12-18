@@ -166,10 +166,15 @@ QList<int> WorkOrderModel::getSpliceList()
 
 void WorkOrderModel::editNew(int index)
 {
-    qDebug() << "cccccccccccccccccccc" << index;
     m_partAdaptor->QueryOneRecordFromTable(index,&partElement);
-    qDebug() << "cccccccccccccccccccc" << index;
+}
 
+QVariant WorkOrderModel::getStructValue(QString key)
+{
+    if (key == "WorkOrderId")
+        return workOrderElement.WorkOrderID;
+    else if (key == "WorkOrderName")
+        return workOrderElement.WorkOrderName;
 }
 
 QVariant WorkOrderModel::getWorkOrderValue(int index, QString key)
@@ -594,11 +599,33 @@ QString SpliceModel::getStructValue(QString valueKey, QString valueType)
         return variantToString->ShrinkTimeToString(presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime).Current;
     }
     else if (valueKey == "Cross Section") {
-        qDebug() << "aaaaaaaaaaaaaaaaaaaaa" << presetElement.CrossSection << variantToString->CrossSectionToString(presetElement.CrossSection);
+        return variantToString->CrossSectionToString(presetElement.CrossSection);
+    }
+    else if (valueKey == "Cross Section") {
         return variantToString->CrossSectionToString(presetElement.CrossSection);
     }
     else
         return "";
+}
+
+int SpliceModel::getRawData(QString key)
+{
+    if (key == "Time-")
+        return presetElement.WeldSettings.QualitySetting.Time.Minus;
+    else if (key == "Time+")
+        return presetElement.WeldSettings.QualitySetting.Time.Plus;
+    else if (key == "Power-")
+        return presetElement.WeldSettings.QualitySetting.Power.Minus;
+    else if (key == "Power+")
+        return presetElement.WeldSettings.QualitySetting.Power.Plus;
+    else if (key == "Pre-Height-")
+        return presetElement.WeldSettings.QualitySetting.Preheight.Minus;
+    else if (key == "Pre-Height+")
+        return presetElement.WeldSettings.QualitySetting.Preheight.Plus;
+    else if (key == "Post-Height-")
+        return presetElement.WeldSettings.QualitySetting.Height.Minus;
+    else if (key == "Post-Height+")
+        return presetElement.WeldSettings.QualitySetting.Height.Plus;
 }
 
 void SpliceModel::setStructValue(QString valueKey, QVariant value)
@@ -746,6 +773,11 @@ int SpliceModel::saveSplice(bool bIsEdit)
     }
     setModelList();
     return spliceId;
+}
+
+uint SpliceModel::getHashCode()
+{
+    return presetElement.HashCode;
 }
 
 void SpliceModel::createNew()
@@ -976,6 +1008,14 @@ int PartModel::count()
     return parts->count();
 }
 
+QVariant PartModel::getStruceValue(QString key)
+{
+    if (key == "PartId")
+        return m_Part->PartID;
+    else if (key == "PartName")
+        return m_Part->PartName;
+}
+
 
 int PartModel::columnCount(const QModelIndex &parent) const
 {
@@ -1085,6 +1125,11 @@ int PartModel::getWorkStationCount()
 int PartModel::getWorkStationMaxSplicePerStation()
 {
     return m_Part->PartTypeSetting.WorkStations.MaxSplicesPerWorkstation;
+}
+
+int PartModel::getCurrentPartSpliceCount()
+{
+    return m_Part->SpliceList.count();
 }
 
 QList<int> PartModel::getWorkStationCorlor()
@@ -1399,6 +1444,85 @@ AlarmModel::AlarmModel(QObject *parent) :
     m_weldHistoryAdaptor = DBWeldResultTable::Instance();
     alarms = new QMap<int, QString>();
     variantToString = VariantToString::Instance();
+}
+
+QList<int> AlarmModel::getPoint()
+{
+//    QString pointStr = "0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	20	20	20	40	60	60	60	80	80	100	100	120	120	140	160	160	160	180	180	200	220	220	240	260	280	300	300	320	340	340	380	400	420	440	460	480	480	500	520	520	540	540	560	560	580	580	580	580	580	580	580	580	580	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	580	580	580	580	580	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	600	580	580	580	580	580	580	600	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	600	600	600	600	600	600	600	600	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	600	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	580	560	560	560	560	560	580	580	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	540	540	540	540	540	540	540	540	540	540	540	540	540	540	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	560	540	540	540	540	540	540	540	540	540	540	540	540	540	540	540	540	520	520	520	520	520	520	520	520	520	540	540	540	540	540	540	540	520	520	520	520	520	520	520	540	540	540	540	540	540	540	540	520	520	540	0";
+//    char s = '\t';
+//    QString temp;
+//    bool ok;
+//    QStringList list = pointStr.split(s);
+//    QList<int> pointList;
+//    for (int i = 0; i < list.count(); i++)
+//    {
+//        temp = list[i];
+//        pointList.append(temp.toInt(&ok, 10));
+//    }
+    QList<int> pointList;
+    pointList = weldResultElement.PowerGraph;
+    return pointList;
+}
+
+QList<int> AlarmModel::getPoint2()
+{
+    QList<int> pointList;
+    pointList = weldResultElement.PostHeightGraph;
+    return pointList;
+}
+
+QList<int> AlarmModel::getPointList(QString key, QString spliceName, uint hashCode)
+{
+    QMap<int, QString> *tempMap = new QMap<int, QString>();
+    QMap<int,QString>::iterator it; //遍历map
+
+    WeldResultElement  temp;
+    bool reb;
+    QList<int> list;
+    reb = m_weldHistoryAdaptor->QueryBySomeFields(spliceName,hashCode,startTime.toTime_t(),QDateTime::currentDateTime().toTime_t(),tempMap);
+    if (reb)
+    {
+        if (key == "Time") {
+            for ( it = tempMap->begin(); it != tempMap->end(); ++it ) {
+                m_weldHistoryAdaptor->QueryOneRecordFromTable(it.key(),&temp);
+                list.append(temp.ActualResult.ActualTime);
+            }
+        }
+        else if (key == "Power") {
+            for ( it = tempMap->begin(); it != tempMap->end(); ++it ) {
+                m_weldHistoryAdaptor->QueryOneRecordFromTable(it.key(),&temp);
+                list.append(temp.ActualResult.ActualPeakPower);
+            }
+        }
+        else if (key == "Pre-Height") {
+            for ( it = tempMap->begin(); it != tempMap->end(); ++it ) {
+                m_weldHistoryAdaptor->QueryOneRecordFromTable(it.key(),&temp);
+                list.append(temp.ActualResult.ActualPreheight);
+            }
+        }
+        else if (key == "Post-Height") {
+            for ( it = tempMap->begin(); it != tempMap->end(); ++it ) {
+                m_weldHistoryAdaptor->QueryOneRecordFromTable(it.key(),&temp);
+                list.append(temp.ActualResult.ActualPostheight);
+            }
+        }
+    }
+    return list;
+}
+
+int AlarmModel::getAxes(QString key)
+{
+    if (key == "Time")
+        return weldResultElement.ActualResult.ActualTime;
+    else if (key == "Power")
+        return weldResultElement.ActualResult.ActualPeakPower;
+    else if (key == "Post-Height")
+        return weldResultElement.ActualResult.ActualPreheight;
+}
+
+void AlarmModel::setStartTime()
+{
+    startTime = QDateTime::currentDateTime();
 }
 
 QVariant AlarmModel::data(const QModelIndex &index, int role) const

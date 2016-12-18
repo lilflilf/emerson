@@ -5,23 +5,111 @@ import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
 
 Item {
+    id: offLine
     property alias listModel: recRepeater.model
+    property int maxNum: 0
     width: parent.width
     height: parent.height
-    function setRecColor(index)
+
+    function offLineInit()
     {
-        if (index == 0) {
-            return "#00aa7e"
-        } else if (index == 1) {
-            return "#00afe9"
-        } else {
-            return "#9FA1A4"
+        var count = offLine.maxNum
+        if (offLine.maxNum > 8)
+            count = 8
+        for (var i = 0; i < count; i++) {
+            if (i == 0) {
+                recRepeater.itemAt(i).recColor = "#00aa7e"
+            } else if (i == 1) {
+                recRepeater.itemAt(i).recColor = "#00afe9"
+            } else {
+                recRepeater.itemAt(i).recColor = "#9fa1a4"
+            }
+            recRepeater.itemAt(i).numIndex = i+1
         }
     }
-    function setSatusOffLineNum(index)
+
+    function setStusOffLineBack(index)
     {
-        listModel.remove(0)
-        listModel.append({"theNo":index})
+        if (index + 7 > maxNum) {
+            var count2 = offLine.maxNum
+            if (offLine.maxNum > 8)
+                count2 = 8
+            for (var i = 0; i < count2; i++) {
+                if (recRepeater.itemAt(i).numIndex == (index ))
+                    recRepeater.itemAt(i).recColor = "#00aa7e"
+                else if (recRepeater.itemAt(i).numIndex == (index + 1))
+                    recRepeater.itemAt(i).recColor = "#00afe9"
+                else if (recRepeater.itemAt(i).numIndex == (index + 2))
+                    recRepeater.itemAt(i).recColor = "#9fa1a4"
+            }
+        } else {
+            if (index == 1) {
+                offLineInit()
+            } else {
+                var count = offLine.maxNum
+                if (offLine.maxNum > 8)
+                    count = 8
+                for (var i = 0; i < count; i++) {
+                    recRepeater.itemAt(i).numIndex = index-1+i
+                }
+            }
+        }
+    }
+
+    function setStusOffLineUpdate(index)
+    {
+        if (index + 7 > maxNum) {
+            var count2 = offLine.maxNum
+            if (offLine.maxNum > 8)
+                count2 = 8
+            for (var i = 0; i < count2; i++) {
+                if (recRepeater.itemAt(i).numIndex == (index - 1))
+                    recRepeater.itemAt(i).recColor = "#60bb46"
+                else if (recRepeater.itemAt(i).numIndex == index)
+                    recRepeater.itemAt(i).recColor = "#00aa7e"
+                else if (recRepeater.itemAt(i).numIndex == (index + 1))
+                    recRepeater.itemAt(i).recColor = "#00afe9"
+            }
+        } else {
+            if (index == 1) {
+                offLineInit()
+            } else {
+                var count = offLine.maxNum
+                if (offLine.maxNum > 8)
+                    count = 8
+                for (var i = 0; i < count; i++) {
+                    recRepeater.itemAt(i).numIndex = index+i
+                }
+            }
+        }
+    }
+
+    function setSatusOffLineOver(index)
+    {
+        if (index + 7 > maxNum) {
+            var count2 = offLine.maxNum
+            if (offLine.maxNum > 8)
+                count2 = 8
+            for (var i = 0; i < count2; i++) {
+                if (recRepeater.itemAt(i).numIndex == (index - 1))
+                    recRepeater.itemAt(i).recColor = "#d31145"
+                else if (recRepeater.itemAt(i).numIndex == index)
+                    recRepeater.itemAt(i).recColor = "#00aa7e"
+                else if (recRepeater.itemAt(i).numIndex == (index + 1))
+                    recRepeater.itemAt(i).recColor = "#00afe9"
+            }
+        } else {
+            if (index == 1) {
+                offLineInit()
+            } else {
+                var count = offLine.maxNum
+                if (offLine.maxNum > 8)
+                    count = 8
+                for (var i = 0; i < count; i++) {
+                    recRepeater.itemAt(i).numIndex = index+i
+                }
+            }
+        }
     }
 
 
@@ -32,18 +120,21 @@ Item {
         Repeater {
             id: recRepeater
             delegate: Item {
+                property string recColor: "#00aa7e"
+                property int numIndex: 1
                 width: (parent.width-60)/8
                 height: parent.height
                 Rectangle {
+                    id: rec
                     anchors.fill: parent
-                    color: setRecColor(index)
+                    color: recColor
                 }
                 Text {
                     id: num
                     anchors.centerIn: parent
                     font.family: "arial"
                     font.pixelSize: 24
-                    text: theNo
+                    text: numIndex
                     color: "white"
                 }
             }

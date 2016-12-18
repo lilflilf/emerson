@@ -720,6 +720,7 @@ Item {
     }
     Rectangle {
         id: backGround
+        z: leftArea.z+1
         anchors.fill: parent
         color: "black"
         opacity: 0.5
@@ -737,7 +738,15 @@ Item {
         anchors.centerIn: parent
         width: 639
         height: 390
+        z: leftArea.z+2
         source: "qrc:/images/images/dialogbg.png"
+        onVisibleChanged: {
+            if (dialog.visible) {
+                inputTemperature.inputText = shrinkModel.get(selectIndx).temperature
+                inputtimeText.inputText = shrinkModel.get(selectIndx).times
+            }
+        }
+
         Text {
             id: shrinkId
             anchors.top: parent.top
@@ -782,20 +791,26 @@ Item {
             horizontalAlignment: Qt.AlignRight
             color: "white"
         }
-        MyLineEdit {
+        MiniKeyNumInput {
             id: inputTemperature
             property var partId: 1
             anchors.top: inputshrinkId.bottom
             anchors.topMargin: 20
             anchors.right: parent.right
             anchors.rightMargin: 72
-            horizontalAlignment: Qt.AlignHCenter
             width: 375
             height: 60
             inputWidth: 375
-            inputColor: "white"
-            inputHeight: 60
             inputText: shrinkModel.get(selectIndx).temperature
+            onInputFocusChanged: {
+                if (inputTemperature.inputFocus) {
+                    keyNum.visible = true
+                    keyNum.titleText = temperatureText.text
+                    keyNum.currentValue = shrinkModel.get(selectIndx).temperature
+                    keyNum.minvalue = "1"
+                    keyNum.maxvalue = "20"
+                }
+            }
         }
         Text {
             id: timeText
@@ -812,8 +827,9 @@ Item {
             horizontalAlignment: Qt.AlignRight
             color: "white"
         }
-        MyLineEdit {
+        MiniKeyNumInput {
             id: inputtimeText
+            property var partId: 1
             anchors.top: temperatureText.bottom
             anchors.topMargin: 20
             anchors.right: parent.right
@@ -821,10 +837,16 @@ Item {
             width: 375
             height: 60
             inputWidth: 375
-            inputHeight: 60
-            inputColor: "white"
-            horizontalAlignment: Qt.AlignHCenter
             inputText: shrinkModel.get(selectIndx).times
+            onInputFocusChanged: {
+                if (inputtimeText.inputFocus) {
+                    keyNum.visible = true
+                    keyNum.titleText = timeText.text
+                    keyNum.currentValue = shrinkModel.get(selectIndx).times
+                    keyNum.minvalue = "1"
+                    keyNum.maxvalue = "20"
+                }
+            }
         }
         CButton {
             id: cancel
@@ -857,6 +879,55 @@ Item {
                 shrinkModel.insert(selectIndx,{shrinkid:inputshrinkId.inputText,temperature:inputTemperature.inputText,times:inputtimeText.inputText})
                 backGround.visible = false
                 dialog.visible = false
+            }
+        }
+    }
+    KeyBoardNum {
+        id: keyNum
+        anchors.centerIn: parent
+        z: leftArea.z+3
+        width: 962
+        height: 526
+        visible: false
+        titleText: qsTr("")
+        maxvalue: "4"
+        minvalue: "1"
+        currentValue: "4"
+        onCurrentClickIndex: {
+            if (index == 15) {
+                if (hmiAdaptor.comepareCurrentValue(keyNum.minvalue,keyNum.maxvalue,keyNum.inputText)) {
+                    if (inputTemperature.inputFocus) {
+                        inputTemperature.inputText = keyNum.inputText
+                        inputTemperature.inputFocus = false
+                    } else if (inputtimeText.inputFocus) {
+                        inputtimeText.inputText = keyNum.inputText
+                        inputtimeText.inputFocus = false
+                    }
+
+                    keyNum.visible = false
+                    keyNum.inputText = ""
+                    keyNum.tempValue = ""
+                } else {
+                    keyNum.timeRun = true
+                }
+            } else if (index == 11) {
+                if (inputTemperature.inputFocus) {
+                    inputTemperature.inputFocus = false
+                } else if (inputtimeText.inputFocus) {
+                    inputtimeText.inputFocus = false
+                }
+                keyNum.visible = false
+                keyNum.inputText = ""
+                keyNum.tempValue = ""
+            }
+        }
+        onInputTextChanged: {
+            if (keyNum.inputText != "") {
+                if (inputTemperature.inputFocus) {
+                    inputTemperature.inputText = keyNum.inputText
+                } else if (inputtimeText.inputFocus) {
+                    inputtimeText.inputText = keyNum.inputText
+                }
             }
         }
     }

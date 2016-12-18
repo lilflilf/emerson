@@ -44,7 +44,7 @@ Item {
             clip: true
             font.pixelSize: 27
             font.family: "arial"
-            text: qsTr(titleName)
+            text: titleName
         }
         Text {
             id: head1
@@ -58,7 +58,7 @@ Item {
             clip: true
             elide: Text.ElideRight
             font.family: "arial"
-            text: qsTr(componentName)
+            text: componentName
         }
         Text {
             id: head2
@@ -72,7 +72,7 @@ Item {
             elide: Text.ElideRight
             clip: true
             font.family: "arial"
-            text: qsTr(componentData)
+            text: componentData
         }
         Text {
             id: head3
@@ -86,7 +86,7 @@ Item {
             font.pixelSize: 18
             clip: true
             font.family: "arial"
-            text: qsTr(componentMiddle)
+            text: componentMiddle
         }
         Text {
             id: head4
@@ -100,7 +100,7 @@ Item {
             elide: Text.ElideRight
             font.family: "arial"
             clip: true
-            text: qsTr(componenttype)
+            text: componenttype
         }
         Text {
             id: head5
@@ -350,7 +350,7 @@ Item {
             width: 200
             height: 50
             clip: true
-            text: bIsOnlyOne ? qsTr("Select") : qsTr("Select(" + selectCount + ")")
+            text: bIsOnlyOne ? qsTr("Select") : qsTr("Select")+ "(" + selectCount + ")"
             textColor: "white"
             onClicked: {
                 if ((bIsOnlyOne && selectIndex != -1) || selectList.count) {

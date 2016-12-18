@@ -6,10 +6,10 @@ import QtQuick.Window 2.2
 Item {
     id: operateDetail
     property var spliceList: new Array
-    property int showFlag: -1
+    property int showFlag: -1 /*1:inLine 2:offLine 3:signal*/
     property int cycleCount: 0
     property int qliantity: 0
-
+    property int maxCount: partModel.getCurrentPartSpliceCount()
     Rectangle {
         anchors.fill: parent
         color: "#626465"
@@ -17,10 +17,46 @@ Item {
             anchors.fill: parent
         }
     }
+    Connections {
+        target: hmiAdaptor
+        onSignalWeldCycleCompleted: {
+            progressBar.current++
+            spliceLocation.setTreeModelOver()
+            progressBar.moveToNext()
+            offline.setSatusOffLineNum(testModel.get(testModel.count-1).theNo+1)
+            selectSplice(spliceList[progressBar.current-1])
+        }
+    }
+
+    Component.onCompleted: {
+//        hmiAdaptor.operateProcessExec("Start")
+    }
+    Component.onDestruction: {
+//        hmiAdaptor.operateProcessExec("Stop")
+    }
+
+    function setData()
+    {
+        qualityWindow.qualityModel.clear()
+        qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Time+"),"redMin":spliceModel.getRawData("Time-"),"yellowMax":4,"yellowMin":1,"current":6,"currentText":""})
+        qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Power+"),"redMin":spliceModel.getRawData("Power-"),"yellowMax":4,"yellowMin":1,"current":123,"currentText":""})
+        qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Pre-Height+"),"redMin":spliceModel.getRawData("Pre-Height-"),"yellowMax":4,"yellowMin":1,"current":2512,"currentText":""})
+        qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Post-Height+"),"redMin":spliceModel.getRawData("Post-Height-"),"yellowMax":4,"yellowMin":1,"current":43,"currentText":""})
+
+        qualityWindow.timeModel = alarmModel.getPointList("Time",spliceModel.getStructValue("SpliceName",""),spliceModel.getHashCode())
+        qualityWindow.powerModel = alarmModel.getPointList("Power",spliceModel.getStructValue("SpliceName",""),spliceModel.getHashCode())
+        qualityWindow.preModel = alarmModel.getPointList("Pre-Height",spliceModel.getStructValue("SpliceName",""),spliceModel.getHashCode())
+        qualityWindow.postModel = alarmModel.getPointList("Post-Height",spliceModel.getStructValue("SpliceName",""),spliceModel.getHashCode())
+
+        qualityWindow.qualityListViewTwoModel = 0
+        qualityWindow.qualityListViewTwoModel = qualityWindow.timeModel.length
+
+    }
 
     function selectSplice(spliceId)
     {
         spliceModel.editNew(spliceId)
+        setData()
         var list = new Array
         list = spliceModel.getWireIdList()
         spliceDetailsItem.clear()
@@ -31,6 +67,9 @@ Item {
             wireModel.addFromLibrary(list[i])
             spliceDetailsItem.addWireFromSplice()
         }
+        hmiAdaptor.setOperateProcess(spliceId)
+//        hmiAdaptor.operateProcessExec("Execute")
+
     }
 
     Text {
@@ -133,19 +172,6 @@ Item {
         text: qsTr("TOTAL CROSS SECTION: 2.3mm")
         color: "white"
     }
-    ListModel {
-        id: testModel
-        Component.onCompleted: {
-            testModel.append({"theNo":1})
-            testModel.append({"theNo":2})
-            testModel.append({"theNo":3})
-            testModel.append({"theNo":4})
-            testModel.append({"theNo":5})
-            testModel.append({"theNo":6})
-            testModel.append({"theNo":7})
-            testModel.append({"theNo":8})
-        }
-    }
 
     ListModel {
         id: treeModel
@@ -182,7 +208,7 @@ Item {
         rows: partModel.getWorkStationRows()
         visible: showFlag == 1 ? true : false
         listModel: treeModel
-        maxNum: spliceList.length
+        maxNum: maxCount
     }
     SpliceStatusOffLine {
         id: offline
@@ -192,8 +218,12 @@ Item {
         anchors.bottom: partCount2.top
         anchors.bottomMargin: 20
         width: Screen.width * 0.37
-        listModel: testModel
+        maxNum: maxCount
+        listModel: maxCount > 8 ? 8 : maxCount
         visible: showFlag == 2 ? true : false
+        Component.onCompleted: {
+            offLineInit()
+        }
     }
 
     Rectangle {
@@ -386,12 +416,11 @@ Item {
     }
     CButton {
         id: leftButton
-        anchors.bottom: partCount2.top
-        anchors.bottomMargin: 20
+        anchors.verticalCenter: progressBar.verticalCenter
         anchors.left: qualityWindow.left
-        width: 50
-        height: 32
-        iconSource: "qrc:/images/images/you.png"
+        width: 41
+        height: 63
+        iconSource: "qrc:/images/images/left_operate.png"
         backgroundEnabled: false
         clip: true
         visible: showFlag != 3 ? true : false
@@ -401,6 +430,7 @@ Item {
                 progressBar.jumpToAbove()
                 selectSplice(spliceList[progressBar.current-1])
                 spliceLocation.setTreeModelBack(progressBar.current)
+                offline.setStusOffLineBack(progressBar.current)
             }
         }
     }
@@ -420,21 +450,20 @@ Item {
     }
     CButton {
         id: rightButton
-        anchors.bottom: partCount2.top
-        anchors.bottomMargin: 20
+        anchors.verticalCenter: progressBar.verticalCenter
         anchors.right: qualityWindow.right
-        width: 50
-        height: 32
-        iconSource: "qrc:/images/images/zuo.png"
+        width: 41
+        height: 63
+        iconSource: "qrc:/images/images/right_operate.png"
         backgroundEnabled: false
         clip: true
         visible: showFlag != 3 ? true : false
         onClicked: {
             progressBar.current++
             progressBar.jumpToNext()
-            offline.setSatusOffLineNum(testModel.get(testModel.count-1).theNo+1)
             selectSplice(spliceList[progressBar.current-1])
             spliceLocation.setTreeModelOver(progressBar.current)
+            offline.setSatusOffLineOver(progressBar.current)
         }
     }
     Text {
