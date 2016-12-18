@@ -116,10 +116,10 @@ Item {
     ListModel {
         id: listModel
         Component.onCompleted: {
-            listModel.append({"titleHead":"Power Supply","value":"4000W"})
-            listModel.append({"titleHead":"Calibrated Amplitude","value":"72μm"})
-            listModel.append({"titleHead":"Tune Point","value":"40%"})
-            listModel.append({"titleHead":"Frequency Offset","value":"50%"})
+            listModel.append({"titleHead":qsTr("Power Supply"),"value":"4000W"})
+            listModel.append({"titleHead":qsTr("Calibrated Amplitude"),"value":"72μm"})
+            listModel.append({"titleHead":qsTr("Tune Point"),"value":"40%"})
+            listModel.append({"titleHead":qsTr("Frequency Offset"),"value":"50%"})
         }
     }
 
@@ -156,8 +156,8 @@ Item {
             delegate: Recsetting {
                 width: 250 //(rowButton3.width-20)/3
                 height: 130 //(testSetting.height-20)/3
-                headTitle: qsTr(titleHead)
-                centervalue: qsTr(value)
+                headTitle: titleHead
+                centervalue: value
             }
         }
     }

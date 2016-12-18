@@ -37,25 +37,25 @@ Item {
     function setadvancesetingdefalut()
     {
         standardUpperModel.clear()
-        standardUpperModel.append({"head":"Time","value":"40%"})
-        standardUpperModel.append({"head":"Power","value":"25%"})
-        standardUpperModel.append({"head":"Pre-Height","value":"15%"})
-        standardUpperModel.append({"head":"Height","value":"10%"})
+        standardUpperModel.append({"head":qsTr("Time"),"value":"40%"})
+        standardUpperModel.append({"head":qsTr("Power"),"value":"25%"})
+        standardUpperModel.append({"head":qsTr("Pre-Height"),"value":"15%"})
+        standardUpperModel.append({"head":qsTr("Height"),"value":"10%"})
         standardLowerModel.clear()
-        standardLowerModel.append({"head":"Time","value":"40%"})
-        standardLowerModel.append({"head":"Power","value":"25%"})
-        standardLowerModel.append({"head":"Pre-Height","value":"15%"})
-        standardLowerModel.append({"head":"Height","value":"10%"})
+        standardLowerModel.append({"head":qsTr("Time"),"value":"40%"})
+        standardLowerModel.append({"head":qsTr("Power"),"value":"25%"})
+        standardLowerModel.append({"head":qsTr("Pre-Height"),"value":"15%"})
+        standardLowerModel.append({"head":qsTr("Height"),"value":"10%"})
         sigmaUpperModel.clear()
-        sigmaUpperModel.append({"head":"Time","value":"4"})
-        sigmaUpperModel.append({"head":"Power","value":"4"})
-        sigmaUpperModel.append({"head":"Pre-Height","value":"4"})
-        sigmaUpperModel.append({"head":"Height","value":"4"})
+        sigmaUpperModel.append({"head":qsTr("Time"),"value":"4"})
+        sigmaUpperModel.append({"head":qsTr("Power"),"value":"4"})
+        sigmaUpperModel.append({"head":qsTr("Pre-Height"),"value":"4"})
+        sigmaUpperModel.append({"head":qsTr("Height"),"value":"4"})
         sigmaLowerModel.clear()
-        sigmaLowerModel.append({"head":"Time","value":"4"})
-        sigmaLowerModel.append({"head":"Power","value":"4"})
-        sigmaLowerModel.append({"head":"Pre-Height","value":"4"})
-        sigmaLowerModel.append({"head":"Height","value":"4"})
+        sigmaLowerModel.append({"head":qsTr("Time"),"value":"4"})
+        sigmaLowerModel.append({"head":qsTr("Power"),"value":"4"})
+        sigmaLowerModel.append({"head":qsTr("Pre-Height"),"value":"4"})
+        sigmaLowerModel.append({"head":qsTr("Height"),"value":"4"})
     }
 
     Image {
@@ -178,25 +178,25 @@ Item {
     ListModel {
         id: sigmaLowerModel
         Component.onCompleted: {
-            standardUpperModel.append({"head":"Time","value":"40%"})
-            standardUpperModel.append({"head":"Power","value":"25%"})
-            standardUpperModel.append({"head":"Pre-Height","value":"15%"})
-            standardUpperModel.append({"head":"Height","value":"10%"})
+            standardUpperModel.append({"head":qsTr("Time"),"value":"40%"})
+            standardUpperModel.append({"head":qsTr("Power"),"value":"25%"})
+            standardUpperModel.append({"head":qsTr("Pre-Height"),"value":"15%"})
+            standardUpperModel.append({"head":qsTr("Height"),"value":"10%"})
 
-            standardLowerModel.append({"head":"Time","value":"40%"})
-            standardLowerModel.append({"head":"Power","value":"25%"})
-            standardLowerModel.append({"head":"Pre-Height","value":"15%"})
-            standardLowerModel.append({"head":"Height","value":"10%"})
+            standardLowerModel.append({"head":qsTr("Time"),"value":"40%"})
+            standardLowerModel.append({"head":qsTr("Power"),"value":"25%"})
+            standardLowerModel.append({"head":qsTr("Pre-Height"),"value":"15%"})
+            standardLowerModel.append({"head":qsTr("Height"),"value":"10%"})
 
-            sigmaUpperModel.append({"head":"Time","value":"4"})
-            sigmaUpperModel.append({"head":"Power","value":"4"})
-            sigmaUpperModel.append({"head":"Pre-Height","value":"4"})
-            sigmaUpperModel.append({"head":"Height","value":"4"})
+            sigmaUpperModel.append({"head":qsTr("Time"),"value":"4"})
+            sigmaUpperModel.append({"head":qsTr("Power"),"value":"4"})
+            sigmaUpperModel.append({"head":qsTr("Pre-Height"),"value":"4"})
+            sigmaUpperModel.append({"head":qsTr("Height"),"value":"4"})
 
-            sigmaLowerModel.append({"head":"Time","value":"4"})
-            sigmaLowerModel.append({"head":"Power","value":"4"})
-            sigmaLowerModel.append({"head":"Pre-Height","value":"4"})
-            sigmaLowerModel.append({"head":"Height","value":"4"})
+            sigmaLowerModel.append({"head":qsTr("Time"),"value":"4"})
+            sigmaLowerModel.append({"head":qsTr("Power"),"value":"4"})
+            sigmaLowerModel.append({"head":qsTr("Pre-Height"),"value":"4"})
+            sigmaLowerModel.append({"head":qsTr("Height"),"value":"4"})
         }
     }
 
@@ -236,7 +236,7 @@ Item {
                     font.family: "arial"
                     font.pixelSize: 20
                     color: "white"
-                    text: qsTr(head)
+                    text: head
                 }
                 Text {
                     id: centerValue
@@ -244,7 +244,7 @@ Item {
                     font.family: "arial"
                     font.pixelSize: 25
                     color: "white"
-                    text: qsTr(value)
+                    text: value
                 }
                 MouseArea {
                     anchors.fill: parent
@@ -299,7 +299,7 @@ Item {
                     font.family: "arial"
                     font.pixelSize: 20
                     color: "white"
-                    text: qsTr(head)
+                    text: head
                 }
                 Text {
                     id: centerValue2
@@ -307,7 +307,7 @@ Item {
                     font.family: "arial"
                     font.pixelSize: 25
                     color: "white"
-                    text: qsTr(value)
+                    text: value
                 }
                 MouseArea {
                     anchors.fill: parent
@@ -362,7 +362,7 @@ Item {
                     font.family: "arial"
                     font.pixelSize: 20
                     color: "white"
-                    text: qsTr(head)
+                    text: head
                 }
                 Text {
                     id: centerValue3
@@ -370,7 +370,7 @@ Item {
                     font.family: "arial"
                     font.pixelSize: 25
                     color: "white"
-                    text: qsTr(value)
+                    text: value
                 }
                 MouseArea {
                     anchors.fill: parent
@@ -426,7 +426,7 @@ Item {
                     font.family: "arial"
                     font.pixelSize: 20
                     color: "white"
-                    text: qsTr(head)
+                    text: head
                 }
                 Text {
                     id: centerValue4
@@ -434,7 +434,7 @@ Item {
                     font.family: "arial"
                     font.pixelSize: 25
                     color: "white"
-                    text: qsTr(value)
+                    text: value
                 }
                 MouseArea {
                     anchors.fill: parent

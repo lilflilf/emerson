@@ -260,8 +260,7 @@ Item {
         inputWidth: parent.width*0.3
         inputHeight: 48
         horizontalAlignment: Qt.AlignHCenter
-        inputText: qsTr("4000")
-        //            regExp: RegExpValidator{regExp: /^[1-4000]$/}
+        inputText: "4000"
     }
 
     CButton {

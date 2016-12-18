@@ -58,7 +58,7 @@ Item {
             wrapMode: Text.WordWrap
             color: "white"
             horizontalAlignment: Qt.AlignHCenter
-            text: qsTr("aaaaaaaaaaaaaaaaaa")
+            text: qsTr("")
         }
         CButton {
             id: okButton

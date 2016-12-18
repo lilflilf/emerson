@@ -210,7 +210,7 @@ Item {
                             anchors.top: parent.top
                             anchors.topMargin: 6
                             color: "#b2a9b9"
-                            text: qsTr(boardLayout.array[index])
+                            text: boardLayout.array[index]
                             font.pointSize: 16
                             font.family: "arial"
                         }
