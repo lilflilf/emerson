@@ -9,11 +9,11 @@ private:
     int WeldResultID;
 private:
     void RunModeMouseButton();
-    void ShowText();
+    void ShowText(int weldresult);
     void UpdateAlarmLog(QString AlarmStr, QString AlarmType, int WeldResultID);
     static void ResetAnyAlarm(void* _obj);
 public:
-    void Initialization();
+    void Initialization(int weldresult);
 public:
     static AlarmMessage* Instance();
 protected:
