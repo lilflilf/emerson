@@ -91,7 +91,7 @@ MouseArea {
             horizontalAlignment: Qt.AlignHCenter
             font.pixelSize: button.pixelSize
             color: button.textColor
-            text: qsTr(button.text)
+            text: button.text
             font.family: "arial"
         }
     }

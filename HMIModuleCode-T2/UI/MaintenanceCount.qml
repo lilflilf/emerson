@@ -21,16 +21,16 @@ Item {
     function initPage()
     {
         listModel.clear()
-        listModel.append({mytitle:"Horn"})
-        listModel.append({mytitle:"AnvilTip"})
-        listModel.append({mytitle:"Gather"})
-        listModel.append({mytitle:"AnvilGuide"})
-        listModel.append({mytitle:"Converter"})
-        listModel.append({mytitle:"Actuator"})
+        listModel.append({mytitle:qsTr("Horn")})
+        listModel.append({mytitle:qsTr("AnvilTip")})
+        listModel.append({mytitle:qsTr("Gather")})
+        listModel.append({mytitle:qsTr("AnvilGuide")})
+        listModel.append({mytitle:qsTr("Converter")})
+        listModel.append({mytitle:qsTr("Actuator")})
 
         for (var i = 0; i < 6; i++)
         {
-            listModel.set(i,{"imageSourece":"","mylimit":hmiAdaptor.maintenanceCountGetValue(i,2), "mycurrent":hmiAdaptor.maintenanceCountGetValue(i,3),"createDate":hmiAdaptor.maintenanceCountGetValue(i,4),"maxLimit":hmiAdaptor.maintenanceCountGetValue(i,5),"minLimit":hmiAdaptor.maintenanceCountGetValue(i,6),"myreset":"Reset"})
+            listModel.set(i,{"imageSourece":"","mylimit":hmiAdaptor.maintenanceCountGetValue(i,2), "mycurrent":hmiAdaptor.maintenanceCountGetValue(i,3),"createDate":hmiAdaptor.maintenanceCountGetValue(i,4),"maxLimit":hmiAdaptor.maintenanceCountGetValue(i,5),"minLimit":hmiAdaptor.maintenanceCountGetValue(i,6),"myreset":qsTr("Reset")})
         }
     }
 
@@ -134,7 +134,7 @@ Item {
                 Text {
                     width: 160
                     height: 79
-                    text: qsTr(mytitle)
+                    text: mytitle
                     color: "white"
                     font.family: "arial"
                     font.pointSize: 14
@@ -172,7 +172,7 @@ Item {
                 Text {
                     width: 160
                     height: 79
-                    text: qsTr("-")
+                    text: "-"
                     color: "white"
                     font.family: "arial"
                     font.pointSize: 14
@@ -183,7 +183,7 @@ Item {
                 Text {
                     width: 160
                     height: 79
-                    text: qsTr(mycurrent)
+                    text: mycurrent
                     color: "white"
                     font.family: "arial"
                     font.pointSize: 14
@@ -193,7 +193,7 @@ Item {
                 Text {
                     width: 160
                     height: 79
-                    text: qsTr(createDate)
+                    text: createDate
                     color: "white"
                     font.family: "arial"
                     font.pointSize: 14
@@ -211,7 +211,7 @@ Item {
                 Text {
                     width: 160
                     height: 79
-                    text: qsTr("-")
+                    text: "-"
                     color: "white"
                     font.family: "arial"
                     font.pointSize: 14
@@ -286,7 +286,7 @@ Item {
         width: 962
         height: 526
         visible: false
-        titleText: qsTr("")
+        titleText: ""
         maxvalue: "4"
         minvalue: "1"
         currentValue: "4"

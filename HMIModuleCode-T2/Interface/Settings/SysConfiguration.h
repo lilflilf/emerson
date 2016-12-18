@@ -490,6 +490,7 @@ public:
     int CutoffMode;
     bool LockKeyFlag;
     bool FootPedalFlag;
+    QMap<QString,QString> carTemplate;
 public:
     Status_Data &operator= (const Status_Data &StatusDataObj);
 };

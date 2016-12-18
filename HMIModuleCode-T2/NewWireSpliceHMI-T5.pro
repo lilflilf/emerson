@@ -74,6 +74,7 @@ QML_IMPORT_PATH =
 
 # Default rules for deployment.
 include(deployment.pri)
+
 HEADERS += \
     UI/Utility.h \
     Modules/Modstart.h \
@@ -127,10 +128,11 @@ HEADERS += \
     Interface/AlarmElement.h \
     Interface/Operate/OperateProcess.h \
     Modules/AlarmMessage.h \
+#    UI/displayChinese_zh_CN.qm \
     Modules/StatisticalFunction.h
 
 DISTFILES += \
-    UI/displayChinese_zh_CN.qm \
+#    UI/displayChinese_zh_CN.qm \
     cmake.exe.stackdump \
-    UI/displayChinese_zh_CN.ts \
-    UI/displayFrench_zh_CN.ts
+#    UI/displayChinese_zh_CN.ts \
+#    UI/displayFrench_zh_CN.ts

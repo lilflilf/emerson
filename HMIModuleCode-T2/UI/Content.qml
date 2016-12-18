@@ -82,7 +82,7 @@ Item {
 
         insulation.visible = true
         spliceDetailsTips.visible = true
-        insulation.text = "  Insulation: " + shrinkId + " Temp:" + shrinkTemp + " Time:" + shrinkTime
+        insulation.text = qsTr("  Insulation: ") + shrinkId + qsTr(" Temp:") + shrinkTemp + qsTr(" Time:") + shrinkTime
 
         spliceDetailsTips.text = qsTr("TOTAL CROSS SECTION ") + spliceModel.getStructValue("Cross Section","")
     }
@@ -175,7 +175,7 @@ Item {
                 anchors.bottom: addExitSplice.top
                 anchors.left: parent.left
                 anchors.leftMargin: 10
-                text: "+ ADD NEW SPLICE"
+                text: qsTr("+ ADD NEW SPLICE")
                 textColor: "white"
                 width: parent.width - 20
                 pointSize: 16
@@ -190,7 +190,7 @@ Item {
                 anchors.bottom: upload.top
                 anchors.left: parent.left
                 anchors.leftMargin: 10
-                text: "+ ADD EXISTING SPLICE"
+                text: qsTr("+ ADD EXISTING SPLICE")
                 textColor: "white"
                 width: parent.width - 20
                 pointSize: 16
@@ -206,7 +206,7 @@ Item {
                 anchors.bottomMargin: 5
                 anchors.left: parent.left
                 anchors.leftMargin: 10
-                text: "IMPORT SPLICE"
+                text: qsTr("IMPORT SPLICE")
                 textColor: "white"
                 width: (parent.width-20) / 2 - 12
                 pointSize: 16
@@ -219,7 +219,7 @@ Item {
                 anchors.bottomMargin: 5
                 anchors.right: parent.right
                 anchors.rightMargin: 10
-                text: "SAVE PART"
+                text: qsTr("SAVE PART")
                 textColor: "white"
                 width: (parent.width-20) / 2 - 12
                 pointSize: 16
@@ -917,7 +917,7 @@ Item {
             anchors.bottomMargin: 14
             anchors.right: bIsBoard ? boardlayout.right : testSplice.left
             anchors.rightMargin: bIsBoard ? 0 : 14
-            text: "EDIT SPLICE"
+            text: qsTr("EDIT SPLICE")
             textColor: "white"
             width: 250
             pointSize: 16
@@ -927,7 +927,7 @@ Item {
                     bIsEditSplice = true
                     spliceModel.editNew(content.selectSpliceId)
                     loader.source = "qrc:/UI/CreatWire.qml"
-                    titleTextChanged("Edit Existing")
+                    titleTextChanged(qsTr("Edit Existing"))
                 }
 
             }
@@ -938,7 +938,7 @@ Item {
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 14
             anchors.right: boardlayout.right
-            text: "TEST SPLICE"
+            text: qsTr("TEST SPLICE")
             textColor: "white"
             width: 250
             pointSize: 16
@@ -1321,7 +1321,7 @@ Item {
                     anchors.leftMargin: 20
                     anchors.right: close.left
                     anchors.rightMargin: 6
-                    text: qsTr(name)
+                    text: name
                     font.pixelSize: 20
                     font.family: "arial"
                     color: "white"
@@ -1481,7 +1481,7 @@ Item {
         width: 962
         height: 526
         visible: false
-        titleText: qsTr("")
+        titleText: ""
         maxvalue: "4"
         minvalue: "1"
         currentValue: "4"

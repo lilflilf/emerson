@@ -14,7 +14,7 @@ Item {
     Rectangle {
         id: headBack
         anchors.fill: parent
-        color: (title.text == "Test" || title.text == "Create Assembly" || title.text == "Edit Existing") ? "#f79428" : "#0079c1"
+        color: (title.text == qsTr("Test") || title.text == qsTr("Create Assembly") || title.text == qsTr("Edit Existing")) ? "#f79428" : "#0079c1"
     }
     //    Image {
     //        id: headBack
@@ -89,12 +89,12 @@ Item {
         ListModel {
             id: listMainMenu
             Component.onCompleted: {
-                listMainMenu.append({"menuName":"Create/Edit"})
-                listMainMenu.append({"menuName":"Operate"})
-                listMainMenu.append({"menuName":"Test"})
-                listMainMenu.append({"menuName":"Maintenance"})
-                listMainMenu.append({"menuName":"View Data"})
-                listMainMenu.append({"menuName":"Settings"})
+                listMainMenu.append({"menuName":qsTr("Create/Edit")})
+                listMainMenu.append({"menuName":qsTr("Operate")})
+                listMainMenu.append({"menuName":qsTr("Test")})
+                listMainMenu.append({"menuName":qsTr("Maintenance")})
+                listMainMenu.append({"menuName":qsTr("View Data")})
+                listMainMenu.append({"menuName":qsTr("Settings")})
             }
         }
         ExclusiveGroup {
@@ -170,7 +170,7 @@ Item {
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.left: parent.left
                             anchors.leftMargin: 5
-                            text: qsTr(menuName)//qsTr("Creat/Edit")
+                            text: menuName
                             color: "white"
                             font.pointSize: 20
                             font.family: "arial"
@@ -217,32 +217,32 @@ Item {
 
     ListModel {
         id: creatMenuList
-        ListElement {menuKey:"Create New"}
-        ListElement {menuKey:"Edit Existing"}
+        ListElement {menuKey:qsTr("Create New")}
+        ListElement {menuKey:qsTr("Edit Existing")}
     }
     ListModel {
         id: maintenanceList
-        ListElement {menuKey:"Calibration"}
-        ListElement {menuKey:"Tool Change"}
-        ListElement {menuKey:"Advanced Maintenance"}
-        ListElement {menuKey:"Maintenance Counter"}
-        ListElement {menuKey:"Maintenance log"}
+        ListElement {menuKey:qsTr("Calibration")}
+        ListElement {menuKey:qsTr("Tool Change")}
+        ListElement {menuKey:qsTr("Advanced Maintenance")}
+        ListElement {menuKey:qsTr("Maintenance Counter")}
+        ListElement {menuKey:qsTr("Maintenance log")}
     }
     ListModel {
         id: viewDataList
-        ListElement {menuKey:"Work Order History"}
-        ListElement {menuKey:"Statistical Trend"}
-        ListElement {menuKey:"Error/Alarm Log"}
-        ListElement {menuKey:"Library"}
-        ListElement {menuKey:"Version Information"}
+        ListElement {menuKey:qsTr("Work Order History")}
+        ListElement {menuKey:qsTr("Statistical Trend")}
+        ListElement {menuKey:qsTr("Error/Alarm Log")}
+        ListElement {menuKey:qsTr("Library")}
+        ListElement {menuKey:qsTr("Version Information")}
 
     }
     ListModel {
         id: settingList
-        ListElement {menuKey:"Permission Setting"}
-        ListElement {menuKey:"Weld Defaults"}
-        ListElement {menuKey:"Operator Library"}
-        ListElement {menuKey:"Data/Communication"}
+        ListElement {menuKey:qsTr("Permission Setting")}
+        ListElement {menuKey:qsTr("Weld Defaults")}
+        ListElement {menuKey:qsTr("Operator Library")}
+        ListElement {menuKey:qsTr("Data/Communication")}
 //        ListElement {menuKey:"Branson Setting"}
 
     }
@@ -306,67 +306,67 @@ Item {
                                 btn.isCheck = false
                                 creatMenu.visible = false
                                 btnBack.visible = false
-                                if (menuKey == "Create New"){
+                                if (menuKey == qsTr("Create New")){
                                     root.menuInit(0)
                                     title.text = qsTr("Create Assembly")
                                 }
-                                else if (menuKey == "Edit Existing"){
+                                else if (menuKey == qsTr("Edit Existing")){
                                     root.menuInit(1)
                                     title.text = qsTr("Edit Existing")
                                 }
-                                else if (menuKey == "Calibration"){
+                                else if (menuKey == qsTr("Calibration")){
                                     root.menuInit(4)
                                     title.text = qsTr("Calibration")
                                 }
-                                else if (menuKey == "Tool Change"){
+                                else if (menuKey == qsTr("Tool Change")){
                                     root.menuInit(5)
                                     title.text = qsTr("Tool Change")
                                 }
-                                else if (menuKey == "Advanced Maintenance"){
+                                else if (menuKey == qsTr("Advanced Maintenance")){
                                     root.menuInit(6)
                                     title.text = qsTr("Advanced Maintenance")
                                 }
-                                else if (menuKey == "Maintenance Counter"){
+                                else if (menuKey == qsTr("Maintenance Counter")){
                                     root.menuInit(7)
                                     title.text = qsTr("Maintenance Counter")
                                 }
-                                else if (menuKey == "Maintenance log"){
+                                else if (menuKey == qsTr("Maintenance log")){
                                     root.menuInit(8)
                                     title.text = qsTr("Maintenance log")
                                 }
-                                else if (menuKey == "Library") {
+                                else if (menuKey == qsTr("Library")) {
                                     root.menuInit(12)
                                     title.text = qsTr("Library")
                                 }
-                                else if (menuKey == "Version Information") {
+                                else if (menuKey == qsTr("Version Information")) {
                                     root.menuInit(13)
                                     title.text = qsTr("Version Information")
                                 }
-                                else if (menuKey == "Work Order History"){
+                                else if (menuKey == qsTr("Work Order History")){
                                     root.menuInit(9)
                                     title.text = qsTr("Work Order History")
                                 }
-                                else if (menuKey == "Statistical Trend"){
+                                else if (menuKey == qsTr("Statistical Trend")){
                                     root.menuInit(10)
                                     title.text = qsTr("Statistical Trend")
                                 }
-                                else if (menuKey == "Error/Alarm Log"){
+                                else if (menuKey == qsTr("Error/Alarm Log")){
                                     root.menuInit(11)
                                     title.text = qsTr("Error/Alarm Log")
                                 }
-                                else if (menuKey == "Permission Setting"){
+                                else if (menuKey == qsTr("Permission Setting")){
                                     root.menuInit(14)
                                     title.text = qsTr("Permission Setting")
                                 }
-                                else if (menuKey == "Weld Defaults") {
+                                else if (menuKey == qsTr("Weld Defaults")) {
                                     root.menuInit(15)
                                     title.text = qsTr("Weld Defaults")
                                 }
-                                else if (menuKey == "Operator Library"){
+                                else if (menuKey == qsTr("Operator Library")){
                                     root.menuInit(16)
                                     title.text = qsTr("Operator Library")
                                 }
-                                else if (menuKey == "Data/Communication") {
+                                else if (menuKey == qsTr("Data/Communication")) {
                                     root.menuInit(17)
                                     title.text = qsTr("Data Communication")
                                 }
@@ -418,7 +418,7 @@ Item {
                 dialog.visible = true
                 okButton.visible = false
                 helpTitle.visible = true
-                helpTitle.text = "Current Operator: " + hmiAdaptor.getCurrentOperatorId() //Jerry Wang"
+                helpTitle.text = qsTr("Current Operator: ") + hmiAdaptor.getCurrentOperatorId() //Jerry Wang"
                 personColumn.visible = true
                 background.opacity = 0.5
             }
@@ -445,7 +445,7 @@ Item {
                 background.visible = true
                 dialog.visible = true
                 helpTitle.visible = true
-                helpTitle.text = "Create Part:"
+                helpTitle.text = qsTr("Create Part:")
                 helpValue.visible = true
                 okButton.visible = true
                 background.opacity = 0.5

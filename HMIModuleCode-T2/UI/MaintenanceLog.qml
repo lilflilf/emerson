@@ -43,31 +43,6 @@ Item {
             lineColor: "#375566"
             height: 1
         }
-
-        ListModel {
-            id: testModel
-            Component.onCompleted: {
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-            }
-        }
         Item {
             id: searchArea
             property int selectNum: -2
@@ -156,7 +131,7 @@ Item {
                             font.pixelSize: 16
                             color: "white"
                             elide: Text.ElideRight
-                            text: qsTr(Type)
+                            text: Type
                         }
                         MouseArea {
                             anchors.fill: parent
@@ -349,10 +324,10 @@ Item {
 
     ListModel {
         id: headModel
-        ListElement {key:"CreatedDate"}
-        ListElement {key:"OperatorName"}
-        ListElement {key:"Type"}
-        ListElement {key:"Message"}
+        ListElement {key:qsTr("CreatedDate")}
+        ListElement {key:qsTr("OperatorName")}
+        ListElement {key:qsTr("Type")}
+        ListElement {key:qsTr("Message")}
     }
 
     Row {
