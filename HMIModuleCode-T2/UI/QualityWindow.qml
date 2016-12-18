@@ -9,10 +9,12 @@ Item {
     height: Screen.height *0.4
     property var clickType: 0
     property alias qualityModel: qualityModel
-    property alias timeModel : timeModel
-    property alias powerModel: powerModel
-    property alias preModel: preModel
-    property alias postModel: postModel
+    property var timeModel : new Array
+    property var powerModel: new Array
+    property var preModel: new Array
+    property var postModel: new Array
+    property var selectIndex: 0
+    property alias qualityListViewTwoModel: qualityListViewTwo.model
     Text {
         id: qualityWindowTitle
         text: qsTr("QualityWindow")
@@ -45,18 +47,6 @@ Item {
     }
     ListModel {
         id: qualityModel
-    }
-    ListModel {
-        id: timeModel
-    }
-    ListModel {
-        id: powerModel
-    }
-    ListModel {
-        id: preModel
-    }
-    ListModel {
-        id: postModel
     }
     ListView {
         id: qualityListView
@@ -227,16 +217,23 @@ Item {
                 anchors.fill: parent
                 onClicked: {
                     radioButton.checked = true
-                    if (index == 0)
-                        clickType = 20
-                    else if (index == 1)
-                        clickType = 40
-                    else if (index == 2)
-                        clickType = 60
-                    else if (index == 3)
-                        clickType = 80
                     qualityListViewTwo.model = 0
-                    qualityListViewTwo.model = 100
+                    if (index == 0) {
+                        selectIndex = 0
+                        qualityListViewTwo.model = timeModel.length
+                    }
+                    else if (index == 1){
+                        selectIndex = 1
+                        qualityListViewTwo.model = powerModel.length
+                    }
+                    else if (index == 2) {
+                        selectIndex = 2
+                        qualityListViewTwo.model = preModel.length
+                    }
+                    else if (index == 3) {
+                        selectIndex = 3
+                        qualityListViewTwo.model = postModel.length
+                    }
                 }
             }
         }
@@ -294,9 +291,9 @@ Item {
         orientation: Qt.Horizontal
         interactive: false
         anchors.top: qualityListView.bottom
-        anchors.topMargin: 40
+        anchors.topMargin: 45
         delegate: qualityListViewTwoDelegate
-        model: 100
+//        model: 100
         layoutDirection: Qt.RightToLeft
         anchors.right: parent.right
         anchors.rightMargin: 20
@@ -324,7 +321,25 @@ Item {
                 anchors.horizontalCenter: parent.horizontalCenter
                 color: index == 0 ? "#33FFCC" : "white" //* 8 >= qualityListViewTwo.width ? "red" : "white"
                 Component.onCompleted: {
-                    point.anchors.topMargin = hmiAdaptor.randPoint() + 80 //index + clickType
+                    var temp
+                    if (index == 0) {
+                        temp = spliceModel.getRawData("Time+") - spliceModel.getRawData("Time-")
+                        point.anchors.topMargin = timeModel[index] / temp * parent.height * 0.8 + parent.height * 0.1
+                    }
+                    else if (index == 1) {
+                        temp = spliceModel.getRawData("Power+") - spliceModel.getRawData("Power-")
+                        point.anchors.topMargin = powerModel[index] / temp * parent.height * 0.8 + parent.height * 0.1
+                    }
+                    else if (index == 2) {
+                        temp = spliceModel.getRawData("Pre-Height+") - spliceModel.getRawData("Pre-Height-")
+                        point.anchors.topMargin = preModel[index] / temp * parent.height * 0.8 + parent.height * 0.1
+                    }
+                    else if (index == 3) {
+                        temp = spliceModel.getRawData("Post-Height+") - spliceModel.getRawData("Post-Height-")
+                        point.anchors.topMargin = postModel[index] / temp * parent.height * 0.8 + parent.height * 0.1
+                    }
+
+//                    point.anchors.topMargin = parent.height/2 // hmiAdaptor.randPoint() + 80 //index + clickType
                 }
                 Text {
                     text: index == 0 ? "68" : ""

@@ -12,9 +12,9 @@ static {
 TRANSLATIONS = displayChinese_zh_CN.ts \
                displayFrench_zh_CN.ts
 
-lupdate_only{
-    SOURCES += UI/*.qml
-}
+#lupdate_only{
+#    SOURCES += UI/*.qml
+#}
 SOURCES += main.cpp \
     UI/Utility.cpp \
     Modules/Modstart.cpp \

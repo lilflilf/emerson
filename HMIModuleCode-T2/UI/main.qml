@@ -51,6 +51,7 @@ Window {
             contentLoader.source = "qrc:/UI/Operate.qml"
             break;
         case 3:
+            headBar.titleText = qsTr("Test")
             contentLoader.source = "qrc:/UI/TestSpliceLibrary.qml"
             break;
         case 4:
