@@ -7,7 +7,7 @@ Item {
     width: parent.width
     height: parent.height
     property alias inputNum: defalut.text
-    signal signalAdvanceSettingStart()
+    signal signalAdvanceSettingStart(var checkIndex)
     signal signalTestStart()
     function setData()
     {
@@ -208,7 +208,16 @@ Item {
             text: qsTr("Advanced Setting")
             textColor: "white"
             onClicked: {
-                signalAdvanceSettingStart()
+                if (diagram.state == "right") {
+                    if (standard.bIsCheck)
+                        signalAdvanceSettingStart(0)
+                    else if (auto.bIsCheck)
+                        signalAdvanceSettingStart(1)
+                    else if (sigma.bIsCheck)
+                        signalAdvanceSettingStart(1)
+                }
+                else
+                    signalAdvanceSettingStart(3)
             }
         }
         CButton {

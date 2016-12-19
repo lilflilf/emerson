@@ -8,6 +8,20 @@ Item {
     property int currentIndex: 0
     signal signalCancel()
     signal signalAdvanceOk()
+
+    function setState(checkIndex)
+    {
+        if (checkIndex == 0 || checkIndex == 1) {
+           sigmaUpperrecbg.source = ""
+           sigmaLowerrecbg.source = ""
+        }
+        else if (checkIndex == 2)
+        {
+            standardupperrecbg.source = ""
+            standardLowerrecbg.source = ""
+        }
+    }
+
     function setClickColor(index)
     {
         if (standardUpperRepeater.itemAt(index).localbordercolor === "#05f91c") {
@@ -216,6 +230,7 @@ Item {
                 width: 145
                 height: 154
                 Image {
+                    id: standardupperrecbg
                     anchors.fill: parent
                     source: "qrc:/images/images/advancesetting-bg1.png"
                 }
@@ -252,6 +267,8 @@ Item {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
+                        if (standardupperrecbg.source == "")
+                            return
                         setClickColor(advanceset.currentIndex)
                         advanceset.currentIndex = index
                         localbordercolor = "#05f91c"
@@ -284,6 +301,7 @@ Item {
                 width: 145
                 height: 154
                 Image {
+                    id: standardLowerrecbg
                     anchors.fill: parent
                     source: "qrc:/images/images/advancesetting-bg1.png"
                 }
@@ -320,6 +338,8 @@ Item {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
+                        if (standardLowerrecbg.source == "")
+                            return
                         setClickColor(advanceset.currentIndex)
                         advanceset.currentIndex = index
                         localbordercolor = "#05f91c"
@@ -352,6 +372,7 @@ Item {
                 width: 145
                 height: 154
                 Image {
+                    id: sigmaUpperrecbg
                     anchors.fill: parent
                     source: "qrc:/images/images/advancesetting-bg1.png"
                 }
@@ -388,6 +409,8 @@ Item {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
+                        if (sigmaUpperrecbg.source == "")
+                            return
                         setClickColor(advanceset.currentIndex)
                         advanceset.currentIndex = index
                         localbordercolor = "#05f91c"
@@ -421,6 +444,7 @@ Item {
                 width: 145
                 height: 154
                 Image {
+                    id: sigmaLowerrecbg
                     anchors.fill: parent
                     source: "qrc:/images/images/advancesetting-bg1.png"
                 }
@@ -457,6 +481,8 @@ Item {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
+                        if (sigmaLowerrecbg.source == "")
+                            return
                         setClickColor(advanceset.currentIndex)
                         advanceset.currentIndex = index
                         localbordercolor = "#05f91c"

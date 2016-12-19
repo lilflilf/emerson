@@ -5,7 +5,9 @@ import QtQuick.Layouts 1.0
 import QtQuick.Window 2.2
 
 Item {
+    id: testSpliceLibrary
     property int selectIndx: -1
+    property int setCheckIndex: -1
     Image {
         anchors.fill: parent
         source: "qrc:/images/images/bg.png"
@@ -21,6 +23,10 @@ Item {
             if (loader.source == "qrc:/UI/TestDetail.qml") {
                 loader.item.selectSplice(spliceModel.getValue(selectIndx,"SpliceId"))
                 alarmModel.setStartTime();
+            }
+            else if (loader.source == "qrc:/UI/AdvanceSetting.qml")
+            {
+                loader.item.setState(setCheckIndex)
             }
         }
     }
@@ -338,6 +344,7 @@ Item {
         }
 
         onSignalAdvanceSettingStart: {
+            testSpliceLibrary.setCheckIndex = checkIndex
             loader.source = "qrc:/UI/AdvanceSetting.qml"
         }
         onSignalTestStart: {

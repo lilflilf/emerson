@@ -197,6 +197,9 @@ public:
     QStringList m_idList;
     DBOperatorTable *m_operatorAdaptor;
     QMap<int, QString> *operators;
+    OperatorElement operatorElement;
+    Q_INVOKABLE void editNew(int index);
+    Q_INVOKABLE QString getStruckValue(QString key);
 
 protected:
     int rowCount(const QModelIndex &parent) const;
