@@ -312,7 +312,7 @@ Item {
             backGround.visible = true
             backGround.opacity = 0.5
             testDialog.visible = true
-            spliceModel.editNew(spliceId)
+            spliceModel.editNew(spliceModel.getValue(selectIndx,"SpliceId"))
         }
     }
     Rectangle {
@@ -331,6 +331,12 @@ Item {
         anchors.centerIn: parent
         width: 435
         height: 540
+        onVisibleChanged: {
+            if (testDialog.visible)
+                testDialog.setData()
+
+        }
+
         onSignalAdvanceSettingStart: {
             loader.source = "qrc:/UI/AdvanceSetting.qml"
         }

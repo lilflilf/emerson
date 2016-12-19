@@ -18,19 +18,18 @@ Item {
 
     function setData()
     {
+        qualityWindow.timeModel = alarmModel.getPointList("Time",spliceModel.getStructValue("SpliceName",""),spliceModel.getHashCode())
+        qualityWindow.powerModel = alarmModel.getPointList("Power",spliceModel.getStructValue("SpliceName",""),spliceModel.getHashCode())
+        qualityWindow.preModel = alarmModel.getPointList("Pre-Height",spliceModel.getStructValue("SpliceName",""),spliceModel.getHashCode())
+        qualityWindow.postModel = alarmModel.getPointList("Post-Height",spliceModel.getStructValue("SpliceName",""),spliceModel.getHashCode())
+
         qualityWindow.qualityModel.clear()
         qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Time+"),"redMin":spliceModel.getRawData("Time-"),"yellowMax":4,"yellowMin":1,"current":-1,"currentText":"23"})
         qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Power+"),"redMin":spliceModel.getRawData("Power-"),"yellowMax":4,"yellowMin":1,"current":123,"currentText":"123"})
         qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Pre-Height+"),"redMin":spliceModel.getRawData("Pre-Height-"),"yellowMax":4,"yellowMin":1,"current":2512,"currentText":"2512"})
         qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Post-Height+"),"redMin":spliceModel.getRawData("Post-Height-"),"yellowMax":4,"yellowMin":1,"current":43,"currentText":"43"})
 
-        qualityWindow.timeModel = alarmModel.getPointList("Time",spliceModel.getStructValue("SpliceName",""),spliceModel.getHashCode())
-        qualityWindow.powerModel = alarmModel.getPointList("Power",spliceModel.getStructValue("SpliceName",""),spliceModel.getHashCode())
-        qualityWindow.preModel = alarmModel.getPointList("Pre-Height",spliceModel.getStructValue("SpliceName",""),spliceModel.getHashCode())
-        qualityWindow.postModel = alarmModel.getPointList("Post-Height",spliceModel.getStructValue("SpliceName",""),spliceModel.getHashCode())
-
-        qualityWindow.qualityListViewTwoModel = 0
-        qualityWindow.qualityListViewTwoModel = qualityWindow.timeModel.length
+        qualityWindow.setData()
     }
 
     function selectSplice(spliceId)
@@ -48,7 +47,7 @@ Item {
             spliceDetailsItem.addWireFromSplice()
         }
         hmiAdaptor.setOperateProcess(spliceId,true)
-//        hmiAdaptor.operateProcessExec("Execute")
+        hmiAdaptor.operateProcessExec("Execute")
 
     }
 

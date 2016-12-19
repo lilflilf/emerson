@@ -740,8 +740,10 @@ bool HmiAdaptor::dataCommunicationSetValue(QList<bool> boolList, QStringList str
 
 void HmiAdaptor::slotWeldCycleCompleted(bool result)
 {
-    alarmModel->weldResultElement = operateProcess->CurrentWeldResult;
-    emit signalWeldCycleCompleted(result);
+    if (result) {
+        alarmModel->weldResultElement = operateProcess->CurrentWeldResult;
+        emit signalWeldCycleCompleted(result);
+    }
 }
 
 void HmiAdaptor::slotEnableDialog(BransonMessageBox &MsgBox)

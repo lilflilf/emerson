@@ -314,7 +314,7 @@ Item {
                     color: "white"
                     text: value
                     onTextChanged: {
-                        standardLowerModel.set(index,{"value":centerValue.text})
+                        standardLowerModel.set(index,{"value":centerValue2.text})
                     }
                 }
                 MouseArea {
@@ -382,7 +382,7 @@ Item {
                     color: "white"
                     text: value
                     onTextChanged: {
-                        sigmaUpperModel.set(index,{"value":centerValue.text})
+                        sigmaUpperModel.set(index,{"value":centerValue3.text})
                     }
                 }
                 MouseArea {
@@ -451,7 +451,7 @@ Item {
                     color: "white"
                     text: value
                     onTextChanged: {
-                        sigmaLowerModel.set(index,{"value":centerValue.text})
+                        sigmaLowerModel.set(index,{"value":centerValue4.text})
                     }
                 }
                 MouseArea {

@@ -29,27 +29,27 @@ Item {
     }
 
     Component.onCompleted: {
-//        hmiAdaptor.operateProcessExec("Start")
+        hmiAdaptor.operateProcessExec("Start")
     }
     Component.onDestruction: {
-//        hmiAdaptor.operateProcessExec("Stop")
+        hmiAdaptor.operateProcessExec("Stop")
     }
 
     function setData()
     {
-        qualityWindow.qualityModel.clear()
-        qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Time+"),"redMin":spliceModel.getRawData("Time-"),"yellowMax":4,"yellowMin":1,"current":6,"currentText":""})
-        qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Power+"),"redMin":spliceModel.getRawData("Power-"),"yellowMax":4,"yellowMin":1,"current":123,"currentText":""})
-        qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Pre-Height+"),"redMin":spliceModel.getRawData("Pre-Height-"),"yellowMax":4,"yellowMin":1,"current":2512,"currentText":""})
-        qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Post-Height+"),"redMin":spliceModel.getRawData("Post-Height-"),"yellowMax":4,"yellowMin":1,"current":43,"currentText":""})
 
         qualityWindow.timeModel = alarmModel.getPointList("Time",spliceModel.getStructValue("SpliceName",""),spliceModel.getHashCode())
         qualityWindow.powerModel = alarmModel.getPointList("Power",spliceModel.getStructValue("SpliceName",""),spliceModel.getHashCode())
         qualityWindow.preModel = alarmModel.getPointList("Pre-Height",spliceModel.getStructValue("SpliceName",""),spliceModel.getHashCode())
         qualityWindow.postModel = alarmModel.getPointList("Post-Height",spliceModel.getStructValue("SpliceName",""),spliceModel.getHashCode())
 
-        qualityWindow.qualityListViewTwoModel = 0
-        qualityWindow.qualityListViewTwoModel = qualityWindow.timeModel.length
+        qualityWindow.qualityModel.clear()
+        qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Time+"),"redMin":spliceModel.getRawData("Time-"),"yellowMax":4,"yellowMin":1,"current":6,"currentText":""})
+        qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Power+"),"redMin":spliceModel.getRawData("Power-"),"yellowMax":4,"yellowMin":1,"current":123,"currentText":""})
+        qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Pre-Height+"),"redMin":spliceModel.getRawData("Pre-Height-"),"yellowMax":4,"yellowMin":1,"current":2512,"currentText":""})
+        qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Post-Height+"),"redMin":spliceModel.getRawData("Post-Height-"),"yellowMax":4,"yellowMin":1,"current":43,"currentText":""})
+
+        qualityWindow.setData()
 
     }
 
@@ -68,7 +68,7 @@ Item {
             spliceDetailsItem.addWireFromSplice()
         }
         hmiAdaptor.setOperateProcess(spliceId, false)
-//        hmiAdaptor.operateProcessExec("Execute")
+        hmiAdaptor.operateProcessExec("Execute")
 
     }
 

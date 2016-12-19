@@ -732,6 +732,15 @@ QString SpliceModel::getStructValue(QString valueKey, QString valueType)
         else if (valueType == "min")
             return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_CONFRG_MS]).Minimum;
     }
+    else if (valueKey == "TestModel") {
+        return QString("%1").arg((int)presetElement.TestSetting.TestMode);
+    }
+    else if (valueKey == "TestCount") {
+        return QString("%1").arg(presetElement.TestSetting.Qutanty);
+    }
+    else if (valueKey == "TeachMode") {
+        return QString("%1").arg((int)presetElement.TestSetting.TeachModeSetting.TeachModeType);
+    }
     else
         return "";
 }
@@ -932,6 +941,15 @@ void SpliceModel::setStructValue(QString valueKey, QVariant value)
     }
     else if (valueKey == "TestSigmaPost-") {
         presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_CONFRG_MS] = stringToVariant->SigmaTeachModeToInt(value.toString());
+    }
+    else if (valueKey == "TestModel") {
+        presetElement.TestSetting.TestMode = (TESTMODE)value.toInt();
+    }
+    else if (valueKey == "TestCount") {
+        presetElement.TestSetting.Qutanty = value.toInt();
+    }
+    else if (valueKey == "TeachMode") {
+        presetElement.TestSetting.TeachModeSetting.TeachModeType = (TEACH_MODE_TYPE)value.toInt();
     }
 }
 

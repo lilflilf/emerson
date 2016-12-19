@@ -11,7 +11,32 @@ Item {
     signal signalTestStart()
     function setData()
     {
+        if (spliceModel.getStructValue("TestModel","") == "0") {
+            splices.bIsCheck = false
+            unButton.bIsCheck = true
+        }
+        else if (spliceModel.getStructValue("TestModel","") == "1")
+        {
+            unButton.bIsCheck = false
+            splices.bIsCheck = true
+            defalut.text = spliceModel.getStructValue("TestCount","")
+        }
+        if (spliceModel.getStructValue("TeachMode","") == "3") {
+            diagram.state = "left"
+        }
+        else {
+            diagram.state = "right"
+            standard.bIsCheck = false
+            auto.bIsCheck = false
+            sigma.bIsCheck = false
+            if (spliceModel.getStructValue("TeachMode","") == "0")
+                standard.bIsCheck = true
+            else if (spliceModel.getStructValue("TeachMode","") == "1")
+                auto.bIsCheck = true
+            else if (spliceModel.getStructValue("TeachMode","") == "2")
+                sigma.bIsCheck = true
 
+        }
     }
 
     signal signalInputNum(string text)
@@ -56,7 +81,7 @@ Item {
             clip: true
             buttontext: qsTr("Unconstrained")
             exclusiveGroup: mos
-            bIsCheck: true
+//            bIsCheck: true
         }
         MyRadioButton {
             id: splices
@@ -197,6 +222,24 @@ Item {
             text: qsTr("Start")
             textColor: "white"
             onClicked: {
+                if (unButton.bIsCheck)
+                    spliceModel.setStructValue("TestModel",0)
+                else if (splices.bIsCheck) {
+                    spliceModel.setStructValue("TestModel",1)
+                    spliceModel.setStructValue("TestCount",defalut.text)
+                }
+                if(diagram.state == "left")
+                    spliceModel.setStructValue("TeachMode",3)
+                else if (diagram.state == "right") {
+                    if (standard.bIsCheck)
+                        spliceModel.setStructValue("TeachMode",0)
+                    else if (auto.bIsCheck)
+                        spliceModel.setStructValue("TeachMode",1)
+                    else if (sigma.bIsCheck)
+                        spliceModel.setStructValue("TeachMode",2)
+                }
+                spliceModel.saveSplice(true)
+
                 signalTestStart()
             }
         }
