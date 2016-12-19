@@ -16,6 +16,7 @@ enum TipsScreenMode{
     OKOnly      = 0x00, //only show Okay button
     OKCancel    = 0x01, //show Okay and cancel buttons
     RESETCancel = 0x02, //show Reset and cancel buttons
+    ACCEPTReject = 0x04, //show Accept and Reject buttons
     Critical    = 0x10, //show Error sign
     Exclamation = 0x20, //show Warning sign
     Information = 0x40, //show Information sign
