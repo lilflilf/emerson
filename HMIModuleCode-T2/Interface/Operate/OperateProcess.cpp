@@ -80,6 +80,8 @@ void OperateProcess::UpdateWeldResult()
     CurrentWeldResult.ActualResult.ActualPressure = _M102IA->IAactual.Pressure;
     CurrentWeldResult.ActualResult.ActualTPressure = _M102IA->IAactual.TPressure;
     CurrentWeldResult.ActualResult.ActualAlarmflags = _M102IA->IAactual.Alarmflags;
+    if(CurrentSplice.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode == STEPDISABLE)
+        CurrentWeldResult.ActualResult.ActualAmplitude2 == -1;
 
     CurrentWeldResult.OperatorName = _Interface->CurrentOperator.OperatorName;
     CurrentWeldResult.CurrentWorkOrder.WorkOrderID
@@ -96,7 +98,6 @@ void OperateProcess::UpdateWeldResult()
     CurrentWeldResult.SampleRatio = _Interface->StatusData.GraphSampleRatio;
     CurrentWeldResult.PostHeightGraph.clear();
     CurrentWeldResult.PowerGraph.clear();
-
 }
 
 bool OperateProcess::PowerGraphReceive()
@@ -141,6 +142,13 @@ bool OperateProcess::HeightGraphReceive()
         bResult = false;
     }
     return bResult;
+}
+
+void OperateProcess::AcceptWeldResult(void* _obj)
+{
+    OperateProcess* _ObjectPtr = (OperateProcess*)_obj;
+    M10runMode* _M10runMode = M10runMode::Instance();
+    _M10runMode->CalculateTeachMode(&_ObjectPtr->CurrentSplice);
 }
 
 void OperateProcess::WeldCycleDaemonThread(void* _obj)
@@ -220,11 +228,38 @@ void OperateProcess::WeldCycleDaemonThread(void* _obj)
 //        //3. Update Maintenance Count
 //        _M10runMode->UpdateMaintenanceData();
         //4. Alarm handle
-        _M10runMode->CheckWeldData();
-        //5. Shrink Tube
-        //6. Remote Data sending
+        _M10runMode->CheckWeldData(iResult);
+        //5. Teach Mode
+        if(_ObjectPtr->CurrentNecessaryInfo.IsTestProcess == true)
+        {
+            struct BransonMessageBox tmpMsgBox;
+            switch(_ObjectPtr->CurrentSplice.TestSetting.TeachModeSetting.TeachModeType)
+            {
+            case STANDARD:
+            case SIGMA:
+                tmpMsgBox.MsgTitle = QObject::tr("Teach Mode - Standard");
+                tmpMsgBox.MsgPrompt = QObject::tr("Please hit the button to start next.");
+                tmpMsgBox.TipsMode = Information | ACCEPTReject;
+                tmpMsgBox.func_ptr = OperateProcess::AcceptWeldResult;
+                tmpMsgBox._Object = _ObjectPtr;
+                _Interface->cMsgBox(&tmpMsgBox);
+                break;
+            case AUTO:
+                _M10runMode->CalculateTeachMode(&_ObjectPtr->CurrentSplice);
+                break;
+            case UNDEFINED:
+                break;
+            default:
+                break;
+            }
+
+        }
+
+        //6. Shrink Tube
+        //7. Remote Data sending
         _Statistics->HistoryEvent(_ObjectPtr->CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderName,
                 _ObjectPtr->CurrentNecessaryInfo.CurrentPart.PartName, &_ObjectPtr->CurrentWeldResult, &_ObjectPtr->CurrentSplice);
+
         emit _ObjectPtr->WeldCycleCompleted(&_ObjectPtr->WeldCycleStatus);
     }
 }
@@ -449,4 +484,10 @@ void OperateProcess::ControlLimitProcess(QUALITYTYPE Type, QList<int> &RawList,
         *LCL = LowerControlValue / _Utility->txtData[DINActHgt].Factor;
         break;
     }
+}
+
+void OperateProcess::StopTeachMode()
+{
+    Statistics *_Statistics = Statistics::Instance();
+    _Statistics->GetLimitsAfterWeld(&CurrentSplice);
 }

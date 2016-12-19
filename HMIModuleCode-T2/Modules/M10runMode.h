@@ -5,6 +5,7 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "m10definitions.h"
+#include "Interface/PresetElement.h"
 using namespace std;
 #define MAX_CYCLE_COUNTER               65000
 #define MAX_HOSTNAME_LEN                132
@@ -92,10 +93,12 @@ public:
 
     void CheckWeldData(int weldresult = -1);
 
+    void CalculateTeachMode(PresetElement* _Splice);
+
     void SafetyAlertMsg();
     void FootPedalMsg();
     void Run_E_Stop_Screen();
-    void Update_Counter();
+
     void Save_Data_Events();
     void CycleAbortMsg();
 
@@ -112,6 +115,7 @@ private:
     void RestartSeqOnAlarm();
     void TeachModeProcess();
     bool CheckForOverLoad(bool ShowAlarm);
+    void Update_Counter();
 
 public:
     static M10runMode* Instance();
