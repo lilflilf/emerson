@@ -604,6 +604,134 @@ QString SpliceModel::getStructValue(QString valueKey, QString valueType)
     else if (valueKey == "Cross Section") {
         return variantToString->CrossSectionToString(presetElement.CrossSection);
     }
+    else if (valueKey == "TestStandardTime+") {
+        if (valueType == "current")
+            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_PLRG]).Current;
+        else if (valueType == "max")
+            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_PLRG]).Maximum;
+        else if (valueType == "min")
+            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_PLRG]).Minimum;
+    }
+    else if (valueKey == "TestStandardTime-") {
+        if (valueType == "current")
+            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_MSRG]).Current;
+        else if (valueType == "max")
+            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_MSRG]).Maximum;
+        else if (valueType == "min")
+            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_MSRG]).Minimum;
+    }
+    else if (valueKey == "TestStandardPower+") {
+        if (valueType == "current")
+            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_PLRG]).Current;
+        else if (valueType == "max")
+            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_PLRG]).Maximum;
+        else if (valueType == "min")
+            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_PLRG]).Minimum;
+    }
+    else if (valueKey == "TestStandardPower-") {
+        if (valueType == "current")
+            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_MSRG]).Current;
+        else if (valueType == "max")
+            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_MSRG]).Maximum;
+        else if (valueType == "min")
+            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_MSRG]).Minimum;
+    }
+    else if (valueKey == "TestStandardPre+") {
+        if (valueType == "current")
+            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_PLRG]).Current;
+        else if (valueType == "max")
+            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_PLRG]).Maximum;
+        else if (valueType == "min")
+            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_PLRG]).Minimum;
+    }
+    else if (valueKey == "TestStandardPre-") {
+        if (valueType == "current")
+            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_MSRG]).Current;
+        else if (valueType == "max")
+            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_MSRG]).Maximum;
+        else if (valueType == "min")
+            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_MSRG]).Minimum;
+    }
+    else if (valueKey == "TestStandardPost+") {
+        if (valueType == "current")
+            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_PLRG]).Current;
+        else if (valueType == "max")
+            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_PLRG]).Maximum;
+        else if (valueType == "min")
+            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_PLRG]).Minimum;
+    }
+    else if (valueKey == "TestStandardPost-") {
+        if (valueType == "current")
+            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_MSRG]).Current;
+        else if (valueType == "max")
+            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_MSRG]).Maximum;
+        else if (valueType == "min")
+            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_MSRG]).Minimum;
+    }
+    else if (valueKey == "TestSigmaTime+") {
+        if (valueType == "current")
+            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_CONFRG_PL]).Current;
+        else if (valueType == "max")
+            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_CONFRG_PL]).Maximum;
+        else if (valueType == "min")
+            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_CONFRG_PL]).Minimum;
+    }
+    else if (valueKey == "TestSigmaTime-") {
+        if (valueType == "current")
+            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_CONFRG_MS]).Current;
+        else if (valueType == "max")
+            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_CONFRG_MS]).Maximum;
+        else if (valueType == "min")
+            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_CONFRG_MS]).Minimum;
+    }
+    else if (valueKey == "TestSigmaPower+") {
+        if (valueType == "current")
+            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_CONFRG_PL]).Current;
+        else if (valueType == "max")
+            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_CONFRG_PL]).Maximum;
+        else if (valueType == "min")
+            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_CONFRG_PL]).Minimum;
+    }
+    else if (valueKey == "TestSigmaPower-") {
+        if (valueType == "current")
+            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_CONFRG_MS]).Current;
+        else if (valueType == "max")
+            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_CONFRG_MS]).Maximum;
+        else if (valueType == "min")
+            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_CONFRG_MS]).Minimum;
+    }
+    else if (valueKey == "TestSigmaPre+") {
+        if (valueType == "current")
+            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_CONFRG_PL]).Current;
+        else if (valueType == "max")
+            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_CONFRG_PL]).Maximum;
+        else if (valueType == "min")
+            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_CONFRG_PL]).Minimum;
+    }
+    else if (valueKey == "TestSigmaPre-") {
+        if (valueType == "current")
+            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_CONFRG_MS]).Current;
+        else if (valueType == "max")
+            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_CONFRG_MS]).Maximum;
+        else if (valueType == "min")
+            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_CONFRG_MS]).Minimum;
+    }
+    else if (valueKey == "TestSigmaPost+") {
+        if (valueType == "current")
+            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_CONFRG_PL]).Current;
+        else if (valueType == "max")
+            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_CONFRG_PL]).Maximum;
+        else if (valueType == "min")
+            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_CONFRG_PL]).Minimum;
+    }
+    else if (valueKey == "TestSigmaPost-") {
+        if (valueType == "current")
+            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_CONFRG_MS]).Current;
+        else if (valueType == "max")
+            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_CONFRG_MS]).Maximum;
+        else if (valueType == "min")
+            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_CONFRG_MS]).Minimum;
+    }
     else
         return "";
 }
@@ -756,6 +884,54 @@ void SpliceModel::setStructValue(QString valueKey, QVariant value)
     }
     else if (valueKey == "PicPath") {
         presetElement.PresetPicNamePath = value.toString();
+    }
+    else if (valueKey == "TestStandardTime+") {
+        presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_PLRG] = stringToVariant->PercentTeachModeToInt(value.toString());
+    }
+    else if (valueKey == "TestStandardPower+") {
+        presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_PLRG] = stringToVariant->PercentTeachModeToInt(value.toString());
+    }
+    else if (valueKey == "TestStandardPre+") {
+        presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_PLRG] = stringToVariant->PercentTeachModeToInt(value.toString());
+    }
+    else if (valueKey == "TestStandardPost+") {
+        presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_PLRG] = stringToVariant->PercentTeachModeToInt(value.toString());
+    }
+    else if (valueKey == "TestStandardTime-") {
+        presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_MSRG] = stringToVariant->PercentTeachModeToInt(value.toString());
+    }
+    else if (valueKey == "TestStandardPower-") {
+        presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_MSRG] = stringToVariant->PercentTeachModeToInt(value.toString());
+    }
+    else if (valueKey == "TestStandardPre-") {
+        presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_MSRG] = stringToVariant->PercentTeachModeToInt(value.toString());
+    }
+    else if (valueKey == "TestStandardPost-") {
+        presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_MSRG] = stringToVariant->PercentTeachModeToInt(value.toString());
+    }
+    else if (valueKey == "TestSigmaTime+") {
+        presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_CONFRG_PL] = stringToVariant->SigmaTeachModeToInt(value.toString());
+    }
+    else if (valueKey == "TestSigmaPower+") {
+        presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_CONFRG_PL] = stringToVariant->SigmaTeachModeToInt(value.toString());
+    }
+    else if (valueKey == "TestSigmaPre+") {
+        presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_CONFRG_PL] = stringToVariant->SigmaTeachModeToInt(value.toString());
+    }
+    else if (valueKey == "TestSigmaPost+") {
+        presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_CONFRG_PL] = stringToVariant->SigmaTeachModeToInt(value.toString());
+    }
+    else if (valueKey == "TestSigmaTime-") {
+        presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_CONFRG_MS] = stringToVariant->SigmaTeachModeToInt(value.toString());
+    }
+    else if (valueKey == "TestSigmaPower-") {
+        presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_CONFRG_MS] = stringToVariant->SigmaTeachModeToInt(value.toString());
+    }
+    else if (valueKey == "TestSigmaPre-") {
+        presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_CONFRG_MS] = stringToVariant->SigmaTeachModeToInt(value.toString());
+    }
+    else if (valueKey == "TestSigmaPost-") {
+        presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_CONFRG_MS] = stringToVariant->SigmaTeachModeToInt(value.toString());
     }
 }
 

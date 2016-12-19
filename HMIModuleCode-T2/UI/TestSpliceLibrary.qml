@@ -312,6 +312,7 @@ Item {
             backGround.visible = true
             backGround.opacity = 0.5
             testDialog.visible = true
+            spliceModel.editNew(spliceId)
         }
     }
     Rectangle {

@@ -89,7 +89,7 @@ Item {
 
                     Text {
                         id: lineValue
-                        text: current //qsTr("170")
+                        text: currentText //qsTr("170")
                         font.family: "arial"
                         color: "white"
                         font.pointSize: 16

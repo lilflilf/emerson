@@ -67,7 +67,7 @@ Item {
             wireModel.addFromLibrary(list[i])
             spliceDetailsItem.addWireFromSplice()
         }
-        hmiAdaptor.setOperateProcess(spliceId)
+        hmiAdaptor.setOperateProcess(spliceId, false)
 //        hmiAdaptor.operateProcessExec("Execute")
 
     }

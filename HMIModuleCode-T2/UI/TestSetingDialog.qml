@@ -8,6 +8,12 @@ Item {
     height: parent.height
     signal signalAdvanceSettingStart()
     signal signalTestStart()
+
+    function setData()
+    {
+
+    }
+
     Image {
         anchors.fill: parent
         source: "qrc:/images/images/dialogbg.png"

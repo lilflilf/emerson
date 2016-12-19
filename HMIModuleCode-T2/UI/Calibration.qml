@@ -10,12 +10,12 @@ Item {
     height: Screen.height*0.6
     property var currentIndex: 1
 
-//    Component.onCompleted: {
-//        hmiAdaptor.maintenanceStart(0);
-//    }
-//    Component.onDestruction: {
-//        hmiAdaptor.maintenanceStop(0);
-//    }
+    Component.onCompleted: {
+        hmiAdaptor.maintenanceStart(0);
+    }
+    Component.onDestruction: {
+        hmiAdaptor.maintenanceStop(0);
+    }
 
     Connections {
         target: hmiAdaptor
@@ -109,7 +109,7 @@ Item {
                 text: qsTr("Start")
                 onClicked: {
                     if (calibration.currentIndex == 1) {
-                        //hmiAdaptor.calibrationMaintenanceExecute(hmiAdaptor.WIDTH_CALIBRATE)
+                        hmiAdaptor.calibrationMaintenanceExecute(hmiAdaptor.WIDTH_CALIBRATE)
                         button1.enabled = false
                         animated.visible = true
                     }
