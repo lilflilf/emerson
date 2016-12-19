@@ -10,13 +10,9 @@
 #include "Interface/PresetElement.h"
 using namespace std;
 
-const int M20_Stat_Points = 128;  //The number of data points in the file
-const int M20_Data_Points = 128;  //The number of data points on the screen
-const int M20_Data_Pnt_MI = M20_Data_Points;    //Max Index for data
-
-const long QualGoodColor = 0xC000;
-const long QualSLbadColor = 0xFFFF;
-const long QualBadColor = 0x00FF;
+#define M20_Stat_Points  128  //The number of data points in the file
+#define M20_Data_Points  128  //The number of data points on the screen
+#define M20_Data_Pnt_MI  M20_Data_Points    //Max Index for data
 
 #define iOverLoadFault  0x01
 #define iTimeFault      0x20
@@ -24,6 +20,7 @@ const long QualBadColor = 0x00FF;
 #define iHeightFault    0x80
 #define iWidthFault     0x800
 #define iAlarms         (iOverLoadFault | iTimeFault | iPowerFault | iHeightFault | iWidthFault)
+
 enum SoftLimitStatusType{
     SLSTSoftLimitOFF,
     SLSTSoftLimitON,
@@ -148,15 +145,17 @@ public:
 private:
     QString HeaderString();
     QString GraphData(enum ScreenShowDataType DataType, QList<int> *_GraphData);
-    void RotateIn(StatStats SumStats, string DataEvent, int NewData);
+    void RotateIn(StatStats SumStats, int& DataEvent, int NewData);
+    void RotateOut(StatStats SumStats, int OldData);
 public:
     void UpdateSoftLimitData(bool ShowResults = true);
-    void RotateOut(StatStats SumStats, int OldData);
+
     void UpdateSpliceStatStats();
     void EnterM20DataEvent();
     void ZeroM20DataEvents();
     void UpdateCounter();
-    void CalcConfLimits();
+    void CalcConfLimits(PresetElement*);
+    void GetLimitsAfterWeld(PresetElement*);
     void start_data_structures();
     void Open_Maint_Log();
     void HistoryEvent(QString WorkOrderName, QString PartName,

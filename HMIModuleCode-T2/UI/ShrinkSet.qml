@@ -63,7 +63,7 @@ Item {
             inputWidth: 375
             inputColor: "white"
             inputHeight: 60
-            inputText: " " //shrinkModel.get(selectIndx).shrinkid
+            inputText: " "
             Image {
                 id: selectImage
                 anchors.verticalCenter: parent.verticalCenter
@@ -110,7 +110,7 @@ Item {
             inputWidth: 375
             inputColor: "white"
             inputHeight: 60
-            inputText: " " //shrinkModel.get(selectIndx).temperature
+            inputText: " "
         }
         Text {
             id: timeText
@@ -139,7 +139,7 @@ Item {
             inputHeight: 60
             inputColor: "white"
             horizontalAlignment: Qt.AlignHCenter
-            inputText: " " //shrinkModel.get(selectIndx).times
+            inputText: " "
         }
         CButton {
             anchors.right: sure.left

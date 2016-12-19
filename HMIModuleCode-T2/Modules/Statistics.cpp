@@ -4,6 +4,7 @@
 #include "M10INI.h"
 #include "M102IA.h"
 #include "M10runMode.h"
+#include "SaveReplace.h"
 #include "Interface/Interface.h"
 #include "UtilityClass.h"
 #include "QDateTime"
@@ -20,6 +21,7 @@ Statistics::Statistics()
 {
 
 }
+
 void Statistics::UpdateSoftLimitData(bool ShowResults)
 {
     int SampleSize, PartCount, DataCount;
@@ -156,15 +158,18 @@ void Statistics::UpdateSoftLimitData(bool ShowResults)
     }             //SLindexer
 }
 
-//void Statistics::RotateOut(StatStats SumStats, int OldData)
-//{
+void Statistics::RotateOut(StatStats SumStats, int OldData)
+{
+    SumStats.Sum = SumStats.Sum - OldData;
+    SumStats.Sum_sqr = SumStats.Sum_sqr - (OldData * OldData);
+}
 
-//}
-
-//void Statistics::RotateIn(StatStats SumStats, string DataEvent, int NewData)
-//{
-
-//}
+void Statistics::RotateIn(StatStats SumStats, int& DataEvent, int NewData)
+{
+    DataEvent = NewData;
+    SumStats.Sum = SumStats.Sum + NewData;
+    SumStats.Sum_sqr = SumStats.Sum_sqr + (NewData * NewData);
+}
 
 void Statistics::UpdateSpliceStatStats()
 {
@@ -173,7 +178,28 @@ void Statistics::UpdateSpliceStatStats()
 
 void Statistics::EnterM20DataEvent()
 {
+    int ptr;
+    M102IA *_M102IA = M102IA::Instance();
+    M2010 *_M2010 = M2010::Instance();
+    ptr = Splice_Stat.data_ptr;
+    if (Splice_Stat.prts_count > M20_Stat_Points)
+    {
+       RotateOut(Splice_Stat.Time, Splice_Stat.TimeData.Data[ptr]);
+       RotateOut(Splice_Stat.Power, Splice_Stat.PowerData.Data[ptr]);
+       RotateOut(Splice_Stat.Pre_hght, Splice_Stat.PreHghtData.Data[ptr]);
+       RotateOut(Splice_Stat.Height, Splice_Stat.HeightData.Data[ptr]);
+    }
 
+    RotateIn(Splice_Stat.Time, Splice_Stat.TimeData.Data[ptr], _M102IA->IAactual.Time);
+    RotateIn(Splice_Stat.Power, Splice_Stat.PowerData.Data[ptr], _M102IA->IAactual.Power);
+    RotateIn(Splice_Stat.Pre_hght, Splice_Stat.PreHghtData.Data[ptr], _M102IA->IAactual.Preheight);
+    RotateIn(Splice_Stat.Height, Splice_Stat.HeightData.Data[ptr], _M102IA->IAactual.Height);
+
+    Splice_Stat.prts_count = Splice_Stat.prts_count + 1;
+    Splice_Stat.data_ptr = _M2010->IncPtrCircular(Splice_Stat.data_ptr, M20_Data_Pnt_MI);
+    //Cannot allow counter to go negative
+    //It also must be set to a high number to keep the count tests to display the correct data
+    if (Splice_Stat.prts_count > 32760) Splice_Stat.prts_count = 1000;
 }
 
 void Statistics::ZeroM20DataEvents()
@@ -199,12 +225,7 @@ void Statistics::ZeroM20DataEvents()
 
 void Statistics::UpdateCounter()
 {
-
-}
-
-void Statistics::CalcConfLimits()
-{
-
+    EnterM20DataEvent();
 }
 
 void Statistics::start_data_structures()
@@ -382,7 +403,120 @@ void Statistics::HistoryEvent(QString WorkOrderName, QString PartName,
     QString sRecord = sEvent + "\t" + sGraph + "\r\n";
 }
 
-//string Statistics::HeaderString()
-//{
+void Statistics::CalcConfLimits(PresetElement *_Splice)
+{
+    UtilityClass *_Utility = UtilityClass::Instance();
+    int entries;
+    double time_sigma, power_sigma, pre_hght_sigma, height_sigma;
+    double time_x_bar, power_x_bar, pre_hght_x_bar, height_x_bar;
+    if(Splice_Stat.prts_count > M20_Stat_Points)
+        entries = M20_Stat_Points;
+    else
+        entries = Splice_Stat.prts_count;
 
-//}
+    //average of weld results so far
+    time_x_bar = Splice_Stat.Time.Sum/entries;
+    power_x_bar = Splice_Stat.Power.Sum/entries;
+    pre_hght_x_bar = Splice_Stat.Pre_hght.Sum/entries;
+    height_x_bar = Splice_Stat.Height.Sum/entries;
+
+    if(Splice_Stat.prts_count == TEACH_AUTO_THRESHOLD)
+    {
+        Time_Average = time_x_bar;
+        Power_Average = power_x_bar;
+        PreHeight_Avreage = pre_hght_x_bar;
+        Height_Average = height_x_bar;
+    }
+    switch(_Splice->TestSetting.TeachModeSetting.TeachModeType)
+    {
+    case SIGMA:
+        if(entries < MIN_STATS_QUANT)
+        {
+            time_lower_limit = 0.5 * time_x_bar;
+            time_upper_limit = 1.5 * time_x_bar;
+            power_lower_limit = 0.5 * power_x_bar;
+            power_upper_limit = 1.5 * power_x_bar;
+            pre_hght_lower_limit = 0.5 * pre_hght_x_bar;
+            pre_hght_upper_limit = 1.5 * pre_hght_x_bar;
+            height_lower_limit = 0.5 * height_x_bar;
+            height_upper_limit = 1.5 * height_x_bar;
+        }
+        else
+        {
+            power_sigma = (Splice_Stat.Power.Sum_sqr - Splice_Stat.Power.Sum *
+                           Splice_Stat.Power.Sum / entries) / (entries - 1);
+            if(power_sigma < 0) power_sigma = power_sigma * (-1);
+            power_sigma = sqrt(power_sigma);
+
+            time_sigma = (Splice_Stat.Time.Sum_sqr - Splice_Stat.Time.Sum *
+                    Splice_Stat.Time.Sum / entries) / (entries - 1);
+            if(time_sigma < 0) time_sigma = time_sigma * (-1);
+            time_sigma = sqrt(time_sigma);    //find square root
+
+            pre_hght_sigma = (Splice_Stat.Pre_hght.Sum_sqr - Splice_Stat.Pre_hght.Sum *
+                    Splice_Stat.Pre_hght.Sum / entries) / (entries - 1);
+            if(pre_hght_sigma < 0) pre_hght_sigma = pre_hght_sigma * (-1);
+            pre_hght_sigma = sqrt(pre_hght_sigma);
+
+            height_sigma = (Splice_Stat.Height.Sum_sqr - Splice_Stat.Height.Sum *
+                    Splice_Stat.Height.Sum / entries) / (entries - 1);
+            if(height_sigma < 0) height_sigma = height_sigma * (-1);
+            height_sigma = sqrt(height_sigma);
+            time_lower_limit = time_x_bar - _Splice->TestSetting.TeachModeSetting.TeachModequal_Window[TIME_CONFRG_MS] * time_sigma;
+            time_upper_limit = time_x_bar + _Splice->TestSetting.TeachModeSetting.TeachModequal_Window[TIME_CONFRG_PL] * time_sigma;
+            power_lower_limit = power_x_bar - _Splice->TestSetting.TeachModeSetting.TeachModequal_Window[POWER_CONFRG_MS] * power_sigma;
+            power_upper_limit = power_x_bar + _Splice->TestSetting.TeachModeSetting.TeachModequal_Window[POWER_CONFRG_PL] * power_sigma;
+            pre_hght_lower_limit = pre_hght_x_bar - _Splice->TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_CONFRG_MS] * pre_hght_sigma;
+            pre_hght_upper_limit = pre_hght_x_bar + _Splice->TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_CONFRG_PL] * pre_hght_sigma;
+            height_lower_limit = height_x_bar - _Splice->TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_CONFRG_MS] * height_sigma;
+            height_upper_limit = height_x_bar + _Splice->TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_CONFRG_PL] * height_sigma;
+        }
+        break;
+    case AUTO:
+    case STANDARD:
+        time_lower_limit = time_x_bar * (1 - (_Splice->TestSetting.TeachModeSetting.TeachModequal_Window[TIME_MSRG] * 0.01));
+        time_upper_limit = time_x_bar * (1 + (_Splice->TestSetting.TeachModeSetting.TeachModequal_Window[TIME_PLRG] * 0.01));
+        power_lower_limit = power_x_bar * (1 - (_Splice->TestSetting.TeachModeSetting.TeachModequal_Window[POWER_MSRG] * 0.01));
+        power_upper_limit = power_x_bar * (1 + (_Splice->TestSetting.TeachModeSetting.TeachModequal_Window[POWER_PLRG] * 0.01));
+        pre_hght_lower_limit = pre_hght_x_bar * (1 - (_Splice->TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_MSRG] * 0.01));
+        pre_hght_upper_limit = pre_hght_x_bar * (1 + (_Splice->TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_PLRG] * 0.01));
+        height_lower_limit = height_x_bar * (1 - (_Splice->TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_MSRG] * 0.01));
+        height_upper_limit = height_x_bar * (1 + (_Splice->TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_PLRG] * 0.01));
+        break;
+    }
+    if (time_lower_limit < 0) time_lower_limit = MINTIME;
+    if (time_upper_limit > (MAXTIME / 2)) time_lower_limit = MAXTIME / 2;
+    if (power_lower_limit < 0) power_lower_limit = 0;
+    if (power_upper_limit > _Utility->Maxpower) power_upper_limit = _Utility->Maxpower;
+    if (pre_hght_lower_limit < 0) pre_hght_lower_limit = MINPREHEIGHT;
+    if (pre_hght_upper_limit > MAXPREHEIGHT) pre_hght_upper_limit = MAXPREHEIGHT;
+    if (height_lower_limit < 0) height_lower_limit = MINHEIGHT;
+    if (height_upper_limit > MAXHEIGHT) height_upper_limit = MAXHEIGHT;
+}
+
+void Statistics::GetLimitsAfterWeld(PresetElement *_Splice)
+{
+    power_lower_limit = Power_Average * 0.9;
+    power_upper_limit = Power_Average * 1.1;
+    pre_hght_lower_limit = PreHeight_Avreage * 0.9;
+    pre_hght_upper_limit = PreHeight_Avreage * 1.1;
+    if(_Splice->WeldSettings.AdvanceSetting.WeldMode != TIME)
+    {
+        time_lower_limit = Time_Average * 0.9;               //down by ten percent
+        time_upper_limit = Time_Average * 1.1;               //up by ten percent
+        _Splice->WeldSettings.QualitySetting.Time.Minus = 2 * int(time_lower_limit);
+        _Splice->WeldSettings.QualitySetting.Time.Plus = 2 * int(time_upper_limit);
+    }
+   _Splice->WeldSettings.QualitySetting.Power.Minus = int(power_lower_limit);
+   _Splice->WeldSettings.QualitySetting.Power.Plus = int(power_upper_limit);
+   _Splice->WeldSettings.QualitySetting.Preheight.Minus = int(pre_hght_lower_limit);
+   _Splice->WeldSettings.QualitySetting.Preheight.Plus = int(pre_hght_upper_limit);
+   if((_Splice->WeldSettings.AdvanceSetting.WeldMode != HEIGHT) &&
+       (_Splice->WeldSettings.AdvanceSetting.WeldMode != ENERGYWITHHEIGHT))
+   {
+      height_lower_limit = Height_Average * 0.9;
+      height_upper_limit = Height_Average * 1.1;
+      _Splice->WeldSettings.QualitySetting.Height.Minus = int(height_lower_limit);
+      _Splice->WeldSettings.QualitySetting.Height.Plus = int(height_upper_limit);
+   }
+}

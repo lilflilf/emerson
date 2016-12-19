@@ -68,30 +68,6 @@ Item {
             lineColor: "#375566"
         }
 
-        ListModel {
-            id: testModel
-            Component.onCompleted: {
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-            }
-        }
         Item {
             id: searchArea
             property int selectNum: -2
@@ -179,7 +155,7 @@ Item {
                             font.pixelSize: 16
                             color: "white"
                             elide: Text.ElideRight
-                            text: qsTr(Alarm/ErrorType)
+                            text: Alarm/ErrorType
                         }
                         MouseArea {
                             anchors.fill: parent
@@ -478,11 +454,11 @@ Item {
 
     ListModel {
         id: alarmTitleModel
-        ListElement {title:"CreatedDate"}
-        ListElement {title:"Alarm/ErrorType"}
-        ListElement {title:"Alarm/ErrorLevel"}
-        ListElement {title:"Message"}
-        ListElement {title:"SpliceName"}
+        ListElement {title:qsTr("CreatedDate")}
+        ListElement {title:qsTr("Alarm/ErrorType")}
+        ListElement {title:qsTr("Alarm/ErrorLevel")}
+        ListElement {title:qsTr("Message")}
+        ListElement {title:qsTr("SpliceName")}
     }
     Row {
         id: headTitle
@@ -502,7 +478,7 @@ Item {
                 font.pixelSize: 25
                 color: "white"
                 clip: true
-                text: qsTr(title)
+                text: title
             }
         }
     }

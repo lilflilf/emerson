@@ -465,8 +465,7 @@ Item {
             width: 375
             height: 60
             clip: true
-            text: dialog.bIsEdit ? workOrderModel.getWorkOrderValue(selectIndx, "middle") : "SELECT PART" //workOrderModel.get(selectIndx).middle : qsTr("SELECT PART")
-            textColor: "white"
+            text: dialog.bIsEdit ? workOrderModel.getWorkOrderValue(selectIndx, "middle") : qsTr("SELECT PART")
             onClicked: {
                 addExit.visible = true
             }
@@ -495,12 +494,11 @@ Item {
             width: 375
             height: 60
             inputWidth: 375
-            inputText: dialog.bIsEdit ? workOrderModel.getWorkOrderValue( selectIndx, "count") : "" //.get(selectIndx).count : ""
+            inputText: dialog.bIsEdit ? workOrderModel.getWorkOrderValue( selectIndx, "count") : ""
             onInputFocusChanged: {
                 if (inputquantity.inputFocus) {
                     keyNum.visible = true
                     keyNum.titleText = quantity.text
-                    console.log("11111111111111111111",selectIndx,workOrderModel.getWorkOrderValue( selectIndx, "count"))
                     keyNum.currentValue = workOrderModel.getWorkOrderValue( selectIndx, "count")
                     keyNum.minvalue = "1"
                     keyNum.maxvalue = "20"
@@ -523,7 +521,7 @@ Item {
                 dialog.visible = false
                 dialog.bIsEdit = false
                 if (!dialog.bIsEdit) {
-                    selectPart.text = "SELECT PART"
+                    selectPart.text = qsTr("SELECT PART")
                 }
             }
         }
@@ -546,7 +544,7 @@ Item {
                     workOrderModel.updateRecordIntoTable(workOrderModel.getWorkOrderValue(selectIndx, "workOrderId"),dialog.oldWorkOrderName, inputworkId.inputText,selectPart.partId,selectPart.text, inputquantity.inputText )
                 else {
                     workOrderModel.insertRecordIntoTable(inputworkId.inputText,selectPart.partId,selectPart.text,inputquantity.inputText)
-                    selectPart.text = "SELECT PART"
+                    selectPart.text = qsTr("SELECT PART")
                 }
                 dialog.bIsEdit = false
             }
@@ -556,19 +554,17 @@ Item {
     AddExistingSpliceWire {
         id: addExit
         anchors.centerIn: parent
-//        width: Screen.width*0.7
-//        height: Screen.height*0.6
         width: parent.width*0.9
         height: parent.width*0.4
 
         visible: false
-        listModel: partModel //testModel
+        listModel: partModel
         titleName: qsTr("ADD WORK ORDEAR")
         componentName: qsTr("PART NAME")
         componentData: qsTr("DATE CREATED")
         componentMiddle: qsTr("# OF SPLICE")
         componenttype: qsTr("CROSS SECTION")
-        componentCount: qsTr("")
+        componentCount: ""
         bIsOnlyOne: true
         onSignalAddExistCancel : {
             addExit.visible = false
@@ -585,7 +581,7 @@ Item {
         width: 962
         height: 526
         visible: false
-        titleText: qsTr("")
+        titleText: ""
         maxvalue: "4"
         minvalue: "1"
         currentValue: "4"

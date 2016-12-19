@@ -49,7 +49,7 @@ Item {
             anchors.bottomMargin: 20
             anchors.left: parent.left
             anchors.leftMargin: 20
-            text: "IMPORT"
+            text: qsTr("IMPORT")
 
         }
 
@@ -61,7 +61,6 @@ Item {
             anchors.leftMargin: 2
             height: 50*3+4
             width: parent.width-4
-//            spacing: 2
             CButton {
                 id: part
                 width: column.width

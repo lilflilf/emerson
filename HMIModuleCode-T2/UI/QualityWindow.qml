@@ -110,7 +110,7 @@ Item {
                     width: parent.width
                     height: 2
                     Text {
-                        text: redMax //qsTr("170")
+                        text: redMax
                         font.family: "arial"
                         color: "white"
                         font.pointSize: 12
@@ -126,7 +126,7 @@ Item {
                     width: parent.width
                     height: 2
                     Text {
-                        text: yellowMax //qsTr("170")
+                        text: yellowMax
                         font.family: "arial"
                         color: "white"
                         font.pointSize: 12
@@ -142,7 +142,7 @@ Item {
                     width: parent.width
                     height: 2
                     Text {
-                        text: yellowMin //qsTr("170")
+                        text: yellowMin
                         font.family: "arial"
                         color: "white"
                         font.pointSize: 12
@@ -158,7 +158,7 @@ Item {
                     width: parent.width
                     height: 2
                     Text {
-                        text: redMin //qsTr("170")
+                        text: redMin
                         font.family: "arial"
                         color: "white"
                         font.pointSize: 12
@@ -240,10 +240,9 @@ Item {
     }
 
     Rectangle {
-//        anchors.fill: qualityListViewTwo
         color: "#6d6e71"
         visible: qualityListViewTwo.visible
-        width: qualityParent.width //Screen.width * 0.35
+        width: qualityParent.width
         height: Screen.height *0.25
         anchors.top: qualityListView.bottom
         anchors.topMargin: 45
@@ -286,7 +285,7 @@ Item {
 
     ListView {
         id: qualityListViewTwo
-        width: qualityParent.width - 20 //Screen.width * 0.35
+        width: qualityParent.width - 20
         height: Screen.height *0.25
         orientation: Qt.Horizontal
         interactive: false
@@ -354,7 +353,7 @@ Item {
 
     MyCanvas {
         id: myCanvas
-        width: qualityParent.width //Screen.width * 0.35
+        width: qualityParent.width
         height: Screen.height * 0.5
         anchors.top: qualityWindowTitle.bottom
         anchors.topMargin: 30

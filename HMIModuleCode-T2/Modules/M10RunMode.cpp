@@ -102,6 +102,16 @@ bool M10runMode::CheckForOverLoad(bool ShowAlarm)
     return bResult;
 }
 
+void M10runMode::Update_Counter()
+{
+    //Enter the Data and update the counters if no errors are found during weld
+    //This section must be editted, note that the part counter is updated AFTER the data is saved
+    Statistics *_Statistics = Statistics::Instance();
+    InterfaceClass *_Interface = InterfaceClass::Instance();
+    _Statistics->EnterM20DataEvent();
+//    Save_Data_Events
+}
+
 void M10runMode::CheckWeldData(int weldresult)
 {
     //This routine must control all of the data checks including alarm checks.
@@ -112,6 +122,7 @@ void M10runMode::CheckWeldData(int weldresult)
     InterfaceClass *_Interface = InterfaceClass::Instance();
     M102IA* _M102IA = M102IA::Instance();
     AlarmMessage* _AlarmMsg = AlarmMessage::Instance();
+    Statistics* _Statistics = Statistics::Instance();
     _M2010->M10Run.Pre_Hght_Error = false;
     _M10INI->ValidWeldData = false;
     WidthError = false;
@@ -237,14 +248,22 @@ void M10runMode::CheckWeldData(int weldresult)
         {
             PreviousWeldValid = true;
             if(_Interface->ApplicationFirstStartFlag == false)
+            {
+                Update_Counter();
                 _M10INI->ValidWeldData = true;
+                _Statistics->UpdateSoftLimitData();
+            }
         }else
             PreviousWeldValid = false;
-
-
     }
+}
 
-
-
-
+void M10runMode::CalculateTeachMode(PresetElement *_Splice)
+{
+    M2010 *_M2010 = M2010::Instance();
+    Statistics* _Statistics = Statistics::Instance();
+    if(_M2010->M10Run.Alarm_found == false)
+    {
+        _Statistics->CalcConfLimits(_Splice);
+    }
 }
