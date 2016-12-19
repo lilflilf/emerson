@@ -6,8 +6,10 @@ import QtQuick.Dialogs 1.2
 Item {
     width: parent.width
     height: parent.height
+    property alias inputNum: defalut.text
     signal signalAdvanceSettingStart()
     signal signalTestStart()
+    signal signalInputNum(string text)
     Image {
         anchors.fill: parent
         source: "qrc:/images/images/dialogbg.png"
@@ -60,10 +62,9 @@ Item {
             height: 57
             width: 217
             clip: true
-//            buttontext: qsTr("#of Splices")
             exclusiveGroup: mos
         }
-        Rectangle {
+        Image {
             id: lineEdit
             anchors.left: samplesize.right
             anchors.leftMargin: 78
@@ -71,37 +72,35 @@ Item {
             anchors.topMargin: 12
             height: 45
             width: 140
-            color: "black"
-            TextInput {
-                id: input
+            source: "qrc:/images/images/advancesetting-bg1.png"
+            Rectangle {
+                id: backGround
+                width: parent.width
+                height: parent.height-2
+                border.color: "#0079c1"
+                border.width: 2
+                color: Qt.rgba(0,0,0,0)
+            }
+            Text {
+                id: defalut
                 anchors.fill: parent
+                font.pixelSize: 24
+                font.family: "arial"
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
                 color: "white"
-                text: qsTr("")
-                clip: true
-                font.pixelSize: 24
-                font.family: "arial"
-                onFocusChanged: {
-                    if (input.focus) {
-                        splices.bIsCheck = true
-                    }
+                text: qsTr("#of Splices")
+            }
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    signalInputNum(defalut.text)
                 }
-
-                Text {
-                    id: defalut
-                    anchors.fill: parent
-                    font.pixelSize: 24
-                    font.family: "arial"
-                    horizontalAlignment: Qt.AlignHCenter
-                    verticalAlignment: Qt.AlignVCenter
-                    color: "white"
-                    text: qsTr("#of Splices")
-                    visible: input.text.length > 0 ? false : true
+                onPressed: {
+                    splices.bIsCheck = true
                 }
             }
         }
-
         Text {
             id: teachMode
             anchors.left: parent.left

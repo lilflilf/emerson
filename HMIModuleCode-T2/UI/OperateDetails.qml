@@ -124,22 +124,6 @@ Item {
         anchors.left: operateTitle.left
         anchors.topMargin: 15
         centerVisable: false
-        Component.onCompleted: {
-//            spliceDetailsItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-//            spliceDetailsItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-//            spliceDetailsItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-//            spliceDetailsItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-
-//            spliceDetailsItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-//            spliceDetailsItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-//            spliceDetailsItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-//            spliceDetailsItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-//            spliceDetailsItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-//            spliceDetailsItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-//            spliceDetailsItem.setState("topLeft",200,"0.75","red")
-//            spliceDetailsItem.setState("bottomLeft",200,"0.75","red")
-
-        }
     }
 
     Text {
@@ -149,7 +133,6 @@ Item {
         anchors.left: operateTitle.left
         font.pointSize: 14
         font.family: "arial"
-        //text: qsTr("Splice Locations and Status")
         text: qsTr("Insulation: 1 Temp(℃):260 Time(s):09.0")
         color: "white"
     }
@@ -163,7 +146,6 @@ Item {
         text: qsTr("TOTAL CROSS SECTION: 2.3mm")
         color: "white"
     }
-
     ListModel {
         id: treeModel
         Component.onCompleted: {

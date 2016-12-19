@@ -9,7 +9,7 @@ FileDialog {
     height: Screen.height / 2
     signal signalFileDialogCancel()
     signal signalChoseFile(var fileName)
-    title: "Please choose a file"
+    title: qsTr("Please choose a file")
     folder: shortcuts.home
     nameFilters: [ "Image files (*.jpg *.png)", "All files (*)" ]
 

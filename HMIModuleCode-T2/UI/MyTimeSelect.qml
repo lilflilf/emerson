@@ -203,7 +203,7 @@ Item {
         pathItemCount: 7;
         path: Path {
             startY: 0
-            startX: 30 //0//pathMargin
+            startX: 30
             PathLine { y: second.height; x: 30 }
         }
         delegate: Item {
@@ -212,7 +212,7 @@ Item {
             Text {
                 id: modelRect
                 anchors.centerIn: parent
-                text: index//qsTr("index")
+                text: index
                 font.family: "arial"
                 color: time.currentIndex == index ? "blue" : "white";
                 font.pointSize: 20
@@ -268,7 +268,7 @@ Item {
         pathItemCount: 7;
         path: Path {
             startY: 0
-            startX: 30 //0//pathMargin
+            startX: 30
             PathLine { y: second.height; x: 30 }
         }
         delegate: Item {
@@ -277,7 +277,7 @@ Item {
             Text {
                 id: modelRect2
                 anchors.centerIn: parent
-                text: index//qsTr("index")
+                text: index
                 font.family: "arial"
                 color: mint.currentIndex == index ? "blue" : "white";
                 font.pointSize: 20
@@ -343,7 +343,7 @@ Item {
             Text {
                 id: modelRect3
                 anchors.centerIn: parent
-                text: index//qsTr("index")
+                text: index
                 font.family: "arial"
                 color: second.currentIndex == index ? "blue" : "white";
                 font.pointSize: 20

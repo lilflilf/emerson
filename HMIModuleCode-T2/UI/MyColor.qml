@@ -6,7 +6,7 @@ Item {
     signal colorChanged(var color)
     ColorDialog {
         id: colorDialog
-        title: "Please choose a color"
+        title: qsTr("Please choose a color")
         width: 200
         height: 350
         onAccepted: {

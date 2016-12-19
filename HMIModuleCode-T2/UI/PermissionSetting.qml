@@ -66,7 +66,7 @@ Item {
             clip: true
             inputSize: 20
             inputColor: "white"
-            inputText: qsTr(fourLevelIdentifier[0]) //qsTr("1.Administrator")
+            inputText: fourLevelIdentifier[0]
         }
         MyLineEdit {
             id: levelText2
@@ -79,7 +79,7 @@ Item {
             clip: true
             inputSize: 20
             inputColor: "white"
-            inputText: qsTr(fourLevelIdentifier[1]) //qsTr("2.Technician")
+            inputText: fourLevelIdentifier[1]
         }
         MyLineEdit {
             id: levelText3
@@ -92,7 +92,7 @@ Item {
             clip: true
             inputSize: 20
             inputColor: "white"
-            inputText: qsTr(fourLevelIdentifier[2]) //qsTr("3.Quality Control")
+            inputText: fourLevelIdentifier[2]
         }
         MyLineEdit {
             id: levelText4
@@ -105,7 +105,7 @@ Item {
             clip: true
             inputSize: 20
             inputColor: "white"
-            inputText: qsTr(fourLevelIdentifier[3]) //qsTr("4.Open")
+            inputText: fourLevelIdentifier[3]
         }
     }
     Rectangle {
@@ -131,41 +131,10 @@ Item {
     }
     ListModel {
         id: listModel
-//        Component.onCompleted: {
-//            listModel.append({name:"Create New",level1:true,level2:false,level3:false,level4:false})
-//            listModel.append({name:"Edit Existing",level1:false,level2:false,level3:false,level4:false})
-//            listModel.append({name:"Operate",level1:false,level2:false,level3:false,level4:false})
-//            listModel.append({name:"Test",level1:false,level2:false,level3:false,level4:false})
-//            listModel.append({name:"Calibration",level1:false,level2:false,level3:false,level4:false})
-//            listModel.append({name:"Tool Change",level1:true,level2:false,level3:false,level4:false})
-//            listModel.append({name:"Advanced Maintenance",level1:false,level2:false,level3:false,level4:false})
-//            listModel.append({name:"Maintenance Counter",level1:false,level2:false,level3:false,level4:false})
-//        }
     }
 
     ListModel {
         id: menuModel
-//        Component.onCompleted: {
-//            menuModel.append({name:"Create New",opacityValue:0})
-//            menuModel.append({name:"Edit Existing",opacityValue:0})
-//            menuModel.append({name:"Operate",opacityValue:0})
-//            menuModel.append({name:"Test",opacityValue:0})
-//            menuModel.append({name:"Calibration",opacityValue:0})
-//            menuModel.append({name:"Tool Change",opacityValue:0})
-//            menuModel.append({name:"Advanced Maintenance",opacityValue:0})
-//            menuModel.append({name:"Maintenance Counter",opacityValue:0})
-//            menuModel.append({name:"Maintenance log",opacityValue:0})
-//            menuModel.append({name:"Work Order History",opacityValue:0})
-//            menuModel.append({name:"Statistical Trend",opacityValue:0})
-//            menuModel.append({name:"Error/Alarm Log",opacityValue:0})
-//            menuModel.append({name:"Library",opacityValue:0})
-//            menuModel.append({name:"Version Information",opacityValue:0})
-//            menuModel.append({name:"Permission Setting",opacityValue:0})
-//            menuModel.append({name:"Weld Defaults",opacityValue:0})
-//            menuModel.append({name:"Operator Library",opacityValue:0})
-//            menuModel.append({name:"Data/Communication",opacityValue:0})
-//            menuModel.append({name:"Branson Setting",opacityValue:0})
-//        }
     }
     Image {
         id: menuSelect
@@ -192,7 +161,6 @@ Item {
                 onClicked: {
                     menuBackGround.visible = false
                     menuSelect.visible = false
-//                    listModel.clear()
                 }
             }
             CButton {
@@ -207,32 +175,12 @@ Item {
                     for (var i = 0; i < menuModel.count; i++) {
                         if (menuModel.get(i).opacityValue == 0.5) {
                             listModel.append({name:menuModel.get(i).name,level1:hmiAdaptor.permissionsettingGetChecked(menuModel.get(i).name,1),level2:hmiAdaptor.permissionsettingGetChecked(menuModel.get(i).name,2),level3:hmiAdaptor.permissionsettingGetChecked(menuModel.get(i).name,3),level4:hmiAdaptor.permissionsettingGetChecked(menuModel.get(i).name,4)})
-//                            listModel.append({name:menuModel.get(i).name,level1:false,level2:false,level3:false,level4:false})
                         }
                     }
                 }
             }
         }
 
-//        CButton {
-//            id: sureButton
-//            anchors.bottom: parent.bottom
-//            anchors.bottomMargin: 16
-//            anchors.horizontalCenter: parent.horizontalAlignment
-//            width: parent.width-80
-//            iconSource: "qrc:/images/images/OK.png"
-//            text: qsTr("OK")
-//            onClicked: {
-//                menuBackGround.visible = false
-//                menuSelect.visible = false
-//                listModel.clear()
-//                for (var i = 0; i < menuModel.count; i++) {
-//                    if (menuModel.get(i).opacityValue == 0.5) {
-//                        listModel.append({name:menuModel.get(i).name})
-//                    }
-//                }
-//            }
-//        }
         ListView {
             id: menuView
             anchors.top: parent.top
@@ -251,7 +199,7 @@ Item {
                     font.family: "arial"
                     font.pixelSize: 20
                     color: "white"
-                    text: qsTr(name)
+                    text: name
                 }
                 Rectangle {
                     id: back
@@ -305,7 +253,7 @@ Item {
                 font.family: "arial"
                 font.pixelSize: 20
                 color: "white"
-                text: qsTr(name)
+                text: name
             }
 
             MyCheckBox {

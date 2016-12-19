@@ -337,5 +337,47 @@ Item {
             loader.source = "qrc:/UI/TestDetail.qml"
 
         }
+        onSignalInputNum: {
+            keyNum.visible = true
+            keyNum.titleText = qsTr("#of Splices")
+            keyNum.maxvalue = "20"
+            keyNum.minvalue = "0"
+            if (text == qsTr("#of Splices")) {
+                keyNum.currentValue = "0"
+            } else {
+                keyNum.currentValue = text
+            }
+        }
+    }
+    KeyBoardNum {
+        id: keyNum
+        anchors.centerIn: parent
+        z: testDialog.z+1
+        width: 962
+        height: 526
+        visible: false
+        titleText: ""
+        maxvalue: "20"
+        minvalue: "0"
+        currentValue: "0"
+        onCurrentClickIndex: {
+            if (index == 15) {
+                if (hmiAdaptor.comepareCurrentValue(keyNum.minvalue,keyNum.maxvalue,keyNum.inputText)) {
+                    testDialog.inputNum = keyNum.inputText
+                    keyNum.visible = false
+                    keyNum.inputText = ""
+                    keyNum.tempValue = ""
+                }
+            } else if (index == 11) {
+                keyNum.visible = false
+                keyNum.inputText = ""
+                keyNum.tempValue = ""
+            }
+        }
+        onInputTextChanged: {
+            if (keyNum.inputText != "") {
+                testDialog.inputNum = keyNum.inputText
+            }
+        }
     }
 }
