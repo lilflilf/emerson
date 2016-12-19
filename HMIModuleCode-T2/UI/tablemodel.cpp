@@ -599,7 +599,9 @@ QString SpliceModel::getStructValue(QString valueKey, QString valueType)
         return variantToString->ShrinkTimeToString(presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime).Current;
     }
     else if (valueKey == "Cross Section") {
-        qDebug() << "aaaaaaaaaaaaaaaaaaaaa" << presetElement.CrossSection << variantToString->CrossSectionToString(presetElement.CrossSection);
+        return variantToString->CrossSectionToString(presetElement.CrossSection);
+    }
+    else if (valueKey == "Cross Section") {
         return variantToString->CrossSectionToString(presetElement.CrossSection);
     }
     else
@@ -771,6 +773,11 @@ int SpliceModel::saveSplice(bool bIsEdit)
     }
     setModelList();
     return spliceId;
+}
+
+uint SpliceModel::getHashCode()
+{
+    return presetElement.HashCode;
 }
 
 void SpliceModel::createNew()
@@ -1464,6 +1471,45 @@ QList<int> AlarmModel::getPoint2()
     return pointList;
 }
 
+QList<int> AlarmModel::getPointList(QString key, QString spliceName, uint hashCode)
+{
+    QMap<int, QString> *tempMap = new QMap<int, QString>();
+    QMap<int,QString>::iterator it; //遍历map
+
+    WeldResultElement  temp;
+    bool reb;
+    QList<int> list;
+    reb = m_weldHistoryAdaptor->QueryBySomeFields(spliceName,hashCode,startTime.toTime_t(),QDateTime::currentDateTime().toTime_t(),tempMap);
+    if (reb)
+    {
+        if (key == "Time") {
+            for ( it = tempMap->begin(); it != tempMap->end(); ++it ) {
+                m_weldHistoryAdaptor->QueryOneRecordFromTable(it.key(),&temp);
+                list.append(temp.ActualResult.ActualTime);
+            }
+        }
+        else if (key == "Power") {
+            for ( it = tempMap->begin(); it != tempMap->end(); ++it ) {
+                m_weldHistoryAdaptor->QueryOneRecordFromTable(it.key(),&temp);
+                list.append(temp.ActualResult.ActualPeakPower);
+            }
+        }
+        else if (key == "Pre-Height") {
+            for ( it = tempMap->begin(); it != tempMap->end(); ++it ) {
+                m_weldHistoryAdaptor->QueryOneRecordFromTable(it.key(),&temp);
+                list.append(temp.ActualResult.ActualPreheight);
+            }
+        }
+        else if (key == "Post-Height") {
+            for ( it = tempMap->begin(); it != tempMap->end(); ++it ) {
+                m_weldHistoryAdaptor->QueryOneRecordFromTable(it.key(),&temp);
+                list.append(temp.ActualResult.ActualPostheight);
+            }
+        }
+    }
+    return list;
+}
+
 int AlarmModel::getAxes(QString key)
 {
     if (key == "Time")
@@ -1472,6 +1518,11 @@ int AlarmModel::getAxes(QString key)
         return weldResultElement.ActualResult.ActualPeakPower;
     else if (key == "Post-Height")
         return weldResultElement.ActualResult.ActualPreheight;
+}
+
+void AlarmModel::setStartTime()
+{
+    startTime = QDateTime::currentDateTime();
 }
 
 QVariant AlarmModel::data(const QModelIndex &index, int role) const

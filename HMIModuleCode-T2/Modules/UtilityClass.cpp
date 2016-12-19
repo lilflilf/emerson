@@ -311,9 +311,8 @@ void UtilityClass::InitializeTextData()
     SetTextData(DINGatherLimit, 0, MINGATHERLIMIT, MAXGATHERLIMIT, 1, 1, "%d");
     SetTextData(DINAnvilGuideLimit, 0, MINANVILGUIDELIMIT, MAXANVILGUIDELIMIT, 1, 1, "%d");
     SetTextData(DINConverterLimit, 0, MINCONVERTERLIMIT, MAXCONVERTERLIMIT, 1, 1, "%d");
-
-
-
+    SetTextData(DINPercentTeachMode, 0, MINPERCENTTEACHMODE, MAXPERCENTTEACHMODE, 1, 1, "%d%");
+    SetTextData(DINSigmaTeachMode, 0, MINSIGMATEACHMODE, MAXSIGMATEACHMODE, 1, 1, "%d");
 }
 
 void UtilityClass::SetTextData(ScreenShowDataType TypeIndex,int Data,int min, int max,

@@ -18,8 +18,10 @@ Item {
         z: 10
         anchors.fill: parent
         onLoaded: {
-            if (loader.source == "qrc:/UI/TestDetail.qml")
+            if (loader.source == "qrc:/UI/TestDetail.qml") {
                 loader.item.selectSplice(spliceModel.getValue(selectIndx,"SpliceId"))
+                alarmModel.setStartTime();
+            }
         }
     }
     Connections {

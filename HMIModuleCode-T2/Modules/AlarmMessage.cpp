@@ -4,6 +4,7 @@
 #include "Interface/interface.h"
 #include "Interface/AlarmElement.h"
 #include "DataBase/DBAlarmLogTable.h"
+#include "Interface/VariantToString.h"
 AlarmMessage* AlarmMessage::_instance = NULL;
 
 AlarmMessage* AlarmMessage::Instance()
@@ -19,7 +20,7 @@ AlarmMessage::AlarmMessage()
 //    AlarmPresent = false;
 }
 
-void AlarmMessage::Initialization()
+void AlarmMessage::Initialization(int weldresult)
 {
     M102IA *_M102IA = M102IA::Instance();
     InterfaceClass *_Interface = InterfaceClass::Instance();
@@ -33,15 +34,16 @@ void AlarmMessage::Initialization()
         tmpMsgBox.func_ptr = NULL;
         _Interface->cMsgBox(&tmpMsgBox);
     }else{
-        ShowText();
+        ShowText(weldresult);
     }
 
 }
 
-void AlarmMessage::ShowText()
+void AlarmMessage::ShowText(int weldresult)
 {
     M102IA *_M102IA = M102IA::Instance();
     InterfaceClass* _Interface = InterfaceClass::Instance();
+    VariantToString* _Var2Str = VariantToString::Instance();
     int Index = 0;
     QString AlarmMsg;
     AlarmMsg.clear();
@@ -49,7 +51,8 @@ void AlarmMessage::ShowText()
     if((_M102IA->IAactual.Alarmflags & 0x800) == 0x800)
     {
         AlarmMsg += QString::number(Index + 1, 10) + ". " + QObject::tr("WIDTH ERROR");
-//        UpdateAlarmLog(QString AlarmStr, QString AlarmType, -1);
+        QString AlarmType = _Var2Str->AlarmTypeToString(MOTORERROR);
+        UpdateAlarmLog(AlarmMsg, AlarmType, weldresult);
         Index++;
     }
     //Overload
@@ -58,6 +61,8 @@ void AlarmMessage::ShowText()
         if(Index != 0)
             AlarmMsg += "\n";
         AlarmMsg += QString::number(Index + 1, 10) + ". " + QObject::tr("Power OVERLOAD");
+        QString AlarmType = _Var2Str->AlarmTypeToString(OVERLOADALARM);
+        UpdateAlarmLog(AlarmMsg, AlarmType, weldresult);
         Index++;
     }
     //Safety
@@ -66,6 +71,8 @@ void AlarmMessage::ShowText()
         if(Index != 0)
             AlarmMsg += "\n";
         AlarmMsg += QString::number(Index + 1, 10) + ". " + QObject::tr("Weld Safety Alarm");
+        QString AlarmType = _Var2Str->AlarmTypeToString(SAFETYERROR);
+        UpdateAlarmLog(AlarmMsg, AlarmType, weldresult);
         Index++;
     }
     //Height Error
@@ -74,6 +81,8 @@ void AlarmMessage::ShowText()
         if(Index != 0)
             AlarmMsg += "\n";
         AlarmMsg += QString::number(Index + 1, 10) + ". " + QObject::tr("Height System failure");
+        QString AlarmType = _Var2Str->AlarmTypeToString(HEIGHTENCODERERROR);
+        UpdateAlarmLog(AlarmMsg, AlarmType, weldresult);
         Index++;
     }
     //Time Error
@@ -91,6 +100,8 @@ void AlarmMessage::ShowText()
             AlarmMsg += QString::number(Index + 1, 10) + ". " + QObject::tr("Weld longer than maximum time");
             Index++;
         }
+        QString AlarmType = _Var2Str->AlarmTypeToString(TIMEALARM);
+        UpdateAlarmLog(AlarmMsg, AlarmType, weldresult);
     }
     //Power Error
     if((_M102IA->IAactual.Alarmflags & 0x40) == 0x40)
@@ -106,6 +117,8 @@ void AlarmMessage::ShowText()
             AlarmMsg += QString::number(Index + 1, 10) + ". " + QObject::tr("Highest power is above power maximum");
             Index++;
         }
+        QString AlarmType = _Var2Str->AlarmTypeToString(PEAKPOWERALARM);
+        UpdateAlarmLog(AlarmMsg, AlarmType, weldresult);
     }
     //PostHeight Error
     if((_M102IA->IAactual.Alarmflags & 0x80) == 0x80)
@@ -121,6 +134,8 @@ void AlarmMessage::ShowText()
             AlarmMsg += QString::number(Index + 1, 10) + ". " + QObject::tr("Result is taller than maximum height");
             Index++;
         }
+        QString AlarmType = _Var2Str->AlarmTypeToString(HEIGHTALARM);
+        UpdateAlarmLog(AlarmMsg, AlarmType, weldresult);
     }
     //PerHeight Error
     if((_M102IA->IAactual.Alarmflags & 0x04) == 0x04)
@@ -135,6 +150,8 @@ void AlarmMessage::ShowText()
             AlarmMsg += QString::number(Index + 1, 10) + ". " + QObject::tr("Result is taller than maximum Perheight");
             Index++;
         }
+        QString AlarmType = _Var2Str->AlarmTypeToString(PREHEIGHTALARM);
+        UpdateAlarmLog(AlarmMsg, AlarmType, weldresult);
     }
     //Sense 24V
     if((_M102IA->IAactual.Alarmflags & 0x10000) == 0x10000)
@@ -142,6 +159,8 @@ void AlarmMessage::ShowText()
         if(Index != 0)
             AlarmMsg += "\n";
         AlarmMsg += QString::number(Index + 1, 10) + ". " + QObject::tr("Power supply for solenoid valve is smaller than 24V");
+        QString AlarmType = _Var2Str->AlarmTypeToString(VOL24ERROR);
+        UpdateAlarmLog(AlarmMsg, AlarmType, weldresult);
         Index++;
     }
     //Cutter Alarm for the New Wire Splicer
@@ -150,6 +169,8 @@ void AlarmMessage::ShowText()
         if(Index != 0)
             AlarmMsg += "\n";
         AlarmMsg += QString::number(Index + 1, 10) + ". " + QObject::tr("New wire splicer cutter alarm");
+        QString AlarmType = _Var2Str->AlarmTypeToString(CUTERROR);
+        UpdateAlarmLog(AlarmMsg, AlarmType, weldresult);
         Index++;
     }
     //Lock Key Alarm for New Wire Splicer
@@ -166,6 +187,8 @@ void AlarmMessage::ShowText()
         if(Index != 0)
             AlarmMsg += "\n";
         AlarmMsg += QString::number(Index + 1, 10) + ". " + QObject::tr("Please check Actuator Board connecting");
+        QString AlarmType = _Var2Str->AlarmTypeToString(IDCHIPERROR);
+        UpdateAlarmLog(AlarmMsg, AlarmType, weldresult);
         Index++;
     }
     //FRAM, RAM error
@@ -174,6 +197,8 @@ void AlarmMessage::ShowText()
         if(Index != 0)
             AlarmMsg += "\n";
         AlarmMsg += QString::number(Index + 1, 10) + ". " + QObject::tr("FRAM, RAM error");
+        QString AlarmType = _Var2Str->AlarmTypeToString(RAMERROR);
+        UpdateAlarmLog(AlarmMsg, AlarmType, weldresult);
         Index++;
     }
     BransonMessageBox tmpMsgBox;

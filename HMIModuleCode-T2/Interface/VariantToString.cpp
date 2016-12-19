@@ -294,6 +294,7 @@ struct BRANSONDATA VariantToString::MeasureWidthToString(int Width)
                     _Utility->txtData[DINWidth].min);
     return tmpData;
 }
+
 struct BRANSONDATA VariantToString::MeasureHeightToString(int Height)
 {
     struct BRANSONDATA tmpData;
@@ -391,6 +392,29 @@ struct BRANSONDATA VariantToString::ShrinkTimeToString(int Time)
     tmpData.Minimum = _Utility->FormatedDataToString(DINShrinkTubeTime,
                     _Utility->txtData[DINShrinkTubeTime].min);
     return tmpData;
+}
+
+struct BRANSONDATA VariantToString::StandardAutoTeachModeToString(int parameter)
+{
+    struct BRANSONDATA tmpData;
+    tmpData.Current =  _Utility->FormatedDataToString(DINPercentTeachMode, parameter);
+    tmpData.Maximum = _Utility->FormatedDataToString(DINPercentTeachMode,
+                    _Utility->txtData[DINPercentTeachMode].max);
+    tmpData.Minimum = _Utility->FormatedDataToString(DINPercentTeachMode,
+                    _Utility->txtData[DINPercentTeachMode].min);
+    return tmpData;
+}
+
+struct BRANSONDATA VariantToString::SigmaTeachModeToString(int parameter)
+{
+    struct BRANSONDATA tmpData;
+    tmpData.Current = _Utility->FormatedDataToString(DINSigmaTeachMode, parameter);
+    tmpData.Maximum = _Utility->FormatedDataToString(DINSigmaTeachMode,
+                    _Utility->txtData[DINSigmaTeachMode].max);
+    tmpData.Minimum = _Utility->FormatedDataToString(DINSigmaTeachMode,
+                    _Utility->txtData[DINSigmaTeachMode].min);
+    return tmpData;
+
 }
 
 //Weld History
@@ -562,6 +586,12 @@ QString VariantToString::AlarmTypeToString(enum ALARMTYPE type)
     case CUTERROR:
         str = QObject::tr("Cutter error");
         break;
+    case IDCHIPERROR:
+        str = QObject::tr("ID Chip error");
+        break;
+    case RAMERROR:
+        str = QObject::tr("Fram error");
+        break;
     case E_STOP:
         str = QObject::tr("E-Stop");
         break;
@@ -583,6 +613,8 @@ QString VariantToString::AlarmLevelToString(enum ALARMTYPE Alarmtype)
     case SAFETYERROR:
     case CUTERROR:
     case E_STOP:
+    case IDCHIPERROR:
+    case RAMERROR:
         str = QObject::tr("High-level");
         break;
     case TIMEALARM:

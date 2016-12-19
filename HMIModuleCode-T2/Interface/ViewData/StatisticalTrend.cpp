@@ -52,8 +52,14 @@ bool StatisticalTrend::GetCurrentWeldResultOneByOne(QMap<int, QString>* ResultIn
                         CurrentWeldResultRecord.ActualResult.ActualPreheight);
             float postheight = _Utility->FormatedDataToFloat(DINActHgt,
                         CurrentWeldResultRecord.ActualResult.ActualPostheight);
-            CurrentWeldActual.Amplitude = _Utility->FormatedDataToString(DINAmplitude,
+            if(CurrentWeldResultRecord.ActualResult.ActualAmplitude2 == -1)
+                CurrentWeldActual.Amplitude = _Utility->FormatedDataToString(DINAmplitude,
                         CurrentWeldResultRecord.ActualResult.ActualAmplitude);
+            else
+                CurrentWeldActual.Amplitude = _Utility->FormatedDataToString(DINAmplitude,
+                        CurrentWeldResultRecord.ActualResult.ActualAmplitude) + "/" +
+                        _Utility->FormatedDataToString(DINAmplitude2,
+                        CurrentWeldResultRecord.ActualResult.ActualAmplitude2);
             CurrentWeldActual.CrossSection = _Utility->FormatedDataToString(DINCrossSection,
                         CurrentPreset.CrossSection);
             QDateTime TimeLabel = QDateTime::fromTime_t(CurrentWeldResultRecord.CreatedDate);

@@ -75,6 +75,10 @@
 #define MINANVILGUIDELIMIT    1
 #define MAXCONVERTERLIMIT     400000
 #define MINCONVERTERLIMIT     1
+#define MAXPERCENTTEACHMODE   1
+#define MINPERCENTTEACHMODE   100
+#define MAXSIGMATEACHMODE     9
+#define MINSIGMATEACHMODE     1
 
 //Used by the program to consistently change from PSI to BAR
 #define PRESS2BARFACTOR  (0.1 / 14.5)
@@ -149,6 +153,8 @@ enum ScreenShowDataType{
     DINGatherLimit,
     DINAnvilGuideLimit,
     DINConverterLimit,
+    DINPercentTeachMode,
+    DINSigmaTeachMode,
     DIN_end,
 };
 

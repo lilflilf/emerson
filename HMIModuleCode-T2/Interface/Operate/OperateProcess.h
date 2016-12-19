@@ -8,6 +8,7 @@ struct NecessaryInfo
 {
     struct WorkOrderIndex CurrentWorkOrder;
     struct PartIndex CurrentPart;
+    bool IsTestProcess;
 };
 enum GRAPHSTEP
 {
@@ -43,6 +44,7 @@ private:
     bool HeightGraphReceive();
     bool PowerGraphReceive();
     static void WeldCycleDaemonThread(void*);
+    static void AcceptWeldResult(void*);
 signals:
     void WeldCycleCompleted(const bool &_status);
 private slots:
@@ -51,8 +53,10 @@ public:
     void _start();
     void _stop();
     void _execute();
+
     void ControlLimitProcess(enum QUALITYTYPE Type, QList<int> &RawList, int USL, int LSL,
                              int* UCL, int* LCL);
+    void StopTeachMode();
 public:
     static OperateProcess* Instance();
 private:

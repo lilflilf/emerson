@@ -6,15 +6,20 @@
 #include "stdlib.h"
 #include "m10definitions.h"
 #include "Interface/Settings/SysConfiguration.h"
+#include "Interface/WeldResultElement.h"
+#include "Interface/PresetElement.h"
 using namespace std;
 
-const int M20_Stat_Points = 128;  //The number of data points in the file
-const int M20_Data_Points = 128;  //The number of data points on the screen
-const int M20_Data_Pnt_MI = M20_Data_Points;    //Max Index for data
+#define M20_Stat_Points  128  //The number of data points in the file
+#define M20_Data_Points  128  //The number of data points on the screen
+#define M20_Data_Pnt_MI  M20_Data_Points    //Max Index for data
 
-const long QualGoodColor = 0xC000;
-const long QualSLbadColor = 0xFFFF;
-const long QualBadColor = 0x00FF;
+#define iOverLoadFault  0x01
+#define iTimeFault      0x20
+#define iPowerFault     0x40
+#define iHeightFault    0x80
+#define iWidthFault     0x800
+#define iAlarms         (iOverLoadFault | iTimeFault | iPowerFault | iHeightFault | iWidthFault)
 
 enum SoftLimitStatusType{
     SLSTSoftLimitOFF,
@@ -138,19 +143,24 @@ public:
     Maint_Log_File Maint_Data;
     double Time_Average, Power_Average, PreHeight_Avreage, Height_Average;
 private:
-    void RotateIn(StatStats SumStats, string DataEvent, int NewData);
+    QString HeaderString();
+    QString GraphData(enum ScreenShowDataType DataType, QList<int> *_GraphData);
+    void RotateIn(StatStats SumStats, int& DataEvent, int NewData);
+    void RotateOut(StatStats SumStats, int OldData);
 public:
     void UpdateSoftLimitData(bool ShowResults = true);
-    void RotateOut(StatStats SumStats, int OldData);
+
     void UpdateSpliceStatStats();
     void EnterM20DataEvent();
     void ZeroM20DataEvents();
     void UpdateCounter();
-    void CalcConfLimits();
+    void CalcConfLimits(PresetElement*);
+    void GetLimitsAfterWeld(PresetElement*);
     void start_data_structures();
     void Open_Maint_Log();
-    void HistoryEvent();
-    string HeaderString();
+    void HistoryEvent(QString WorkOrderName, QString PartName,
+                      WeldResultElement *_WeldResult, PresetElement *_Splice);
+
 
 public:
     static Statistics* Instance();

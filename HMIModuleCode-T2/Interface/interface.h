@@ -44,6 +44,7 @@ public:
     VersionList CurrentVersions;
     OperatorElement CurrentOperator;
     bool FirstScreenComesUp;
+    bool ApplicationFirstStartFlag;
 public:
     void cMsgBox(struct BransonMessageBox* MsgBox);
     void dlgMaintWarning();

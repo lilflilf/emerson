@@ -110,6 +110,7 @@ public slots:
     Q_INVOKABLE int getRawData(QString key);
     Q_INVOKABLE void setStructValue(QString valueKey, QVariant value);
     Q_INVOKABLE int saveSplice(bool bIsEdit);
+    Q_INVOKABLE uint getHashCode();
 
     Q_INVOKABLE void createNew();
     Q_INVOKABLE void editNew(int spliceId);
@@ -234,6 +235,7 @@ public:
     DBWeldResultTable *m_weldHistoryAdaptor;
 
     WeldResultElement weldResultElement;
+    QDateTime startTime;
 
 protected:
     int rowCount(const QModelIndex &parent) const;
@@ -253,7 +255,9 @@ public slots:
     Q_INVOKABLE int count();
     Q_INVOKABLE QList<int> getPoint();
     Q_INVOKABLE QList<int> getPoint2();
+    Q_INVOKABLE QList<int> getPointList(QString key, QString spliceName, uint hashCode);
     Q_INVOKABLE int getAxes(QString key);
+    Q_INVOKABLE void setStartTime();
 
 private:
     QHash<int, QByteArray> m_roleNames;
