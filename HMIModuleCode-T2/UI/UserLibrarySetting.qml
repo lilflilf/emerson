@@ -24,7 +24,6 @@ Item {
         spacing: 10
         Text {
             anchors.verticalCenter: headTitle.verticalCenter
-            //horizontalAlignment: Qt.AlignHCenter
             width: (parent.width-30)/4
             color: "white"
             clip: true
@@ -34,7 +33,6 @@ Item {
         }
         Text {
             anchors.verticalCenter: headTitle.verticalCenter
-            //horizontalAlignment: Qt.AlignHCenter
             width: (parent.width-30)/4
             color: "white"
             clip: true
@@ -44,7 +42,6 @@ Item {
         }
         Text {
             anchors.verticalCenter: headTitle.verticalCenter
-            //horizontalAlignment: Qt.AlignHCenter
             width: (parent.width-30)/4
             color: "white"
             clip: true
@@ -54,7 +51,6 @@ Item {
         }
         Text {
             anchors.verticalCenter: headTitle.verticalCenter
-            //horizontalAlignment: Qt.AlignHCenter
             width: (parent.width-30)/4
             text: qsTr("Permission Level")
             color: "white"
@@ -270,7 +266,6 @@ Item {
         anchors.right: deleteButton.left
         anchors.rightMargin: 43
         anchors.bottom: deleteButton.bottom
-//        anchors.bottomMargin: 40
         width: 300
         text: qsTr("Edit")
         textColor: "white"

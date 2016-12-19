@@ -26,7 +26,6 @@ Item {
     property var selectWireStripeColor: ""
     property var selectWireStripeType: -1
     property var selectWireId: -1
-//    property var selectWireCurrent: ""
 
     property bool isSafe: false
     property bool bIsLibrary: false
@@ -301,7 +300,6 @@ Item {
             wireCount++
             gaugeChanged("add",wireModel.getStructValue("Gauge"))
         }
-
     }
     function deleteWire()
     {
@@ -925,11 +923,6 @@ Item {
         height: parent.height * 0.7
         anchors.top: top.bottom
         anchors.topMargin: parent.height * 0.1 / 2
-//        Rectangle {
-//            anchors.fill: parent
-//            color: "black"
-//            opacity: 0.2
-//        }
         ListModel {
             id: listModelLeft
             Component.onCompleted: {
@@ -1013,7 +1006,6 @@ Item {
             property var myStripeType: -1
             property var myWireId: -1
             width: middle.width / 2 + 40
-//            height: listModelLeft.count <= 5 ? detail.height * 0.1 + 10 : 30
             height: position == "leftList" ? listModelLeft.count <= 5 ? detail.height * 0.1 + 10 : (listModelLeft.count > 5 && listModelLeft.count <= 10) ? 30 : index < (listModelLeft.count - 10) * 2 ? 15 : 30 : 30
 
             Rectangle {
@@ -1082,7 +1074,7 @@ Item {
                 Text {
                     id: mytextLeft
                     anchors.centerIn: parent
-                    text: leftItem.position == "leftList" ? qsTr(linetext) : ""
+                    text: leftItem.position == "leftList" ? linetext : ""
                     font.family: "arial"
                     font.pointSize: 16
                     color: "white"
@@ -1207,7 +1199,7 @@ Item {
                 Text {
                     id: mytext
                     anchors.centerIn: parent
-                    text: qsTr(linetext)
+                    text: linetext
                     font.family: "arial"
                     font.pointSize: 16
                     color: "white"

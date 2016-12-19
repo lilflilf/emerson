@@ -151,7 +151,7 @@ Item {
                             id: myFileName
                             width: listView.width
                             height: 30
-                            text: fileName //qsTr("fileName") filePath //
+                            text: fileName
                             color: "white"
                             font.pointSize: 14
                             font.family: "arial"
@@ -176,14 +176,12 @@ Item {
     Row {
         id: row
         anchors.bottom: back.bottom
-//        anchors.right: back.right
         anchors.bottomMargin: 20
-//        anchors.rightMargin: 20
         anchors.horizontalCenter: back.horizontalCenter
         spacing: 5
         CButton {
             width: 200
-            text: "BACK"
+            text: qsTr("BACK")
             onPressed: {
                 if ((currentFile == 0 || currentFile == -1) && currentDir > 0){
                     currentDir--
@@ -202,7 +200,7 @@ Item {
 
         CButton {
             width: 200
-            text: "NEXT STEP"
+            text: qsTr("NEXT STEP")
             onClicked: {
                 if (dirCount > 0 && fileCount > 0 && currentFile < fileCount - 1)
                     currentFile++

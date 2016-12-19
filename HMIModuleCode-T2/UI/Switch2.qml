@@ -14,12 +14,8 @@ Item {
     function toggle() {
         if (toggleswitch.state == "right") {
             toggleswitch.state = "left";
-//            leftSwitch.color = "black"
-//            rightSwitch.color = "white"
         } else {
             toggleswitch.state = "right";
-//            leftSwitch.color = "white"
-//            rightSwitch.color = "black"
         }
     }
 
@@ -85,16 +81,11 @@ Item {
             name: "right"
             PropertyChanges { target: knob; x: toggleswitch.width/2 }
             PropertyChanges { target: toggleswitch; on: true }
-//            PropertyChanges { target: leftSwitch; color: "white" }
-//            PropertyChanges { target: rightSwitch; color: "black" }
         },
         State {
             name: "left"
             PropertyChanges { target: knob; x: 1 }
             PropertyChanges { target: toggleswitch; on: false }
-//            PropertyChanges { target: leftSwitch; color: "black" }
-//            PropertyChanges { target: rightSwitch; color: "white" }
-
         }
     ]
 

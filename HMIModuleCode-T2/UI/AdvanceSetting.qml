@@ -178,25 +178,25 @@ Item {
     ListModel {
         id: sigmaLowerModel
         Component.onCompleted: {
-            standardUpperModel.append({"head":qsTr("Time"),"value":"40%"})
-            standardUpperModel.append({"head":qsTr("Power"),"value":"25%"})
-            standardUpperModel.append({"head":qsTr("Pre-Height"),"value":"15%"})
-            standardUpperModel.append({"head":qsTr("Height"),"value":"10%"})
+            standardUpperModel.append({"head":qsTr("Time"),"value":spliceModel.getStructValue("TestStandardTime+","current"),"maxValue":spliceModel.getStructValue("TestStandardTime+","max"),"minValue":spliceModel.getStructValue("TestStandardTime+","min")})
+            standardUpperModel.append({"head":qsTr("Power"),"value":spliceModel.getStructValue("TestStandardPower+","current"),"maxValue":spliceModel.getStructValue("TestStandardPower+","max"),"minValue":spliceModel.getStructValue("TestStandardPower+","min")})
+            standardUpperModel.append({"head":qsTr("Pre-Height"),"value":spliceModel.getStructValue("TestStandardPre+","current"),"maxValue":spliceModel.getStructValue("TestStandardPre+","max"),"minValue":spliceModel.getStructValue("TestStandardPre+","min")})
+            standardUpperModel.append({"head":qsTr("Height"),"value":spliceModel.getStructValue("TestStandardPost+","current"),"maxValue":spliceModel.getStructValue("TestStandardPost+","max"),"minValue":spliceModel.getStructValue("TestStandardPost+","min")})
 
-            standardLowerModel.append({"head":qsTr("Time"),"value":"40%"})
-            standardLowerModel.append({"head":qsTr("Power"),"value":"25%"})
-            standardLowerModel.append({"head":qsTr("Pre-Height"),"value":"15%"})
-            standardLowerModel.append({"head":qsTr("Height"),"value":"10%"})
+            standardLowerModel.append({"head":qsTr("Time"),"value":spliceModel.getStructValue("TestStandardTime-","current"),"maxValue":spliceModel.getStructValue("TestStandardTime-","max"),"minValue":spliceModel.getStructValue("TestStandardTime-","min")})
+            standardLowerModel.append({"head":qsTr("Power"),"value":spliceModel.getStructValue("TestStandardPower-","current"),"maxValue":spliceModel.getStructValue("TestStandardPower-","max"),"minValue":spliceModel.getStructValue("TestStandardPower-","min")})
+            standardLowerModel.append({"head":qsTr("Pre-Height"),"value":spliceModel.getStructValue("TestStandardPre-","current"),"maxValue":spliceModel.getStructValue("TestStandardPre-","max"),"minValue":spliceModel.getStructValue("TestStandardPre-","min")})
+            standardLowerModel.append({"head":qsTr("Height"),"value":spliceModel.getStructValue("TestStandardPost-","current"),"maxValue":spliceModel.getStructValue("TestStandardPost-","max"),"minValue":spliceModel.getStructValue("TestStandardPost-","min")})
 
-            sigmaUpperModel.append({"head":qsTr("Time"),"value":"4"})
-            sigmaUpperModel.append({"head":qsTr("Power"),"value":"4"})
-            sigmaUpperModel.append({"head":qsTr("Pre-Height"),"value":"4"})
-            sigmaUpperModel.append({"head":qsTr("Height"),"value":"4"})
+            sigmaUpperModel.append({"head":qsTr("Time"),"value":spliceModel.getStructValue("TestSigmaTime+","current"),"maxValue":spliceModel.getStructValue("TestSigmaTime+","max"),"minValue":spliceModel.getStructValue("TestSigmaTime+","min")})
+            sigmaUpperModel.append({"head":qsTr("Power"),"value":spliceModel.getStructValue("TestSigmaPower+","current"),"maxValue":spliceModel.getStructValue("TestSigmaPower+","max"),"minValue":spliceModel.getStructValue("TestSigmaPower+","min")})
+            sigmaUpperModel.append({"head":qsTr("Pre-Height"),"value":spliceModel.getStructValue("TestSigmaPre+","current"),"maxValue":spliceModel.getStructValue("TestSigmaPre+","max"),"minValue":spliceModel.getStructValue("TestSigmaPre+","min")})
+            sigmaUpperModel.append({"head":qsTr("Height"),"value":spliceModel.getStructValue("TestSigmaPost+","current"),"maxValue":spliceModel.getStructValue("TestSigmaPost+","max"),"minValue":spliceModel.getStructValue("TestSigmaPost+","min")})
 
-            sigmaLowerModel.append({"head":qsTr("Time"),"value":"4"})
-            sigmaLowerModel.append({"head":qsTr("Power"),"value":"4"})
-            sigmaLowerModel.append({"head":qsTr("Pre-Height"),"value":"4"})
-            sigmaLowerModel.append({"head":qsTr("Height"),"value":"4"})
+            sigmaLowerModel.append({"head":qsTr("Time"),"value":spliceModel.getStructValue("TestSigmaTime-","current"),"maxValue":spliceModel.getStructValue("TestSigmaTime-","max"),"minValue":spliceModel.getStructValue("TestSigmaTime-","min")})
+            sigmaLowerModel.append({"head":qsTr("Power"),"value":spliceModel.getStructValue("TestSigmaPower-","current"),"maxValue":spliceModel.getStructValue("TestSigmaPower-","max"),"minValue":spliceModel.getStructValue("TestSigmaPower-","min")})
+            sigmaLowerModel.append({"head":qsTr("Pre-Height"),"value":spliceModel.getStructValue("TestSigmaPre-","current"),"maxValue":spliceModel.getStructValue("TestSigmaPre-","max"),"minValue":spliceModel.getStructValue("TestSigmaPre-","min")})
+            sigmaLowerModel.append({"head":qsTr("Height"),"value":spliceModel.getStructValue("TestSigmaPost-","current"),"maxValue":spliceModel.getStructValue("TestSigmaPost-","max"),"minValue":spliceModel.getStructValue("TestSigmaPost-","min")})
         }
     }
 
@@ -245,6 +245,9 @@ Item {
                     font.pixelSize: 25
                     color: "white"
                     text: value
+                    onTextChanged: {
+                        standardUpperModel.set(index,{"value":centerValue.text})
+                    }
                 }
                 MouseArea {
                     anchors.fill: parent
@@ -257,6 +260,8 @@ Item {
                         keyNum.visible = true
                         keyNum.titleText = head
                         keyNum.currentValue = value
+                        keyNum.maxvalue = maxValue
+                        keyNum.minvalue = minValue
                     }
                 }
             }
@@ -308,6 +313,9 @@ Item {
                     font.pixelSize: 25
                     color: "white"
                     text: value
+                    onTextChanged: {
+                        standardLowerModel.set(index,{"value":centerValue.text})
+                    }
                 }
                 MouseArea {
                     anchors.fill: parent
@@ -320,6 +328,8 @@ Item {
                         keyNum.visible = true
                         keyNum.titleText = head
                         keyNum.currentValue = value
+                        keyNum.maxvalue = maxValue
+                        keyNum.minvalue = minValue
                     }
                 }
             }
@@ -371,6 +381,9 @@ Item {
                     font.pixelSize: 25
                     color: "white"
                     text: value
+                    onTextChanged: {
+                        sigmaUpperModel.set(index,{"value":centerValue.text})
+                    }
                 }
                 MouseArea {
                     anchors.fill: parent
@@ -383,6 +396,8 @@ Item {
                         keyNum.visible = true
                         keyNum.titleText = head
                         keyNum.currentValue = value
+                        keyNum.maxvalue = maxValue
+                        keyNum.minvalue = minValue
                     }
                 }
             }
@@ -435,6 +450,9 @@ Item {
                     font.pixelSize: 25
                     color: "white"
                     text: value
+                    onTextChanged: {
+                        sigmaLowerModel.set(index,{"value":centerValue.text})
+                    }
                 }
                 MouseArea {
                     anchors.fill: parent
@@ -447,6 +465,8 @@ Item {
                         keyNum.visible = true
                         keyNum.titleText = head
                         keyNum.currentValue = value
+                        keyNum.maxvalue = maxValue
+                        keyNum.minvalue = minValue
                     }
                 }
             }
@@ -484,6 +504,26 @@ Item {
         text: qsTr("OK")
         textColor: "white"
         onClicked: {
+            spliceModel.setStructValue("TestStandardTime+",standardUpperModel.get(0).value)
+            spliceModel.setStructValue("TestStandardPower+",standardUpperModel.get(1).value)
+            spliceModel.setStructValue("TestStandardPre+",standardUpperModel.get(2).value)
+            spliceModel.setStructValue("TestStandardPost+",standardUpperModel.get(3).value)
+
+            spliceModel.setStructValue("TestStandardTime-",standardLowerModel.get(0).value)
+            spliceModel.setStructValue("TestStandardPower-",standardLowerModel.get(1).value)
+            spliceModel.setStructValue("TestStandardPre-",standardLowerModel.get(2).value)
+            spliceModel.setStructValue("TestStandardPost-",standardLowerModel.get(3).value)
+
+            spliceModel.setStructValue("TestSigmaTime+",sigmaUpperModel.get(0).value)
+            spliceModel.setStructValue("TestSigmaPower+",sigmaUpperModel.get(1).value)
+            spliceModel.setStructValue("TestSigmaPre+",sigmaUpperModel.get(2).value)
+            spliceModel.setStructValue("TestSigmaPost+",sigmaUpperModel.get(3).value)
+
+            spliceModel.setStructValue("TestSigmaTime-",sigmaLowerModel.get(0).value)
+            spliceModel.setStructValue("TestSigmaPower-",sigmaLowerModel.get(1).value)
+            spliceModel.setStructValue("TestSigmaPre-",sigmaLowerModel.get(2).value)
+            spliceModel.setStructValue("TestSigmaPost-",sigmaLowerModel.get(3).value)
+            spliceModel.saveSplice(true)
             signalAdvanceOk()
         }
     }

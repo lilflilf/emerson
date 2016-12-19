@@ -9,13 +9,20 @@ Item {
     width: Screen.width
     height: Screen.height * 0.8
 
+    Component.onCompleted: {
+//        hmiAdaptor.operateProcessExec("Start")
+    }
+    Component.onDestruction: {
+//        hmiAdaptor.operateProcessExec("Stop")
+    }
+
     function setData()
     {
         qualityWindow.qualityModel.clear()
-        qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Time+"),"redMin":spliceModel.getRawData("Time-"),"yellowMax":4,"yellowMin":1,"current":6,"currentText":""})
-        qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Power+"),"redMin":spliceModel.getRawData("Power-"),"yellowMax":4,"yellowMin":1,"current":123,"currentText":""})
-        qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Pre-Height+"),"redMin":spliceModel.getRawData("Pre-Height-"),"yellowMax":4,"yellowMin":1,"current":2512,"currentText":""})
-        qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Post-Height+"),"redMin":spliceModel.getRawData("Post-Height-"),"yellowMax":4,"yellowMin":1,"current":43,"currentText":""})
+        qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Time+"),"redMin":spliceModel.getRawData("Time-"),"yellowMax":4,"yellowMin":1,"current":-1,"currentText":"23"})
+        qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Power+"),"redMin":spliceModel.getRawData("Power-"),"yellowMax":4,"yellowMin":1,"current":123,"currentText":"123"})
+        qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Pre-Height+"),"redMin":spliceModel.getRawData("Pre-Height-"),"yellowMax":4,"yellowMin":1,"current":2512,"currentText":"2512"})
+        qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Post-Height+"),"redMin":spliceModel.getRawData("Post-Height-"),"yellowMax":4,"yellowMin":1,"current":43,"currentText":"43"})
 
         qualityWindow.timeModel = alarmModel.getPointList("Time",spliceModel.getStructValue("SpliceName",""),spliceModel.getHashCode())
         qualityWindow.powerModel = alarmModel.getPointList("Power",spliceModel.getStructValue("SpliceName",""),spliceModel.getHashCode())
@@ -40,7 +47,7 @@ Item {
             wireModel.addFromLibrary(list[i])
             spliceDetailsItem.addWireFromSplice()
         }
-        hmiAdaptor.setOperateProcess(spliceId)
+        hmiAdaptor.setOperateProcess(spliceId,true)
 //        hmiAdaptor.operateProcessExec("Execute")
 
     }
@@ -106,12 +113,6 @@ Item {
 
     QualityWindow {
         id: qualityWindow
-//        anchors.left: line.right
-//        anchors.leftMargin: 36
-//        anchors.right: parent.right
-//        anchors.rightMargin: 30
-////        width: 688
-//        height: 543
         anchors.top: operateTitle.top
         anchors.right: parent.right
         anchors.rightMargin: 30
@@ -123,23 +124,9 @@ Item {
         height: Screen.height *0.45
         anchors.top: operateTitle.bottom
         anchors.left: operateTitle.left
-        //anchors.right: operateTitle.right
         anchors.topMargin: 15
         centerVisable: false
         Component.onCompleted: {
-//            spliceDetailsItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-//            spliceDetailsItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-//            spliceDetailsItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-//            spliceDetailsItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-
-//            spliceDetailsItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-//            spliceDetailsItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-//            spliceDetailsItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-//            spliceDetailsItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-//            spliceDetailsItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-//            spliceDetailsItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-//            spliceDetailsItem.setState("topLeft",200,"0.75","red")
-//            spliceDetailsItem.setState("bottomLeft",200,"0.75","red")
         }
     }
     Item {
@@ -187,11 +174,11 @@ Item {
             anchors.right: parent.right
             ListModel {
                 id: leftBottomModel
-                ListElement { name: "ENERGY(J)"; myvalue: "50"}
-                ListElement { name: "T.P.(PSI)"; myvalue: "20"}
-                ListElement { name: "W.P.(PSI)"; myvalue: "20"}
-                ListElement { name: "AMP(um)"; myvalue: "50"}
-                ListElement { name: "WIDTH(mm)"; myvalue: "10.00"}
+                ListElement { name: qsTr("ENERGY(J)"); myvalue: "50"}
+                ListElement { name: qsTr("T.P.(PSI)"); myvalue: "20"}
+                ListElement { name: qsTr("W.P.(PSI)"); myvalue: "20"}
+                ListElement { name: qsTr("AMP(um)"); myvalue: "50"}
+                ListElement { name: qsTr("WIDTH(mm)"); myvalue: "10.00"}
             }
 
             ListView {
@@ -206,7 +193,7 @@ Item {
                     Text {
                         id: title
                         font.family: "arial"
-                        text:  qsTr(name)
+                        text:  name
                         font.pointSize: 16
                         color: "white"
                         anchors.horizontalCenter: parent.horizontalCenter
@@ -215,7 +202,7 @@ Item {
                         anchors.top: title.bottom
                         anchors.topMargin: 20
                         font.family: "arial"
-                        text: myvalue //qsTr(myvalue)
+                        text: myvalue
                         font.pointSize: 16
                         color: "white"
                         anchors.horizontalCenter: parent.horizontalCenter
@@ -291,8 +278,8 @@ Item {
 
     CButton {
         id: finish
-        width: 300//Screen.width * 0.17
-        height: 79//Screen.height * 0.07
+        width: 300
+        height: 79
         anchors.right: qualityWindow.right
         anchors.bottom: parent.bottom
         text: qsTr("FINISH SAMPLE")

@@ -32,6 +32,7 @@ public:
     PresetElement CurrentSplice;
     struct NecessaryInfo CurrentNecessaryInfo;
     WeldResultElement CurrentWeldResult;
+
 private:
     static ThreadClass* m_Thread;
     int m_triedCount;

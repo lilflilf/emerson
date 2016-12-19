@@ -9,24 +9,6 @@ Item {
     CButton {
         id: miniKey
         height: parent.height
-    //    property alias inputSize: mytext.font.pointSize
-    //    property alias tipsSize: tips.font.pointSize
-    //    property alias inputColor: mytext.color
-    //    property alias tipsColor: tips.color
-    //    property alias maxSize: mytext.maximumLineCount
-    //    property alias backgroundcolor: miniKey.backgroundItem.color
-    //    property string borderColor: miniKey.backgroundItem.border.color
-    //    property alias tipsWidth: miniKey.width
-    //    property alias inputHeight: miniKey.height
-    //    property alias tipsHeight: miniKey.height
-
-    //    property alias regExp: mytext.validator
-    //    property alias displayText: textInput.displayText
-    //    property alias horizontalAlignment: textInput.horizontalAlignment
-    //    property alias defaultText: defaultText.text
-    //    property alias defaultTextSize: defaultText.font.pointSize
-
-
 
         Text {
             id: mytext

@@ -73,7 +73,7 @@ Item {
         width: parent.width- checkBox.width - 34
         font.pixelSize: 20
         font.family: "arial"
-        text: qsTr("text")
+        text: ""
         color: "white"
     }
     MouseArea {

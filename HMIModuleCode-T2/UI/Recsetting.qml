@@ -36,7 +36,7 @@ Item {
         font.family: "arial"
         font.pixelSize: 20
         color: "white"
-        text: qsTr(headTitle)
+        text: headTitle
     }
     Text {
         id: centerValue
@@ -44,7 +44,7 @@ Item {
         font.family: "arial"
         font.pixelSize: 25
         color: "white"
-        text: qsTr(centervalue)
+        text: centervalue
     }
     MouseArea {
         anchors.fill: parent
