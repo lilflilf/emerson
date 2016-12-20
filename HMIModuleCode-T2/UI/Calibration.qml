@@ -22,7 +22,7 @@ Item {
         onWidthCalibrationFinish: {
             if (_Result && calibration.currentIndex == 1)
             {
-                hmiAdaptor.calibrationMaintenanceExecute(hmiAdaptor.HEIGHT_CALIBRATE)
+                hmiAdaptor.calibrationMaintenanceExecute(1)
             }
         }
         onHeightCalibrationFinish: {
@@ -109,20 +109,20 @@ Item {
                 text: qsTr("Start")
                 onClicked: {
                     if (calibration.currentIndex == 1) {
-                        hmiAdaptor.calibrationMaintenanceExecute(hmiAdaptor.WIDTH_CALIBRATE)
                         button1.enabled = false
                         animated.visible = true
+                        hmiAdaptor.calibrationMaintenanceExecute(0)
                     }
                     else if (calibration.currentIndex == 2)
                         calibration.currentIndex++
                 }
                 onPressed: {
                     if (calibration.currentIndex == 3)
-                        hmiAdaptor.calibrationMaintenanceExecute(hmiAdaptor.AMPLITUDE_CALIBRATE_PRESS)
+                        hmiAdaptor.calibrationMaintenanceExecute(2)
                 }
                 onReleased: {
                     if (calibration.currentIndex == 3) {
-                        hmiAdaptor.calibrationMaintenanceExecute(hmiAdaptor.AMPLITUDE_CALIBRATE_UPPRESS)
+                        hmiAdaptor.calibrationMaintenanceExecute(3)
                         calibration.currentIndex++
                     }
 
