@@ -5,6 +5,7 @@
 #include <QFile>
 #include <QAxObject>
 #include <QAxWidget>
+#include <QQuickView>
 
 HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
 {
@@ -82,6 +83,17 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
     operateProcess = OperateProcess::Instance();
     connect(operateProcess,SIGNAL(WeldCycleCompleted(bool)),this,SLOT(slotWeldCycleCompleted(bool)));
     m_spliceAdaptor = DBPresetTable::Instance();
+}
+
+HmiAdaptor::~HmiAdaptor()
+{
+
+}
+
+void HmiAdaptor::quit()
+{
+    HWND hWnd = ::FindWindow(TEXT("Shell_traywnd"),TEXT(""));
+    ::SetWindowPos(hWnd,0,0,0,0,0,SWP_SHOWWINDOW);
 }
 
 void HmiAdaptor::openFileDialog()
