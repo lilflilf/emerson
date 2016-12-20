@@ -13,9 +13,10 @@ Item {
     Component.onCompleted: {
         hmiAdaptor.maintenanceStart(0);
     }
-    Component.onDestruction: {
-        hmiAdaptor.maintenanceStop(0);
-    }
+//    Component.onDestruction: {
+//        console.log("dddddddddddddddddddddddddddddd")
+//        hmiAdaptor.maintenanceStop(0);
+//    }
 
     Connections {
         target: hmiAdaptor

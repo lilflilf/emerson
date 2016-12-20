@@ -22,11 +22,11 @@ Item {
     property var currentDir: 0
     property var currentFile: 0
 
-//    Component.onCompleted: {
-//        hmiAdaptor.maintenanceStart(2);
-//    }
+    Component.onCompleted: {
+        hmiAdaptor.maintenanceStart(1);
+    }
 //    Component.onDestruction: {
-//        hmiAdaptor.maintenanceStop(2);
+//        hmiAdaptor.maintenanceStop(1);
 //    }
     Image {
         anchors.fill: parent
