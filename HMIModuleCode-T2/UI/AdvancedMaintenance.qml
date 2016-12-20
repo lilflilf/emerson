@@ -11,12 +11,12 @@ Item {
     width: Screen.width*0.7
     height: Screen.height*0.6
 
-//    Component.onCompleted: {
-//        hmiAdaptor.maintenanceStart(2);
-//    }
-//    Component.onDestruction: {
-//        hmiAdaptor.maintenanceStop(2);
-//    }
+    Component.onCompleted: {
+        hmiAdaptor.maintenanceStart(2);
+    }
+    Component.onDestruction: {
+        hmiAdaptor.maintenanceStop(2);
+    }
 
     Column {
         id: column1
@@ -58,21 +58,21 @@ Item {
             width: 250
             text: qsTr("1-Anvil Arm")
             onClicked: {
-//                hmiAdaptor.advancedMaintenanceExecute(hmiAdaptor.ANVILARMCLICK)
+                hmiAdaptor.advancedMaintenanceExecute(0)
             }
         }
         CButton {
             width: 250
             text: qsTr("2-Gather")
             onClicked: {
-//                hmiAdaptor.advancedMaintenanceExecute(hmiAdaptor.GATHERCLICK)
+                hmiAdaptor.advancedMaintenanceExecute(2)
             }
         }
         CButton {
             width: 250
             text: qsTr("3-Safety")
             onClicked: {
-//                hmiAdaptor.advancedMaintenanceExecute(hmiAdaptor.SAFETYCLICK)
+                hmiAdaptor.advancedMaintenanceExecute(5)
             }
         }
     }
@@ -87,28 +87,28 @@ Item {
             width: 250
             text: qsTr("4-Cutter")
             onClicked: {
-//                hmiAdaptor.advancedMaintenanceExecute(hmiAdaptor.CUTTERCLICK)
+                hmiAdaptor.advancedMaintenanceExecute(3)
             }
         }
         CButton {
             width: 250
             text: qsTr("5-Cooling Tooling")
             onClicked: {
-//                hmiAdaptor.advancedMaintenanceExecute(hmiAdaptor.TOOLINGCOOLINGCLICK)
+                hmiAdaptor.advancedMaintenanceExecute(7)
             }
         }
         CButton {
             width: 250
             text: qsTr("6-Cooling Converter")
             onClicked: {
-//                hmiAdaptor.advancedMaintenanceExecute(hmiAdaptor.CONVERTERCOOLINGCLICK)
+                hmiAdaptor.advancedMaintenanceExecute(6)
             }
         }
         CButton {
             width: 250
             text: qsTr("7-Crash")
             onClicked: {
-//                hmiAdaptor.advancedMaintenanceExecute(hmiAdaptor.CRASHCLICK)
+                hmiAdaptor.advancedMaintenanceExecute(4)
             }
         }
 

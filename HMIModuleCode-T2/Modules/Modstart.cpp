@@ -37,6 +37,10 @@ MODstart::MODstart()
     Statistics *_Statistics = Statistics::Instance();
     ModRunSetup *_ModRunSetup = ModRunSetup::Instance();
     InterfaceClass *_Interface = InterfaceClass::Instance();
+
+//    _ModRunSetup->OfflineModeEnabled = true;
+//    _ModRunSetup->GlobalOfflineModeEnabled = true;
+
     int check_result = 0;
 
     App.Major    = "24";
@@ -139,7 +143,20 @@ MODstart::MODstart()
         _M102IA->IACommand(IAComSetM10Mode);
         _ModRunSetup->OfflineModeEnabled = false;
 
-        Update_from_StatusData_for_commands();
+//        Update_from_StatusData_for_commands();
+        switch(_Interface->StatusData.MachineType)
+        {
+        case ACTULTRA20:
+        case ACTULTRA40:
+        case ACTMTS20:
+        case ACTGUN40:
+            _M2010->Machine = Welder;
+            break;
+        default:
+            _M2010->Machine = WireSplicer;
+            break;
+        }
+
         _ModRunSetup->InitialStartFlag = true;
         ApplicationFirstStartFlag = true;
         _ModRunSetup->M10initiate();

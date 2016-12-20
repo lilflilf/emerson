@@ -499,7 +499,7 @@ Item {
                 if (inputquantity.inputFocus) {
                     keyNum.visible = true
                     keyNum.titleText = quantity.text
-                    keyNum.currentValue = workOrderModel.getWorkOrderValue( selectIndx, "count")
+                    keyNum.currentValue = dialog.bIsEdit ? workOrderModel.getWorkOrderValue( selectIndx, "count") : ""
                     keyNum.minvalue = "1"
                     keyNum.maxvalue = "20"
                 }

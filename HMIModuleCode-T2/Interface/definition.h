@@ -148,7 +148,7 @@ enum TESTMODE
 {
     UNCONSTRAINED,
     CONSTRAINED,
-    TEACHMODE,
+//    TEACHMODE,
 };
 
 // Quality Range Variables Created (set), defined under InitializeData

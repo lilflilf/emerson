@@ -15,6 +15,20 @@ Item {
     property var postModel: new Array
     property var selectIndex: 0
     property alias qualityListViewTwoModel: qualityListViewTwo.model
+
+    function setData()
+    {
+        qualityListViewTwo.model = 0
+        if (selectIndex == 0)
+            qualityListViewTwo.model = timeModel.length
+        else if (selectIndex == 1)
+            qualityListViewTwo.model = powerModel.length
+        else if (selectIndex == 2)
+            qualityListViewTwo.model = preModel.length
+        else if (selectIndex == 3)
+            qualityListViewTwo.model = postModel.length
+    }
+
     Text {
         id: qualityWindowTitle
         text: qsTr("QualityWindow")
@@ -89,7 +103,7 @@ Item {
 
                     Text {
                         id: lineValue
-                        text: current
+                        text: current //qsTr("170")
                         font.family: "arial"
                         color: "white"
                         font.pointSize: 16

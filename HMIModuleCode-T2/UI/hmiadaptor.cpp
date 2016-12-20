@@ -741,8 +741,10 @@ bool HmiAdaptor::dataCommunicationSetValue(QList<bool> boolList, QStringList str
 
 void HmiAdaptor::slotWeldCycleCompleted(bool result)
 {
-    alarmModel->weldResultElement = operateProcess->CurrentWeldResult;
-    emit signalWeldCycleCompleted(result);
+    if (result) {
+        alarmModel->weldResultElement = operateProcess->CurrentWeldResult;
+        emit signalWeldCycleCompleted(result);
+    }
 }
 
 void HmiAdaptor::slotEnableDialog(BransonMessageBox &MsgBox)
@@ -869,13 +871,16 @@ int HmiAdaptor::timeChangeToInt(QString time)
     return temptime.toTime_t();
 }
 
-void HmiAdaptor::setOperateProcess(int spliceId)
+void HmiAdaptor::setOperateProcess(int spliceId, bool isText)
 {
     m_spliceAdaptor->QueryOneRecordFromTable(spliceId,&operateProcess->CurrentSplice);
-    operateProcess->CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderID = workOrderModel->getStructValue("WorkOrderId").toInt();
-    operateProcess->CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderName = workOrderModel->getStructValue("WorkOrderName").toString();
-    operateProcess->CurrentNecessaryInfo.CurrentPart.PartID = partModel->getStruceValue("PartId").toInt();
-    operateProcess->CurrentNecessaryInfo.CurrentPart.PartName = partModel->getStruceValue("PartName").toString();
+    if (isText == false)
+    {
+        operateProcess->CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderID = workOrderModel->getStructValue("WorkOrderId").toInt();
+        operateProcess->CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderName = workOrderModel->getStructValue("WorkOrderName").toString();
+        operateProcess->CurrentNecessaryInfo.CurrentPart.PartID = partModel->getStruceValue("PartId").toInt();
+        operateProcess->CurrentNecessaryInfo.CurrentPart.PartName = partModel->getStruceValue("PartName").toString();
+    }
 }
 
 void HmiAdaptor::operateProcessExec(QString type)

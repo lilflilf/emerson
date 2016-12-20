@@ -273,6 +273,7 @@ Item {
             backGround.visible = true
             backGround.opacity = 0.5
             operatorDialog.visible = true
+            operatorModel.editNew(selectIndx)
         }
     }
     CButton {
