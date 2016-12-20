@@ -87,7 +87,7 @@ Item {
                         anchors.centerIn: parent
                         width: parent.width - 6
                         height: parent.height - 6
-                        color: qsTr(array[index])
+                        color: array[index]
                     }
                 }
             }
@@ -137,7 +137,6 @@ Item {
                             if (zone.num == -1) {
                                 zone.num = index
                             } else {
-                                console.log("11111111111111111111",zone.num)
                                 zoneRepeater.itemAt(zone.num).bIsShow = false
                                 zone.num = index
                             }
@@ -147,7 +146,7 @@ Item {
                         }
                     }
                     Text {
-                        text: qsTr(array2[index])
+                        text: array2[index]
                         color: "white"
                         anchors.centerIn: parent
                         font.pointSize: 16

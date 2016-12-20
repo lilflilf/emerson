@@ -66,6 +66,7 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
     maintenanceCount = new MaintenanceCounter;
     maintenanceLog = new MaintenanceLogElement;
     toolChange = new ToolChange;
+    statisticalTrend = new StatisticalTrend;
     interfaceClass = InterfaceClass::Instance();
 
     connect(interfaceClass, SIGNAL(EnableErrorMessageSignal(BransonMessageBox&)), this, SLOT(slotEnableDialog(BransonMessageBox&)));
@@ -890,4 +891,9 @@ void HmiAdaptor::operateProcessExec(QString type)
         operateProcess->_stop();
     else if (type == "Execute")
         operateProcess->_execute();
+}
+
+void HmiAdaptor::statisticalTrendApply(int SpliceID, QString SpliceName, unsigned int time_from, unsigned int time_to)
+{
+    statisticalTrend->_apply(SpliceID,SpliceName,time_from,time_to);
 }

@@ -303,66 +303,66 @@ Item {
 
         Component.onCompleted: {
             initPage()
-            partKeyModel.append({"title":"name"})
-            partKeyModel.append({"title":"date"})
-            partKeyModel.append({"title":"totalSplices"})
-            partKeyModel.append({"title":"type"})
-            partKeyModel.append({"title":"operatorName"})
-            partKeyModel.append({"title":"processMode"})
-            partKeyModel.append({"title":"ofWorkstation"})
-            partKeyModel.append({"title":"ofSplicesperWorkstation"})
-            partKeyModel.append({"title":"rows"})
-            partKeyModel.append({"title":"columns"})
-            partKeyModel.append({"title":"maxSplicesPerZone"})
+            partKeyModel.append({"title":qsTr("name")})
+            partKeyModel.append({"title":qsTr("date")})
+            partKeyModel.append({"title":qsTr("totalSplices")})
+            partKeyModel.append({"title":qsTr("type")})
+            partKeyModel.append({"title":qsTr("operatorName")})
+            partKeyModel.append({"title":qsTr("processMode")})
+            partKeyModel.append({"title":qsTr("ofWorkstation")})
+            partKeyModel.append({"title":qsTr("ofSplicesperWorkstation")})
+            partKeyModel.append({"title":qsTr("rows")})
+            partKeyModel.append({"title":qsTr("columns")})
+            partKeyModel.append({"title":qsTr("maxSplicesPerZone")})
 
             shrinkTitleModel.append({title:qsTr("Insulation Name")})
             shrinkTitleModel.append({title:qsTr("Temp(℃)")})
             shrinkTitleModel.append({title:qsTr("Time(S)")})
 
-            partTitleModel.append({"title":"PartName"})
-            partTitleModel.append({"title":"DateCreated"})
-            partTitleModel.append({"title":"OperatorName"})
-            partTitleModel.append({"title":"TotalSplices"})
-            partTitleModel.append({"title":"ProcessMode"})
-            partTitleModel.append({"title":"#ofWorkstation"})
-            partTitleModel.append({"title":"#ofSplicesperWorkstation"})
-            partTitleModel.append({"title":"Rows"})
-            partTitleModel.append({"title":"Columns"})
-            partTitleModel.append({"title":"MaxSplicesPerZone"})
+            partTitleModel.append({"title":qsTr("PartName")})
+            partTitleModel.append({"title":qsTr("DateCreated")})
+            partTitleModel.append({"title":qsTr("OperatorName")})
+            partTitleModel.append({"title":qsTr("TotalSplices")})
+            partTitleModel.append({"title":qsTr("ProcessMode")})
+            partTitleModel.append({"title":qsTr("#ofWorkstation")})
+            partTitleModel.append({"title":qsTr("#ofSplicesperWorkstation")})
+            partTitleModel.append({"title":qsTr("Rows")})
+            partTitleModel.append({"title":qsTr("Columns")})
+            partTitleModel.append({"title":qsTr("MaxSplicesPerZone")})
 
-            spliceTitleModel.append({"title":"SpliceName"})
-            spliceTitleModel.append({"title":"DateCreated"})
-            spliceTitleModel.append({"title":"OperatorName"})
-            spliceTitleModel.append({"title":"CrossSection"})
-            spliceTitleModel.append({"title":"TotalWires"})
-            spliceTitleModel.append({"title":"Verified"})
-            spliceTitleModel.append({"title":"WeldMode"})
-            spliceTitleModel.append({"title":"Energy"})
-            spliceTitleModel.append({"title":"Amplitude"})
-            spliceTitleModel.append({"title":"Width"})
-            spliceTitleModel.append({"title":"TriggerPressure"})
-            spliceTitleModel.append({"title":"WeldPressure"})
-            spliceTitleModel.append({"title":"Time+"})
-            spliceTitleModel.append({"title":"Time-"})
-            spliceTitleModel.append({"title":"Power+"})
-            spliceTitleModel.append({"title":"Power-"})
-            spliceTitleModel.append({"title":"Pre-Height+"})
-            spliceTitleModel.append({"title":"Pre-Height-"})
-            spliceTitleModel.append({"title":"Height+"})
-            spliceTitleModel.append({"title":"Height-"})
+            spliceTitleModel.append({"title":qsTr("SpliceName")})
+            spliceTitleModel.append({"title":qsTr("DateCreated")})
+            spliceTitleModel.append({"title":qsTr("OperatorName")})
+            spliceTitleModel.append({"title":qsTr("CrossSection")})
+            spliceTitleModel.append({"title":qsTr("TotalWires")})
+            spliceTitleModel.append({"title":qsTr("Verified")})
+            spliceTitleModel.append({"title":qsTr("WeldMode")})
+            spliceTitleModel.append({"title":qsTr("Energy")})
+            spliceTitleModel.append({"title":qsTr("Amplitude")})
+            spliceTitleModel.append({"title":qsTr("Width")})
+            spliceTitleModel.append({"title":qsTr("TriggerPressure")})
+            spliceTitleModel.append({"title":qsTr("WeldPressure")})
+            spliceTitleModel.append({"title":qsTr("Time+")})
+            spliceTitleModel.append({"title":qsTr("Time-")})
+            spliceTitleModel.append({"title":qsTr("Power+")})
+            spliceTitleModel.append({"title":qsTr("Power-")})
+            spliceTitleModel.append({"title":qsTr("Pre-Height+")})
+            spliceTitleModel.append({"title":qsTr("Pre-Height-")})
+            spliceTitleModel.append({"title":qsTr("Height+")})
+            spliceTitleModel.append({"title":qsTr("Height-")})
 
 //            list <<"WireId"<< "WireName" << "DateCreated" << "OperatorName" << "Color" << "StripeType" << "StripeColor" << "Gauge" << "MetalType" << "HorizontalLocation" << "VerticalLocation" << "VerticalPosition";
-            wireTitleModel.append({"title":"WireName"})
-            wireTitleModel.append({"title":"DateCreated"})
-            wireTitleModel.append({"title":"OperatorName"})
-            wireTitleModel.append({"title":"Color"})
-            wireTitleModel.append({"title":"StripeType"})
-            wireTitleModel.append({"title":"StripeColor"})
-            wireTitleModel.append({"title":"Gauge"})
-            wireTitleModel.append({"title":"MetalType"})
-            wireTitleModel.append({"title":"HorizontalLocation"})
-            wireTitleModel.append({"title":"VerticalLocation"})
-            wireTitleModel.append({"title":"VerticalPosition"})
+            wireTitleModel.append({"title":qsTr("WireName")})
+            wireTitleModel.append({"title":qsTr("DateCreated")})
+            wireTitleModel.append({"title":qsTr("OperatorName")})
+            wireTitleModel.append({"title":qsTr("Color")})
+            wireTitleModel.append({"title":qsTr("StripeType")})
+            wireTitleModel.append({"title":qsTr("StripeColor")})
+            wireTitleModel.append({"title":qsTr("Gauge")})
+            wireTitleModel.append({"title":qsTr("MetalType")})
+            wireTitleModel.append({"title":qsTr("HorizontalLocation")})
+            wireTitleModel.append({"title":qsTr("VerticalLocation")})
+            wireTitleModel.append({"title":qsTr("VerticalPosition")})
         }
     }
     Image {
@@ -404,7 +404,7 @@ Item {
                 color: "white"
                 clip: true
                 elide: Text.ElideRight
-                text: qsTr(title)
+                text: title
 //                Rectangle {
 //                    id: rect
 //                    width: 10
@@ -888,7 +888,7 @@ Item {
         width: 962
         height: 526
         visible: false
-        titleText: qsTr("")
+        titleText: ""
         maxvalue: "4"
         minvalue: "1"
         currentValue: "4"

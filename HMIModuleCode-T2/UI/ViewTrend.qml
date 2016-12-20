@@ -45,30 +45,6 @@ Item {
             lineColor: "#375566"
         }
 
-        ListModel {
-            id: testModel
-            Component.onCompleted: {
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-            }
-        }
         Item {
             id: searchArea
             property int selectNum: -2
@@ -157,7 +133,7 @@ Item {
                             font.pixelSize: 16
                             color: "white"
                             elide: Text.ElideRight
-                            text: qsTr(SpliceName)
+                            text: SpliceName
                         }
                         MouseArea {
                             anchors.fill: parent
@@ -199,7 +175,7 @@ Item {
                         workOrderName.text = searchList.model.getValue(searchArea.selectNum,"SpliceName")
                     } else {
                         searchArea.visible = false
-                        workOrderName.text = "All"
+                        workOrderName.text = qsTr("All")
                     }
                 }
             }
@@ -477,19 +453,19 @@ Item {
         spacing: 30
         CButton {
             width: (qualityListViewTwo.width - 90) / 4
-            text: "Time"
+            text: qsTr("Time")
         }
         CButton {
             width: (qualityListViewTwo.width - 90) / 4
-            text: "Pre-Height"
+            text: qsTr("Pre-Height")
         }
         CButton {
             width: (qualityListViewTwo.width - 90) / 4
-            text: "Post-Hight"
+            text: qsTr("Post-Hight")
         }
         CButton {
             width: (qualityListViewTwo.width - 90) / 4
-            text: "Peak Power"
+            text: qsTr("Peak Power")
         }
     }
     Text {
@@ -499,20 +475,18 @@ Item {
         font.family: "arial"
         font.pointSize: 16
         color: "white"
-        text: qsTr("Weld Actual Result\n") //Cross section\nEnergy\nTime\nPressure\nAmplitude\nWidth\nPre-Height\nPost-Height")
+        text: qsTr("Weld Actual Result\n")
     }
     ListModel {
         id: leftTextModel
         Component.onCompleted: {
-            leftTextModel.append({"mytitle":"Cross section:","myvalue":"xxxxxx","mytitle2":"Weld Time:","myvalue2":"xxxxxx"})
-            leftTextModel.append({"mytitle":"Energy:","myvalue":"xxxxxx","mytitle2":"Peak Power:","myvalue2":"xxxxxx"})
-            leftTextModel.append({"mytitle":"Weld Pressure:","myvalue":"xxxxxx","mytitle2":"Pre-Heigh:","myvalue2":"xxxxxx"})
-            leftTextModel.append({"mytitle":"Trigger Pressure:","myvalue":"xxxxxx","mytitle2":"Post-Heigh:","myvalue2":"xxxxxx"})
-            leftTextModel.append({"mytitle":"Amplitude:","myvalue":"xxxxxx","mytitle2":"Part Name:","myvalue2":"xxxxxx"})
-            leftTextModel.append({"mytitle":"Width:","myvalue":"xxxxxx","mytitle2":"Date Created:","myvalue2":"xxxxxx"})
-            leftTextModel.append({"mytitle":"Work Order Name:","myvalue":"xxxxxx","mytitle2":"","myvalue2":""})
-
-
+            leftTextModel.append({"mytitle":qsTr("Cross section:"),"myvalue":"xxxxxx","mytitle2":"Weld Time:","myvalue2":"xxxxxx"})
+            leftTextModel.append({"mytitle":qsTr("Energy:"),"myvalue":"xxxxxx","mytitle2":"Peak Power:","myvalue2":"xxxxxx"})
+            leftTextModel.append({"mytitle":qsTr("Weld Pressure:"),"myvalue":"xxxxxx","mytitle2":"Pre-Heigh:","myvalue2":"xxxxxx"})
+            leftTextModel.append({"mytitle":qsTr("Trigger Pressure:"),"myvalue":"xxxxxx","mytitle2":"Post-Heigh:","myvalue2":"xxxxxx"})
+            leftTextModel.append({"mytitle":qsTr("Amplitude:"),"myvalue":"xxxxxx","mytitle2":"Part Name:","myvalue2":"xxxxxx"})
+            leftTextModel.append({"mytitle":qsTr("Width:"),"myvalue":"xxxxxx","mytitle2":"Date Created:","myvalue2":"xxxxxx"})
+            leftTextModel.append({"mytitle":qsTr("Work Order Name:"),"myvalue":"xxxxxx","mytitle2":"","myvalue2":""})
         }
     }
 
@@ -529,28 +503,28 @@ Item {
                     font.pointSize: 16
                     color: "white"
                     width: qualityListViewTwo.width / 8 + 60
-                    text: qsTr(mytitle)
+                    text: mytitle
                 }
                 Text {
                     font.family: "arial"
                     font.pointSize: 16
                     color: "white"
                     width: qualityListViewTwo.width / 8
-                    text: qsTr(myvalue)
+                    text: myvalue
                 }
                 Text {
                     font.family: "arial"
                     font.pointSize: 16
                     color: "white"
                     width: qualityListViewTwo.width / 8 + 40
-                    text: qsTr(mytitle2)
+                    text: mytitle2
                 }
                 Text {
                     font.family: "arial"
                     font.pointSize: 16
                     color: "white"
                     width: qualityListViewTwo.width / 8
-                    text: qsTr(myvalue2)
+                    text: myvalue2
                 }
             }
         }
@@ -559,21 +533,21 @@ Item {
     Text {
         id: bottomText2
         anchors.left: leftTextList.right
-        anchors.leftMargin: 30 //qualityListViewTwo.width / 4 * 3
+        anchors.leftMargin: 30
         anchors.top: selectButton.bottom
         font.family: "arial"
         font.pointSize: 16
         color: "white"
-        text: qsTr("Statistics\n")  // \nSample Size\nMean\nMedian\nSigma\nCPK")
+        text: qsTr("Statistics\n")
     }
     ListModel {
         id: rightTextModel
         Component.onCompleted: {
-            rightTextModel.append({"mytitle":"Sample Size:","myvalue":"xxxxxx"})
-            rightTextModel.append({"mytitle":"Mean:","myvalue":"xxxxxx"})
-            rightTextModel.append({"mytitle":"Median:","myvalue":"xxxxxx"})
-            rightTextModel.append({"mytitle":"Sigma:","myvalue":"xxxxxx"})
-            rightTextModel.append({"mytitle":"CPK:","myvalue":"xxxxxx"})
+            rightTextModel.append({"mytitle":qsTr("Sample Size:"),"myvalue":"xxxxxx"})
+            rightTextModel.append({"mytitle":qsTr("Mean:"),"myvalue":"xxxxxx"})
+            rightTextModel.append({"mytitle":qsTr("Median:"),"myvalue":"xxxxxx"})
+            rightTextModel.append({"mytitle":qsTr("Sigma:"),"myvalue":"xxxxxx"})
+            rightTextModel.append({"mytitle":qsTr("CPK:"),"myvalue":"xxxxxx"})
         }
     }
     Column {
@@ -589,14 +563,14 @@ Item {
                     font.pointSize: 16
                     color: "white"
                     width: qualityListViewTwo.width / 8 + 40
-                    text: qsTr(mytitle)
+                    text: mytitle
                 }
                 Text {
                     font.family: "arial"
                     font.pointSize: 16
                     color: "white"
                     width: qualityListViewTwo.width / 8
-                    text: qsTr(myvalue)
+                    text: myvalue
                 }
             }
         }
@@ -606,7 +580,7 @@ Item {
         anchors.bottom: parent.bottom
         anchors.right: selectButton.right
         width: 200
-        text: "Export"
+        text: qsTr("Export")
     }
 
 }

@@ -50,7 +50,6 @@ Item {
         if (bIsInsert) {
             for (var i = 0; i < listModel.count; i++) {
                 if (listModel.get(i).workcolor == color) {
-                    console.log("add ++++++++++++++++++++",color,i)
                     ++colorRepeater.itemAt(i).currentWorkSpliceCount
                     break;
                 }
@@ -58,7 +57,6 @@ Item {
         } else {
             for (var i = 0; i < listModel.count; i++) {
                 if (listModel.get(i).workcolor == color) {
-                    console.log("-----------------------",color,i)
                     --colorRepeater.itemAt(i).currentWorkSpliceCount
                     break;
                 }
@@ -209,7 +207,7 @@ Item {
                     visible: maxSpliceNum == 0 ? false : true
                     font.pointSize: 10
                     font.family: "arial"
-                    text: "Station" + (index+1+clickCount)
+                    text: qsTr("Station") + (index+1+clickCount)
                 }
             }
         }

@@ -40,33 +40,33 @@ Item {
         }
         ListModel {
             id: headModel
-            ListElement {key:"WorkOrde Name"}
-            ListElement {key:"PartName"}
-            ListElement {key:"SpliceName"}
-            ListElement {key:"OperatorName"}
-            ListElement {key:"DateCreated"}
-            ListElement {key:"CrossSection"}
-            ListElement {key:"WeldMode"}
-            ListElement {key:"Energy"}
-            ListElement {key:"Amplitude"}
-            ListElement {key:"Width"}
-            ListElement {key:"TriggerPressure"}
-            ListElement {key:"Weld Pressure"}
-            ListElement {key:"Time+"}
-            ListElement {key:"Timer-"}
-            ListElement {key:"Time"}
-            ListElement {key:"Power+"}
-            ListElement {key:"Power-"}
-            ListElement {key:"Power"}
-            ListElement {key:"Pre-Height+"}
-            ListElement {key:"Pre-Height-"}
-            ListElement {key:"Pre-Height"}
-            ListElement {key:"Height+"}
-            ListElement {key:"Height-"}
-            ListElement {key:"Height"}
-            ListElement {key:"AlarmType"}
-            ListElement {key:"SampleRatio"}
-            ListElement {key:"GraphData"}
+            ListElement {key:qsTr("WorkOrde Name")}
+            ListElement {key:qsTr("PartName")}
+            ListElement {key:qsTr("SpliceName")}
+            ListElement {key:qsTr("OperatorName")}
+            ListElement {key:qsTr("DateCreated")}
+            ListElement {key:qsTr("CrossSection")}
+            ListElement {key:qsTr("WeldMode")}
+            ListElement {key:qsTr("Energy")}
+            ListElement {key:qsTr("Amplitude")}
+            ListElement {key:qsTr("Width")}
+            ListElement {key:qsTr("TriggerPressure")}
+            ListElement {key:qsTr("Weld Pressure")}
+            ListElement {key:qsTr("Time+")}
+            ListElement {key:qsTr("Timer-")}
+            ListElement {key:qsTr("Time")}
+            ListElement {key:qsTr("Power+")}
+            ListElement {key:qsTr("Power-")}
+            ListElement {key:qsTr("Power")}
+            ListElement {key:qsTr("Pre-Height+")}
+            ListElement {key:qsTr("Pre-Height-")}
+            ListElement {key:qsTr("Pre-Height")}
+            ListElement {key:qsTr("Height+")}
+            ListElement {key:qsTr("Height-")}
+            ListElement {key:qsTr("Height")}
+            ListElement {key:qsTr("AlarmType")}
+            ListElement {key:qsTr("SampleRatio")}
+            ListElement {key:qsTr("GraphData")}
 
         }
 
@@ -137,30 +137,6 @@ Item {
             width: parent.width-58
             lineColor: "#375566"
             height: 1
-        }
-        ListModel {
-            id: testModel
-            Component.onCompleted: {
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-                testModel.append({"name":"test name A"})
-            }
         }
         Item {
             id: searchArea
@@ -248,7 +224,7 @@ Item {
                             font.pixelSize: 16
                             color: "white"
                             elide: Text.ElideRight
-                            text: searchList.model == partModel ? qsTr(PartName) : searchList.model == spliceModel ? qsTr(SpliceName) : qsTr(name)
+                            text: searchList.model == partModel ? PartName : searchList.model == spliceModel ? SpliceName : name
                         }
                         MouseArea {
                             anchors.fill: parent
@@ -303,13 +279,13 @@ Item {
                     } else {
                         switch(searchArea.buttonIndex) {
                         case 1:
-                            workOrderName.text = "All"
+                            workOrderName.text = qsTr("All")
                             break;
                         case 2:
-                            partName.text = "All"
+                            partName.text = qsTr("All")
                             break;
                         case 3:
-                            spliceName.text = "All"
+                            spliceName.text = qsTr("All")
                             break;
                         default:
                             break;
