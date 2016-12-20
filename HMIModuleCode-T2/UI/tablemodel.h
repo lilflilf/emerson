@@ -364,6 +364,7 @@ class MaintenanceLogModel : public QAbstractTableModel
 public:
     explicit MaintenanceLogModel(QObject *parent = 0);
     void setModelList(unsigned int time_from, unsigned int time_to);
+    void setModelList(QString Name, unsigned int time_from,unsigned int time_to);
     void setModelList();
 
     QStringList m_idList;
@@ -385,6 +386,7 @@ public slots:
     Q_INVOKABLE QVariant getValue(int index, QString key);
     Q_INVOKABLE int count();
     Q_INVOKABLE void removeValue(int id, QString name);
+    Q_INVOKABLE void searchMaintenanceLog(QString Name, unsigned int time_from,unsigned int time_to);
 
 private:
     QHash<int, QByteArray> m_roleNames;
