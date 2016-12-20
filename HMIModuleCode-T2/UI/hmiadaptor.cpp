@@ -363,6 +363,7 @@ void HmiAdaptor::maintenanceStart(int page)
 
 void HmiAdaptor::maintenanceStop(int page)
 {
+    mutex.lock();
     switch (page) {
     case 0:
         calibration->_stop();
@@ -381,6 +382,7 @@ void HmiAdaptor::maintenanceStop(int page)
     default:
         break;
     }
+    mutex.unlock();
 }
 
 

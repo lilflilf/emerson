@@ -18,6 +18,7 @@
 #include "Interface/Settings/WeldDefaults.h"
 #include "Interface/Settings/DataCommunication.h"
 #include "Interface/Operate/OperateProcess.h"
+#include <QMutex>
 
 #define TOPATH "C:/BransonData/Library/SpliceImage/"
 
@@ -26,35 +27,35 @@
 class HmiAdaptor : public QObject
 {
     Q_OBJECT
-    Q_ENUMS(StripeType)
-    Q_ENUMS(MetalType)
-    Q_ENUMS(HorizontalLocation)
-    Q_ENUMS(VerticalLocation)
-    Q_ENUMS(VerticalPosition)
-    Q_ENUMS(BUTTONCLICK)
-    Q_ENUMS(CALIBRATE)
+//    Q_ENUMS(StripeType)
+//    Q_ENUMS(MetalType)
+//    Q_ENUMS(HorizontalLocation)
+//    Q_ENUMS(VerticalLocation)
+//    Q_ENUMS(VerticalPosition)
+//    Q_ENUMS(BUTTONCLICK)
+//    Q_ENUMS(CALIBRATE)
     Q_ENUMS(FormulaRange)
 
 public:
-    enum CALIBRATE
-    {
-        WIDTH_CALIBRATE,
-        HEIGHT_CALIBRATE,
-        AMPLITUDE_CALIBRATE_PRESS,
-        AMPLITUDE_CALIBRATE_UPPRESS,
-    };
+//    enum CALIBRATE
+//    {
+//        WIDTH_CALIBRATE,
+//        HEIGHT_CALIBRATE,
+//        AMPLITUDE_CALIBRATE_PRESS,
+//        AMPLITUDE_CALIBRATE_UPPRESS,
+//    };
 
-    enum BUTTONCLICK
-    {
-        ANVILARMCLICK,
-        ANVILCLICK,
-        GATHERCLICK,
-        CUTTERCLICK,
-        CRASHCLICK,
-        SAFETYCLICK,
-        CONVERTERCOOLINGCLICK,
-        TOOLINGCOOLINGCLICK,
-    };
+//    enum BUTTONCLICK
+//    {
+//        ANVILARMCLICK,
+//        ANVILCLICK,
+//        GATHERCLICK,
+//        CUTTERCLICK,
+//        CRASHCLICK,
+//        SAFETYCLICK,
+//        CONVERTERCOOLINGCLICK,
+//        TOOLINGCOOLINGCLICK,
+//    };
     enum FormulaRange
     {
         EnergyR1,
@@ -146,6 +147,8 @@ public:
     PermissionSetting *permissionSetting;
     WeldDefaults *weldDefaults;
     DataCommunication *dataCommunication;
+
+    QMutex mutex;
 signals:
     void widthCalibrationFinish(const bool &_Result);
     void heightCalibrationFinish(const bool &_Result);

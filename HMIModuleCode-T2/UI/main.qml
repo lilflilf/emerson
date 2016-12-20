@@ -38,6 +38,15 @@ Window {
     function menuInit(index)
     {
         initIndex = index
+        if (contentLoader.source == "qrc:/UI/Calibration.qml")
+            hmiAdaptor.maintenanceStop(0);
+        else if (contentLoader.source == "qrc:/UI/AdvancedMaintenance.qml")
+            hmiAdaptor.maintenanceStop(2);
+        else if (contentLoader.source == "qrc:/UI/ToolChange.qml")
+            hmiAdaptor.maintenanceStop(1);
+        else if (contentLoader.source == "qrc:/UI/MaintenanceCount.qml")
+            hmiAdaptor.maintenanceStop(3);
+
         contentLoader.source = ""
         switch (index) {
         case 0:
@@ -61,6 +70,7 @@ Window {
             contentLoader.source = "qrc:/UI/ToolChange.qml"
             break;
         case 6:
+            headBar.titleText = qsTr("Advanced Maintenance")
             contentLoader.source = "qrc:/UI/AdvancedMaintenance.qml"
             break;
         case 7:
