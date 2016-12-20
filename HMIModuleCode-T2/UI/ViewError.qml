@@ -327,7 +327,7 @@ Item {
                 text: qsTr("APPLY")
                 onClicked: {
                     var fromtime = hmiAdaptor.timeChangeToInt(mycalendar1.text + " " + mytimeSelect1.text)
-                    var totime = hmiAdaptor.timeChangeToInt(mytimeSelect2.text + " " + mytimeSelect2.text)
+                    var totime = hmiAdaptor.timeChangeToInt(mycalendar2.text + " " + mytimeSelect2.text)
                     alarmModel.searchAlarmLog(workOrderName.text,fromtime,totime)
                 }
             }

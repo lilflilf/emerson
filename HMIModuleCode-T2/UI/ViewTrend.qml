@@ -303,7 +303,7 @@ Item {
                 text: qsTr("APPLY")
                 onClicked: {
                     var fromtime = hmiAdaptor.timeChangeToInt(mycalendar1.text + " " + mytimeSelect1.text)
-                    var totime = hmiAdaptor.timeChangeToInt(mytimeSelect2.text + " " + mytimeSelect2.text)
+                    var totime = hmiAdaptor.timeChangeToInt(mycalendar2.text + " " + mytimeSelect2.text)
                 }
             }
 //            CButton {
@@ -371,11 +371,11 @@ Item {
         anchors.rightMargin: 30
         height: Screen.height *0.32
         orientation: Qt.Horizontal
-        interactive: false
+        //interactive: false
         anchors.top: parent.top
         anchors.topMargin: 20
         delegate: qualityListViewTwoDelegate
-        model: 100
+        model: 200
     }
     Rectangle {
         id: scrollbar
@@ -405,6 +405,8 @@ Item {
             }
             onXChanged: {
                 scrollLine.x = button.x/(scrollbar.width-50)*qualityListViewTwo.width
+                qualityListViewTwo.currentIndex = scrollLine.x*qualityListViewTwo.contentWidth/qualityListViewTwo.width/8
+                console.log("11111111",qualityListViewTwo.currentIndex)
             }
         }
     }

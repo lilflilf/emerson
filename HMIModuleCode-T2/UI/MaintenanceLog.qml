@@ -173,7 +173,7 @@ Item {
                         workOrderName.text = searchList.model.getValue(searchArea.selectNum,"Type")
                     } else {
                         searchArea.visible = false
-                        workOrderName.text = "All"
+                        workOrderName.text = qsTr("All")
                     }
                 }
             }
@@ -198,7 +198,7 @@ Item {
             anchors.rightMargin: 48
             text: qsTr("All")
             clip: true
-            height: mytimeSelect.height
+            height: mytimeSelect1.height
             backgroundComponent: Rectangle {
                 anchors.fill: parent
                 color: "#052a40"
@@ -235,7 +235,7 @@ Item {
         }
 
         MyCalendar {
-            id: mycalendar
+            id: mycalendar1
             anchors.left: from.left
             anchors.leftMargin: 10
             anchors.top: from.bottom
@@ -246,10 +246,10 @@ Item {
         }
 
         MyCalendar {
-            id: mytimeSelect
+            id: mytimeSelect1
             width: (parent.width-98)/2
-            anchors.top: mycalendar.top
-            anchors.left: mycalendar.right
+            anchors.top: mycalendar1.top
+            anchors.left: mycalendar1.right
             anchors.leftMargin: 20
             bIsdate: false
             selecter: newCalendar
@@ -262,7 +262,7 @@ Item {
             font.family: "arial"
             color: "white"
             font.pointSize: 16
-            anchors.top: mycalendar.bottom
+            anchors.top: mycalendar1.bottom
             anchors.left: parent.left
             anchors.leftMargin: 20
         }
@@ -278,7 +278,7 @@ Item {
         }
 
         MyCalendar {
-            id: timeSet
+            id: mytimeSelect2
             width: (parent.width-98)/2
             anchors.top: mycalendar2.top
             anchors.left: mycalendar2.right
@@ -292,7 +292,7 @@ Item {
             id: line3
             anchors.left: parent.left
             anchors.leftMargin: 10
-            anchors.top: timeSet.bottom
+            anchors.top: mytimeSelect2.bottom
             anchors.topMargin: 10
             width: parent.width-58
             lineColor: "#375566"
@@ -311,7 +311,9 @@ Item {
                 width: parent.width
                 text: qsTr("APPLY")
                 onClicked: {
-
+                    var fromtime = hmiAdaptor.timeChangeToInt(mycalendar1.text + " " + mytimeSelect1.text)
+                    var totime = hmiAdaptor.timeChangeToInt(mycalendar2.text + " " + mytimeSelect2.text)
+                    maintenanceLogModel.searchMaintenanceLog(workOrderName.text,fromtime,totime)
                 }
             }
 //            CButton {

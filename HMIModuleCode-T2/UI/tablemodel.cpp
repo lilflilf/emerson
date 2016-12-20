@@ -2622,6 +2622,15 @@ void MaintenanceLogModel::setModelList(unsigned int time_from, unsigned int time
     endResetModel();
 }
 
+void MaintenanceLogModel::setModelList(QString Name, unsigned int time_from, unsigned int time_to)
+{
+    beginResetModel();
+    logs->clear();
+    if (m_maintenanceLogAdaptor->QueryUseNameAndTime(Name,time_from,time_to,logs))
+        qDebug( )<< "MaintenanceLogModel " << logs->count();
+    endResetModel();
+}
+
 void MaintenanceLogModel::setModelList()
 {
     beginResetModel();
@@ -2705,4 +2714,8 @@ QVariant MaintenanceLogModel::getValue(int index, QString key)
     } else {
         return MaintenanceModelHash.value(key);
     }
+}
+void MaintenanceLogModel::searchMaintenanceLog(QString Name, unsigned int time_from, unsigned int time_to)
+{
+    setModelList(Name,time_from,time_to);
 }
