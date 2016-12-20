@@ -17,14 +17,6 @@ enum GRAPHSTEP
     STEPTrd,
 };
 
-enum QUALITYTYPE
-{
-    QUALITYTIME,
-    QUALITYPOWER,
-    QUALITYPREHEIGHT,
-    QUALITYPOSTHEIGHT,
-};
-
 class OperateProcess : public QObject
 {
     Q_OBJECT

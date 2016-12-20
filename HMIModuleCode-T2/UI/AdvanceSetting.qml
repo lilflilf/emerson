@@ -199,7 +199,6 @@ Item {
             sigmaLowerModel.append({"head":qsTr("Height"),"value":"4"})
         }
     }
-
     Row {
         id: standardupperrec
         anchors.top: upper1.bottom
@@ -535,7 +534,7 @@ Item {
         width: 962
         height: 526
         visible: false
-        titleText: qsTr("")
+        titleText: ""
         maxvalue: "100%"
         minvalue: "1%"
         currentValue: "123"
