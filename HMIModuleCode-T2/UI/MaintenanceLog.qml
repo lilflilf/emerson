@@ -109,6 +109,14 @@ Item {
                 }
             }
 
+            ListModel {
+                id: mySearchMode
+                ListElement {Type:qsTr("Calibration")}
+                ListElement {Type:qsTr("Tooling Change")}
+                ListElement {Type:qsTr("Advanced Maintenance")}
+                ListElement {Type:qsTr("Maintenance Counter")}
+            }
+
             ListView {
                 id: searchList
                 anchors.top: allText.bottom
@@ -117,7 +125,7 @@ Item {
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: 100
                 clip: true
-                model: maintenanceLogModel //testModel
+                model: mySearchMode //testModel
                 delegate: Component {
                     id: seachComponent
                     Item {
@@ -170,7 +178,7 @@ Item {
                 onClicked: {
                     if (searchArea.selectNum != -2) {
                         searchArea.visible = false
-                        workOrderName.text = searchList.model.getValue(searchArea.selectNum,"Type")
+                        workOrderName.text = searchList.model.get(searchArea.selectNum).Type
                     } else {
                         searchArea.visible = false
                         workOrderName.text = qsTr("All")
@@ -376,9 +384,14 @@ Item {
         clip: true
     }
 
+    ExclusiveGroup {
+        id: positionGroup
+    }
+
     Component {
         id: listDelegate
         Item {
+            id: listItem
             width: listView.width
             height: 50
             clip: true
@@ -396,6 +409,8 @@ Item {
                     id: listRepeater
                     model: 4
                     delegate:  Text {
+                        id: tempText
+                        property var newObject: null
                         anchors.verticalCenter: parent.verticalCenter
                         width: 200
                         font.family: "arial"
@@ -403,14 +418,33 @@ Item {
                         color: "white"
                         clip: true
                         elide: Text.ElideRight
-                        text: listView.model.getValue(listIndex,headModel.get(index).title)
+                        text: maintenanceLogModel.getValue(listItem.listIndex,headModel.get(index).key)
+                        MouseArea {
+                            anchors.fill: parent
+//                            z:10
+                            hoverEnabled: true
+                            onEntered: {
+//                                tempText.color = "red"
+                                tempText.newObject = Qt.createQmlObject('import QtQuick 2.0;Rectangle {color: "#052a40";property alias mytext: tempText.text;height: tempText.height;width:400;z:11; Text {id: tempText;anchors.verticalCenter: parent.verticalCenter;text: qsTr("")
+;font.family: "arial";font.pixelSize: 20;color: "white";wrapMode: Text.WordWrap; maximumLineCount: 60}}',parent,"");
+                                tempText.newObject.mytext = tempText.text
+                                if (tempText.width > 600)
+                                    tempText.width = 600
+//                                tempText.newObject.width = tempText.width
+//                                tempText.newObject.height = tempText.height
+
+                            }
+                            onExited: {
+                                tempText.color = "white"
+                                tempText.newObject.destroy()
+                            }
+                        }
                     }
                 }
             }
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    selectIndx = index
                     selectCheck.checked = !selectCheck.checked
                 }
             }
@@ -421,8 +455,8 @@ Item {
                 opacity: 0//opacityValue
                 RadioButton {
                     id: selectCheck
-                    exclusiveGroup: listviewPositionGroup
                     visible: false
+                    exclusiveGroup: positionGroup
                     onCheckedChanged: {
                         if (checked)
                             backGround.opacity = 0.3

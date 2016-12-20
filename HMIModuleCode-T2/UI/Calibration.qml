@@ -23,15 +23,16 @@ Item {
         onWidthCalibrationFinish: {
             if (_Result && calibration.currentIndex == 1)
             {
-                hmiAdaptor.calibrationMaintenanceExecute(1)
+                calibration.currentIndex++
+                button1.enabled = true
+                animated.visible = false
             }
+
         }
         onHeightCalibrationFinish: {
             if (_Result && calibration.currentIndex == 1)
             {
-                calibration.currentIndex++
-                button1.enabled = true
-                animated.visible = false
+                hmiAdaptor.calibrationMaintenanceExecute(0)
             }
         }
     }
@@ -112,7 +113,7 @@ Item {
                     if (calibration.currentIndex == 1) {
                         button1.enabled = false
                         animated.visible = true
-                        hmiAdaptor.calibrationMaintenanceExecute(0)
+                        hmiAdaptor.calibrationMaintenanceExecute(1)
                     }
                     else if (calibration.currentIndex == 2)
                         calibration.currentIndex++
