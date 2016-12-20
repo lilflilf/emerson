@@ -140,6 +140,7 @@ void BransonSerial::comIAportReadEventSlot()
             if (NextLine.isEmpty() == false)
             {
                 ptr_M102IA->HexLineBufferCheck(NextLine);
+                qDebug()<<"wyb";
                 Command = 0x13;
                 IAportSend(Command);
                 NextLine.clear();
