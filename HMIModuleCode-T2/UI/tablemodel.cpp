@@ -1512,6 +1512,43 @@ void OperatorModel::setModelList()
     endResetModel();
 }
 
+void OperatorModel::editNew(int index)
+{
+    QMap<int,QString>::iterator it; //遍历map
+    int i = 0;
+    for ( it = operators->begin(); it != operators->end(); ++it ) {
+        if (i == index){
+            break;
+        }
+        else {
+            i++;
+        }
+    }
+    m_operatorAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&operatorElement);
+}
+
+QString OperatorModel::getStruckValue(QString key)
+{
+    if (key == "OperatorName")
+        return operatorElement.OperatorName;
+    else if (key == "PassWord")
+        return operatorElement.Password;
+    else if (key == "Level") {
+        QString level = "";
+        if (operatorElement.PermissionLevel == PASSWORDCONTROL::SUPERUSER)
+            level = "SUPERUSER";
+        else if (operatorElement.PermissionLevel == PASSWORDCONTROL::ADMINISTRATOR)
+            level = "ADMINISTRATOR";
+        else if (operatorElement.PermissionLevel == PASSWORDCONTROL::TECHNICIAN)
+            level = "TECHNICIAN";
+        else if (operatorElement.PermissionLevel == PASSWORDCONTROL::QUALITYCONTROL)
+            level = "QUALITYCONTROL";
+        else if (operatorElement.PermissionLevel == PASSWORDCONTROL::OPEN)
+            level = "OPEN";
+        return level;
+    }
+}
+
 
 int OperatorModel::rowCount(const QModelIndex & parent) const
 {
