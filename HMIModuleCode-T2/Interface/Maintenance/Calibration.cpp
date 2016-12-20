@@ -6,6 +6,7 @@
 #include "MaintenanceLog.h"
 #include "DataBase/DBMaintenanceLogTable.h"
 #include <QDateTime>
+#include <QDebug>
 Calibration::Calibration()
 {
     CalbCount = 0;
@@ -90,6 +91,7 @@ bool Calibration::_execute(int funCode)
         WidthCalibration();
         break;
     case HEIGHT_CALIBRATE:
+        qDebug()<<"WidthCalibration Finish:";
         HeightCalibration();
         break;
     case AMPLITUDE_CALIBRATE_PRESS:
@@ -109,8 +111,9 @@ void Calibration::WidthCalibration()
 {
    M102IA* _M102IA = M102IA::Instance();
    bool bResult = false;
-   _M102IA->SetIAWidth(0);
-   bResult = _M102IA->SetIAWidth(_M102IA->IAsetup.Width);
+   bResult = _M102IA->SetIAWidth(0);
+   qDebug()<<"WidthCalibration :" <<bResult;
+//   bResult = _M102IA->SetIAWidth(_M102IA->IAsetup.Width);
    emit this->WidthCalibrationFinish(bResult);
 }
 
@@ -126,7 +129,7 @@ void Calibration::HeightCalibration()
     MaintenanceLog.CreatedDate = QDateTime::currentDateTime().toTime_t();
     bool bResult = false;
     _M102IA->IACommand(IAComHeightZero, 2);
-    _M102IA->WaitForResponseAfterSent(30000, &_M2010->ReceiveFlags.CalibrationDone);
+    _M102IA->WaitForResponseAfterSent(15000, &_M2010->ReceiveFlags.CalibrationDone);
     struct BransonMessageBox tmpMsgBox;
     if (_M2010->ReceiveFlags.CalibrationDone == true)
     {

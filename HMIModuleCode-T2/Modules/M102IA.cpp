@@ -1041,13 +1041,17 @@ bool M102IA::SetIAWidth(int WidthSet, bool SettingCheck)
 
     //Wait for width data
     Done = false;
-    _Timer->SetCommandTimer(3000);
+    _Timer->SetCommandTimer(15000);
     while (Done == false)
     {
         QCoreApplication::processEvents(); // Wait for response
         if (_M2010->ReceiveFlags.WIDTHdata == true) Done = true;
         if(_Timer->IsCommandTimeout() == true) Done = true;
-        if(_ModRunSetup->OfflineModeEnabled == true) break;
+        if(_ModRunSetup->OfflineModeEnabled == true)
+        {
+            _M2010->ReceiveFlags.WIDTHdata = true;
+            Done = true;
+        }
     }
     delete _Timer;
     //Aux Motion Control, Open Safety Cover

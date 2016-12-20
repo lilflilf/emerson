@@ -69,7 +69,7 @@ int BransonSerial::CheckIAportSet(long iBaudRate, long iComm)
     //ENQuirey, IA sends back "U"
     strCommand = IAcomfunctionENQ;
     IAportSend(strCommand);
-    _Timer->SetCommandTimer(200);
+    _Timer->SetCommandTimer(500);
     while (_Timer->IsCommandTimeout() == false)
     {
         QCoreApplication::processEvents(); // Wait for response
@@ -89,7 +89,7 @@ int BransonSerial::CheckIAportSet(long iBaudRate, long iComm)
     //ENQuirey, IA sends back "U"
     strCommand = IAcomfunctionENQ;
     IAportSend(strCommand);
-    _Timer->SetCommandTimer(200);
+    _Timer->SetCommandTimer(500);
     while (_Timer->IsCommandTimeout() == false)
     {
         QCoreApplication::processEvents(); // Wait for response
