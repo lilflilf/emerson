@@ -3,7 +3,7 @@
 #include <QObject>
 #include "Interface/PresetElement.h"
 #include "Interface/WeldResultElement.h"
-#include "Modules/UtilityClass.h"
+#include "Modules/ThreadClass.h"
 struct NecessaryInfo
 {
     struct WorkOrderIndex CurrentWorkOrder;

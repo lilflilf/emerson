@@ -10,6 +10,7 @@
 #include "M10runMode.h"
 #include "Interface/Interface.h"
 #include "UtilityClass.h"
+#include "TimerClass.h"
 #include <QString>
 #include "windows.h"
 #include <QCoreApplication>
@@ -38,8 +39,8 @@ MODstart::MODstart()
     ModRunSetup *_ModRunSetup = ModRunSetup::Instance();
     InterfaceClass *_Interface = InterfaceClass::Instance();
 
-//    _ModRunSetup->OfflineModeEnabled = true;
-//    _ModRunSetup->GlobalOfflineModeEnabled = true;
+    _ModRunSetup->OfflineModeEnabled = true;
+    _ModRunSetup->GlobalOfflineModeEnabled = true;
 
     int check_result = 0;
 
@@ -365,6 +366,7 @@ int MODstart::CheckIOStatus()
     int FeedbackResult = 0;
     M2010         *_M2010  = M2010::Instance();
     M102IA        *_M102IA = M102IA::Instance();
+    TimerClass *_Timer = new TimerClass();
 //    ModRunSetup   *_ModRunSetup = ModRunSetup::Instance();
     InterfaceClass *_Interface = InterfaceClass::Instance();
     BransonSerial *_Serial = BransonSerial::Instance();
@@ -388,8 +390,8 @@ int MODstart::CheckIOStatus()
     //--Get back the current I/O data!
     _M2010->ReceiveFlags.IOdata = false;
     _M102IA->IACommand(IAComSendIOdata);
-    _Serial->SetCommandTimer(3000);
-    while (_Serial->IsCommandTimeout() == false)
+    _Timer->SetCommandTimer(3000);
+    while (_Timer->IsCommandTimeout() == false)
     {
         QCoreApplication::processEvents(); // Wait for response
         if (_M2010->ReceiveFlags.IOdata == true)
@@ -397,7 +399,7 @@ int MODstart::CheckIOStatus()
             break;
         }
     }
-    _Serial->ResetCommandTimer();
+    delete _Timer;
     //--Check to make sure that the Pressure Rating is O.K.
     if (_M102IA->IOstatus.IO & 0x08)
     {

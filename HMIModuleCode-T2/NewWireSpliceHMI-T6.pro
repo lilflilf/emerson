@@ -62,7 +62,9 @@ SOURCES += main.cpp \
     Interface/AlarmElement.cpp \
     Interface/Operate/OperateProcess.cpp \
     Modules/AlarmMessage.cpp \
-    Modules/StatisticalFunction.cpp
+    Modules/StatisticalFunction.cpp \
+    Modules/TimerClass.cpp \
+    Modules/ThreadClass.cpp
 
 
 
@@ -129,7 +131,9 @@ HEADERS += \
     Interface/Operate/OperateProcess.h \
     Modules/AlarmMessage.h \
 #    UI/displayChinese_zh_CN.qm \
-    Modules/StatisticalFunction.h
+    Modules/StatisticalFunction.h \
+    Modules/TimerClass.h \
+    Modules/ThreadClass.h
 
 DISTFILES += \
 #    UI/displayChinese_zh_CN.qm \

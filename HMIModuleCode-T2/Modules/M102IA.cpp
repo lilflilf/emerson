@@ -8,6 +8,7 @@
 #include "ModRunSetup.h"
 #include "M10runMode.h"
 #include "UtilityClass.h"
+#include "TimerClass.h"
 #include "Interface/Interface.h"
 #include "Interface/Operate/OperateProcess.h"
 #include <QCoreApplication>
@@ -490,20 +491,20 @@ void M102IA::SendIACommand(IACommands CommandNumber, int CommandData)
 
 bool M102IA::WaitForResponseAfterSent(int TimeOut, bool *CheckResponseFlag)
 {
-    BransonSerial *_Serial = BransonSerial::Instance();
     ModRunSetup *_ModRunSetup = ModRunSetup::Instance();
-    _Serial->SetCommandTimer(TimeOut);
+    TimerClass *_Timer = new TimerClass();
+    _Timer->SetCommandTimer(TimeOut);
     *CheckResponseFlag = false;
     while (*CheckResponseFlag == false)
     {
         QCoreApplication::processEvents(); // Wait for response
         if ((_ModRunSetup->OfflineModeEnabled == true) ||
-                (_Serial->IsCommandTimeout() == true))
+                (_Timer->IsCommandTimeout() == true))
             break;
     };
     if(_ModRunSetup->OfflineModeEnabled == true)
         *CheckResponseFlag = true;
-    _Serial->ResetCommandTimer();
+    delete _Timer;
     return *CheckResponseFlag;
 }
 
@@ -972,29 +973,29 @@ void M102IA::SendCommandData(int CommandData)
     int Time, Retries;
     M2010 *_M2010 = M2010::Instance();
     ModRunSetup *_ModRunSetup = ModRunSetup::Instance();
-    BransonSerial *_Serial    = BransonSerial::Instance();
     InterfaceClass *_Interface = InterfaceClass::Instance();
+    TimerClass *_Timer = new TimerClass();
     Retries = 0;
     Time = 500;
     //SendCommandSetRunMode CommandData
     _M2010->ReceiveFlags.HostReadyData = false;
     SendIACommand(IAComHostReady, CommandData);
     if (CommandData == 1) return;
-    _Serial->SetCommandTimer(Time);
+    _Timer->SetCommandTimer(Time);
     while (_M2010->ReceiveFlags.HostReadyData == false)
     {
         QCoreApplication::processEvents(); //Wait for response
         if (_ModRunSetup->OfflineModeEnabled == true) break;
-        if ((_Serial->IsCommandTimeout() == true) && (Retries < 20))
+        if ((_Timer->IsCommandTimeout() == true) && (Retries < 20))
         {
             SendIACommand(IAComHostReady, CommandData);
-            _Serial->SetCommandTimer(Time);
+            _Timer->SetCommandTimer(Time);
             Retries = Retries + 1;
         }
         else if (Retries >= 19)
             break;
      }
-    _Serial->ResetCommandTimer();
+    delete _Timer;
     if (Retries >= 19)
     {
 //        MsgBox "Can't get Response from controller!"
@@ -1017,9 +1018,9 @@ bool M102IA::SetIAWidth(int WidthSet, bool SettingCheck)
     M2010* _M2010 = M2010::Instance();
     M10runMode* _M10runMode = M10runMode::Instance();
     ModRunSetup* _ModRunSetup = ModRunSetup::Instance();
-    BransonSerial* _SerialPort = BransonSerial::Instance();
 //    InterfaceClass* _Interface = InterfaceClass::Instance();
     OperateProcess* _Operate   = OperateProcess::Instance();
+    TimerClass* _Timer = new TimerClass();
     //This command is ignored if the safety cover does not exist
     //Aux Motion Control, Close Safety Cover
 
@@ -1040,15 +1041,15 @@ bool M102IA::SetIAWidth(int WidthSet, bool SettingCheck)
 
     //Wait for width data
     Done = false;
-    _SerialPort->SetCommandTimer(3000);
+    _Timer->SetCommandTimer(3000);
     while (Done == false)
     {
         QCoreApplication::processEvents(); // Wait for response
         if (_M2010->ReceiveFlags.WIDTHdata == true) Done = true;
-        if(_SerialPort->IsCommandTimeout() == true) Done = true;
+        if(_Timer->IsCommandTimeout() == true) Done = true;
         if(_ModRunSetup->OfflineModeEnabled == true) break;
     }
-    _SerialPort->ResetCommandTimer();
+    delete _Timer;
     //Aux Motion Control, Open Safety Cover
     //SendIACommand IAComAuxMotion, DO_OPEN_SAFETY
 
