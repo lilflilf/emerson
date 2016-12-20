@@ -37,11 +37,13 @@ Item {
         source: "qrc:/images/images/dialogbg.png"
         Image {
             id: msgType
-            width: 80
-            height: 80
+            width: 40
+            height: 40
         }
         Text {
             id: headText
+            anchors.left: msgType.right
+            anchors.verticalCenter: msgType.verticalCenter
             font.family: "arial"
             font.pixelSize: 25
             wrapMode: Text.WordWrap
@@ -58,7 +60,7 @@ Item {
             wrapMode: Text.WordWrap
             color: "white"
             horizontalAlignment: Qt.AlignHCenter
-            text: qsTr("")
+            text: ""
         }
         CButton {
             id: okButton
@@ -69,7 +71,7 @@ Item {
             width: 180
             visible: false
             pointSize: 16
-            text: qsTr("")
+            text: ""
             onClicked: {
                 dialog.visible = false
                 cliceTo(true)
@@ -83,7 +85,7 @@ Item {
             width: 180
             pointSize: 16
             visible: false
-            text: qsTr("")
+            text: ""
             onClicked: {
                 dialog.visible = false
                 cliceTo(false)

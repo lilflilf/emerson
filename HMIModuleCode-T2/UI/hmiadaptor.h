@@ -19,7 +19,7 @@
 #include "Interface/Settings/DataCommunication.h"
 #include "Interface/Operate/OperateProcess.h"
 #include <QMutex>
-
+#include "Interface/ViewData/StatisticalTrend.h"
 #define TOPATH "C:/BransonData/Library/SpliceImage/"
 
 #define HMI_PRINT (qDebug() <<"HMI adapter:" << __FILE__ << __FUNCTION__ << __LINE__ << ": ")
@@ -122,6 +122,7 @@ public:
     Q_INVOKABLE QStringList dataCommunicationGetValue(QString index);
     Q_INVOKABLE bool dataCommunicationSetValue(QList<bool> boolList, QStringList strList, QString ip, QString port);
 
+    Q_INVOKABLE void statisticalTrendApply(int SpliceID, QString SpliceName, unsigned int time_from, unsigned int time_to);
 
     InterfaceClass *interfaceClass;
     OperateProcess *operateProcess;
@@ -149,6 +150,7 @@ public:
     DataCommunication *dataCommunication;
 
     QMutex mutex;
+    StatisticalTrend *statisticalTrend;
 signals:
     void widthCalibrationFinish(const bool &_Result);
     void heightCalibrationFinish(const bool &_Result);

@@ -239,7 +239,7 @@ void OperateProcess::WeldCycleDaemonThread(void* _obj)
             case SIGMA:
                 tmpMsgBox.MsgTitle = QObject::tr("Teach Mode - Standard");
                 tmpMsgBox.MsgPrompt = QObject::tr("Please hit the button to start next.");
-                tmpMsgBox.TipsMode = Information | ACCEPTReject;
+//                tmpMsgBox.TipsMode = Information | ACCEPTReject;
                 tmpMsgBox.func_ptr = OperateProcess::AcceptWeldResult;
                 tmpMsgBox._Object = _ObjectPtr;
                 _Interface->cMsgBox(&tmpMsgBox);

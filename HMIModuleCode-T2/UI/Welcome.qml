@@ -139,13 +139,11 @@ Item {
         anchors.right: parent.right
         anchors.verticalCenter: title1.verticalCenter
         anchors.verticalCenterOffset: -100
-//        maximumLength: 4
         font.pixelSize: 35
         height: 40
         font.family: "arial"
         color: "white"
-        text: qsTr("")
-//        echoMode: TextInput.Password
+        text: ""
         Keys.enabled: true
         Keys.onReturnPressed: {
         }

@@ -225,7 +225,7 @@ void AdvancedMaintenance::Safety_Click()
         CommandON = DO_CLOSE_SAFETY;
         CommandOFF = DO_OPEN_SAFETY;
     }
-    if ((Aux3Test == false) || (_M2010->M10Run.Aux3On))
+    if ((Aux3Test == false) || (_M2010->M10Run.Aux3On == false))
     {
         _M102IA->SendIACommand(IAComAuxMotion, CommandON);
         Aux3Test = true;
@@ -431,7 +431,7 @@ void AdvancedMaintenance::UpdateSafety()
     InterfaceClass* _Interface = InterfaceClass::Instance();
     if(_Interface->StatusData.MachineType != ACTXL)
     {
-        if((PreviousIO & IN0_OFF) == IN0_OFF)
+        if((PreviousIO & COVER_OPEN) == COVER_OPEN)
         {
             Aux3Test = false;
             _M2010->M10Run.Aux3On = false;

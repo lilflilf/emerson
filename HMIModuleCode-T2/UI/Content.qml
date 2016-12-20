@@ -486,16 +486,10 @@ Item {
                 anchors.leftMargin: 10
                 width: parent.width-20
                 height: 50
-//                borderColor: "#375566"
                 inputWidth: edit5.width/3
-//                inputHeight: 45
-//                horizontalAlignment: Qt.AlignHCenter
                 tipsText: qsTr("Max Splice Per Zone")
-//                regExp: RegExpValidator{regExp: /([1-9]|1[0-2])/}
-//                maxSize: 20
                 opacity: 0.7
                 inputText: partModel.getWorkStationMaxSplicePerZone()
-//                tipsSize: 14
                 onInputFocusChanged: {
                     if (edit5.inputFocus) {
                         backGround.visible = true
@@ -662,17 +656,6 @@ Item {
             visible: !bIsBasic
             text: qsTr("Board Layout")
         }
-//        Text {
-//            id: tempText
-//            anchors.top:  edit6.bottom
-//            anchors.topMargin: 14
-//            anchors.right: boardlayout.right
-//            color: "white"
-//            opacity: 0.5
-//            font.family: "arial"
-//            font.pointSize: 16
-//            text: qsTr("Temp(℃):260 Time(s):09.0 ENABLED")
-//        }
         Switch2 {
             id: borderSwitch
             anchors.top: edit6.bottom
@@ -739,21 +722,6 @@ Item {
             anchors.bottomMargin: 10
             visible: !bIsBoard
             Component.onCompleted: {
-//                spliceDetailItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-//                spliceDetailItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-//                spliceDetailItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-//                spliceDetailItem.leftModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-
-//                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-//                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-//                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-//                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-//                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-//                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-//                spliceDetailItem.rightModel.append({"myLineLength":200,"mycolor":"#00cc66","isCheck":false,"linetext":"0.75"})
-
-//                spliceDetailItem.setState("topLeft",200,"0.75","red")
-//                spliceDetailItem.setState("bottomLeft",200,"0.75","red")
             }
         }
 
@@ -769,35 +737,7 @@ Item {
             Image {
                 id: spliceImage
                 anchors.fill: parent
-//                source: spliceModel.getStructValue("PicPath","") == " " ? "qrc:/images/images/bg.png" : spliceModel.getStructValue("PicPath","")
             }
-//            Text {
-//                anchors.right: parent.right
-//                font.pointSize: 20
-//                font.family: "arial"
-//                color: "white"
-//                text: qsTr("Click to Select Picture")
-//            }
-//            MouseArea {
-//                anchors.fill: parent
-//                onClicked: {
-//                    imageLoader.source = "qrc:/UI/MyFileDialog.qml"
-//                }
-//                Connections {
-//                    target: imageLoader.item
-//                    onSignalFileDialogCancel: {
-//                        imageLoader.source = ""
-//                    }
-//                    onSignalChoseFile: {
-//                        imageLoader.source = ""
-//                        var path = hmiAdaptor.copyFileToPath(fileName)
-//                        if (path != "") {
-//                            spliceImage.source = "file:///"+path
-//                            spliceModel.setStructValue("PicPath",spliceImage.source)
-//                        }
-//                    }
-//                }
-//            }
         }
         Loader {
             id: imageLoader

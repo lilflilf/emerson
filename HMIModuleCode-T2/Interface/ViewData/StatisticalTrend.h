@@ -4,7 +4,7 @@
 #include <QObject>
 #include "Interface/PresetElement.h"
 
-struct WeldActualParameter
+struct  WeldActualParameter
 {
     QString CrossSection;
     QString Energy;
@@ -27,13 +27,6 @@ struct StatisticsParameter
     QString Median;
     QString Sigma;
     QString Cpk;
-};
-enum QUALITYTYPE
-{
-    QUALITYTIME,
-    QUALITYPOWER,
-    QUALITYPREHEIGHT,
-    QUALITYPOSTHEIGHT,
 };
 
 class StatisticalTrend : public QObject
