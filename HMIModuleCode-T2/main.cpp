@@ -39,58 +39,5 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("alarmModel",hmiAdaptor->alarmModel);
     engine.rootContext()->setContextProperty("maintenanceLogModel",hmiAdaptor->maintenanceLogModel);
     engine.load(QUrl(QStringLiteral("qrc:/UI/main.qml")));
-
-//    DataBaseTest *_TestPtr = new DataBaseTest();
-
-
-//    _TestPtr->TestInsertOneRecordIntoWireTable();
-//    _TestPtr->TestQueryOnlyUseFieldWeldResult();
-//    _TestPtr->TestMapJsonToString();
-//    _TestPtr->TestStringJsonToMap();
-//    _TestPtr->TestInsertOneRecordIntoWorkOrderTable();
-//    _TestPtr->TestInsertOneRecordIntoPartTable();
-//    _TestPtr->TestInsertOneRecordIntoPresetTable();
-//    _TestPtr->TestInsertOneRecordIntoWireTable();
-//    _TestPtr->TestInsertOneRecordIntoOperatorTable();
-//    _TestPtr->TestQueryEntireWireTable();
-//    _TestPtr->TestQueryEntireSpliceTable();
-//    _TestPtr->TestQueryEntirePartTable();
-//    _TestPtr->TestQueryEntireWorkOrderTable();
-//    _TestPtr->TestQueryEntireOpertorTable();
-//    _TestPtr->TestQueryOneOperatorTable();
-//    _TestPtr->TestQueryOneWireTable();
-//    _TestPtr->TestDeleteEntireWireTable();
-//    _TestPtr->TestDeleteEntirePresetTable();
-//    _TestPtr->TestDeleteEntirePartTable();
-//    _TestPtr->TestDeleteEntireWorkOrderTable();
-//    _TestPtr->TestDeleteEntireOperator();
-//    _TestPtr->TestDeleteOneWireTable();
-//    _TestPtr->TestDeleteOnePresetTable();
-//    _TestPtr->TestDeleteOnePartTable();
-//    _TestPtr->TestDeleteOneWorkOrderTable();
-//    _TestPtr->TestDeleteOneOperatorTable();
-//    _TestPtr->TestUpdateOneRecordIntoWireTable();
-//    _TestPtr->TestUpdateOneRecordIntoPresetTable();
-//    _TestPtr->TestUpdateOneRecordIntoPartTable();
-//    _TestPtr->TestUpdateOneRecordIntoWorkOrderTable();
-//    _TestPtr->TestUpdateOneRecordIntoOperatorTable();
-//    _TestPtr->TestQueryOnlyTimeWireTable();
-//    Maintenance *_Maintenance = new AdvancedMaintenance();
-//    _Maintenance->_start();
-//    InterfaceClass* _Interface = InterfaceClass::Instance();
-//    memset(_Interface->StatusData.Machineflags.Word,0,8);
-//    _Interface->StatusData.Machineflags.Flag.WdthEncoderOff = 1;
-//    unsigned short tmp = _Interface->StatusData.Machineflags.Word[0];
-//    tmp = _Interface->StatusData.Machineflags.Word[3];
-//    struct test{
-//        int a = 0;
-//        int b = 8;
-//    }www;
-//    QByteArray ba;
-//    ba.resize(sizeof(www));
-//    memcpy(ba.data(), &www, sizeof(www));
-//    uint tmp = qHashBits(&www,sizeof(struct test), 0);
-//    uint tmp1 = qHash(ba, 0);
-//    qDebug()<<"Hash Code: "<<tmp<< "" <<tmp1;
     return app.exec();
 }
