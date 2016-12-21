@@ -218,7 +218,11 @@ Item {
                 font.pointSize: 20
                 onColorChanged: {
                     if (modelRect.color == "#0000ff") {
-                        hourText.inputText = index
+                        if (index < 10) {
+                            hourText.inputText = "0"+index
+                        } else {
+                            hourText.inputText = index
+                        }
                         timeSelect.timeValue = hourText.inputText + ":" + minuteText.inputText + ":" + secondText.inputText
                     }
                 }
@@ -283,7 +287,11 @@ Item {
                 font.pointSize: 20
                 onColorChanged: {
                     if (modelRect2.color == "#0000ff") {
-                        minuteText.inputText = index
+                        if (index < 10) {
+                            minuteText.inputText = "0"+index
+                        } else {
+                            minuteText.inputText = index
+                        }
                         timeSelect.timeValue = hourText.inputText + ":" + minuteText.inputText + ":" + secondText.inputText
 
                     }
@@ -349,7 +357,11 @@ Item {
                 font.pointSize: 20
                 onColorChanged: {
                     if (modelRect3.color == "#0000ff") {
-                        secondText.inputText = index
+                        if (index < 10) {
+                            secondText.inputText = "0"+index
+                        } else {
+                            secondText.inputText = index
+                        }
                         timeSelect.timeValue = hourText.inputText + ":" + minuteText.inputText + ":" + secondText.inputText
 
                     }

@@ -197,7 +197,7 @@ Item {
                         workOrderName.text = searchList.model.getAlarmValue(searchArea.selectNum,"Alarm/ErrorType")
                     } else {
                         searchArea.visible = false
-                        workOrderName.text = "All"
+                        workOrderName.text = qsTr("All")
                     }
                 }
             }
@@ -326,6 +326,8 @@ Item {
                 width: parent.width
                 text: qsTr("APPLY")
                 onClicked: {
+                    if (newCalendar.visible)
+                        newCalendar.visible = false
                     var fromtime = hmiAdaptor.timeChangeToInt(mycalendar1.text + " " + mytimeSelect1.text)
                     var totime = hmiAdaptor.timeChangeToInt(mycalendar2.text + " " + mytimeSelect2.text)
                     alarmModel.searchAlarmLog(workOrderName.text,fromtime,totime)

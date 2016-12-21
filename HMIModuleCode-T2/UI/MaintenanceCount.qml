@@ -126,8 +126,12 @@ Item {
     Component {
         id: listLine
         Item {
+            property int listIndex: 0
             width: listView.width
             height: index == 5 ? 100 : 80
+            Component.onCompleted: {
+                listIndex = index
+            }
             Row {
                 spacing: 30
                 anchors.verticalCenter: parent.verticalCenter
@@ -181,6 +185,7 @@ Item {
                     visible: index == 5 ? true : false
                 }
                 Text {
+                    id: currentCount
                     width: 160
                     height: 79
                     text: mycurrent
@@ -206,6 +211,7 @@ Item {
                     visible: index == 5 ? false : true
                     onClicked: {
                         hmiAdaptor.maintenanceCountReset(mytitle)
+                        currentCount.text = hmiAdaptor.maintenanceCountGetValue(listIndex,3)
                     }
                 }
                 Text {

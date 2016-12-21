@@ -73,7 +73,8 @@ Item {
             font.pointSize: 20
             anchors.left: parent.left
             anchors.leftMargin: 15
-            width: parent.width * 0.8
+            anchors.right: parent.right
+            anchors.rightMargin: 15
             anchors.top: title.bottom
             anchors.topMargin: 15
             wrapMode: Text.WordWrap
@@ -85,7 +86,7 @@ Item {
             width: parent.width * 0.4
             height: parent.height * 0.5
             anchors.top: content.bottom
-            anchors.topMargin: 50
+            anchors.topMargin: 30
             anchors.left: parent.left
             anchors.leftMargin: 20
         }
@@ -130,17 +131,29 @@ Item {
                 }
 
             }
-            MyLineEdit {
+            MiniKeyNumInput{
                 id: line1
-                height: 79
+                height: button2.height
                 width: 200
                 inputWidth: 200
-                inputHeight: button1.height
                 visible: false
-                defaultText: qsTr("enter value here")
+                inputText: qsTr("enter value here")
+                onInputFocusChanged: {
+                    if (line1.inputFocus) {
+                        backGround.visible = true
+                        keyNum.visible = true
+                        if (line1.inputText == qsTr("enter value here")) {
+                            keyNum.currentValue = "0"
+                            keyNum.minvalue = "0"
+                            keyNum.maxvalue = "20"
+                        } else {
+                            keyNum.currentValue = line1.inputText
+                            keyNum.minvalue = "0"
+                            keyNum.maxvalue = "20"
+                        }
+                    }
+                }
             }
-
-
             CButton {
                 id: button2
                 width: 200
@@ -183,7 +196,60 @@ Item {
                 }
             }
         }
-
+    }
+    Rectangle {
+        id: backGround
+        anchors.fill: parent
+        color: "black"
+        opacity: 0.5
+        visible: false
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+            }
+        }
+    }
+    KeyBoardNum {
+        id: keyNum
+        anchors.centerIn: parent
+        width: 962
+        height: 526
+        visible: false
+        titleText: ""
+        maxvalue: "4"
+        minvalue: "1"
+        currentValue: "4"
+        onCurrentClickIndex: {
+            if (index == 15) {
+                if (hmiAdaptor.comepareCurrentValue(keyNum.minvalue,keyNum.maxvalue,keyNum.inputText)) {
+                    if (line1.inputFocus) {
+                        line1.inputText = keyNum.inputText
+                        line1.inputFocus = false
+                    }
+                    keyNum.visible = false
+                    keyNum.inputText = ""
+                    keyNum.tempValue = ""
+                    backGround.visible = false
+                } else {
+                    keyNum.timeRun = true
+                }
+            } else if (index == 11) {
+                if (line1.inputFocus) {
+                    line1.inputFocus = false
+                }
+                keyNum.visible = false
+                keyNum.inputText = ""
+                keyNum.tempValue = ""
+                backGround.visible = false
+            }
+        }
+        onInputTextChanged: {
+            if (keyNum.inputText != "") {
+                if (line1.inputFocus) {
+                    line1.inputText = keyNum.inputText
+                }
+            }
+        }
     }
 
 }

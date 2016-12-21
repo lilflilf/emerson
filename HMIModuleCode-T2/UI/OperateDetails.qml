@@ -6,7 +6,7 @@ import QtQuick.Window 2.2
 Item {
     id: operateDetail
     property var spliceList: new Array
-    property int showFlag: -1 /*1:inLine 2:offLine 3:signal*/
+    property int showFlag: 3 /*1:inLine 2:offLine 3:signal*/
     property int cycleCount: 0
     property int qliantity: 0
     property int maxCount: partModel.getCurrentPartSpliceCount()
@@ -78,7 +78,6 @@ Item {
         }
         hmiAdaptor.setOperateProcess(spliceId, false)
         hmiAdaptor.operateProcessExec("Execute")
-
     }
 
     Text {
@@ -201,6 +200,10 @@ Item {
         listModel: treeModel
         maxNum: maxCount
     }
+    onShowFlagChanged: {
+        console.log("555555555555555",showFlag)
+    }
+
     SpliceStatusOffLine {
         id: offline
         anchors.top: spliceTips.bottom

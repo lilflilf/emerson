@@ -311,6 +311,9 @@ Item {
                 width: parent.width
                 text: qsTr("APPLY")
                 onClicked: {
+                    if (newCalendar.visible) {
+                        newCalendar.visible = false
+                    }
                     var fromtime = hmiAdaptor.timeChangeToInt(mycalendar1.text + " " + mytimeSelect1.text)
                     var totime = hmiAdaptor.timeChangeToInt(mycalendar2.text + " " + mytimeSelect2.text)
                     maintenanceLogModel.searchMaintenanceLog(workOrderName.text,fromtime,totime)
@@ -385,6 +388,7 @@ Item {
             property var listIndex: 0
             Component.onCompleted: {
                 listIndex = index
+                console.log("2222222222222222",listIndex)
             }
 
             Row {
@@ -410,7 +414,6 @@ Item {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    selectIndx = index
                     selectCheck.checked = !selectCheck.checked
                 }
             }

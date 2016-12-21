@@ -26,8 +26,6 @@ Item {
                 list =  workOrderModel.getSpliceList(selectIndx)
                 if (list.length > 0) {
                     loader.item.spliceList = workOrderModel.getSpliceList(selectIndx)
-                    loader.item.selectSplice(workOrderModel.getSpliceList(selectIndx)[0])
-                    loader.item.qliantity = workOrderModel.getWorkOrderValue(selectIndx, "count")
                     if (partModel.getPartOnlineOrOffLine()) {
                         loader.item.showFlag = 1
                     } else {
@@ -37,6 +35,8 @@ Item {
                             loader.item.showFlag = 2
                         }
                     }
+                    loader.item.selectSplice(workOrderModel.getSpliceList(selectIndx)[0])
+                    loader.item.qliantity = workOrderModel.getWorkOrderValue(selectIndx, "count")
                 }
             }
         }
@@ -387,7 +387,6 @@ Item {
             onClicked: {
             }
         }
-
     }
 
     Image {
