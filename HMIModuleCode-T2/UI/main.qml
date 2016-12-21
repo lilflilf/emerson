@@ -53,7 +53,7 @@ Window {
         case 1:
             partModel.getPartInfo(false,0,"")
             contentLoader.source = "qrc:/UI/Content.qml"
-            headBar.titleText = qsTr("Create Assembly")
+            headBar.titleText = qsTr("Create New")
             break;
         case 2:
             headBar.titleText = qsTr("Operate")

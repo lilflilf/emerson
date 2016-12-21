@@ -14,7 +14,7 @@ Item {
     Rectangle {
         id: headBack
         anchors.fill: parent
-        color: (title.text == qsTr("Test") || title.text == qsTr("Create Assembly") || title.text == qsTr("Edit Existing")) ? "#f79428" : "#0079c1"
+        color: "#0079c1" //(title.text == qsTr("Test") || title.text == qsTr("Create New") || title.text == qsTr("Edit Existing")) ? "#f79428" : "#0079c1"
     }
     //    Image {
     //        id: headBack
@@ -90,10 +90,10 @@ Item {
             id: listMainMenu
             Component.onCompleted: {
                 listMainMenu.append({"menuName":qsTr("Create/Edit")})
-                listMainMenu.append({"menuName":qsTr("Operate")})
                 listMainMenu.append({"menuName":qsTr("Test")})
-                listMainMenu.append({"menuName":qsTr("Maintenance")})
+                listMainMenu.append({"menuName":qsTr("Operate")})
                 listMainMenu.append({"menuName":qsTr("View Data")})
+                listMainMenu.append({"menuName":qsTr("Maintenance")})
                 listMainMenu.append({"menuName":qsTr("Settings")})
             }
         }
@@ -135,14 +135,14 @@ Item {
                                             creatMenu.childModel = creatMenuList
                                             creatMenu.height = creatMenuList.count * 50
                                         }
-                                        else if (index == 3) {
+                                        else if (index == 4) {
                                             creatMenu.visible = true
                                             creatMenu.childModel = null
                                             creatMenu.childModel = maintenanceList
                                             creatMenu.height = maintenanceList.count * 50
 
                                         }
-                                        else if (index == 4) {
+                                        else if (index == 3) {
                                             creatMenu.visible = true
                                             creatMenu.childModel = null
                                             creatMenu.childModel = viewDataList
@@ -187,13 +187,13 @@ Item {
                                 }
                             }
                             onClicked: {
-                                if (index == 1) {
+                                if (index == 2) {
                                     btn.isCheck = false
                                     creatMenu.visible = false
                                     btnBack.visible = false
                                     root.menuInit(2)
                                     title.text = qsTr("Operate")
-                                } else if (index == 2) {
+                                } else if (index == 1) {
                                     btn.isCheck = false
                                     creatMenu.visible = false
                                     btnBack.visible = false
@@ -308,7 +308,7 @@ Item {
                                 btnBack.visible = false
                                 if (menuKey == qsTr("Create New")){
                                     root.menuInit(0)
-                                    title.text = qsTr("Create Assembly")
+                                    title.text = qsTr("Create New")
                                 }
                                 else if (menuKey == qsTr("Edit Existing")){
                                     root.menuInit(1)
@@ -398,7 +398,7 @@ Item {
         font.family: "arial"
         font.pointSize: 36
         color: "white"
-        text: qsTr("Create Assembly")
+        text: qsTr("Create New")
         anchors.left: btn.right
         anchors.verticalCenter: parent.verticalCenter
     }

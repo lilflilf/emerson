@@ -5,8 +5,8 @@ import QtQuick.Controls 1.4
 
 FileDialog {
     id: fileDialog
-    width: Screen.width / 2
-    height: Screen.height / 2
+    width: Screen.width /// 2 + 100
+    height: Screen.height /// 2 + 100
     signal signalFileDialogCancel()
     signal signalChoseFile(var fileName)
     title: qsTr("Please choose a file")

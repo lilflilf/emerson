@@ -610,7 +610,7 @@ Item {
                 Label {
                     id: labelType
                     color: "#8295a0"
-                    text: qsTr("Type of Wire")
+                    text: qsTr("Type")
                     font.family: "arial"
                     font.pointSize: 14
                     anchors.right: parent.right
@@ -1266,7 +1266,7 @@ Item {
             anchors.left: spliceDetails.left
             anchors.right: parent.right
             anchors.rightMargin: 20
-
+            centerVisable: true
         }
 
         Item {
@@ -1311,7 +1311,10 @@ Item {
                 }
             }
         }
-
+        Loader {
+            id: imageLoader
+            anchors.fill: parent
+        }
         CButton {
             id: wireLibrary
             pointSize: 14
