@@ -18,6 +18,8 @@ private:
     bool CalStarted;
     int CalbCount;
 private:
+    bool CloseSafetyGuard();
+    void OpenSafetyGuard();
     void RunSonicsPressed();
     void RunSonicsUnPressed();
     void RunSonics100Pressed();

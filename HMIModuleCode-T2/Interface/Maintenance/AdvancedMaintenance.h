@@ -2,7 +2,7 @@
 #define ADVANCEDMAINTENANCE_H
 
 #include "Maintenance.h"
-#include "Modules/UtilityClass.h"
+#include "Modules/ThreadClass.h"
 
 /* Output:  bit31,  bit30, bit29, bit28
  *          bit27, ToolingCooling On, CutterOn, CrashOn,

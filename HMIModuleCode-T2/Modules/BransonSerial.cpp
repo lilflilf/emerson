@@ -2,6 +2,7 @@
 #include "M2010.h"
 #include "M102IA.h"
 #include "ModRunSetup.h"
+#include "TimerClass.h"
 #include "Interface/Interface.h"
 #include <QtSerialPort/QSerialPort>
 #include <QDebug>
@@ -22,8 +23,6 @@ BransonSerial::BransonSerial(QObject *parent)
     :QObject(parent)
 {
     comIAport = new QSerialPort();
-    m_nCurrentTimer = 0;
-    b_Timeout = false;
     _Mutex = new QMutex(QMutex::NonRecursive);
 }
 
@@ -31,7 +30,6 @@ BransonSerial::~BransonSerial()
 {
     delete comIAport;
     delete _Mutex;
-    ResetCommandTimer();
 }
 
 void BransonSerial::FindIAport()
@@ -47,6 +45,7 @@ int BransonSerial::CheckIAportSet(long iBaudRate, long iComm)
     QString CommName;
     M2010 *_M2010 = M2010::Instance();
     ModRunSetup *_ModRunSetup = ModRunSetup::Instance();
+    TimerClass *_Timer = new TimerClass();
     char strCommand;
 //    Required to keep computers with different or fewer ports from shutting down program
     CommName = QString::number(iComm, 10);
@@ -70,8 +69,8 @@ int BransonSerial::CheckIAportSet(long iBaudRate, long iComm)
     //ENQuirey, IA sends back "U"
     strCommand = IAcomfunctionENQ;
     IAportSend(strCommand);
-    SetCommandTimer(200);
-    while (IsCommandTimeout() == false)
+    _Timer->SetCommandTimer(500);
+    while (_Timer->IsCommandTimeout() == false)
     {
         QCoreApplication::processEvents(); // Wait for response
         if (_M2010->ReceiveFlags.IAFOUNDGOOD == true)
@@ -81,7 +80,7 @@ int BransonSerial::CheckIAportSet(long iBaudRate, long iComm)
             break;
         }
     }
-    ResetCommandTimer();
+
     if(iResult == 1)
         return iResult;
 
@@ -90,8 +89,8 @@ int BransonSerial::CheckIAportSet(long iBaudRate, long iComm)
     //ENQuirey, IA sends back "U"
     strCommand = IAcomfunctionENQ;
     IAportSend(strCommand);
-    SetCommandTimer(200);
-    while (IsCommandTimeout() == false)
+    _Timer->SetCommandTimer(500);
+    while (_Timer->IsCommandTimeout() == false)
     {
         QCoreApplication::processEvents(); // Wait for response
         if (_M2010->ReceiveFlags.IAFOUNDGOOD == true)
@@ -101,7 +100,7 @@ int BransonSerial::CheckIAportSet(long iBaudRate, long iComm)
             break;
         }
     }
-    ResetCommandTimer();
+//    ResetCommandTimer();
     if(iResult == -1)
     {
         comIAport->close();
@@ -175,44 +174,6 @@ void BransonSerial::comIAportReadEventSlot()
     }
 
 
-}
-
-void BransonSerial::SetCommandTimer(int Time)
-{
-    if(m_nCurrentTimer != 0){
-        killTimer(m_nCurrentTimer);
-        m_nCurrentTimer = 0;
-    }
-//    qDebug()<<"Utility::start() called";
-    m_nCurrentTimer = startTimer(Time);
-    b_Timeout = false;
-}
-
-void BransonSerial::ResetCommandTimer()
-{
-    if(m_nCurrentTimer > 0)
-    {
-        killTimer(m_nCurrentTimer);
-        m_nCurrentTimer = 0;
-        b_Timeout = false;
-    }
-}
-
-bool BransonSerial::IsCommandTimeout()
-{
-    return b_Timeout;
-}
-
-void BransonSerial::timerEvent(QTimerEvent *event)
-{
-    if(event->timerId() >= m_nCurrentTimer)
-    {
-        b_Timeout = true;
-    }
-    else
-    {
-        QObject::timerEvent(event);
-    }
 }
 
 bool BransonSerial::IAportSend(char data)

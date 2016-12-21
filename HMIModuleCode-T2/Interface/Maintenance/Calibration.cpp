@@ -1,19 +1,20 @@
 #include "Calibration.h"
 #include "Modules/M102IA.h"
 #include "Modules/M2010.h"
+#include "Modules/ModRunSetup.h"
 #include "Interface/Interface.h"
 #include "AdvancedMaintenance.h"
 #include "MaintenanceLog.h"
 #include "DataBase/DBMaintenanceLogTable.h"
 #include <QDateTime>
+#include <QDebug>
 Calibration::Calibration()
 {
     CalbCount = 0;
     CalStarted = false;
 }
 
-
-bool Calibration::_start()
+bool Calibration::CloseSafetyGuard()
 {
     bool bResult = true;
     M102IA* _M102IA = M102IA::Instance();
@@ -62,7 +63,7 @@ bool Calibration::_start()
     return bResult;
 }
 
-bool Calibration::_stop()
+void Calibration::OpenSafetyGuard()
 {
     InterfaceClass* _Interface = InterfaceClass::Instance();
     M102IA* _M102IA = M102IA::Instance();
@@ -78,11 +79,23 @@ bool Calibration::_stop()
         MaintenanceLog.MaintenanceMsg = MaintenanceMessageString[CALIBRATE_W_H_CANCEL];
         _MaintenanceLogTable->InsertRecordIntoTable(&MaintenanceLog);
     }
+}
+
+bool Calibration::_start()
+{
+    CloseSafetyGuard();
+    return true;
+}
+
+bool Calibration::_stop()
+{
+    OpenSafetyGuard();
     return true;
 }
 
 bool Calibration::_execute(int funCode)
 {
+    qDebug() << "Calibration::_execute" << funCode;
     bool bResult = true;
     switch(funCode)
     {
@@ -90,12 +103,15 @@ bool Calibration::_execute(int funCode)
         WidthCalibration();
         break;
     case HEIGHT_CALIBRATE:
+        CloseSafetyGuard();
         HeightCalibration();
+        OpenSafetyGuard();
         break;
     case AMPLITUDE_CALIBRATE_PRESS:
         HornCalibrationStart();
         break;
     case AMPLITUDE_CALIBRATE_UPPRESS:
+        qDebug() << "AMPLITUDE_CALIBRATE_UPPRESS";
         HornCalibrationStop();
         break;
     default:
@@ -109,8 +125,9 @@ void Calibration::WidthCalibration()
 {
    M102IA* _M102IA = M102IA::Instance();
    bool bResult = false;
-   _M102IA->SetIAWidth(0);
-   bResult = _M102IA->SetIAWidth(_M102IA->IAsetup.Width);
+   bResult = _M102IA->SetIAWidth(0);
+   qDebug()<<"WidthCalibration :" <<bResult;
+//   bResult = _M102IA->SetIAWidth(_M102IA->IAsetup.Width);
    emit this->WidthCalibrationFinish(bResult);
 }
 
@@ -118,6 +135,7 @@ void Calibration::HeightCalibration()
 {
     M102IA* _M102IA = M102IA::Instance();
     M2010* _M2010 = M2010::Instance();
+    ModRunSetup* _ModRunSetup = ModRunSetup::Instance();
     InterfaceClass* _Interface = InterfaceClass::Instance();
     DBMaintenanceLogTable* _MaintenanceLogTable = DBMaintenanceLogTable::Instance();
     MaintenanceLogElement MaintenanceLog;
@@ -126,10 +144,12 @@ void Calibration::HeightCalibration()
     MaintenanceLog.CreatedDate = QDateTime::currentDateTime().toTime_t();
     bool bResult = false;
     _M102IA->IACommand(IAComHeightZero, 2);
-    _M102IA->WaitForResponseAfterSent(30000, &_M2010->ReceiveFlags.CalibrationDone);
+    _M102IA->WaitForResponseAfterSent(15000, &_M2010->ReceiveFlags.CalibrationDone);
     struct BransonMessageBox tmpMsgBox;
     if (_M2010->ReceiveFlags.CalibrationDone == true)
     {
+        if(_ModRunSetup->OfflineModeEnabled == true)
+            _M102IA->HeightCalResult = 2;
         if (_M102IA->HeightCalResult == 2)
         {
             tmpMsgBox.MsgTitle = QObject::tr("Information");
@@ -184,7 +204,7 @@ void Calibration::HornCalibrationStart()
     _MaintenanceLogTable->InsertRecordIntoTable(&MaintenanceLog);
     bool bResult = false;
     RunSonicsPressed();
-    _M102IA->WaitForResponseAfterSent(5000, &bResult);
+    _M102IA->WaitForResponseAfterSent(1000, &bResult);
     RunSonicsUnPressed();
     _M102IA->WaitForResponseAfterSent(1000, &bResult);
     RunSonics100Pressed();

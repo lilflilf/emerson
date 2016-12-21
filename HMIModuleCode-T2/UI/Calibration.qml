@@ -25,6 +25,7 @@ Item {
             {
                 hmiAdaptor.calibrationMaintenanceExecute(1)
             }
+
         }
         onHeightCalibrationFinish: {
             if (_Result && calibration.currentIndex == 1)

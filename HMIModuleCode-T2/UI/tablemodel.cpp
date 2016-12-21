@@ -2694,6 +2694,7 @@ QHash<int, QByteArray> MaintenanceLogModel::roleNames() const
 
 QVariant MaintenanceLogModel::getValue(int index, QString key)
 {
+    qDebug() << "MaintenanceLogModel" << index << key;
     QMap<int,QString>::iterator it; //遍历map
     int i = 0;
     int orderId;
@@ -2728,5 +2729,8 @@ QVariant MaintenanceLogModel::getValue(int index, QString key)
 }
 void MaintenanceLogModel::searchMaintenanceLog(QString Name, unsigned int time_from, unsigned int time_to)
 {
-    setModelList(Name,time_from,time_to);
+    if (Name == "All")
+        setModelList();
+    else
+        setModelList(Name,time_from,time_to);
 }

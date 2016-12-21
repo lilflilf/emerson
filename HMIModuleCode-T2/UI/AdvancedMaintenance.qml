@@ -12,7 +12,6 @@ Item {
     height: Screen.height*0.6
 
     Component.onCompleted: {
-//        console.log("sssssssssssssssssssssssss")
         hmiAdaptor.maintenanceStart(2);
     }
 //    Component.onDestruction: {

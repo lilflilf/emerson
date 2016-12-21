@@ -242,13 +242,13 @@ Item {
         anchors.bottomMargin: 20
         spacing: 50
         Text {
-            text: qsTr("Actuator Part Number: ")//+hmiAdaptor.getMaintenanceVerson(0)
+            text: qsTr("Actuator Part Number: ") + hmiAdaptor.getMaintenanceVerson(0)
             color: "white"
             font.family: "arial"
             font.pointSize: 14
         }
         Text {
-            text: qsTr("Actuator Software Verson Number: ")//+hmiAdaptor.getMaintenanceVerson(1)
+            text: qsTr("Actuator Software Verson Number: ") + hmiAdaptor.getMaintenanceVerson(1)
             color: "white"
             font.family: "arial"
             font.pointSize: 14
@@ -261,13 +261,13 @@ Item {
         anchors.bottomMargin: 20
         spacing: 50
         Text {
-            text: qsTr("Actuator Serial Number: ")//+hmiAdaptor.getMaintenanceVerson(2)
+            text: qsTr("Actuator Serial Number: ")+hmiAdaptor.getMaintenanceVerson(2)
             color: "white"
             font.family: "arial"
             font.pointSize: 14
         }
         Text {
-            text: qsTr("Actuator Module: ")//+hmiAdaptor.getMaintenanceVerson(3)
+            text: qsTr("Actuator Module: ")+hmiAdaptor.getMaintenanceVerson(3)
             color: "white"
             font.family: "arial"
             font.pointSize: 14

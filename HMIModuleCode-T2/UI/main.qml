@@ -203,7 +203,6 @@ Window {
     Connections {
         target: contentLoader.item
         onTitleTextChanged: {
-            console.log("myTitleText = ",myTitleText)
             headBar.titleText = myTitleText
         }
     }

@@ -666,6 +666,7 @@ Item {
                 textColor: "white"
                 text: qsTr("Shut Down")
                 onClicked: {
+                    hmiAdaptor.quit()
                     Qt.quit()
                 }
             }
