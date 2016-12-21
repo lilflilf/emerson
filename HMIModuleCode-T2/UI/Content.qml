@@ -35,7 +35,7 @@ Item {
                 content.selectSplice(content.selectSpliceId)
 
             loader.source = ""
-            titleTextChanged("Create Assembly")
+            titleTextChanged("Create New")
         }
     }
     Loader {
@@ -364,7 +364,7 @@ Item {
                 width: parent.width-20
                 height: 50
                 inputWidth: edit2.width/3
-                tipsText: qsTr("#of Splices per Workstations")
+                tipsText: qsTr("Max Splices per Workstations")
 //                regExp: RegExpValidator{regExp: /([1-9]|1[0-9]|20)/}
                 opacity: 0.7
                 inputText: partModel.getWorkStationMaxSplicePerStation()
@@ -721,6 +721,7 @@ Item {
             anchors.bottom: editSplice.top
             anchors.bottomMargin: 10
             visible: !bIsBoard
+            centerVisable: false
             Component.onCompleted: {
             }
         }

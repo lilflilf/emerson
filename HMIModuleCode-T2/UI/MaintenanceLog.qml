@@ -319,6 +319,9 @@ Item {
                 width: parent.width
                 text: qsTr("APPLY")
                 onClicked: {
+                    if (newCalendar.visible) {
+                        newCalendar.visible = false
+                    }
                     var fromtime = hmiAdaptor.timeChangeToInt(mycalendar1.text + " " + mytimeSelect1.text)
                     var totime = hmiAdaptor.timeChangeToInt(mycalendar2.text + " " + mytimeSelect2.text)
                     maintenanceLogModel.searchMaintenanceLog(workOrderName.text,fromtime,totime)
@@ -398,6 +401,7 @@ Item {
             property var listIndex: 0
             Component.onCompleted: {
                 listIndex = index
+                console.log("2222222222222222",listIndex)
             }
 
             Row {
@@ -425,11 +429,13 @@ Item {
                             hoverEnabled: true
                             onEntered: {
 //                                tempText.color = "red"
-                                tempText.newObject = Qt.createQmlObject('import QtQuick 2.0;Rectangle {color: "#052a40";property alias mytext: tempText.text;height: tempText.height;width:400;z:11; Text {id: tempText;anchors.verticalCenter: parent.verticalCenter;text: qsTr("")
-;font.family: "arial";font.pixelSize: 20;color: "white";wrapMode: Text.WordWrap; maximumLineCount: 60}}',parent,"");
+                                tempText.newObject = Qt.createQmlObject('import QtQuick 2.0;Rectangle {color: "#052a40";property alias mytext: tempText.text;height: tempText.height;width:tempText.width;z:11; Text {id: tempText;anchors.verticalCenter: parent.verticalCenter;text: qsTr("")
+;font.family: "arial";font.pixelSize: 20;color: "white";wrapMode: Text.WordWrap; maximumLineCount: 10}}',listView,"");
                                 tempText.newObject.mytext = tempText.text
-                                if (tempText.width > 600)
-                                    tempText.width = 600
+//                                if (tempText.width > 600)
+//                                    tempText.width = 600
+                                tempText.newObject.x = tempText.x
+                                tempText.newObject.y = tempText.y + listIndex * 50
 //                                tempText.newObject.width = tempText.width
 //                                tempText.newObject.height = tempText.height
 

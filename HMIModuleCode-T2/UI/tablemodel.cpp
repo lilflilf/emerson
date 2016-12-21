@@ -1833,7 +1833,11 @@ void AlarmModel::setModelList()
 
 void AlarmModel::searchAlarmLog(QString name, unsigned int time_from, unsigned int time_to)
 {
-    setModelList(name,time_from,time_to);
+    if (name == "All") {
+        setModelList(time_from,time_to);
+    } else {
+        setModelList(name,time_from,time_to);
+    }
 }
 
 int AlarmModel::rowCount(const QModelIndex & parent) const
@@ -2110,7 +2114,14 @@ QHash<int, QByteArray> WeldHistoryModel::roleNames() const
 
 void WeldHistoryModel::weldResultSearch(QString WorkOrderName, QString PartName, QString SpliceName, unsigned int time_from, unsigned int time_to, FieldType OrderField, bool Orderby)
 {
-    setModelList(WorkOrderName,PartName,SpliceName,time_from,time_to,OrderField,Orderby);
+    QString workOrderName,partName,spliceName;
+    if (WorkOrderName != "All")
+        workOrderName = WorkOrderName;
+    if (PartName != "All")
+        partName = PartName;
+    if (SpliceName != "All")
+        spliceName = SpliceName;
+    setModelList(workOrderName,partName,spliceName,time_from,time_to,OrderField,Orderby);
 }
 
 QVariant WeldHistoryModel::getValue(int index, QString key)

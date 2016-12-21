@@ -49,6 +49,8 @@ Item {
             anchors.bottomMargin: 20
             anchors.left: parent.left
             anchors.leftMargin: 20
+            iconSource: "qrc:/images/images/import.png"
+            spacing: 10
             text: qsTr("IMPORT")
 
         }
@@ -620,10 +622,13 @@ Item {
                             onEntered: {
                                 tempText.color = "red"
                                 tempText.newObject = Qt.createQmlObject('import QtQuick 2.0;Rectangle {color: "#052a40";property alias mytext: tempText.text;height: tempText.height; width:tempText.width;Text {id: tempText;anchors.verticalCenter: parent.verticalCenter;text: qsTr("")
-;font.family: "arial";font.pixelSize: 20;color: "white";wrapMode: Text.WordWrap; maximumLineCount: 60}}',parent,"");
+;font.family: "arial";font.pixelSize: 20;color: "white";wrapMode: Text.WordWrap; maximumLineCount: 60}}',listView,"");
                                 tempText.newObject.mytext = tempText.text
-                                if (tempText.width > 600)
-                                    tempText.width = 600
+//                                if (tempText.width > 600)
+//                                    tempText.width = 600
+//                                console.log("xxxxxxxxx",tempText.x,tempText.y)
+                                tempText.newObject.x = tempText.x
+                                tempText.newObject.y = tempText.y + listIndex * 50
 //                                tempText.newObject.width = tempText.width
 //                                tempText.newObject.height = tempText.height
 

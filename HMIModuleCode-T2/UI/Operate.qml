@@ -26,8 +26,6 @@ Item {
                 list =  workOrderModel.getSpliceList(selectIndx)
                 if (list.length > 0) {
                     loader.item.spliceList = workOrderModel.getSpliceList(selectIndx)
-                    loader.item.selectSplice(workOrderModel.getSpliceList(selectIndx)[0])
-                    loader.item.qliantity = workOrderModel.getWorkOrderValue(selectIndx, "count")
                     if (partModel.getPartOnlineOrOffLine()) {
                         loader.item.showFlag = 1
                     } else {
@@ -37,6 +35,8 @@ Item {
                             loader.item.showFlag = 2
                         }
                     }
+                    loader.item.selectSplice(workOrderModel.getSpliceList(selectIndx)[0])
+                    loader.item.qliantity = workOrderModel.getWorkOrderValue(selectIndx, "count")
                 }
             }
         }
@@ -289,7 +289,7 @@ Item {
         anchors.bottomMargin: 10
         anchors.left: parent.left
         anchors.leftMargin: 15
-        width: (parent.width-230)/4
+        width: (parent.width-100)/5
         spacing: 10
         iconSource: "qrc:/images/images/Add.png"
         text: qsTr("ADD NEW")
@@ -308,7 +308,7 @@ Item {
         anchors.bottom: addnewOrder.bottom
         anchors.left: addnewOrder.right
         anchors.leftMargin: 15
-        width: (parent.width-230)/4
+        width: (parent.width-100)/5
         spacing: 10
         iconSource: "qrc:/images/images/stting.png"
         text: qsTr("EDIT")
@@ -330,13 +330,15 @@ Item {
         anchors.bottom: addnewOrder.bottom
         anchors.left: editExistingOrder.right
         anchors.leftMargin: 15
-        width: (parent.width-230)/4
+        width: (parent.width-100)/5
         spacing: 10
         text: qsTr("DELETE")
         pointSize: 20
         clip: true
         textColor: "white"
         onClicked: {
+            if (selectIndx < 0)
+                return
             workOrderModel.removeValue(workOrderModel.getWorkOrderValue(selectIndx,"workOrderId"),workOrderModel.getWorkOrderValue(selectIndx,"name"))
         }
     }
@@ -345,7 +347,7 @@ Item {
         anchors.bottom: addnewOrder.bottom
         anchors.left: deleOrder.right
         anchors.leftMargin: 15
-        width: (parent.width-230)/4
+        width: (parent.width-100)/5
         spacing: 10
         iconSource: "qrc:/images/images/import.png"
         text: qsTr("IMPORT")
@@ -361,7 +363,7 @@ Item {
         anchors.bottom: addnewOrder.bottom
         anchors.right: parent.right
         anchors.rightMargin: 20
-        width: 130
+        width: (parent.width-100)/5
         spacing: 10
         iconSource: "qrc:/images/images/OK.png"
         text: qsTr("OK")
@@ -387,7 +389,6 @@ Item {
             onClicked: {
             }
         }
-
     }
 
     Image {
