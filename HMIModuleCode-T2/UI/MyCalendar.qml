@@ -14,6 +14,7 @@ CButton {
     height: 40
     text: mycalendar.bIsdate == true ? Qt.formatDateTime(new Date(), "yyyy-MM-dd") : Qt.formatDateTime(new Date(), "hh:mm:ss")
     backgroundComponent: Rectangle {
+        id: backColor
         anchors.fill: parent
         color: "black"
         border.color: mycalendarRadio.checked ? "#05f91c" : "#1987ab"
@@ -44,6 +45,11 @@ CButton {
         onTimeValueChanged: {
             if (mycalendarRadio.checked == true && mycalendar.bIsdate == false)
                 mycalendar.text = selecter.timeValue
+        }
+        onVisibleChanged: {
+            if (selecter.visible == false) {
+                mycalendarRadio.checked = false
+            }
         }
     }
 }

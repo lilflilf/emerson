@@ -14,7 +14,7 @@ Item {
         id: newCalendar
         anchors.centerIn: parent
         z: 12
-        visible: false
+        bIsVisible: false
     }
     Rectangle {
         id: back
@@ -173,10 +173,10 @@ Item {
                     if (searchArea.selectNum != -2) {
                         searchArea.visible = false
                         workOrderName.text = searchList.model.getValue(searchArea.selectNum,"SpliceName")
-                    } else {
+                    }/* else {
                         searchArea.visible = false
                         workOrderName.text = qsTr("All")
-                    }
+                    }*/
                 }
             }
         }
@@ -302,6 +302,9 @@ Item {
                 width: parent.width
                 text: qsTr("APPLY")
                 onClicked: {
+                    if (newCalendar.visible) {
+                        newCalendar.visible = false
+                    }
                     var fromtime = hmiAdaptor.timeChangeToInt(mycalendar1.text + " " + mytimeSelect1.text)
                     var totime = hmiAdaptor.timeChangeToInt(mycalendar2.text + " " + mytimeSelect2.text)
                 }

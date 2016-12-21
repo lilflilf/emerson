@@ -111,4 +111,19 @@ MouseArea {
         anchors.horizontalCenterOffset: button.labelHorizontalOffset
         anchors.verticalCenterOffset: button.labelVerticalOffset
     }
+    Timer {
+        id: time
+        interval: 500
+        running: false
+        onRunningChanged: {
+            if (time.running) {
+                button.enabled = false
+            } else {
+                button.enabled = true
+            }
+        }
+    }
+    onClicked: {
+        time.running = true
+    }
 }

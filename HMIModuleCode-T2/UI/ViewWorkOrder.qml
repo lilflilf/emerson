@@ -210,7 +210,7 @@ Item {
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: 100
                 clip: true
-                model: testModel
+                model: workOrderModel
                 delegate: Component {
                     id: seachComponent
                     Item {
@@ -501,6 +501,8 @@ Item {
                 width: spliceName.width
                 text: qsTr("APPLY")
                 onClicked: {
+                    if (newCalendar.visible)
+                        newCalendar.visible = false
                     var fromtime = hmiAdaptor.timeChangeToInt(mycalendar1.text + " " + mycalendar2.text)
                     var totime = hmiAdaptor.timeChangeToInt(mytimeSelect1.text + " " + mytimeSelect2.text)
                     weldHistoryModel.weldResultSearch(workOrderName.text,partName.text,spliceName.text,fromtime,totime)

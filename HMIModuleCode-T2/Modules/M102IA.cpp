@@ -40,7 +40,7 @@ M102IA::M102IA(QObject *parent)
 
     IAsetup.ModeFlags = 0;
     IAsetup.Energy = -1;
-    IAsetup.Width = -1;
+    IAsetup.Width = 100;
     IAsetup.WeldPressure = -1;
     IAsetup.TriggerPressure = -1;
     IAsetup.Amplitude = -1;
@@ -64,10 +64,9 @@ M102IA::M102IA(QObject *parent)
     IAsetup.TimeToStep = -1;
     IAsetup.PowerToStep = -1;
 
-    WELDdata IAactual;
     IAactual.Reserved.clear();
     IAactual.Energy = -1;
-    IAactual.Width = -1;
+    IAactual.Width = 100;
     IAactual.Time = -1;
     IAactual.PeakPowerPer.clear();
     IAactual.Power = -1;
@@ -523,9 +522,13 @@ int M102IA::MakeHexNibbleNumber(char HexNibble)
 int M102IA::MakeHexByteNumber(QString HexByte)
 {
     int Result = 0;
-    QByteArray Array = HexByte.toLatin1();
-    Result = 16 * MakeHexNibbleNumber(Array.at(0)) +
-            MakeHexNibbleNumber(Array.at(1));
+    if(HexByte.length() == 2)
+    {
+        QByteArray Array = HexByte.toLatin1();
+        Result = 16 * MakeHexNibbleNumber(Array.at(0)) +
+                MakeHexNibbleNumber(Array.at(1));
+    }else
+        Result = 0;
     return Result;
 }
 
@@ -733,9 +736,11 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         break;
     case IASigHeightCal:
         HeightCalResult = MakeHexWordNumber(HexString.mid(9, 4));
+        qDebug()<<"123"<<HexString.length()<<HeightCalResult;
         if (HeightCalResult == 1)
         {
             DownSpeed = MakeHexWordNumber(HexString.mid(13, 4));
+            qDebug()<<"234"<<HexString.length();
 //            dlgCalibHeight.UniLabel6.Caption = GetResString(1106) & " = " & Format(DownSpeed / 100, "0.00 mm/sec")
         }
         if (HeightCalResult != 1)  _M2010->ReceiveFlags.CalibrationDone = true;
