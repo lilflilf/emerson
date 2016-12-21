@@ -14,7 +14,7 @@ Item {
         id: newCalendar
         anchors.centerIn: parent
         z: 12
-        bIsVisible: false
+        visible: false
     }
     Rectangle {
         id: back
