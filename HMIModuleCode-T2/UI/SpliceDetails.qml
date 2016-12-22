@@ -1083,7 +1083,7 @@ Item {
             }
             Text {
                 id: myWireNameLeft
-                width: leftRec.width * 2
+                width: leftRec.width * 3
                 anchors.right: leftRec.left
                 anchors.verticalCenter: leftRec.verticalCenter
                 anchors.rightMargin: 8
@@ -1208,7 +1208,7 @@ Item {
             }
             Text {
                 id: myWireNameRight
-                width: rightRec.width * 2
+                width: rightRec.width * 3
                 anchors.left: rightRec.right
                 anchors.verticalCenter: rightRec.verticalCenter
                 anchors.leftMargin: 8

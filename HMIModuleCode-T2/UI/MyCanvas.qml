@@ -40,13 +40,13 @@ Item {
         pointy = canvas.height / powerMax
         for (i = 0; i < powerList.length; i++)
         {
-            listModel.append({"x":i * pointx,"y":canvas.height - list[i] * pointy})
+            listModel.append({"x":i * pointx,"y":canvas.height - powerList[i] * pointy})
         }
         heightList = alarmModel.getPoint2()
         pointy = canvas.height / heightMax
         for (i = 0; i < heightList.length; i++)
         {
-            listModelRight.append({"x":i * pointx,"y":canvas.height - list[i] * pointy})
+            listModelRight.append({"x":i * pointx,"y":canvas.height - heightList[i] * pointy})
         }
     }
 
@@ -178,7 +178,8 @@ Item {
             ctx.strokeStyle = "lightblue"
 //            ctx.fillStyle = "steelblue"
             ctx.beginPath()
-            ctx.moveTo(listModel.get(0).x,listModel.get(0).y)
+            if (listModel.count > 0)
+                ctx.moveTo(listModel.get(0).x,listModel.get(0).y)
 //            ctx.lineTo(width,0)
 //            ctx.lineTo(width,height)
 //            ctx.lineTo(0,height)
@@ -191,7 +192,8 @@ Item {
             ctx.stroke()
             ctx.strokeStyle = "red"
             ctx.beginPath()
-            ctx.moveTo(listModelRight.get(0).x,listModelRight.get(0).y)
+            if (listModelRight.count > 0)
+                ctx.moveTo(listModelRight.get(0).x,listModelRight.get(0).y)
             for (i = 0; i < listModelRight.count; i++)
             {
                 ctx.lineTo(listModelRight.get(i).x,listModelRight.get(i).y)

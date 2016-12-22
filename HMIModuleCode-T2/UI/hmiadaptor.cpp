@@ -6,6 +6,8 @@
 #include <QAxObject>
 #include <QAxWidget>
 #include <QQuickView>
+#include <windows.h>
+#include <QDesktopWidget>
 
 HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
 {
@@ -92,8 +94,13 @@ HmiAdaptor::~HmiAdaptor()
 
 void HmiAdaptor::quit()
 {
-    HWND hWnd = ::FindWindow(TEXT("Shell_traywnd"),TEXT(""));
-    ::SetWindowPos(hWnd,0,0,0,0,0,SWP_SHOWWINDOW);
+//    int cx = GetSystemMetrics( SM_CXFULLSCREEN );
+//    int cy = GetSystemMetrics( SM_CYFULLSCREEN );
+//    RECT rc = {0,0,cx,cy-taskBarHeight};
+//    SystemParametersInfo(SPI_SETWORKAREA,
+//                         0,
+//                         &rc,
+//                         0);
 }
 
 void HmiAdaptor::openFileDialog()
@@ -416,9 +423,9 @@ bool HmiAdaptor::login(QString passwd)
     return isLog;
 }
 
-int HmiAdaptor::getCurrentOperatorId()
+QString HmiAdaptor::getCurrentOperatorId()
 {
-    return interfaceClass->CurrentOperator.OperatorID;
+    return interfaceClass->CurrentOperator.OperatorName;
 }
 
 void HmiAdaptor::calibrationMaintenanceExecute(int code)
