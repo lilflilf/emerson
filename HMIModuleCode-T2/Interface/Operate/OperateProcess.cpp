@@ -23,9 +23,7 @@ OperateProcess* OperateProcess::Instance()
 
 OperateProcess::OperateProcess(QObject *parent) : QObject(parent)
 {
-    M102IA* _M102IA = M102IA::Instance();
-    connect(_M102IA, SIGNAL(WeldResultFeedback()),
-            this,SLOT(WeldResultFeedbackEventSlot));
+//    M102IA* _M102IA = M102IA::Instance();
 }
 
 void OperateProcess::UpdateIAFields()
@@ -81,7 +79,7 @@ void OperateProcess::UpdateWeldResult()
     CurrentWeldResult.ActualResult.ActualTPressure = _M102IA->IAactual.TPressure;
     CurrentWeldResult.ActualResult.ActualAlarmflags = _M102IA->IAactual.Alarmflags;
     if(CurrentSplice.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode == STEPDISABLE)
-        CurrentWeldResult.ActualResult.ActualAmplitude2 == -1;
+        CurrentWeldResult.ActualResult.ActualAmplitude2 = 0;
 
     CurrentWeldResult.OperatorName = _Interface->CurrentOperator.OperatorName;
     CurrentWeldResult.CurrentWorkOrder.WorkOrderID
@@ -105,20 +103,17 @@ bool OperateProcess::PowerGraphReceive()
     bool bResult = false;
     M102IA *_M102IA = M102IA::Instance();
     M2010 *_M2010 = M2010::Instance();
-
     int Index;
 
     Index = _M102IA->RawPowerDataGraph.CurrentIndex;
-    _M102IA->SendIACommand(IAComSendPowerGraph, Index);
-    _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.PowerGraphData);
-    if(_M2010->ReceiveFlags.PowerGraphData == true)
+    if(Index != (_M102IA->RawPowerDataGraph.TotalFrame - 1))
     {
+        _M2010->ReceiveFlags.PowerGraphData = false;
+        _M102IA->SendIACommand(IAComSendPowerGraph, Index);
+        _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.PowerGraphData);
+    }else
         bResult = true;
-    }
-    if(_M102IA->RawPowerDataGraph.GraphDataList.size() == 0)
-    {
-        bResult = false;
-    }
+
     return bResult;
 }
 
@@ -127,20 +122,16 @@ bool OperateProcess::HeightGraphReceive()
     bool bResult = false;
     M102IA *_M102IA = M102IA::Instance();
     M2010 *_M2010 = M2010::Instance();
-
     int Index;
 
     Index = _M102IA->RawHeightDataGraph.CurrentIndex;
-    _M102IA->SendIACommand(IAComSendHeightGraph, Index);
-    _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.HeightGraphData);
-    if(_M2010->ReceiveFlags.HeightGraphData == true)
+    if(Index != (_M102IA->RawHeightDataGraph.TotalFrame - 1))
     {
+        _M2010->ReceiveFlags.HeightGraphData = false;
+        _M102IA->SendIACommand(IAComSendHeightGraph, Index);
+        _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.HeightGraphData);
+    }else
         bResult = true;
-    }
-    if(_M102IA->RawHeightDataGraph.GraphDataList.size() == 0)
-    {
-        bResult = false;
-    }
     return bResult;
 }
 
@@ -164,11 +155,8 @@ void OperateProcess::WeldCycleDaemonThread(void* _obj)
     switch(_ObjectPtr->CurrentStep)
     {
     case POWERFst:
-        if(_M2010->ReceiveFlags.PowerGraphData == false)
-        {
-            _ObjectPtr->PowerGraphReceive();
+        if(_ObjectPtr->PowerGraphReceive() == false)
             _ObjectPtr->m_triedCount++;
-        }
         else
         {
             _M2010->ConvertGraphData(_M102IA->RawPowerDataGraph.GraphDataList,
@@ -183,11 +171,9 @@ void OperateProcess::WeldCycleDaemonThread(void* _obj)
         }
         break;
     case HEIGHTSnd:
-        if(_M2010->ReceiveFlags.HeightGraphData == false)
-        {
-            _ObjectPtr->HeightGraphReceive();
+        if(_ObjectPtr->HeightGraphReceive() == false)
             _ObjectPtr->m_triedCount++;
-        }
+
         else
         {
             _M2010->ConvertGraphData(_M102IA->RawHeightDataGraph.GraphDataList,
@@ -264,29 +250,32 @@ void OperateProcess::WeldCycleDaemonThread(void* _obj)
     }
 }
 
-void OperateProcess::WeldResultFeedbackEventSlot()
+void OperateProcess::WeldResultFeedbackEventSlot(bool& bResult)
 {
     M102IA *_M102IA = M102IA::Instance();
     M2010 *_M2010 = M2010::Instance();
+    if(bResult == false)
+        return;
     UpdateWeldResult();
-    _M2010->ReceiveFlags.PowerGraphData = false;
-    _M102IA->RawPowerDataGraph.GraphDataList.clear();
-    _M102IA->RawPowerDataGraph.CurrentIndex = 0;
-    _M2010->ReceiveFlags.HeightGraphData = false;
-    _M102IA->RawHeightDataGraph.GraphDataList.clear();
-    _M102IA->RawHeightDataGraph.CurrentIndex = 0;
+//    _M2010->ReceiveFlags.PowerGraphData = false;
+//    _M102IA->RawPowerDataGraph.GraphDataList.clear();
+//    _M102IA->RawPowerDataGraph.CurrentIndex = 0;
+//    _M2010->ReceiveFlags.HeightGraphData = false;
+//    _M102IA->RawHeightDataGraph.GraphDataList.clear();
+//    _M102IA->RawHeightDataGraph.CurrentIndex = 0;
 
     m_triedCount = 0;
     CurrentStep = POWERFst;
     m_Thread->start();
 }
 
-void OperateProcess::_start()
+bool OperateProcess::_start()
 {
     M102IA *_M102IA = M102IA::Instance();
     InterfaceClass* _Interface = InterfaceClass::Instance();
     struct BransonMessageBox tmpMsgBox;
     _Interface->FirstScreenComesUp = true;
+    bool bResult = true;
     if(_M102IA->SendCommandSetRunMode(1) == false)
     {
         tmpMsgBox.MsgTitle = QObject::tr("ERROR");
@@ -294,19 +283,24 @@ void OperateProcess::_start()
         tmpMsgBox.TipsMode = Critical;
         tmpMsgBox.func_ptr = NULL;
         _Interface->cMsgBox(&tmpMsgBox);
+        bResult = false;
     }else{
         m_Thread = new ThreadClass(0, (void*)(OperateProcess::WeldCycleDaemonThread), this);
         m_Thread->setStopEnabled(false);
         m_Thread->setSuspendEnabled(false);
+        connect(_M102IA, SIGNAL(WeldResultFeedback(bool&)),
+                this,SLOT(WeldResultFeedbackEventSlot(bool&)));
     }
-
+    return bResult;
 }
 
-void OperateProcess::_stop()
+bool OperateProcess::_stop()
 {
     M102IA *_M102IA = M102IA::Instance();
     InterfaceClass *_Interface = InterfaceClass::Instance();
     struct BransonMessageBox tmpMsgBox;
+    bool bResult = true;
+    disconnect(_M102IA, SIGNAL(WeldResultFeedback(bool&)),this, SLOT(WeldResultFeedbackEventSlot(bool&)));
     if(_M102IA->SendCommandSetRunMode(0) == false)
     {
         tmpMsgBox.MsgTitle = QObject::tr("ERROR");
@@ -314,6 +308,7 @@ void OperateProcess::_stop()
         tmpMsgBox.TipsMode = Critical;
         tmpMsgBox.func_ptr = NULL;
         _Interface->cMsgBox(&tmpMsgBox);
+        bResult = false;
     }
     if(m_Thread != NULL)
     {
@@ -323,17 +318,19 @@ void OperateProcess::_stop()
         delete m_Thread;
         m_Thread = NULL;
     }
+    return bResult;
 }
 
 //this function is used to send the preset data to controller
 //this also send width calibration data, trigpress, amplitude and pre burst.
 //Command for Sending Amplitude Step parameters is also added before the Preset is sent to the controller
-void OperateProcess::_execute()
+bool OperateProcess::_execute()
 {
     M102IA *_M102IA = M102IA::Instance();
     M2010  *_M2010  = M2010::Instance();
     InterfaceClass *_Interface = InterfaceClass::Instance();
     ModRunSetup *_ModRunSetup = ModRunSetup::Instance();
+    bool bResult = true;
     int Retries = 0;
     struct BransonMessageBox tmpMsgBox;
     UpdateIAFields();
@@ -342,8 +339,6 @@ void OperateProcess::_execute()
 
     while(_M2010->ReceiveFlags.SYSTEMid == false)
     {
-        if (_ModRunSetup->OfflineModeEnabled == true)
-            break;
         if(Retries < 20)
         {
             _M102IA->SendPresetToIA(0);
@@ -360,38 +355,37 @@ void OperateProcess::_execute()
         tmpMsgBox.TipsMode = Critical;
         tmpMsgBox.func_ptr = NULL;
         _Interface->cMsgBox(&tmpMsgBox);
+        bResult = false;
     }
+    if(bResult == false)
+        return bResult;
 
-    if(_ModRunSetup->OfflineModeEnabled == false)
-    {
-        _M102IA->SetIAWidth();
-        _M102IA->SendIACommand(IAComSetPressure, CurrentSplice.WeldSettings.BasicSetting.TrigPres);
-        _M102IA->SendIACommand(IAComSetAmplitude, CurrentSplice.WeldSettings.BasicSetting.Amplitude);
-        _M102IA->SendIACommand(IAComSetPreburst, CurrentSplice.WeldSettings.AdvanceSetting.PreBurst);
-    }
+    _M102IA->SetIAWidth();
+    _M102IA->SendIACommand(IAComSetPressure, CurrentSplice.WeldSettings.BasicSetting.TrigPres);
+    _M102IA->SendIACommand(IAComSetAmplitude, CurrentSplice.WeldSettings.BasicSetting.Amplitude);
+    _M102IA->SendIACommand(IAComSetPreburst, CurrentSplice.WeldSettings.AdvanceSetting.PreBurst);
 
-    if(_ModRunSetup->OfflineModeEnabled == false)
+
+    Retries = 0;
+    _M2010->ReceiveFlags.HostReadyData = false;
+    while(_M2010->ReceiveFlags.HostReadyData == false)
     {
-        Retries = 0;
-        _M2010->ReceiveFlags.HostReadyData = false;
-        while(_M2010->ReceiveFlags.HostReadyData == false)
-        {
-            _M102IA->IACommand(IAComHostReady);
-            _M102IA->WaitForResponseAfterSent(3000,&_M2010->ReceiveFlags.HostReadyData);
-            if(_M2010->ReceiveFlags.HostReadyData == false)
-                Retries++;
-            if(Retries > 3)
-                break;
-        }
+        _M102IA->IACommand(IAComHostReady);
+        _M102IA->WaitForResponseAfterSent(5000,&_M2010->ReceiveFlags.HostReadyData);
+        Retries++;
         if(Retries > 3)
-        {
-            tmpMsgBox.MsgTitle = QObject::tr("ERROR");
-            tmpMsgBox.MsgPrompt = QObject::tr("Can't get any Response from controller!");
-            tmpMsgBox.TipsMode = Critical;
-            tmpMsgBox.func_ptr = NULL;
-            _Interface->cMsgBox(&tmpMsgBox);
-        }
+            break;
     }
+    if(Retries > 3)
+    {
+        tmpMsgBox.MsgTitle = QObject::tr("ERROR");
+        tmpMsgBox.MsgPrompt = QObject::tr("Can't get any Response from controller!");
+        tmpMsgBox.TipsMode = Critical;
+        tmpMsgBox.func_ptr = NULL;
+        _Interface->cMsgBox(&tmpMsgBox);
+        bResult = false;
+    }
+    return bResult;
 }
 
 //this functio is only for the UCL & LCL calculation.

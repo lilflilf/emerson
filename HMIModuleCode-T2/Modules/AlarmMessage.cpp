@@ -237,6 +237,7 @@ void AlarmMessage::RunModeMouseButton()
         _Interface->cMsgBox(&tmpMsgBox);
     }else
     {
+        _M2010->ReceiveFlags.HostReadyData = false;
         _M102IA->IACommand(IAComHostReady);
         _M102IA->WaitForResponseAfterSent(3000,&_M2010->ReceiveFlags.HostReadyData);
         if(_M2010->ReceiveFlags.HostReadyData == false)

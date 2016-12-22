@@ -40,10 +40,10 @@ PresetElement::PresetElement()
     WeldSettings.AdvanceSetting.SqzTime = 0;
     WeldSettings.AdvanceSetting.WeldMode = ENERGY;
     WeldSettings.AdvanceSetting.StepWeld.StepWeldMode = STEPDISABLE;
-    WeldSettings.AdvanceSetting.StepWeld.Amplitude2 = -1;
-    WeldSettings.AdvanceSetting.StepWeld.EnergyToStep = -1;
-    WeldSettings.AdvanceSetting.StepWeld.PowerToStep = -1;
-    WeldSettings.AdvanceSetting.StepWeld.TimeToStep = -1;
+    WeldSettings.AdvanceSetting.StepWeld.Amplitude2 = 0;
+    WeldSettings.AdvanceSetting.StepWeld.EnergyToStep = 0;
+    WeldSettings.AdvanceSetting.StepWeld.PowerToStep = 0;
+    WeldSettings.AdvanceSetting.StepWeld.TimeToStep = 0;
     WeldSettings.AdvanceSetting.ShrinkTube.ShrinkOption = false;
     WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTemperature
             = _Interface->StatusData.ShrinkTubeDefaults.at(0).temp;

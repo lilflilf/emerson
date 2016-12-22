@@ -143,6 +143,7 @@ void Calibration::HeightCalibration()
     MaintenanceLog.OperatorID = _Interface->CurrentOperator.OperatorID;
     MaintenanceLog.CreatedDate = QDateTime::currentDateTime().toTime_t();
     bool bResult = false;
+    _M2010->ReceiveFlags.CalibrationDone = false;
     _M102IA->IACommand(IAComHeightZero, 2);
     _M102IA->WaitForResponseAfterSent(15000, &_M2010->ReceiveFlags.CalibrationDone);
     struct BransonMessageBox tmpMsgBox;

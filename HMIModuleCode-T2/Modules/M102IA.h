@@ -404,7 +404,7 @@ public:
     void SendPresetToIA(int PresetNo);
     bool WaitForResponseAfterSent(int TimeOut = 3000, bool *CheckResponseFlag = NULL);
 signals:
-    void WeldResultFeedback(const bool &_status);
+    void WeldResultFeedback(bool &_status);
 public:
     static M102IA* Instance();
 protected:
