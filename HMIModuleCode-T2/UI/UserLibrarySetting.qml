@@ -260,6 +260,11 @@ Item {
         width: 300
         text: qsTr("Delete")
         textColor: "white"
+        onClicked: {
+            if (selectIndx < 0)
+                return
+            operatorModel.removeValue(operatorModel.getOperatorValue(selectIndx,"operatorId"),operatorModel.getOperatorValue(selectIndx,"name"))
+        }
     }
     CButton {
         id: editButton
@@ -267,13 +272,17 @@ Item {
         anchors.rightMargin: 43
         anchors.bottom: deleteButton.bottom
         width: 300
+        iconSource: "qrc:/images/images/stting.png"
         text: qsTr("Edit")
         textColor: "white"
         onClicked: {
+            if (selectIndx < 0)
+                return
+            operatorDialog.bIsEdit = true
             backGround.visible = true
             backGround.opacity = 0.5
             operatorDialog.visible = true
-            operatorModel.editNew(selectIndx)
+//            operatorModel.editNew(selectIndx)
         }
     }
     CButton {
@@ -283,6 +292,7 @@ Item {
         anchors.bottom: deleteButton.bottom
 //        anchors.bottomMargin: 40
         width: 300
+        iconSource: "qrc:/images/images/Add.png"
         text: qsTr("Add New")
         textColor: "white"
         onClicked: {
@@ -306,12 +316,38 @@ Item {
     }
     Image {
         id: operatorDialog
+        property bool bIsEdit: false
         anchors.centerIn: parent
         anchors.verticalCenterOffset: -80
         width: 570
         height: 480
         visible: false
         source: "qrc:/images/images/dialogbg.png"
+        onBIsEditChanged: {
+            if (bIsEdit) {
+                operatorNameInput.inputText = operatorModel.getOperatorValue(selectIndx,"name")
+                passwordInput.inputText = operatorModel.getOperatorValue(selectIndx,"middle")
+                var level = operatorModel.getOperatorValue(selectIndx,"count")
+                console.log("1111111111111111",operatorNameInput.inputText,passwordInput.inputText,level)
+                if (level == qsTr("ADMINISTRATOR")) {
+                    administratorRadio.bIsCheck = true
+                } else if (level == qsTr("TECHNICIAN")) {
+                    technicianRadio.bIsCheck = true
+                } else if (level == qsTr("QUALITYCONTROL")) {
+                    qualityRadio.bIsCheck = true
+                } else if (level == qsTr("OPEN")) {
+                    openRadio.bIsCheck = true
+                }
+            }
+        }
+        onVisibleChanged: {
+            if(!bIsEdit && operatorDialog.visible){
+                operatorNameInput.inputText = ""
+                passwordInput.inputText = ""
+                administratorRadio.bIsCheck = true
+            }
+        }
+
         Text {
             id: title
             anchors.top: parent.top
@@ -441,6 +477,7 @@ Item {
                 backGround.visible = false
                 backGround.opacity = 0
                 operatorDialog.visible = false
+                operatorDialog.bIsEdit = false
             }
         }
         CButton {
@@ -457,7 +494,22 @@ Item {
                 backGround.visible = false
                 backGround.opacity = 0
                 operatorDialog.visible = false
-                operatorModel.insertValue(operatorNameInput.inputText,passwordInput.inputText);
+                var level = 0
+                if (administratorRadio.bIsCheck) {
+                    level = 1
+                } else if (technicianRadio.bIsCheck) {
+                    level = 2
+                } else if (qualityRadio.bIsCheck) {
+                    level = 3
+                } else if (openRadio.bIsCheck) {
+                    level = 4
+                }
+                if (operatorDialog.bIsEdit) {
+                    operatorModel.updateOperator(operatorModel.getOperatorValue(selectIndx,"operatorId"),operatorNameInput.inputText,passwordInput.inputText,level)
+                    operatorDialog.bIsEdit = false
+                } else {
+                    operatorModel.insertValue(operatorNameInput.inputText,passwordInput.inputText,level);
+                }
             }
         }
     }

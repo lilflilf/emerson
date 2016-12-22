@@ -1561,13 +1561,20 @@ int OperatorModel::count()
     return operators->count();
 }
 
-void OperatorModel::insertValue(QString name, QString passwd)
+void OperatorModel::insertValue(QString name, QString passwd,int level)
 {
-    qDebug() << "insertValue----------" << name << passwd;
+    qDebug() << "insertValue----------" << name << passwd<<level;
     OperatorElement myOperator;
     myOperator.OperatorName = name;
     myOperator.Password = passwd;
-    myOperator.PermissionLevel = PASSWORDCONTROL::OPEN;
+    if (level == 1)
+        myOperator.PermissionLevel = PASSWORDCONTROL::ADMINISTRATOR;
+    else if (level == 2)
+        myOperator.PermissionLevel = PASSWORDCONTROL::TECHNICIAN;
+    else if (level == 3)
+        myOperator.PermissionLevel = PASSWORDCONTROL::QUALITYCONTROL;
+    else if (level == 4)
+        myOperator.PermissionLevel = PASSWORDCONTROL::OPEN;
     myOperator.CreatedDate = QDateTime::currentDateTime().toTime_t();
     m_operatorAdaptor->InsertRecordIntoTable(&myOperator);
     setModelList();
@@ -1598,6 +1605,23 @@ void OperatorModel::removeValue(int id, QString name)
     setModelList();
 }
 
+void OperatorModel::updateOperator(int id, QString name, QString passwd, int level)
+{
+    OperatorElement myOperator;
+    m_operatorAdaptor->QueryOneRecordFromTable(id,&myOperator);
+    myOperator.OperatorName = name;
+    myOperator.Password = passwd;
+    if (level == 1)
+        myOperator.PermissionLevel = PASSWORDCONTROL::ADMINISTRATOR;
+    else if (level == 2)
+        myOperator.PermissionLevel = PASSWORDCONTROL::TECHNICIAN;
+    else if (level == 3)
+        myOperator.PermissionLevel = PASSWORDCONTROL::QUALITYCONTROL;
+    else if (level == 4)
+        myOperator.PermissionLevel = PASSWORDCONTROL::OPEN;
+    m_operatorAdaptor->UpdateRecordIntoTable(&myOperator);
+    setModelList();
+}
 
 int OperatorModel::columnCount(const QModelIndex &parent) const
 {

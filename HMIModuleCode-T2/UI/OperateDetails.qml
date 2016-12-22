@@ -23,7 +23,6 @@ Item {
             progressBar.current++
             spliceLocation.setTreeModelOver()
             progressBar.moveToNext()
-            offline.setSatusOffLineNum(testModel.get(testModel.count-1).theNo+1)
             selectSplice(spliceList[progressBar.current-1])
         }
     }

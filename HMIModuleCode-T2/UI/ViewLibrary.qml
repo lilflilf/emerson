@@ -680,6 +680,7 @@ Item {
         spacing: 18
         CButton {
             width: (parent.width-54)/4
+            iconSource: "qrc:/images/images/stting.png"
             textColor: "white"
             text: qsTr("Edit Details")
             onClicked: {
@@ -690,6 +691,9 @@ Item {
                 else if (wireRadio.checked)
                     root.menuInit(19)
                 else if (shrinkRadio.checked){
+                    if (selectIndx < 0) {
+                        return
+                    }
                     backGround.visible = true
                     dialog.visible = true
                 }
@@ -700,6 +704,9 @@ Item {
             textColor: "white"
             text: qsTr("Delete")
             onClicked: {
+                if (selectIndx < 0) {
+                    return
+                }
                 if (partRadio.checked)
                     partModel.removeValue(partModel.getValue(selectIndx,"PartId"),partModel.getValue(selectIndx,"PartName"))
                 else if (spliceRadio.checked)

@@ -409,7 +409,6 @@ Item {
             onXChanged: {
                 scrollLine.x = button.x/(scrollbar.width-50)*qualityListViewTwo.width
                 qualityListViewTwo.currentIndex = scrollLine.x*qualityListViewTwo.contentWidth/qualityListViewTwo.width/8
-                console.log("11111111",qualityListViewTwo.currentIndex)
             }
         }
     }

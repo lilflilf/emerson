@@ -402,6 +402,7 @@ Item {
         source: "qrc:/images/images/dialogbg.png"
         onBIsEditChanged: {
             if (bIsEdit) {
+               inputworkId.inputText = workOrderModel.getWorkOrderValue(selectIndx, "name")
                selectPart.text = workOrderModel.getWorkOrderValue(selectIndx, "middle")
                inputquantity.inputText = workOrderModel.getWorkOrderValue( selectIndx, "count")
             }
@@ -409,6 +410,9 @@ Item {
         onVisibleChanged: {
             if (dialog.bIsEdit && dialog.visible) {
                 dialog.oldWorkOrderName = workOrderModel.getWorkOrderValue(selectIndx, "name")
+            } else if (!dialog.bIsEdit && dialog.visible) {
+                inputquantity.inputText = ""
+                inputworkId.inputText = ""
             }
         }
 
