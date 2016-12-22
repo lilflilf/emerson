@@ -80,34 +80,31 @@ MODstart::MODstart()
 //        {
 //            dlgSelectMode.Show vbModal
 //        }
+        _M2010->ReceiveFlags.ActuatorType = false;
         _M102IA->SendIACommand(IAComgetActuator, 0);
         _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.ActuatorType);
-        if(_M2010->ReceiveFlags.ActuatorType == true)
-           _M2010->ReceiveFlags.ActuatorType = false;
+
         //Send command to get Controller Version string.
+        _M2010->ReceiveFlags.ControllerVersionData = false;
         _M102IA->SendIACommand(IAComGetControllerVer, 0);
         _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.ControllerVersionData);
-        if(_M2010->ReceiveFlags.ControllerVersionData)
-            _M2010->ReceiveFlags.ControllerVersionData = false;
 
+        _M2010->ReceiveFlags.ActuatorVersionData = false;
         _M102IA->SendIACommand(IAComGetActuatorVer, 0);
         _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.ActuatorVersionData);
-        if(_M2010->ReceiveFlags.ActuatorVersionData)
-            _M2010->ReceiveFlags.ActuatorVersionData = false;
 
+        _M2010->ReceiveFlags.ActuatorPartNumData = false;
         _M102IA->SendIACommand(IAComGetActuatorPartNum, 0);
         _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.ActuatorPartNumData);
-        if(_M2010->ReceiveFlags.ActuatorPartNumData)
-            _M2010->ReceiveFlags.ActuatorPartNumData = false;
 
+        _M2010->ReceiveFlags.ActuatorSerialNumData = false;
         _M102IA->SendIACommand(IAComGetActuatorSerialNum, 0);
         _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.ActuatorSerialNumData);
-        if(_M2010->ReceiveFlags.ActuatorSerialNumData)
-            _M2010->ReceiveFlags.ActuatorSerialNumData = false;
 
+        _M2010->ReceiveFlags.POWERrating = false;
         _M102IA->IACommand(IAComSendPWRrating);
         _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.POWERrating);
-        if (_M2010->ReceiveFlags.POWERrating)
+        if (_M2010->ReceiveFlags.POWERrating == true)
         {
             _M2010->ReceiveFlags.POWERrating = false;
             _M10INI->Power_to_Watts = _Interface->StatusData.Soft_Settings.SonicGenWatts / 200;
@@ -117,18 +114,18 @@ MODstart::MODstart()
                     _Interface->StatusData.Soft_Settings.SonicGenWatts);
             }
         }
+        _M2010->ReceiveFlags.HORNamplitude = false;
         _M102IA->IACommand(IAComSendHornAmplitude);
         _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.HORNamplitude);
-        if(_M2010->ReceiveFlags.HORNamplitude == true)
-            _M2010->ReceiveFlags.HORNamplitude = false;
+
+        _M2010->ReceiveFlags.SonicHitsData = false;
         _M102IA->IACommand(IAComSendSonicHits);    //Always make this last, it terminates the watch loop
         _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.SonicHitsData);
-        if (_M2010->ReceiveFlags.SonicHitsData)
-            _M2010->ReceiveFlags.SonicHitsData = false;
+
+        _M2010->ReceiveFlags.WELDdata = false;
         _M102IA->IACommand(IAComSendWeldData);
         _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.WELDdata);
-        if (_M2010->ReceiveFlags.WELDdata)
-            _M2010->ReceiveFlags.WELDdata = false;
+
         //Prepare Current VersaGraphics Version String.
         _Interface->CurrentVersions.SoftwareVersion = App.Major + "." + App.Minor + "." + App.Revision;
 
@@ -217,8 +214,9 @@ void MODstart::Update_from_StatusData_for_commands()
     _M102IA->SendIACommand(IAComSetCooling, 0);
     _M102IA->SendIACommand(IAComSetLockonAlarm, _M10INI->TempSysConfig.LockAlarm);
     _M102IA->SendIACommand(IAComSetCutoff, _M10INI->TempSysConfig.CutoffMode);
-    _M102IA->SendIACommand(IAComGetRunModeNew, 0);
+
     _M2010->ReceiveFlags.FootPadelDATA = false;
+    _M102IA->SendIACommand(IAComGetRunModeNew, 0);
     _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.FootPadelDATA);
 
     _Interface->StatusData.RunMode.Word =
@@ -232,8 +230,7 @@ void MODstart::Update_from_StatusData_for_commands()
     _M2010->ReceiveFlags.MAINTENANCEcounters = false;
     _M102IA->SendIACommand(IAComGetMaintCntr, 0);
     _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.MAINTENANCEcounters);
-    if(_M2010->ReceiveFlags.MAINTENANCEcounters)
-        _M2010->ReceiveFlags.MAINTENANCEcounters = false;
+
     _M102IA->SendIACommand(IAComGetCycleCntr, 0);
 }
 
@@ -296,6 +293,7 @@ void MODstart::CheckBransonFolder()
         objDriveSystem.mkdir("c:\\BransonData\\"); //Creates a new directory or folder.
         objDriveSystem.mkdir("c:\\BransonData\\Library\\");
         objDriveSystem.mkdir("c:\\BransonData\\History\\");
+        objDriveSystem.mkdir("c:\\BransonData\\ToolChangeImage\\");
         objDriveSystem.mkdir("c:\\BransonData\\History\\Graph\\");
     }else{
         if (objDriveSystem.exists("c:\\BransonData\\History\\") == false)
@@ -313,6 +311,8 @@ void MODstart::CheckBransonFolder()
             if(objDriveSystem.exists("c:\\BransonData\\Library\\SpliceImage\\") == false)
                 objDriveSystem.mkdir("c:\\BransonData\\Library\\SpliceImage\\");
         }
+        if(objDriveSystem.exists("c:\\BransonData\\ToolChangeImage\\") == false)
+            objDriveSystem.mkdir("c:\\BransonData\\ToolChangeImage\\");
 
     }
 

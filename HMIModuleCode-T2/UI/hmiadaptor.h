@@ -89,10 +89,10 @@ public:
     Q_INVOKABLE QString getMaintenanceVerson(int index);
     Q_INVOKABLE QString getSoftVerson(int index);
     Q_INVOKABLE bool login(QString passwd);
-    Q_INVOKABLE int getCurrentOperatorId();
     Q_INVOKABLE QStringList getCarTempLate();
     Q_INVOKABLE void addCarTempLate(QString name);
     Q_INVOKABLE void removeCarTemplate(QString name);
+    Q_INVOKABLE QString getCurrentOperatorId();
     Q_INVOKABLE void calibrationMaintenanceExecute(int code);
     Q_INVOKABLE int randPoint();
     Q_INVOKABLE QString copyFileToPath(QString source);
@@ -157,6 +157,7 @@ public:
 
     QMutex mutex;
     StatisticalTrend *statisticalTrend;
+    int taskBarHeight;
 signals:
     void widthCalibrationFinish(const bool &_Result);
     void heightCalibrationFinish(const bool &_Result);

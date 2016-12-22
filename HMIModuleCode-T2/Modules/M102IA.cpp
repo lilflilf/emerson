@@ -39,11 +39,11 @@ M102IA::M102IA(QObject *parent)
     IACommandError = -1;
 
     IAsetup.ModeFlags = 0;
-    IAsetup.Energy = -1;
+    IAsetup.Energy = 100;
     IAsetup.Width = 100;
-    IAsetup.WeldPressure = -1;
-    IAsetup.TriggerPressure = -1;
-    IAsetup.Amplitude = -1;
+    IAsetup.WeldPressure = 200;
+    IAsetup.TriggerPressure = 200;
+    IAsetup.Amplitude = 18;
     IAsetup.SqueezeTime = 0;
     IAsetup.Time.max = 1000;
     IAsetup.Time.min = 0;
@@ -58,11 +58,11 @@ M102IA::M102IA(QObject *parent)
     IAsetup.HoldTime = 0;
     IAsetup.ABDelay = 0;
     IAsetup.ABDuration = 0;
-    IAsetup.Amplitude2 = -1;
+    IAsetup.Amplitude2 = 0;
     IAsetup.PartName.clear();
-    IAsetup.EnergyToStep = -1;
-    IAsetup.TimeToStep = -1;
-    IAsetup.PowerToStep = -1;
+    IAsetup.EnergyToStep = 0;
+    IAsetup.TimeToStep = -0;
+    IAsetup.PowerToStep = 0;
 
     IAactual.Reserved.clear();
     IAactual.Energy = -1;
@@ -493,7 +493,7 @@ bool M102IA::WaitForResponseAfterSent(int TimeOut, bool *CheckResponseFlag)
     ModRunSetup *_ModRunSetup = ModRunSetup::Instance();
     TimerClass *_Timer = new TimerClass();
     _Timer->SetCommandTimer(TimeOut);
-    *CheckResponseFlag = false;
+//    *CheckResponseFlag = false;
     while (*CheckResponseFlag == false)
     {
         QCoreApplication::processEvents(); // Wait for response
@@ -684,7 +684,6 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
 //            IACommand(IAComHostReady, 1);
         //--Set Correct Flag
         _M2010->ReceiveFlags.WELDdata = true;
-        emit WeldResultFeedback(_M2010->ReceiveFlags.WELDdata);
         break;
     case IASigPower:           //Data Signature = "04"
         // Frame head 3 bytes + ":" 7 characters
@@ -710,6 +709,7 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
             Total = MakeHexWordNumber(HexString.mid((tmpIndex + 9), 4));
             num = MakeHexWordNumber(HexString.mid(tmpIndex + 13, 4));
             RawPowerDataGraph.GraphDataList.insert(num,HexString.mid(tmpIndex, 51));
+            qDebug()<<"Total: "<<Total << " Index: "<<num<<" str: "<<HexString.mid(tmpIndex, 51);
             tmpIndex = tmpIndex + 51;
         }
         if (LastString > 0)
@@ -717,18 +717,17 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
             //Take off the overhead and tack the string onto the Power String
             Total = MakeHexWordNumber(HexString.mid((tmpIndex + 9), 4));
             num = MakeHexWordNumber(HexString.mid(tmpIndex + 13, 4));
-            Datalen = MakeHexByteNumber(HexString.mid(tmpIndex + 1, 4));
+            Datalen = MakeHexWordNumber(HexString.mid(tmpIndex + 1, 4));
+            qDebug()<<"Total: "<<Total << " Index: "<<num<<" str: "<<HexString.mid(tmpIndex, LastString);
             if ((Datalen - 4) != ((LastString - 19) / 2))
                 num = num - 1;
             else
                 RawPowerDataGraph.GraphDataList.insert(num, HexString.mid(tmpIndex, LastString));
         }
-        RawHeightDataGraph.CurrentIndex = num;
-        if (num == (Total - 1))
-            _M2010->ReceiveFlags.PowerGraphData = true;
-        else
-            _M2010->ReceiveFlags.PowerGraphData = false;
+        RawPowerDataGraph.CurrentIndex = num;
+        _M2010->ReceiveFlags.PowerGraphData = true;
 //        _M2010->ConvertGraphData(PowerString);
+        emit WeldResultFeedback(_M2010->ReceiveFlags.WELDdata);
         break;
     case IASigSerialNumber:
         SerialNoData = _M2010->ParseSerialNumber(HexString.mid(9, 32));
@@ -1061,7 +1060,6 @@ bool M102IA::SetIAWidth(int WidthSet, bool SettingCheck)
     delete _Timer;
     //Aux Motion Control, Open Safety Cover
     //SendIACommand IAComAuxMotion, DO_OPEN_SAFETY
-
     if (_M2010->ReceiveFlags.WIDTHdata == false)
     {
         return bResult;    //Did not make it
@@ -1082,6 +1080,7 @@ bool M102IA::SetIAWidth(int WidthSet, bool SettingCheck)
 bool M102IA::SendCommandSetRunMode(int CommandData)
 {
     M2010   *_M2010   = M2010::Instance();
+    _M2010->ReceiveFlags.FootPadelDATA = false;
     SendIACommand(IAComSetRunMode, CommandData);
     WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.FootPadelDATA);
     return _M2010->ReceiveFlags.FootPadelDATA;

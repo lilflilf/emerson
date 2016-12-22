@@ -283,6 +283,7 @@ void AdvancedMaintenance::AdvancedMaintenanceHandle(void* _obj)
     M102IA* _M102IA = M102IA::Instance();
     M2010* _M2010 = M2010::Instance();
     InterfaceClass* _Interface = InterfaceClass::Instance();
+    _M2010->ReceiveFlags.IOdata = false;
     _M102IA->IACommand(IAComSendIOdata);
     _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.IOdata);
     if(_M2010->ReceiveFlags.IOdata == true)

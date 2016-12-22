@@ -68,7 +68,7 @@ Item {
         }
         Text {
             id: content
-            text: qsTr("This process calibrates and adjusts the Width and Height control system.Please press and hold the start button on this sereen or the start switch on the actuarot.")
+            text: qsTr("This process calibrates and adjusts the Width and Height control system.Please press and hold the start button on this sereen or the start switch on the actuator.")
             color: "white"
             font.family: "arial"
             font.pointSize: 20
@@ -98,6 +98,25 @@ Item {
             anchors.bottomMargin: 20
             anchors.horizontalCenter: column.horizontalCenter
             visible: false
+        }
+
+        CButton {
+            id: button3
+            width: 200
+            text: qsTr("Sonics")
+            anchors.left: column.left
+            anchors.bottom: column.top
+            anchors.bottomMargin: 20
+            visible: line1.visible
+            onPressed: {
+                if (calibration.currentIndex == 3)
+                    hmiAdaptor.calibrationMaintenanceExecute(2)
+            }
+            onReleased: {
+                if (calibration.currentIndex == 3) {
+                    hmiAdaptor.calibrationMaintenanceExecute(3)
+                }
+            }
         }
 
         Column {
@@ -164,6 +183,8 @@ Item {
                         calibration.currentIndex--
                     else if (button2.text == qsTr("Save"))
                         root.menuInit(0)
+                    else if (button2.text == qsTr("Cancel"))
+                        calibration.currentIndex = 1
                 }
             }
             Connections {

@@ -182,12 +182,12 @@ bool BransonSerial::IAportSend(char data)
     char tmpData = data;
     bool bResult = false;
     int iResult = comIAport->write(&tmpData,1); //XON
+    _Mutex->unlock();
     if(iResult == -1)
         bResult = false;
     else
         bResult = true;
     bResult = comIAport->waitForBytesWritten(-1);
-    _Mutex->unlock();
     return bResult;
 }
 
@@ -197,11 +197,11 @@ bool BransonSerial::IAportSend(QByteArray data)
     QByteArray tmpBuffer = data;
     bool bResult = false;
     int iResult = comIAport->write(tmpBuffer);
+    _Mutex->unlock();
     if(iResult == -1)
         bResult = false;
     else
         bResult = true;
     bResult = comIAport->waitForBytesWritten(-1);
-    _Mutex->unlock();
     return bResult;
 }

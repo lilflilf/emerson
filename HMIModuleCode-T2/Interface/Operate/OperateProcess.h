@@ -40,12 +40,12 @@ private:
     static void AcceptWeldResult(void*);
 signals:
     void WeldCycleCompleted(const bool &_status);
-private slots:
-    void WeldResultFeedbackEventSlot();
+public slots:
+    void WeldResultFeedbackEventSlot(bool &bResult);
 public:
-    void _start();
-    void _stop();
-    void _execute();
+    bool _start();
+    bool _stop();
+    bool _execute();
 
     void ControlLimitProcess(enum QUALITYTYPE Type, QList<int> &RawList, int USL, int LSL,
                              int* UCL, int* LCL);

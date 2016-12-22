@@ -380,11 +380,21 @@ Item {
         anchors.left: headRows.left
         anchors.top: headRows.bottom
         anchors.topMargin: 5
-        anchors.bottom: parent.bottom
+        anchors.bottom: exportButton.top
+        anchors.bottomMargin: 20
         model: maintenanceLogModel
         delegate: listDelegate
         width: headRows.width // headModel.count * 200 + (headModel.count - 1) * 30
         clip: true
+    }
+    CButton {
+        id: exportButton
+        width: 200
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 20
+        anchors.right: parent.right
+        anchors.rightMargin: 20
+        text: qsTr("Export")
     }
 
     ExclusiveGroup {
