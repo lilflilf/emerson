@@ -927,6 +927,7 @@ void HmiAdaptor::setOperateProcess(int spliceId, bool isText)
 
 void HmiAdaptor::operateProcessExec(QString type)
 {
+    qDebug() << "operateProcessExec" << type;
     if (type == "Start")
         operateProcess->_start();
     else if (type == "Stop")

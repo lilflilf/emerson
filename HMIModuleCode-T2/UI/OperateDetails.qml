@@ -20,8 +20,10 @@ Item {
     Connections {
         target: hmiAdaptor
         onSignalWeldCycleCompleted: {
-            if (spliceList.length == progressBar.current)
-                return
+            console.log("xxxxxxxxxxxxxxxxxonSignalWeldCycleCompleted")
+
+//            if (progressBar.total == progressBar.current)
+//                return
             progressBar.current++
             spliceLocation.setTreeModelOver()
             progressBar.moveToNext()
@@ -82,6 +84,7 @@ Item {
         }
         hmiAdaptor.setOperateProcess(spliceId, false)
         hmiAdaptor.operateProcessExec("Execute")
+        console.log("xxxxxxxxxxxxxxxxx")
     }
 
     Text {
@@ -205,7 +208,7 @@ Item {
         maxNum: maxCount
     }
     onShowFlagChanged: {
-        console.log("555555555555555",showFlag)
+//        console.log("555555555555555",showFlag)
     }
 
     SpliceStatusOffLine {

@@ -21,6 +21,8 @@ Item {
 
     function setPoint()
     {
+        listModel.clear()
+        listModelRight.clear()
         timeMax = alarmModel.getAxes("Time") * 1.1
         powerMax = alarmModel.getAxes("Power") * 1.1
         heightMax = alarmModel.getAxes("Post-Height") * 1.1
@@ -36,18 +38,20 @@ Item {
         var pointy
         var i
         powerList = alarmModel.getPoint()
-        pointx = canvas.width / timeMax;
-        pointy = canvas.height / powerMax
+        pointx = canvasLoader.width / (powerList.length * 1.1);
+        pointy = canvasLoader.height / powerMax
         for (i = 0; i < powerList.length; i++)
         {
-            listModel.append({"x":i * pointx,"y":canvas.height - powerList[i] * pointy})
+            listModel.append({"x":i * pointx,"y":canvasLoader.height - powerList[i] * pointy})
         }
         heightList = alarmModel.getPoint2()
-        pointy = canvas.height / heightMax
+        pointy = canvasLoader.height / heightMax
         for (i = 0; i < heightList.length; i++)
         {
-            listModelRight.append({"x":i * pointx,"y":canvas.height - heightList[i] * pointy})
+            listModelRight.append({"x":i * pointx,"y":canvasLoader.height - heightList[i] * pointy})
         }
+        canvasLoader.sourceComponent = null
+        canvasLoader.sourceComponent = canvasCompent
     }
 
     ListModel {
@@ -93,7 +97,7 @@ Item {
                     width: bottomLine.width / 6
                     color: "#adaeae"
                     font.pixelSize: 14
-                    text: index / 6 * myCanvas.timeMax //index * 100
+                    text: (index / 6 * myCanvas.timeMax).toFixed(2) //index * 100
                     horizontalAlignment: Qt.AlignLeft
                 }
             }
@@ -117,7 +121,7 @@ Item {
                     height: leftLine.height / 7
                     color: "#adaeae"
                     font.pixelSize: 14
-                    text: (7 - index) / 7 * myCanvas.powerMax  //(7 - index) * 100
+                    text: ((7 - index) / 7 * myCanvas.powerMax).toFixed(2)  //(7 - index) * 100
                     verticalAlignment: Qt.AlignTop
                 }
             }
@@ -158,19 +162,31 @@ Item {
                     height: rightLine.height / 7
                     color: "#adaeae"
                     font.pixelSize: 14
-                    text: (7 - index) / 7 * myCanvas.heightMax //(7 - index) * 100
+                    text: ((7 - index) / 7 * myCanvas.heightMax).toFixed(2) //(7 - index) * 100
                     verticalAlignment: Qt.AlignTop
                 }
             }
         }
     }
 
-    Canvas {
-        id: canvas
+    Loader {
+        id: canvasLoader
         anchors.left: leftLine.right
         anchors.right: rightLine.left
         anchors.bottom: bottomLine.bottom
         anchors.top: parent.top
+        sourceComponent: canvasCompent
+    }
+
+    Component {
+        id: canvasCompent
+    Canvas {
+        id: canvas
+        anchors.fill: parent
+//        anchors.left: leftLine.right
+//        anchors.right: rightLine.left
+//        anchors.bottom: bottomLine.bottom
+//        anchors.top: parent.top
         onPaint: {
             var i
             var ctx = getContext("2d")
@@ -201,8 +217,6 @@ Item {
             ctx.stroke()
 
         }
-        Component.onCompleted: {
-            console.log("width ===",canvas.width,canvas.height)
-        }
+    }
     }
 }

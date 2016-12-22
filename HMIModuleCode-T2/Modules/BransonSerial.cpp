@@ -129,7 +129,7 @@ void BransonSerial::comIAportReadEventSlot()
         strBuffer = strBuffer.mid(iPos + 1, strBuffer.length() - iPos -1);
     else
         return;
-    qDebug()<<"Received Data:"<<strBuffer;
+//    qDebug()<<"Received Data:"<<strBuffer;
     DataBuffer = strBuffer.toLatin1();
     for(int i = 0; i< DataBuffer.length(); i++)
     {
