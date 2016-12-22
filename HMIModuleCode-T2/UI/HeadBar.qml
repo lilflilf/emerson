@@ -495,7 +495,8 @@ Item {
         width: 80
         MouseArea {
             anchors.fill: parent
-
+            onClicked: {
+            }
         }
     }
 

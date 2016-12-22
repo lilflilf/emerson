@@ -20,11 +20,16 @@ Item {
     Connections {
         target: hmiAdaptor
         onSignalWeldCycleCompleted: {
+            if (spliceList.length == progressBar.current)
+                return
             progressBar.current++
             spliceLocation.setTreeModelOver()
             progressBar.moveToNext()
-            offline.setSatusOffLineNum(testModel.get(testModel.count-1).theNo+1)
             selectSplice(spliceList[progressBar.current-1])
+            if (showFlag == 2)
+                offline.setStusOffLineUpdate(progressBar.current)
+            else if (showFlag == 1)
+                spliceLocation.updateTreeModel(progressBar.current)
         }
     }
 
@@ -55,7 +60,6 @@ Item {
             qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Power+"),"redMin":spliceModel.getRawData("Power-"),"yellowMax":4,"yellowMin":1,"current":-1,"currentText":"123"})
             qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Pre-Height+"),"redMin":spliceModel.getRawData("Pre-Height-"),"yellowMax":4,"yellowMin":1,"current":-1,"currentText":"2512"})
             qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Post-Height+"),"redMin":spliceModel.getRawData("Post-Height-"),"yellowMax":4,"yellowMin":1,"current":-1,"currentText":"43"})
-
         }
 
         qualityWindow.setData()
@@ -158,9 +162,9 @@ Item {
         anchors.top: spliceDetailsItem.bottom
         anchors.topMargin: 10
         anchors.right: spliceDetailsItem.right
-        font.pointSize: 16
+        font.pointSize: 14
         font.family: "arial"
-        text: qsTr("TOTAL CROSS SECTION: 2.3mm")
+        text: qsTr("Total Cross Section: 2.3mm")
         color: "white"
     }
     ListModel {
@@ -346,6 +350,8 @@ Item {
             target: showFlag != 3 ?  progressBar : ""
             onCycleDone: {
                 cycleCount++
+                if (cycleCount > qliantity)
+                    return
                 selectSplice(spliceList[0])
                 partCount2.text = qsTr("PART COUNTER ") + cycleCount + "/" + qliantity;
                 progressBar2.value = cycleCount

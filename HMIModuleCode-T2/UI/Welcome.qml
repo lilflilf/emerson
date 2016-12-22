@@ -158,6 +158,7 @@ Item {
             if (event.key == Qt.Key_0) {
                 mimaShow.text = mimaShow.text + "●"
                 mima.text = mima.text + "0"
+
             }
             else if (event.key == Qt.Key_1) {
                 mimaShow.text = mimaShow.text + "●"
@@ -166,6 +167,7 @@ Item {
             else if (event.key == Qt.Key_2) {
                 mimaShow.text = mimaShow.text + "●"
                 mima.text = mima.text + "2"
+
             }
             else if (event.key == Qt.Key_3) {
                 mimaShow.text = mimaShow.text + "●"
@@ -276,6 +278,7 @@ Item {
                                 return
                             mima.text += listModel.get(index).value
                             mimaShow.text = mimaShow.text + "●"
+
                             if (mima.text.length == 4) {
 //                                if (hmiAdaptor.login(mima.text))
 //                                    passWordInputOk()

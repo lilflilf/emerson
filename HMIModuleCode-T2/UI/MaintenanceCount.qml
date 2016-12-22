@@ -123,6 +123,7 @@ Item {
         anchors.left: parent.left
         anchors.leftMargin: 20
     }
+
     Component {
         id: listLine
         Item {
