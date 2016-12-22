@@ -16,11 +16,11 @@ PresetElement::PresetElement()
     PresetPicNamePath.clear();
     Verified = false;
 
-    WeldSettings.BasicSetting.Energy = -1;
-    WeldSettings.BasicSetting.Amplitude = -1;
-    WeldSettings.BasicSetting.Pressure = -1;
-    WeldSettings.BasicSetting.TrigPres = -1;
-    WeldSettings.BasicSetting.Width = -1;
+    WeldSettings.BasicSetting.Energy = 100;
+    WeldSettings.BasicSetting.Amplitude = 18;
+    WeldSettings.BasicSetting.Pressure = 200;
+    WeldSettings.BasicSetting.TrigPres = 200;
+    WeldSettings.BasicSetting.Width = 200;
     WeldSettings.QualitySetting.Time.Minus = MINTIME;
     WeldSettings.QualitySetting.Time.Plus = MAXTIME;               //Seconds * 200
     WeldSettings.QualitySetting.Power.Minus = MINPOWER;
@@ -38,7 +38,7 @@ PresetElement::PresetElement()
     WeldSettings.AdvanceSetting.MeasuredWidth = 0;
     WeldSettings.AdvanceSetting.PreBurst = 0;
     WeldSettings.AdvanceSetting.SqzTime = 0;
-    WeldSettings.AdvanceSetting.WeldMode = TIME;
+    WeldSettings.AdvanceSetting.WeldMode = ENERGY;
     WeldSettings.AdvanceSetting.StepWeld.StepWeldMode = STEPDISABLE;
     WeldSettings.AdvanceSetting.StepWeld.Amplitude2 = -1;
     WeldSettings.AdvanceSetting.StepWeld.EnergyToStep = -1;
