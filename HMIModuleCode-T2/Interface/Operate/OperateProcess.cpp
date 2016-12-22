@@ -201,11 +201,6 @@ void OperateProcess::WeldCycleDaemonThread(void* _obj)
         {
             _ObjectPtr->WeldCycleStatus = true;
         }
-        m_Thread->setStopEnabled(true);
-        m_Thread->setSuspendEnabled(true);
-        m_Thread->wait();
-        delete m_Thread;
-        m_Thread = NULL;
         //2. Save the Weld result into the Database
         int iResult =
             _WeldResultDB->InsertRecordIntoTable(&_ObjectPtr->CurrentWeldResult);
@@ -247,6 +242,8 @@ void OperateProcess::WeldCycleDaemonThread(void* _obj)
                 _ObjectPtr->CurrentNecessaryInfo.CurrentPart.PartName, &_ObjectPtr->CurrentWeldResult, &_ObjectPtr->CurrentSplice);
 
         emit _ObjectPtr->WeldCycleCompleted(&_ObjectPtr->WeldCycleStatus);
+        m_Thread->setStopEnabled(true);
+        m_Thread->setSuspendEnabled(true);
     }
 }
 
