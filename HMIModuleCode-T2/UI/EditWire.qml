@@ -212,6 +212,7 @@ Item {
                         CButton {
                             width: 150
                             height: 40
+                            iconSource: "qrc:/images/images/OK.png"
                             text: qsTr("OK")
                             textColor: "black"
                             backgroundComponent: Component {

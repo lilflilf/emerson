@@ -43,7 +43,7 @@ CButton {
                 mycalendar.text = selecter.dateValue
         }
         onTimeValueChanged: {
-            if (mycalendarRadio.checked == true && mycalendar.bIsdate == false)
+            if (mycalendarRadio.checked == true && mycalendar.bIsdate == false && selecter.visible)
                 mycalendar.text = selecter.timeValue
         }
         onVisibleChanged: {

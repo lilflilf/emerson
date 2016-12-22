@@ -157,7 +157,12 @@ Status_Data &Status_Data::operator= (const Status_Data &StatusDataObj)
     this->ActuatorPartNumber = StatusDataObj.ActuatorPartNumber;
     this->ActuatorSerialNumber = StatusDataObj.ActuatorSerialNumber;
     this->ActuatorVersion = StatusDataObj.ActuatorVersion;
-
+    this->carTemplate.clear();
+    QMap<int, QString>::const_iterator it;
+    for ( it = StatusDataObj.carTemplate.begin(); it != StatusDataObj.carTemplate.end(); ++it )
+    {
+        this->carTemplate.insert(it.key(),it.value());
+    }
     return *this;
 }
 

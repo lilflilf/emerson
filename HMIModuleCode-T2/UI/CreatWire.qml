@@ -265,6 +265,7 @@ Item {
                         }
                         CButton {
                             width: 200
+                            iconSource: "qrc:/images/images/OK.png"
                             text: qsTr("OK")
                             textColor: "white"
                             onClicked: {
@@ -1339,7 +1340,7 @@ Item {
             anchors.rightMargin: 24
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 14
-            text: qsTr("ADD WIRE")
+            text: qsTr("+ ADD WIRE")
             onClicked: {
                 wireModel.createNew()
                 spliceDetailsItem.addWire()

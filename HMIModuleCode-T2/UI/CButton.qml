@@ -113,7 +113,7 @@ MouseArea {
     }
     Timer {
         id: time
-        interval: 500
+        interval: 200
         running: false
         onRunningChanged: {
             if (time.running) {
