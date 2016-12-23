@@ -325,7 +325,7 @@ Item {
         anchors.top: conversion.bottom
         width: (parent.width-40)/6+40
         height: 50
-        textRight: qsTr("Imperical")
+        textRight: qsTr("Imperial")
         textLeft: qsTr("Metric")
         state: hmiAdaptor.weldDefaultsGetSwitch("Unit Conversion") ? "right" : "left"
         clip: true

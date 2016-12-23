@@ -22,6 +22,7 @@ Item {
         onLoaded: {
             if (loader.source == "qrc:/UI/OperateDetails.qml")
             {
+                alarmModel.setStartTime();
                 var list = new Array
                 list =  workOrderModel.getSpliceList(selectIndx)
                 if (list.length > 0) {
@@ -91,7 +92,7 @@ Item {
             font.pixelSize: 25
             clip: true
             font.family: "arial"
-            text: qsTr("QLIANTITY")
+            text: qsTr("QUANTITY")
         }
     }
     Rectangle {

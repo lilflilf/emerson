@@ -330,26 +330,27 @@ Item {
                 radius: 100
                 width: index == 0 ? 30 : 4
                 height: index == 0 ? 30 : 4
-                anchors.top: parent.top
+//                anchors.top: parent.top
+                anchors.bottom: parent.bottom
                 anchors.horizontalCenter: parent.horizontalCenter
                 color: index == 0 ? "#33FFCC" : "white" //* 8 >= qualityListViewTwo.width ? "red" : "white"
                 Component.onCompleted: {
                     var temp
-                    if (index == 0) {
+                    if (selectIndex == 0) {
                         temp = spliceModel.getRawData("Time+") - spliceModel.getRawData("Time-")
-                        point.anchors.topMargin = timeModel[index] / temp * parent.height * 0.8 + parent.height * 0.1
+                        point.anchors.bottomMargin = timeModel[index] / temp * parent.height * 0.8 + parent.height * 0.1
                     }
-                    else if (index == 1) {
+                    else if (selectIndex == 1) {
                         temp = spliceModel.getRawData("Power+") - spliceModel.getRawData("Power-")
-                        point.anchors.topMargin = powerModel[index] / temp * parent.height * 0.8 + parent.height * 0.1
+                        point.anchors.bottomMargin = powerModel[index] / temp * parent.height * 0.8 + parent.height * 0.1
                     }
-                    else if (index == 2) {
+                    else if (selectIndex == 2) {
                         temp = spliceModel.getRawData("Pre-Height+") - spliceModel.getRawData("Pre-Height-")
-                        point.anchors.topMargin = preModel[index] / temp * parent.height * 0.8 + parent.height * 0.1
+                        point.anchors.bottomMargin = preModel[index] / temp * parent.height * 0.8 + parent.height * 0.1
                     }
-                    else if (index == 3) {
+                    else if (selectIndex == 3) {
                         temp = spliceModel.getRawData("Post-Height+") - spliceModel.getRawData("Post-Height-")
-                        point.anchors.topMargin = postModel[index] / temp * parent.height * 0.8 + parent.height * 0.1
+                        point.anchors.bottomMargin = postModel[index] / temp * parent.height * 0.8 + parent.height * 0.1
                     }
 
 //                    point.anchors.topMargin = parent.height/2 // hmiAdaptor.randPoint() + 80 //index + clickType

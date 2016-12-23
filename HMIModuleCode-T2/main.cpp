@@ -18,9 +18,9 @@
 int main(int argc, char *argv[])
 {
 
-//    RECT rt = {0,0,0,0};
-//    SystemParametersInfo(SPI_GETWORKAREA,0,&rt,0);
-//    int y = ::GetSystemMetrics(SM_CYSCREEN)-rt.bottom;
+    RECT rt = {0,0,0,0};
+    SystemParametersInfo(SPI_GETWORKAREA,0,&rt,0);
+    int y = GetSystemMetrics(SM_CYSCREEN)-rt.bottom;
 
     int width=GetSystemMetrics(SM_CXSCREEN);
     int height=GetSystemMetrics(SM_CYSCREEN);
@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     MODstart* _ModStart = MODstart::Instance();
     HmiAdaptor *hmiAdaptor = new HmiAdaptor;
-//    hmiAdaptor->taskBarHeight = y;
+    hmiAdaptor->taskBarHeight = y;
     engine.rootContext()->setContextProperty("hmiAdaptor",hmiAdaptor);
     engine.rootContext()->setContextProperty("workOrderModel",hmiAdaptor->workOrderModel);
     engine.rootContext()->setContextProperty("spliceModel",hmiAdaptor->spliceModel);

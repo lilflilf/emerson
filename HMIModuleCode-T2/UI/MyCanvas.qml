@@ -29,9 +29,9 @@ Item {
         leftRepeater.model = 0
         rightRepeater.model = 0
         bottomRepeater.model = 0
-        leftRepeater.model = 7
-        rightRepeater.model = 7
-        bottomRepeater.model = 6
+        leftRepeater.model = 10
+        rightRepeater.model = 10
+        bottomRepeater.model = 10
         var powerList = new Array;
         var heightList = new Array;
         var pointx
@@ -92,12 +92,12 @@ Item {
             width: parent.width + 100
             Repeater {
                 id: bottomRepeater
-                model: 6
+                model: 10
                 delegate: Text {
-                    width: bottomLine.width / 6
+                    width: bottomLine.width / 10
                     color: "#adaeae"
                     font.pixelSize: 14
-                    text: (index / 6 * myCanvas.timeMax).toFixed(2) //index * 100
+                    text: (index / 10 * myCanvas.timeMax).toFixed(2) //index * 100
                     horizontalAlignment: Qt.AlignLeft
                 }
             }
@@ -116,12 +116,12 @@ Item {
             anchors.right: leftLine.left
             Repeater {
                 id: leftRepeater
-                model: 7
+                model: 10
                 delegate: Text {
-                    height: leftLine.height / 7
+                    height: leftLine.height / 10
                     color: "#adaeae"
                     font.pixelSize: 14
-                    text: ((7 - index) / 7 * myCanvas.powerMax).toFixed(2)  //(7 - index) * 100
+                    text: ((10 - index) / 10 * myCanvas.powerMax).toFixed(0)  //(7 - index) * 100
                     verticalAlignment: Qt.AlignTop
                 }
             }
@@ -157,12 +157,12 @@ Item {
             anchors.left: rightLine.right
             Repeater {
                 id: rightRepeater
-                model: 7
+                model: 10
                 delegate: Text {
-                    height: rightLine.height / 7
+                    height: rightLine.height / 10
                     color: "#adaeae"
                     font.pixelSize: 14
-                    text: ((7 - index) / 7 * myCanvas.heightMax).toFixed(2) //(7 - index) * 100
+                    text: ((10 - index) / 10 * myCanvas.heightMax).toFixed(0) //(7 - index) * 100
                     verticalAlignment: Qt.AlignTop
                 }
             }
