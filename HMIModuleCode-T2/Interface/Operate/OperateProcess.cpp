@@ -297,6 +297,7 @@ bool OperateProcess::_stop()
     struct BransonMessageBox tmpMsgBox;
     bool bResult = true;
     disconnect(_M102IA, SIGNAL(WeldResultFeedback(bool&)),this, SLOT(WeldResultFeedbackEventSlot(bool&)));
+    qDebug()<<"Operate Stop";
     if(_M102IA->SendCommandSetRunMode(0) == false)
     {
         tmpMsgBox.MsgTitle = QObject::tr("ERROR");
