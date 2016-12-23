@@ -22,17 +22,15 @@ Item {
         anchors.left: back.right
         anchors.right: parent.right
         anchors.top: parent.top
-        anchors.bottom: exportData.top
+        anchors.bottom: parent.bottom
         anchors.leftMargin: 20
         anchors.rightMargin: 10
-        anchors.bottomMargin: 20
-
         ListView {
             id: listView
             anchors.left: parent.left
             anchors.top: topLine.bottom
             anchors.topMargin: 5
-            anchors.bottom: parent.bottom
+            anchors.bottom: scrollbar2.top
             model: weldHistoryModel
             delegate: listDelegate
             width: headModel.count * 200 + (headModel.count - 1) * 30
@@ -40,7 +38,7 @@ Item {
         }
         ListModel {
             id: headModel
-            ListElement {key:qsTr("WorkOrde Name")}
+            ListElement {key:qsTr("WorkOrderName")}
             ListElement {key:qsTr("PartName")}
             ListElement {key:qsTr("SpliceName")}
             ListElement {key:qsTr("OperatorName")}
@@ -101,15 +99,189 @@ Item {
             height: 2
             lineColor: "white"
         }
-    }
+        Image {
+            id: scrollUp
+            anchors.top: listView.top
+            anchors.topMargin: 2
+            anchors.left: rightItem.right
+            anchors.leftMargin: -14
+            width: 17
+            height: 10
+            visible: listView.contentHeight > listView.height ? true : false
+            source: "qrc:/images/images/up.png"
+        }
+        Image {
+            id: scrollDown
+            anchors.bottom: listView.bottom
+            anchors.bottomMargin: 2
+            anchors.left: rightItem.right
+            anchors.leftMargin: -14
+            width: 17
+            height: 10
+            visible: listView.contentHeight > listView.height ? true : false
+            source: "qrc:/images/images/down.png"
+        }
+        Rectangle {
+            id: scrollbar
+            width: 10
+            height: listView.height-24
+            anchors.top: scrollUp.bottom
+            anchors.left: rightItem.right
+            anchors.leftMargin: -10
+            color: "#585858"
+            radius: 10
+            visible: listView.contentHeight > listView.height ? true : false
+            Rectangle {
+                id: button
+                anchors.left: parent.left
+                y: (listView.visibleArea.yPosition < 0 ) ? 0 : (listView.contentY+listView.height>listView.contentHeight) ?
+                                                               scrollbar.height - button.height : listView.visibleArea.yPosition * scrollbar.height
+                width: 10
+                height: listView.visibleArea.heightRatio * scrollbar.height;
+                color: "#ccbfbf"
+                radius: 10
+                // 鼠标区域
+                MouseArea {
+                    id: mouseArea
+                    anchors.fill: button
+                    drag.target: button
+                    drag.axis: Drag.YAxis
+                    drag.minimumY: 0
+                    drag.maximumY: scrollbar.height - button.height
+                    // 拖动
+                    onMouseYChanged: {
+                        listView.contentY = button.y / scrollbar.height * listView.contentHeight
+                    }
+                }
+            }
+        }
 
-    CButton {
-        id: exportData
-        width: 250
-        anchors.right: rightItem.right
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 20
-        text: qsTr("Export Data")
+
+        Image {
+            id: scrollLeft
+            anchors.bottom: exportData.top
+            anchors.bottomMargin: 10
+            anchors.right: scrollbar2.left
+            width: 11
+            height: 17
+            visible: true //listView.contentHeight > listView.height ? true : false
+            source: "qrc:/images/images/left.png"
+        }
+        Image {
+            id: scrollRight
+            anchors.bottom: exportData.top
+            anchors.bottomMargin: 10
+            anchors.left: scrollbar2.right
+            width: 11
+            height: 17
+            visible: true //listView.contentHeight > listView.height ? true : false
+            source: "qrc:/images/images/right.png"
+        }
+        Rectangle {
+            id: scrollbar2
+            width: rightItem.width
+            height: 17
+            anchors.bottom: exportData.top
+            anchors.bottomMargin: 10
+            anchors.left: rightItem.left
+            anchors.right: rightItem.right
+            color: "#585858"
+            radius: 10
+            visible: true //listView.contentHeight > listView.height ? true : false
+            Rectangle {
+                id: button2
+                anchors.top: parent.top
+                x: 0
+                //            y: (listView.visibleArea.yPosition < 0 ) ? 0 : (listView.contentY+listView.height>listView.contentHeight) ?
+                //                scrollbar2.height - button2.height : listView.visibleArea.yPosition * scrollbar2.height
+                width: scrollbar2.width / listView.width * scrollbar2.width //50
+                height: 17 //listView.visibleArea.heightRatio * scrollbar2.height;
+                color: "#ccbfbf"
+                radius: 10
+                // 鼠标区域
+                MouseArea {
+                    id: mouseArea2
+                    anchors.fill: button2
+                    drag.target: button2
+                    drag.axis: Drag.XAxis
+                    drag.minimumX: 0
+                    drag.maximumX: scrollbar2.width - button2.width
+                }
+                onXChanged: {
+                    listView.anchors.leftMargin = -button2.x / scrollbar2.width * listView.width
+                    headRows.anchors.leftMargin = -button2.x / scrollbar2.width * listView.width
+                }
+            }
+        }
+        CButton {
+            id: exportData
+            width: 250
+            anchors.right: rightItem.right
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 20
+            text: qsTr("Export Data")
+        }
+        ExclusiveGroup {
+            id: listviewPositionGroup
+        }
+
+        Component {
+            id: listDelegate
+            Item {
+                width: listView.width
+                height: 50
+                clip: true
+                property var listIndex: 0
+                Component.onCompleted: {
+                    listIndex = index
+                }
+
+                Row {
+                    width: parent.width
+                    height: parent.height
+                    spacing: 30
+                    clip: true
+                    Repeater {
+                        id: listRepeater
+                        model: headModel.count
+                        delegate:  Text {
+                            anchors.verticalCenter: parent.verticalCenter
+                            width: 200
+                            font.family: "arial"
+                            font.pixelSize: 20
+                            color: "white"
+                            clip: true
+                            elide: Text.ElideRight
+                            text: weldHistoryModel.getValue(listIndex,headModel.get(index).key)
+                        }
+                    }
+                }
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        selectIndx = index
+                        selectCheck.checked = !selectCheck.checked
+                    }
+                }
+                Rectangle {
+                    id: backGround
+                    anchors.fill: parent
+                    color: "black"
+                    opacity: 0//opacityValue
+                    RadioButton {
+                        id: selectCheck
+                        exclusiveGroup: listviewPositionGroup
+                        visible: false
+                        onCheckedChanged: {
+                            if (checked)
+                                backGround.opacity = 0.3
+                            else
+                                backGround.opacity = 0
+                        }
+                    }
+                }
+            }
+        }
     }
 
     Rectangle {
@@ -512,179 +684,6 @@ Item {
                 id: backButton
                 width: spliceName.width
                 text: qsTr("Back")
-            }
-        }
-    }
-    Image {
-        id: scrollUp
-        anchors.top: rightItem.top
-        anchors.topMargin: 2
-        anchors.left: rightItem.right
-        width: 17
-        height: 10
-        visible: listView.contentHeight > listView.height ? true : false
-        source: "qrc:/images/images/up.png"
-    }
-    Image {
-        id: scrollDown
-        anchors.bottom: rightItem.bottom
-        anchors.bottomMargin: 2
-        anchors.left: rightItem.right
-        width: 17
-        height: 10
-        visible: listView.contentHeight > listView.height ? true : false
-        source: "qrc:/images/images/down.png"
-    }
-    Rectangle {
-        id: scrollbar
-        width: 10
-        height: listView.height-24
-        anchors.top: scrollUp.bottom
-        anchors.left: rightItem.right
-        anchors.leftMargin: -10
-        color: "#585858"
-        radius: 10
-        visible: listView.contentHeight > listView.height ? true : false
-        Rectangle {
-            id: button
-            anchors.left: parent.left
-            y: (listView.visibleArea.yPosition < 0 ) ? 0 : (listView.contentY+listView.height>listView.contentHeight) ?
-                                                           scrollbar.height - button.height : listView.visibleArea.yPosition * scrollbar.height
-            width: 10
-            height: listView.visibleArea.heightRatio * scrollbar.height;
-            color: "#ccbfbf"
-            radius: 10
-            // 鼠标区域
-            MouseArea {
-                id: mouseArea
-                anchors.fill: button
-                drag.target: button
-                drag.axis: Drag.YAxis
-                drag.minimumY: 0
-                drag.maximumY: scrollbar.height - button.height
-                // 拖动
-                onMouseYChanged: {
-                    listView.contentY = button.y / scrollbar.height * listView.contentHeight
-                }
-            }
-        }
-    }
-
-
-    Image {
-        id: scrollLeft
-        anchors.bottom: rightItem.bottom
-        anchors.right: scrollbar2.left
-        width: 11
-        height: 17
-        visible: true //listView.contentHeight > listView.height ? true : false
-        source: "qrc:/images/images/left.png"
-    }
-    Image {
-        id: scrollRight
-        anchors.bottom: rightItem.bottom
-        anchors.left: scrollbar2.right
-        width: 11
-        height: 17
-        visible: true //listView.contentHeight > listView.height ? true : false
-        source: "qrc:/images/images/right.png"
-    }
-    Rectangle {
-        id: scrollbar2
-        width: rightItem.width
-        height: 17
-        anchors.bottom: rightItem.bottom
-        anchors.left: rightItem.left
-        anchors.right: rightItem.right
-        color: "#585858"
-        radius: 10
-        visible: true //listView.contentHeight > listView.height ? true : false
-        Rectangle {
-            id: button2
-            anchors.top: parent.top
-            x: 0
-            //            y: (listView.visibleArea.yPosition < 0 ) ? 0 : (listView.contentY+listView.height>listView.contentHeight) ?
-            //                scrollbar2.height - button2.height : listView.visibleArea.yPosition * scrollbar2.height
-            width: scrollbar2.width / listView.width * scrollbar2.width //50
-            height: 17 //listView.visibleArea.heightRatio * scrollbar2.height;
-            color: "#ccbfbf"
-            radius: 10
-            // 鼠标区域
-            MouseArea {
-                id: mouseArea2
-                anchors.fill: button2
-                drag.target: button2
-                drag.axis: Drag.XAxis
-                drag.minimumX: 0
-                drag.maximumX: scrollbar2.width - button2.width
-            }
-            onXChanged: {
-                listView.anchors.leftMargin = -button2.x / scrollbar2.width * listView.width
-                headRows.anchors.leftMargin = -button2.x / scrollbar2.width * listView.width
-            }
-        }
-    }
-
-
-
-    ExclusiveGroup {
-        id: listviewPositionGroup
-    }
-
-    Component {
-        id: listDelegate
-        Item {
-            width: listView.width
-            height: 50
-            clip: true
-            property var listIndex: 0
-            Component.onCompleted: {
-                listIndex = index
-            }
-
-            Row {
-                width: parent.width
-                height: parent.height
-                spacing: 30
-                clip: true
-                Repeater {
-                    id: listRepeater
-                    model: 10
-                    delegate:  Text {
-                        anchors.verticalCenter: parent.verticalCenter
-                        width: 200
-                        font.family: "arial"
-                        font.pixelSize: 20
-                        color: "white"
-                        clip: true
-                        elide: Text.ElideRight
-                        text: listView.model.getValue(listIndex,headModel.get(index).title)
-                    }
-                }
-            }
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    selectIndx = index
-                    selectCheck.checked = !selectCheck.checked
-                }
-            }
-            Rectangle {
-                id: backGround
-                anchors.fill: parent
-                color: "black"
-                opacity: 0//opacityValue
-                RadioButton {
-                    id: selectCheck
-                    exclusiveGroup: listviewPositionGroup
-                    visible: false
-                    onCheckedChanged: {
-                        if (checked)
-                            backGround.opacity = 0.3
-                        else
-                            backGround.opacity = 0
-                    }
-                }
             }
         }
     }

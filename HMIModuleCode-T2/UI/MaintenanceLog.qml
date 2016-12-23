@@ -411,7 +411,6 @@ Item {
             property var listIndex: 0
             Component.onCompleted: {
                 listIndex = index
-                console.log("2222222222222222",listIndex)
             }
 
             Row {
@@ -421,7 +420,7 @@ Item {
                 clip: true
                 Repeater {
                     id: listRepeater
-                    model: 4
+                    model: headModel.count
                     delegate:  Text {
                         id: tempText
                         property var newObject: null

@@ -22,6 +22,7 @@
 #include "Interface/Maintenance/MaintenanceLog.h"
 #include "Interface/variantToString.h"
 #include "Interface/StringToVariant.h"
+#include "Interface/Settings/PermissionSetting.h"
 
 class WorkOrderModel : public QAbstractTableModel
 {
@@ -200,6 +201,7 @@ public:
     OperatorElement operatorElement;
     Q_INVOKABLE void editNew(int index);
     Q_INVOKABLE QString getStruckValue(QString key);
+    PermissionSetting *permissionSetting;
 
 protected:
     int rowCount(const QModelIndex &parent) const;
