@@ -2,11 +2,12 @@
 #define TIMERCLASS_H
 
 #include <QObject>
+#include <QTimer>
 class TimerClass : public QObject
 {
     Q_OBJECT
 private:
-    void *Timer;
+    QTimer *Timer;
 public:
     bool b_Timeout;
 public:

@@ -1,5 +1,4 @@
 #include "TimerClass.h"
-#include <QTimer>
 #include <QDebug>
 TimerClass* TimerClass::_instance = NULL;
 TimerClass* TimerClass::Instance()
@@ -22,8 +21,8 @@ void TimerClass::SetCommandTimer(int Time)
 {
     b_Timeout = false;
     Timer = new QTimer();
-    connect((QTimer*)Timer, SIGNAL(timeout()),this, SLOT(IsCommandTimeout));
-    ((QTimer*)Timer)->start(Time);
+    connect(Timer, SIGNAL(timeout()),this, SLOT(TimeoutEventSlot()));
+    Timer->start(Time);
 }
 
 void TimerClass::TimeoutEventSlot()
@@ -38,11 +37,11 @@ bool TimerClass::IsCommandTimeout()
 
 void TimerClass::ResetCommandTimer()
 {
-    if(((QTimer*)Timer)->isActive() == true)
-        ((QTimer*)Timer)->stop();
+    if(Timer->isActive() == true)
+        Timer->stop();
     if(Timer != NULL)
     {
-        delete (QTimer*)Timer;
+        delete Timer;
         Timer = NULL;
     }
 }
