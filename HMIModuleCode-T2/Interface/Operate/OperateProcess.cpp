@@ -131,7 +131,7 @@ bool OperateProcess::HeightGraphReceive()
     {
         _M2010->ReceiveFlags.HeightGraphData = false;
         _M102IA->SendIACommand(IAComSendHeightGraph, Index);
-        _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.HeightGraphData);
+        _M102IA->WaitForResponseAfterSent(5000, &_M2010->ReceiveFlags.HeightGraphData);
     }else
         bResult = true;
     return bResult;
@@ -163,7 +163,7 @@ void OperateProcess::WeldCycleDaemonThread(void* _obj)
         {
             _ObjectPtr->CurrentWeldResult.PowerGraph.clear();
             qDebug()<<"GraphDataList.size"<<_M102IA->RawPowerDataGraph.GraphDataList.size();
-            _M2010->ConvertGraphData(_M102IA->RawPowerDataGraph.GraphDataList,
+            _M2010->ConvertPowerGraphData(_M102IA->RawPowerDataGraph.GraphDataList,
                                      &_ObjectPtr->CurrentWeldResult.PowerGraph);
             for(int i = 0; i < _ObjectPtr->CurrentWeldResult.PowerGraph.size(); i++)
             {
@@ -176,12 +176,13 @@ void OperateProcess::WeldCycleDaemonThread(void* _obj)
         break;
     case HEIGHTSnd:
         if(_ObjectPtr->HeightGraphReceive() == false)
+        {
             _ObjectPtr->m_triedCount++;
-
+        }
         else
         {
             _ObjectPtr->CurrentWeldResult.PostHeightGraph.clear();
-            _M2010->ConvertGraphData(_M102IA->RawHeightDataGraph.GraphDataList,
+            _M2010->ConvertHeightGraphData(_M102IA->RawHeightDataGraph.GraphDataList,
                                      &_ObjectPtr->CurrentWeldResult.PostHeightGraph);
             _ObjectPtr->CurrentStep = STEPTrd;
             _ObjectPtr->m_triedCount = 0;
@@ -254,18 +255,9 @@ void OperateProcess::WeldCycleDaemonThread(void* _obj)
 
 void OperateProcess::WeldResultFeedbackEventSlot(bool& bResult)
 {
-    M102IA *_M102IA = M102IA::Instance();
-    M2010 *_M2010 = M2010::Instance();
     if(bResult == false)
         return;
     UpdateWeldResult();
-//    _M2010->ReceiveFlags.PowerGraphData = false;
-//    _M102IA->RawPowerDataGraph.GraphDataList.clear();
-//    _M102IA->RawPowerDataGraph.CurrentIndex = 0;
-//    _M2010->ReceiveFlags.HeightGraphData = false;
-//    _M102IA->RawHeightDataGraph.GraphDataList.clear();
-//    _M102IA->RawHeightDataGraph.CurrentIndex = 0;
-
     m_triedCount = 0;
     CurrentStep = POWERFst;
     m_Thread->setStopEnabled(false);
@@ -333,14 +325,11 @@ bool OperateProcess::_execute()
     M102IA *_M102IA = M102IA::Instance();
     M2010  *_M2010  = M2010::Instance();
     InterfaceClass *_Interface = InterfaceClass::Instance();
-    ModRunSetup *_ModRunSetup = ModRunSetup::Instance();
     bool bResult = true;
     int Retries = 0;
     struct BransonMessageBox tmpMsgBox;
     UpdateIAFields();
-    qDebug()<<"GraphDataList.size"<<_M102IA->RawPowerDataGraph.GraphDataList.size();
     _M2010->ReceiveFlags.SYSTEMid = false;
-
     while(_M2010->ReceiveFlags.SYSTEMid == false)
     {
         if(Retries < 20)

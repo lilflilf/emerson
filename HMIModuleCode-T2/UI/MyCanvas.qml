@@ -97,7 +97,7 @@ Item {
                     width: bottomLine.width / 10
                     color: "#adaeae"
                     font.pixelSize: 14
-                    text: (index / 10 * myCanvas.timeMax).toFixed(0) //index * 100
+                    text: (index / 10 * myCanvas.timeMax).toFixed(2) //index * 100
                     horizontalAlignment: Qt.AlignLeft
                 }
             }

@@ -22,7 +22,7 @@ Item {
         onLoaded: {
             if (loader.source == "qrc:/UI/OperateDetails.qml")
             {
-                alarmModel.setStartTime()
+                alarmModel.setStartTime();
                 var list = new Array
                 list =  workOrderModel.getSpliceList(selectIndx)
                 if (list.length > 0) {

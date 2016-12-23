@@ -143,52 +143,54 @@ struct SpliceFileData{
 
 // IA header record identification
 enum IASig{
-   IASigEmpty,             //0x00
-   IASigSetup,             //0x01
-   IASigPresetTable,       //0x02
-   IASigWeld,              //0x03
-   IASigPower,             //0x04
-   IASigSerialNumber,      //0x05
-   IASigIO,                //0x06
-   IASigSonicHits,         //0x07
-   IASigPressure,          //0x08
-   IASigIOswitch,          //0x09
-   IASigAbortEnable,       //0x0A   Abort button in case of double hit
-   IASigHistoryPar,        //0x0B   Weld Down Loaded Parameter Data
-   IASigMemory,            //0x0C
-   IASigHeight,            //0x0D
-   IASigWidth,             //0x0E
-   IASigPWRrating,         //0x0F   Power Rating
-   IASigSequenceTable,     //0x10
-   IASigHornAmplitude,     //0x11
-   IASigSystemID,          //0x12
-   IASigMaintCount,        //0x13   Maintence counter
-   IASigPresetData,        //0x14   IA98 added signature, Data for a single preset
-   IASigMachineFlags,
-   IASigRunMode,           //0x16
-   IASigActuator,          //0x17
-   IASigWidthZero,         //0x18
-   IASigHeightZero,        //0x19
-   IAsigCooling,           //0x1A
-   IASigDataLockOnAlarm,   //0x1B
-   IASigDataMaintCntr,     //0x1C
-   IASigDataCycleCntr,     //0x1D
-   IASigCommError,         //0x1E
-   IASigControllerVer,     //0x1F
-   IASigReadPower,         //0x20
-   IASigDATADOUBLECLICK,   //0x21
-   IASigDownSpeed,         //0x22
-   IASigHeightCal,         //0x23
-   IASigHostReadyStatus,   //0x24
-   IASigMaximumGauge,      //0x25
-   IASigTunePoint,         //0x26
-   IASigCutoff,            //0x27
-   IASigFrequencyOffset,   //0x28
-   IASigActuatorVer,       //0x29
-   IASigActuatorPartNum,   //0x2A
-   IASigActuatorSerialNum, //0x2B
-   IASigEnd,               //Identifies end of Enum
-   IASigMax = IASigEnd - 1,     //Used by functions to test for limit
+    IASigEmpty,             //0x00
+    IASigSetup,             //0x01
+    IASigPresetTable,       //0x02
+    IASigWeld,              //0x03
+    IASigPower,             //0x04
+    IASigSerialNumber,      //0x05
+    IASigIO,                //0x06
+    IASigSonicHits,         //0x07
+    IASigPressure,          //0x08
+    IASigIOswitch,          //0x09
+    IASigAbortEnable,       //0x0A   Abort button in case of double hit
+    IASigHistoryPar,        //0x0B   Weld Down Loaded Parameter Data
+    IASigMemory,            //0x0C
+    IASigHeight,            //0x0D
+    IASigWidth,             //0x0E
+    IASigPWRrating,         //0x0F   Power Rating
+    IASigSequenceTable,     //0x10
+    IASigHornAmplitude,     //0x11
+    IASigSystemID,          //0x12
+    IASigMaintCount,        //0x13   Maintence counter
+    IASigPresetData,        //0x14   IA98 added signature, Data for a single preset
+    IASigMachineFlags,
+    IASigRunMode,           //0x16
+    IASigActuator,          //0x17
+    IASigWidthZero,         //0x18
+    IASigHeightZero,        //0x19
+    IAsigCooling,           //0x1A
+    IASigDataLockOnAlarm,   //0x1B
+    IASigDataMaintCntr,     //0x1C
+    IASigDataCycleCntr,     //0x1D
+    IASigCommError,         //0x1E
+    IASigControllerVer,     //0x1F
+    IASigReadPower,         //0x20
+    IASigDATADOUBLECLICK,   //0x21
+    IASigDownSpeed,         //0x22
+    IASigHeightCal,         //0x23
+    IASigHostReadyStatus,   //0x24
+    IASigMaximumGauge,      //0x25
+    IASigTunePoint,         //0x26
+    IASigCutoff,            //0x27
+    IASigFrequencyOffset,   //0x28
+    IASigActuatorVer,       //0x29
+    IASigActuatorPartNum,   //0x2A
+    IASigActuatorSerialNum, //0x2B
+    IASigResetReady,       //0x2C
+    IASigHeightGraph,      //0x2D
+    IASigEnd,               //Identifies end of Enum
+    IASigMax = IASigEnd - 1,     //Used by functions to test for limit
 };
 
 //#define IA98System 1

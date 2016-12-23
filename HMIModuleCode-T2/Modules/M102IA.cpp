@@ -678,7 +678,7 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         IAactual.Amplitude2 = MakeHexWordNumber(HexString.mid(66, 4));
         IAactual.PPHeight = MakeHexWordNumber(HexString.mid(70, 4));
         IAactual.Pressure = MakeHexWordNumber(HexString.mid(74, 4));
-        //IAactual.Alarmflags = MakeHexWordNumber(HexString.mid(78, 4));
+        IAactual.TPressure = MakeHexWordNumber(HexString.mid(78, 4));
         IAactual.Alarmflags = MakeHexWordNumberLong(HexString.mid(82, 8));
 //        if ((IAactual.Alarmflags & 0x4000) == 0x4000)
 //            IACommand(IAComHostReady, 1);
@@ -694,13 +694,12 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         // Data                     32 characters
         // Check sum 1 byte         2 characters
         //  (length = 51 Characters)
-        int StringLen, StringCount, LastString, StartData;
+        int StringLen, StringCount, LastString;
         int num, Total, tmpIndex, Datalen;
         StringLen = HexString.length();
         StringCount = int(StringLen / 51);
         LastString = StringLen % 51;
         PowerString = "";
-        StartData = 17;      //First data character
         tmpIndex = 0;
         Total = MakeHexWordNumber(HexString.mid((tmpIndex + 9), 4));
         RawPowerDataGraph.TotalFrame = Total;
@@ -727,7 +726,6 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         RawPowerDataGraph.CurrentIndex = num;
         _M2010->ReceiveFlags.PowerGraphData = true;
 //        _M2010->ConvertGraphData(PowerString);
-        emit WeldResultFeedback(_M2010->ReceiveFlags.WELDdata);
         break;
     case IASigSerialNumber:
         SerialNoData = _M2010->ParseSerialNumber(HexString.mid(9, 32));
@@ -965,6 +963,49 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
     case IASigActuatorSerialNum:
         ActuatorSerialNum = _M2010->ParseSerialNumber(HexString.mid(9, 64));
         _M2010->ReceiveFlags.ActuatorSerialNumData = true;
+        break;
+    case IASigHeightGraph:
+        // Frame head 3 bytes + ":" 7 characters
+        // Total 2 bytes            4 characters
+        // Index 2 bytes            4 characters
+        // One empty byte           2 characters
+        // Data is in an unknown number of strings, all but last is 32 Bytes of data
+        // Data                     64 characters
+        // Check sum 1 byte         2 characters
+        //  (length = 83 Characters)
+//        int StringLen, StringCount, LastString;
+//        int num, Total, tmpIndex, Datalen;
+        StringLen = HexString.length();
+        StringCount = int(StringLen / 83);
+        LastString = StringLen % 83;
+        PowerString = "";
+//        StartData = 17;      //First data character
+        tmpIndex = 0;
+        Total = MakeHexWordNumber(HexString.mid((tmpIndex + 9), 4)); // include the one empty byte
+        RawHeightDataGraph.TotalFrame = Total;
+        for (i = 0; i < StringCount; i++)
+        {
+            Total = MakeHexWordNumber(HexString.mid((tmpIndex + 9), 4));
+            num = MakeHexWordNumber(HexString.mid(tmpIndex + 13, 4));
+            RawHeightDataGraph.GraphDataList.insert(num,HexString.mid(tmpIndex, 83));
+            qDebug()<<"Total: "<<Total << " Index: "<<num<<" str: "<<HexString.mid(tmpIndex, 51);
+            tmpIndex = tmpIndex + 83;
+        }
+        if (LastString > 0)
+        {
+            //Take off the overhead and tack the string onto the Power String
+            Total = MakeHexWordNumber(HexString.mid((tmpIndex + 9), 4));
+            num = MakeHexWordNumber(HexString.mid(tmpIndex + 13, 4));
+            Datalen = MakeHexWordNumber(HexString.mid(tmpIndex + 1, 4));
+            qDebug()<<"Total: "<<Total << " Index: "<<num<<" str: "<<HexString.mid(tmpIndex, LastString);
+            if ((Datalen - 4) != ((LastString - 19) / 2))
+                num = num - 1;
+            else
+                RawHeightDataGraph.GraphDataList.insert(num, HexString.mid(tmpIndex, LastString));
+        }
+        RawHeightDataGraph.CurrentIndex = num;
+        _M2010->ReceiveFlags.HeightGraphData = true;
+        emit WeldResultFeedback(_M2010->ReceiveFlags.HeightGraphData);
         break;
     default:
         break;
