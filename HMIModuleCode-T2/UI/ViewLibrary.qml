@@ -527,11 +527,7 @@ Item {
         }
         MouseArea {
             id: mouseArea
-//                anchors.fill: button
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.top: button.top
-            height: button.height < 5 ? 20 : button.height
+            anchors.fill: button
             drag.target: button
             drag.axis: Drag.YAxis
             drag.minimumY: 0
@@ -539,12 +535,6 @@ Item {
             // 拖动
             onMouseYChanged: {
                 listView.contentY = (button.y + button.height) / scrollbar.height * listView.contentHeight
-            }
-            Rectangle {
-                anchors.fill: parent
-                color: "#585858"
-                radius: 10
-
             }
         }
     }

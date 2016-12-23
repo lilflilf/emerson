@@ -105,6 +105,7 @@ Window {
             contentLoader.source = "qrc:/UI/WeldDefalut.qml"
             break;
         case 16:
+            hmiAdaptor.permissionsettingExecute("_Recall")
             contentLoader.source = "qrc:/UI/UserLibrarySetting.qml"
             break;
         case 17:

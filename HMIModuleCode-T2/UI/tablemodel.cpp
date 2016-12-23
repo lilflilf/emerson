@@ -1479,7 +1479,7 @@ QVariant OperatorModel::data(const QModelIndex &index, int role) const
             value = QVariant::fromValue(myOperator.Password);
         else if (columnIdx == 4) {
             permissionSetting->_Recall();
-            value = QVariant::fromValue(permissionSetting->FourLevelIdentifier.at(myOperator.PermissionLevel));
+            value = QVariant::fromValue(permissionSetting->FourLevelIdentifier.at(myOperator.PermissionLevel-1));
         }
     }
     return value;
@@ -1663,7 +1663,7 @@ QVariant OperatorModel::getOperatorValue(int index, QString key)
     OperatorModelHash.insert("middle",myOperator.Password);
     int level = myOperator.PermissionLevel;
     permissionSetting->_Recall();
-    OperatorModelHash.insert("count",permissionSetting->FourLevelIdentifier.at(level));//myOperator.PermissionLevel;
+    OperatorModelHash.insert("count",permissionSetting->FourLevelIdentifier.at(level-1));//myOperator.PermissionLevel;
     //list << "name" << "date" << "middle" << "count";
     if (key == "") {
         return OperatorModelHash;
@@ -2142,11 +2142,23 @@ void WeldHistoryModel::weldResultSearch(QString WorkOrderName, QString PartName,
 QVariant WeldHistoryModel::getValue(int index, QString key)
 {
     int orderId;
+
+
     orderId = historys->keys().at(index);
     WeldResultElement myHistory;
-    m_weldHistoryAdaptor->QueryOneRecordFromTable(orderId,historys->value(orderId),&myHistory);
     PresetElement presetElement;
-    m_spliceTable->QueryOneRecordFromTable(myHistory.CurrentSplice.SpliceID,myHistory.CurrentSplice.SpliceName,&presetElement);
+    if (!historyList.contains(index)) {
+        m_weldHistoryAdaptor->QueryOneRecordFromTable(orderId,historys->value(orderId),&myHistory);
+        historyList.insert(index,myHistory);
+    } else {
+        myHistory = historyList.value(index);
+    }
+    if (!presetList.contains(index)) {
+        m_spliceTable->QueryOneRecordFromTable(myHistory.CurrentSplice.SpliceID,myHistory.CurrentSplice.SpliceName,&presetElement);
+        presetList.insert(index,presetElement);
+    } else {
+        presetElement = presetList.value(index);
+    }
     QHash<QString, QVariant> WeldHistoryModelHash;
     WeldHistoryModelHash.insert("WeldHistoryId",myHistory.WeldResultID);
     WeldHistoryModelHash.insert("WorkOrderName",myHistory.CurrentWorkOrder.WorkOrderName);
