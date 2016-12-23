@@ -1771,8 +1771,10 @@ int AlarmModel::getAxes(QString key)
         return weldResultElement.ActualResult.ActualTime;
     else if (key == "Power")
         return weldResultElement.ActualResult.ActualPeakPower;
-    else if (key == "Post-Height")
+    else if (key == "Pre-Height")
         return weldResultElement.ActualResult.ActualPreheight;
+    else if (key == "Post-Height")
+        return weldResultElement.ActualResult.ActualPostheight;
 }
 
 void AlarmModel::setStartTime()

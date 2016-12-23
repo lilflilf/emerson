@@ -46,6 +46,10 @@ Window {
             hmiAdaptor.maintenanceStop(1);
         else if (contentLoader.source == "qrc:/UI/MaintenanceCount.qml")
             hmiAdaptor.maintenanceStop(3);
+        else if (contentLoader.source == "qrc:/UI/Operate.qml")
+            hmiAdaptor.operateProcessExec("Stop")
+        else if (contentLoader.source == "qrc:/UI/TestSpliceLibrary.qml")
+            hmiAdaptor.operateProcessExec("Stop")
 
         contentLoader.source = ""
         switch (index) {

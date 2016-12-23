@@ -15,7 +15,7 @@ Item {
     property var postModel: new Array
     property var selectIndex: 0
     property alias qualityListViewTwoModel: qualityListViewTwo.model
-
+    property var partCount: 0
     function setData()
     {
         qualityListViewTwo.model = 0
