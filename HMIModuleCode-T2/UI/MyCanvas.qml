@@ -45,7 +45,7 @@ Item {
             listModel.append({"x":i * pointx,"y":canvasLoader.height - powerList[i] * pointy})
         }
         heightList = alarmModel.getPoint2()
-        pointy = canvasLoader.height / heightMax
+        pointy = canvasLoader.height / ((alarmModel.getAxes("Pre-Height") - alarmModel.getAxes("Post-Height"))/8 * 2 + (alarmModel.getAxes("Pre-Height") - alarmModel.getAxes("Post-Height")))
         for (i = 0; i < heightList.length; i++)
         {
             listModelRight.append({"x":i * pointx,"y":canvasLoader.height - heightList[i] * pointy})
@@ -92,12 +92,12 @@ Item {
             width: parent.width + 100
             Repeater {
                 id: bottomRepeater
-                model: 10
+                model: 11
                 delegate: Text {
                     width: bottomLine.width / 10
                     color: "#adaeae"
                     font.pixelSize: 14
-                    text: (index / 10 * myCanvas.timeMax).toFixed(2) //index * 100
+                    text: (index * alarmModel.getAxes("Time") * 0.1).toFixed(2) //  (index / 10 * myCanvas.timeMax).toFixed(2)
                     horizontalAlignment: Qt.AlignLeft
                 }
             }
@@ -116,12 +116,12 @@ Item {
             anchors.right: leftLine.left
             Repeater {
                 id: leftRepeater
-                model: 10
+                model: 11
                 delegate: Text {
                     height: leftLine.height / 10
                     color: "#adaeae"
                     font.pixelSize: 14
-                    text: ((10 - index) / 10 * myCanvas.powerMax).toFixed(0)  //(7 - index) * 100
+                    text: ((11-index) * alarmModel.getAxes("Power") * 0.1).toFixed(0) //((10 - index) / 10 * myCanvas.powerMax).toFixed(0)  //(7 - index) * 100
                     verticalAlignment: Qt.AlignTop
                 }
             }
@@ -157,12 +157,13 @@ Item {
             anchors.left: rightLine.right
             Repeater {
                 id: rightRepeater
-                model: 10
+                model: 11
                 delegate: Text {
                     height: rightLine.height / 10
                     color: "#adaeae"
                     font.pixelSize: 14
-                    text: ((10 - index) / 10 * myCanvas.heightMax).toFixed(0) //(7 - index) * 100
+                    text: index == 0 ? alarmModel.getAxes("Pre-Height") + (alarmModel.getAxes("Pre-Height") - alarmModel.getAxes("Post-Height"))/8 : alarmModel.getAxes("Pre-Height") - (alarmModel.getAxes("Pre-Height") - alarmModel.getAxes("Post-Height"))/8*(index-1)
+//                    text: ((11 - index) * alarmModel.getAxes("Post-Height") * 0.1).toFixed(0) /// 10 * myCanvas.heightMax).toFixed(0) //(7 - index) * 100
                     verticalAlignment: Qt.AlignTop
                 }
             }
