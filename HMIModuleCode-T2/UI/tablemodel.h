@@ -215,9 +215,10 @@ public slots:
     void setRoles(const QStringList &names);
     Q_INVOKABLE QVariant getOperatorValue(int index, QString key);
     Q_INVOKABLE int count();
-    Q_INVOKABLE void insertValue(QString name, QString passwd);
+    Q_INVOKABLE void insertValue(QString name, QString passwd, int level);
     Q_INVOKABLE bool login(QString passwd, OperatorElement *operatot);
     Q_INVOKABLE void removeValue(int id, QString name);
+    Q_INVOKABLE void updateOperator(int id, QString name, QString passwd, int level);
 
 private:
     QHash<int, QByteArray> m_roleNames;

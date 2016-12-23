@@ -433,6 +433,27 @@ QString HmiAdaptor::getCurrentOperatorId()
     return interfaceClass->CurrentOperator.OperatorName;
 }
 
+QStringList HmiAdaptor::getCarTempLate()
+{
+    QStringList carList;
+    int count = interfaceClass->StatusData.carTemplate.count();
+    for (int i = 0; i < count; i++) {
+        QString name = interfaceClass->StatusData.carTemplate.value(interfaceClass->StatusData.carTemplate.keys().at(i));
+        carList.append(name);
+    }
+    return carList;
+}
+
+void HmiAdaptor::addCarTempLate(QString name)
+{
+    interfaceClass->StatusData.carTemplate.insert(interfaceClass->StatusData.carTemplate.count(),name);
+}
+
+void HmiAdaptor::removeCarTemplate(QString name)
+{
+    interfaceClass->StatusData.carTemplate.remove(interfaceClass->StatusData.carTemplate.key(name));
+}
+
 void HmiAdaptor::calibrationMaintenanceExecute(int code)
 {
     calibration->_execute(code);
@@ -916,6 +937,7 @@ void HmiAdaptor::setOperateProcess(int spliceId, bool isText)
 
 void HmiAdaptor::operateProcessExec(QString type)
 {
+    qDebug() << "operateProcessExec" << type;
     if (type == "Start")
         operateProcess->_start();
     else if (type == "Stop")

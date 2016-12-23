@@ -472,7 +472,7 @@ void M102IA::SendIACommand(IACommands CommandNumber, int CommandData)
     }
     SumCheck = (0 - SumCheck) & 0xFF;
     OutStr = OutStr + MakeHexByte(SumCheck) + "\r\n";
-    qDebug()<<"Send Frame: "<<OutStr;
+//    qDebug()<<"Send Frame: "<<OutStr;
 
     #ifdef IA98System
         BransonSerial::comIA98->write(OutStr.c_str(), OutStr.length());
@@ -709,7 +709,7 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
             Total = MakeHexWordNumber(HexString.mid((tmpIndex + 9), 4));
             num = MakeHexWordNumber(HexString.mid(tmpIndex + 13, 4));
             RawPowerDataGraph.GraphDataList.insert(num,HexString.mid(tmpIndex, 51));
-            qDebug()<<"Total: "<<Total << " Index: "<<num<<" str: "<<HexString.mid(tmpIndex, 51);
+//            qDebug()<<"Total: "<<Total << " Index: "<<num<<" str: "<<HexString.mid(tmpIndex, 51);
             tmpIndex = tmpIndex + 51;
         }
         if (LastString > 0)
@@ -718,7 +718,7 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
             Total = MakeHexWordNumber(HexString.mid((tmpIndex + 9), 4));
             num = MakeHexWordNumber(HexString.mid(tmpIndex + 13, 4));
             Datalen = MakeHexWordNumber(HexString.mid(tmpIndex + 1, 4));
-            qDebug()<<"Total: "<<Total << " Index: "<<num<<" str: "<<HexString.mid(tmpIndex, LastString);
+//            qDebug()<<"Total: "<<Total << " Index: "<<num<<" str: "<<HexString.mid(tmpIndex, LastString);
             if ((Datalen - 4) != ((LastString - 19) / 2))
                 num = num - 1;
             else
@@ -916,11 +916,11 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         ADPower = MakeHexWordNumber(HexString.mid(9, 4));
         break;
     case IASigCommError:
-        tmpMsgBox.MsgTitle = QObject::tr("ERROR");
-        tmpMsgBox.MsgPrompt = QObject::tr("Communication Error!");
-        tmpMsgBox.TipsMode = Critical;
-        tmpMsgBox.func_ptr = NULL;
-        _Interface->cMsgBox(&tmpMsgBox);
+//        tmpMsgBox.MsgTitle = QObject::tr("ERROR");
+//        tmpMsgBox.MsgPrompt = QObject::tr("Communication Error!");
+//        tmpMsgBox.TipsMode = Critical;
+//        tmpMsgBox.func_ptr = NULL;
+//        _Interface->cMsgBox(&tmpMsgBox);
         break;
     case IASigControllerVer:
         ContollerVersion = _M2010->ParseSerialNumber(HexString.mid(9, 32));

@@ -61,6 +61,8 @@ void OperateProcess::UpdateIAFields()
     _M102IA->IAsetup.EnergyToStep = CurrentSplice.WeldSettings.AdvanceSetting.StepWeld.EnergyToStep;
     _M102IA->IAsetup.PowerToStep = CurrentSplice.WeldSettings.AdvanceSetting.StepWeld.PowerToStep;
     _M102IA->IAsetup.TimeToStep = CurrentSplice.WeldSettings.AdvanceSetting.StepWeld.TimeToStep;
+    _M102IA->RawPowerDataGraph.GraphDataList.clear();
+    _M102IA->RawHeightDataGraph.GraphDataList.clear();
 }
 
 void OperateProcess::UpdateWeldResult()
@@ -159,6 +161,8 @@ void OperateProcess::WeldCycleDaemonThread(void* _obj)
             _ObjectPtr->m_triedCount++;
         else
         {
+            _ObjectPtr->CurrentWeldResult.PowerGraph.clear();
+            qDebug()<<"GraphDataList.size"<<_M102IA->RawPowerDataGraph.GraphDataList.size();
             _M2010->ConvertGraphData(_M102IA->RawPowerDataGraph.GraphDataList,
                                      &_ObjectPtr->CurrentWeldResult.PowerGraph);
             for(int i = 0; i < _ObjectPtr->CurrentWeldResult.PowerGraph.size(); i++)
@@ -176,6 +180,7 @@ void OperateProcess::WeldCycleDaemonThread(void* _obj)
 
         else
         {
+            _ObjectPtr->CurrentWeldResult.PostHeightGraph.clear();
             _M2010->ConvertGraphData(_M102IA->RawHeightDataGraph.GraphDataList,
                                      &_ObjectPtr->CurrentWeldResult.PostHeightGraph);
             _ObjectPtr->CurrentStep = STEPTrd;
@@ -201,11 +206,6 @@ void OperateProcess::WeldCycleDaemonThread(void* _obj)
         {
             _ObjectPtr->WeldCycleStatus = true;
         }
-        m_Thread->setStopEnabled(true);
-        m_Thread->setSuspendEnabled(true);
-        m_Thread->wait();
-        delete m_Thread;
-        m_Thread = NULL;
         //2. Save the Weld result into the Database
         int iResult =
             _WeldResultDB->InsertRecordIntoTable(&_ObjectPtr->CurrentWeldResult);
@@ -247,6 +247,8 @@ void OperateProcess::WeldCycleDaemonThread(void* _obj)
                 _ObjectPtr->CurrentNecessaryInfo.CurrentPart.PartName, &_ObjectPtr->CurrentWeldResult, &_ObjectPtr->CurrentSplice);
 
         emit _ObjectPtr->WeldCycleCompleted(&_ObjectPtr->WeldCycleStatus);
+        m_Thread->setStopEnabled(true);
+        m_Thread->setSuspendEnabled(true);
     }
 }
 
@@ -266,6 +268,8 @@ void OperateProcess::WeldResultFeedbackEventSlot(bool& bResult)
 
     m_triedCount = 0;
     CurrentStep = POWERFst;
+    m_Thread->setStopEnabled(false);
+    m_Thread->setSuspendEnabled(false);
     m_Thread->start();
 }
 
@@ -334,7 +338,7 @@ bool OperateProcess::_execute()
     int Retries = 0;
     struct BransonMessageBox tmpMsgBox;
     UpdateIAFields();
-
+    qDebug()<<"GraphDataList.size"<<_M102IA->RawPowerDataGraph.GraphDataList.size();
     _M2010->ReceiveFlags.SYSTEMid = false;
 
     while(_M2010->ReceiveFlags.SYSTEMid == false)
