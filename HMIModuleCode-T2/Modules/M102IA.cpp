@@ -483,7 +483,8 @@ void M102IA::SendIACommand(IACommands CommandNumber, int CommandData)
             QByteArray Buffer = OutStr.toLatin1();
             BransonSerial::IAportSend(Buffer);
             char Command = 0x11;
-            BransonSerial::IAportSend(Command);
+            Buffer = QByteArray(&Command, 1);
+            BransonSerial::IAportSend(Buffer);
         }
     #endif
 }

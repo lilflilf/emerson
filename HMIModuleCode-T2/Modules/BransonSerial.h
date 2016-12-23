@@ -24,7 +24,7 @@ public:
 public slots:
     static void comIAportReadEventSlot();
 public:
-    static bool IAportSend(char data);
+//    static bool IAportSend(char data);
     static bool IAportSend(QByteArray data);
 public:
     static BransonSerial* Instance();
