@@ -13,7 +13,7 @@ Item {
     property var stepModel: -1
 
     signal signalSaveSplice(var spliceId)
-    property bool crossSection: true
+    property bool crossSection: false
     property int selectIndex: 0
     property bool detailIsChang: true
     property bool bIsStep: false
@@ -1226,11 +1226,11 @@ Item {
             color: "white"
             opacity: 0.5
             onTextChanged: {
-                if (crossSection)
-                {
-                    spliceModel.calculateSpliceData()
-                    initSettings()
-                }
+//                if (crossSection)
+//                {
+//                    spliceModel.calculateSpliceData()
+//                    initSettings()
+//                }
             }
         }
         Text {

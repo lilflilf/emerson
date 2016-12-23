@@ -291,7 +291,7 @@ Item {
         color: "#052a40"
         Text {
             id: seach
-            text: qsTr("Seach")
+            text: qsTr("Search")
             font.family: "arial"
             color: "white"
             font.pointSize: 16

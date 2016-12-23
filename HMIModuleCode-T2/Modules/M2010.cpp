@@ -10,6 +10,7 @@
 #include <QFile>
 #include "Modules/UtilityClass.h"
 #include "Interface/Interface.h"
+#include "M102IA.h"
 M2010* M2010::_instance = 0;
 M2010* M2010::Instance()
 {
@@ -57,6 +58,7 @@ M2010::M2010()
     ReceiveFlags.ActuatorVersionData = false;
     ReceiveFlags.ActuatorSerialNumData = false;
     ReceiveFlags.ActuatorPartNumData= false;
+    ReceiveFlags.HeightGraphData = false;
 
     M10Run.Sequence_Done = false;
     M10Run.Pre_Hght_Error = false;
@@ -149,7 +151,7 @@ int M2010::IncPtrCircular(int ptr, int ptrMAX)
     return ((ptr + 1) % (ptrMAX + 1));
 }
 
-void M2010::ConvertGraphData(QStringList SourceGraphDataList, QList<int> *DestList)
+void M2010::ConvertPowerGraphData(QStringList SourceGraphDataList, QList<int> *DestList)
 {
     if(DestList == NULL)
         return;
@@ -179,6 +181,36 @@ void M2010::ConvertGraphData(QStringList SourceGraphDataList, QList<int> *DestLi
     }
 }
 
+void M2010::ConvertHeightGraphData(QStringList SourceGraphDataList, QList<int> *DestList)
+{
+    M102IA *_M102IA = M102IA::Instance();
+    if(DestList == NULL)
+        return;
+    int StartData = 17;      //First data character
+    QString GraphString = "";
+    QString Str;
+    for (int i = 0; i < (SourceGraphDataList.size() - 1);i++)
+    {
+        Str = SourceGraphDataList.at(i);
+        GraphString += Str.mid(StartData, 64);
+    }
+    Str = SourceGraphDataList.last();
+    GraphString += Str.mid(StartData, (Str.length() - 19));
+
+    int WeldPoints, Points, LenString;
+    LenString = GraphString.length();
+    WeldPoints = (int)(LenString/4);
+    Points = WeldPoints - 5;
+    int j = 0;
+    bool bResult;
+    for(int i = 0; i < Points; i++)
+    {
+        Str = GraphString.mid(j, 4);
+        int value = _M102IA->MakeHexWordNumber(Str);
+        DestList->insert(i, value);
+        j += 4;
+    }
+}
 
 QString M2010::ParseSerialNumber(QString SerialCode)
 {
@@ -324,16 +356,6 @@ void M2010::UpdateThisSplice(M10Part ThisSplice)
     int FileNumber;
 }
 
-//void M2010::SendNWmsgStruct(ErrMsgStruct MsgStruct[])
-//{
-
-//}
-
-//void M2010::SendNWmsg(string sErrPart, string sErr)
-//{
-
-//}
-
 /*************************************************************************************/
 /* This routine replaces the many, many file accesses in the old program             */
 /* Because of the variety of input possibilities the process must include checking to*/
@@ -381,117 +403,4 @@ int M2010::GetTeachModeRunCount()
 
     }
     return tmpRunCount;
-}
-
-void M2010::CopyPartRevThree(M10PartRevThree PartDestRevThree, M10Part PartDest)
-{
-//    PartDest.RevCode      = DEFINEDREVCODE;
-//    PartDest.PartNo       = PartDestRevThree.PartNo;
-//    PartDest.FlagField    = PartDestRevThree.FlagField;
-//    PartDest.Amplitude2   = PartDestRevThree.Amplitude2;
-//    PartDest.EnergyToStep = PartDestRevThree.EnergyToStep;
-//    PartDest.Area         = PartDestRevThree.Area;
-//    PartDest.PartsCnt     = PartDestRevThree.PartsCnt;
-//    PartDest.TimeToStep   = PartDestRevThree.TimeToStep;
-//    PartDest.PowerToStep  = PartDestRevThree.PowerToStep;
-//    PartDest.Energy       = PartDestRevThree.Energy;
-//    PartDest.Width        = PartDestRevThree.Width;
-//    PartDest.Pressure     = PartDestRevThree.Pressure;
-//    PartDest.Amplitude    = PartDestRevThree.Amplitude;
-//    PartDest.Time         = PartDestRevThree.Time;
-//    PartDest.Power        = PartDestRevThree.Power;
-//    PartDest.Preheight    = PartDestRevThree.Preheight;
-//    PartDest.Height       = PartDestRevThree.Height;
-//    PartDest.Force        = PartDestRevThree.Force;
-//    PartDest.NoOfWires    = PartDestRevThree.NoOfWires;
-//    for(int i = 0; i< MAX_WIRE_ELEMENTS;i++)
-//    {
-//        PartDest.WireEl[i].PartName = PartDestRevThree.WireEl[i].PartName;
-//        PartDest.WireEl[i].Area = PartDestRevThree.WireEl[i].Area;
-//        for (int j = 0; j < 11; j++)
-//        {
-//            PartDest.WireEl[i].Color[j] = PartDestRevThree.WireEl[i].Color[j];
-//        }
-//    }
-//    PartDest.RecData   = PartDestRevThree.RecData;
-//    PartDest.TrigPres  = PartDestRevThree.TrigPres;
-//    PartDest.SqzTime   = PartDestRevThree.SqzTime;
-//    PartDest.FlagWord  = PartDestRevThree.FlagWord;
-//    PartDest.StopCount = PartDestRevThree.StopCount;
-//    PartDest.HoldTime  = PartDestRevThree.HoldTime;
-//    PartDest.ABDelay   = PartDestRevThree.ABDelay;
-//    PartDest.ABDur     = PartDestRevThree.ABDur;
-//    PartDest.PreBurst = PartDestRevThree.PreBurst;
-//    PartDest.WidthCorr = PartDestRevThree.WidthCorr;
-//    PartDest.HeightCorr = PartDestRevThree.HeightCorr;
-//    PartDest.ShrinkTubeIndex = PartDestRevThree.ShrinkTubeIndex;
-//    PartDest.ShrinkTime = PartDestRevThree.ShrinkTime;
-//    PartDest.ShrinkTemperature = PartDestRevThree.ShrinkTemperature;
-//    PartDest.PreviousFileNumber = PartDestRevThree.PreviousFileNumber;
-//    PartDest.PresetTeachModeSetting = PartDestRevThree.PresetTeachModeSetting;
-//    for(int i = 0; i < ENERGY_ADJ; i++)
-//    {
-//         PartDest.TeachModequal_Window[i] = PartDestRevThree.TeachModequal_Window[i];
-//    }
-//    PartDest.StandardRunQuantity = PartDestRevThree.StandardRunQuantity;
-//    PartDest.AutoRunQuantity = PartDestRevThree.AutoRunQuantity;
-//    PartDest.SigmaRunQuantity = PartDestRevThree.SigmaRunQuantity;
-//    PartDest.PresetPicName = PartDestRevThree.PresetPicName;
-}
-
-void M2010::CopyPartRevTwo(M10PartRevTwo PartDestRevTwo, M10Part PartDest)
-{
-//    PartDest.RevCode = DEFINEDREVCODE;
-//    PartDest.PartNo = PartDestRevTwo.PartNo;
-//    PartDest.FlagField = PartDestRevTwo.FlagField;
-//    PartDest.Amplitude2 = PartDestRevTwo.Amplitude2;
-//    PartDest.EnergyToStep = PartDestRevTwo.EnergyToStep;
-//    PartDest.Area = PartDestRevTwo.Area;
-//    PartDest.PartsCnt = PartDestRevTwo.PartsCnt;
-//    PartDest.TimeToStep = PartDestRevTwo.TimeToStep;
-//    PartDest.PowerToStep = PartDestRevTwo.PowerToStep;
-//    PartDest.Energy = PartDestRevTwo.Energy;
-//    PartDest.Width = PartDestRevTwo.Width;
-//    PartDest.Pressure = PartDestRevTwo.Pressure;
-//    PartDest.Amplitude = PartDestRevTwo.Amplitude;
-//    PartDest.Time = PartDestRevTwo.Time;
-//    PartDest.Power = PartDestRevTwo.Power;
-//    PartDest.Preheight = PartDestRevTwo.Preheight;
-//    PartDest.Height = PartDestRevTwo.Height;
-//    PartDest.Force = PartDestRevTwo.Force;
-//    PartDest.NoOfWires = PartDestRevTwo.NoOfWires;
-//    for(int i = 0; i < MAX_WIRE_ELEMENTS; i++)
-//    {
-//        PartDest.WireEl[i].PartName = PartDestRevTwo.WireEl[i].PartName;
-//        PartDest.WireEl[i].Area = PartDestRevTwo.WireEl[i].Area;
-//        for(int j = 0; j < 11; j++)
-//        {
-//            PartDest.WireEl[i].Color[j] = PartDestRevTwo.WireEl[i].Color[j];
-//        }
-//        PartDest.WireEl[i].side = PartDestRevTwo.WireEl[i].side;
-//    }
-//    PartDest.RecData = PartDestRevTwo.RecData;
-//    PartDest.TrigPres = PartDestRevTwo.TrigPres;
-//    PartDest.SqzTime = PartDestRevTwo.SqzTime;
-//    PartDest.FlagWord = PartDestRevTwo.FlagWord;
-//    PartDest.StopCount = PartDestRevTwo.StopCount;
-//    PartDest.HoldTime = PartDestRevTwo.HoldTime;
-//    PartDest.ABDelay = PartDestRevTwo.ABDelay;
-//    PartDest.ABDur = PartDestRevTwo.ABDur;
-//    PartDest.PreBurst = PartDestRevTwo.PreBurst;
-//    PartDest.WidthCorr = PartDestRevTwo.WidthCorr;
-//    PartDest.HeightCorr = PartDestRevTwo.HeightCorr;
-//    PartDest.ShrinkTubeIndex = PartDestRevTwo.ShrinkTubeIndex;
-//    PartDest.ShrinkTime = PartDestRevTwo.ShrinkTime;
-//    PartDest.ShrinkTemperature = PartDestRevTwo.ShrinkTemperature;
-//    PartDest.PreviousFileNumber = PartDestRevTwo.PreviousFileNumber;
-//    PartDest.PresetTeachModeSetting = PartDestRevTwo.PresetTeachModeSetting;
-//    for(int i = 0; i < ENERGY_ADJ; i++)
-//    {
-//        PartDest.TeachModequal_Window[i] = PartDestRevTwo.TeachModequal_Window[i];
-//    }
-//    PartDest.StandardRunQuantity = PartDestRevTwo.StandardRunQuantity;
-//    PartDest.AutoRunQuantity = PartDestRevTwo.AutoRunQuantity;
-//    PartDest.SigmaRunQuantity = PartDestRevTwo.SigmaRunQuantity;
-//    PartDest.PresetPicName = PartDestRevTwo.PresetPicName;
 }

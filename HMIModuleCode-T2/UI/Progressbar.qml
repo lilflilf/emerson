@@ -45,6 +45,11 @@ Item {
             }
             cycleDone()
         }
+
+        if (current == total)
+            nextprogress.visible = false
+        else
+            nextprogress.visible = true
     }
 
     Rectangle {
@@ -107,6 +112,7 @@ Item {
         color: "#00AFE9"
         visible: current == total ? false : true
     }
+
     Text {
         id: startNo
         anchors.left: parent.left

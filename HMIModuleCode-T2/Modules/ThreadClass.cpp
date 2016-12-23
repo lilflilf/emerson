@@ -19,6 +19,7 @@ ThreadClass::~ThreadClass()
 
 void ThreadClass::run()
 {
+    qDebug()<<"Thread run";
     if(m_callbackHandle != NULL)
     {
         while(1)

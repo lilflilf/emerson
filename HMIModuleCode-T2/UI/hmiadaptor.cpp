@@ -8,9 +8,14 @@
 #include <QQuickView>
 #include <windows.h>
 #include <QDesktopWidget>
-
+#include <QTimer>
 HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
 {
+    QTimer *timer;
+    timer = new QTimer(this);
+    timer->singleShot(3000,this,SLOT(test()));
+    delete timer;
+    timer = NULL;
     workOrderModel = new WorkOrderModel(this);
     QStringList list;
     list << "workOrderId" << "name" << "date" << "middle" << "count";
@@ -96,11 +101,13 @@ void HmiAdaptor::quit()
 {
 //    int cx = GetSystemMetrics( SM_CXFULLSCREEN );
 //    int cy = GetSystemMetrics( SM_CYFULLSCREEN );
-//    RECT rc = {0,0,cx,cy-taskBarHeight};
-//    SystemParametersInfo(SPI_SETWORKAREA,
-//                         0,
-//                         &rc,
-//                         0);
+    int cx=GetSystemMetrics(SM_CXSCREEN);
+    int cy=GetSystemMetrics(SM_CYSCREEN);
+    RECT rc = {0,0,cx,cy-taskBarHeight};
+    SystemParametersInfo(SPI_SETWORKAREA,
+                         0,
+                         &rc,
+                         0);
 }
 
 void HmiAdaptor::openFileDialog()
@@ -838,6 +845,11 @@ void HmiAdaptor::slotDisableDialog(BransonMessageBox &MsgBox)
 
 }
 
+void HmiAdaptor::test()
+{
+    qDebug() << "xxxxxxxxxxxxxxxxxxxxx";
+}
+
 bool HmiAdaptor::stringRegexMatch(QString exp, QString value)
 {
     QRegExp rx(exp);
@@ -927,6 +939,7 @@ void HmiAdaptor::setOperateProcess(int spliceId, bool isText)
 
 void HmiAdaptor::operateProcessExec(QString type)
 {
+    qDebug() << "operateProcessExec" << type;
     if (type == "Start")
         operateProcess->_start();
     else if (type == "Stop")
