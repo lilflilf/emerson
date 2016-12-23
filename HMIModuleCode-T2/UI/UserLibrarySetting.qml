@@ -9,7 +9,6 @@ Item {
     function setDialogLevel()
     {
         fourLevelIdentifier = hmiAdaptor.permissionsettingGetValue("FourLevelIdentifier")
-
     }
 
     Image {
