@@ -5,6 +5,13 @@ import QtQuick.Dialogs 1.2
 
 Item {
     property int selectIndx: -1
+    property var fourLevelIdentifier: ""
+    function setDialogLevel()
+    {
+        fourLevelIdentifier = hmiAdaptor.permissionsettingGetValue("FourLevelIdentifier")
+
+    }
+
     Image {
         anchors.fill: parent
         source: "qrc:/images/images/bg.png"
@@ -282,6 +289,7 @@ Item {
             backGround.visible = true
             backGround.opacity = 0.5
             operatorDialog.visible = true
+            setDialogLevel()
 //            operatorModel.editNew(selectIndx)
         }
     }
@@ -299,6 +307,7 @@ Item {
             backGround.visible = true
             backGround.opacity = 0.5
             operatorDialog.visible = true
+            setDialogLevel()
         }
     }
     Rectangle {
@@ -328,14 +337,13 @@ Item {
                 operatorNameInput.inputText = operatorModel.getOperatorValue(selectIndx,"name")
                 passwordInput.inputText = operatorModel.getOperatorValue(selectIndx,"middle")
                 var level = operatorModel.getOperatorValue(selectIndx,"count")
-                console.log("1111111111111111",operatorNameInput.inputText,passwordInput.inputText,level)
-                if (level == qsTr("ADMINISTRATOR")) {
+                if (level == administratorRadio.buttontext) {
                     administratorRadio.bIsCheck = true
-                } else if (level == qsTr("TECHNICIAN")) {
+                } else if (level == technicianRadio.buttontext) {
                     technicianRadio.bIsCheck = true
-                } else if (level == qsTr("QUALITYCONTROL")) {
+                } else if (level == qualityRadio.buttontext) {
                     qualityRadio.bIsCheck = true
-                } else if (level == qsTr("OPEN")) {
+                } else if (level == openRadio.buttontext) {
                     openRadio.bIsCheck = true
                 }
             }
@@ -428,7 +436,7 @@ Item {
             height: 40
             bIsCheck: true
             exclusiveGroup: mos
-            buttontext: qsTr("Administrator")
+            buttontext: fourLevelIdentifier[0]//qsTr("Administrator")
         }
         MyRadioButton {
             id: technicianRadio
@@ -439,7 +447,7 @@ Item {
             width: 300
             height: 40
             exclusiveGroup: mos
-            buttontext: qsTr("Technician")
+            buttontext: fourLevelIdentifier[1]//qsTr("Technician")
         }
         MyRadioButton {
             id: qualityRadio
@@ -450,7 +458,7 @@ Item {
             width: 300
             height: 40
             exclusiveGroup: mos
-            buttontext: qsTr("Quality Control")
+            buttontext: fourLevelIdentifier[2]//qsTr("Quality Control")
         }
         MyRadioButton {
             id: openRadio
@@ -461,7 +469,7 @@ Item {
             width: 300
             height: 40
             exclusiveGroup: mos
-            buttontext: qsTr("Open")
+            buttontext: fourLevelIdentifier[3]//qsTr("Open")
         }
         CButton {
             id: cancelButton

@@ -366,8 +366,8 @@ Item {
         width: showFlag != 1 ? spliceDetailsItem.width : qualityWindow.width/2 - 20
         height: 10
         maximum: qliantity
-        minimum: 1
-        value: 1
+        minimum: 0
+        value: 0
     }
     Text {
         id: progresstracking2

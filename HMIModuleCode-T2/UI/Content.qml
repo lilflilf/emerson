@@ -1183,10 +1183,16 @@ Item {
         ListModel {
             id: templateModel
             Component.onCompleted: {
-                templateModel.append({name:"GM"})
-                templateModel.append({name:"Toyota"})
-                templateModel.append({name:"Volks Wagen"})
-                templateModel.append({name:"BYD"})
+                var templateList = new Array()
+                templateList = hmiAdaptor.getCarTempLate()
+                for (var i = 0; i < templateList.length; i++) {
+                    templateModel.append({name:templateList[i]})
+                }
+
+//                templateModel.append({name:"GM"})
+//                templateModel.append({name:"Toyota"})
+//                templateModel.append({name:"Volks Wagen"})
+//                templateModel.append({name:"BYD"})
             }
         }
         Image {
@@ -1298,6 +1304,7 @@ Item {
                         anchors.fill: parent
                         onClicked: {
                             templateModel.remove(index)
+                            hmiAdaptor.removeCarTemplate(templateNameInput.inputText)
                         }
                     }
                 }
@@ -1391,6 +1398,7 @@ Item {
                 edit6.inputText = partNumberInput.inputText
                 template.text = templateNameInput.inputText
                 templateModel.append({name:templateNameInput.inputText})
+                hmiAdaptor.addCarTempLate(templateNameInput.inputText)
                 temPlateDialog.visible = false
                 backGround.visible = false
                 template2.visible = false
