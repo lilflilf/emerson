@@ -20,8 +20,6 @@ Item {
     Connections {
         target: hmiAdaptor
         onSignalWeldCycleCompleted: {
-            console.log("xxxxxxxxxxxxxxxxxonSignalWeldCycleCompleted")
-
 //            if (progressBar.total == progressBar.current)
 //                return
             progressBar.current++
@@ -84,7 +82,6 @@ Item {
         }
         hmiAdaptor.setOperateProcess(spliceId, false)
         hmiAdaptor.operateProcessExec("Execute")
-        console.log("xxxxxxxxxxxxxxxxx")
     }
 
     Text {

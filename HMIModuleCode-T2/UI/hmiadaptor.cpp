@@ -101,11 +101,13 @@ void HmiAdaptor::quit()
 {
 //    int cx = GetSystemMetrics( SM_CXFULLSCREEN );
 //    int cy = GetSystemMetrics( SM_CYFULLSCREEN );
-//    RECT rc = {0,0,cx,cy-taskBarHeight};
-//    SystemParametersInfo(SPI_SETWORKAREA,
-//                         0,
-//                         &rc,
-//                         0);
+    int cx=GetSystemMetrics(SM_CXSCREEN);
+    int cy=GetSystemMetrics(SM_CYSCREEN);
+    RECT rc = {0,0,cx,cy-taskBarHeight};
+    SystemParametersInfo(SPI_SETWORKAREA,
+                         0,
+                         &rc,
+                         0);
 }
 
 void HmiAdaptor::openFileDialog()
