@@ -36,13 +36,13 @@ Item {
     Component.onCompleted: {
         hmiAdaptor.operateProcessExec("Start")
     }
-    Component.onDestruction: {
-        hmiAdaptor.operateProcessExec("Stop")
-    }
+//    Component.onDestruction: {
+//        hmiAdaptor.operateProcessExec("Stop")
+//    }
 
     function setData()
     {
-
+        qualityWindow.partCount = progressBar.current - 1
         qualityWindow.timeModel = alarmModel.getPointList("Time",spliceModel.getStructValue("SpliceName",""),spliceModel.getHashCode())
         qualityWindow.powerModel = alarmModel.getPointList("Power",spliceModel.getStructValue("SpliceName",""),spliceModel.getHashCode())
         qualityWindow.preModel = alarmModel.getPointList("Pre-Height",spliceModel.getStructValue("SpliceName",""),spliceModel.getHashCode())
@@ -366,8 +366,8 @@ Item {
         width: showFlag != 1 ? spliceDetailsItem.width : qualityWindow.width/2 - 20
         height: 10
         maximum: qliantity
-        minimum: 1
-        value: 1
+        minimum: 0
+        value: 0
     }
     Text {
         id: progresstracking2

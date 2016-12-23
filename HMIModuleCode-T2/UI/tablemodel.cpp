@@ -767,12 +767,12 @@ int SpliceModel::getRawData(QString key)
 
 void SpliceModel::setStructValue(QString valueKey, QVariant value)
 {
-    qDebug() << "setStructValue" << valueKey << value;
     if (valueKey == "Energy") {
         presetElement.WeldSettings.BasicSetting.Energy = stringToVariant->EnergyToInt(value.toString());
     }
     else if (valueKey == "Trigger Pressure") {
         presetElement.WeldSettings.BasicSetting.TrigPres = stringToVariant->TriggerPressureToInt(value.toString());
+        qDebug() << "setStructValue" << value<<presetElement.WeldSettings.BasicSetting.TrigPres;
     }
     else if (valueKey == "Amplitude") {
         presetElement.WeldSettings.BasicSetting.Amplitude = stringToVariant->AmplitudeToInt(value.toString());
@@ -1442,6 +1442,7 @@ OperatorModel::OperatorModel(QObject *parent) :
 {
     m_operatorAdaptor = DBOperatorTable::Instance();
     operators = new QMap<int, QString>();
+    permissionSetting = new PermissionSetting();
 }
 
 QVariant OperatorModel::data(const QModelIndex &index, int role) const
@@ -1477,18 +1478,8 @@ QVariant OperatorModel::data(const QModelIndex &index, int role) const
         else if (columnIdx == 3)
             value = QVariant::fromValue(myOperator.Password);
         else if (columnIdx == 4) {
-            QString level = "";
-            if (myOperator.PermissionLevel == PASSWORDCONTROL::SUPERUSER)
-                level = "SUPERUSER";
-            else if (myOperator.PermissionLevel == PASSWORDCONTROL::ADMINISTRATOR)
-                level = "ADMINISTRATOR";
-            else if (myOperator.PermissionLevel == PASSWORDCONTROL::TECHNICIAN)
-                level = "TECHNICIAN";
-            else if (myOperator.PermissionLevel == PASSWORDCONTROL::QUALITYCONTROL)
-                level = "QUALITYCONTROL";
-            else if (myOperator.PermissionLevel == PASSWORDCONTROL::OPEN)
-                level = "OPEN";
-            value = QVariant::fromValue(level);
+            permissionSetting->_Recall();
+            value = QVariant::fromValue(permissionSetting->FourLevelIdentifier.at(myOperator.PermissionLevel));
         }
     }
     return value;
@@ -1533,20 +1524,20 @@ QString OperatorModel::getStruckValue(QString key)
         return operatorElement.OperatorName;
     else if (key == "PassWord")
         return operatorElement.Password;
-    else if (key == "Level") {
-        QString level = "";
-        if (operatorElement.PermissionLevel == PASSWORDCONTROL::SUPERUSER)
-            level = "SUPERUSER";
-        else if (operatorElement.PermissionLevel == PASSWORDCONTROL::ADMINISTRATOR)
-            level = "ADMINISTRATOR";
-        else if (operatorElement.PermissionLevel == PASSWORDCONTROL::TECHNICIAN)
-            level = "TECHNICIAN";
-        else if (operatorElement.PermissionLevel == PASSWORDCONTROL::QUALITYCONTROL)
-            level = "QUALITYCONTROL";
-        else if (operatorElement.PermissionLevel == PASSWORDCONTROL::OPEN)
-            level = "OPEN";
-        return level;
-    }
+//    else if (key == "Level") {
+//        QString level = "";
+//        if (operatorElement.PermissionLevel == PASSWORDCONTROL::SUPERUSER)
+//            level = "SUPERUSER";
+//        else if (operatorElement.PermissionLevel == PASSWORDCONTROL::ADMINISTRATOR)
+//            level = "ADMINISTRATOR";
+//        else if (operatorElement.PermissionLevel == PASSWORDCONTROL::TECHNICIAN)
+//            level = "TECHNICIAN";
+//        else if (operatorElement.PermissionLevel == PASSWORDCONTROL::QUALITYCONTROL)
+//            level = "QUALITYCONTROL";
+//        else if (operatorElement.PermissionLevel == PASSWORDCONTROL::OPEN)
+//            level = "OPEN";
+//        return level;
+//    }
 }
 
 
@@ -1670,18 +1661,9 @@ QVariant OperatorModel::getOperatorValue(int index, QString key)
     OperatorModelHash.insert("name",myOperator.OperatorName);
     OperatorModelHash.insert("date",QDateTime::fromTime_t(myOperator.CreatedDate).toString("MM/dd/yyyy hh:mm"));
     OperatorModelHash.insert("middle",myOperator.Password);
-    QString level = "";
-    if (myOperator.PermissionLevel == PASSWORDCONTROL::SUPERUSER)
-        level = "SUPERUSER";
-    else if (myOperator.PermissionLevel == PASSWORDCONTROL::ADMINISTRATOR)
-        level = "ADMINISTRATOR";
-    else if (myOperator.PermissionLevel == PASSWORDCONTROL::TECHNICIAN)
-        level = "TECHNICIAN";
-    else if (myOperator.PermissionLevel == PASSWORDCONTROL::QUALITYCONTROL)
-        level = "QUALITYCONTROL";
-    else if (myOperator.PermissionLevel == PASSWORDCONTROL::OPEN)
-        level = "OPEN";
-    OperatorModelHash.insert("count",level);//myOperator.PermissionLevel;
+    int level = myOperator.PermissionLevel;
+    permissionSetting->_Recall();
+    OperatorModelHash.insert("count",permissionSetting->FourLevelIdentifier.at(level));//myOperator.PermissionLevel;
     //list << "name" << "date" << "middle" << "count";
     if (key == "") {
         return OperatorModelHash;
@@ -1772,8 +1754,10 @@ int AlarmModel::getAxes(QString key)
         return weldResultElement.ActualResult.ActualTime;
     else if (key == "Power")
         return weldResultElement.ActualResult.ActualPeakPower;
-    else if (key == "Post-Height")
+    else if (key == "Pre-Height")
         return weldResultElement.ActualResult.ActualPreheight;
+    else if (key == "Post-Height")
+        return weldResultElement.ActualResult.ActualPostheight;
 }
 
 void AlarmModel::setStartTime()
@@ -1957,6 +1941,8 @@ WeldHistoryModel::WeldHistoryModel(QObject *parent) :
 
 QVariant WeldHistoryModel::data(const QModelIndex &index, int role) const
 {
+    qDebug() << "m_weldHistoryAdaptorcccccccccccccccccccccccc";
+
     QVariant value;
     if(role < Qt::UserRole)
     {
@@ -1978,9 +1964,12 @@ QVariant WeldHistoryModel::data(const QModelIndex &index, int role) const
             }
         }
         WeldResultElement myHistory;
+        qDebug() << "m_weldHistoryAdaptor" << QDateTime::currentDateTime().toTime_t();
         m_weldHistoryAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myHistory);
         PresetElement presetElement;
         m_spliceTable->QueryOneRecordFromTable(myHistory.CurrentSplice.SpliceID,myHistory.CurrentSplice.SpliceName,&presetElement);
+        qDebug() << "m_spliceTable" << QDateTime::currentDateTime().toTime_t();
+
         QString temp;
         if (columnIdx == 0)
             value = QVariant::fromValue(myHistory.WeldResultID);
@@ -2060,6 +2049,8 @@ QVariant WeldHistoryModel::data(const QModelIndex &index, int role) const
             temp = "GraphData";
             value = QVariant::fromValue(temp);
         }
+        qDebug() << "m_spliceTable" << QDateTime::currentDateTime().toTime_t();
+
     }
     return value;
 }
@@ -2069,7 +2060,7 @@ void WeldHistoryModel::setModelList(unsigned int time_from, unsigned int time_to
     beginResetModel();
     historys->clear();
     if (m_weldHistoryAdaptor->QueryOnlyUseTime(time_from,time_to,historys))
-        qDebug( )<< "WeldHistoryModel " << historys->count();
+        qDebug( )<< "WeldHistoryModel 3" << historys->count();
     endResetModel();
 }
 
@@ -2080,7 +2071,7 @@ void WeldHistoryModel::setModelList(QString WorkOrderName, QString PartName, QSt
     beginResetModel();
     historys->clear();
     if (m_weldHistoryAdaptor->QueryBySomeFields(historys,WorkOrderName,PartName,SpliceName,time_from,time_to,OrderField,Orderby))
-        qDebug( )<< "WeldHistoryModel " << historys->count();
+        qDebug( )<< "WeldHistoryModel 2" << historys->count();
     endResetModel();
 }
 
@@ -2089,7 +2080,7 @@ void WeldHistoryModel::setModelList()
     beginResetModel();
     historys->clear();
     if (m_weldHistoryAdaptor->QueryEntireTable(historys))
-        qDebug( )<< "WeldHistoryModel" << historys->count();
+        qDebug( )<< "WeldHistoryModel 1" << historys->count();
     endResetModel();
 }
 
@@ -2146,25 +2137,16 @@ void WeldHistoryModel::weldResultSearch(QString WorkOrderName, QString PartName,
         partName = PartName;
     if (SpliceName != "All")
         spliceName = SpliceName;
+    qDebug()<<"weldResultSearch"<<WorkOrderName<<PartName<<SpliceName;
     setModelList(workOrderName,partName,spliceName,time_from,time_to,OrderField,Orderby);
 }
 
 QVariant WeldHistoryModel::getValue(int index, QString key)
 {
-    QMap<int,QString>::iterator it; //遍历map
-    int i = 0;
     int orderId;
-    for ( it = historys->begin(); it != historys->end(); ++it ) {
-        if (i == index){
-            orderId = it.key();
-            break;
-        }
-        else {
-            i++;
-        }
-    }
+    orderId = historys->keys().at(index);
     WeldResultElement myHistory;
-    m_weldHistoryAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myHistory);
+    m_weldHistoryAdaptor->QueryOneRecordFromTable(orderId,historys->value(orderId),&myHistory);
     PresetElement presetElement;
     m_spliceTable->QueryOneRecordFromTable(myHistory.CurrentSplice.SpliceID,myHistory.CurrentSplice.SpliceName,&presetElement);
     QHash<QString, QVariant> WeldHistoryModelHash;
@@ -2174,14 +2156,13 @@ QVariant WeldHistoryModel::getValue(int index, QString key)
     WeldHistoryModelHash.insert("SpliceName",myHistory.CurrentSplice.SpliceName);
     WeldHistoryModelHash.insert("OperatorName",myHistory.OperatorName);
     WeldHistoryModelHash.insert("DateCreated",QDateTime::fromTime_t(myHistory.CreatedDate).toString("MM/dd/yyyy hh:mm"));
-
     WeldHistoryModelHash.insert("CrossSection",variantToString->CrossSectionToString(presetElement.CrossSection)); //contain in splice
     WeldHistoryModelHash.insert("WeldMode",variantToString->WeldModeToString(presetElement.WeldSettings.AdvanceSetting.WeldMode,presetElement.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode));     //contain in splice
     WeldHistoryModelHash.insert("Energy",variantToString->EnergyToString(myHistory.ActualResult.ActualEnergy).Current);
     WeldHistoryModelHash.insert("Amplitude",variantToString->AmplitudeToString(myHistory.ActualResult.ActualAmplitude).Current);
     WeldHistoryModelHash.insert("Width",variantToString->WidthToString(myHistory.ActualResult.ActualWidth).Current);
     WeldHistoryModelHash.insert("TriggerPressure",variantToString->TriggerPressureToString(myHistory.ActualResult.ActualTPressure).Current);
-    WeldHistoryModelHash.insert("WeldPressure",variantToString->WeldPressureToString(myHistory.ActualResult.ActualPressure).Current);
+    WeldHistoryModelHash.insert("Weld Pressure",variantToString->WeldPressureToString(myHistory.ActualResult.ActualPressure).Current);
     WeldHistoryModelHash.insert("Time+",variantToString->Time_PlusToString(presetElement.WeldSettings.QualitySetting.Time.Plus)); //contain in splice QUALITYWINDONSETTING
     WeldHistoryModelHash.insert("Timer-",variantToString->Time_MinusToString(presetElement.WeldSettings.QualitySetting.Time.Minus));
     WeldHistoryModelHash.insert("Time",variantToString->ActualTimeToString(myHistory.ActualResult.ActualTime));
@@ -2194,7 +2175,7 @@ QVariant WeldHistoryModel::getValue(int index, QString key)
     WeldHistoryModelHash.insert("Height+",variantToString->Height_PlusToString(presetElement.WeldSettings.QualitySetting.Height.Plus));
     WeldHistoryModelHash.insert("Height-",variantToString->Height_MinusToString(presetElement.WeldSettings.QualitySetting.Height.Minus));
     WeldHistoryModelHash.insert("Height",variantToString->ActualHeightToString(myHistory.ActualResult.ActualPostheight));
-    WeldHistoryModelHash.insert("Alarm",variantToString->AlarmTypeToString((ALARMTYPE)myHistory.ActualResult.ActualAlarmflags)); //myHistory.ActualResult.ActualAlarmflags
+    WeldHistoryModelHash.insert("AlarmType",variantToString->AlarmTypeToString((ALARMTYPE)myHistory.ActualResult.ActualAlarmflags)); //myHistory.ActualResult.ActualAlarmflags
     WeldHistoryModelHash.insert("SampleRatio",variantToString->SampleRatioToString(myHistory.SampleRatio));
     WeldHistoryModelHash.insert("GraphData","GraphData");
     if (key == "") {
