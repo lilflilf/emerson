@@ -165,7 +165,7 @@ public slots:
     void slotWeldCycleCompleted(bool result);
     void slotEnableDialog(struct BransonMessageBox &MsgBox);
     void slotDisableDialog(struct BransonMessageBox &MsgBox);
-
+    void test();
 };
 
 #endif // HMIADAPTOR_H

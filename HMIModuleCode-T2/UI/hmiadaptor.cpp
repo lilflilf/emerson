@@ -8,9 +8,14 @@
 #include <QQuickView>
 #include <windows.h>
 #include <QDesktopWidget>
-
+#include <QTimer>
 HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
 {
+    QTimer *timer;
+    timer = new QTimer(this);
+    timer->singleShot(3000,this,SLOT(test()));
+    delete timer;
+    timer = NULL;
     workOrderModel = new WorkOrderModel(this);
     QStringList list;
     list << "workOrderId" << "name" << "date" << "middle" << "count";
@@ -815,6 +820,11 @@ void HmiAdaptor::slotEnableDialog(BransonMessageBox &MsgBox)
 void HmiAdaptor::slotDisableDialog(BransonMessageBox &MsgBox)
 {
 
+}
+
+void HmiAdaptor::test()
+{
+    qDebug() << "xxxxxxxxxxxxxxxxxxxxx";
 }
 
 bool HmiAdaptor::stringRegexMatch(QString exp, QString value)

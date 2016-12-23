@@ -95,7 +95,7 @@ Item {
             font.family: "arial"
             clip: true
             elide: Text.ElideRight
-            text: qsTr("QLIANTITY")
+            text: qsTr("QUANTITY")
         }
     }
     Rectangle {

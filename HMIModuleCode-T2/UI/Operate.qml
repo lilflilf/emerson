@@ -91,7 +91,7 @@ Item {
             font.pixelSize: 25
             clip: true
             font.family: "arial"
-            text: qsTr("QLIANTITY")
+            text: qsTr("QUANTITY")
         }
     }
     Rectangle {
