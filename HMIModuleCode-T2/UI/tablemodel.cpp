@@ -1735,6 +1735,7 @@ QList<int> AlarmModel::getPointList(QString key, QString spliceName, uint hashCo
     bool reb;
     QList<int> list;
     reb = m_weldHistoryAdaptor->QueryBySomeFields(spliceName,hashCode,startTime.toTime_t(),QDateTime::currentDateTime().toTime_t(),tempMap);
+    qDebug() << "getPointList" << spliceName << hashCode << startTime.toString("hh:mm:ss") << reb << tempMap->count();
     if (reb)
     {
         if (key == "Time") {

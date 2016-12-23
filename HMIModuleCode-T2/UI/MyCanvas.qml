@@ -97,7 +97,7 @@ Item {
                     width: bottomLine.width / 10
                     color: "#adaeae"
                     font.pixelSize: 14
-                    text: index / 10 * myCanvas.timeMax //index * 100
+                    text: (index / 10 * myCanvas.timeMax).toFixed(0) //index * 100
                     horizontalAlignment: Qt.AlignLeft
                 }
             }
@@ -121,7 +121,7 @@ Item {
                     height: leftLine.height / 10
                     color: "#adaeae"
                     font.pixelSize: 14
-                    text: (10 - index) / 10 * myCanvas.powerMax  //(7 - index) * 100
+                    text: ((10 - index) / 10 * myCanvas.powerMax).toFixed(0)  //(7 - index) * 100
                     verticalAlignment: Qt.AlignTop
                 }
             }
@@ -162,7 +162,7 @@ Item {
                     height: rightLine.height / 10
                     color: "#adaeae"
                     font.pixelSize: 14
-                    text: (10 - index) / 10 * myCanvas.heightMax //(7 - index) * 100
+                    text: ((10 - index) / 10 * myCanvas.heightMax).toFixed(0) //(7 - index) * 100
                     verticalAlignment: Qt.AlignTop
                 }
             }
