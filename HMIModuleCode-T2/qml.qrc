@@ -55,6 +55,7 @@
         <file>UI/EditWire.qml</file>
         <file>UI/MiniKeyNumInput.qml</file>
         <file>UI/CDialog.qml</file>
+        <file>UI/CPassWordDialog.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file>images/you.png</file>
@@ -169,5 +170,9 @@
         <file>images/current_operate.png</file>
         <file>images/left_operate.png</file>
         <file>images/right_operate.png</file>
+        <file>images/Canada&amp;french.png</file>
+        <file>images/Portuguese&amp;Brazil.png</file>
+        <file>images/Spanish&amp;Mexcio.png</file>
+        <file>images/us&amp;English.png</file>
     </qresource>
 </RCC>

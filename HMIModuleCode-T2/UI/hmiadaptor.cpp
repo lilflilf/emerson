@@ -492,6 +492,38 @@ bool HmiAdaptor::permissionsettingExecute(QString code)
     return true;
 }
 
+bool HmiAdaptor::needPassWord(QString pageName)
+{
+    permissionsettingExecute("_Recall");
+
+    int i;
+    int funcIndex = -1;
+    int levelIndex = -1;
+    bool reb = true;
+    QStringList funcName;
+    funcName = permissionSetting->AllFunctionNameList;
+    for (i = 0; i < funcName.length();i++)
+    {
+        if (pageName == funcName[i]) {
+            funcIndex = i;
+            break;
+        }
+    }
+    if (funcIndex == -1)
+        return reb;
+    levelIndex = (int)interfaceClass->CurrentOperator.PermissionLevel;
+    if (levelIndex == 1)
+        reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level1;
+    else if (levelIndex == 2)
+        reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level2;
+    else if (levelIndex == 3)
+        reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level3;
+    else if (levelIndex == 4)
+        reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level4;
+
+    return !reb;
+}
+
 QStringList HmiAdaptor::permissionsettingGetValue(QString code)
 {
     if (code == "AllFunctionNameList")
@@ -898,6 +930,15 @@ bool HmiAdaptor::keyNumStringMatch(QString minValue, QString maxValue, QString v
     }
     if(minNum.toFloat(&ok) > 10 && value.toFloat(&ok) < minNum.toFloat(&ok)) {
         return true;
+    }
+    if (minNum.toFloat(&ok) < 1) {
+        if (value.length() >=3 && minNum.length() >= 3) {
+            if (value.at(2) < minNum.at(2)) {
+                return false;
+            }
+        } else {
+            return true;
+        }
     }
     if (value.toFloat(&ok) >= minNum.toFloat(&ok) && value.toFloat(&ok) <= maxNum.toFloat(&ok)) {
         return true;

@@ -20,8 +20,10 @@ Item {
     Connections {
         target: hmiAdaptor
         onSignalWeldCycleCompleted: {
-//            if (progressBar.total == progressBar.current)
-//                return
+            if (progressBar.total == progressBar.current) {
+                cdialog.visible = true
+                return
+            }
             progressBar.current++
             spliceLocation.setTreeModelOver()
             progressBar.moveToNext()
@@ -488,5 +490,19 @@ Item {
         maximum: 125
         minimum: 1
         value: 60
+    }
+    CDialog {
+        id: cdialog
+        anchors.centerIn: parent
+        okvisible: true
+        okText: "OK"
+        cancelvisible: true
+        cancelText: "CANCEL"
+        centerText: "Operate complete"
+        visible: false
+        onCliceTo: {
+            if (reb)
+                root.menuInit(2)
+        }
     }
 }
