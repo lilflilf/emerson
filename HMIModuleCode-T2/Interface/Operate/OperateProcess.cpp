@@ -410,9 +410,9 @@ void OperateProcess::ControlLimitProcess(QUALITYTYPE Type, QList<int> &RawList,
                     LSL);
         break;
     case QUALITYPOWER:
-        UpperSpecValue = _Utility->FormatedDataToFloat(DINPowerPl,
+        UpperSpecValue = _Utility->FormatedDataToInteger(DINPowerPl,
                     USL);
-        LowerSpecValue = _Utility->FormatedDataToFloat(DINPowerMs,
+        LowerSpecValue = _Utility->FormatedDataToInteger(DINPowerMs,
                     LSL);
         break;
     case QUALITYPREHEIGHT:
@@ -437,7 +437,7 @@ void OperateProcess::ControlLimitProcess(QUALITYTYPE Type, QList<int> &RawList,
             tmpValue = _Utility->FormatedDataToFloat(DINActTime, RawList.at(i));
             break;
         case QUALITYPOWER:
-            tmpValue = _Utility->FormatedDataToFloat(DINActPower, RawList.at(i));
+            tmpValue = _Utility->FormatedDataToInteger(DINActPower, RawList.at(i));
             break;
         case QUALITYPREHEIGHT:
             tmpValue = _Utility->FormatedDataToFloat(DINActPreHgt, RawList.at(i));

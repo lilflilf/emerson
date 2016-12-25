@@ -971,6 +971,7 @@ int HmiAdaptor::controlLimitProcess(QString type, QList<int> list, int redMax, i
     }
     else if (type == "Power+") {
         operateProcess->ControlLimitProcess(QUALITYPOWER,list,redMax,redMin,&upper,&lower);
+        qDebug() << "controlLimitProcess" << list << redMax << redMin << upper<< lower;
         return upper;
     }
     else if (type == "Power-") {
