@@ -50,16 +50,16 @@ Item {
 
         qualityWindow.qualityModel.clear()
         if (qualityWindow.timeModel.length > 0) {
-            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Time+"),"redMin":spliceModel.getRawData("Time-"),"yellowMax":4,"yellowMin":1,"current":qualityWindow.timeModel[qualityWindow.timeModel.length - 1],"currentText":"23"})
-            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Power+"),"redMin":spliceModel.getRawData("Power-"),"yellowMax":4,"yellowMin":1,"current":qualityWindow.powerModel[qualityWindow.powerModel.length - 1],"currentText":"123"})
-            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Pre-Height+"),"redMin":spliceModel.getRawData("Pre-Height-"),"yellowMax":4,"yellowMin":1,"current":qualityWindow.preModel[qualityWindow.preModel.length - 1],"currentText":"2512"})
-            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Post-Height+"),"redMin":spliceModel.getRawData("Post-Height-"),"yellowMax":4,"yellowMin":1,"current":qualityWindow.postModel[qualityWindow.postModel.length - 1],"currentText":"43"})
+            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Time+"),"redMin":spliceModel.getRawData("Time-"),"yellowMax":hmiAdaptor.controlLimitProcess("Time+",qualityWindow.timeModel,spliceModel.getRawData("Time+"),spliceModel.getRawData("Time-")),"yellowMin":hmiAdaptor.controlLimitProcess("Time-",qualityWindow.timeModel,spliceModel.getRawData("Time+"),spliceModel.getRawData("Time-")),"current":qualityWindow.timeModel[qualityWindow.timeModel.length - 1],"currentText":"23"})
+            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Power+"),"redMin":spliceModel.getRawData("Power-"),"yellowMax":hmiAdaptor.controlLimitProcess("Power+",qualityWindow.powerModel,spliceModel.getRawData("Power+"),spliceModel.getRawData("Power-")),"yellowMin":hmiAdaptor.controlLimitProcess("Power-",qualityWindow.powerModel,spliceModel.getRawData("Power+"),spliceModel.getRawData("Power-")),"current":qualityWindow.powerModel[qualityWindow.powerModel.length - 1],"currentText":"123"})
+            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Pre-Height+"),"redMin":spliceModel.getRawData("Pre-Height-"),"yellowMax":hmiAdaptor.controlLimitProcess("Time+",qualityWindow.preModel,spliceModel.getRawData("Pre-Height+"),spliceModel.getRawData("Pre-Height-")),"yellowMin":hmiAdaptor.controlLimitProcess("Pre-Height-",qualityWindow.preModel,spliceModel.getRawData("Pre-Height+"),spliceModel.getRawData("Pre-Height-")),"current":qualityWindow.preModel[qualityWindow.preModel.length - 1],"currentText":"2512"})
+            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Post-Height+"),"redMin":spliceModel.getRawData("Post-Height-"),"yellowMax":hmiAdaptor.controlLimitProcess("Time+",qualityWindow.postModel,spliceModel.getRawData("Post-Height+"),spliceModel.getRawData("Post-Height-")),"yellowMin":hmiAdaptor.controlLimitProcess("Post-Height-",qualityWindow.postModel,spliceModel.getRawData("Post-Height+"),spliceModel.getRawData("Post-Height-")),"current":qualityWindow.postModel[qualityWindow.postModel.length - 1],"currentText":"43"})
         }
         else {
-            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Time+"),"redMin":spliceModel.getRawData("Time-"),"yellowMax":4,"yellowMin":1,"current":-1,"currentText":"23"})
-            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Power+"),"redMin":spliceModel.getRawData("Power-"),"yellowMax":4,"yellowMin":1,"current":-1,"currentText":"123"})
-            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Pre-Height+"),"redMin":spliceModel.getRawData("Pre-Height-"),"yellowMax":4,"yellowMin":1,"current":-1,"currentText":"2512"})
-            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Post-Height+"),"redMin":spliceModel.getRawData("Post-Height-"),"yellowMax":4,"yellowMin":1,"current":-1,"currentText":"43"})
+            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Time+"),"redMin":spliceModel.getRawData("Time-"),"yellowMax":-1,"yellowMin":-1,"current":-1,"currentText":"23"})
+            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Power+"),"redMin":spliceModel.getRawData("Power-"),"yellowMax":-1,"yellowMin":-1,"current":-1,"currentText":"123"})
+            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Pre-Height+"),"redMin":spliceModel.getRawData("Pre-Height-"),"yellowMax":-1,"yellowMin":-1,"current":-1,"currentText":"2512"})
+            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Post-Height+"),"redMin":spliceModel.getRawData("Post-Height-"),"yellowMax":-1,"yellowMin":-1,"current":-1,"currentText":"43"})
         }
 
         qualityWindow.setData()

@@ -102,6 +102,7 @@ public:
 
     Q_INVOKABLE void setOperateProcess(int spliceId, bool isText);
     Q_INVOKABLE void operateProcessExec(QString type);
+    Q_INVOKABLE int  controlLimitProcess(QString type,QList<int> list,int redMax,int redMin);
 
     /********permissionsetting func**************/
     Q_INVOKABLE bool permissionsettingExecute(QString code);
