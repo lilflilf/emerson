@@ -35,9 +35,13 @@ bool StatisticalTrend::GetCurrentWeldResultOneByOne(QMap<int, QString>* ResultIn
     WeldResultElement CurrentWeldResultRecord;
     bool bResult = false;
     DataList[QUALITYTIME].clear();
+    RawQualityWindowList[QUALITYTIME].clear();
     DataList[QUALITYPOWER].clear();
+    RawQualityWindowList[QUALITYPOWER].clear();
     DataList[QUALITYPREHEIGHT].clear();
+    RawQualityWindowList[QUALITYPREHEIGHT].clear();
     DataList[QUALITYPOSTHEIGHT].clear();
+    RawQualityWindowList[QUALITYPOSTHEIGHT].clear();
     struct WeldActualParameter CurrentWeldActual;
     QMap<int, QString>::const_iterator i = ResultIndex->constBegin();
     while (i != ResultIndex->constEnd()) {
@@ -46,13 +50,13 @@ bool StatisticalTrend::GetCurrentWeldResultOneByOne(QMap<int, QString>* ResultIn
         {
             float time = _Utility->FormatedDataToFloat(DINActTime,
                         CurrentWeldResultRecord.ActualResult.ActualTime);
-            float peakpower = _Utility->FormatedDataToFloat(DINActPower,
+            float peakpower = _Utility->FormatedDataToInteger(DINActPower,
                         CurrentWeldResultRecord.ActualResult.ActualPeakPower);
             float preheight = _Utility->FormatedDataToFloat(DINActPreHgt,
                         CurrentWeldResultRecord.ActualResult.ActualPreheight);
             float postheight = _Utility->FormatedDataToFloat(DINActHgt,
                         CurrentWeldResultRecord.ActualResult.ActualPostheight);
-            if(CurrentWeldResultRecord.ActualResult.ActualAmplitude2 == -1)
+            if(CurrentPreset.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode == STEPDISABLE)
                 CurrentWeldActual.Amplitude = _Utility->FormatedDataToString(DINAmplitude,
                         CurrentWeldResultRecord.ActualResult.ActualAmplitude);
             else
@@ -84,9 +88,13 @@ bool StatisticalTrend::GetCurrentWeldResultOneByOne(QMap<int, QString>* ResultIn
             CurrentWeldActual.WorkOrderName = CurrentWeldResultRecord.CurrentWorkOrder.WorkOrderName;
             CurrentWeldParameterList.push_back(CurrentWeldActual);
             DataList[QUALITYTIME].push_back(time);
+            RawQualityWindowList[QUALITYTIME].push_back(CurrentWeldResultRecord.ActualResult.ActualTime);
             DataList[QUALITYPOWER].push_back(peakpower);
+            RawQualityWindowList[QUALITYPOWER].push_back(CurrentWeldResultRecord.ActualResult.ActualPeakPower);
             DataList[QUALITYPREHEIGHT].push_back(preheight);
+            RawQualityWindowList[QUALITYPREHEIGHT].push_back(CurrentWeldResultRecord.ActualResult.ActualPreheight);
             DataList[QUALITYPOSTHEIGHT].push_back(postheight);
+            RawQualityWindowList[QUALITYPOSTHEIGHT].push_back(CurrentWeldResultRecord.ActualResult.ActualPostheight);
         }
         ++i;
     }
@@ -99,7 +107,7 @@ bool StatisticalTrend::GetStatisticsParameter()
     UtilityClass* _Utility = UtilityClass::Instance();
     int size;
     float mean, median, sigma, CPK;
-    float USL, LSL;
+    float USL, LSL, UCL, LCL;
     int tmp = 0;
     for(int i = QUALITYTIME; i <= QUALITYPOSTHEIGHT; i++)
     {
@@ -107,26 +115,34 @@ bool StatisticalTrend::GetStatisticsParameter()
         {
         case QUALITYTIME:
             tmp = CurrentPreset.WeldSettings.QualitySetting.Time.Plus;
+            CurrentStatisticsParameter[i].UpperSpecLimit = tmp;
             USL = _Utility->FormatedDataToFloat(DINTimePl, tmp);
             tmp = CurrentPreset.WeldSettings.QualitySetting.Time.Minus;
+            CurrentStatisticsParameter[i].LowerSpecLimit = tmp;
             LSL = _Utility->FormatedDataToFloat(DINTimeMs, tmp);
             break;
         case QUALITYPOWER:
             tmp = CurrentPreset.WeldSettings.QualitySetting.Power.Plus;
+            CurrentStatisticsParameter[i].UpperSpecLimit = tmp;
             USL = _Utility->FormatedDataToFloat(DINPowerPl, tmp);
             tmp = CurrentPreset.WeldSettings.QualitySetting.Power.Minus;
+            CurrentStatisticsParameter[i].LowerSpecLimit = tmp;
             LSL = _Utility->FormatedDataToFloat(DINPowerMs, tmp);
             break;
         case QUALITYPREHEIGHT:
             tmp = CurrentPreset.WeldSettings.QualitySetting.Preheight.Plus;
+            CurrentStatisticsParameter[i].UpperSpecLimit = tmp;
             USL = _Utility->FormatedDataToFloat(DINPre_HgtPl, tmp);
             tmp = CurrentPreset.WeldSettings.QualitySetting.Preheight.Minus;
+            CurrentStatisticsParameter[i].LowerSpecLimit = tmp;
             LSL = _Utility->FormatedDataToFloat(DINPre_HgtMs, tmp);
             break;
         case QUALITYPOSTHEIGHT:
             tmp = CurrentPreset.WeldSettings.QualitySetting.Height.Plus;
+            CurrentStatisticsParameter[i].UpperSpecLimit = tmp;
             USL = _Utility->FormatedDataToFloat(DINHeightPl, tmp);
             tmp = CurrentPreset.WeldSettings.QualitySetting.Height.Minus;
+            CurrentStatisticsParameter[i].LowerSpecLimit = tmp;
             LSL = _Utility->FormatedDataToFloat(DINHeightMs, tmp);
             break;
         default:
@@ -157,6 +173,43 @@ bool StatisticalTrend::GetStatisticsParameter()
         CurrentStatisticsParameter[i].Sigma.sprintf("%.4f", sigma);
         CurrentStatisticsParameter[i].Cpk.sprintf("%.4f", CPK);
         CurrentStatisticsParameter[i].SampleSize = QString::number(size, 10);
+        float CentralValue = (USL + LSL)/ 2;
+        if(USL > (3 * sigma))
+            UCL = USL - 3 * sigma;
+        else
+            UCL = USL;
+        if(UCL < CentralValue)
+            UCL = CentralValue;
+        LCL = LSL + 3 * sigma;
+        if(LCL > CentralValue)
+            LCL = CentralValue;
+        switch(i)
+        {
+        case QUALITYTIME:
+            CurrentStatisticsParameter[i].UpperControlLimit =
+                    UCL / _Utility->txtData[DINActTime].Factor;
+            CurrentStatisticsParameter[i].LowerControlLimit =
+                    LCL / _Utility->txtData[DINActTime].Factor;
+            break;
+        case QUALITYPOWER:
+            CurrentStatisticsParameter[i].UpperControlLimit =
+                    UCL / _Utility->txtData[DINActPower].Factor;
+            CurrentStatisticsParameter[i].LowerControlLimit =
+                    LCL / _Utility->txtData[DINActPower].Factor;
+            break;
+        case QUALITYPREHEIGHT:
+            CurrentStatisticsParameter[i].UpperControlLimit =
+                    UCL / _Utility->txtData[DINActPreHgt].Factor;
+            CurrentStatisticsParameter[i].LowerControlLimit =
+                    LCL / _Utility->txtData[DINActPreHgt].Factor;
+            break;
+        case QUALITYPOSTHEIGHT:
+            CurrentStatisticsParameter[i].UpperControlLimit =
+                    UCL / _Utility->txtData[DINActHgt].Factor;
+            CurrentStatisticsParameter[i].LowerControlLimit =
+                    LCL / _Utility->txtData[DINActHgt].Factor;
+            break;
+        }
     }
     return bResult;
 }

@@ -675,11 +675,11 @@ Item {
             text: qsTr("Edit Details")
             onClicked: {
                 if (partRadio.checked)
-                    root.menuInit(0)
+                    root.checkNeedPassWd(0)
                 else if (spliceRadio.checked)
-                    root.menuInit(0)
+                    root.checkNeedPassWd(0)
                 else if (wireRadio.checked)
-                    root.menuInit(19)
+                    root.checkNeedPassWd(19)
                 else if (shrinkRadio.checked){
                     if (selectIndx < 0) {
                         return

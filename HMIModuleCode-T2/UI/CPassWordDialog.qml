@@ -63,7 +63,12 @@ Item {
             visible: false
             onTextChanged: {
                 if (mima.text.length == 4) {
-//                    if (hmiAdaptor.login(mima.text))
+                    if (hmiAdaptor.login(mima.text)) {
+                        root.menuInit(passwdDialog.index)
+                        mimaShow.text = ""
+                        mima.text = ""
+                        passwdDialog.visible = false
+                    }
                 }
             }
         }
@@ -100,7 +105,6 @@ Item {
                 else if (event.key == Qt.Key_2) {
                     mimaShow.text = mimaShow.text + "●"
                     mima.text = mima.text + "2"
-
                 }
                 else if (event.key == Qt.Key_3) {
                     mimaShow.text = mimaShow.text + "●"
@@ -130,7 +134,6 @@ Item {
                     mimaShow.text = mimaShow.text + "●"
                     mima.text = mima.text + "9"
                 }
-
             }
             Component.onCompleted: {
                 forceActiveFocus()
@@ -174,7 +177,6 @@ Item {
                 border.width: 1
                 color: Qt.rgba(0,0,0,0)
             }
-
         }
         Grid {
             anchors.horizontalCenter: title.horizontalCenter
@@ -206,8 +208,8 @@ Item {
                             } else {
                                 if (mimaShow.text.length >= 4)
                                     return
-                                mima.text += listModel.get(index).value
                                 mimaShow.text = mimaShow.text + "●"
+                                mima.text += listModel.get(index).value
                             }
                         }
                     }
@@ -227,6 +229,8 @@ Item {
             text: qsTr("CANCEL")
             onClicked: {
                 passwdDialog.visible = false
+                mima.text = ""
+                mimaShow.text = ""
             }
         }
     }
