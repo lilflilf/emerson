@@ -39,6 +39,7 @@ Item {
                     loader.item.selectSplice(workOrderModel.getSpliceList(selectIndx)[0])
                     loader.item.qliantity = workOrderModel.getWorkOrderValue(selectIndx, "count")
                 }
+                hmiAdaptor.operateProcessExec("Start")
             }
         }
     }

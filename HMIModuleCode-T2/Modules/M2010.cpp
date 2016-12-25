@@ -271,8 +271,6 @@ void M2010::load_splice_file()
         M10Run.Run_Splice = Splice.PartNo;
         SaveSpliceFile(true);                     //Update run_file.dat
     }
-
-    ptr_M10runMode->init_m20_data_events();
     InterfaceClass* _Interface = InterfaceClass::Instance();
     if (_Interface->StatusData.Soft_Settings.Teach_Mode != AUTO)
     {

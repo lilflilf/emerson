@@ -31,9 +31,9 @@ Item {
 
     function moveToNext()
     {
+        finishedProgress.anchors.leftMargin = (current - 1) * (progressBar.width/progressBar.total)
         if (current < 2)
             return
-        finishedProgress.anchors.leftMargin = (current - 1) * (progressBar.width/progressBar.total)
         repeater.itemAt(current-2).color = "#60BB46"
     }
     onCurrentChanged: {
