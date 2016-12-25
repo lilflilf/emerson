@@ -373,7 +373,7 @@ Item {
 //                    point.anchors.topMargin = parent.height/2 // hmiAdaptor.randPoint() + 80 //index + clickType
                 }
                 Text {
-                    text: index == 0 ? "68" : ""
+                    text: index == 0 ? progressBar.current : ""
                     font.family: "arial"
                     font.pixelSize: 20
                     color: "white"
