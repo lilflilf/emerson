@@ -366,8 +366,7 @@ Item {
         centerText: "Test Complete"
         visible: false
         onCliceTo: {
-            setData()
-            hmiAdaptor.operateProcessExec("Execute")
+            root.menuInit(3)
         }
 
     }
