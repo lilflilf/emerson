@@ -492,6 +492,38 @@ bool HmiAdaptor::permissionsettingExecute(QString code)
     return true;
 }
 
+bool HmiAdaptor::needPassWord(QString pageName)
+{
+    permissionsettingExecute("_Recall");
+
+    int i;
+    int funcIndex = -1;
+    int levelIndex = -1;
+    bool reb = true;
+    QStringList funcName;
+    funcName = permissionSetting->AllFunctionNameList;
+    for (i = 0; i < funcName.length();i++)
+    {
+        if (pageName == funcName[i]) {
+            funcIndex = i;
+            break;
+        }
+    }
+    if (funcIndex == -1)
+        return reb;
+    levelIndex = (int)interfaceClass->CurrentOperator.PermissionLevel;
+    if (levelIndex == 1)
+        reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level1;
+    else if (levelIndex == 2)
+        reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level2;
+    else if (levelIndex == 3)
+        reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level3;
+    else if (levelIndex == 4)
+        reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level4;
+
+    return !reb;
+}
+
 QStringList HmiAdaptor::permissionsettingGetValue(QString code)
 {
     if (code == "AllFunctionNameList")

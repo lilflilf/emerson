@@ -107,6 +107,7 @@ public:
     /********permissionsetting func**************/
     Q_INVOKABLE bool permissionsettingExecute(QString code);
     Q_INVOKABLE QStringList permissionsettingGetValue(QString code);
+    Q_INVOKABLE bool needPassWord(QString pageName);
     Q_INVOKABLE bool permissionsettingGetChecked(QString stringIndex, int level);
     Q_INVOKABLE bool permissionsettingSetValue(QString name,bool level1,bool level2,bool level3,bool level4);
     Q_INVOKABLE bool permissionsettingSetFourValue(QStringList fourName);

@@ -8,7 +8,7 @@ Item {
     signal signalSaveSplice()
     width: Screen.width
     height: Screen.height * 0.8
-
+    property var teachCount: 0
     Component.onCompleted: {
         hmiAdaptor.operateProcessExec("Start")
     }
@@ -19,6 +19,20 @@ Item {
     Connections {
         target: hmiAdaptor
         onSignalWeldCycleCompleted: {
+            teachCount++
+            if (spliceModel.getStructValue("TeachMode","") == 0 || spliceModel.getStructValue("TeachMode","") == 3)
+            {
+                cdialog.visible = true
+                return
+            }
+            if (spliceModel.getStructValue("TestModel","") == 1)
+            {
+                if (teachCount >= spliceModel.getStructValue("TestCount","")) {
+                    cdialog2.visible = true
+                    return
+                }
+            }
+
             setData()
             hmiAdaptor.operateProcessExec("Execute")
 
@@ -326,5 +340,35 @@ Item {
                 signalSaveSplice()
             }
         }
+    }
+    CDialog {
+        id: cdialog
+        anchors.centerIn: parent
+        okvisible: true
+        okText: "OK"
+        cancelvisible: true
+        cancelText: "CANCEL"
+        centerText: "Stand Teach Mode"
+        visible: false
+        onCliceTo: {
+            setData()
+            hmiAdaptor.operateProcessExec("Execute")
+        }
+
+    }
+    CDialog {
+        id: cdialog2
+        anchors.centerIn: parent
+        okvisible: true
+        okText: "OK"
+        cancelvisible: true
+        cancelText: "CANCEL"
+        centerText: "Test Complete"
+        visible: false
+        onCliceTo: {
+            setData()
+            hmiAdaptor.operateProcessExec("Execute")
+        }
+
     }
 }
