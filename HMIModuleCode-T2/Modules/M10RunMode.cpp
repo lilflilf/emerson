@@ -25,48 +25,26 @@ M10runMode::M10runMode()
 
 /*It gets the value of Splice_Stat structure from temporary/permanent Stat file*/
 /*depending on whether the user is working on a current or saved preset        */
-void M10runMode::init_m20_data_events()
+void M10runMode::init_m20_data_events(PresetElement *_Splice)
 {
     QString StatFileFound;
-    M2010* ptr_M2010 = M2010::Instance();
-    M10INI* ptr_M10INI = M10INI::Instance();
-    Statistics* ptr_Statistics = Statistics::Instance();
-    UtilityClass* ptr_Utility = UtilityClass::Instance();
+    M2010* _M2010 = M2010::Instance();
+    M10INI* _M10INI = M10INI::Instance();
+    Statistics* _Statistics = Statistics::Instance();
+    UtilityClass* _Utility = UtilityClass::Instance();
 
-    if ((ptr_M2010->PresetChanged == true) && (ptr_M2010->UseTempStsFile == true))
-    {
-        //Reworked to use part name as file name
-        //M10Run.Run_Splice_Stat =
-        tempStatFile = ptr_M2010->Splice.PartNo.trimmed() + ".tempsts";
-        StatFileFound = ptr_M10INI->ConfigFilesPath + tempStatFile;
-        if(ptr_Utility->ReadFromBinaryFile(StatFileFound,&ptr_Statistics->Splice_Stat) == false)
-        {
-            //M10Run.Run_Splice_Stat =
-            tempStatFile = ptr_M2010->Splice.PartNo.trimmed() + ".tempsbk";
-            StatFileFound = ptr_M10INI->ConfigFilesPath + tempStatFile;
-            if(ptr_Utility->ReadFromBinaryFile(StatFileFound,&ptr_Statistics->Splice_Stat) == true)
-                tempStatFile = ptr_M2010->Splice.PartNo.trimmed() + ".tempsts";
-            else
-                ptr_Statistics->ZeroM20DataEvents();
-        }
-    }
-    else
-    {
-        //Reworked to use part name as file name
-        tempStatFile = "";
-        ptr_M2010->M10Run.Run_Splice_Stat = ptr_M2010->Splice.PartNo.trimmed() + ".sts";
+    tempStatFile = _Splice->SpliceName;
+    StatFileFound = _M10INI->ConfigFilesPath + tempStatFile + ".ini";
 
-        StatFileFound = ptr_M10INI->ConfigFilesPath + ptr_M2010->M10Run.Run_Splice_Stat;
-        if(ptr_Utility->ReadFromBinaryFile(StatFileFound,&ptr_Statistics->Splice_Stat) == false)
-        {
-            ptr_M2010->M10Run.Run_Splice_Stat = ptr_M2010->Splice.PartNo + ".sbk";
-            StatFileFound = ptr_M10INI->ConfigFilesPath + ptr_M2010->M10Run.Run_Splice_Stat;
-            if(ptr_Utility->ReadFromBinaryFile(StatFileFound,&ptr_Statistics->Splice_Stat) == true)
-                ptr_M2010->M10Run.Run_Splice_Stat = ptr_M2010->Splice.PartNo + ".sts";
-            else
-                ptr_Statistics->ZeroM20DataEvents();
-        }
-    }
+    _Statistics->Splice_Stat.ReadQSettingToSpliceStat(StatFileFound, _Splice);
+}
+void M10runMode::Save_Data_Events()
+{
+    QString StatFileFound;
+    M10INI* _M10INI = M10INI::Instance();
+    Statistics* _Statistics = Statistics::Instance();
+    StatFileFound = _M10INI->ConfigFilesPath;
+    _Statistics->Splice_Stat.WriteSpliceStatToQSetting(StatFileFound);
 }
 
 void M10runMode::UpdateMaintenanceData()
@@ -109,10 +87,10 @@ void M10runMode::Update_Counter()
     Statistics *_Statistics = Statistics::Instance();
     InterfaceClass *_Interface = InterfaceClass::Instance();
     _Statistics->EnterM20DataEvent();
-//    Save_Data_Events
+    Save_Data_Events();
 }
 
-void M10runMode::CheckWeldData(int weldresult)
+bool M10runMode::CheckWeldData(int weldresult)
 {
     //This routine must control all of the data checks including alarm checks.
     bool Invalidweld = false;
@@ -135,7 +113,7 @@ void M10runMode::CheckWeldData(int weldresult)
             if(_Interface->FirstScreenComesUp == true)
                 _AlarmMsg->Initialization(WeldResultID);
             CheckForOverLoad(false);
-            return;
+            return true;
         }
     }
 
@@ -147,11 +125,11 @@ void M10runMode::CheckWeldData(int weldresult)
             _AlarmMsg->Initialization(WeldResultID);
         }
         CheckForOverLoad(false);
-        return;
+        return true;
     }
 
     //Check Overload Alarm
-    if (CheckForOverLoad(true) == true) return;
+    if (CheckForOverLoad(true) == true) return true;
 
     //Safety Alarm Check
     if((_M102IA->IAactual.Alarmflags & 0x400) == 0x400)
@@ -161,14 +139,14 @@ void M10runMode::CheckWeldData(int weldresult)
             _M2010->M10Run.SafetyFailed = true;
             _AlarmMsg->Initialization(WeldResultID);
         }
-        return;
+        return true;
     }
 
     //Weld Abort
-    if((_M102IA->IAactual.Alarmflags & 0x10) == 0x10) return;
+    if((_M102IA->IAactual.Alarmflags & 0x10) == 0x10) return true;
 
     //Foot Paddle Abort
-    if((_M102IA->IAactual.Alarmflags & 0x200) == 0x200) return;
+    if((_M102IA->IAactual.Alarmflags & 0x200) == 0x200) return true;
 
     /***************** PREHEIGHT **************************/
     //Check for pre-height alarm indicated by bit 2
@@ -182,7 +160,7 @@ void M10runMode::CheckWeldData(int weldresult)
             //Display PreHeight Error
             //need some warning message
             _AlarmMsg->Initialization(WeldResultID);
-            return;
+            return true;
         }
     }
 
@@ -206,6 +184,7 @@ void M10runMode::CheckWeldData(int weldresult)
     if((_M102IA->IAactual.Alarmflags & 0x100000) == 0x100000)
         _M2010->M10Run.Alarm_found = true;
 
+    if(WeldResultID == -1) return true;
     //Check if this is the current weld data. (WeldDone Flag)
     if((_M102IA->IAactual.Alarmflags & 0x4000) != 0x4000)
     {
@@ -213,9 +192,8 @@ void M10runMode::CheckWeldData(int weldresult)
         {
             if(_M2010->M10Run.Alarm_found == true)
                 _AlarmMsg->Initialization(WeldResultID);
-            return;
+            return true;
         }
-        if(Invalidweld == false) UpdateMaintenanceData(); //Increment Maintenance Counters here
 
         // PREHEIGHT CHECK FINISH
 
@@ -256,6 +234,7 @@ void M10runMode::CheckWeldData(int weldresult)
         }else
             PreviousWeldValid = false;
     }
+    return Invalidweld;
 }
 
 void M10runMode::CalculateTeachMode(PresetElement *_Splice)

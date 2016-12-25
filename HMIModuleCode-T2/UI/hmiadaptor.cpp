@@ -87,7 +87,7 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
     connect(calibration,SIGNAL(WidthCalibrationFinish(bool)),this,SIGNAL(widthCalibrationFinish(bool)));
     connect(calibration,SIGNAL(HeightCalibrationFinish(bool)),this,SIGNAL(heightCalibrationFinish(bool)));
 
-    operateProcess = OperateProcess::Instance();
+    operateProcess = MakeWeldProcess::Instance();
     connect(operateProcess,SIGNAL(WeldCycleCompleted(bool)),this,SLOT(slotWeldCycleCompleted(bool)));
     m_spliceAdaptor = DBPresetTable::Instance();
 }
