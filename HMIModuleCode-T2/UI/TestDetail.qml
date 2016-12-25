@@ -12,9 +12,9 @@ Item {
     Component.onCompleted: {
         hmiAdaptor.operateProcessExec("Start")
     }
-    Component.onDestruction: {
-        hmiAdaptor.operateProcessExec("Stop")
-    }
+//    Component.onDestruction: {
+//        hmiAdaptor.operateProcessExec("Stop")
+//    }
 
     Connections {
         target: hmiAdaptor

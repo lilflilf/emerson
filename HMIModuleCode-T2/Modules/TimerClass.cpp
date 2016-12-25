@@ -1,15 +1,26 @@
 #include "TimerClass.h"
-#include <QTimer>
 #include <QDebug>
+
 TimerClass::TimerClass(QObject *parent) : QObject(parent)
 {
+    Timer = NULL;
+    b_Timeout = false;
+    Timer = new QTimer(this);
+    connect(Timer, SIGNAL(timeout()),this, SLOT(TimeoutEventSlot()));
 
+}
+TimerClass::~TimerClass()
+{
+    if(Timer != NULL)
+    {
+        delete Timer;
+        Timer = NULL;
+    }
 }
 
 void TimerClass::SetCommandTimer(int Time)
 {
-    b_Timeout = false;
-    QTimer::singleShot(Time, Qt::VeryCoarseTimer, this, TimeoutEventSlot);
+    Timer->start(Time);
 }
 
 void TimerClass::TimeoutEventSlot()
@@ -20,4 +31,12 @@ void TimerClass::TimeoutEventSlot()
 bool TimerClass::IsCommandTimeout()
 {
     return b_Timeout;
+}
+
+void TimerClass::ResetCommandTimer()
+{
+    if(Timer->isActive() == true)
+    {
+        Timer->stop();
+    }
 }

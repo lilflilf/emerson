@@ -311,8 +311,6 @@ void AdvancedMaintenance::AdvancedMaintenanceHandle(void* _obj)
         tmpMsgBox.func_ptr = NULL;
         _Interface->cMsgBox(&tmpMsgBox);
     }
-
-    qDebug()<<"Advanced Maintenace processing";
 }
 
 void AdvancedMaintenance::UpdateAnvil()

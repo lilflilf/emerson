@@ -39,8 +39,8 @@ MODstart::MODstart()
     ModRunSetup *_ModRunSetup = ModRunSetup::Instance();
     InterfaceClass *_Interface = InterfaceClass::Instance();
 
-    _ModRunSetup->OfflineModeEnabled = true;
-    _ModRunSetup->GlobalOfflineModeEnabled = true;
+//    _ModRunSetup->OfflineModeEnabled = true;
+//    _ModRunSetup->GlobalOfflineModeEnabled = true;
 
     int check_result = 0;
 
@@ -399,6 +399,7 @@ int MODstart::CheckIOStatus()
             break;
         }
     }
+    _Timer->ResetCommandTimer();
     delete _Timer;
     //--Check to make sure that the Pressure Rating is O.K.
     if (_M102IA->IOstatus.IO & 0x08)
