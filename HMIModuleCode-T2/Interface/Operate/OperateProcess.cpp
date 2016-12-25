@@ -450,6 +450,8 @@ void OperateProcess::ControlLimitProcess(QUALITYTYPE Type, QList<int> &RawList,
     }
 
     AverageValue = StatisticalFunction::Mean(tmpList);
+    if(tmpList.size() < 2)
+        Sigam = 0;
     Sigam = StatisticalFunction::StandardDeviation(tmpList,AverageValue);
     UpperControlValue = CentralValue + 3 * Sigam;
     LowerControlValue = CentralValue - 3 * Sigam;
