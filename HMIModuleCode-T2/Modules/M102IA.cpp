@@ -10,7 +10,7 @@
 #include "UtilityClass.h"
 #include "TimerClass.h"
 #include "Interface/Interface.h"
-#include "Interface/Operate/OperateProcess.h"
+#include "Interface/MakeWeld//MakeWeldProcess.h"
 #include <QCoreApplication>
 #include <QDebug>
 
@@ -629,7 +629,6 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
     ModRunSetup *_ModRunSetup = ModRunSetup::Instance();
     UtilityClass* _Utility = UtilityClass::Instance();
     InterfaceClass *_Interface = InterfaceClass::Instance();
-    OperateProcess *_Operate = OperateProcess::Instance();
     const QString Colon = ":";
 
     int i;
@@ -832,12 +831,7 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
                      float(0.2 * _Interface->StatusData.Soft_Settings.SonicGenWatts);
         }
 
-        _Utility->SetTextData(DINPowerPl,
-            _Operate->CurrentSplice.WeldSettings.QualitySetting.Power.Plus, MINPOWER,
-            _Utility->Maxpower, 100, 1, "%dW");
-        _Utility->SetTextData(DINPowerMs,
-            _Operate->CurrentSplice.WeldSettings.QualitySetting.Power.Minus, MINPOWER,
-            _Interface->StatusData.Soft_Settings.SonicGenWatts, 100, 1, "%dW");
+        _Utility->InitializeTextData();
         _M2010->ReceiveFlags.POWERrating = true;
         break;
     case IASigSequenceTable:     // Data Signature = "10"
@@ -1068,7 +1062,7 @@ bool M102IA::SetIAWidth(int WidthSet, bool SettingCheck)
     M10runMode* _M10runMode = M10runMode::Instance();
     ModRunSetup* _ModRunSetup = ModRunSetup::Instance();
 //    InterfaceClass* _Interface = InterfaceClass::Instance();
-    OperateProcess* _Operate   = OperateProcess::Instance();
+    MakeWeldProcess* _WeldCycle   = MakeWeldProcess::Instance();
     TimerClass* _Timer = new TimerClass();
     //This command is ignored if the safety cover does not exist
     //Aux Motion Control, Close Safety Cover
@@ -1082,7 +1076,7 @@ bool M102IA::SetIAWidth(int WidthSet, bool SettingCheck)
     //        SendIACommand IAComAuxMotion, DO_CLOSE_SAFETY
 
     if (WidthSet == -1) WidthSet =
-            _Operate->CurrentSplice.WeldSettings.BasicSetting.Width;
+            _WeldCycle->CurrentSplice.WeldSettings.BasicSetting.Width;
     _M2010->ReceiveFlags.WIDTHdata = false;
     _M10runMode->WidthError = true;
     SendIACommand(IAComSetWidth, WidthSet);

@@ -1,4 +1,4 @@
-#include "Interface/Operate/OperateProcess.h"
+#include "Interface/MakeWeld/MakeWeldProcess.h"
 #include "Modules/M102IA.h"
 #include "Modules/M2010.h"
 #include "Modules/M10INI.h"
@@ -11,22 +11,22 @@
 #include "Modules/Statistics.h"
 #include <QDateTime>
 #include <QDebug>
-OperateProcess* OperateProcess::_instance = NULL;
-ThreadClass* OperateProcess::m_Thread = NULL;
-OperateProcess* OperateProcess::Instance()
+MakeWeldProcess* MakeWeldProcess::_instance = NULL;
+ThreadClass* MakeWeldProcess::m_Thread = NULL;
+MakeWeldProcess* MakeWeldProcess::Instance()
 {
     if(_instance == NULL){
-        _instance = new OperateProcess();
+        _instance = new MakeWeldProcess();
     }
     return _instance;
 }
 
-OperateProcess::OperateProcess(QObject *parent) : QObject(parent)
+MakeWeldProcess::MakeWeldProcess(QObject *parent) : QObject(parent)
 {
 //    M102IA* _M102IA = M102IA::Instance();
 }
 
-void OperateProcess::UpdateIAFields()
+void MakeWeldProcess::UpdateIAFields()
 {
     M102IA *_M102IA = M102IA::Instance();
     _M102IA->IAsetup.Energy = CurrentSplice.WeldSettings.BasicSetting.Energy;
@@ -65,7 +65,7 @@ void OperateProcess::UpdateIAFields()
     _M102IA->RawHeightDataGraph.GraphDataList.clear();
 }
 
-void OperateProcess::UpdateWeldResult()
+void MakeWeldProcess::UpdateWeldResult()
 {
     M102IA *_M102IA = M102IA::Instance();
     InterfaceClass *_Interface = InterfaceClass::Instance();
@@ -100,7 +100,7 @@ void OperateProcess::UpdateWeldResult()
     CurrentWeldResult.PowerGraph.clear();
 }
 
-bool OperateProcess::PowerGraphReceive()
+bool MakeWeldProcess::PowerGraphReceive()
 {
     bool bResult = false;
     M102IA *_M102IA = M102IA::Instance();
@@ -119,7 +119,7 @@ bool OperateProcess::PowerGraphReceive()
     return bResult;
 }
 
-bool OperateProcess::HeightGraphReceive()
+bool MakeWeldProcess::HeightGraphReceive()
 {
     bool bResult = false;
     M102IA *_M102IA = M102IA::Instance();
@@ -137,22 +137,54 @@ bool OperateProcess::HeightGraphReceive()
     return bResult;
 }
 
-void OperateProcess::AcceptWeldResult(void* _obj)
+//void OperateProcess::AcceptWeldResult(void* _obj)
+//{
+//    OperateProcess* _ObjectPtr = (OperateProcess*)_obj;
+//    M10runMode* _M10runMode = M10runMode::Instance();
+//    _M10runMode->CalculateTeachMode(&_ObjectPtr->CurrentSplice);
+//}
+
+void MakeWeldProcess::TeachModeProcess()
 {
-    OperateProcess* _ObjectPtr = (OperateProcess*)_obj;
     M10runMode* _M10runMode = M10runMode::Instance();
-    _M10runMode->CalculateTeachMode(&_ObjectPtr->CurrentSplice);
+//    InterfaceClass *_Interface = InterfaceClass::Instance();
+//    if(CurrentNecessaryInfo.IsTestProcess == true)
+//    {
+//        struct BransonMessageBox tmpMsgBox;
+//        switch(CurrentSplice.TestSetting.TeachModeSetting.TeachModeType)
+//        {
+//        case STANDARD:
+//            tmpMsgBox.MsgTitle = QObject::tr("Teach Mode - Standard");
+//            tmpMsgBox.MsgPrompt = QObject::tr("Please hit the button to start next.");
+//            tmpMsgBox.TipsMode = Information | ACCEPTReject;
+//            tmpMsgBox.func_ptr = OperateProcess::AcceptWeldResult;
+//            tmpMsgBox._Object = this;
+//            _Interface->cMsgBox(&tmpMsgBox);
+//            break;
+//        case SIGMA:
+//        case AUTO:
+//            _M10runMode->CalculateTeachMode(CurrentSplice);
+//            break;
+//        case UNDEFINED:
+//            break;
+//        default:
+//            break;
+//        }
+
+//    }
+    _M10runMode->CalculateTeachMode(&CurrentSplice);
 }
 
-void OperateProcess::WeldCycleDaemonThread(void* _obj)
+void MakeWeldProcess::WeldCycleDaemonThread(void* _obj)
 {
     M2010 *_M2010 = M2010::Instance();
     M102IA *_M102IA = M102IA::Instance();
     InterfaceClass *_Interface = InterfaceClass::Instance();
-    OperateProcess* _ObjectPtr = (OperateProcess*)_obj;
+    MakeWeldProcess* _ObjectPtr = (MakeWeldProcess*)_obj;
     M10runMode* _M10runMode = M10runMode::Instance();
     Statistics* _Statistics = Statistics::Instance();
     DBWeldResultTable* _WeldResultDB = DBWeldResultTable::Instance();
+    bool Invalidweld = false;
     //1. Receive Power and Height Graph Data
     switch(_ObjectPtr->CurrentStep)
     {
@@ -210,50 +242,29 @@ void OperateProcess::WeldCycleDaemonThread(void* _obj)
         //2. Save the Weld result into the Database
         int iResult =
             _WeldResultDB->InsertRecordIntoTable(&_ObjectPtr->CurrentWeldResult);
-        if(iResult != -1)
-            _ObjectPtr->CurrentWeldResult.WeldResultID = iResult;
-//        //3. Update Maintenance Count
-//        _M10runMode->UpdateMaintenanceData();
-        //4. Alarm handle
-        _M10runMode->CheckWeldData(iResult);
+        _ObjectPtr->CurrentWeldResult.WeldResultID = iResult;
+        //3. Alarm handle
+        Invalidweld = _M10runMode->CheckWeldData(iResult);
+        //4. Update Maintenance Count
+        if(Invalidweld == false)
+            _M10runMode->UpdateMaintenanceData(); //Increment Maintenance Counters here
         //5. Teach Mode
-        if(_ObjectPtr->CurrentNecessaryInfo.IsTestProcess == true)
-        {
-            struct BransonMessageBox tmpMsgBox;
-            switch(_ObjectPtr->CurrentSplice.TestSetting.TeachModeSetting.TeachModeType)
-            {
-            case STANDARD:
-            case SIGMA:
-                tmpMsgBox.MsgTitle = QObject::tr("Teach Mode - Standard");
-                tmpMsgBox.MsgPrompt = QObject::tr("Please hit the button to start next.");
-//                tmpMsgBox.TipsMode = Information | ACCEPTReject;
-                tmpMsgBox.func_ptr = OperateProcess::AcceptWeldResult;
-                tmpMsgBox._Object = _ObjectPtr;
-                _Interface->cMsgBox(&tmpMsgBox);
-                break;
-            case AUTO:
-                _M10runMode->CalculateTeachMode(&_ObjectPtr->CurrentSplice);
-                break;
-            case UNDEFINED:
-                break;
-            default:
-                break;
-            }
-
-        }
-
+//        _ObjectPtr->TeachModeProcess();
         //6. Shrink Tube
         //7. Remote Data sending
         _Statistics->HistoryEvent(_ObjectPtr->CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderName,
                 _ObjectPtr->CurrentNecessaryInfo.CurrentPart.PartName, &_ObjectPtr->CurrentWeldResult, &_ObjectPtr->CurrentSplice);
-
+        if((_M102IA->IAactual.Alarmflags & 0x4000) == 0x4000)
+            _ObjectPtr->WeldCycleStatus = true;
+        else
+            _ObjectPtr->WeldCycleStatus = false;
         emit _ObjectPtr->WeldCycleCompleted(&_ObjectPtr->WeldCycleStatus);
         m_Thread->setStopEnabled(true);
         m_Thread->setSuspendEnabled(true);
     }
 }
 
-void OperateProcess::WeldResultFeedbackEventSlot(bool& bResult)
+void MakeWeldProcess::WeldResultFeedbackEventSlot(bool& bResult)
 {
     if(bResult == false)
         return;
@@ -265,9 +276,16 @@ void OperateProcess::WeldResultFeedbackEventSlot(bool& bResult)
     m_Thread->start();
 }
 
-bool OperateProcess::_start()
+void MakeWeldProcess::CheckWeldAlarm()
+{
+    M10runMode* _M10runMode = M10runMode::Instance();
+    _M10runMode->CheckWeldData(-1);
+}
+
+bool MakeWeldProcess::_start()
 {
     M102IA *_M102IA = M102IA::Instance();
+    M10runMode* _M10runMode = M10runMode::Instance();
     InterfaceClass* _Interface = InterfaceClass::Instance();
     struct BransonMessageBox tmpMsgBox;
     _Interface->FirstScreenComesUp = true;
@@ -281,16 +299,21 @@ bool OperateProcess::_start()
         _Interface->cMsgBox(&tmpMsgBox);
         bResult = false;
     }else{
-        m_Thread = new ThreadClass(0, (void*)(OperateProcess::WeldCycleDaemonThread), this);
+        m_Thread = new ThreadClass(0, (void*)(MakeWeldProcess::WeldCycleDaemonThread), this);
         m_Thread->setStopEnabled(false);
         m_Thread->setSuspendEnabled(false);
+        if(CurrentNecessaryInfo.IsTestProcess == true)
+        {
+            if(CurrentSplice.TestSetting.TeachModeSetting.TeachModeType != UNDEFINED)
+                _M10runMode->init_m20_data_events(&CurrentSplice);
+        }
         connect(_M102IA, SIGNAL(WeldResultFeedback(bool&)),
                 this,SLOT(WeldResultFeedbackEventSlot(bool&)));
     }
     return bResult;
 }
 
-bool OperateProcess::_stop()
+bool MakeWeldProcess::_stop()
 {
     M102IA *_M102IA = M102IA::Instance();
     InterfaceClass *_Interface = InterfaceClass::Instance();
@@ -321,7 +344,7 @@ bool OperateProcess::_stop()
 //this function is used to send the preset data to controller
 //this also send width calibration data, trigpress, amplitude and pre burst.
 //Command for Sending Amplitude Step parameters is also added before the Preset is sent to the controller
-bool OperateProcess::_execute()
+bool MakeWeldProcess::_execute()
 {
     M102IA *_M102IA = M102IA::Instance();
     M2010  *_M2010  = M2010::Instance();
@@ -360,6 +383,12 @@ bool OperateProcess::_execute()
     _M102IA->SendIACommand(IAComSetPreburst, CurrentSplice.WeldSettings.AdvanceSetting.PreBurst);
 
 
+    if(WeldCycleStatus == false)
+    {
+        bResult = false;
+        return bResult;
+    }
+
     Retries = 0;
     _M2010->ReceiveFlags.HostReadyData = false;
     while(_M2010->ReceiveFlags.HostReadyData == false)
@@ -384,7 +413,7 @@ bool OperateProcess::_execute()
 
 //this functio is only for the UCL & LCL calculation.
 // the UCL & LCL is the middle point of the USL & LSL +/- 3 standard deviation
-void OperateProcess::ControlLimitProcess(QUALITYTYPE Type, QList<int> &RawList,
+void MakeWeldProcess::ControlLimitProcess(QUALITYTYPE Type, QList<int> &RawList,
                                          int USL, int LSL,
                                          int *UCL, int *LCL)
 {
@@ -486,7 +515,7 @@ void OperateProcess::ControlLimitProcess(QUALITYTYPE Type, QList<int> &RawList,
     }
 }
 
-void OperateProcess::StopTeachMode()
+void MakeWeldProcess::StopTeachMode()
 {
     Statistics *_Statistics = Statistics::Instance();
     _Statistics->GetLimitsAfterWeld(&CurrentSplice);

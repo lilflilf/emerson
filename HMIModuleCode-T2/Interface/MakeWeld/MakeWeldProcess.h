@@ -17,7 +17,7 @@ enum GRAPHSTEP
     STEPTrd,
 };
 
-class OperateProcess : public QObject
+class MakeWeldProcess : public QObject
 {
     Q_OBJECT
 public:
@@ -37,11 +37,12 @@ private:
     bool HeightGraphReceive();
     bool PowerGraphReceive();
     static void WeldCycleDaemonThread(void*);
-    static void AcceptWeldResult(void*);
+//    static void AcceptWeldResult(void*);
 signals:
     void WeldCycleCompleted(const bool &_status);
 public slots:
     void WeldResultFeedbackEventSlot(bool &bResult);
+    void CheckWeldAlarm();
 public:
     bool _start();
     bool _stop();
@@ -50,12 +51,13 @@ public:
     void ControlLimitProcess(enum QUALITYTYPE Type, QList<int> &RawList, int USL, int LSL,
                              int* UCL, int* LCL);
     void StopTeachMode();
+    void TeachModeProcess();
 public:
-    static OperateProcess* Instance();
+    static MakeWeldProcess* Instance();
 private:
-    explicit OperateProcess(QObject *parent = 0);
+    explicit MakeWeldProcess(QObject *parent = 0);
 private:
-    static OperateProcess* _instance;
+    static MakeWeldProcess* _instance;
 };
 
 #endif // OPERATEPROCESS_H

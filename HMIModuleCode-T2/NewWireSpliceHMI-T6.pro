@@ -60,11 +60,11 @@ SOURCES += main.cpp \
     Interface/WorkOrderElement.cpp \
     Interface/WeldResultElement.cpp \
     Interface/AlarmElement.cpp \
-    Interface/Operate/OperateProcess.cpp \
     Modules/AlarmMessage.cpp \
     Modules/StatisticalFunction.cpp \
     Modules/TimerClass.cpp \
-    Modules/ThreadClass.cpp
+    Modules/ThreadClass.cpp \
+    Interface/MakeWeld/MakeWeldProcess.cpp
 
 
 
@@ -128,12 +128,12 @@ HEADERS += \
     Interface/WorkOrderElement.h \
     Interface/WeldResultElement.h \
     Interface/AlarmElement.h \
-    Interface/Operate/OperateProcess.h \
     Modules/AlarmMessage.h \
 #    UI/displayChinese_zh_CN.qm \
     Modules/StatisticalFunction.h \
     Modules/TimerClass.h \
-    Modules/ThreadClass.h
+    Modules/ThreadClass.h \
+    Interface/MakeWeld/MakeWeldProcess.h
 
 DISTFILES += \
 #    UI/displayChinese_zh_CN.qm \

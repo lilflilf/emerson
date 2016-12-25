@@ -23,7 +23,6 @@ Item {
             if (loader.source == "qrc:/UI/TestDetail.qml") {
                 loader.item.selectSplice(spliceModel.getValue(selectIndx,"SpliceId"))
                 alarmModel.setStartTime();
-
             }
             else if (loader.source == "qrc:/UI/AdvanceSetting.qml")
             {

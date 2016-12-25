@@ -29,12 +29,12 @@ Item {
         else if (selectIndex == 3)
             qualityListViewTwo.model = postModel.length
 
-        if (qualityModel.get(selectIndex).yellowMax == -1)
+        if (qualityModel.get(selectIndex).yellowMax == -1 || qualityModel.get(selectIndex).yellowMax == qualityModel.get(selectIndex).redMax)
             yellowMaxLine.visible = false
         else {
             yellowMaxLine.anchors.bottomMargin = window2Back.height * 0.1 + qualityModel.get(selectIndex).yellowMax / (qualityModel.get(selectIndex).redMax - qualityModel.get(selectIndex).redMin) * window2Back.height * 0.8
         }
-        if (qualityModel.get(selectIndex).yellowMin == -1)
+        if (qualityModel.get(selectIndex).yellowMin == -1 || qualityModel.get(selectIndex).yellowMin == qualityModel.get(selectIndex).redMin)
             yellowMinLine.visible = false
         else {
             yellowMinLine.anchors.bottomMargin = window2Back.height * 0.1 + qualityModel.get(selectIndex).yellowMin / (qualityModel.get(selectIndex).redMax - qualityModel.get(selectIndex).redMin) * window2Back.height * 0.8

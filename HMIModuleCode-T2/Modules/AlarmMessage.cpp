@@ -204,7 +204,7 @@ void AlarmMessage::ShowText(int weldresult)
     BransonMessageBox tmpMsgBox;
     tmpMsgBox.MsgPrompt = AlarmMsg;
     tmpMsgBox.MsgTitle = QObject::tr("Alarm");
-    tmpMsgBox.TipsMode = (OKCancel | Alarm);
+    tmpMsgBox.TipsMode = (RESETCancel | Alarm);
     tmpMsgBox.func_ptr = AlarmMessage::ResetAnyAlarm;
     tmpMsgBox._Object = this;
     _Interface->cMsgBox(&tmpMsgBox);

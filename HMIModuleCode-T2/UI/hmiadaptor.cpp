@@ -87,7 +87,7 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
     connect(calibration,SIGNAL(WidthCalibrationFinish(bool)),this,SIGNAL(widthCalibrationFinish(bool)));
     connect(calibration,SIGNAL(HeightCalibrationFinish(bool)),this,SIGNAL(heightCalibrationFinish(bool)));
 
-    operateProcess = OperateProcess::Instance();
+    operateProcess = MakeWeldProcess::Instance();
     connect(operateProcess,SIGNAL(WeldCycleCompleted(bool)),this,SLOT(slotWeldCycleCompleted(bool)));
     m_spliceAdaptor = DBPresetTable::Instance();
 }
@@ -490,6 +490,38 @@ bool HmiAdaptor::permissionsettingExecute(QString code)
     else if (code == "_Clear")
         permissionSetting->CurrentPermissionList.clear();
     return true;
+}
+
+bool HmiAdaptor::needPassWord(QString pageName)
+{
+    permissionsettingExecute("_Recall");
+
+    int i;
+    int funcIndex = -1;
+    int levelIndex = -1;
+    bool reb = true;
+    QStringList funcName;
+    funcName = permissionSetting->AllFunctionNameList;
+    for (i = 0; i < funcName.length();i++)
+    {
+        if (pageName == funcName[i]) {
+            funcIndex = i;
+            break;
+        }
+    }
+    if (funcIndex == -1)
+        return reb;
+    levelIndex = (int)interfaceClass->CurrentOperator.PermissionLevel;
+    if (levelIndex == 1)
+        reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level1;
+    else if (levelIndex == 2)
+        reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level2;
+    else if (levelIndex == 3)
+        reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level3;
+    else if (levelIndex == 4)
+        reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level4;
+
+    return !reb;
 }
 
 QStringList HmiAdaptor::permissionsettingGetValue(QString code)
