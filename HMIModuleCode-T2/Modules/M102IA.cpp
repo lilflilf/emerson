@@ -492,7 +492,7 @@ void M102IA::SendIACommand(IACommands CommandNumber, int CommandData)
 bool M102IA::WaitForResponseAfterSent(int TimeOut, bool *CheckResponseFlag)
 {
     ModRunSetup *_ModRunSetup = ModRunSetup::Instance();
-    TimerClass *_Timer = TimerClass::Instance();
+    TimerClass *_Timer = new TimerClass();
     _Timer->SetCommandTimer(TimeOut);
 //    *CheckResponseFlag = false;
     while (*CheckResponseFlag == false)
@@ -505,6 +505,7 @@ bool M102IA::WaitForResponseAfterSent(int TimeOut, bool *CheckResponseFlag)
     if(_ModRunSetup->OfflineModeEnabled == true)
         *CheckResponseFlag = true;
     _Timer->ResetCommandTimer();
+    delete _Timer;
     return *CheckResponseFlag;
 }
 
@@ -1020,7 +1021,7 @@ void M102IA::SendCommandData(int CommandData)
     M2010 *_M2010 = M2010::Instance();
     ModRunSetup *_ModRunSetup = ModRunSetup::Instance();
     InterfaceClass *_Interface = InterfaceClass::Instance();
-    TimerClass *_Timer = TimerClass::Instance();
+    TimerClass *_Timer = new TimerClass();
     Retries = 0;
     Time = 500;
     //SendCommandSetRunMode CommandData
@@ -1043,6 +1044,7 @@ void M102IA::SendCommandData(int CommandData)
             break;
      }
     _Timer->ResetCommandTimer();
+    delete _Timer;
     if (Retries >= 19)
     {
 //        MsgBox "Can't get Response from controller!"
@@ -1067,7 +1069,7 @@ bool M102IA::SetIAWidth(int WidthSet, bool SettingCheck)
     ModRunSetup* _ModRunSetup = ModRunSetup::Instance();
 //    InterfaceClass* _Interface = InterfaceClass::Instance();
     OperateProcess* _Operate   = OperateProcess::Instance();
-    TimerClass* _Timer = TimerClass::Instance();
+    TimerClass* _Timer = new TimerClass();
     //This command is ignored if the safety cover does not exist
     //Aux Motion Control, Close Safety Cover
 
@@ -1101,6 +1103,7 @@ bool M102IA::SetIAWidth(int WidthSet, bool SettingCheck)
         }
     }
     _Timer->ResetCommandTimer();
+    delete _Timer;
     //Aux Motion Control, Open Safety Cover
     //SendIACommand IAComAuxMotion, DO_OPEN_SAFETY
     if (_M2010->ReceiveFlags.WIDTHdata == false)
