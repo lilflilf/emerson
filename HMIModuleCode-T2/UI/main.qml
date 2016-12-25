@@ -37,6 +37,7 @@ Window {
       */
     function menuInit(index)
     {
+//        passwdLog.visible = true
         initIndex = index
         if (contentLoader.source == "qrc:/UI/Calibration.qml")
             hmiAdaptor.maintenanceStop(0);
@@ -168,7 +169,12 @@ Window {
             }
         }
     }
-
+    CPassWordDialog {
+        id: passwdLog
+        anchors.centerIn: parent
+        visible: false
+        z: 21
+    }
     Image {
         anchors.fill: parent
         source: "qrc:/images/images/bg.png"
