@@ -243,7 +243,7 @@ Item {
                             partModel.setPartSpliceList(listModel.get(i).SpliceName,listModel.get(i).SpliceId,arrayColor.indexOf(listModel.get(i).stationColor),arrayzone.indexOf(listModel.get(i).station),i+1)
                         }
                         partModel.savePartInfo(content.bIsEdit, hmiAdaptor.getCurrentOperatorId())
-                        root.menuInit(2)
+                        root.checkNeedPassWd(2)
                     }
                 }
             }

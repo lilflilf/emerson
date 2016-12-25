@@ -366,7 +366,7 @@ Item {
         centerText: "Test Complete"
         visible: false
         onCliceTo: {
-            root.menuInit(3)
+            root.checkNeedPassWd(3)
         }
 
     }

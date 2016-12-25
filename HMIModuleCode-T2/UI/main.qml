@@ -35,9 +35,79 @@ Window {
       17-- settings Data Communication
       18--settings Branson Setting
       */
+
+    function checkNeedPassWd(index)
+    {
+        var source
+        switch (index) {
+        case 0:
+        case 1:
+            source = "qrc:/UI/Content.qml"
+            break;
+        case 2:
+            source = "qrc:/UI/Operate.qml"
+            break;
+        case 3:
+            source = "qrc:/UI/TestSpliceLibrary.qml"
+            break;
+        case 4:
+            source = "qrc:/UI/Calibration.qml"
+            break;
+        case 5:
+            source = "qrc:/UI/ToolChange.qml"
+            break;
+        case 6:
+            source = "qrc:/UI/AdvancedMaintenance.qml"
+            break;
+        case 7:
+            source = "qrc:/UI/MaintenanceCount.qml"
+            break;
+        case 8:
+            source = "qrc:/UI/MaintenanceLog.qml"
+            break;
+        case 9:
+            source = "qrc:/UI/ViewWorkOrder.qml"
+            break;
+        case 10:
+            source = "qrc:/UI/ViewTrend.qml"
+            break;
+        case 11:
+            source = "qrc:/UI/ViewError.qml"
+            break;
+        case 12:
+            source = "qrc:/UI/ViewLibrary.qml"
+            break;
+        case 13:
+            source = "qrc:/UI/ViewVersion.qml"
+            break
+        case 14:
+            source = "qrc:/UI/PermissionSetting.qml"
+            break;
+        case 15:
+            source = "qrc:/UI/WeldDefalut.qml"
+            break;
+        case 16:
+            source = "qrc:/UI/UserLibrarySetting.qml"
+            break;
+        case 17:
+            source = "qrc:/UI/DataCommunication.qml"
+            break;
+        case 19:
+            source = "qrc:/UI/EditWire.qml"
+            break;
+        default:
+            break;
+        }
+        if (hmiAdaptor.needPassWord(source)) {
+            passwdLog.visible = true
+            passwdLog.index = index
+        } else {
+            menuInit(index)
+        }
+    }
+
     function menuInit(index)
     {
-//        passwdLog.visible = true
         initIndex = index
         if (contentLoader.source == "qrc:/UI/Calibration.qml")
             hmiAdaptor.maintenanceStop(0);
@@ -69,9 +139,11 @@ Window {
             contentLoader.source = "qrc:/UI/TestSpliceLibrary.qml"
             break;
         case 4:
+            headBar.titleText = qsTr("Calibration")
             contentLoader.source = "qrc:/UI/Calibration.qml"
             break;
         case 5:
+            headBar.titleText = qsTr("Tool Change")
             contentLoader.source = "qrc:/UI/ToolChange.qml"
             break;
         case 6:
@@ -79,41 +151,52 @@ Window {
             contentLoader.source = "qrc:/UI/AdvancedMaintenance.qml"
             break;
         case 7:
+            headBar.titleText = qsTr("Maintenance Counter")
             hmiAdaptor.maintenanceCountExecute("_Recall")
             contentLoader.source = "qrc:/UI/MaintenanceCount.qml"
             break;
         case 8:
+            headBar.titleText = qsTr("Maintenance log")
             contentLoader.source = "qrc:/UI/MaintenanceLog.qml"
             break;
         case 9:
+            headBar.titleText = qsTr("Work Order History")
             contentLoader.source = "qrc:/UI/ViewWorkOrder.qml"
             break;
         case 10:
+            headBar.titleText = qsTr("Statistical Trend")
             contentLoader.source = "qrc:/UI/ViewTrend.qml"
             break;
         case 11:
+            headBar.titleText = qsTr("Error/Alarm Log")
             contentLoader.source = "qrc:/UI/ViewError.qml"
             break;
         case 12:
+            headBar.titleText = qsTr("Library")
             hmiAdaptor.dataCommunicationExecute("_Recall");
             contentLoader.source = "qrc:/UI/ViewLibrary.qml"
             break;
         case 13:
+            headBar.titleText = qsTr("Version Information")
             contentLoader.source = "qrc:/UI/ViewVersion.qml"
             break
         case 14:
+            headBar.titleText = qsTr("Permission Setting")
             hmiAdaptor.permissionsettingExecute("_Recall");
             contentLoader.source = "qrc:/UI/PermissionSetting.qml"
             break;
         case 15:
+            headBar.titleText = qsTr("Weld Defaults")
             hmiAdaptor.weldDefaultsExecute("_Recall");
             contentLoader.source = "qrc:/UI/WeldDefalut.qml"
             break;
         case 16:
+            headBar.titleText = qsTr("Operator Library")
             hmiAdaptor.permissionsettingExecute("_Recall")
             contentLoader.source = "qrc:/UI/UserLibrarySetting.qml"
             break;
         case 17:
+            headBar.titleText = qsTr("Data Communication")
             hmiAdaptor.dataCommunicationExecute("_Recall");
             contentLoader.source = "qrc:/UI/DataCommunication.qml"
             break;
@@ -121,6 +204,7 @@ Window {
 //            contentLoader.source = "qrc:/UI/BransonSetting.qml"
 //            break;
         case 19:
+            headBar.titleText = qsTr("Edit Wire")
             contentLoader.source = "qrc:/UI/EditWire.qml"
             break;
         default:

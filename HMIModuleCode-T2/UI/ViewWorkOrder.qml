@@ -253,16 +253,29 @@ Item {
                             clip: true
                             elide: Text.ElideRight
                             text: weldHistoryModel.getValue(listIndex,headModel.get(index).key)
+                            MouseArea {
+                                anchors.fill: parent
+//                                visible: index == (headModel.count - 1) ? true : false
+//                                z:20
+                                hoverEnabled: true
+                                onClicked: {
+                                    alarmModel.editNew(weldHistoryModel.getValue(listIndex,"WeldHistoryId"))
+                                    myCanvas.visible = true
+                                }
+                            }
                         }
                     }
                 }
                 MouseArea {
-                    anchors.fill: parent
+//                    anchors.fill: parent
+                    width: parent.width -200
+                    height: parent.height
                     onClicked: {
                         selectIndx = index
                         selectCheck.checked = !selectCheck.checked
                     }
                 }
+
                 Rectangle {
                     id: backGround
                     anchors.fill: parent
@@ -686,5 +699,24 @@ Item {
                 text: qsTr("Back")
             }
         }
+    }
+    Image {
+        anchors.centerIn: myCanvas
+        width: myCanvas.width + 50
+        height: myCanvas.height + 100
+        source: "qrc:/images/images/bg.png"
+        visible: myCanvas.visible
+        MouseArea {
+            anchors.fill: parent
+            onClicked: myCanvas.visible = false
+        }
+    }
+
+    MyCanvas {
+        id: myCanvas
+        visible: false
+        width: Screen.width * 0.43
+        height: Screen.height * 0.5
+        anchors.centerIn: parent
     }
 }

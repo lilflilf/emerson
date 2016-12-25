@@ -20,10 +20,6 @@ Item {
     Connections {
         target: hmiAdaptor
         onSignalWeldCycleCompleted: {
-            if (progressBar.total == progressBar.current) {
-                cdialog.visible = true
-                return
-            }
             progressBar.current++
             spliceLocation.setTreeModelOver()
             progressBar.moveToNext()
@@ -32,12 +28,16 @@ Item {
                 offline.setStusOffLineUpdate(progressBar.current)
             else if (showFlag == 1)
                 spliceLocation.updateTreeModel(progressBar.current)
+            if (operateDetail.cycleCount == operateDetail.qliantity) {
+                cdialog.visible = true
+                return
+            }
         }
     }
 
-    Component.onCompleted: {
-        hmiAdaptor.operateProcessExec("Start")
-    }
+//    Component.onCompleted: {
+//        hmiAdaptor.operateProcessExec("Start")
+//    }
 //    Component.onDestruction: {
 //        hmiAdaptor.operateProcessExec("Stop")
 //    }
@@ -502,7 +502,7 @@ Item {
         visible: false
         onCliceTo: {
             if (reb)
-                root.menuInit(2)
+                root.checkNeedPassWd(2)
         }
     }
 }
