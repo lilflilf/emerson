@@ -191,14 +191,14 @@ Item {
                                     btn.isCheck = false
                                     creatMenu.visible = false
                                     btnBack.visible = false
-                                    root.menuInit(2)
-                                    title.text = qsTr("Operate")
+                                    root.checkNeedPassWd(2)
+//                                    title.text = qsTr("Operate")
                                 } else if (index == 1) {
                                     btn.isCheck = false
                                     creatMenu.visible = false
                                     btnBack.visible = false
-                                    root.menuInit(3)
-                                    title.text = qsTr("Test")
+                                    root.checkNeedPassWd(3)
+//                                    title.text = qsTr("Test")
                                 }
                             }
                         }
@@ -307,71 +307,71 @@ Item {
                                 creatMenu.visible = false
                                 btnBack.visible = false
                                 if (menuKey == qsTr("Create New")){
-                                    root.menuInit(0)
-                                    title.text = qsTr("Create New")
+                                    root.checkNeedPassWd(0)
+//                                    title.text = qsTr("Create New")
                                 }
                                 else if (menuKey == qsTr("Edit Existing")){
-                                    root.menuInit(1)
-                                    title.text = qsTr("Edit Existing")
+                                    root.checkNeedPassWd(1)
+//                                    title.text = qsTr("Edit Existing")
                                 }
                                 else if (menuKey == qsTr("Calibration")){
-                                    root.menuInit(4)
-                                    title.text = qsTr("Calibration")
+                                    root.checkNeedPassWd(4)
+//                                    title.text = qsTr("Calibration")
                                 }
                                 else if (menuKey == qsTr("Tool Change")){
-                                    root.menuInit(5)
-                                    title.text = qsTr("Tool Change")
+                                    root.checkNeedPassWd(5)
+//                                    title.text = qsTr("Tool Change")
                                 }
                                 else if (menuKey == qsTr("Advanced Maintenance")){
-                                    root.menuInit(6)
-                                    title.text = qsTr("Advanced Maintenance")
+                                    root.checkNeedPassWd(6)
+//                                    title.text = qsTr("Advanced Maintenance")
                                 }
                                 else if (menuKey == qsTr("Maintenance Counter")){
-                                    root.menuInit(7)
-                                    title.text = qsTr("Maintenance Counter")
+                                    root.checkNeedPassWd(7)
+//                                    title.text = qsTr("Maintenance Counter")
                                 }
                                 else if (menuKey == qsTr("Maintenance log")){
-                                    root.menuInit(8)
-                                    title.text = qsTr("Maintenance log")
+                                    root.checkNeedPassWd(8)
+//                                    title.text = qsTr("Maintenance log")
                                 }
                                 else if (menuKey == qsTr("Library")) {
-                                    root.menuInit(12)
-                                    title.text = qsTr("Library")
+                                    root.checkNeedPassWd(12)
+//                                    title.text = qsTr("Library")
                                 }
                                 else if (menuKey == qsTr("Version Information")) {
-                                    root.menuInit(13)
-                                    title.text = qsTr("Version Information")
+                                    root.checkNeedPassWd(13)
+//                                    title.text = qsTr("Version Information")
                                 }
                                 else if (menuKey == qsTr("Work Order History")){
-                                    root.menuInit(9)
-                                    title.text = qsTr("Work Order History")
+                                    root.checkNeedPassWd(9)
+//                                    title.text = qsTr("Work Order History")
                                 }
                                 else if (menuKey == qsTr("Statistical Trend")){
-                                    root.menuInit(10)
-                                    title.text = qsTr("Statistical Trend")
+                                    root.checkNeedPassWd(10)
+//                                    title.text = qsTr("Statistical Trend")
                                 }
                                 else if (menuKey == qsTr("Error/Alarm Log")){
-                                    root.menuInit(11)
-                                    title.text = qsTr("Error/Alarm Log")
+                                    root.checkNeedPassWd(11)
+//                                    title.text = qsTr("Error/Alarm Log")
                                 }
                                 else if (menuKey == qsTr("Permission Setting")){
-                                    root.menuInit(14)
-                                    title.text = qsTr("Permission Setting")
+                                    root.checkNeedPassWd(14)
+//                                    title.text = qsTr("Permission Setting")
                                 }
                                 else if (menuKey == qsTr("Weld Defaults")) {
-                                    root.menuInit(15)
-                                    title.text = qsTr("Weld Defaults")
+                                    root.checkNeedPassWd(15)
+//                                    title.text = qsTr("Weld Defaults")
                                 }
                                 else if (menuKey == qsTr("Operator Library")){
-                                    root.menuInit(16)
-                                    title.text = qsTr("Operator Library")
+                                    root.checkNeedPassWd(16)
+//                                    title.text = qsTr("Operator Library")
                                 }
                                 else if (menuKey == qsTr("Data/Communication")) {
-                                    root.menuInit(17)
-                                    title.text = qsTr("Data Communication")
+                                    root.checkNeedPassWd(17)
+//                                    title.text = qsTr("Data Communication")
                                 }
 //                                else if (menuKey == "Branson Setting") {
-//                                    root.menuInit(18)
+//                                    root.checkNeedPassWd(18)
 //                                    title.text = qsTr("Branson Setting")
 //                                }
                             }

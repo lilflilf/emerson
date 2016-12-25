@@ -502,7 +502,7 @@ Item {
         visible: false
         onCliceTo: {
             if (reb)
-                root.menuInit(2)
+                root.checkNeedPassWd(2)
         }
     }
 }

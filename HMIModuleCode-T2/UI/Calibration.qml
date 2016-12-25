@@ -182,7 +182,7 @@ Item {
                     if (button2.text == qsTr("Back"))
                         calibration.currentIndex--
                     else if (button2.text == qsTr("Save"))
-                        root.menuInit(0)
+                        root.checkNeedPassWd(0)
                     else if (button2.text == qsTr("Cancel"))
                         calibration.currentIndex = 1
                 }
