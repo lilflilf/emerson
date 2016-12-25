@@ -450,9 +450,21 @@ void OperateProcess::ControlLimitProcess(QUALITYTYPE Type, QList<int> &RawList,
     }
 
     AverageValue = StatisticalFunction::Mean(tmpList);
-    Sigam = StatisticalFunction::StandardDeviation(tmpList,AverageValue);
-    UpperControlValue = CentralValue + 3 * Sigam;
-    LowerControlValue = CentralValue - 3 * Sigam;
+    if(tmpList.size() < 2)
+        Sigam = 0;
+    else
+        Sigam = StatisticalFunction::StandardDeviation(tmpList,AverageValue);
+//    UpperControlValue = CentralValue + 3 * Sigam;
+//    LowerControlValue = CentralValue - 3 * Sigam;
+    if(UpperSpecValue > (3 * Sigam))
+        UpperControlValue = UpperSpecValue - 3 * Sigam;
+    else
+        UpperControlValue = UpperSpecValue;
+    if(UpperControlValue < CentralValue)
+        UpperControlValue = CentralValue;
+    LowerControlValue = LowerSpecValue + 3 * Sigam;
+    if(LowerControlValue > CentralValue)
+        LowerControlValue = CentralValue;
     switch(Type)
     {
     case QUALITYTIME:
