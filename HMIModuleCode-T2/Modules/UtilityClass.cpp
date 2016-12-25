@@ -191,9 +191,9 @@ bool UtilityClass::StringJsonToList(QString SourceString, QList<int> *_DestList)
             if(_DestList->isEmpty() == false)
                 _DestList->clear();
             QJsonObject::const_iterator i = obj.constBegin();
-            while(i != obj.constEnd()){
-                _DestList->insert(i.key().toInt(), i.value().toInt());
-                ++i;
+            for (int i = 0; i < obj.count();i++)
+            {
+               _DestList->append(obj.constFind(QString("%1").arg(i)).value().toVariant().toInt());
             }
             bResult = true;
 
