@@ -899,6 +899,15 @@ bool HmiAdaptor::keyNumStringMatch(QString minValue, QString maxValue, QString v
     if(minNum.toFloat(&ok) > 10 && value.toFloat(&ok) < minNum.toFloat(&ok)) {
         return true;
     }
+    if (minNum.toFloat(&ok) < 1) {
+        if (value.length() >=3 && minNum.length() >= 3) {
+            if (value.at(2) < minNum.at(2)) {
+                return false;
+            }
+        } else {
+            return true;
+        }
+    }
     if (value.toFloat(&ok) >= minNum.toFloat(&ok) && value.toFloat(&ok) <= maxNum.toFloat(&ok)) {
         return true;
     } else {

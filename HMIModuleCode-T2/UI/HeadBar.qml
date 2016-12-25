@@ -515,38 +515,48 @@ Item {
     ListModel {
         id: listModel
         Component.onCompleted: {
-            listModel.append({"iconsource":"qrc:/images/images/Arabic.png","selectlanguage":"Arabic"})
-            listModel.append({"iconsource":"qrc:/images/images/United-Arab-Emirates.png","selectlanguage":"Arabic"})
-            listModel.append({"iconsource":"qrc:/images/images/chinese.png","selectlanguage":"Chinese"})
-            listModel.append({"iconsource":"qrc:/images/images/chinese.png","selectlanguage":"Chinese(TaiWan)"})
-            listModel.append({"iconsource":"qrc:/images/images/Czech.png","selectlanguage":"Czech"})
-            listModel.append({"iconsource":"qrc:/images/images/dutch.png","selectlanguage":"Dutch"})
-            listModel.append({"iconsource":"qrc:/images/images/australia.png","selectlanguage":"EngLish"})
-            listModel.append({"iconsource":"qrc:/images/images/Canada.png","selectlanguage":"EngLish"})
-            listModel.append({"iconsource":"qrc:/images/images/Hindi.png","selectlanguage":"EngLish"})
-            listModel.append({"iconsource":"qrc:/images/images/English.png","selectlanguage":"EngLish"})
-            listModel.append({"iconsource":"qrc:/images/images/us.png","selectlanguage":"EngLish"})
-            listModel.append({"iconsource":"qrc:/images/images/Canada.png","selectlanguage":"French"})
-            listModel.append({"iconsource":"qrc:/images/images/french.png","selectlanguage":"French"})
-            listModel.append({"iconsource":"qrc:/images/images/German.png","selectlanguage":"German"})
-            listModel.append({"iconsource":"qrc:/images/images/Hindi.png","selectlanguage":"Hindi"})
-            listModel.append({"iconsource":"qrc:/images/images/Hungarian.png","selectlanguage":"Hungarian"})
-            listModel.append({"iconsource":"qrc:/images/images/Indonesian.png","selectlanguage":"Indonesian"})
-            listModel.append({"iconsource":"qrc:/images/images/Italian.png","selectlanguage":"Italian"})
-            listModel.append({"iconsource":"qrc:/images/images/Japanese.png","selectlanguage":"Japanese"})
-            listModel.append({"iconsource":"qrc:/images/images/Korean.png","selectlanguage":"Korean"})
-            listModel.append({"iconsource":"qrc:/images/images/Malaysian.png","selectlanguage":"Malaysian"})
-            listModel.append({"iconsource":"qrc:/images/images/polish.png","selectlanguage":"Polish"})
-            listModel.append({"iconsource":"qrc:/images/images/Portuguese.png","selectlanguage":"Portuguese"})
-            listModel.append({"iconsource":"qrc:/images/images/Brazil.png","selectlanguage":"Portuguese"})
-            listModel.append({"iconsource":"qrc:/images/images/Romanian.png","selectlanguage":"Romanian"})
-            listModel.append({"iconsource":"qrc:/images/images/russian.png","selectlanguage":"Russian"})
-            listModel.append({"iconsource":"qrc:/images/images/Slovak.png","selectlanguage":"Slovak"})
-            listModel.append({"iconsource":"qrc:/images/images/Spanish.png","selectlanguage":"Spanish"})
-            listModel.append({"iconsource":"qrc:/images/images/Mexcio.png","selectlanguage":"Spanish"})
-            listModel.append({"iconsource":"qrc:/images/images/Thai.png","selectlanguage":"Thai"})
-            listModel.append({"iconsource":"qrc:/images/images/Turkish.png","selectlanguage":"Turkish"})
-            listModel.append({"iconsource":"qrc:/images/images/Vietnam.png","selectlanguage":"Vietnam"})
+            listModel.append({"row":"1","subNode":[]})
+            listModel.append({"row":"2","subNode":[]})
+            listModel.append({"row":"3","subNode":[]})
+            listModel.append({"row":"4","subNode":[]})
+            listModel.append({"row":"5","subNode":[]})
+            listModel.append({"row":"6","subNode":[]})
+            listModel.get(0).subNode.append({"iconsource":"qrc:/images/images/Arabic.png","selectlanguage":"Arabic","backColor":"black","theopacity":"1"})
+            listModel.get(0).subNode.append({"iconsource":"qrc:/images/images/United-Arab-Emirates.png","selectlanguage":"Arabic","backColor":"black","theopacity":"1"})
+            listModel.get(0).subNode.append({"iconsource":"qrc:/images/images/chinese.png","selectlanguage":"Chinese","backColor":"black","theopacity":"1"})
+            listModel.get(0).subNode.append({"iconsource":"qrc:/images/images/chinese.png","selectlanguage":"Chinese(TaiWan)","backColor":"black","theopacity":"1"})
+            listModel.get(0).subNode.append({"iconsource":"qrc:/images/images/Czech.png","selectlanguage":"Czech","backColor":"black","theopacity":"1"})
+            listModel.get(0).subNode.append({"iconsource":"qrc:/images/images/dutch.png","selectlanguage":"Dutch","backColor":"black","theopacity":"1"})
+            listModel.get(0).subNode.append({"iconsource":"qrc:/images/images/australia.png","selectlanguage":"EngLish","backColor":"black","theopacity":"1"})
+            listModel.get(1).subNode.append({"iconsource":"qrc:/images/images/Canada.png","selectlanguage":"EngLish","backColor":"black","theopacity":"1"})
+            listModel.get(1).subNode.append({"iconsource":"qrc:/images/images/Hindi.png","selectlanguage":"EngLish","backColor":"black","theopacity":"1"})
+            listModel.get(1).subNode.append({"iconsource":"qrc:/images/images/English.png","selectlanguage":"EngLish","backColor":"black","theopacity":"1"})
+            listModel.get(1).subNode.append({"iconsource":"qrc:/images/images/us.png","selectlanguage":"EngLish","backColor":"black","theopacity":"1"})
+            listModel.get(1).subNode.append({"iconsource":"qrc:/images/images/us&English.png","selectlanguage":"EngLish","backColor":"black","theopacity":"1"})
+            listModel.get(1).subNode.append({"iconsource":"qrc:/images/images/Canada.png","selectlanguage":"French","backColor":"black","theopacity":"1"})
+            listModel.get(1).subNode.append({"iconsource":"qrc:/images/images/french.png","selectlanguage":"French","backColor":"black","theopacity":"1"})
+            listModel.get(2).subNode.append({"iconsource":"qrc:/images/images/Canada&french.png","selectlanguage":"French","backColor":"black","theopacity":"1"})
+            listModel.get(2).subNode.append({"iconsource":"qrc:/images/images/German.png","selectlanguage":"German","backColor":"black","theopacity":"1"})
+            listModel.get(2).subNode.append({"iconsource":"qrc:/images/images/Hindi.png","selectlanguage":"Hindi","backColor":"black","theopacity":"1"})
+            listModel.get(2).subNode.append({"iconsource":"qrc:/images/images/Hungarian.png","selectlanguage":"Hungarian","backColor":"black","theopacity":"1"})
+            listModel.get(2).subNode.append({"iconsource":"qrc:/images/images/Indonesian.png","selectlanguage":"Indonesian","backColor":"black","theopacity":"1"})
+            listModel.get(2).subNode.append({"iconsource":"qrc:/images/images/Italian.png","selectlanguage":"Italian","backColor":"black","theopacity":"1"})
+            listModel.get(2).subNode.append({"iconsource":"qrc:/images/images/Japanese.png","selectlanguage":"Japanese","backColor":"black","theopacity":"1"})
+            listModel.get(3).subNode.append({"iconsource":"qrc:/images/images/Korean.png","selectlanguage":"Korean","backColor":"black","theopacity":"1"})
+            listModel.get(3).subNode.append({"iconsource":"qrc:/images/images/Malaysian.png","selectlanguage":"Malaysian","backColor":"black","theopacity":"1"})
+            listModel.get(3).subNode.append({"iconsource":"qrc:/images/images/polish.png","selectlanguage":"Polish","backColor":"black","theopacity":"1"})
+            listModel.get(3).subNode.append({"iconsource":"qrc:/images/images/Portuguese.png","selectlanguage":"Portuguese","backColor":"black","theopacity":"1"})
+            listModel.get(3).subNode.append({"iconsource":"qrc:/images/images/Brazil.png","selectlanguage":"Portuguese","backColor":"black","theopacity":"1"})
+            listModel.get(3).subNode.append({"iconsource":"qrc:/images/images/Portuguese&Brazil.png","selectlanguage":"Portuguese","backColor":"black","theopacity":"1"})
+            listModel.get(3).subNode.append({"iconsource":"qrc:/images/images/Romanian.png","selectlanguage":"Romanian","backColor":"black","theopacity":"1"})
+            listModel.get(4).subNode.append({"iconsource":"qrc:/images/images/russian.png","selectlanguage":"Russian","backColor":"black","theopacity":"1"})
+            listModel.get(4).subNode.append({"iconsource":"qrc:/images/images/Slovak.png","selectlanguage":"Slovak","backColor":"black","theopacity":"1"})
+            listModel.get(4).subNode.append({"iconsource":"qrc:/images/images/Spanish.png","selectlanguage":"Spanish","backColor":"black","theopacity":"1"})
+            listModel.get(4).subNode.append({"iconsource":"qrc:/images/images/Mexcio.png","selectlanguage":"Spanish","backColor":"black","theopacity":"1"})
+            listModel.get(4).subNode.append({"iconsource":"qrc:/images/images/Spanish&Mexcio.png","selectlanguage":"Spanish","backColor":"black","theopacity":"1"})
+            listModel.get(4).subNode.append({"iconsource":"qrc:/images/images/Thai.png","selectlanguage":"Thai","backColor":"black","theopacity":"1"})
+            listModel.get(4).subNode.append({"iconsource":"qrc:/images/images/Turkish.png","selectlanguage":"Turkish","backColor":"black","theopacity":"1"})
+            listModel.get(5).subNode.append({"iconsource":"qrc:/images/images/Vietnam.png","selectlanguage":"Vietnam","backColor":"black","theopacity":"1"})
         }
     }
 
@@ -557,59 +567,133 @@ Item {
         anchors.topMargin: (Screen.height-dialog.height)/2
         anchors.left: parent.left
         anchors.leftMargin: (Screen.width - dialog.width)/2
-        width: languageRep.visible ? 1270 : 700
-        height: languageRep.visible ? 659 : 525
+        width: language.visible ? 1270 : 700
+        height: language.visible ? 659 : 525
         source: "qrc:/images/images/dialogbg.png"
         z: background.z+1
-        Grid {
-            id: language
-            property int selectIndex: -1
-            visible: false
+        Image {
+            id: scrollUp
             anchors.top: parent.top
             anchors.topMargin: 30
+            anchors.right: parent.right
+            anchors.rightMargin: 10
+            width: 17
+            height: 10
+            visible: language.visible
+            source: "qrc:/images/images/up.png"
+        }
+        Image {
+            id: scrollDown
+            anchors.bottom: okButton.top
+            anchors.bottomMargin: 20
+            anchors.right: parent.right
+            anchors.rightMargin: 10
+            width: 17
+            height: 10
+            visible: language.visible
+            source: "qrc:/images/images/down.png"
+        }
+        Rectangle {
+            id: scrollbar
+            width: 10
+            anchors.top: scrollUp.bottom
+            anchors.bottom: scrollDown.top
+            anchors.right: parent.right
+            anchors.rightMargin: 14
+            color: "#585858"
+            radius: 10
+            visible: language.visible
+            Rectangle {
+                id: button
+                anchors.left: parent.left
+                y: (language.visibleArea.yPosition < 0 ) ? 0 : (language.contentY+language.height>language.contentHeight) ?
+                    scrollbar.height - button.height : language.visibleArea.yPosition * scrollbar.height
+                width: 10
+                height: language.visibleArea.heightRatio * scrollbar.height;
+                color: "#ccbfbf"
+                radius: 10
+                // 鼠标区域
+                MouseArea {
+                    id: mouseArea
+                    anchors.fill: button
+                    drag.target: button
+                    drag.axis: Drag.YAxis
+                    drag.minimumY: 0
+                    drag.maximumY: scrollbar.height - button.height
+                    // 拖动
+                    onMouseYChanged: {
+                        language.contentY = button.y / scrollbar.height * language.contentHeight
+                    }
+                }
+            }
+        }
+        ListView {
+            id: language
+            property int selectrow: -1
+            property int selectColum: -1
+            anchors.top: parent.top
+            anchors.topMargin: 30
+            anchors.right: scrollbar.left
+            anchors.rightMargin: 10
             anchors.left: parent.left
-            anchors.leftMargin: (parent.width-8*135)/2
-            columns: 8
-            rows: 4
-            Repeater {
-                id: languageRep
-                model: listModel
-                delegate: Rectangle {
-                    property string backColor: "black"
-                    id: languageRec
-                    width: 135
-                    height: 135
-                    color: backColor
-                    border.width: 1
-                    border.color: "#0079C1"
-                    Image {
-                        anchors.centerIn: parent
-                        source: iconsource
-                        MouseArea {
-                            anchors.fill: parent
-                            onClicked: {
-                                if (language.selectIndex == -1) {
-                                    languageRep.itemAt(index).backColor = "#29afff"
-                                    languageRep.itemAt(index).opacity = 0.5
-                                    language.selectIndex = index
-                                } else {
-                                    languageRep.itemAt(language.selectIndex).opacity = 1
-                                    languageRep.itemAt(language.selectIndex).backColor = "black"
-                                    languageRep.itemAt(index).opacity = 0.5
-                                    languageRep.itemAt(index).backColor = "#29afff"
-                                    language.selectIndex = index
+            anchors.leftMargin: 20
+            anchors.bottom: okButton.top
+            anchors.bottomMargin: 20
+            clip: true
+            visible: false
+            model: listModel
+            delegate: Item {
+                property int listIndex: -1
+                width: language.width
+                height: 120
+                Component.onCompleted: {
+                    listIndex = index
+                }
+                Row {
+                    width: language.width
+                    height: 120
+                    Repeater {
+                        id: languageRep
+                        model: subNode
+                        delegate: Rectangle {
+                            width: language.width/7
+                            height: 120
+                            color: model.backColor
+                            border.width: 1
+                            border.color: "#0079C1"
+                            opacity: model.theopacity
+                            Image {
+                                anchors.top: parent.top
+                                anchors.topMargin: -20
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                source: model.iconsource
+                                MouseArea {
+                                    anchors.fill: parent
+                                    onClicked: {
+                                        if (language.selectrow == -1) {
+                                            listModel.get(listIndex).subNode.set(index,{"backColor":"#29afff","theopacity":"0.5"})
+                                            language.selectrow = listIndex
+                                            language.selectColum = index
+                                        } else {
+                                            listModel.get(language.selectrow).subNode.set(language.selectColum,{"backColor":"black","theopacity":"1"})
+                                            listModel.get(listIndex).subNode.set(index,{"backColor":"#29afff","theopacity":"0.5"})
+                                            language.selectrow = listIndex
+                                            language.selectColum = index
+                                        }
+                                    }
                                 }
                             }
+                            Text {
+                                id: selectText
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                anchors.bottom: parent.bottom
+                                anchors.bottomMargin: 6
+                                font.family: "arial"
+                                font.pixelSize: 20
+                                color: "white"
+                                text: model.selectlanguage
+                            }
                         }
-                    }
-                    Text {
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        anchors.bottom: parent.bottom
-                        anchors.bottomMargin: 6
-                        font.family: "arial"
-                        font.pixelSize: 20
-                        color: "white"
-                        text: selectlanguage
                     }
                 }
             }
@@ -695,8 +779,8 @@ Item {
             iconSource: "qrc:/images/images/OK.png"
             text: qsTr("OK")
             onClicked: {
-                if (languageRep.visible ) {
-                    languageButton.source = listModel.get(language.selectIndex).iconsource
+                if (language.visible ) {
+                    languageButton.source = listModel.get(language.selectrow).subNode.get(language.selectColum).iconsource
                 }
                 dialog.visible = false
                 background.visible = false
@@ -712,7 +796,7 @@ Item {
             anchors.right: okButton.left
             anchors.rightMargin: 20
             width: 180
-            visible: languageRep.visible
+            visible: language.visible
             iconSource: "qrc:/images/images/cancel.png"
             text: qsTr("Cancel")
             onClicked: {
