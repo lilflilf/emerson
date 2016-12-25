@@ -962,7 +962,7 @@ int HmiAdaptor::controlLimitProcess(QString type, QList<int> list, int redMax, i
     }
     else if (type == "Power+") {
         operateProcess->ControlLimitProcess(QUALITYPOWER,list,redMax,redMin,&upper,&lower);
-        return lower;
+        return upper;
     }
     else if (type == "Power-") {
         operateProcess->ControlLimitProcess(QUALITYPOWER,list,redMax,redMin,&upper,&lower);
@@ -970,7 +970,7 @@ int HmiAdaptor::controlLimitProcess(QString type, QList<int> list, int redMax, i
     }
     else if (type == "Pre-Height+") {
         operateProcess->ControlLimitProcess(QUALITYPREHEIGHT,list,redMax,redMin,&upper,&lower);
-        return lower;
+        return upper;
     }
     else if (type == "Pre-Height-") {
         operateProcess->ControlLimitProcess(QUALITYPREHEIGHT,list,redMax,redMin,&upper,&lower);
@@ -978,7 +978,7 @@ int HmiAdaptor::controlLimitProcess(QString type, QList<int> list, int redMax, i
     }
     else if (type == "Post-Height+") {
         operateProcess->ControlLimitProcess(QUALITYPOSTHEIGHT,list,redMax,redMin,&upper,&lower);
-        return lower;
+        return upper;
     }
     else if (type == "Post-Height-") {
         operateProcess->ControlLimitProcess(QUALITYPOSTHEIGHT,list,redMax,redMin,&upper,&lower);
