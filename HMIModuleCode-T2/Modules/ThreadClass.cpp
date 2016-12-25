@@ -26,15 +26,18 @@ void ThreadClass::run()
         {
             if(m_stop == true)
                 break;
+            qDebug()<<"Thread process"<<m_suspend;
+
             if(m_suspend == false)
             {
                 m_callbackHandle(m_arg);
-                qDebug()<<"Thread process";
             }else
             {
                 qDebug()<<"Thread suspend";
             }
+            qDebug()<<"123";
             QThread::msleep(500);
+            qDebug()<<"234";
         }
     }else{
         qDebug()<<"No function need to be executed";

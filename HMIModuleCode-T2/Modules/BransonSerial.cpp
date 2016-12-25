@@ -45,7 +45,7 @@ int BransonSerial::CheckIAportSet(long iBaudRate, long iComm)
     QString CommName;
     M2010 *_M2010 = M2010::Instance();
     ModRunSetup *_ModRunSetup = ModRunSetup::Instance();
-    TimerClass *_Timer = TimerClass::Instance();
+    TimerClass *_Timer = new TimerClass();
     char strCommand;
 //    Required to keep computers with different or fewer ports from shutting down program
     CommName = QString::number(iComm, 10);
@@ -104,6 +104,7 @@ int BransonSerial::CheckIAportSet(long iBaudRate, long iComm)
         }
     }
     _Timer->ResetCommandTimer();
+    delete _Timer;
     if(iResult == -1)
     {
         comIAport->close();

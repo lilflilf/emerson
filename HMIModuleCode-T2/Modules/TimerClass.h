@@ -16,12 +16,7 @@ public:
     bool IsCommandTimeout();
     void ResetCommandTimer();
 public:
-    static TimerClass* Instance();
-protected:
     explicit TimerClass(QObject *parent = 0);
-private:
-    static TimerClass* _instance;
-public:
     ~TimerClass();
 signals:
 

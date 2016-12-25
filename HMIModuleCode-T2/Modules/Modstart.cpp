@@ -39,8 +39,8 @@ MODstart::MODstart()
     ModRunSetup *_ModRunSetup = ModRunSetup::Instance();
     InterfaceClass *_Interface = InterfaceClass::Instance();
 
-    _ModRunSetup->OfflineModeEnabled = true;
-    _ModRunSetup->GlobalOfflineModeEnabled = true;
+//    _ModRunSetup->OfflineModeEnabled = true;
+//    _ModRunSetup->GlobalOfflineModeEnabled = true;
 
     int check_result = 0;
 
@@ -366,7 +366,7 @@ int MODstart::CheckIOStatus()
     int FeedbackResult = 0;
     M2010         *_M2010  = M2010::Instance();
     M102IA        *_M102IA = M102IA::Instance();
-    TimerClass *_Timer = TimerClass::Instance();
+    TimerClass *_Timer = new TimerClass();
 //    ModRunSetup   *_ModRunSetup = ModRunSetup::Instance();
     InterfaceClass *_Interface = InterfaceClass::Instance();
     BransonSerial *_Serial = BransonSerial::Instance();
@@ -400,6 +400,7 @@ int MODstart::CheckIOStatus()
         }
     }
     _Timer->ResetCommandTimer();
+    delete _Timer;
     //--Check to make sure that the Pressure Rating is O.K.
     if (_M102IA->IOstatus.IO & 0x08)
     {
