@@ -10,7 +10,7 @@
 #include "UtilityClass.h"
 #include "TimerClass.h"
 #include "Interface/Interface.h"
-#include "Interface/Operate/MakeWeldProcess.h"
+#include "Interface/MakeWeld//MakeWeldProcess.h"
 #include <QCoreApplication>
 #include <QDebug>
 

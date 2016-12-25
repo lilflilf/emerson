@@ -64,7 +64,7 @@ SOURCES += main.cpp \
     Modules/StatisticalFunction.cpp \
     Modules/TimerClass.cpp \
     Modules/ThreadClass.cpp \
-    Interface/Operate/MakeWeldProcess.cpp
+    Interface/MakeWeld/MakeWeldProcess.cpp
 
 
 
@@ -133,7 +133,7 @@ HEADERS += \
     Modules/StatisticalFunction.h \
     Modules/TimerClass.h \
     Modules/ThreadClass.h \
-    Interface/Operate/MakeWeldProcess.h
+    Interface/MakeWeld/MakeWeldProcess.h
 
 DISTFILES += \
 #    UI/displayChinese_zh_CN.qm \

@@ -17,7 +17,7 @@
 #include "Interface/Settings/PermissionSetting.h"
 #include "Interface/Settings/WeldDefaults.h"
 #include "Interface/Settings/DataCommunication.h"
-#include "Interface/Operate/MakeWeldProcess.h"
+#include "Interface/MakeWeld/MakeWeldProcess.h"
 #include <QMutex>
 #include "Interface/ViewData/StatisticalTrend.h"
 #define TOPATH "C:/BransonData/Library/SpliceImage/"
