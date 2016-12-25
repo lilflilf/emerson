@@ -46,7 +46,6 @@ Item {
         }
         heightList = alarmModel.getPoint2()
         pointy = canvasLoader.height / ((alarmModel.getAxes("Pre-Height") - alarmModel.getAxes("Post-Height"))/8 * 2 + (alarmModel.getAxes("Pre-Height") - alarmModel.getAxes("Post-Height")))
-        console.log("xxxxxxxxxxxxxxxxxxxx  setPoint",heightList.length,pointy)
         for (i = 0; i < heightList.length; i++)
         {
             listModelRight.append({"x":i * pointx,"y":canvasLoader.height - (heightList[i]-alarmModel.getAxes("Post-Height") + ((alarmModel.getAxes("Pre-Height") - alarmModel.getAxes("Post-Height"))/8)) * pointy})

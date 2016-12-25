@@ -1765,6 +1765,11 @@ void AlarmModel::setStartTime()
     startTime = QDateTime::currentDateTime();
 }
 
+void AlarmModel::editNew(int weldId)
+{
+    m_weldHistoryAdaptor->QueryOneRecordFromTable(weldId,&weldResultElement);
+}
+
 QVariant AlarmModel::data(const QModelIndex &index, int role) const
 {
     QVariant value;

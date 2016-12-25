@@ -35,9 +35,9 @@ Item {
         }
     }
 
-    Component.onCompleted: {
-        hmiAdaptor.operateProcessExec("Start")
-    }
+//    Component.onCompleted: {
+//        hmiAdaptor.operateProcessExec("Start")
+//    }
 //    Component.onDestruction: {
 //        hmiAdaptor.operateProcessExec("Stop")
 //    }
