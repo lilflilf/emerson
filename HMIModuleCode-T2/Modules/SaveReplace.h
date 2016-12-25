@@ -9,11 +9,11 @@
 #include "Interface/definition.h"
 using namespace std;
 
-const int MINWIREINDEX = 0;
-const int MAXWIREINDEX = 19;
-const int MAXNOOFWIRES = 20;
-const int MAXNOOFFILES = 500;
-const int TEACH_AUTO_THRESHOLD = 5;
+#define MINWIREINDEX            0
+#define MAXWIREINDEX            19
+#define MAXNOOFWIRES            20
+#define MAXNOOFFILES            500
+#define TEACH_AUTO_THRESHOLD    5
 
 struct CommonFile
 {

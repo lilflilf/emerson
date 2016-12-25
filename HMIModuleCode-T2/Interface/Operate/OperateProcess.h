@@ -37,11 +37,12 @@ private:
     bool HeightGraphReceive();
     bool PowerGraphReceive();
     static void WeldCycleDaemonThread(void*);
-    static void AcceptWeldResult(void*);
+//    static void AcceptWeldResult(void*);
 signals:
     void WeldCycleCompleted(const bool &_status);
 public slots:
     void WeldResultFeedbackEventSlot(bool &bResult);
+    void CheckWeldAlarm();
 public:
     bool _start();
     bool _stop();
@@ -50,6 +51,7 @@ public:
     void ControlLimitProcess(enum QUALITYTYPE Type, QList<int> &RawList, int USL, int LSL,
                              int* UCL, int* LCL);
     void StopTeachMode();
+    void TeachModeProcess();
 public:
     static OperateProcess* Instance();
 private:

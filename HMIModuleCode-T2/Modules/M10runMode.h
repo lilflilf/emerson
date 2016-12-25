@@ -86,12 +86,12 @@ public:
     void run_setup();
     void next_splice_in();
     void get_weld();
-    void init_m20_data_events();
+    void init_m20_data_events(PresetElement *_Splice);
 
     int GetPressureFromString(string InString, int ShowPressureUnit);
     string MakePressureToString(int PressureData, int ShowPressureUnit);
 
-    void CheckWeldData(int weldresult = -1);
+    bool CheckWeldData(int weldresult = -1);
 
     void CalculateTeachMode(PresetElement* _Splice);
 

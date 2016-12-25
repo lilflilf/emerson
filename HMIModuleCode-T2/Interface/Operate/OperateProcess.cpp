@@ -137,11 +137,42 @@ bool OperateProcess::HeightGraphReceive()
     return bResult;
 }
 
-void OperateProcess::AcceptWeldResult(void* _obj)
+//void OperateProcess::AcceptWeldResult(void* _obj)
+//{
+//    OperateProcess* _ObjectPtr = (OperateProcess*)_obj;
+//    M10runMode* _M10runMode = M10runMode::Instance();
+//    _M10runMode->CalculateTeachMode(&_ObjectPtr->CurrentSplice);
+//}
+
+void OperateProcess::TeachModeProcess()
 {
-    OperateProcess* _ObjectPtr = (OperateProcess*)_obj;
     M10runMode* _M10runMode = M10runMode::Instance();
-    _M10runMode->CalculateTeachMode(&_ObjectPtr->CurrentSplice);
+//    InterfaceClass *_Interface = InterfaceClass::Instance();
+//    if(CurrentNecessaryInfo.IsTestProcess == true)
+//    {
+//        struct BransonMessageBox tmpMsgBox;
+//        switch(CurrentSplice.TestSetting.TeachModeSetting.TeachModeType)
+//        {
+//        case STANDARD:
+//            tmpMsgBox.MsgTitle = QObject::tr("Teach Mode - Standard");
+//            tmpMsgBox.MsgPrompt = QObject::tr("Please hit the button to start next.");
+//            tmpMsgBox.TipsMode = Information | ACCEPTReject;
+//            tmpMsgBox.func_ptr = OperateProcess::AcceptWeldResult;
+//            tmpMsgBox._Object = this;
+//            _Interface->cMsgBox(&tmpMsgBox);
+//            break;
+//        case SIGMA:
+//        case AUTO:
+//            _M10runMode->CalculateTeachMode(CurrentSplice);
+//            break;
+//        case UNDEFINED:
+//            break;
+//        default:
+//            break;
+//        }
+
+//    }
+    _M10runMode->CalculateTeachMode(&CurrentSplice);
 }
 
 void OperateProcess::WeldCycleDaemonThread(void* _obj)
@@ -153,6 +184,7 @@ void OperateProcess::WeldCycleDaemonThread(void* _obj)
     M10runMode* _M10runMode = M10runMode::Instance();
     Statistics* _Statistics = Statistics::Instance();
     DBWeldResultTable* _WeldResultDB = DBWeldResultTable::Instance();
+    bool Invalidweld = false;
     //1. Receive Power and Height Graph Data
     switch(_ObjectPtr->CurrentStep)
     {
@@ -210,43 +242,22 @@ void OperateProcess::WeldCycleDaemonThread(void* _obj)
         //2. Save the Weld result into the Database
         int iResult =
             _WeldResultDB->InsertRecordIntoTable(&_ObjectPtr->CurrentWeldResult);
-        if(iResult != -1)
-            _ObjectPtr->CurrentWeldResult.WeldResultID = iResult;
-//        //3. Update Maintenance Count
-//        _M10runMode->UpdateMaintenanceData();
-        //4. Alarm handle
-        _M10runMode->CheckWeldData(iResult);
+        _ObjectPtr->CurrentWeldResult.WeldResultID = iResult;
+        //3. Alarm handle
+        Invalidweld = _M10runMode->CheckWeldData(iResult);
+        //4. Update Maintenance Count
+        if(Invalidweld == false)
+            _M10runMode->UpdateMaintenanceData(); //Increment Maintenance Counters here
         //5. Teach Mode
-        if(_ObjectPtr->CurrentNecessaryInfo.IsTestProcess == true)
-        {
-            struct BransonMessageBox tmpMsgBox;
-            switch(_ObjectPtr->CurrentSplice.TestSetting.TeachModeSetting.TeachModeType)
-            {
-            case STANDARD:
-            case SIGMA:
-                tmpMsgBox.MsgTitle = QObject::tr("Teach Mode - Standard");
-                tmpMsgBox.MsgPrompt = QObject::tr("Please hit the button to start next.");
-//                tmpMsgBox.TipsMode = Information | ACCEPTReject;
-                tmpMsgBox.func_ptr = OperateProcess::AcceptWeldResult;
-                tmpMsgBox._Object = _ObjectPtr;
-                _Interface->cMsgBox(&tmpMsgBox);
-                break;
-            case AUTO:
-                _M10runMode->CalculateTeachMode(&_ObjectPtr->CurrentSplice);
-                break;
-            case UNDEFINED:
-                break;
-            default:
-                break;
-            }
-
-        }
-
+//        _ObjectPtr->TeachModeProcess();
         //6. Shrink Tube
         //7. Remote Data sending
         _Statistics->HistoryEvent(_ObjectPtr->CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderName,
                 _ObjectPtr->CurrentNecessaryInfo.CurrentPart.PartName, &_ObjectPtr->CurrentWeldResult, &_ObjectPtr->CurrentSplice);
-
+        if((_M102IA->IAactual.Alarmflags & 0x4000) == 0x4000)
+            _ObjectPtr->WeldCycleStatus = true;
+        else
+            _ObjectPtr->WeldCycleStatus = false;
         emit _ObjectPtr->WeldCycleCompleted(&_ObjectPtr->WeldCycleStatus);
         m_Thread->setStopEnabled(true);
         m_Thread->setSuspendEnabled(true);
@@ -265,9 +276,16 @@ void OperateProcess::WeldResultFeedbackEventSlot(bool& bResult)
     m_Thread->start();
 }
 
+void OperateProcess::CheckWeldAlarm()
+{
+    M10runMode* _M10runMode = M10runMode::Instance();
+    _M10runMode->CheckWeldData(-1);
+}
+
 bool OperateProcess::_start()
 {
     M102IA *_M102IA = M102IA::Instance();
+    M10runMode* _M10runMode = M10runMode::Instance();
     InterfaceClass* _Interface = InterfaceClass::Instance();
     struct BransonMessageBox tmpMsgBox;
     _Interface->FirstScreenComesUp = true;
@@ -284,6 +302,11 @@ bool OperateProcess::_start()
         m_Thread = new ThreadClass(0, (void*)(OperateProcess::WeldCycleDaemonThread), this);
         m_Thread->setStopEnabled(false);
         m_Thread->setSuspendEnabled(false);
+        if(CurrentNecessaryInfo.IsTestProcess == true)
+        {
+            if(CurrentSplice.TestSetting.TeachModeSetting.TeachModeType != UNDEFINED)
+                _M10runMode->init_m20_data_events(&CurrentSplice);
+        }
         connect(_M102IA, SIGNAL(WeldResultFeedback(bool&)),
                 this,SLOT(WeldResultFeedbackEventSlot(bool&)));
     }
@@ -360,6 +383,12 @@ bool OperateProcess::_execute()
     _M102IA->SendIACommand(IAComSetPreburst, CurrentSplice.WeldSettings.AdvanceSetting.PreBurst);
 
 
+    if(WeldCycleStatus == false)
+    {
+        bResult = false;
+        return bResult;
+    }
+
     Retries = 0;
     _M2010->ReceiveFlags.HostReadyData = false;
     while(_M2010->ReceiveFlags.HostReadyData == false)
@@ -410,9 +439,9 @@ void OperateProcess::ControlLimitProcess(QUALITYTYPE Type, QList<int> &RawList,
                     LSL);
         break;
     case QUALITYPOWER:
-        UpperSpecValue = _Utility->FormatedDataToFloat(DINPowerPl,
+        UpperSpecValue = _Utility->FormatedDataToInteger(DINPowerPl,
                     USL);
-        LowerSpecValue = _Utility->FormatedDataToFloat(DINPowerMs,
+        LowerSpecValue = _Utility->FormatedDataToInteger(DINPowerMs,
                     LSL);
         break;
     case QUALITYPREHEIGHT:
@@ -437,7 +466,7 @@ void OperateProcess::ControlLimitProcess(QUALITYTYPE Type, QList<int> &RawList,
             tmpValue = _Utility->FormatedDataToFloat(DINActTime, RawList.at(i));
             break;
         case QUALITYPOWER:
-            tmpValue = _Utility->FormatedDataToFloat(DINActPower, RawList.at(i));
+            tmpValue = _Utility->FormatedDataToInteger(DINActPower, RawList.at(i));
             break;
         case QUALITYPREHEIGHT:
             tmpValue = _Utility->FormatedDataToFloat(DINActPreHgt, RawList.at(i));
