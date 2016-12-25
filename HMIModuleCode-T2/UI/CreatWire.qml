@@ -12,8 +12,9 @@ Item {
     property var weldModel: -1
     property var stepModel: -1
 
+    property bool firstComeIn: true
     signal signalSaveSplice(var spliceId)
-    property bool crossSection: true
+    property bool crossSection: false
     property int selectIndex: 0
     property bool detailIsChang: true
     property bool bIsStep: false
@@ -1226,6 +1227,8 @@ Item {
             color: "white"
             opacity: 0.5
             onTextChanged: {
+                if (firstComeIn)
+                    return
                 if (crossSection)
                     return
                 if (crossSection == false && bIsEditSplice == false)
@@ -2266,7 +2269,7 @@ Item {
                     return
                 } else {
                     if (repeater.model == settingsModel)
-                        crossSection = false
+                        crossSection = true
                     repeater.model.set(creatWire.selectIndex,{"bottomText":keyNum.inputText})
                     repeater.itemAt(creatWire.selectIndex).localbordercolor = "#0079c1"
                 }

@@ -50,6 +50,7 @@ Item {
                 loader.item.editSplice(list)
                 bIsEditSplice = false
             }
+            loader.item.firstComeIn = false
         }
     }
     ListModel{
