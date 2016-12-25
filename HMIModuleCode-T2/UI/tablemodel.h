@@ -293,7 +293,8 @@ protected:
     QVariant data(const QModelIndex &index, int role) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
     QHash<int, QByteArray> roleNames() const;
-
+    QMap<int, WeldResultElement> historyList;
+    QMap<int, PresetElement> presetList;
 signals:
 
 

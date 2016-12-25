@@ -45,7 +45,7 @@ int BransonSerial::CheckIAportSet(long iBaudRate, long iComm)
     QString CommName;
     M2010 *_M2010 = M2010::Instance();
     ModRunSetup *_ModRunSetup = ModRunSetup::Instance();
-    TimerClass *_Timer = new TimerClass();
+    TimerClass *_Timer = TimerClass::Instance();
     char strCommand;
 //    Required to keep computers with different or fewer ports from shutting down program
     CommName = QString::number(iComm, 10);
@@ -63,12 +63,13 @@ int BransonSerial::CheckIAportSet(long iBaudRate, long iComm)
     comIAport->open(QIODevice::ReadWrite);
     comIAport->clearError();
     comIAport->clear();
-
     strCommand = 0x11;
-    IAportSend(strCommand);
+    QByteArray Buffer = QByteArray(&strCommand, 1);
+    IAportSend(Buffer);
     //ENQuirey, IA sends back "U"
     strCommand = IAcomfunctionENQ;
-    IAportSend(strCommand);
+    Buffer = QByteArray(&strCommand, 1);
+    IAportSend(Buffer);
     _Timer->SetCommandTimer(500);
     while (_Timer->IsCommandTimeout() == false)
     {
@@ -80,15 +81,17 @@ int BransonSerial::CheckIAportSet(long iBaudRate, long iComm)
             break;
         }
     }
-
+    _Timer->ResetCommandTimer();
     if(iResult == 1)
         return iResult;
 
     strCommand = 0x11;
-    IAportSend(strCommand);
+    Buffer = QByteArray(&strCommand, 1);
+    IAportSend(Buffer);
     //ENQuirey, IA sends back "U"
     strCommand = IAcomfunctionENQ;
-    IAportSend(strCommand);
+    Buffer = QByteArray(&strCommand, 1);
+    IAportSend(Buffer);
     _Timer->SetCommandTimer(500);
     while (_Timer->IsCommandTimeout() == false)
     {
@@ -100,7 +103,7 @@ int BransonSerial::CheckIAportSet(long iBaudRate, long iComm)
             break;
         }
     }
-//    ResetCommandTimer();
+    _Timer->ResetCommandTimer();
     if(iResult == -1)
     {
         comIAport->close();
@@ -141,12 +144,15 @@ void BransonSerial::comIAportReadEventSlot()
             {
                 ptr_M102IA->HexLineBufferCheck(NextLine);
                 Command = 0x13;
-                IAportSend(Command);
+                DataBuffer = QByteArray(&Command, 1);
+                IAportSend(DataBuffer);
                 NextLine.clear();
                 Command = 0x11;
-                IAportSend(Command);
+                DataBuffer = QByteArray(&Command, 1);
+                IAportSend(DataBuffer);
                 Command = 0x06;
-                IAportSend(Command);
+                DataBuffer = QByteArray(&Command, 1);
+                IAportSend(DataBuffer);
             }
             break;
         case 10:
@@ -176,20 +182,20 @@ void BransonSerial::comIAportReadEventSlot()
 
 }
 
-bool BransonSerial::IAportSend(char data)
-{
-    _Mutex->lock();
-    char tmpData = data;
-    bool bResult = false;
-    int iResult = comIAport->write(&tmpData,1); //XON
-    _Mutex->unlock();
-    if(iResult == -1)
-        bResult = false;
-    else
-        bResult = true;
-    bResult = comIAport->waitForBytesWritten(-1);
-    return bResult;
-}
+//bool BransonSerial::IAportSend(char data)
+//{
+//    _Mutex->lock();
+//    char tmpData = data;
+//    bool bResult = false;
+//    int iResult = comIAport->write(&tmpData,1); //XON
+//    _Mutex->unlock();
+//    if(iResult == -1)
+//        bResult = false;
+//    else
+//        bResult = true;
+//    bResult = comIAport->waitForBytesWritten(-1);
+//    return bResult;
+//}
 
 bool BransonSerial::IAportSend(QByteArray data)
 {

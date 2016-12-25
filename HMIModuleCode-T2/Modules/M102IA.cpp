@@ -483,7 +483,8 @@ void M102IA::SendIACommand(IACommands CommandNumber, int CommandData)
             QByteArray Buffer = OutStr.toLatin1();
             BransonSerial::IAportSend(Buffer);
             char Command = 0x11;
-            BransonSerial::IAportSend(Command);
+            Buffer = QByteArray(&Command, 1);
+            BransonSerial::IAportSend(Buffer);
         }
     #endif
 }
@@ -491,7 +492,7 @@ void M102IA::SendIACommand(IACommands CommandNumber, int CommandData)
 bool M102IA::WaitForResponseAfterSent(int TimeOut, bool *CheckResponseFlag)
 {
     ModRunSetup *_ModRunSetup = ModRunSetup::Instance();
-    TimerClass *_Timer = new TimerClass();
+    TimerClass *_Timer = TimerClass::Instance();
     _Timer->SetCommandTimer(TimeOut);
 //    *CheckResponseFlag = false;
     while (*CheckResponseFlag == false)
@@ -503,7 +504,7 @@ bool M102IA::WaitForResponseAfterSent(int TimeOut, bool *CheckResponseFlag)
     };
     if(_ModRunSetup->OfflineModeEnabled == true)
         *CheckResponseFlag = true;
-    delete _Timer;
+    _Timer->ResetCommandTimer();
     return *CheckResponseFlag;
 }
 
@@ -696,6 +697,7 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         //  (length = 51 Characters)
         int StringLen, StringCount, LastString;
         int num, Total, tmpIndex, Datalen;
+        num = 0;
         StringLen = HexString.length();
         StringCount = int(StringLen / 51);
         LastString = StringLen % 51;
@@ -725,7 +727,6 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         }
         RawPowerDataGraph.CurrentIndex = num;
         _M2010->ReceiveFlags.PowerGraphData = true;
-//        _M2010->ConvertGraphData(PowerString);
         break;
     case IASigSerialNumber:
         SerialNoData = _M2010->ParseSerialNumber(HexString.mid(9, 32));
@@ -979,8 +980,8 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         StringCount = int(StringLen / 83);
         LastString = StringLen % 83;
         PowerString = "";
-//        StartData = 17;      //First data character
         tmpIndex = 0;
+        num = 0;
         Total = MakeHexWordNumber(HexString.mid((tmpIndex + 9), 4)); // include the one empty byte
         RawHeightDataGraph.TotalFrame = Total;
         for (i = 0; i < StringCount; i++)
@@ -988,7 +989,7 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
             Total = MakeHexWordNumber(HexString.mid((tmpIndex + 9), 4));
             num = MakeHexWordNumber(HexString.mid(tmpIndex + 13, 4));
             RawHeightDataGraph.GraphDataList.insert(num,HexString.mid(tmpIndex, 83));
-            qDebug()<<"Total: "<<Total << " Index: "<<num<<" str: "<<HexString.mid(tmpIndex, 51);
+//            qDebug()<<"Total: "<<Total << " Index: "<<num<<" str: "<<HexString.mid(tmpIndex, 83);
             tmpIndex = tmpIndex + 83;
         }
         if (LastString > 0)
@@ -997,7 +998,7 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
             Total = MakeHexWordNumber(HexString.mid((tmpIndex + 9), 4));
             num = MakeHexWordNumber(HexString.mid(tmpIndex + 13, 4));
             Datalen = MakeHexWordNumber(HexString.mid(tmpIndex + 1, 4));
-            qDebug()<<"Total: "<<Total << " Index: "<<num<<" str: "<<HexString.mid(tmpIndex, LastString);
+//            qDebug()<<"Total: "<<Total << " Index: "<<num<<" str: "<<HexString.mid(tmpIndex, LastString);
             if ((Datalen - 4) != ((LastString - 19) / 2))
                 num = num - 1;
             else
@@ -1019,7 +1020,7 @@ void M102IA::SendCommandData(int CommandData)
     M2010 *_M2010 = M2010::Instance();
     ModRunSetup *_ModRunSetup = ModRunSetup::Instance();
     InterfaceClass *_Interface = InterfaceClass::Instance();
-    TimerClass *_Timer = new TimerClass();
+    TimerClass *_Timer = TimerClass::Instance();
     Retries = 0;
     Time = 500;
     //SendCommandSetRunMode CommandData
@@ -1033,6 +1034,7 @@ void M102IA::SendCommandData(int CommandData)
         if (_ModRunSetup->OfflineModeEnabled == true) break;
         if ((_Timer->IsCommandTimeout() == true) && (Retries < 20))
         {
+            _Timer->ResetCommandTimer();
             SendIACommand(IAComHostReady, CommandData);
             _Timer->SetCommandTimer(Time);
             Retries = Retries + 1;
@@ -1040,7 +1042,7 @@ void M102IA::SendCommandData(int CommandData)
         else if (Retries >= 19)
             break;
      }
-    delete _Timer;
+    _Timer->ResetCommandTimer();
     if (Retries >= 19)
     {
 //        MsgBox "Can't get Response from controller!"
@@ -1065,7 +1067,7 @@ bool M102IA::SetIAWidth(int WidthSet, bool SettingCheck)
     ModRunSetup* _ModRunSetup = ModRunSetup::Instance();
 //    InterfaceClass* _Interface = InterfaceClass::Instance();
     OperateProcess* _Operate   = OperateProcess::Instance();
-    TimerClass* _Timer = new TimerClass();
+    TimerClass* _Timer = TimerClass::Instance();
     //This command is ignored if the safety cover does not exist
     //Aux Motion Control, Close Safety Cover
 
@@ -1098,7 +1100,7 @@ bool M102IA::SetIAWidth(int WidthSet, bool SettingCheck)
             Done = true;
         }
     }
-    delete _Timer;
+    _Timer->ResetCommandTimer();
     //Aux Motion Control, Open Safety Cover
     //SendIACommand IAComAuxMotion, DO_OPEN_SAFETY
     if (_M2010->ReceiveFlags.WIDTHdata == false)
