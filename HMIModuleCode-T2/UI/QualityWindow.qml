@@ -19,14 +19,26 @@ Item {
     function setData()
     {
         qualityListViewTwo.model = 0
-        if (selectIndex == 0)
+        if (selectIndex == 0) {
             qualityListViewTwo.model = timeModel.length
+        }
         else if (selectIndex == 1)
             qualityListViewTwo.model = powerModel.length
         else if (selectIndex == 2)
             qualityListViewTwo.model = preModel.length
         else if (selectIndex == 3)
             qualityListViewTwo.model = postModel.length
+
+        if (qualityModel.get(selectIndex).yellowMax == -1)
+            yellowMaxLine.visible = false
+        else {
+            yellowMaxLine.anchors.bottomMargin = window2Back.height * 0.1 + qualityModel.get(selectIndex).yellowMax / (qualityModel.get(selectIndex).redMax - qualityModel.get(selectIndex).redMin) * window2Back.height * 0.8
+        }
+        if (qualityModel.get(selectIndex).yellowMin == -1)
+            yellowMinLine.visible = false
+        else {
+            yellowMinLine.anchors.bottomMargin = window2Back.height * 0.1 + qualityModel.get(selectIndex).yellowMin / (qualityModel.get(selectIndex).redMax - qualityModel.get(selectIndex).redMin) * window2Back.height * 0.8
+        }
     }
 
     Text {
@@ -134,11 +146,12 @@ Item {
                     }
                 }
                 Line {
-                    anchors.top: parent.top
-                    anchors.topMargin: parent.height * 0.2
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: yellowMax /(redMax-redMin) * parent.height * 0.8 + parent.height * 0.1
                     lineColor: "yellow"
                     width: parent.width
                     height: 2
+                    visible: yellowMax == -1 ? false : true
                     Text {
                         text: yellowMax
                         font.family: "arial"
@@ -151,10 +164,11 @@ Item {
                 }
                 Line {
                     anchors.bottom: parent.bottom
-                    anchors.bottomMargin: parent.height * 0.2
+                    anchors.bottomMargin: yellowMin /(redMax-redMin) * parent.height * 0.8 + parent.height * 0.1
                     lineColor: "yellow"
                     width: parent.width
                     height: 2
+                    visible: yellowMin == -1 ? false : true
                     Text {
                         text: yellowMin
                         font.family: "arial"
@@ -254,6 +268,7 @@ Item {
     }
 
     Rectangle {
+        id: window2Back
         color: "#6d6e71"
         visible: qualityListViewTwo.visible
         width: qualityParent.width
@@ -275,13 +290,15 @@ Item {
             height: 2
         }
         Line {
-            anchors.top: parent.top
-            anchors.topMargin: parent.height * 0.2
+            id: yellowMaxLine
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: parent.height * 0.2
             lineColor: "yellow"
             width: parent.width
             height: 2
         }
         Line {
+            id: yellowMinLine
             anchors.bottom: parent.bottom
             anchors.bottomMargin: parent.height * 0.2
             lineColor: "yellow"

@@ -948,6 +948,44 @@ void HmiAdaptor::operateProcessExec(QString type)
         operateProcess->_execute();
 }
 
+int HmiAdaptor::controlLimitProcess(QString type, QList<int> list, int redMax, int redMin)
+{
+    int upper;
+    int lower;
+    if (type == "Time+") {
+        operateProcess->ControlLimitProcess(QUALITYTIME,list,redMax,redMin,&upper,&lower);
+        return upper;
+    }
+    else if (type == "Time-") {
+        operateProcess->ControlLimitProcess(QUALITYTIME,list,redMax,redMin,&upper,&lower);
+        return lower;
+    }
+    else if (type == "Power+") {
+        operateProcess->ControlLimitProcess(QUALITYPOWER,list,redMax,redMin,&upper,&lower);
+        return lower;
+    }
+    else if (type == "Power-") {
+        operateProcess->ControlLimitProcess(QUALITYPOWER,list,redMax,redMin,&upper,&lower);
+        return lower;
+    }
+    else if (type == "Pre-Height+") {
+        operateProcess->ControlLimitProcess(QUALITYPREHEIGHT,list,redMax,redMin,&upper,&lower);
+        return lower;
+    }
+    else if (type == "Pre-Height-") {
+        operateProcess->ControlLimitProcess(QUALITYPREHEIGHT,list,redMax,redMin,&upper,&lower);
+        return lower;
+    }
+    else if (type == "Post-Height+") {
+        operateProcess->ControlLimitProcess(QUALITYPOSTHEIGHT,list,redMax,redMin,&upper,&lower);
+        return lower;
+    }
+    else if (type == "Post-Height-") {
+        operateProcess->ControlLimitProcess(QUALITYPOSTHEIGHT,list,redMax,redMin,&upper,&lower);
+        return lower;
+    }
+}
+
 void HmiAdaptor::statisticalTrendApply(int SpliceID, QString SpliceName, unsigned int time_from, unsigned int time_to)
 {
     statisticalTrend->_apply(SpliceID,SpliceName,time_from,time_to);
