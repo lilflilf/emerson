@@ -169,5 +169,9 @@
         <file>images/current_operate.png</file>
         <file>images/left_operate.png</file>
         <file>images/right_operate.png</file>
+        <file>images/Canada&amp;french.png</file>
+        <file>images/Portuguese&amp;Brazil.png</file>
+        <file>images/Spanish&amp;Mexcio.png</file>
+        <file>images/us&amp;English.png</file>
     </qresource>
 </RCC>

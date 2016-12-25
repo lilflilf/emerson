@@ -83,7 +83,7 @@ int DBOperatorTable::InsertRecordIntoTable(void *_obj)
         qDebug() << "SQL Open:"<< query.lastError();
         return bResult;
     }
-
+    qDebug()<<"InsertRecordIntoTable"<<((OperatorElement*)_obj)->WhoCreatedNewID;
     query.prepare(SQLSentence[INSERT]);
     query.addBindValue(((OperatorElement*)_obj)->OperatorName);
     QDateTime TimeLabel = QDateTime::currentDateTime();
