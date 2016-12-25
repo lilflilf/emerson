@@ -17,7 +17,7 @@
 #include "Interface/Settings/PermissionSetting.h"
 #include "Interface/Settings/WeldDefaults.h"
 #include "Interface/Settings/DataCommunication.h"
-#include "Interface/Operate/OperateProcess.h"
+#include "Interface/Operate/MakeWeldProcess.h"
 #include <QMutex>
 #include "Interface/ViewData/StatisticalTrend.h"
 #define TOPATH "C:/BransonData/Library/SpliceImage/"
@@ -133,7 +133,7 @@ public:
     Q_INVOKABLE void statisticalTrendApply(int SpliceID, QString SpliceName, unsigned int time_from, unsigned int time_to);
 
     InterfaceClass *interfaceClass;
-    OperateProcess *operateProcess;
+    MakeWeldProcess *operateProcess;
     DBPresetTable *m_spliceAdaptor;
 
     WorkOrderModel *workOrderModel;

@@ -17,7 +17,7 @@ enum GRAPHSTEP
     STEPTrd,
 };
 
-class OperateProcess : public QObject
+class MakeWeldProcess : public QObject
 {
     Q_OBJECT
 public:
@@ -53,11 +53,11 @@ public:
     void StopTeachMode();
     void TeachModeProcess();
 public:
-    static OperateProcess* Instance();
+    static MakeWeldProcess* Instance();
 private:
-    explicit OperateProcess(QObject *parent = 0);
+    explicit MakeWeldProcess(QObject *parent = 0);
 private:
-    static OperateProcess* _instance;
+    static MakeWeldProcess* _instance;
 };
 
 #endif // OPERATEPROCESS_H
