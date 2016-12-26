@@ -46,9 +46,9 @@ PresetElement::PresetElement()
     WeldSettings.AdvanceSetting.StepWeld.TimeToStep = 0;
     WeldSettings.AdvanceSetting.ShrinkTube.ShrinkOption = false;
     WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTemperature
-            = _Interface->StatusData.ShrinkTubeDefaults.at(0).temp;
+            = 260; //_Interface->StatusData.ShrinkTubeDefaults.at(0).temp;
     WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime
-            = _Interface->StatusData.ShrinkTubeDefaults.at(0).Time;
+            = 9; //_Interface->StatusData.ShrinkTubeDefaults.at(0).Time;
     WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID = 1;
     HashCode = qHashBits(&WeldSettings, sizeof(WeldSettings), 0);
     WireIndex.clear();

@@ -129,15 +129,16 @@ public:
     Q_INVOKABLE bool dataCommunicationGetSwitch(QString index);
     Q_INVOKABLE QStringList dataCommunicationGetValue(QString index);
     Q_INVOKABLE bool dataCommunicationSetValue(QList<bool> boolList, QStringList strList, QString ip, QString port);
-
     Q_INVOKABLE void statisticalTrendApply(int SpliceID, QString SpliceName, unsigned int time_from, unsigned int time_to);
 
+    Q_INVOKABLE void msgBoxClick(bool clickOK);
+    BransonMessageBox bransonMessageBox;
     InterfaceClass *interfaceClass;
     MakeWeldProcess *operateProcess;
     DBPresetTable *m_spliceAdaptor;
 
     WorkOrderModel *workOrderModel;
-    SpliceModel *spliceModel;
+    SplicesModel *spliceModel;
     PartModel *partModel;
     OperatorModel *operatorModel;
     WireModel *wireModel;
@@ -160,6 +161,7 @@ public:
     QMutex mutex;
     StatisticalTrend *statisticalTrend;
     int taskBarHeight;
+    void (*func_ptr)(void*);
 signals:
     void widthCalibrationFinish(const bool &_Result);
     void heightCalibrationFinish(const bool &_Result);
@@ -170,7 +172,6 @@ public slots:
     void slotWeldCycleCompleted(bool result);
     void slotEnableDialog(struct BransonMessageBox &MsgBox);
     void slotDisableDialog(struct BransonMessageBox &MsgBox);
-    void test();
 };
 
 #endif // HMIADAPTOR_H

@@ -73,11 +73,11 @@ private:
 };
 
 
-class SpliceModel : public QAbstractTableModel
+class SplicesModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    explicit SpliceModel(QObject *parent = 0);
+    explicit SplicesModel(QObject *parent = 0);
     void setModelList(unsigned int time_from, unsigned int time_to);
     void setModelList();
 
@@ -121,7 +121,6 @@ public slots:
 
 private:
     QHash<int, QByteArray> m_roleNames;
-    VariantToString *m_variant;
 };
 
 
