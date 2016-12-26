@@ -1069,6 +1069,16 @@ int HmiAdaptor::controlLimitProcess(QString type, QList<int> list, int redMax, i
     }
 }
 
+void HmiAdaptor::teachModeProcess()
+{
+    operateProcess->TeachModeProcess();
+}
+
+void HmiAdaptor::stopTeachMode()
+{
+    operateProcess->StopTeachMode();
+}
+
 void HmiAdaptor::statisticalTrendApply(int SpliceID, QString SpliceName, unsigned int time_from, unsigned int time_to)
 {
     statisticalTrend->_apply(SpliceID,SpliceName,time_from,time_to);

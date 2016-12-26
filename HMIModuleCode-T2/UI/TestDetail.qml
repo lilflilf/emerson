@@ -32,7 +32,7 @@ Item {
                     return
                 }
             }
-
+            hmiAdaptor.teachModeProcess()
             setData()
             hmiAdaptor.operateProcessExec("Execute")
 
@@ -314,6 +314,7 @@ Item {
         anchors.bottom: parent.bottom
         text: qsTr("FINISH SAMPLE")
         onClicked: {
+            hmiAdaptor.stopTeachMode()
             finish.visible = false
             rightBottom.visible = true
             leftBottomItem.visible = false
@@ -348,9 +349,11 @@ Item {
         okText: "OK"
         cancelvisible: true
         cancelText: "CANCEL"
-        centerText: "Stand Teach Mode"
+        titleText: "Teach Mode - Standard"
+        centerText: "Please hit the button to start next"
         visible: false
         onCliceTo: {
+            hmiAdaptor.teachModeProcess()
             setData()
             hmiAdaptor.operateProcessExec("Execute")
         }
@@ -366,6 +369,7 @@ Item {
         centerText: "Test Complete"
         visible: false
         onCliceTo: {
+            hmiAdaptor.stopTeachMode()
             root.checkNeedPassWd(3)
         }
 
