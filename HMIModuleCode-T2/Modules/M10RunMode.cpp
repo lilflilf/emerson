@@ -221,19 +221,20 @@ bool M10runMode::CheckWeldData(int weldresult)
                 _M2010->M10Run.Alarm_found = true;
         }
         // HEIGHT CHECK FINISH
-        //check: is there some error due to parameters going out of bound
-        if(_M2010->M10Run.Alarm_found == false)
-        {
-            PreviousWeldValid = true;
-            if(_Interface->ApplicationFirstStartFlag == false)
-            {
-                Update_Counter();
-                _M10INI->ValidWeldData = true;
-                _Statistics->UpdateSoftLimitData();
-            }
-        }else
-            PreviousWeldValid = false;
     }
+    //check: is there some error due to parameters going out of bound
+    if(_M2010->M10Run.Alarm_found == false)
+    {
+        PreviousWeldValid = true;
+        if(_Interface->ApplicationFirstStartFlag == false)
+        {
+            Update_Counter();
+            _M10INI->ValidWeldData = true;
+            _Statistics->UpdateSoftLimitData();
+        }
+    }else
+        PreviousWeldValid = false;
+
     return Invalidweld;
 }
 

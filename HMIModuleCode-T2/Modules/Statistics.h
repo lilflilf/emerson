@@ -306,8 +306,8 @@ public:
 private:
     QString HeaderString();
     QString GraphData(enum ScreenShowDataType DataType, QList<int> *_GraphData);
-    void RotateIn(StatStats SumStats, int& DataEvent, int NewData);
-    void RotateOut(StatStats SumStats, int OldData);
+    void RotateIn(StatStats &SumStats, QList<int>& DataEvent, int NewData);
+    void RotateOut(StatStats &SumStats, int OldData);
 public:
     void UpdateSoftLimitData(bool ShowResults = true);
 
