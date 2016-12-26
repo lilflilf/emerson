@@ -31,7 +31,9 @@ public:
 public:
     bool _Recall();
     bool _Set();
-//    void _Default();
+    void _Default();
+    void _Cancel();
+    void _Ok();
 public:
     DataCommunication();
 };

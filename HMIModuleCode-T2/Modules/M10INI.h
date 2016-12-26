@@ -7,7 +7,7 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "M10definitions.h"
-#include "Interface/Settings/SysConfiguration.h"
+#include "Interface/SysConfiguration.h"
 using namespace std;
 
 #define Minmm2EnergyMult          25

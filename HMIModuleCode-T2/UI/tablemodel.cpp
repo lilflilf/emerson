@@ -2755,7 +2755,7 @@ QVariant MaintenanceLogModel::getValue(int index, QString key)
 void MaintenanceLogModel::searchMaintenanceLog(QString Name, unsigned int time_from, unsigned int time_to)
 {
     if (Name == "All")
-        setModelList();
+        setModelList(time_from,time_to);
     else
         setModelList(Name,time_from,time_to);
 }

@@ -1,6 +1,6 @@
 #include "WeldDefaults.h"
 #include "Interface/Interface.h"
-#include "Interface/Settings/SysConfiguration.h"
+#include "Interface/SysConfiguration.h"
 #include "Modules/M10INI.h"
 #include "Modules/M10definitions.h"
 #include "Modules/UtilityClass.h"
@@ -368,4 +368,14 @@ bool WeldDefaults::_Set()
 
     }
     return true;
+}
+
+void WeldDefaults::_Cancel()
+{
+    HMI_PRINT;
+}
+
+void WeldDefaults::_Ok()
+{
+    HMI_PRINT;
 }

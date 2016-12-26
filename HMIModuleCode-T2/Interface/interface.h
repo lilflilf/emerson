@@ -6,11 +6,12 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include <QObject>
+#include <QDebug>
 //#include "definition.h"
 #include "PresetElement.h"
-#include "Settings/SysConfiguration.h"
+#include "SysConfiguration.h"
 #include "Settings/OperatorLibrary.h"
-
+#define HMI_PRINT (qDebug() <<"That needs to be fixed: " << __FILE__ << __FUNCTION__ << __LINE__ << ": ")
 using namespace std;
 enum TipsScreenMode{
     OKOnly      = 0x00, //only show Okay button
@@ -21,6 +22,7 @@ enum TipsScreenMode{
     Exclamation = 0x20, //show Warning sign
     Information = 0x40, //show Information sign
     Alarm       = 0x80, //show Alarm sign
+    OFF_ON_LINE = 0x100,//show On Line and Off Line
 };
 struct BransonMessageBox{
     QString MsgTitle;
@@ -73,6 +75,7 @@ signals:
 protected:
     InterfaceClass(QObject *parent = 0);
 private:
+    BransonMessageBox MessageBox;
     static InterfaceClass* _instance;
 public:
     ~InterfaceClass();
