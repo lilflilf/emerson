@@ -314,11 +314,6 @@ Item {
         }
     }
 
-
-
-
-
-
     CButton {
         id: finish
         width: 300

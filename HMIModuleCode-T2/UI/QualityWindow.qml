@@ -110,8 +110,9 @@ Item {
                     source: "qrc:/images/images/current_operate.png"
                     visible: current == -1 ? false : true
                     anchors.bottom: parent.bottom
-                    anchors.bottomMargin: ((current - redMin) / redMax * (parent.height * 0.8) + (parent.height * 0.1) - currentArrow.height / 2) > parent.height ?
-                                              parent.height - currentArrow.height / 2 : (current - redMin) / redMax * (parent.height * 0.8) + (parent.height * 0.1) - currentArrow.height / 2
+                    anchors.bottomMargin: ((current - redMin) / (redMax - redMin) * (parent.height * 0.8) + (parent.height * 0.1) - currentArrow.height / 2) > parent.height ?
+                                              parent.height - currentArrow.height / 2 : ((current - redMin) / (redMax - redMin) * (parent.height * 0.8) + (parent.height * 0.1) - currentArrow.height / 2) < 0 ?
+                                                  0 : (current - redMin) / (redMax - redMin) * (parent.height * 0.8) + (parent.height * 0.1) - currentArrow.height / 2
 
                     Text {
                         id: lineValue
@@ -353,21 +354,42 @@ Item {
                 color: index == 0 ? "#33FFCC" : "white" //* 8 >= qualityListViewTwo.width ? "red" : "white"
                 Component.onCompleted: {
                     var temp
+                    var margin
                     if (selectIndex == 0) {
                         temp = spliceModel.getRawData("Time+") - spliceModel.getRawData("Time-")
-                        point.anchors.bottomMargin = timeModel[index] / temp * parent.height * 0.8 + parent.height * 0.1
+                        margin = timeModel[index] / temp * parent.height * 0.8 + parent.height * 0.1
+                        if (margin > parent.height)
+                            margin = parent.height
+                        else if (margin < 0)
+                            margin = 0
+                        point.anchors.bottomMargin = margin //timeModel[index] / temp * parent.height * 0.8 + parent.height * 0.1
                     }
                     else if (selectIndex == 1) {
                         temp = spliceModel.getRawData("Power+") - spliceModel.getRawData("Power-")
-                        point.anchors.bottomMargin = powerModel[index] / temp * parent.height * 0.8 + parent.height * 0.1
+                        margin = powerModel[index] / temp * parent.height * 0.8 + parent.height * 0.1
+                        if (margin > parent.height)
+                            margin = parent.height
+                        else if (margin < 0)
+                            margin = 0
+                        point.anchors.bottomMargin = margin //powerModel[index] / temp * parent.height * 0.8 + parent.height * 0.1
                     }
                     else if (selectIndex == 2) {
                         temp = spliceModel.getRawData("Pre-Height+") - spliceModel.getRawData("Pre-Height-")
-                        point.anchors.bottomMargin = preModel[index] / temp * parent.height * 0.8 + parent.height * 0.1
+                        margin = preModel[index] / temp * parent.height * 0.8 + parent.height * 0.1
+                        if (margin > parent.height)
+                            margin = parent.height
+                        else if (margin < 0)
+                            margin = 0
+                        point.anchors.bottomMargin = margin //preModel[index] / temp * parent.height * 0.8 + parent.height * 0.1
                     }
                     else if (selectIndex == 3) {
                         temp = spliceModel.getRawData("Post-Height+") - spliceModel.getRawData("Post-Height-")
-                        point.anchors.bottomMargin = postModel[index] / temp * parent.height * 0.8 + parent.height * 0.1
+                        margin = postModel[index] / temp * parent.height * 0.8 + parent.height * 0.1
+                        if (margin > parent.height)
+                            margin = parent.height
+                        else if (margin < 0)
+                            margin = 0
+                        point.anchors.bottomMargin = margin //postModel[index] / temp * parent.height * 0.8 + parent.height * 0.1
                     }
 
 //                    point.anchors.topMargin = parent.height/2 // hmiAdaptor.randPoint() + 80 //index + clickType
