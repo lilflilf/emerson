@@ -305,8 +305,14 @@ Item {
                     if (newCalendar.visible) {
                         newCalendar.visible = false
                     }
-                    var fromtime = hmiAdaptor.timeChangeToInt(mycalendar1.text + " " + mytimeSelect1.text)
-                    var totime = hmiAdaptor.timeChangeToInt(mycalendar2.text + " " + mytimeSelect2.text)
+                    if (workOrderName.text == qsTr("Click to Select")) {
+                        return
+                    } else {
+                        var fromtime = hmiAdaptor.timeChangeToInt(mycalendar1.text + " " + mytimeSelect1.text)
+                        var totime = hmiAdaptor.timeChangeToInt(mycalendar2.text + " " + mytimeSelect2.text)
+                        var spliceId = spliceModel.getValue(searchArea.selectNum,"SpliceId")
+                        hmiAdaptor.statisticalTrendApply(spliceId,workOrderName.text,fromtime,totime)
+                    }
                 }
             }
 //            CButton {

@@ -1,3 +1,17 @@
+/*******************************************************************
+Copyright:http://www.sinux.com.cn
+Date:2016/12/26
+Author:zhangjiyong&lilongfei
+Description: This is boardLayout components,arrayColor is the initial color
+The function interface:
+    spliceModelUpdata() //boardLayout updata signal
+    checkBoardLayout()
+    reSetBoardLayoutColor()
+    reSetBoardLayoutStation()
+    clearBoardLayout()
+    setBoardLayoutYPosition()
+    setBoardLayoutXPosition()
+*******************************************************************/
 import QtQuick 2.4
 import QtQuick.Controls 1.3
 import QtQuick.Window 2.2

@@ -1,3 +1,12 @@
+/*******************************************************************
+Copyright:http://www.sinux.com.cn
+Date:2016/12/26
+Author:zhangjiyong&lilongfei
+Description: main interface,load the welcome screen and menu interface
+The function interface:
+    checkNeedPassWd()
+    showDialog()
+*******************************************************************/
 import QtQuick 2.7
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.0

@@ -16,18 +16,19 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
     timer->singleShot(3000,this,SLOT(test()));
     delete timer;
     timer = NULL;
-    workOrderModel = new WorkOrderModel(this);
-    QStringList list;
-    list << "workOrderId" << "name" << "date" << "middle" << "count";
-    workOrderModel->setRoles(list);
-    workOrderModel->setModelList();
 
+    QStringList list;
     spliceModel = new SpliceModel(this);
     list.clear();
     list << "SpliceId" << "SpliceName" << "DateCreated" << "OperatorName" << "CrossSection" << "TotalWires" << "Verified" << "WeldMode" << "Energy" << "Amplitude"
          << "Width" << "TriggerPressure" << "WeldPressure" << "Time+" << "Time-" << "Power+" << "Power-" << "Pre-Height+" << "Pre-Height-" << "Height+" << "Height-" << "count";
     spliceModel->setRoles(list);
     spliceModel->setModelList();
+
+    workOrderModel = new WorkOrderModel(this);
+    list << "workOrderId" << "name" << "date" << "middle" << "count";
+    workOrderModel->setRoles(list);
+    workOrderModel->setModelList();
 
     partModel = new PartModel(this);
     list.clear();

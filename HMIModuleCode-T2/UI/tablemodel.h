@@ -3,6 +3,10 @@
 
 #include <QAbstractTableModel>
 #include <QHash>
+#include <iostream>
+#include <string>
+#include "stdio.h"
+#include "stdlib.h"
 #include "DataBase/DBWorkOrderTable.h"
 #include "DataBase/DBPresetTable.h"
 #include "DataBase/DBPartTable.h"

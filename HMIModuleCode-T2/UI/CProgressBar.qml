@@ -1,6 +1,11 @@
+/*******************************************************************
+Copyright:http://www.sinux.com.cn
+Date:2016/12/26
+Author:zhangjiyong&lilongfei
+Description: progressbar component
+The function interface:
+*******************************************************************/
 import QtQuick 2.3
-//控件外观：
-//\image cprogressbar.png
 
 Item {
    id:cprogressBar

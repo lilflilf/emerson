@@ -1,3 +1,14 @@
+/*******************************************************************
+Copyright:http://www.sinux.com.cn
+Date:2016/12/26
+Author:zhangjiyong&lilongfei
+Description:title bar component,contains help&waring&language info,
+menu is from listMainMenu&creatMenuList&maintenanceList&viewDataList&
+settingList,language is from listModel
+The function interface:
+    root.checkNeedPassWd()
+    hmiAdaptor.getCurrentOperatorId()
+*******************************************************************/
 import QtQuick 2.7
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4

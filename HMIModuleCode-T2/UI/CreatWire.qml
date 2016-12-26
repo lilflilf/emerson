@@ -1,3 +1,15 @@
+/*******************************************************************
+Copyright:http://www.sinux.com.cn
+Date:2016/12/26
+Author:zhangjiyong&lilongfei
+Description: wire to create interface,data is from wireModel,spliceModel,
+settingsModel2,settingsModel,weldListModel,weldSettingModel,widthModel,
+heightModel,
+The function interface:
+    editSplice()
+    wireModel.getStructValue3()
+    spliceModel.getStructValue()
+*******************************************************************/
 import QtQuick 2.0
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.0

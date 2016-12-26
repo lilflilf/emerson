@@ -6,6 +6,7 @@
 #include "Modules/UtilityClass.h"
 #include "Modules/StatisticalFunction.h"
 #include <QDateTime>
+#include <QDebug>
 StatisticalTrend::StatisticalTrend(QObject *parent) : QObject(parent)
 {
 

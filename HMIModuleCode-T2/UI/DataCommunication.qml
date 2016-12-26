@@ -1,3 +1,11 @@
+/*******************************************************************
+Copyright:http://www.sinux.com.cn
+Date:2016/12/26
+Author:zhangjiyong&lilongfei
+Description:set menu bar DataCommunication interface
+The function interface:
+    hmiAdaptor.dataCommunicationGetSwitch()
+*******************************************************************/
 import QtQuick 2.7
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
@@ -8,13 +16,9 @@ Item {
     property int selectIndx: -1
     width: parent.width
     height: parent.height
-    property var shrinkLimit: "" //   MaxmmTemp MinmmTemp MaxmmTime MinmmTime;
 
     Component.onCompleted: {
         initPage()
-        titleModel.append({title:qsTr("Shrink Tube Id")})
-        titleModel.append({title:qsTr("Temp(℃)")})
-        titleModel.append({title:qsTr("Time(S)")})
     }
 
     function initPage()
@@ -25,21 +29,20 @@ Item {
         modularSwitch.state = hmiAdaptor.dataCommunicationGetSwitch("Modular Producation Mode") ? "right" : "left";
         serverPortEdit.inputText = hmiAdaptor.dataCommunicationGetValue("IpPort")[2];
         ipConfig.text = hmiAdaptor.dataCommunicationGetValue("IpPort")[0];
-        var list = new Array()
-        list = hmiAdaptor.dataCommunicationGetValue("shrinkLimit");
-        shrinkLimit = list;
+//        var list = new Array()
+//        list = hmiAdaptor.dataCommunicationGetValue("shrinkLimit");
+//        shrinkLimit = list;
 
-        testModel.clear()
-        list = hmiAdaptor.dataCommunicationGetValue("shrinkData")
+//        testModel.clear()
+//        list = hmiAdaptor.dataCommunicationGetValue("shrinkData")
 
-        if (list.length % 3 == 0)
-        {
-            for (var i = 0 ;i < list.length / 3; i++)
-            {
-                testModel.append({shrinkid:list[i*3],temperature:list[i*3+1],times:list[i*3+2]})
-            }
-        }
-
+//        if (list.length % 3 == 0)
+//        {
+//            for (var i = 0 ;i < list.length / 3; i++)
+//            {
+//                testModel.append({shrinkid:list[i*3],temperature:list[i*3+1],times:list[i*3+2]})
+//            }
+//        }
     }
 
     Image {
@@ -178,20 +181,20 @@ Item {
             width: (rownButton.width-96)/3
             onClicked: {
 
-                var boolList = new Array()
-                boolList.push(networkSwitch.state == "right")
-                boolList.push(remoteSwitch.state == "right")
-                boolList.push(graphSwitch.state == "right")
-                boolList.push(modularSwitch.state == "right")
-                var strList = new Array()
-                for (var i = 0 ; i < testModel.count; i++)
-                {
-                    strList.push(testModel.get(i).shrinkid)
-                    strList.push(testModel.get(i).temperature)
-                    strList.push(testModel.get(i).times)
-                }
-                hmiAdaptor.dataCommunicationSetValue(boolList,strList,ipConfig.text,serverPortEdit.inputText)
-                hmiAdaptor.dataCommunicationExecute("_Set")
+//                var boolList = new Array()
+//                boolList.push(networkSwitch.state == "right")
+//                boolList.push(remoteSwitch.state == "right")
+//                boolList.push(graphSwitch.state == "right")
+//                boolList.push(modularSwitch.state == "right")
+//                var strList = new Array()
+//                for (var i = 0 ; i < testModel.count; i++)
+//                {
+//                    strList.push(testModel.get(i).shrinkid)
+//                    strList.push(testModel.get(i).temperature)
+//                    strList.push(testModel.get(i).times)
+//                }
+//                hmiAdaptor.dataCommunicationSetValue(boolList,strList,ipConfig.text,serverPortEdit.inputText)
+//                hmiAdaptor.dataCommunicationExecute("_Set")
             }
         }
     }
