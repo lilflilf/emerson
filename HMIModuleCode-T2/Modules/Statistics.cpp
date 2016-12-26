@@ -158,15 +158,15 @@ void Statistics::UpdateSoftLimitData(bool ShowResults)
     }             //SLindexer
 }
 
-void Statistics::RotateOut(StatStats SumStats, int OldData)
+void Statistics::RotateOut(StatStats &SumStats, int OldData)
 {
     SumStats.Sum = SumStats.Sum - OldData;
     SumStats.Sum_sqr = SumStats.Sum_sqr - (OldData * OldData);
 }
 
-void Statistics::RotateIn(StatStats SumStats, int& DataEvent, int NewData)
+void Statistics::RotateIn(StatStats &SumStats, QList<int>& DataEvent, int NewData)
 {
-    DataEvent = NewData;
+    DataEvent.append(NewData);
     SumStats.Sum = SumStats.Sum + NewData;
     SumStats.Sum_sqr = SumStats.Sum_sqr + (NewData * NewData);
 }
@@ -190,10 +190,10 @@ void Statistics::EnterM20DataEvent()
        RotateOut(Splice_Stat.Height, Splice_Stat.HeightData.Data[ptr]);
     }
 
-    RotateIn(Splice_Stat.Time, Splice_Stat.TimeData.Data[ptr], _M102IA->IAactual.Time);
-    RotateIn(Splice_Stat.Power, Splice_Stat.PowerData.Data[ptr], _M102IA->IAactual.Power);
-    RotateIn(Splice_Stat.Pre_hght, Splice_Stat.PreHghtData.Data[ptr], _M102IA->IAactual.Preheight);
-    RotateIn(Splice_Stat.Height, Splice_Stat.HeightData.Data[ptr], _M102IA->IAactual.Height);
+    RotateIn(Splice_Stat.Time, Splice_Stat.TimeData.Data, _M102IA->IAactual.Time);
+    RotateIn(Splice_Stat.Power, Splice_Stat.PowerData.Data, _M102IA->IAactual.Power);
+    RotateIn(Splice_Stat.Pre_hght, Splice_Stat.PreHghtData.Data, _M102IA->IAactual.Preheight);
+    RotateIn(Splice_Stat.Height, Splice_Stat.HeightData.Data, _M102IA->IAactual.Height);
 
     Splice_Stat.prts_count = Splice_Stat.prts_count + 1;
     Splice_Stat.data_ptr = _M2010->IncPtrCircular(Splice_Stat.data_ptr, M20_Data_Pnt_MI);

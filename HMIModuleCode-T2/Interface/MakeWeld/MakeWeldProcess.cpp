@@ -147,6 +147,7 @@ bool MakeWeldProcess::HeightGraphReceive()
 
 void MakeWeldProcess::TeachModeProcess()
 {
+    qDebug() << "TeachModeProcess";
     M10runMode* _M10runMode = M10runMode::Instance();
 //    InterfaceClass *_Interface = InterfaceClass::Instance();
 //    if(CurrentNecessaryInfo.IsTestProcess == true)
