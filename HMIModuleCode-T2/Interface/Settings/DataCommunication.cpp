@@ -76,3 +76,18 @@ bool DataCommunication::_Set()
     _Interface->StatusData.ServerPort = _Utility->StringToFormatedData(DINServerPortNumber,str);
     return true;
 }
+
+void DataCommunication::_Default()
+{
+    HMI_PRINT;
+}
+
+void DataCommunication::_Cancel()
+{
+    HMI_PRINT;
+}
+
+void DataCommunication::_Ok()
+{
+    HMI_PRINT;
+}

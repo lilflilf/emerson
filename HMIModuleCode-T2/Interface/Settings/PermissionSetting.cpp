@@ -33,12 +33,27 @@ PermissionSetting::PermissionSetting(QObject *parent) : QObject(parent)
 
 void PermissionSetting::InitializeFRAM()
 {
-
+    HMI_PRINT;
 }
 
 void PermissionSetting::_Default()
 {
+    HMI_PRINT;
+}
 
+void PermissionSetting::_Ok()
+{
+    HMI_PRINT;
+}
+
+void PermissionSetting::_Cancel()
+{
+    HMI_PRINT;
+}
+
+void PermissionSetting::LockOnAlarm()
+{
+    HMI_PRINT;
 }
 
 bool PermissionSetting::_Recall()

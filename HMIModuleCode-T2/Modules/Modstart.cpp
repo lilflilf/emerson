@@ -40,8 +40,8 @@ MODstart::MODstart()
     ModRunSetup *_ModRunSetup = ModRunSetup::Instance();
     InterfaceClass *_Interface = InterfaceClass::Instance();
 
-//    _ModRunSetup->OfflineModeEnabled = true;
-//    _ModRunSetup->GlobalOfflineModeEnabled = true;
+    _ModRunSetup->OfflineModeEnabled = true;
+    _ModRunSetup->GlobalOfflineModeEnabled = true;
 
     int check_result = 0;
 
@@ -67,10 +67,10 @@ MODstart::MODstart()
     if (check_result == 1)
     {
         BransonMessageBox tmpMsgBox;
-        tmpMsgBox.MsgPrompt = QObject::tr("Currently there is no New Wire Splicer Controller Online\n "
+        tmpMsgBox.MsgPrompt = QObject::tr("Currently, there is no New Wire Splicer Controller Online\n "
                                           "Do you want to work offline?");
         tmpMsgBox.MsgTitle = QObject::tr("Warning");
-        tmpMsgBox.TipsMode = (OKCancel + Exclamation);
+        tmpMsgBox.TipsMode = (OKCancel + OFF_ON_LINE);
         tmpMsgBox.func_ptr = MODstart::OfflineInitialization;
         tmpMsgBox._Object = this;
         _Interface->cMsgBox(&tmpMsgBox);
