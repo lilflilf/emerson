@@ -89,6 +89,7 @@ public:
     Q_INVOKABLE QString getMaintenanceVerson(int index);
     Q_INVOKABLE QString getSoftVerson(int index);
     Q_INVOKABLE bool login(QString passwd);
+    Q_INVOKABLE bool borrowLogin(QString passwd, QString pageName);
     Q_INVOKABLE QStringList getCarTempLate();
     Q_INVOKABLE void addCarTempLate(QString name);
     Q_INVOKABLE void removeCarTemplate(QString name);
@@ -103,6 +104,7 @@ public:
     Q_INVOKABLE void setOperateProcess(int spliceId, bool isText);
     Q_INVOKABLE void operateProcessExec(QString type);
     Q_INVOKABLE int  controlLimitProcess(QString type,QList<int> list,int redMax,int redMin);
+
 
     /********permissionsetting func**************/
     Q_INVOKABLE bool permissionsettingExecute(QString code);
@@ -129,15 +131,16 @@ public:
     Q_INVOKABLE bool dataCommunicationGetSwitch(QString index);
     Q_INVOKABLE QStringList dataCommunicationGetValue(QString index);
     Q_INVOKABLE bool dataCommunicationSetValue(QList<bool> boolList, QStringList strList, QString ip, QString port);
-
     Q_INVOKABLE void statisticalTrendApply(int SpliceID, QString SpliceName, unsigned int time_from, unsigned int time_to);
 
+    Q_INVOKABLE void msgBoxClick(bool clickOK);
+    BransonMessageBox bransonMessageBox;
     InterfaceClass *interfaceClass;
     MakeWeldProcess *operateProcess;
     DBPresetTable *m_spliceAdaptor;
 
     WorkOrderModel *workOrderModel;
-    SpliceModel *spliceModel;
+    SplicesModel *spliceModel;
     PartModel *partModel;
     OperatorModel *operatorModel;
     WireModel *wireModel;
@@ -160,6 +163,7 @@ public:
     QMutex mutex;
     StatisticalTrend *statisticalTrend;
     int taskBarHeight;
+    void (*func_ptr)(void*);
 signals:
     void widthCalibrationFinish(const bool &_Result);
     void heightCalibrationFinish(const bool &_Result);
@@ -170,7 +174,6 @@ public slots:
     void slotWeldCycleCompleted(bool result);
     void slotEnableDialog(struct BransonMessageBox &MsgBox);
     void slotDisableDialog(struct BransonMessageBox &MsgBox);
-    void test();
 };
 
 #endif // HMIADAPTOR_H

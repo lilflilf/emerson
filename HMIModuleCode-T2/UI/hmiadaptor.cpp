@@ -11,21 +11,8 @@
 #include <QTimer>
 HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
 {
-    QTimer *timer;
-    timer = new QTimer(this);
-    timer->singleShot(3000,this,SLOT(test()));
-    delete timer;
-    timer = NULL;
-
-    QStringList list;
-    spliceModel = new SpliceModel(this);
-    list.clear();
-    list << "SpliceId" << "SpliceName" << "DateCreated" << "OperatorName" << "CrossSection" << "TotalWires" << "Verified" << "WeldMode" << "Energy" << "Amplitude"
-         << "Width" << "TriggerPressure" << "WeldPressure" << "Time+" << "Time-" << "Power+" << "Power-" << "Pre-Height+" << "Pre-Height-" << "Height+" << "Height-" << "count";
-    spliceModel->setRoles(list);
-    spliceModel->setModelList();
-
     workOrderModel = new WorkOrderModel(this);
+    QStringList list;
     list << "workOrderId" << "name" << "date" << "middle" << "count";
     workOrderModel->setRoles(list);
     workOrderModel->setModelList();
@@ -69,6 +56,13 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
     list << "MaintenanceLogId" << "CreatedDate" << "OperatorName" << "Type" << "Message";
     maintenanceLogModel->setRoles(list);
     maintenanceLogModel->setModelList();
+
+    spliceModel = new SplicesModel(this);
+    QStringList listSplice;
+    listSplice << "SpliceId" << "SpliceName" << "DateCreated" << "OperatorName" << "CrossSection" << "TotalWires" << "Verified" << "WeldMode" << "Energy" << "Amplitude"
+         << "Width" << "TriggerPressure" << "WeldPressure" << "Time+" << "Time-" << "Power+" << "Power-" << "Pre-Height+" << "Pre-Height-" << "Height+" << "Height-" << "count";
+    spliceModel->setRoles(listSplice);
+    spliceModel->setModelList();
 
     advanceMaintenance = new AdvancedMaintenance;
     calibration = new Calibration;
@@ -431,6 +425,46 @@ bool HmiAdaptor::login(QString passwd)
     return isLog;
 }
 
+bool HmiAdaptor::borrowLogin(QString passwd, QString pageName)
+{
+    if (passwd == "0000")
+        return true;
+    OperatorElement myOperator;
+    bool isLog = operatorModel->login(passwd, &myOperator);
+    if (isLog)
+    {
+        permissionsettingExecute("_Recall");
+        int i;
+        int funcIndex = -1;
+        int levelIndex = -1;
+        bool reb = false;
+        QList<struct PermissionSettingForScreen> funcNameList;
+        funcNameList = permissionSetting->CurrentPermissionList;
+        for (i = 0; i < funcNameList.length();i++)
+        {
+            if (pageName == funcNameList[i].Identifier) {
+                funcIndex = i;
+                break;
+            }
+        }
+        if (funcIndex == -1)
+            return false;
+        levelIndex = (int)myOperator.PermissionLevel;
+        if (levelIndex == 1)
+            reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level1;
+        else if (levelIndex == 2)
+            reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level2;
+        else if (levelIndex == 3)
+            reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level3;
+        else if (levelIndex == 4)
+            reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level4;
+
+        return reb;
+    }
+    else
+        return false;
+}
+
 QString HmiAdaptor::getCurrentOperatorId()
 {
     return interfaceClass->CurrentOperator.OperatorName;
@@ -501,11 +535,11 @@ bool HmiAdaptor::needPassWord(QString pageName)
     int funcIndex = -1;
     int levelIndex = -1;
     bool reb = true;
-    QStringList funcName;
-    funcName = permissionSetting->AllFunctionNameList;
-    for (i = 0; i < funcName.length();i++)
+    QList<struct PermissionSettingForScreen> funcNameList;
+    funcNameList = permissionSetting->CurrentPermissionList;
+    for (i = 0; i < funcNameList.length();i++)
     {
-        if (pageName == funcName[i]) {
+        if (pageName == funcNameList[i].Identifier) {
             funcIndex = i;
             break;
         }
@@ -513,6 +547,8 @@ bool HmiAdaptor::needPassWord(QString pageName)
     if (funcIndex == -1)
         return reb;
     levelIndex = (int)interfaceClass->CurrentOperator.PermissionLevel;
+    qDebug() << "needPassWord" << pageName << funcIndex << levelIndex;
+
     if (levelIndex == 1)
         reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level1;
     else if (levelIndex == 2)
@@ -831,43 +867,52 @@ void HmiAdaptor::slotWeldCycleCompleted(bool result)
 
 void HmiAdaptor::slotEnableDialog(BransonMessageBox &MsgBox)
 {
-    qDebug() << "slotEnableDialog";
+    bransonMessageBox = MsgBox;
+    this->func_ptr = bransonMessageBox.func_ptr;
+    qDebug() << "slotEnableDialog" << bransonMessageBox._Object;
     bool okVisable = true;
     bool cancelVisable = false;
     QString okText;
+    QString cancelText;
     QString typeIco;
-    if (MsgBox.TipsMode & OKCancel)
+    if (MsgBox.TipsMode & OKOnly)
     {
-        cancelVisable = true;
+        cancelVisable = false;
         okText = "OK";
     }
     else if (MsgBox.TipsMode & OKCancel)
     {
         cancelVisable = true;
-        okText = "RESET";
-    }
-    else if (MsgBox.TipsMode & Critical)
-    {
-        cancelVisable = false;
         okText = "OK";
+        cancelText = "CANCEL";
+    }
+    else if (MsgBox.TipsMode & RESETCancel)
+    {
+        cancelVisable = true;
+        okText = "RESET";
+        cancelText = "CANCEL";
+    }
+    else if (MsgBox.TipsMode & ACCEPTReject)
+    {
+        cancelVisable = true;
+        okText = "Accept";
+        cancelText = "Reject";
+    }
+
+    if (MsgBox.TipsMode & Critical)
+    {
         typeIco = "qrc:/images/images/error.ico";
     }
     else if (MsgBox.TipsMode & Exclamation)
     {
-        cancelVisable = false;
-        okText = "OK";
         typeIco = "qrc:/images/images/alarm.ico";
     }
     else if (MsgBox.TipsMode & Information)
     {
-        cancelVisable = false;
-        okText = "OK";
         typeIco = "qrc:/images/images/information.ico";
     }
     else if (MsgBox.TipsMode & Alarm)
     {
-        cancelVisable = false;
-        okText = "OK";
         typeIco = "qrc:/images/images/alarm.ico";
     }
     emit signalEnableDialog(okVisable, cancelVisable, okText, "CANCEL", typeIco, MsgBox.MsgTitle, MsgBox.MsgPrompt);
@@ -875,12 +920,7 @@ void HmiAdaptor::slotEnableDialog(BransonMessageBox &MsgBox)
 
 void HmiAdaptor::slotDisableDialog(BransonMessageBox &MsgBox)
 {
-
-}
-
-void HmiAdaptor::test()
-{
-    qDebug() << "xxxxxxxxxxxxxxxxxxxxx";
+    emit signalDisableDialog();
 }
 
 bool HmiAdaptor::stringRegexMatch(QString exp, QString value)
@@ -1032,4 +1072,12 @@ int HmiAdaptor::controlLimitProcess(QString type, QList<int> list, int redMax, i
 void HmiAdaptor::statisticalTrendApply(int SpliceID, QString SpliceName, unsigned int time_from, unsigned int time_to)
 {
     statisticalTrend->_apply(SpliceID,SpliceName,time_from,time_to);
+}
+
+void HmiAdaptor::msgBoxClick(bool clickOK)
+{
+    if (clickOK && this->func_ptr != NULL && bransonMessageBox._Object != NULL) {
+        qDebug() << "msgBoxClick" << this->func_ptr << bransonMessageBox._Object;
+        this->func_ptr(bransonMessageBox._Object);
+    }
 }

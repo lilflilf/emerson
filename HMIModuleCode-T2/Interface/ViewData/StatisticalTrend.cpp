@@ -224,9 +224,6 @@ void StatisticalTrend::_apply(int SpliceID, QString SpliceName,
                 CurrentPreset.HashCode, time_from, time_to);
     if(bResult == true)
         bResult = GetCurrentWeldResultOneByOne(&RetrievedWeldResultIndexList);
-//    if(bResult == true)
-//        if(DataList[QUALITYTIME].size() < 20)
-//            bResult = false;
     if(bResult == true)
          GetStatisticsParameter();
     emit _ProcessFinished(bResult);

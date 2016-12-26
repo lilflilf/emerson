@@ -259,8 +259,9 @@ Item {
 //                                z:20
                                 hoverEnabled: true
                                 onClicked: {
-                                    alarmModel.editNew(weldHistoryModel.getValue(listIndex,"WeldHistoryId"))
+                                    alarmModel.editNew(weldHistoryModel.getValue(listIndex,"WeldHistoryId"),weldHistoryModel.getValue(listIndex,"OperatorName"))
                                     myCanvas.visible = true
+                                    myCanvas.setPoint()
                                 }
                             }
                         }

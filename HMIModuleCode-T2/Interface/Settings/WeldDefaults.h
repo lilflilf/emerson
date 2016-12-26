@@ -1,7 +1,7 @@
 #ifndef WELDDEFAULTS_H
 #define WELDDEFAULTS_H
 #include <QObject>
-#include "Interface/Settings/SysConfiguration.h"
+#include "Interface/SysConfiguration.h"
 #include "Interface/Definition.h"
 
 const QString FormulaIdentifer[] = {
@@ -57,6 +57,8 @@ public:
     bool _Recall();
     bool _Set();
     void _Default();
+    void _Cancel();
+    void _Ok();
 public:
     explicit WeldDefaults(QObject *parent = 0);
 

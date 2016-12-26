@@ -50,7 +50,6 @@ SOURCES += main.cpp \
     Interface/Settings/WeldDefaults.cpp \
     Interface/Settings/DataCommunication.cpp \
     Interface/Settings/PermissionSetting.cpp \
-    Interface/Settings/SysConfiguration.cpp \
     Interface/ViewData/StatisticalTrend.cpp \
     Interface/VariantToString.cpp \
     Interface/StringToVariant.cpp \
@@ -64,7 +63,8 @@ SOURCES += main.cpp \
     Modules/StatisticalFunction.cpp \
     Modules/TimerClass.cpp \
     Modules/ThreadClass.cpp \
-    Interface/MakeWeld/MakeWeldProcess.cpp
+    Interface/MakeWeld/MakeWeldProcess.cpp \
+    Interface/SysConfiguration.cpp
 
 
 
@@ -118,7 +118,6 @@ HEADERS += \
     Interface/Settings/OperatorLibrary.h \
     Interface/Settings/DataCommunication.h \
     Interface/Settings/PermissionSetting.h \
-    Interface/Settings/SysConfiguration.h \
     Interface/ViewData/StatisticalTrend.h \
     Interface/VariantToString.h \
     Interface/StringToVariant.h \
@@ -133,7 +132,8 @@ HEADERS += \
     Modules/StatisticalFunction.h \
     Modules/TimerClass.h \
     Modules/ThreadClass.h \
-    Interface/MakeWeld/MakeWeldProcess.h
+    Interface/MakeWeld/MakeWeldProcess.h \
+    Interface/SysConfiguration.h
 
 DISTFILES += \
 #    UI/displayChinese_zh_CN.qm \

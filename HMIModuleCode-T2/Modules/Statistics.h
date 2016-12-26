@@ -5,7 +5,7 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "m10definitions.h"
-#include "Interface/Settings/SysConfiguration.h"
+#include "Interface/SysConfiguration.h"
 #include "Interface/WeldResultElement.h"
 #include "Interface/PresetElement.h"
 #include <QSettings>

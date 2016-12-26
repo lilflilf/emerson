@@ -17,6 +17,7 @@ Item {
     width: Screen.width
     height: Screen.height
     property int index: -1
+    property var pageName: ""
     Rectangle {
         id: backGround
         anchors.fill: parent
@@ -72,7 +73,7 @@ Item {
             visible: false
             onTextChanged: {
                 if (mima.text.length == 4) {
-                    if (hmiAdaptor.login(mima.text)) {
+                    if (hmiAdaptor.borrowLogin(mima.text,pageName)) {
                         root.menuInit(passwdDialog.index)
                         mimaShow.text = ""
                         mima.text = ""
@@ -142,6 +143,7 @@ Item {
                 else if (event.key == Qt.Key_9) {
                     mimaShow.text = mimaShow.text + "●"
                     mima.text = mima.text + "9"
+
                 }
             }
             Component.onCompleted: {

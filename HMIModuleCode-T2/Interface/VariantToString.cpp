@@ -660,3 +660,18 @@ QString VariantToString::AlarmLevelToString(QString AlarmType)
         str = QObject::tr("None-level");
     return str;
 }
+
+QString VariantToString::GraphTimeToString(int ActualTime)
+{
+    return _Utility->FormatedDataToString(DINGraphTimeMS, ActualTime);
+}
+
+QString VariantToString::GraphPowerToString(int ActualPower)
+{
+    return _Utility->FormatedDataToString(DINGraphPower, ActualPower);
+}
+
+QString VariantToString::GraphHeightToString(int ActualHeight)
+{
+    return _Utility->FormatedDataToString(DINGraphHeight, ActualHeight);
+}

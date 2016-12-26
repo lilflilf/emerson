@@ -8,7 +8,7 @@
 #include "stdlib.h"
 #include "M10definitions.h"
 #include "UtilityDefine.h"
-#include "Interface/Settings/SysConfiguration.h"
+#include "Interface/SysConfiguration.h"
 using namespace std;
 
 enum MACHINE_TYPE{

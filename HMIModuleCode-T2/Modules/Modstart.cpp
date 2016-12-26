@@ -17,6 +17,7 @@
 #include <QObject>
 #include <QSettings>
 #include <QDir>
+#include <QDebug>
 MODstart* MODstart::_instance = 0;
 bool MODstart::Checkmaintenancelimit_EaWeld = false;
 bool MODstart::ApplicationFirstStartFlag = false;
@@ -66,10 +67,10 @@ MODstart::MODstart()
     if (check_result == 1)
     {
         BransonMessageBox tmpMsgBox;
-        tmpMsgBox.MsgPrompt = QObject::tr("Currently there is no New Wire Splicer Controller Online\n "
+        tmpMsgBox.MsgPrompt = QObject::tr("Currently, there is no New Wire Splicer Controller Online\n "
                                           "Do you want to work offline?");
         tmpMsgBox.MsgTitle = QObject::tr("Warning");
-        tmpMsgBox.TipsMode = (OKCancel + Exclamation);
+        tmpMsgBox.TipsMode = (OKCancel + OFF_ON_LINE);
         tmpMsgBox.func_ptr = MODstart::OfflineInitialization;
         tmpMsgBox._Object = this;
         _Interface->cMsgBox(&tmpMsgBox);
@@ -538,6 +539,7 @@ void MODstart::CheckAWGAreaTable()
 //This funciton only for the Offline Initialization in case of the controller is not detected
 void MODstart::OfflineInitialization(void* ptr)
 {
+    qDebug() << "OfflineInitialization";
     ModRunSetup *_ModRunSetup = ModRunSetup::Instance();
 //    M10INI *_M10INI = M10INI::Instance();
     M2010 *_M2010 = M2010::Instance();

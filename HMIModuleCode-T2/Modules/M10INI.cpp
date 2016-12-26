@@ -2,7 +2,7 @@
 #include "Password.h"
 #include "M2010.h"
 #include "Interface/Interface.h"
-#include "Interface/Settings/SysConfiguration.h"
+#include "Interface/SysConfiguration.h"
 #include "UtilityClass.h"
 #include <QDir>
 #include <QFile>

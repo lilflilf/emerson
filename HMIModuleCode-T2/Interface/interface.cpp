@@ -26,11 +26,11 @@ InterfaceClass::~InterfaceClass()
 
 void InterfaceClass::cMsgBox(struct BransonMessageBox* MsgBox)
 {
-    BransonMessageBox tmpMsgBox;
     tmpMsgBox.MsgPrompt = MsgBox->MsgPrompt;
     tmpMsgBox.MsgTitle = MsgBox->MsgTitle;
     tmpMsgBox.TipsMode = MsgBox->TipsMode;
     tmpMsgBox.func_ptr = MsgBox->func_ptr;
+    tmpMsgBox._Object = MsgBox->_Object;
     emit EnableErrorMessageSignal(tmpMsgBox);
 }
 

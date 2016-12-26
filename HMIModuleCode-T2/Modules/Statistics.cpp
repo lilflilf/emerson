@@ -217,8 +217,9 @@ void Statistics::ZeroM20DataEvents()
     Splice_Stat.Height.Sum = 0;
     Splice_Stat.Height.Sum_sqr = 0;
 
+    Splice_Stat.TimeData.Data.clear();
     for(int i = 0; i < M20_Data_Pnt_MI; i++)
-        Splice_Stat.TimeData.Data[i] = NOT_VALID;
+        Splice_Stat.TimeData.Data.push_back(NOT_VALID);
 
     ptr_M10runMode->InvalidWeldCounter = 0; //used in Auto Teach mode only
 }

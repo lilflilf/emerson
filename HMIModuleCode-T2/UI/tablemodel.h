@@ -77,11 +77,11 @@ private:
 };
 
 
-class SpliceModel : public QAbstractTableModel
+class SplicesModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    explicit SpliceModel(QObject *parent = 0);
+    explicit SplicesModel(QObject *parent = 0);
     void setModelList(unsigned int time_from, unsigned int time_to);
     void setModelList();
 
@@ -125,7 +125,6 @@ public slots:
 
 private:
     QHash<int, QByteArray> m_roleNames;
-    VariantToString *m_variant;
 };
 
 
@@ -269,7 +268,7 @@ public slots:
     Q_INVOKABLE int getAxes(QString key);
     Q_INVOKABLE void setStartTime();
 
-    Q_INVOKABLE void editNew(int weldId);
+    Q_INVOKABLE void editNew(int weldId, QString weldName);
 
 private:
     QHash<int, QByteArray> m_roleNames;
