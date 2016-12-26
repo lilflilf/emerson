@@ -5,6 +5,8 @@
 #include "Interface/Maintenance/MaintenanceLog.h"
 #include "DataBase/DBMaintenanceLogTable.h"
 #include <QDebug>
+#include <QThread>
+#include <QCoreApplication>
 
 bool AdvancedMaintenance::HornTest = false;
 bool AdvancedMaintenance::GatherTest = false;
@@ -15,7 +17,7 @@ bool AdvancedMaintenance::Aux5Test = false;
 bool AdvancedMaintenance::ConverterCoolingTest = false;
 bool AdvancedMaintenance::ToolingCoolingTest = false;
 unsigned long AdvancedMaintenance::PreviousIO = 0;
-QTimer* AdvancedMaintenance::Timer = false;
+QTimer* AdvancedMaintenance::Timer = NULL;
 bool AdvancedMaintenance::IsTimerRunning = false;
 AdvancedMaintenance::AdvancedMaintenance()
 {
@@ -58,6 +60,9 @@ bool AdvancedMaintenance::_stop()
 
 bool AdvancedMaintenance::_execute(int funCode)
 {
+    if(IsTimerRunning == true)
+        Timer->stop();
+    Timer->stop();
     bool bResult = true;
     DBMaintenanceLogTable* _MaintenanceLog =
             DBMaintenanceLogTable::Instance();
@@ -79,6 +84,7 @@ bool AdvancedMaintenance::_execute(int funCode)
         _MaintenanceLog->InsertRecordIntoTable(&MaintenanceLog);
         break;
     case GATHERCLICK:
+        qDebug()<<"Gather";
         Gather_Click();
         MaintenanceLog.MaintenanceMsg = MaintenanceMessageString[GATHER_MOVE];
         _MaintenanceLog->InsertRecordIntoTable(&MaintenanceLog);
@@ -108,6 +114,7 @@ bool AdvancedMaintenance::_execute(int funCode)
         bResult = false;
         break;
     }
+    Timer->start(1000);
     return bResult;
 }
 
@@ -115,13 +122,9 @@ void AdvancedMaintenance::AnvilArm_Click()
 {
 //Procedure to bring the Horn Up/Down for the Mod 9 & Mod 10
 //    OR to bring the Anvil Up/Sown for the M2020 & M2030
-    if(IsTimerRunning == true)
-        return;
     M2010* _M2010 = M2010::Instance();
     M102IA* _M102IA = M102IA::Instance();
     InterfaceClass* _Interface = InterfaceClass::Instance();
-//    m_Thread->setSuspendEnabled(true);
-    Timer->stop();
     if ((_M2010->M10Run.Gather_Close == false) &&
             (_Interface->StatusData.ActuatorMode == DOUBLEHITMODE))
     {
@@ -142,19 +145,13 @@ void AdvancedMaintenance::AnvilArm_Click()
         HornTest = false;
         _M2010->M10Run.Horn_Close = false;
     }
-//    m_Thread->setSuspendEnabled(false);
-    Timer->start(1000);
 }
 
 void AdvancedMaintenance::Anvil_Click()
 {
 //Procedure to Clamp/UnClamp the Anvil Block, used only by the Mod 9 & Mod 10
-    if(IsTimerRunning == true)
-        return;
     M2010* _M2010 = M2010::Instance();
     M102IA* _M102IA = M102IA::Instance();
-//    m_Thread->setSuspendEnabled(true);
-    Timer->stop();
     if ((AnvilTest == false) || (_M2010->M10Run.Anvil_Clamped == false))
     {
         _M102IA->SendIACommand(IAComAuxMotion, DO_CLOSE_CLAMP);
@@ -167,18 +164,12 @@ void AdvancedMaintenance::Anvil_Click()
         AnvilTest = false;
         _M2010->M10Run.Anvil_Clamped = false;
     }
-//    m_Thread->setSuspendEnabled(false);
-    Timer->start(1000);
 }
 
 void AdvancedMaintenance::Crash_Click()
 {
-    if(IsTimerRunning == true)
-        return;
     M2010* _M2010 = M2010::Instance();
     M102IA* _M102IA = M102IA::Instance();
-//    m_Thread->setSuspendEnabled(true);
-    Timer->stop();
     if ((Aux5Test == false) || (_M2010->M10Run.Aux5On == false))
     {
         _M102IA->SendIACommand(IAComAuxMotion, DO_AUX5_ON);
@@ -191,18 +182,12 @@ void AdvancedMaintenance::Crash_Click()
         Aux5Test = false;
         _M2010->M10Run.Aux5On = false;
     }
-//    m_Thread->setSuspendEnabled(false);
-    Timer->start(1000);
 }
 
 void AdvancedMaintenance::Cutter_Click()
 {
-    if(IsTimerRunning == true)
-        return;
     M2010* _M2010 = M2010::Instance();
     M102IA* _M102IA = M102IA::Instance();
-//    m_Thread->setSuspendEnabled(true);
-    Timer->stop();
     if((Aux4Test == false) || (_M2010->M10Run.Aux4On == false))
     {
         _M102IA->SendIACommand(IAComAuxMotion, DO_AUX4_ON);
@@ -214,47 +199,37 @@ void AdvancedMaintenance::Cutter_Click()
         Aux4Test = false;
         _M2010->M10Run.Aux4On = false;
     }
-//    m_Thread->setSuspendEnabled(false);
-    Timer->start(1000);
 }
 
 void AdvancedMaintenance::Gather_Click()
 {
 //Procedure to Open/Close the Gather for the Mod 9 & Mod 10
 //    OR Open/Close the Anvil for the M2020 & M2030
-    if(IsTimerRunning == true)
-        return;
     M2010* _M2010 = M2010::Instance();
     M102IA* _M102IA = M102IA::Instance();
-//    m_Thread->setSuspendEnabled(true);
-    Timer->stop();
     if((GatherTest == false) || (_M2010->M10Run.Gather_Close == false))
     {
         //--Aux 1 Close
         _M102IA->IACommand(IAComAux1Close);
         GatherTest = true;
         _M2010->M10Run.Gather_Close = true;
+        qDebug()<<"Gather Close";
     }else
     {
         //--Aux 2 Open (Reset Position)
         _M102IA->IACommand(IAComAux1Open);
         GatherTest = false;
         _M2010->M10Run.Gather_Close = false;
+        qDebug()<<"Gather Open";
     }
-//    m_Thread->setSuspendEnabled(false);
-    Timer->start(1000);
 }
 
 void AdvancedMaintenance::Safety_Click()
 {
-    if(IsTimerRunning == true)
-        return;
     int CommandON = 0;
     int CommandOFF = 0;
     M2010* _M2010 = M2010::Instance();
     M102IA* _M102IA = M102IA::Instance();
-//    m_Thread->setSuspendEnabled(true);
-    Timer->stop();
     if(_M2010->Machine == Welder)
     {
         CommandON = DO_AUX3_ON;
@@ -276,8 +251,6 @@ void AdvancedMaintenance::Safety_Click()
         Aux3Test = false;
         _M2010->M10Run.Aux3On = false;
     }
-//    m_Thread->setSuspendEnabled(false);
-    Timer->start(1000);
 }
 
 void AdvancedMaintenance::ConverterCooling_Click()
@@ -286,8 +259,6 @@ void AdvancedMaintenance::ConverterCooling_Click()
         return;
     M2010* _M2010 = M2010::Instance();
     M102IA* _M102IA = M102IA::Instance();
-//    m_Thread->setSuspendEnabled(true);
-    Timer->stop();
     if((ConverterCoolingTest == false) || (_M2010->M10Run.CoolingOn == false))
     {
         _M102IA->SendIACommand(IAComAuxMotion, DO_COOLING_ON);
@@ -299,17 +270,12 @@ void AdvancedMaintenance::ConverterCooling_Click()
         ConverterCoolingTest = false;
         _M2010->M10Run.CoolingOn = false;
     }
-//    m_Thread->setSuspendEnabled(false);
-    Timer->start(1000);
 }
 
 void AdvancedMaintenance::ToolingCooling_click()
 {
-    if(IsTimerRunning == true)
-        return;
     M2010* _M2010 = M2010::Instance();
     M102IA* _M102IA = M102IA::Instance();
-    Timer->stop();
     if ((ToolingCoolingTest == false) || (_M2010->M10Run.ToolingCoolingOn == false))
     {
         _M102IA->SendIACommand(IAComAuxMotion, DO_AUX3_ON);
@@ -321,7 +287,6 @@ void AdvancedMaintenance::ToolingCooling_click()
         ToolingCoolingTest = false;
         _M2010->M10Run.ToolingCoolingOn = false;
     }
-    Timer->start(1000);
 }
 
 void AdvancedMaintenance::TimeoutEventSlot()
@@ -348,7 +313,7 @@ void AdvancedMaintenance::TimeoutEventSlot()
             UpdateCrash();
             UpdateCutter();
             UpdateToolingCooling();
-//            emit ((AdvancedMaintenance*)_obj)->IOstatusFeedback(PreviousIO);
+            emit IOstatusFeedback(PreviousIO);
         }
         _M2010->ReceiveFlags.IOdata = false;
     }else{
@@ -360,6 +325,7 @@ void AdvancedMaintenance::TimeoutEventSlot()
         _Interface->cMsgBox(&tmpMsgBox);
     }
     IsTimerRunning = false;
+    qDebug()<<"Timer running";
     Timer->start(1000);//1 second
 }
 
