@@ -1,6 +1,6 @@
 #include "StatisticalFunction.h"
 #include <QtAlgorithms>
-
+#include <QDebug>
 StatisticalFunction::StatisticalFunction()
 {
 
@@ -25,6 +25,8 @@ float StatisticalFunction::Median(QList<float> & RawSample, float mean)
         return 0;
     qSort(RawSample.begin(), RawSample.end());
     int len = RawSample.size();
+    if (len == 0)
+        return median;
     if((len % 2)== 0)
     {
         float tmp1 = RawSample.at(len/2);

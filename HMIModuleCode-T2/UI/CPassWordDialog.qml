@@ -1,3 +1,12 @@
+/*******************************************************************
+Copyright:http://www.sinux.com.cn
+Date:2016/12/26
+Author:zhangjiyong&lilongfei
+Description: password dialog component,data is from listModel
+The function interface:
+    hmiAdaptor.login()
+    root.menuInit()
+*******************************************************************/
 import QtQuick 2.4
 import QtQuick.Controls 1.3
 import QtQuick.Window 2.2

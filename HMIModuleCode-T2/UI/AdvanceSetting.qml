@@ -1,3 +1,14 @@
+/*******************************************************************
+Copyright:http://www.sinux.com.cn
+Date:2016/12/26
+Author:zhangjiyong&lilongfei
+Description:Testing interface AdvanceSetting interface,data from the
+standardUpperModel,standardLowerModel,sigmaUpperModel,sigmaLowerModel
+The function interface:
+    setClickColor()
+    setadvancesetingValue()
+    setadvancesetingdefalut()
+*******************************************************************/
 import QtQuick 2.4
 import QtQuick.Controls 1.3
 import QtQuick.Window 2.2

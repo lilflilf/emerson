@@ -1,3 +1,11 @@
+/*******************************************************************
+Copyright:http://www.sinux.com.cn
+Date:2016/12/26
+Author:zhangjiyong&lilongfei
+Description:edit wire set interface
+The function interface:
+    signalSaveSplice()
+*******************************************************************/
 import QtQuick 2.0
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.0

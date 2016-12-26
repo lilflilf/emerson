@@ -1,3 +1,12 @@
+/*******************************************************************
+Copyright:http://www.sinux.com.cn
+Date:2016/12/26
+Author:zhangjiyong&lilongfei
+Description:AdvancedMaintenance set interface
+The function interface:
+    hmiAdaptor.maintenanceStart()
+    hmiAdaptor.advancedMaintenanceExecute()
+*******************************************************************/
 import QtQuick 2.0
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.0
