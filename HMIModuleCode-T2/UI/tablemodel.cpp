@@ -213,7 +213,7 @@ void WorkOrderModel::removeValue(int id, QString name)
     setModelList();
 }
 
-SpliceModel::SpliceModel(QObject *parent) :
+SplicesModel::SplicesModel(QObject *parent) :
     QAbstractTableModel(parent)
 {
     m_spliceAdaptor = DBPresetTable::Instance();
@@ -223,7 +223,7 @@ SpliceModel::SpliceModel(QObject *parent) :
     variantToString = VariantToString::Instance();
 }
 
-QVariant SpliceModel::data(const QModelIndex &index, int role) const
+QVariant SplicesModel::data(const QModelIndex &index, int role) const
 {
     QVariant value;
     if(role < Qt::UserRole)
@@ -320,7 +320,7 @@ QVariant SpliceModel::data(const QModelIndex &index, int role) const
 
 
 
-void SpliceModel::setModelList(unsigned int time_from, unsigned int time_to)
+void SplicesModel::setModelList(unsigned int time_from, unsigned int time_to)
 {
     beginResetModel();
     splices->clear();
@@ -329,7 +329,7 @@ void SpliceModel::setModelList(unsigned int time_from, unsigned int time_to)
     endResetModel();
 }
 
-void SpliceModel::setModelList()
+void SplicesModel::setModelList()
 {
     beginResetModel();
     splices->clear();
@@ -338,22 +338,22 @@ void SpliceModel::setModelList()
     endResetModel();
 }
 
-int SpliceModel::rowCount(const QModelIndex & parent) const
+int SplicesModel::rowCount(const QModelIndex & parent) const
 {
     return splices->count();
 }
 
-int SpliceModel::count()
+int SplicesModel::count()
 {
     return splices->count();
 }
 
-void SpliceModel::calculateSpliceData()
+void SplicesModel::calculateSpliceData()
 {
     presetElement.CalculateSpliceData();
 }
 
-QString SpliceModel::getStructValue(QString valueKey, QString valueType)
+QString SplicesModel::getStructValue(QString valueKey, QString valueType)
 {
     if (valueKey == "Energy") {
         if (valueType == "current")
@@ -745,7 +745,7 @@ QString SpliceModel::getStructValue(QString valueKey, QString valueType)
         return "";
 }
 
-int SpliceModel::getRawData(QString key)
+int SplicesModel::getRawData(QString key)
 {
     if (key == "Time-")
         return presetElement.WeldSettings.QualitySetting.Time.Minus;
@@ -765,7 +765,7 @@ int SpliceModel::getRawData(QString key)
         return presetElement.WeldSettings.QualitySetting.Height.Plus;
 }
 
-void SpliceModel::setStructValue(QString valueKey, QVariant value)
+void SplicesModel::setStructValue(QString valueKey, QVariant value)
 {
     if (valueKey == "Energy") {
         presetElement.WeldSettings.BasicSetting.Energy = stringToVariant->EnergyToInt(value.toString());
@@ -953,7 +953,7 @@ void SpliceModel::setStructValue(QString valueKey, QVariant value)
     }
 }
 
-int SpliceModel::saveSplice(bool bIsEdit)
+int SplicesModel::saveSplice(bool bIsEdit)
 {
     int spliceId;
     if (bIsEdit)
@@ -969,29 +969,29 @@ int SpliceModel::saveSplice(bool bIsEdit)
     return spliceId;
 }
 
-uint SpliceModel::getHashCode()
+uint SplicesModel::getHashCode()
 {
     return presetElement.HashCode;
 }
 
-void SpliceModel::createNew()
+void SplicesModel::createNew()
 {
     PresetElement temp;
     presetElement = temp;
 }
 
-void SpliceModel::editNew(int spliceId)
+void SplicesModel::editNew(int spliceId)
 {
     m_spliceAdaptor->QueryOneRecordFromTable(spliceId, &presetElement);
 }
 
-QString SpliceModel::getString(QString type, int value)
+QString SplicesModel::getString(QString type, int value)
 {
     if (type == "CrossSection")
         return variantToString->CrossSectionToString(value);
 }
 
-bool SpliceModel::getWeldMode(QString type, int index)
+bool SplicesModel::getWeldMode(QString type, int index)
 {
     if (type == "weld")
     {
@@ -1009,7 +1009,7 @@ bool SpliceModel::getWeldMode(QString type, int index)
     }
 }
 
-QList<int> SpliceModel::getWireIdList()
+QList<int> SplicesModel::getWireIdList()
 {
     QMap<int,QString>::iterator it; //遍历map
     QList<int> list;
@@ -1020,23 +1020,23 @@ QList<int> SpliceModel::getWireIdList()
 }
 
 
-void SpliceModel::removeValue(int id, QString name)
+void SplicesModel::removeValue(int id, QString name)
 {
     m_spliceAdaptor->DeleteOneRecordFromTable(id,name);
     setModelList();
 }
 
-int SpliceModel::columnCount(const QModelIndex &parent) const
+int SplicesModel::columnCount(const QModelIndex &parent) const
 {
     return 1;
 }
 
-QVariant SpliceModel::headerData(int section, Qt::Orientation orientation, int role) const
+QVariant SplicesModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     return QVariant();
 }
 
-void SpliceModel::setRoles(const QStringList &names)
+void SplicesModel::setRoles(const QStringList &names)
 {
     m_roleNames.clear();
     for(int idx=0; idx<names.count(); idx++)
@@ -1045,12 +1045,12 @@ void SpliceModel::setRoles(const QStringList &names)
     }
 }
 
-QHash<int, QByteArray> SpliceModel::roleNames() const
+QHash<int, QByteArray> SplicesModel::roleNames() const
 {
     return m_roleNames;
 }
 
-QVariant SpliceModel::getValue(int index, QString key)
+QVariant SplicesModel::getValue(int index, QString key)
 {
     QMap<int,QString>::iterator it; //遍历map
     int i = 0;

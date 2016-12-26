@@ -154,6 +154,7 @@ Window {
         z: 20
         onCliceTo: {
             dialogReturn(reb)
+            hmiAdaptor.msgBoxClick(reb)
         }
         Connections {
             target: hmiAdaptor

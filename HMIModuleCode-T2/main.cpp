@@ -53,8 +53,7 @@ int main(int argc, char *argv[])
     bool success = translator.load("displayChinese_zh_CN.qm");
     app.installTranslator(&translator);
     QQmlApplicationEngine engine;
-    MODstart* _ModStart = MODstart::Instance();
-    HmiAdaptor *hmiAdaptor = new HmiAdaptor;
+    HmiAdaptor *hmiAdaptor = new HmiAdaptor();
     hmiAdaptor->taskBarHeight = y;
     engine.rootContext()->setContextProperty("hmiAdaptor",hmiAdaptor);
     engine.rootContext()->setContextProperty("workOrderModel",hmiAdaptor->workOrderModel);
@@ -66,5 +65,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("alarmModel",hmiAdaptor->alarmModel);
     engine.rootContext()->setContextProperty("maintenanceLogModel",hmiAdaptor->maintenanceLogModel);
     engine.load(QUrl(QStringLiteral("qrc:/UI/main.qml")));
+    MODstart* _ModStart = MODstart::Instance();
+
     return app.exec();
 }
