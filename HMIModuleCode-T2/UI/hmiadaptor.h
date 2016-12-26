@@ -89,6 +89,7 @@ public:
     Q_INVOKABLE QString getMaintenanceVerson(int index);
     Q_INVOKABLE QString getSoftVerson(int index);
     Q_INVOKABLE bool login(QString passwd);
+    Q_INVOKABLE bool borrowLogin(QString passwd, QString pageName);
     Q_INVOKABLE QStringList getCarTempLate();
     Q_INVOKABLE void addCarTempLate(QString name);
     Q_INVOKABLE void removeCarTemplate(QString name);
