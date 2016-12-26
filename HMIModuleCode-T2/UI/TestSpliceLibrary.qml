@@ -40,6 +40,7 @@ Item {
             testDialog.visible = true
         }
         onSignalSaveSplice: {
+            hmiAdaptor.teachModeSaveSplice();
             loader.source = ""
         }
     }

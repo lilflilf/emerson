@@ -1091,3 +1091,8 @@ void HmiAdaptor::msgBoxClick(bool clickOK)
         this->func_ptr(bransonMessageBox._Object);
     }
 }
+
+void HmiAdaptor::teachModeSaveSplice()
+{
+    spliceModel->updateSplice(operateProcess->CurrentSplice);
+}

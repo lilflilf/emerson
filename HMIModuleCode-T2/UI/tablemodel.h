@@ -122,7 +122,9 @@ public slots:
     Q_INVOKABLE QString getString(QString type, int value);
     Q_INVOKABLE bool getWeldMode(QString type,int index);
     Q_INVOKABLE QList<int> getWireIdList();
+    Q_INVOKABLE QString graphTimeToString(int time);
 
+    void updateSplice(PresetElement presetElement);
 private:
     QHash<int, QByteArray> m_roleNames;
 };

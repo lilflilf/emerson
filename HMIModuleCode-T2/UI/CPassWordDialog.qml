@@ -143,7 +143,6 @@ Item {
                 else if (event.key == Qt.Key_9) {
                     mimaShow.text = mimaShow.text + "●"
                     mima.text = mima.text + "9"
-
                 }
             }
             Component.onCompleted: {
