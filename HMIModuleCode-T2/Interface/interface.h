@@ -74,6 +74,7 @@ protected:
     InterfaceClass(QObject *parent = 0);
 private:
     static InterfaceClass* _instance;
+    BransonMessageBox tmpMsgBox;
 public:
     ~InterfaceClass();
 };

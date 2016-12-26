@@ -869,6 +869,7 @@ void HmiAdaptor::slotEnableDialog(BransonMessageBox &MsgBox)
 {
     bransonMessageBox = MsgBox;
     this->func_ptr = bransonMessageBox.func_ptr;
+    qDebug() << "slotEnableDialog" << bransonMessageBox._Object;
     bool okVisable = true;
     bool cancelVisable = false;
     QString okText;
@@ -1075,6 +1076,8 @@ void HmiAdaptor::statisticalTrendApply(int SpliceID, QString SpliceName, unsigne
 
 void HmiAdaptor::msgBoxClick(bool clickOK)
 {
-    if (clickOK && this->func_ptr != NULL && bransonMessageBox._Object != NULL)
+    if (clickOK && this->func_ptr != NULL && bransonMessageBox._Object != NULL) {
+        qDebug() << "msgBoxClick" << this->func_ptr << bransonMessageBox._Object;
         this->func_ptr(bransonMessageBox._Object);
+    }
 }
