@@ -53,6 +53,10 @@ public:
 
 
 
+    // Only for Graph, The Graph Time unit is microsecond
+    QString GraphTimeToString(int ActualTime);
+    QString GraphPowerToString(int ActualPower);
+    QString GraphHeightToString(int ActualHeight);
     //Weld History
     QString WeldModeToString(enum WELDMODE, enum STEPWELDMODE);
     QString HistoryAmplitudeToString(int Amplitude1, int Amplitude2);

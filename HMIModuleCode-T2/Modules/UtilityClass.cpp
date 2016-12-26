@@ -313,6 +313,9 @@ void UtilityClass::InitializeTextData()
     SetTextData(DINConverterLimit, 0, MINCONVERTERLIMIT, MAXCONVERTERLIMIT, 1, 1, "%d");
     SetTextData(DINPercentTeachMode, 0, MINPERCENTTEACHMODE, MAXPERCENTTEACHMODE, 1, 1, "%d%");
     SetTextData(DINSigmaTeachMode, 0, MINSIGMATEACHMODE, MAXSIGMATEACHMODE, 1, 1, "%d");
+    SetTextData(DINGraphTimeMS, 0, MINTIME, MAXTIME, 2, 0.5, "%.2f");
+    SetTextData(DINGraphPower, 0, MINPOWER, Maxpower, 100, 1, "%d");
+    SetTextData(DINGraphHeight, 0, MINHEIGHT, MAXHEIGHT, 2, 0.01, "%.2f");
 }
 
 void UtilityClass::SetTextData(ScreenShowDataType TypeIndex,int Data,int min, int max,
