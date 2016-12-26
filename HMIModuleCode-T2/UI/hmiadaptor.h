@@ -136,6 +136,8 @@ public:
     Q_INVOKABLE void statisticalTrendApply(int SpliceID, QString SpliceName, unsigned int time_from, unsigned int time_to);
 
     Q_INVOKABLE void msgBoxClick(bool clickOK);
+    Q_INVOKABLE void teachModeSaveSplice();
+
     BransonMessageBox bransonMessageBox;
     InterfaceClass *interfaceClass;
     MakeWeldProcess *operateProcess;
