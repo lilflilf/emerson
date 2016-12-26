@@ -264,7 +264,7 @@ public slots:
     Q_INVOKABLE int getAxes(QString key);
     Q_INVOKABLE void setStartTime();
 
-    Q_INVOKABLE void editNew(int weldId);
+    Q_INVOKABLE void editNew(int weldId, QString weldName);
 
 private:
     QHash<int, QByteArray> m_roleNames;

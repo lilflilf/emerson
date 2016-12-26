@@ -2,7 +2,7 @@
 #define ADVANCEDMAINTENANCE_H
 
 #include "Maintenance.h"
-#include "Modules/ThreadClass.h"
+#include <QTimer>
 
 /* Output:  bit31,  bit30, bit29, bit28
  *          bit27, ToolingCooling On, CutterOn, CrashOn,
@@ -70,7 +70,9 @@ private:
     static bool ConverterCoolingTest;
     static bool ToolingCoolingTest;
     static unsigned long PreviousIO;
-    ThreadClass* m_Thread;
+//    ThreadClass* m_Thread;
+    static QTimer *Timer;
+    static bool IsTimerRunning;
 public:
     static bool HornTest;
 private:
@@ -102,6 +104,7 @@ public:
 signals:
     void IOstatusFeedback(const unsigned long &_status);
 public slots:
+    void TimeoutEventSlot();
 };
 
 #endif // ADVANCEDMAINTENANCE_H

@@ -24,6 +24,7 @@ MakeWeldProcess* MakeWeldProcess::Instance()
 MakeWeldProcess::MakeWeldProcess(QObject *parent) : QObject(parent)
 {
 //    M102IA* _M102IA = M102IA::Instance();
+    WeldCycleStatus = true;
 }
 
 void MakeWeldProcess::UpdateIAFields()

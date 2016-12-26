@@ -9,6 +9,8 @@ StatisticalFunction::StatisticalFunction()
 float StatisticalFunction::Mean(QList<float> & RawSample)
 {
     double sum = 0;
+    if(RawSample.isEmpty() == true)
+        return 0;
     for(int i = 0; i < RawSample.size();i++)
     {
         sum += RawSample.at(i);
@@ -19,6 +21,8 @@ float StatisticalFunction::Mean(QList<float> & RawSample)
 float StatisticalFunction::Median(QList<float> & RawSample, float mean)
 {
     float median = 0;
+    if(RawSample.isEmpty() == true)
+        return 0;
     qSort(RawSample.begin(), RawSample.end());
     int len = RawSample.size();
     if((len % 2)== 0)
@@ -49,6 +53,8 @@ float StatisticalFunction::Median(QList<float> & RawSample, float mean)
 float StatisticalFunction::StandardDeviation(QList<float> &RawSample, float mean)
 {
     double sum = 0;
+    if(RawSample.isEmpty() == true)
+        return 0;
     int len = RawSample.size();
     for(int i = 0; i< RawSample.size(); i++)
     {
@@ -63,6 +69,8 @@ float StatisticalFunction::CPKProcess(float sigma, float mean, float USL, float 
     float CPKu = -1;
     float CPKI = -1;
     float CPK = 0;
+    if(sigma == 0)
+        return CPK;
     if(USL != -1)
     {
         if(mean < USL)

@@ -1765,9 +1765,11 @@ void AlarmModel::setStartTime()
     startTime = QDateTime::currentDateTime();
 }
 
-void AlarmModel::editNew(int weldId)
+void AlarmModel::editNew(int weldId, QString weldName)
 {
-    m_weldHistoryAdaptor->QueryOneRecordFromTable(weldId,&weldResultElement);
+    bool reb;
+    reb = m_weldHistoryAdaptor->QueryOneRecordWithGraph(weldId,weldName,&weldResultElement);
+//    qDebug() << "editNew" << weldId << weldName << reb << weldResultElement.PowerGraph;
 }
 
 QVariant AlarmModel::data(const QModelIndex &index, int role) const

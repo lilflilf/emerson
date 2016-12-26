@@ -155,6 +155,9 @@ enum ScreenShowDataType{
     DINConverterLimit,
     DINPercentTeachMode,
     DINSigmaTeachMode,
+    DINGraphTimeMS,
+    DINGraphPower,
+    DINGraphHeight,
     DIN_end,
 };
 

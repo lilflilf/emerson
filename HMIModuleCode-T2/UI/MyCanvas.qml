@@ -83,7 +83,7 @@ Item {
             anchors.topMargin: 5
             color: "white"
             font.pointSize: 12
-            text: qsTr("TIME(msec)")
+            text: qsTr("TIME(sec)")
             font.family: "arial"
 
         }
@@ -97,7 +97,7 @@ Item {
                     width: bottomLine.width / 10
                     color: "#adaeae"
                     font.pixelSize: 14
-                    text: (index * alarmModel.getAxes("Time") * 0.1).toFixed(2) //  (index / 10 * myCanvas.timeMax).toFixed(2)
+                    text: (index * alarmModel.getAxes("Time") * 0.1).toFixed(0) //  (index / 10 * myCanvas.timeMax).toFixed(2)
                     horizontalAlignment: Qt.AlignLeft
                 }
             }
@@ -162,7 +162,7 @@ Item {
                     height: rightLine.height / 10
                     color: "#adaeae"
                     font.pixelSize: 14
-                    text: index == 0 ? alarmModel.getAxes("Pre-Height") + (alarmModel.getAxes("Pre-Height") - alarmModel.getAxes("Post-Height"))/8 : alarmModel.getAxes("Pre-Height") - (alarmModel.getAxes("Pre-Height") - alarmModel.getAxes("Post-Height"))/8*(index-1)
+                    text: index == 0 ? (alarmModel.getAxes("Pre-Height") + (alarmModel.getAxes("Pre-Height") - alarmModel.getAxes("Post-Height"))/8).toFixed(0) : (alarmModel.getAxes("Pre-Height") - (alarmModel.getAxes("Pre-Height") - alarmModel.getAxes("Post-Height"))/8*(index-1)).toFixed(0)
 //                    text: ((11 - index) * alarmModel.getAxes("Post-Height") * 0.1).toFixed(0) /// 10 * myCanvas.heightMax).toFixed(0) //(7 - index) * 100
                     verticalAlignment: Qt.AlignTop
                 }

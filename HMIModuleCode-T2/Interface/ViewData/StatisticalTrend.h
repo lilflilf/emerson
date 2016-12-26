@@ -27,6 +27,10 @@ struct StatisticsParameter
     QString Median;
     QString Sigma;
     QString Cpk;
+    int UpperSpecLimit;
+    int LowerSpecLimit;
+    int UpperControlLimit;
+    int LowerControlLimit;
 };
 
 class StatisticalTrend : public QObject
@@ -45,6 +49,7 @@ private:
 public:
     QList<struct WeldActualParameter> CurrentWeldParameterList;
     struct StatisticsParameter CurrentStatisticsParameter[4];
+    QList<int> RawQualityWindowList[4];
 public:
     void _apply(int, QString, unsigned int time_from, unsigned int time_to);
 public:
