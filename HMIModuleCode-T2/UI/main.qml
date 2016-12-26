@@ -38,59 +38,66 @@ Window {
 
     function checkNeedPassWd(index)
     {
+//         ("Create New", "Edit Existing", "Operate", "Test", "Teach Mode", "Calibration",
+//          "Tool Change", "Advanced Maintenance", "Maintenance Counter", "Maintenance Log",
+//          "Work Order History", "Statistical Trend", "Error/Alarm Log", "Library",
+//          "Version Information", "Permission Setting", "Weld Defaults", "Operator Library",
+//          "Data/Communication", "Lock On Alarm")
         var source
         switch (index) {
         case 0:
+            source = "Create New"
+            break;
         case 1:
-            source = "qrc:/UI/Content.qml"
+            source = "Edit Existing"
             break;
         case 2:
-            source = "qrc:/UI/Operate.qml"
+            source = "Operate"
             break;
         case 3:
-            source = "qrc:/UI/TestSpliceLibrary.qml"
+            source = "Test"
             break;
         case 4:
-            source = "qrc:/UI/Calibration.qml"
+            source = "Calibration"
             break;
         case 5:
-            source = "qrc:/UI/ToolChange.qml"
+            source = "Tool Change"
             break;
         case 6:
-            source = "qrc:/UI/AdvancedMaintenance.qml"
+            source = "Advanced Maintenance"
             break;
         case 7:
-            source = "qrc:/UI/MaintenanceCount.qml"
+            source = "Maintenance Counter"
             break;
         case 8:
-            source = "qrc:/UI/MaintenanceLog.qml"
+            source = "Maintenance Log"
             break;
         case 9:
-            source = "qrc:/UI/ViewWorkOrder.qml"
+            source = "Work Order History"
             break;
         case 10:
-            source = "qrc:/UI/ViewTrend.qml"
+            source = "Statistical Trend"
             break;
         case 11:
-            source = "qrc:/UI/ViewError.qml"
+            source = "Error/Alarm Log"
             break;
         case 12:
-            source = "qrc:/UI/ViewLibrary.qml"
+            source = "Library"
             break;
         case 13:
-            source = "qrc:/UI/ViewVersion.qml"
+            source = "Version Information"
             break
         case 14:
-            source = "qrc:/UI/PermissionSetting.qml"
+            source = "Permission Setting"
             break;
         case 15:
-            source = "qrc:/UI/WeldDefalut.qml"
+            source = "Weld Defaults"
             break;
         case 16:
-            source = "qrc:/UI/UserLibrarySetting.qml"
+            source = "Operator Library"
             break;
         case 17:
-            source = "qrc:/UI/DataCommunication.qml"
+            source = "Data/Communication"
             break;
         case 19:
             source = "qrc:/UI/EditWire.qml"
@@ -101,6 +108,7 @@ Window {
         if (hmiAdaptor.needPassWord(source)) {
             passwdLog.visible = true
             passwdLog.index = index
+            passwdLog.pageName = source
         } else {
             menuInit(index)
         }

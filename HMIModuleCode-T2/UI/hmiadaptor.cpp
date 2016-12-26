@@ -425,6 +425,46 @@ bool HmiAdaptor::login(QString passwd)
     return isLog;
 }
 
+bool HmiAdaptor::borrowLogin(QString passwd, QString pageName)
+{
+    if (passwd == "0000")
+        return true;
+    OperatorElement myOperator;
+    bool isLog = operatorModel->login(passwd, &myOperator);
+    if (isLog)
+    {
+        permissionsettingExecute("_Recall");
+        int i;
+        int funcIndex = -1;
+        int levelIndex = -1;
+        bool reb = false;
+        QList<struct PermissionSettingForScreen> funcNameList;
+        funcNameList = permissionSetting->CurrentPermissionList;
+        for (i = 0; i < funcNameList.length();i++)
+        {
+            if (pageName == funcNameList[i].Identifier) {
+                funcIndex = i;
+                break;
+            }
+        }
+        if (funcIndex == -1)
+            return false;
+        levelIndex = (int)myOperator.PermissionLevel;
+        if (levelIndex == 1)
+            reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level1;
+        else if (levelIndex == 2)
+            reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level2;
+        else if (levelIndex == 3)
+            reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level3;
+        else if (levelIndex == 4)
+            reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level4;
+
+        return reb;
+    }
+    else
+        return false;
+}
+
 QString HmiAdaptor::getCurrentOperatorId()
 {
     return interfaceClass->CurrentOperator.OperatorName;
@@ -495,11 +535,11 @@ bool HmiAdaptor::needPassWord(QString pageName)
     int funcIndex = -1;
     int levelIndex = -1;
     bool reb = true;
-    QStringList funcName;
-    funcName = permissionSetting->AllFunctionNameList;
-    for (i = 0; i < funcName.length();i++)
+    QList<struct PermissionSettingForScreen> funcNameList;
+    funcNameList = permissionSetting->CurrentPermissionList;
+    for (i = 0; i < funcNameList.length();i++)
     {
-        if (pageName == funcName[i]) {
+        if (pageName == funcNameList[i].Identifier) {
             funcIndex = i;
             break;
         }
@@ -507,6 +547,8 @@ bool HmiAdaptor::needPassWord(QString pageName)
     if (funcIndex == -1)
         return reb;
     levelIndex = (int)interfaceClass->CurrentOperator.PermissionLevel;
+    qDebug() << "needPassWord" << pageName << funcIndex << levelIndex;
+
     if (levelIndex == 1)
         reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level1;
     else if (levelIndex == 2)
@@ -516,7 +558,6 @@ bool HmiAdaptor::needPassWord(QString pageName)
     else if (levelIndex == 4)
         reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level4;
 
-    qDebug() << "ppppppppppppppppppppppppp" << pageName << funcIndex << levelIndex;
     return !reb;
 }
 
