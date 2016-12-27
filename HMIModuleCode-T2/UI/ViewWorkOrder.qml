@@ -456,7 +456,7 @@ Item {
                         searchArea.visible = false
                         switch(searchArea.buttonIndex) {
                         case 1:
-                            workOrderName.text = searchList.model.getWorkOrderValue(searchArea.selectNum,"name")
+                            workOrderName.text = searchList.model.getValue(searchArea.selectNum,"name")
                             break;
                         case 2:
                             partName.text = searchList.model.getValue(searchArea.selectNum,"PartName")
