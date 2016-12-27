@@ -190,8 +190,11 @@ Item {
                 onClicked: {
                     if (button2.text == qsTr("Back"))
                         calibration.currentIndex--
-                    else if (button2.text == qsTr("Save"))
+                    else if (button2.text == qsTr("Save")) {
+                        if (line1.inputText != qsTr("enter value here"))
+                            hmiAdaptor.hornCalibrationComplete(line1.inputText)
                         root.checkNeedPassWd(0)
+                    }
                     else if (button2.text == qsTr("Cancel"))
                         calibration.currentIndex = 1
                 }
