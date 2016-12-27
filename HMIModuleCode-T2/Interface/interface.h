@@ -70,7 +70,7 @@ public:
     bool SQLDelete(void* _DBObj);
     bool SQLDelete(void* _DBObj, int ID, QString Name);
 private:
-
+    void CheckBransonFolder();
 signals:
     void EnableErrorMessageSignal(struct BransonMessageBox &MsgBox);
     void DisableErrorMessageSignal(struct BransonMessageBox &MsgBox);
