@@ -268,6 +268,19 @@ Window {
                 cdialog.msgTypeIco = typeIco
                 cdialog.titleText = titleText
                 cdialog.visible = true
+                cdialog.isQuit = isQuit
+            }
+            onSignalDisableDialog: {
+                cdialog.visible = false
+
+                cdialog.okvisible = false
+                cdialog.cancelvisible = false
+                cdialog.okText = okText
+                cdialog.cancelText = ""
+                cdialog.centerText = ""
+                cdialog.msgTypeIco = ""
+                cdialog.titleText = ""
+                cdialog.isQuit = false
             }
         }
     }

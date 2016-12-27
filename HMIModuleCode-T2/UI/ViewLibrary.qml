@@ -932,4 +932,9 @@ Item {
             }
         }
     }
+
+    Loader {
+        id: editLoader
+        anchors.fill: parent
+    }
 }

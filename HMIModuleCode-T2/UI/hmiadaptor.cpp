@@ -72,6 +72,7 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
     statisticalTrend = new StatisticalTrend;
     interfaceClass = InterfaceClass::Instance();
 
+    connect(advanceMaintenance, SIGNAL(IOstatusFeedback(ulong)),this,SLOT(slotButtonState(ulong)));
     connect(interfaceClass, SIGNAL(EnableErrorMessageSignal(BransonMessageBox&)), this, SLOT(slotEnableDialog(BransonMessageBox&)));
     connect(interfaceClass, SIGNAL(DisableErrorMessageSignal(BransonMessageBox&)), this, SLOT(slotDisableDialog(BransonMessageBox&)));
 
@@ -875,6 +876,7 @@ void HmiAdaptor::slotEnableDialog(BransonMessageBox &MsgBox)
     QString okText;
     QString cancelText;
     QString typeIco;
+    bool isQuit = false;
     if (MsgBox.TipsMode & OKOnly)
     {
         cancelVisable = false;
@@ -915,12 +917,48 @@ void HmiAdaptor::slotEnableDialog(BransonMessageBox &MsgBox)
     {
         typeIco = "qrc:/images/images/alarm.ico";
     }
-    emit signalEnableDialog(okVisable, cancelVisable, okText, "CANCEL", typeIco, MsgBox.MsgTitle, MsgBox.MsgPrompt);
+
+    if (MsgBox.TipsMode & OFF_ON_LINE)
+        isQuit = true;
+    emit signalEnableDialog(okVisable, cancelVisable, okText, "CANCEL", typeIco, MsgBox.MsgTitle, MsgBox.MsgPrompt,isQuit);
 }
 
 void HmiAdaptor::slotDisableDialog(BransonMessageBox &MsgBox)
 {
     emit signalDisableDialog();
+}
+
+void HmiAdaptor::slotButtonState(const unsigned long status)
+{
+    if ((status & HORN_ON) == HORN_ON)
+        emit signalButtonStateChanged("AnvilArm", true);
+    else
+        emit signalButtonStateChanged("AnvilArm", false);
+
+    if ((status & GATHER_ON) == GATHER_ON)
+        emit signalButtonStateChanged("Gather", true);
+    else
+        emit signalButtonStateChanged("Gather", false);
+    if ((status & COVER_OPEN) == COVER_OPEN)
+        emit signalButtonStateChanged("Safety", true);
+    else
+        emit signalButtonStateChanged("Safety", false);
+    if ((status & CUTTER_ON) == CUTTER_ON)
+        emit signalButtonStateChanged("Cutter", true);
+    else
+        emit signalButtonStateChanged("Cutter", false);
+    if ((status & TOOLINGCOOL_ON) == TOOLINGCOOL_ON)
+        emit signalButtonStateChanged("Cooling Tooling", true);
+    else
+        emit signalButtonStateChanged("Cooling Tooling", false);
+    if ((status & CONVERTERCOOL_ON) == CONVERTERCOOL_ON)
+        emit signalButtonStateChanged("Cooling Converter", true);
+    else
+        emit signalButtonStateChanged("Cooling Converter", false);
+    if ((status & CRASH_ON) == CRASH_ON)
+        emit signalButtonStateChanged("Crash", true);
+    else
+        emit signalButtonStateChanged("Crash", false);
 }
 
 bool HmiAdaptor::stringRegexMatch(QString exp, QString value)
