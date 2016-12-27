@@ -1,4 +1,13 @@
 #include "SysConfiguration.h"
+#include "Modules/M10INI.h"
+#include "Modules/UtilityClass.h"
+#include <QDir>
+#include <QSettings>
+Status_Data::Status_Data()
+{
+
+}
+
 Status_Data &Status_Data::operator= (const Status_Data &StatusDataObj)
 {
     if(this == &StatusDataObj)
@@ -123,7 +132,7 @@ Status_Data &Status_Data::operator= (const Status_Data &StatusDataObj)
     this->CurrentCoolingMode = StatusDataObj.CurrentCoolingMode;
     this->CurrentCoolingTooling = StatusDataObj.CurrentCoolingTooling;
     this->LockonAlarm = StatusDataObj.LockonAlarm;
-    this->RunMode = StatusDataObj.RunMode;
+    this->RunMode.Word = StatusDataObj.RunMode.Word;
     for(int i = 0; i< 4; i++)
         this->Machineflags.Word[i] = StatusDataObj.Machineflags.Word[i];
 
@@ -133,6 +142,7 @@ Status_Data &Status_Data::operator= (const Status_Data &StatusDataObj)
         this->MaintenanceLimits[i] = StatusDataObj.MaintenanceLimits[i];
         this->CurrentMaintenanceLimits[i] = StatusDataObj.CurrentMaintenanceLimits[i];
         this->MaintenanceDateStarted[i] = StatusDataObj.MaintenanceDateStarted[i];
+        this->Maintenance80PercentAlarm[i] = StatusDataObj.Maintenance80PercentAlarm[i];
     }
     this->TubeShrinkerport = StatusDataObj.TubeShrinkerport;
     this->HistoryGraphData = StatusDataObj.HistoryGraphData;
@@ -166,4 +176,372 @@ Status_Data &Status_Data::operator= (const Status_Data &StatusDataObj)
     return *this;
 }
 
+bool Status_Data::ReadStatusDataFromQSetting()
+{
+    QDir dir;
+    QString str = "";
+    M10INI* _M10INI = M10INI::Instance();
+    UtilityClass* _Utility = UtilityClass::Instance();
+    QString FileName = _M10INI->ConfigFilesPath + BRANSON_INI_FILE;
+    if (dir.exists(FileName) == false)
+        return false;
 
+    QSettings settings(FileName, QSettings::IniFormat);
+    settings.beginGroup("BransonInitial");
+    RevCode = settings.value("RevCode").value<int>();
+    CreatedDate = settings.value("CreatedDate").value<QString>();
+    OperatorName = settings.value("OperatorName").value<QString>();
+
+    settings.beginGroup("Soft_Settings");
+    int i_tmp = settings.value("Lang_Support").value<int>();
+    Soft_Settings.Lang_Support = (enum LangSupport)i_tmp;
+    Soft_Settings.Horn_Calibrate = settings.value("Horn_Calibrate").value<int>();
+    Soft_Settings.AutoPreburst = settings.value("AutoPreburst").value<int>();
+    Soft_Settings.SonicGenWatts = settings.value("SonicGenWatts").value<int>();
+    Soft_Settings.ToolCoverIgnore = settings.value("ToolCoverIgnore").value<bool>();
+    i_tmp = settings.value("Pressure2Unit").value<int>();
+    Soft_Settings.Pressure2Unit = (enum PRESSUREUNIT)i_tmp;
+    Soft_Settings.Mm2Awg = settings.value("Mm2Awg").value<bool>();
+    Soft_Settings.PWWidth2Height = settings.value("PWWidth2Height").value<float>();
+    Soft_Settings.MinAmplitude = settings.value("MinAmplitude").value<int>();
+    Soft_Settings.MinPressure = settings.value("MinPressure").value<int>();
+    i_tmp = settings.value("WeldFormula").value<int>();
+    Soft_Settings.WeldFormula = (enum WeldSetFormula)i_tmp;
+    Soft_Settings.RunCount = settings.value("RunCount").value<int>();
+    i_tmp = settings.value("Teach_Mode").value<int>();
+    Soft_Settings.Teach_Mode = (enum TEACH_MODE_TYPE)i_tmp;
+    Soft_Settings.TunePoint = settings.value("TunePoint").value<int>();
+    Soft_Settings.FrequencyOffset = settings.value("FrequencyOffset").value<int>();
+    settings.endGroup();
+
+    settings.beginGroup("Cust_Data");
+    settings.beginGroup("mod10a_settings");
+    Cust_Data.mod10a_settings.UnsignedWeldData = settings.value("UnsignedWeldData").value<int>();
+    Cust_Data.mod10a_settings.AfterBurstDelay = settings.value("AfterBurstDelay").value<int>();
+    Cust_Data.mod10a_settings.AfterBurstDuration = settings.value("AfterBurstDuration").value<int>();
+    Cust_Data.mod10a_settings.EnergyWindowPL = settings.value("EnergyWindowPL").value<int>();
+    Cust_Data.mod10a_settings.PreBurstIndex = settings.value("PreBurstIndex").value<int>();
+    settings.endGroup();
+    for(int i = 0; i < WIDTH_ADJ; i++)
+    {
+        str = QString("cust_qual_range%1").arg(QString::number(i,10));
+        Cust_Data.cust_qual_range[i] = settings.value(str).value<int>();
+    }
+    settings.endGroup();
+
+    settings.beginGroup("HSDATA");
+    for(int i = 0; i< END_SL; i++)
+    {
+        str = QString("HARD_LIMIT%1.TypeHS").arg(QString::number(i, 10));
+        i_tmp = settings.value(str).value<int>();
+        HSDATA.HARD_LIMIT[i].TypeHS = (enum VALUETYPE)i_tmp;
+        str = QString("HARD_LIMIT%1.ValueHS").arg(QString::number(i, 10));
+        HSDATA.HARD_LIMIT[i].ValueHS = settings.value(str).value<int>();
+        str = QString("SOFT_LIMIT%1.TypeHS").arg(QString::number(i, 10));
+        i_tmp = settings.value(str).value<int>();
+        HSDATA.SOFT_LIMIT[i].TypeHS = (enum VALUETYPE)i_tmp;
+        str = QString("SOFT_LIMIT%1.ValueHS").arg(QString::number(i, 10));
+        HSDATA.SOFT_LIMIT[i].ValueHS = settings.value(str).value<int>();
+    }
+    settings.endGroup();
+
+    settings.beginGroup("ComInfo");
+    ComInfo.BaudRate = settings.value("BaudRate").value<int>();
+    ComInfo.COMport = settings.value("COMport").value<unsigned int>();
+    settings.endGroup();
+    i_tmp = settings.value("MachineType").value<int>();
+    MachineType = (enum ActuatorType)i_tmp;
+    MachineDate = settings.value("MachineDate").value<QString>();
+    KeepDailyHistory = settings.value("KeepDailyHistory").value<bool>();
+
+    for (int i = 0; i< PERMISSIONLEVEL; i++)
+    {
+        str = QString("PasswordData%1.Identifier").arg(QString::number(i, 10));
+        PasswordData[i].Identifier = settings.value(str).value<QString>();
+        str = QString("PasswordData%1.Password").arg(QString::number(i, 10));
+        PasswordData[i].Password = settings.value(str).value<QString>();
+        str = QString("PasswordData%1.PWPermissions").arg(QString::number(i, 10));
+        PasswordData[i].PWPermissions = settings.value(str).value<unsigned int>();
+    }
+
+
+    str = settings.value("CurrentFunIndex").value<QString>();
+    _Utility->StringJsonToList(str, &CurrentFunIndex);
+
+    for (int i = 0; i< FormulaRangSize; i++)
+    {
+        str = QString("WeldSettings4Build%1.MaxRange").arg(QString::number(i, 10));
+        WeldSettings4Build[i].MaxRange = settings.value(str).value<float>();
+        str = QString("WeldSettings4Build%1.MinRange").arg(QString::number(i, 10));
+        WeldSettings4Build[i].MinRange = settings.value(str).value<float>();
+        str = QString("WeldSettings4Build%1.Multplier").arg(QString::number(i, 10));
+        WeldSettings4Build[i].Multplier = settings.value(str).value<float>();
+        str = QString("WeldSettings4Build%1.Offset").arg(QString::number(i, 10));
+        WeldSettings4Build[i].Offset = settings.value(str).value<float>();
+    }
+
+    str = settings.value("ShrinkTubeDefault").value<QString>();
+    _Utility->StringJsonToList(str, &ShrinkTubeDefaults);
+
+    RemoteRecallport = settings.value("RemoteRecallport").value<int>();
+    SoftLimitsModeFlags = settings.value("SoftLimitsModeFlags").value<unsigned int>();
+    SoftLimitSampleSize = settings.value("SoftLimitSampleSize").value<int>();
+
+    for(int i = 0; i < SLIControlLimitSize; i++)
+    {
+        for(int j = 0; j < SLI_Size; j++)
+        {
+            str = QString("SoftLimit%1%2").arg(QString::number(i, 10),QString::number(j,10));
+            SoftLimit[i][j] = settings.value(str).value<int>();
+        }
+    }
+
+    FileSystemFlags = settings.value("FileSystemFlags").value<long>();
+    AutoGetNextDelay = settings.value("AutoGetNextDelay").value<long>();
+    NetworkingEnabled = settings.value("NetworkingEnabled").value<bool>();
+    RemoteDataLogging = settings.value("RemoteDataLogging").value<bool>();
+    CurrentWrkStaID = settings.value("CurrentWrkStaID").value<QString>();
+    CentralComputerID = settings.value("CentralComputerID").value<QString>();
+    i_tmp = settings.value("ActuatorMode").value<int>();
+    ActuatorMode = (enum ACTUATORMODE)i_tmp;
+    AntisideSpliceTime = settings.value("AntisideSpliceTime").value<int>();
+    CurrentCoolingDur = settings.value("CurrentCoolingDur").value<int>();
+    CurrentCoolingDel = settings.value("CurrentCoolingDel").value<int>();
+    i_tmp = settings.value("CurrentCoolingMode").value<int>();
+    CurrentCoolingMode = (enum CoolingMode)i_tmp;
+    CurrentCoolingTooling = settings.value("CurrentCoolingTooling").value<int>();
+    LockonAlarm = settings.value("LockonAlarm").value<int>();
+    RunMode.Word = settings.value("RunMode.Word").value<unsigned short>();
+
+    for(int i = 0; i< 4; i++)
+    {
+        str = QString("Machineflags.Word%1").arg(QString::number(i, 10));
+        Machineflags.Word[i] = settings.value(str).value<unsigned short>();
+    }
+
+    CycleCount = settings.value("CycleCount").value<long>();
+
+    for(int i = 0; i< 8; i++)
+    {
+        str = QString("MaintenanceLimits%1").arg(QString::number(i, 10));
+        MaintenanceLimits[i] = settings.value(str).value<long>();
+        str = QString("CurrentMaintenanceLimits%1").arg(QString::number(i, 10));
+        CurrentMaintenanceLimits[i] = settings.value(str).value<long>();
+        str = QString("MaintenanceDateStarted%1").arg(QString::number(i, 10));
+        MaintenanceDateStarted[i] = settings.value(str).value<unsigned int>();
+        str = QString("Maintenance80PercentAlarm%1").arg(QString::number(i, 10));
+        Maintenance80PercentAlarm[i] = settings.value(str).value<bool>();
+    }
+
+    TubeShrinkerport = settings.value("TubeShrinkerport").value<int>();
+    HistoryGraphData = settings.value("HistoryGraphData").value<bool>();
+    RemoteGraphData = settings.value("RemoteGraphData").value<bool>();
+    i_tmp = settings.value("StartScreen").value<int>();
+    StartScreen = (enum SCREEN_MODE)i_tmp;
+    EnableModularFlag = settings.value("EnableModularFlag").value<bool>();
+
+    for(int i = 0; i< PASSCOUNT; i++)
+    {
+        str = QString("ModularPassword%1.Identifier").arg(QString::number(i, 10));
+        ModularPassword[i].Identifier = settings.value(str).value<QString>();
+        str = QString("ModularPassword%1.Password").arg(QString::number(i, 10));
+        ModularPassword[i].Password = settings.value(str).value<QString>();
+    }
+
+    i_tmp = settings.value("GraphSampleRatio").value<int>();
+    GraphSampleRatio = (enum SAMPLERATIO)i_tmp;
+    GraphDataLen = settings.value("GraphDataLen").value<long>();
+    CutoffMode = settings.value("CutoffMode").value<int>();
+    LockKeyFlag = settings.value("LockKeyFlag").value<bool>();
+    FootPedalFlag = settings.value("FootPedalFlag").value<bool>();
+    ServerPort = settings.value("ServerPort").value<int>();
+    ModularProductionEnabled = settings.value("ModularProductionEnabled").value<bool>();
+
+    ActuatorModuleNumber = settings.value("ActuatorModuleNumber").value<QString>();
+    ActuatorPartNumber = settings.value("ActuatorPartNumber").value<QString>();
+    ActuatorSerialNumber = settings.value("ActuatorSerialNumber").value<QString>();
+    ActuatorVersion = settings.value("ActuatorVersion").value<QString>();
+
+    str = settings.value("carTemplate").value<QString>();
+    _Utility->StringJsonToMap(str, &carTemplate);
+
+    settings.endGroup();
+    return true;
+
+}
+
+void Status_Data::WriteStatusDataToQSetting()
+{
+    QString str;
+    M10INI* _M10INI = M10INI::Instance();
+    UtilityClass* _Utility = UtilityClass::Instance();
+    QString FileName = _M10INI->ConfigFilesPath + BRANSON_INI_FILE;
+    QSettings settings(FileName, QSettings::IniFormat);
+    settings.beginGroup("BransonInitial");
+    settings.setValue("RevCode", RevCode);
+    settings.setValue("CreatedDate", CreatedDate);
+    settings.setValue("OperatorName", OperatorName);
+
+        settings.beginGroup("Soft_Settings");
+        settings.setValue("Lang_Support", Soft_Settings.Lang_Support);
+        settings.setValue("Horn_Calibrate", Soft_Settings.Horn_Calibrate);
+        settings.setValue("AutoPreburst", Soft_Settings.AutoPreburst);
+        settings.setValue("SonicGenWatts", Soft_Settings.SonicGenWatts);
+        settings.setValue("ToolCoverIgnore", Soft_Settings.ToolCoverIgnore);
+        settings.setValue("Pressure2Unit", Soft_Settings.Pressure2Unit);
+        settings.setValue("Mm2Awg", Soft_Settings.Mm2Awg);
+        settings.setValue("PWWidth2Height", Soft_Settings.PWWidth2Height);
+        settings.setValue("MinAmplitude", Soft_Settings.MinAmplitude);
+        settings.setValue("MinPressure", Soft_Settings.MinPressure);
+        settings.setValue("WeldFormula", Soft_Settings.WeldFormula);
+        settings.setValue("RunCount", Soft_Settings.RunCount);
+        settings.setValue("Teach_Mode", Soft_Settings.Teach_Mode);
+        settings.setValue("TunePoint", Soft_Settings.TunePoint);
+        settings.setValue("FrequencyOffset", Soft_Settings.FrequencyOffset);
+        settings.endGroup();
+
+        settings.beginGroup("Cust_Data");
+            settings.beginGroup("mod10a_settings");
+                settings.setValue("UnsignedWeldData", Cust_Data.mod10a_settings.UnsignedWeldData);
+                settings.setValue("AfterBurstDelay", Cust_Data.mod10a_settings.AfterBurstDelay);
+                settings.setValue("AfterBurstDuration", Cust_Data.mod10a_settings.AfterBurstDuration);
+                settings.setValue("EnergyWindowPL", Cust_Data.mod10a_settings.EnergyWindowPL);
+                settings.setValue("PreBurstIndex", Cust_Data.mod10a_settings.PreBurstIndex);
+            settings.endGroup();
+            for(int i = 0; i < WIDTH_ADJ; i++)
+            {
+                str = QString("cust_qual_range%1").arg(QString::number(i,10));
+                settings.setValue(str,Cust_Data.cust_qual_range[i]);
+            }
+        settings.endGroup();
+
+    settings.beginGroup("HSDATA");
+    for(int i = 0; i< END_SL; i++)
+    {
+        str = QString("HARD_LIMIT%1.TypeHS").arg(QString::number(i, 10));
+        settings.setValue(str, HSDATA.HARD_LIMIT[i].TypeHS);
+        str = QString("HARD_LIMIT%1.ValueHS").arg(QString::number(i, 10));
+        settings.setValue(str, HSDATA.HARD_LIMIT[i].ValueHS);
+        str = QString("SOFT_LIMIT%1.TypeHS").arg(QString::number(i, 10));
+        settings.setValue(str, HSDATA.SOFT_LIMIT[i].TypeHS);
+        str = QString("SOFT_LIMIT%1.ValueHS").arg(QString::number(i, 10));
+        settings.setValue(str, HSDATA.SOFT_LIMIT[i].ValueHS);
+    }
+    settings.endGroup();
+
+    settings.beginGroup("ComInfo");
+    settings.setValue("BaudRate", ComInfo.BaudRate);
+    settings.setValue("COMport", ComInfo.COMport);
+    settings.endGroup();
+    settings.setValue("MachineType", MachineType);
+    settings.setValue("MachineDate", MachineDate);
+    settings.setValue("KeepDailyHistory", KeepDailyHistory);
+
+    for (int i = 0; i< PERMISSIONLEVEL; i++)
+    {
+        str = QString("PasswordData%1.Identifier").arg(QString::number(i, 10));
+        settings.setValue(str, PasswordData[i].Identifier);
+        str = QString("PasswordData%1.Password").arg(QString::number(i, 10));
+        settings.setValue(str, PasswordData[i].Password);
+        str = QString("PasswordData%1.PWPermissions").arg(QString::number(i, 10));
+        settings.setValue(str, PasswordData[i].PWPermissions);
+    }
+
+    QString Str;
+    _Utility->ListJsonToString(&CurrentFunIndex, Str);
+    settings.setValue("CurrentFunIndex", Str);
+
+    for (int i = 0; i< FormulaRangSize; i++)
+    {
+        str = QString("WeldSettings4Build%1.MaxRange").arg(QString::number(i, 10));
+        settings.setValue(str, WeldSettings4Build[i].MaxRange);
+        str = QString("WeldSettings4Build%1.MinRange").arg(QString::number(i, 10));
+        settings.setValue(str, WeldSettings4Build[i].MinRange);
+        str = QString("WeldSettings4Build%1.Multplier").arg(QString::number(i, 10));
+        settings.setValue(str, WeldSettings4Build[i].Multplier);
+        str = QString("WeldSettings4Build%1.Offset").arg(QString::number(i, 10));
+        settings.setValue(str, WeldSettings4Build[i].Offset);
+    }
+
+    _Utility->ListJsonToString(&ShrinkTubeDefaults, str);
+    settings.setValue("ShrinkTubeDefault", str);
+
+    settings.setValue("RemoteRecallport", RemoteRecallport);
+    settings.setValue("SoftLimitsModeFlags", SoftLimitsModeFlags);
+    settings.setValue("SoftLimitSampleSize", SoftLimitSampleSize);
+
+    for(int i = 0; i < SLIControlLimitSize; i++)
+    {
+        for(int j = 0; j < SLI_Size; j++)
+        {
+            str = QString("SoftLimit%1%2").arg(QString::number(i, 10),QString::number(j,10));
+            settings.setValue(str, SoftLimit[i][j]);
+        }
+    }
+
+    settings.setValue("FileSystemFlags", FileSystemFlags);
+    settings.setValue("AutoGetNextDelay", AutoGetNextDelay);
+    settings.setValue("NetworkingEnabled", NetworkingEnabled);
+    settings.setValue("RemoteDataLogging", RemoteDataLogging);
+    settings.setValue("CurrentWrkStaID", CurrentWrkStaID);
+    settings.setValue("CentralComputerID", CentralComputerID);
+    settings.setValue("ActuatorMode", ActuatorMode);
+    settings.setValue("AntisideSpliceTime", AntisideSpliceTime);
+    settings.setValue("CurrentCoolingDur", CurrentCoolingDur);
+    settings.setValue("CurrentCoolingDel", CurrentCoolingDel);
+    settings.setValue("CurrentCoolingMode", CurrentCoolingMode);
+    settings.setValue("CurrentCoolingTooling", CurrentCoolingTooling);
+    settings.setValue("LockonAlarm", LockonAlarm);
+    settings.setValue("RunMode.Word", RunMode.Word);
+
+    for(int i = 0; i< 4; i++)
+    {
+        str = QString("Machineflags.Word%1").arg(QString::number(i, 10));
+        settings.setValue(str, Machineflags.Word[i]);
+    }
+
+    settings.setValue("CycleCount", CycleCount);
+
+    for(int i = 0; i< 8; i++)
+    {
+        str = QString("MaintenanceLimits%1").arg(QString::number(i, 10));
+        settings.setValue(str, MaintenanceLimits[i]);
+        str = QString("CurrentMaintenanceLimits%1").arg(QString::number(i, 10));
+        settings.setValue(str, CurrentMaintenanceLimits[i]);
+        str = QString("MaintenanceDateStarted%1").arg(QString::number(i, 10));
+        settings.setValue(str, MaintenanceDateStarted[i]);
+        str = QString("Maintenance80PercentAlarm%1").arg(QString::number(i, 10));
+        settings.setValue(str, Maintenance80PercentAlarm[i]);
+    }
+
+    settings.setValue("TubeShrinkerport", TubeShrinkerport);
+    settings.setValue("HistoryGraphData", HistoryGraphData);
+    settings.setValue("RemoteGraphData", RemoteGraphData);
+    settings.setValue("StartScreen", StartScreen);
+    settings.setValue("EnableModularFlag", EnableModularFlag);
+
+    for(int i = 0; i< PASSCOUNT; i++)
+    {
+        str = QString("ModularPassword%1.Identifier").arg(QString::number(i, 10));
+        settings.setValue(str, ModularPassword[i].Identifier);
+        str = QString("ModularPassword%1.Password").arg(QString::number(i, 10));
+        settings.setValue(str, ModularPassword[i].Password);
+    }
+
+    settings.setValue("GraphSampleRatio", GraphSampleRatio);
+    settings.setValue("GraphDataLen", GraphDataLen);
+    settings.setValue("CutoffMode", CutoffMode);
+    settings.setValue("LockKeyFlag", LockKeyFlag);
+    settings.setValue("FootPedalFlag", FootPedalFlag);
+    settings.setValue("ServerPort", ServerPort);
+    settings.setValue("ModularProductionEnabled", ModularProductionEnabled);
+
+    settings.setValue("ActuatorModuleNumber", ActuatorModuleNumber);
+    settings.setValue("ActuatorPartNumber", ActuatorPartNumber);
+    settings.setValue("ActuatorSerialNumber", ActuatorSerialNumber);
+    settings.setValue("ActuatorVersion", ActuatorVersion);
+
+    _Utility->MapJsonToString(&carTemplate, str);
+    settings.setValue("carTemplate", str);
+    settings.endGroup();
+}

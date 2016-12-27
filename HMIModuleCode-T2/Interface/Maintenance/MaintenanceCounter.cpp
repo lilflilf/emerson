@@ -83,7 +83,7 @@ bool MaintenanceCounter::_execute(int funCode)
     default:
         break;
     }
-
+    _Interface->StatusData.WriteStatusDataToQSetting();
     return true;
 }
 
@@ -101,6 +101,8 @@ void MaintenanceCounter::ResetHornCurrentCount()
     InterfaceClass* _Interface = InterfaceClass::Instance();
     _Interface->StatusData.CurrentMaintenanceLimits[HORNRESET/2] = 0;
     _Interface->StatusData.MaintenanceDateStarted[HORNRESET/2] = 0;
+    qDebug()<< HORNRESET/2<<_Interface->StatusData.CurrentMaintenanceLimits[HORNRESET/2]<<
+               _Interface->StatusData.MaintenanceDateStarted[HORNRESET/2];
 }
 
 void MaintenanceCounter::ChangeAnvilTipCounterLimit()
@@ -199,6 +201,8 @@ bool MaintenanceCounter::_recall()
         CurrentMaintenanceCounter.HornDateStarted
             = TimeLabel.toString("MM/dd/yyyy");
     }
+    qDebug()<<"HornCurrentCount" <<CurrentMaintenanceCounter.HornCurrentCount<<
+              "HornDateStarted" << CurrentMaintenanceCounter.HornDateStarted;
     //Anvil Tip
     Str = _Utility->FormatedDataToString(DINAnvilTipLimit,
         _Interface->StatusData.MaintenanceLimits[ANVILTIPCHANGE/2]);

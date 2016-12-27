@@ -87,10 +87,12 @@ bool UtilityClass::StringJsonToMap(QString SourceString, QMap<int, QString>* _De
             QJsonObject obj = parse_document.object();
             if(_DestMap->isEmpty() == false)
                 _DestMap->clear();
-            QJsonObject::const_iterator i = obj.constBegin();
-            while(i != obj.constEnd()){
-                _DestMap->insert(i.key().toInt(), i.value().toString());
-                ++i;
+            QJsonObject::const_iterator tmp = obj.constBegin();
+            for(int i = 0; i< obj.count(); i++)
+            {
+                tmp = obj.constFind(QString::number(i, 10));
+                if(tmp != obj.constEnd())
+                    _DestMap->insert(tmp.key().toInt(), tmp.value().toString());
             }
             bResult = true;
 
@@ -142,20 +144,68 @@ bool UtilityClass::StringJsonToMap(QString SourceString, QMap<int, struct PARTAT
             QJsonObject obj = parse_document.object();
             if (_DestMap->isEmpty() == false)
                 _DestMap->clear();
-            QJsonObject::const_iterator i = obj.constBegin();
-            while(i != obj.constEnd()){
-                QString value = i.value().toString();
-                struct PARTATTRIBUTE PartAttribute;
-                QStringList strList = value.split(";");
-                PartAttribute.SpliceID = ((QString)strList.at(0)).toInt();
-                PartAttribute.SpliceName = strList.at(1);
-                PartAttribute.CurrentWorkstation = ((QString)strList.at(2)).toInt();
-                PartAttribute.CurrentBoardLayoutZone = ((QString)strList.at(3)).toInt();
-                _DestMap->insert(i.key().toInt(), PartAttribute);
-                ++i;
+            QJsonObject::const_iterator tmp = obj.constBegin();
+            for(int i = 0; i< obj.count(); i++){
+                tmp = obj.constFind(QString::number(i, 10));
+                if(tmp != obj.constEnd())
+                {
+                    QString value = tmp.value().toString();
+                    struct PARTATTRIBUTE PartAttribute;
+                    QStringList strList = value.split(";");
+                    PartAttribute.SpliceID = ((QString)strList.at(0)).toInt();
+                    PartAttribute.SpliceName = strList.at(1);
+                    PartAttribute.CurrentWorkstation = ((QString)strList.at(2)).toInt();
+                    PartAttribute.CurrentBoardLayoutZone = ((QString)strList.at(3)).toInt();
+                    _DestMap->insert(tmp.key().toInt(), PartAttribute);
+                }
             }
             bResult = true;
 
+        }
+    }
+    return bResult;
+}
+
+bool UtilityClass::MapJsonToString(QMap<int, int> *_SourceMap, QString &DestString)
+{
+    QJsonObject json;
+    if(_SourceMap == NULL)
+        return false;
+    QMap<int, int>::const_iterator i = _SourceMap->constBegin();
+    while (i != _SourceMap->constEnd()) {
+        json.insert(QString::number(i.key(),10),i.value());
+        ++i;
+    }
+    QJsonDocument document;
+    document.setObject(json);
+    QByteArray byte_array = document.toJson(QJsonDocument::Compact);
+    DestString = byte_array.data();
+    return true;
+}
+
+bool UtilityClass::StringJsonToMap(QString SourceString, QMap<int, int> *_DestMap)
+{
+    bool bResult = false;
+    if(_DestMap == NULL)
+        return false;
+    QByteArray byte_array = SourceString.toLatin1();
+    QJsonParseError json_error;
+    QJsonDocument parse_document = QJsonDocument::fromJson(byte_array, &json_error);
+    if(json_error.error == QJsonParseError::NoError)
+    {
+        if(parse_document.isObject())
+        {
+            QJsonObject obj = parse_document.object();
+            if(_DestMap->isEmpty() == false)
+                _DestMap->clear();
+            QJsonObject::const_iterator tmp = obj.constBegin();
+            for(int i = 0; i < obj.count(); i++)
+            {
+                tmp = obj.constFind(QString::number(i, 10));
+                if(tmp != obj.constEnd())
+                    _DestMap->insert(tmp.key().toInt(), tmp.value().toInt());
+            }
+            bResult = true;
         }
     }
     return bResult;
@@ -190,13 +240,74 @@ bool UtilityClass::StringJsonToList(QString SourceString, QList<int> *_DestList)
             QJsonObject obj = parse_document.object();
             if(_DestList->isEmpty() == false)
                 _DestList->clear();
-            QJsonObject::const_iterator i = obj.constBegin();
+            QJsonObject::const_iterator tmp;
             for (int i = 0; i < obj.count();i++)
             {
-               _DestList->append(obj.constFind(QString("%1").arg(i)).value().toVariant().toInt());
+                tmp = obj.constFind(QString("%1").arg(i));
+                if(tmp != obj.constEnd())
+                    _DestList->append(tmp.value().toVariant().toInt());
             }
             bResult = true;
 
+        }
+    }
+    return bResult;
+}
+
+bool UtilityClass::ListJsonToString(QList<struct ShrinkTubeData>* _SourceList, QString &DestString)
+{
+    QJsonObject json;
+    QString str = "";
+    int i_tmp = 0;
+    float f_tmp = 0;
+    if(_SourceList == NULL)
+        return false;
+    for(int i = 0; i < _SourceList->size(); i++)
+    {   str = _SourceList->at(i).Name + ";";
+        i_tmp = _SourceList->at(i).temp;
+        str += (QString::number(i_tmp, 10) + ";");
+        f_tmp = _SourceList->at(i).Time;
+        str += QString("%1").arg(f_tmp);;
+        json.insert(QString::number(i,10),  str);
+    }
+    QJsonDocument document;
+    document.setObject(json);
+    QByteArray byte_array = document.toJson(QJsonDocument::Compact);
+    DestString = byte_array.data();
+    return true;
+}
+
+bool UtilityClass::StringJsonToList(QString SourceString, QList<struct ShrinkTubeData> *_DestList)
+{
+    bool bResult = false;
+    if(_DestList == NULL)
+        return false;
+    QByteArray byte_array = SourceString.toLatin1();
+    QJsonParseError json_error;
+    QJsonDocument parse_document = QJsonDocument::fromJson(byte_array, &json_error);
+    if(json_error.error == QJsonParseError::NoError)
+    {
+        if(parse_document.isObject())
+        {
+            QJsonObject obj = parse_document.object();
+            if (_DestList->isEmpty() == false)
+                _DestList->clear();
+            QJsonObject::const_iterator tmp;
+            for(int i = 0; i < obj.count(); i++)
+            {
+                tmp = obj.constFind(QString::number(i, 10));
+                if(tmp != obj.constEnd())
+                {
+                    QString value = tmp.value().toString();
+                    struct ShrinkTubeData ShrinkTubeAttribute;
+                    QStringList strList = value.split(";");
+                    ShrinkTubeAttribute.Name = strList.at(0);
+                    ShrinkTubeAttribute.temp = ((QString)strList.at(1)).toInt();
+                    ShrinkTubeAttribute.Time = ((QString)strList.at(2)).toFloat();
+                    _DestList->append(ShrinkTubeAttribute);
+                }
+            }
+            bResult = true;
         }
     }
     return bResult;

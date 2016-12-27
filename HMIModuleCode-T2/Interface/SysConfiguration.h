@@ -246,7 +246,7 @@ struct HARD_SOFT_SETTINGS
 
 struct IAComElement
 {
-    long COMport;          //Stores the value of the Comm Port
+    unsigned int COMport;          //Stores the value of the Comm Port
     int BaudRate;          //Stores the setting for the Baud Rate of the comm port
 };
 
@@ -271,7 +271,7 @@ struct PasswordEntry
 {
     QString Identifier;
     QString Password;
-    unsigned long PWPermissions;         //Flag field
+    unsigned int PWPermissions;         //Flag field
 };
 
 enum FormulaRange
@@ -323,6 +323,7 @@ enum ShrnkTubeIndex
     STIR8,
     STIR9,
     STIR10,
+    STIR11,
     STI_SIZE,         //Marker
 };
 
@@ -458,12 +459,12 @@ public:
     int RemoteRecallport;
 
 
-    long SoftLimitsModeFlags;
+    unsigned int SoftLimitsModeFlags;
     int SoftLimitSampleSize;
     int SoftLimit[SLIControlLimitSize][SLI_Size];
 //    bool QualityLimitsModeFlags;
-    long FileSystemFlags;
-    long AutoGetNextDelay;
+    int FileSystemFlags;
+    int AutoGetNextDelay;
 
     QString CurrentWrkStaID;
     QString CentralComputerID;
@@ -475,10 +476,11 @@ public:
     QString ActuatorModuleNumber;
     int AntisideSpliceTime;
     int LockonAlarm;
-    long CycleCount;
-    long MaintenanceLimits[8];
-    long CurrentMaintenanceLimits[8];
+    int CycleCount;
+    int MaintenanceLimits[8];
+    int CurrentMaintenanceLimits[8];
     unsigned int MaintenanceDateStarted[8];
+    bool Maintenance80PercentAlarm[8];
 
 
 
@@ -486,13 +488,16 @@ public:
     bool EnableModularFlag;
     PasswordEntry ModularPassword[PASSCOUNT];
 
-    long GraphDataLen;
+    int GraphDataLen;
     int CutoffMode;
     bool LockKeyFlag;
     bool FootPedalFlag;
     QMap<int, QString> carTemplate;
 public:
+    Status_Data();
     Status_Data &operator= (const Status_Data &StatusDataObj);
+    bool ReadStatusDataFromQSetting();
+    void WriteStatusDataToQSetting();
 };
 
 
