@@ -506,17 +506,17 @@ void M10INI::Get_INI_File()
     {
 //        bErasePasswords can only be done in the debug mode (Can't be set to true
 //        by program)
-        if (_Password->bErasePasswords == true)
-        {
-//            cMsgBox GetResString(826)
-            BransonMessageBox tmpMsgBox;
-            tmpMsgBox.MsgPrompt = (QObject::tr("ErasePasswords = TRUE"));
-            tmpMsgBox.MsgTitle  = (QObject::tr("Information"));
-            tmpMsgBox.TipsMode = Information;
-            tmpMsgBox.func_ptr = NULL;
-            _Interface->cMsgBox(&tmpMsgBox);
-            ClearPasswordData();
-        }
+//        if (_Password->bErasePasswords == true)
+//        {
+////            cMsgBox GetResString(826)
+//            BransonMessageBox tmpMsgBox;
+//            tmpMsgBox.MsgPrompt = (QObject::tr("ErasePasswords = TRUE"));
+//            tmpMsgBox.MsgTitle  = (QObject::tr("Information"));
+//            tmpMsgBox.TipsMode = Information;
+//            tmpMsgBox.func_ptr = NULL;
+//            _Interface->cMsgBox(&tmpMsgBox);
+//            ClearPasswordData();
+//        }
     }else
     {
         _Interface->StatusData = _Interface->DefaultStatusData;

@@ -37,7 +37,7 @@ Item {
                         }
                     }
                     loader.item.selectSplice(workOrderModel.getSpliceList(selectIndx)[0])
-                    loader.item.qliantity = workOrderModel.getWorkOrderValue(selectIndx, "count")
+                    loader.item.qliantity = workOrderModel.getWorkOrderValue(selectIndx, "QUANTITY")
                 }
                 hmiAdaptor.operateProcessExec("Start")
             }
@@ -66,7 +66,7 @@ Item {
             font.pixelSize: 25
             clip: true
             font.family: "arial"
-            text: qsTr("WORK ORDER ID")
+            text: qsTr("WORK ORDER NAME")
         }
         Text {
             anchors.verticalCenter: parent.verticalCenter
@@ -194,7 +194,7 @@ Item {
                 anchors.left: parent.left
                 width: (parent.width-120)/4
                 elide: Text.ElideRight
-                text: name
+                text: WorkOrderName
                 clip: true
                 color: "white"
                 font.pixelSize: 20
@@ -206,7 +206,7 @@ Item {
                 anchors.left: headName.right
                 anchors.leftMargin: 40
                 width: (parent.width-120)/4
-                text: date
+                text: DateCreated
                 clip: true
                 color: "white"
                 font.pixelSize: 20
@@ -218,7 +218,7 @@ Item {
                 anchors.left: headData.right
                 anchors.leftMargin: 40
                 width: (parent.width-120)/4
-                text: middle
+                text: PART
                 elide: Text.ElideRight
                 clip: true
                 color: "white"
@@ -231,7 +231,7 @@ Item {
                 anchors.left: headMiddle.right
                 anchors.leftMargin: 40
                 width: (parent.width-120)/4
-                text: count
+                text: QUANTITY
                 elide: Text.ElideRight
                 color: "white"
                 clip: true
@@ -342,7 +342,7 @@ Item {
         onClicked: {
             if (selectIndx < 0)
                 return
-            workOrderModel.removeValue(workOrderModel.getWorkOrderValue(selectIndx,"workOrderId"),workOrderModel.getWorkOrderValue(selectIndx,"name"))
+            workOrderModel.removeValue(workOrderModel.getWorkOrderValue(selectIndx,"WorkOrderId"),workOrderModel.getWorkOrderValue(selectIndx,"WorkOrderName"))
         }
     }
     CButton {
@@ -376,7 +376,7 @@ Item {
         onClicked: {
             if (operate.selectIndx != -1) {
                 workOrderModel.editNew(workOrderModel.getPartId(operate.selectIndx))
-                partModel.getPartInfo(true,workOrderModel.getPartId(selectIndx),workOrderModel.getWorkOrderValue(selectIndx,"middle"))
+                partModel.getPartInfo(true,workOrderModel.getPartId(selectIndx),workOrderModel.getWorkOrderValue(selectIndx,"PART"))
                 loader.source = "qrc:/UI/OperateDetails.qml"
             }
         }
@@ -400,19 +400,19 @@ Item {
         anchors.centerIn: parent
         property bool bIsEdit: false
         property var oldWorkOrderName: ""
-        width: 639
+        width: 670
         height: 390
         source: "qrc:/images/images/dialogbg.png"
         onBIsEditChanged: {
             if (bIsEdit) {
-               inputworkId.inputText = workOrderModel.getWorkOrderValue(selectIndx, "name")
-               selectPart.text = workOrderModel.getWorkOrderValue(selectIndx, "middle")
-               inputquantity.inputText = workOrderModel.getWorkOrderValue( selectIndx, "count")
+               inputworkId.inputText = workOrderModel.getWorkOrderValue(selectIndx, "WorkOrderName")
+               selectPart.text = workOrderModel.getWorkOrderValue(selectIndx, "PART")
+               inputquantity.inputText = workOrderModel.getWorkOrderValue( selectIndx, "QUANTITY")
             }
         }
         onVisibleChanged: {
             if (dialog.bIsEdit && dialog.visible) {
-                dialog.oldWorkOrderName = workOrderModel.getWorkOrderValue(selectIndx, "name")
+                dialog.oldWorkOrderName = workOrderModel.getWorkOrderValue(selectIndx, "WorkOrderName")
             } else if (!dialog.bIsEdit && dialog.visible) {
                 inputquantity.inputText = ""
                 inputworkId.inputText = ""
@@ -429,7 +429,7 @@ Item {
             height: 60
             font.pointSize: 18
             font.family: "arial"
-            text: qsTr("Work Order ID")
+            text: qsTr("Work Order Name")
             verticalAlignment: Qt.AlignVCenter
             horizontalAlignment: Qt.AlignRight
             color: "white"
@@ -446,7 +446,7 @@ Item {
             inputWidth: 375
             inputColor: "white"
             inputHeight: 60
-            inputText: dialog.bIsEdit ? workOrderModel.getWorkOrderValue(selectIndx, "name") : "" //workOrderModel.get(selectIndx).name : ""
+            inputText: dialog.bIsEdit ? workOrderModel.getWorkOrderValue(selectIndx, "WorkOrderName") : ""
         }
         Text {
             id: selectTips
@@ -473,7 +473,7 @@ Item {
             width: 375
             height: 60
             clip: true
-            text: dialog.bIsEdit ? workOrderModel.getWorkOrderValue(selectIndx, "middle") : qsTr("SELECT PART")
+            text: dialog.bIsEdit ? workOrderModel.getWorkOrderValue(selectIndx, "PART") : qsTr("SELECT PART")
             onClicked: {
                 addExit.visible = true
             }
@@ -502,12 +502,12 @@ Item {
             width: 375
             height: 60
             inputWidth: 375
-            inputText: dialog.bIsEdit ? workOrderModel.getWorkOrderValue( selectIndx, "count") : ""
+            inputText: dialog.bIsEdit ? workOrderModel.getWorkOrderValue( selectIndx, "QUANTITY") : ""
             onInputFocusChanged: {
                 if (inputquantity.inputFocus) {
                     keyNum.visible = true
                     keyNum.titleText = quantity.text
-                    keyNum.currentValue = dialog.bIsEdit ? workOrderModel.getWorkOrderValue( selectIndx, "count") : ""
+                    keyNum.currentValue = dialog.bIsEdit ? workOrderModel.getWorkOrderValue( selectIndx, "QUANTITY") : ""
                     keyNum.minvalue = "1"
                     keyNum.maxvalue = "20"
                 }
