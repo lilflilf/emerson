@@ -42,7 +42,7 @@ signals:
     void WeldCycleCompleted(const bool &_status);
 public slots:
     void WeldResultFeedbackEventSlot(bool &bResult);
-    void CheckWeldAlarm();
+    void CheckWeldAlarm(bool &bResult);
 public:
     bool _start();
     bool _stop();
