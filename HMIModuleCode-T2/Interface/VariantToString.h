@@ -49,7 +49,7 @@ public:
     struct BRANSONDATA StandardAutoTeachModeToString(int);
     struct BRANSONDATA SigmaTeachModeToString(int);
 
-
+    struct BRANSONDATA TestQuantity(int);
 
 
 
