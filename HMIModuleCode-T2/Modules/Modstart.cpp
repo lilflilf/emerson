@@ -68,7 +68,7 @@ MODstart::MODstart()
         tmpMsgBox.MsgPrompt = QObject::tr("Currently, there is no New Wire Splicer Controller Online\n "
                                           "Do you want to work offline?");
         tmpMsgBox.MsgTitle = QObject::tr("Warning");
-        tmpMsgBox.TipsMode = (OKCancel + OFF_ON_LINE);
+        tmpMsgBox.TipsMode = (OKCancel + OFF_ON_LINE + Exclamation);
         tmpMsgBox.func_ptr = MODstart::OfflineInitialization;
         tmpMsgBox._Object = this;
         _Interface->cMsgBox(&tmpMsgBox);

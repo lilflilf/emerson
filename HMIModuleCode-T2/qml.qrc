@@ -175,5 +175,10 @@
         <file>images/Spanish&amp;Mexcio.png</file>
         <file>images/us&amp;English.png</file>
         <file>images/export.png</file>
+        <file>images/Anvil_Tip.JPG</file>
+        <file>images/Booster.JPG</file>
+        <file>images/Converter.JPG</file>
+        <file>images/Gather_Tip.JPG</file>
+        <file>images/Horn.JPG</file>
     </qresource>
 </RCC>

@@ -82,6 +82,7 @@ public:
     Q_INVOKABLE void advancedMaintenanceExecute(int code);
     Q_INVOKABLE void maintenanceCountExecute(QString code);
     Q_INVOKABLE QString maintenanceCountGetValue(int code, int index);
+    Q_INVOKABLE QString maintenanceCountGetImage(int index);
     Q_INVOKABLE void maintenanceCountReset(QString code);
     Q_INVOKABLE void maintenanceCountSetLimit(QString code, QString value);
     Q_INVOKABLE void maintenanceStart(int page);
