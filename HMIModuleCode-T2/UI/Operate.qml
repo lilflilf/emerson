@@ -334,6 +334,7 @@ Item {
         anchors.leftMargin: 15
         width: (parent.width-100)/5
         spacing: 10
+        iconSource: "qrc:/images/images/cancel.png"
         text: qsTr("DELETE")
         pointSize: 20
         clip: true

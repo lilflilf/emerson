@@ -356,7 +356,7 @@ Item {
         okvisible: true
         okText: "Accept"
         cancelvisible: true
-        cancelText: "reject"
+        cancelText: "Reject"
         titleText: "Teach Mode - Standard"
         centerText: "Please hit the button to start next"
         visible: false

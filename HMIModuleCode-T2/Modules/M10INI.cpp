@@ -285,7 +285,7 @@ void M10INI::SetShrinkTubeDefaults(Status_Data* _DataStruct)
 {
     //This function will set the shrink tube values to default values for the very 1st time.
     struct ShrinkTubeData tmpShrinkTube;
-    for (int i = STIR1;  i <= STIR10; i++)
+    for (int i = STIR1;  i <= STIR11; i++)
     {
         tmpShrinkTube.Name = QString::number(i + 1);
         _DataStruct->ShrinkTubeDefaults.insert(i, tmpShrinkTube);
@@ -310,6 +310,8 @@ void M10INI::SetShrinkTubeDefaults(Status_Data* _DataStruct)
     _DataStruct->ShrinkTubeDefaults[STIR9].Time = ShrinkTubeDefTime9;
     _DataStruct->ShrinkTubeDefaults[STIR10].temp = ShrinkTubeDefTemp10;
     _DataStruct->ShrinkTubeDefaults[STIR10].Time = ShrinkTubeDefTime10;
+    _DataStruct->ShrinkTubeDefaults[STIR11].temp = ShrinkTubeDefTemp1;
+    _DataStruct->ShrinkTubeDefaults[STIR11].Time = ShrinkTubeDefTime1;
 
     //Make Remote recall port disable by default for special
     _DataStruct->TubeShrinkerport = PORT_DISABLE;
@@ -500,7 +502,7 @@ void M10INI::Get_INI_File()
     QDir dir;
     FileName = ConfigFilesPath + BRANSON_INI_FILE;
     Init_StatusData();
-    if (_Utility->ReadFromBinaryFile(FileName,&_Interface->StatusData) == true)
+    if (_Interface->StatusData.ReadStatusDataFromQSetting() == true)
     {
 //        bErasePasswords can only be done in the debug mode (Can't be set to true
 //        by program)
@@ -520,35 +522,6 @@ void M10INI::Get_INI_File()
         _Interface->StatusData = _Interface->DefaultStatusData;
     }
 
-    FileName = ConfigFilesPath + BRANSON_LASTWELD_FILE;
-    if (dir.exists(FileName) == true)
-    {
-        if (DataCell == NULL)
-        {
-            DataCell = new int[_Interface->StatusData.GraphDataLen];
-        }else
-        {
-            delete []DataCell;
-            DataCell = new int[_Interface->StatusData.GraphDataLen];
-        }
-        if(_Utility->ReadFromBinaryFile(FileName,DataCell)== true)
-        {
-            PowerDataReady = true;
-            if (_Password->bErasePasswords == true)
-            {
-    //          cMsgBox GetResString(826)
-                BransonMessageBox tmpMsgBox;
-                tmpMsgBox.MsgPrompt = (QObject::tr("ErasePasswords = TRUE"));
-                tmpMsgBox.MsgTitle = (QObject::tr("Information"));
-                tmpMsgBox.TipsMode = Information;
-                tmpMsgBox.func_ptr = NULL;
-                _Interface->cMsgBox(&tmpMsgBox);
-                ClearPasswordData();
-            }
-            else
-                PowerDataReady = false;
-        }
-    }
     switch (_Interface->StatusData.MachineType)
     {
         case ACTULTRA20:

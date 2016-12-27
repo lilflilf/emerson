@@ -1372,6 +1372,7 @@ Item {
             anchors.rightMargin: 24
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 14
+            iconSource: "qrc:/images/images/cancel.png"
             text: qsTr("DELETE WIRE")
             onClicked: spliceDetailsItem.deleteWire()
 

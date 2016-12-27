@@ -58,7 +58,57 @@ void WeldDefaults::InitWeldSettings()
 
 void WeldDefaults::_Default()
 {
+    InterfaceClass* _Interface = InterfaceClass::Instance();
+    UtilityClass* _Utility = UtilityClass::Instance();
 
+    _Interface->StatusData.Soft_Settings.Mm2Awg =
+            _Interface->DefaultStatusData.Soft_Settings.Mm2Awg;
+    _Interface->StatusData.Soft_Settings.Mm2Inch =
+            _Interface->DefaultStatusData.Soft_Settings.Mm2Inch;
+    _Interface->StatusData.Soft_Settings.Pressure2Unit =
+            _Interface->DefaultStatusData.Soft_Settings.Pressure2Unit;
+
+    _Utility->InitializeTextData();
+
+    _Interface->StatusData.Machineflags.Flag.WdthEncoderOff =
+            _Interface->DefaultStatusData.Machineflags.Flag.WdthEncoderOff;
+
+    _Interface->StatusData.Machineflags.Flag.HgtEncoderOff =
+            _Interface->DefaultStatusData.Machineflags.Flag.HgtEncoderOff;
+
+    _Interface->StatusData.RunMode.ModeFlag.DefeatWeldAbort =
+            _Interface->DefaultStatusData.RunMode.ModeFlag.DefeatWeldAbort;
+
+    _Interface->StatusData.CurrentCoolingMode =
+            _Interface->DefaultStatusData.CurrentCoolingMode;
+    _Interface->StatusData.CurrentCoolingTooling =
+            _Interface->DefaultStatusData.CurrentCoolingTooling;
+    _Interface->StatusData.CurrentCoolingDur =
+            _Interface->DefaultStatusData.CurrentCoolingDur;
+
+    _Interface->StatusData.CurrentCoolingDel =
+            _Interface->DefaultStatusData.CurrentCoolingDel;
+
+    _Interface->StatusData.KeepDailyHistory =
+            _Interface->DefaultStatusData.KeepDailyHistory;
+    _Interface->StatusData.HistoryGraphData =
+            _Interface->DefaultStatusData.HistoryGraphData;
+    _Interface->StatusData.GraphSampleRatio =
+            _Interface->DefaultStatusData.GraphSampleRatio;
+
+    for(int i = EnergyR1; i < FormulaRangSize; i++)
+    {
+        _Interface->StatusData.WeldSettings4Build[i].MinRange =
+                _Interface->DefaultStatusData.WeldSettings4Build[i].MinRange;
+        _Interface->StatusData.WeldSettings4Build[i].MaxRange =
+                _Interface->DefaultStatusData.WeldSettings4Build[i].MaxRange;
+        _Interface->StatusData.WeldSettings4Build[i].Offset =
+                _Interface->DefaultStatusData.WeldSettings4Build[i].Offset;
+        _Interface->StatusData.WeldSettings4Build[i].Multplier =
+                _Interface->DefaultStatusData.WeldSettings4Build[i].Multplier;
+
+    }
+    _Interface->StatusData.WriteStatusDataToQSetting();
 }
 
 bool WeldDefaults::_Recall()
@@ -367,15 +417,6 @@ bool WeldDefaults::_Set()
         _Interface->StatusData.WeldSettings4Build[i].Multplier = multiplier;
 
     }
+    _Interface->StatusData.WriteStatusDataToQSetting();
     return true;
-}
-
-void WeldDefaults::_Cancel()
-{
-    HMI_PRINT;
-}
-
-void WeldDefaults::_Ok()
-{
-    HMI_PRINT;
 }

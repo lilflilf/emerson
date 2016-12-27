@@ -74,10 +74,16 @@ Item {
             onTextChanged: {
                 if (mima.text.length == 4) {
                     if (hmiAdaptor.borrowLogin(mima.text,pageName)) {
-                        root.menuInit(passwdDialog.index)
-                        mimaShow.text = ""
-                        mima.text = ""
-                        passwdDialog.visible = false
+                        if (pageName == "Teach Mode") {
+                            mimaShow.text = ""
+                            mima.text = ""
+                            passwdDialog.visible = false
+                        } else {
+                            root.menuInit(passwdDialog.index)
+                            mimaShow.text = ""
+                            mima.text = ""
+                            passwdDialog.visible = false
+                        }
                     }
                 }
             }

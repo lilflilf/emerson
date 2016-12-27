@@ -221,6 +221,7 @@ Item {
                     visible: index == 5 ? false : true
                     onClicked: {
                         hmiAdaptor.maintenanceCountReset(mytitle)
+                        hmiAdaptor.maintenanceCountExecute("_Recall")
                         currentCount.text = hmiAdaptor.maintenanceCountGetValue(listIndex,3)
                     }
                 }
