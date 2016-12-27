@@ -125,6 +125,7 @@ bool WorkOrderModel::updateRecordIntoTable(int workId,QString oldWorkName, QStri
     struct WorkOrderElement tempWorkOrder;
     m_workOrderAdaptor->QueryOneRecordFromTable(workId, oldWorkName,&tempWorkOrder);
     tempWorkOrder.WorkOrderName = workName;
+    tempWorkOrder.PartIndex.remove(tempWorkOrder.PartIndex.begin().key());
     tempWorkOrder.PartIndex.insert(partId, partName);
     tempWorkOrder.Quantity = count;
     m_workOrderAdaptor->UpdateRecordIntoTable(&tempWorkOrder);
@@ -200,12 +201,12 @@ QVariant WorkOrderModel::getWorkOrderValue(int index, QString key)
     WorkOrderElement myWorkOrder;
     m_workOrderAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myWorkOrder);
     QHash<QString, QVariant> WorkOrderModelHash;
-    WorkOrderModelHash.insert("workOrderId",myWorkOrder.WorkOrderID);
-    WorkOrderModelHash.insert("name",myWorkOrder.WorkOrderName);
-    WorkOrderModelHash.insert("date",QDateTime::fromTime_t(myWorkOrder.CreatedDate).toString("MM/dd/yyyy hh:mm"));
-    WorkOrderModelHash.insert("middle",myWorkOrder.PartIndex.begin().value());
-    WorkOrderModelHash.insert("count",myWorkOrder.Quantity);
-    //list << "name" << "date" << "middle" << "count";
+    qDebug()<<"11111111111111111111111"<<myWorkOrder.PartIndex.begin().value();
+    WorkOrderModelHash.insert("WorkOrderId",myWorkOrder.WorkOrderID);
+    WorkOrderModelHash.insert("WorkOrderName",myWorkOrder.WorkOrderName);
+    WorkOrderModelHash.insert("DateCreated",QDateTime::fromTime_t(myWorkOrder.CreatedDate).toString("MM/dd/yyyy hh:mm"));
+    WorkOrderModelHash.insert("PART",myWorkOrder.PartIndex.begin().value());
+    WorkOrderModelHash.insert("QUANTITY",myWorkOrder.Quantity);
     if (key == "") {
         return WorkOrderModelHash;
     } else {

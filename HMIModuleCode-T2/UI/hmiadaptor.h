@@ -140,6 +140,7 @@ public:
     Q_INVOKABLE QStringList getWeldActualParameterDataList(int index);
     Q_INVOKABLE QStringList getCurrentStatisticsParameterList(int index);
     Q_INVOKABLE QString getAmplitudeToString(int value, bool bIsMax);
+    Q_INVOKABLE QString getTestQuantity(int value, bool bIsMax);
 
     Q_INVOKABLE void msgBoxClick(bool clickOK);
     Q_INVOKABLE void teachModeSaveSplice();

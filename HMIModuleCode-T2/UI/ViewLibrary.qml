@@ -268,6 +268,58 @@ Item {
                     anchors.leftMargin: 10
                 }
             }
+            CButton {
+                id: workOrder
+                width: column.width
+                textColor: "white"
+                RadioButton {
+                    id: workOrderRadio
+                    visible: false
+                    exclusiveGroup: checkGroup
+                    onCheckedChanged: {
+                        if (workOrderRadio.checked) {
+                            workOrderRadio.backgroundItem.source = "qrc:/images/images/icon-bg.png"
+                            headRepeater.model = wordkOrderTitle
+                            viewLib.count = wordkOrderTitle.count
+                            button2.x = 0
+                            listView.model = workOrderModel
+                        }
+                        else {
+                            workOrderRadio.backgroundItem.source = ""
+                        }
+                    }
+                }
+                backgroundComponent: Image {
+                    anchors.fill: parent
+                    source: ""
+                }
+                onClicked: {
+                    if (!workOrderRadio.checked)
+                        workOrderRadio.checked = !workOrderRadio.checked
+                }
+                Line {
+                    width: parent.width
+                    height: 1
+                    lineColor: "#1987ab"
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: 3
+                }
+                Image {
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                    anchors.rightMargin: 18
+                    source: "qrc:/images/images/right.png"
+                }
+                Text {
+                    text: qsTr("WorkOrder")
+                    font.pointSize: 20
+                    font.family: "arial"
+                    color: "white"
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.left: parent.left
+                    anchors.leftMargin: 10
+                }
+            }
         }
     }
     ListModel {
@@ -288,11 +340,17 @@ Item {
         id: spliceTitleModel
     }
     ListModel {
+        id: wordkOrderTitle
+    }
+    ListModel {
         id: wireTitleModel
 //        list << "partId" << "name" << "date" << "totalSplices" << "type" << "operatorName" << "processMode" << "ofWorkstation" << "ofSplicesperWorkstation" << "rows" << "columns" << "maxSplicesPerZone";
-
         Component.onCompleted: {
             initPage()
+            wordkOrderTitle.append({"title":qsTr("WorkOrderName")})
+            wordkOrderTitle.append({"title":qsTr("DateCreated")})
+            wordkOrderTitle.append({"title":qsTr("PART#")})
+            wordkOrderTitle.append({"title":qsTr("QUANTITY")})
             partKeyModel.append({"title":qsTr("name")})
             partKeyModel.append({"title":qsTr("date")})
             partKeyModel.append({"title":qsTr("totalSplices")})
@@ -592,7 +650,7 @@ Item {
                         color: "white"
                         clip: true
                         elide: Text.ElideRight
-                        text: listView.model == shrinkModel ? shrinkGetValue(listIndex,index) : listView.model.getValue(listIndex,headRepeater.model.get(index).title)
+                        text: listView.model == shrinkModel ? shrinkGetValue(listIndex,index) : listView.model.getValue((listIndex,headRepeater.model.get(index).title == "PART#" ? "PART" : headRepeater.model.get(index).title))
                         MouseArea {
                             anchors.fill: parent
 //                            z:10
@@ -674,6 +732,12 @@ Item {
                     }
                     backGround.visible = true
                     dialog.visible = true
+                } else if (workOrderRadio.checked) {
+                    if (selectIndx < 0) {
+                        return
+                    }
+                    backGround.visible = true
+                    dialog.visible = true
                 }
             }
         }
@@ -692,6 +756,8 @@ Item {
                     spliceModel.removeValue(spliceModel.getValue(selectIndx,"SpliceId"),spliceModel.getValue(selectIndx,"SpliceName"))
                 else if (wireRadio.checked)
                     wireModel.removeValue(wireModel.getValue(selectIndx,"WireId"),wireModel.getValue(selectIndx,"WireName"))
+                else if (workOrderRadio.checked)
+                    workOrderModel.removeValue(workOrderModel.getValue(selectIndx,"WorkOrderId"),workOrderModel.getValue(selectIndx,"WorkOrderName"))
                 else if (shrinkRadio.checked){
                     shrinkModel.remove(selectIndx)
                 }
@@ -726,6 +792,9 @@ Item {
     }
     Image {
         id: dialog
+        property string oldWorkName: ""
+        property int selectPartId: -1
+        property string selectPartName: ""
         visible: false
         anchors.centerIn: parent
         width: 639
@@ -734,11 +803,17 @@ Item {
         source: "qrc:/images/images/dialogbg.png"
         onVisibleChanged: {
             if (dialog.visible) {
-                inputTemperature.inputText = shrinkModel.get(selectIndx).temperature
-                inputtimeText.inputText = shrinkModel.get(selectIndx).times
+                if (shrinkRadio.checked) {
+                    inputTemperature.inputText = shrinkModel.get(selectIndx).temperature
+                    inputtimeText.inputText = shrinkModel.get(selectIndx).times
+                } else if (workOrderRadio.checked) {
+                    dialog.oldWorkName = workOrderModel.getWorkOrderValue(selectIndx,"WorkOrderName")
+                    dialog.selectPartName = workOrderModel.getWorkOrderValue(selectIndx,"PART")
+                    inputTemperature.inputText = dialog.oldWorkName
+                    selectPart.text = dialog.selectPartName
+                }
             }
         }
-
         Text {
             id: shrinkId
             anchors.top: parent.top
@@ -749,7 +824,7 @@ Item {
             height: 60
             font.pointSize: 18
             font.family: "arial"
-            text: qsTr("Shrink Tube ID")
+            text: workOrderRadio.checked ? qsTr("Work Order Name") : qsTr("Shrink Tube ID")
             verticalAlignment: Qt.AlignVCenter
             horizontalAlignment: Qt.AlignRight
             color: "white"
@@ -767,6 +842,20 @@ Item {
             inputColor: "white"
             inputHeight: 60
             inputText: shrinkModel.get(selectIndx).shrinkid
+            onInputFocusChanged: {
+                if (inputshrinkId.inputFocus) {
+                    keyNum.visible = true
+                    keyNum.titleText = timeText.text
+                    if (shrinkRadio.checked) {
+                        keyNum.currentValue = shrinkModel.get(selectIndx).shrinkid
+                    } else if (workOrderRadio.checked) {
+                        keyNum.currentValue = workOrderModel.getWorkOrderValue(selectIndx,"WorkOrderName")
+                    }
+                    keyNum.minvalue = "1"
+                    keyNum.maxvalue = "20"
+                }
+
+            }
         }
         Text {
             id: temperatureText
@@ -778,14 +867,28 @@ Item {
             height: 60
             font.pointSize: 18
             font.family: "arial"
-            text: qsTr("Temp")
+            text: workOrderRadio.checked ? qsTr("Select Part") : qsTr("Temp")
             verticalAlignment: Qt.AlignVCenter
             horizontalAlignment: Qt.AlignRight
             color: "white"
         }
+        CButton {
+            id: selectPart
+            anchors.top: inputshrinkId.bottom
+            anchors.topMargin: 20
+            anchors.right: parent.right
+            anchors.rightMargin: 72
+            width: 375
+            height: 60
+            visible: workOrderRadio.checked
+            clip: true
+            text: workOrderModel.getWorkOrderValue(selectIndx, "PART")
+            onClicked: {
+                addExit.visible = true
+            }
+        }
         MiniKeyNumInput {
             id: inputTemperature
-            property var partId: 1
             anchors.top: inputshrinkId.bottom
             anchors.topMargin: 20
             anchors.right: parent.right
@@ -793,12 +896,15 @@ Item {
             width: 375
             height: 60
             inputWidth: 375
+            visible: shrinkRadio.checked
             inputText: shrinkModel.get(selectIndx).temperature
             onInputFocusChanged: {
                 if (inputTemperature.inputFocus) {
                     keyNum.visible = true
                     keyNum.titleText = temperatureText.text
-                    keyNum.currentValue = shrinkModel.get(selectIndx).temperature
+                    if (shrinkRadio.checked) {
+                        keyNum.currentValue = shrinkModel.get(selectIndx).temperature
+                    }
                     keyNum.minvalue = "1"
                     keyNum.maxvalue = "20"
                 }
@@ -814,14 +920,13 @@ Item {
             height: 60
             font.pointSize: 18
             font.family: "arial"
-            text: qsTr("Time")
+            text: workOrderRadio.checked ? qsTr("Qliantity") : qsTr("Time")
             verticalAlignment: Qt.AlignVCenter
             horizontalAlignment: Qt.AlignRight
             color: "white"
         }
         MiniKeyNumInput {
             id: inputtimeText
-            property var partId: 1
             anchors.top: temperatureText.bottom
             anchors.topMargin: 20
             anchors.right: parent.right
@@ -834,7 +939,11 @@ Item {
                 if (inputtimeText.inputFocus) {
                     keyNum.visible = true
                     keyNum.titleText = timeText.text
-                    keyNum.currentValue = shrinkModel.get(selectIndx).times
+                    if (shrinkRadio.checked) {
+                        keyNum.currentValue = shrinkModel.get(selectIndx).times
+                    } else if (workOrderRadio.checked) {
+                        keyNum.currentValue = workOrderModel.getWorkOrderValue(selectIndx,"QUANTITY")
+                    }
                     keyNum.minvalue = "1"
                     keyNum.maxvalue = "20"
                 }
@@ -867,8 +976,12 @@ Item {
             textColor: "white"
             iconSource: "qrc:/images/images/OK.png"
             onClicked: {
-                shrinkModel.remove(selectIndx)
-                shrinkModel.insert(selectIndx,{shrinkid:inputshrinkId.inputText,temperature:inputTemperature.inputText,times:inputtimeText.inputText})
+                if (shrinkRadio.checked) {
+                    shrinkModel.remove(selectIndx)
+                    shrinkModel.insert(selectIndx,{shrinkid:inputshrinkId.inputText,temperature:inputTemperature.inputText,times:inputtimeText.inputText})
+                } else if (workOrderRadio.checked) {
+                    workOrderModel.updateRecordIntoTable(workOrderModel.getWorkOrderValue(selectIndx,"WorkOrderId"),dialog.oldWorkName,inputshrinkId.inputText,dialog.selectPartId,dialog.selectPartName,inputtimeText.inputText)
+                }
                 backGround.visible = false
                 dialog.visible = false
             }
@@ -923,7 +1036,30 @@ Item {
             }
         }
     }
-
+    AddExistingSpliceWire {
+        id: addExit
+        anchors.centerIn: parent
+        width: parent.width*0.9
+        height: parent.width*0.4
+        z: leftArea.z+3
+        visible: false
+        listModel: partModel
+        titleName: qsTr("ADD WORK ORDEAR")
+        componentName: qsTr("PART NAME")
+        componentData: qsTr("DATE CREATED")
+        componentMiddle: qsTr("# OF SPLICE")
+        componenttype: qsTr("CROSS SECTION")
+        componentCount: ""
+        bIsOnlyOne: true
+        onSignalAddExistCancel : {
+            addExit.visible = false
+        }
+        onSignalAddExistSelectClick: {
+            dialog.selectPartId = modelId
+            dialog.selectPartName = name
+            addExit.visible = false
+        }
+    }
     Loader {
         id: editLoader
         anchors.fill: parent

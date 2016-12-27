@@ -220,7 +220,6 @@ bool StatisticalTrend::GetStatisticsParameter()
 void StatisticalTrend::Initialization()
 {
     CurrentWeldParameterList.clear();
-    struct StatisticsParameter CurrentStatisticsParameter[4];
     for(int i = 0; i< 4; i++)
     {
         CurrentStatisticsParameter[i].Cpk.clear();
@@ -246,7 +245,8 @@ void StatisticalTrend::_apply(int SpliceID, QString SpliceName,
                 CurrentPreset.HashCode, time_from, time_to);
     if(bResult == true)
         bResult = GetCurrentWeldResultOneByOne(&RetrievedWeldResultIndexList);
-    if(bResult == true)
+    if(bResult == true) {
          GetStatisticsParameter();
+    }
     emit _ProcessFinished(bResult);
 }

@@ -13,7 +13,7 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
 {
     workOrderModel = new WorkOrderModel(this);
     QStringList list;
-    list << "workOrderId" << "name" << "date" << "middle" << "count";
+    list << "WorkOrderId" << "WorkOrderName" << "DateCreated" << "PART" << "QUANTITY";
     workOrderModel->setRoles(list);
     workOrderModel->setModelList();
 
@@ -1120,7 +1120,6 @@ void HmiAdaptor::stopTeachMode()
 void HmiAdaptor::statisticalTrendApply(int SpliceID, QString SpliceName, unsigned int time_from, unsigned int time_to)
 {
     statisticalTrend->_apply(SpliceID,SpliceName,time_from,time_to);
-    qDebug()<<"111111111111"<<statisticalTrend->RawQualityWindowList[0]<<statisticalTrend->CurrentWeldParameterList.count();
 }
 
 QList<int> HmiAdaptor::getStatisticalTrendDataList(int index)
@@ -1178,6 +1177,14 @@ QString HmiAdaptor::getAmplitudeToString(int value, bool bIsMax)
     }
 }
 
+QString HmiAdaptor::getTestQuantity(int value, bool bIsMax)
+{
+    if (bIsMax) {
+        return m_variantToString->TestQuantity(value).Maximum;
+    } else {
+        return m_variantToString->TestQuantity(value).Minimum;
+    }
+}
 void HmiAdaptor::teachModeSaveSplice()
 {
     spliceModel->updateSplice(operateProcess->CurrentSplice);
