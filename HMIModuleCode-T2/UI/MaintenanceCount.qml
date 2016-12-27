@@ -222,7 +222,8 @@ Item {
                     onClicked: {
                         hmiAdaptor.maintenanceCountReset(mytitle)
                         hmiAdaptor.maintenanceCountExecute("_Recall")
-                        currentCount.text = hmiAdaptor.maintenanceCountGetValue(listIndex,3)
+                        initPage()
+//                        currentCount.text = hmiAdaptor.maintenanceCountGetValue(listIndex,3)
                     }
                 }
                 Text {

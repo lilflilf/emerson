@@ -319,7 +319,11 @@ Item {
                         selectRepeater.itemAt(0).bIsCheck = true
                         weldActualLsit = hmiAdaptor.getWeldActualParameterDataList(0)
                         for (var i = 0; i < leftTextModel.count; i++) {
-                            leftTextModel.set(i,{myvalue:weldActualLsit[i]})
+                             if (weldActualLsit.length == 0) {
+                                 leftTextModel.set(i,{myvalue:""})
+                             } else {
+                                 leftTextModel.set(i,{myvalue:weldActualLsit[i]})
+                             }
                         }
                         statisticsList = hmiAdaptor.getCurrentStatisticsParameterList(0)
                         for (var j = 0; j < rightTextModel.count; j++) {
