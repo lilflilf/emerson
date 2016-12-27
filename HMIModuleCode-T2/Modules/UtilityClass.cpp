@@ -66,7 +66,7 @@ bool UtilityClass::MapJsonToString(QMap<int, QString>* _SourceMap, QString &Dest
     while (iterator != _SourceMap->constEnd()) {
         QString value = QString::number(iterator.key(), 10) + ";";
         value += (iterator.value() + ";");
-        json.insert(QString::number(i, 10),str);
+        json.insert(QString::number(i, 10),value);
         ++iterator;
         ++i;
     }
