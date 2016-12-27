@@ -42,7 +42,13 @@ QVariant WorkOrderModel::data(const QModelIndex &index, int role) const
         else if (columnIdx == 2)
             value = QVariant::fromValue(QDateTime::fromTime_t(myWorkOrder.CreatedDate).toString("MM/dd/yyyy hh:mm"));
         else if (columnIdx == 3)
-            value = QVariant::fromValue(myWorkOrder.PartIndex.begin().value());
+        {
+            qDebug() << "fffffffffffffffff" << myWorkOrder.PartIndex.count();
+            QString temp = "";
+            if (myWorkOrder.PartIndex.count() > 0)
+                temp = myWorkOrder.PartIndex.begin().value();
+            value = QVariant::fromValue(temp);
+        }
         else if (columnIdx == 4)
             value = QVariant::fromValue(myWorkOrder.Quantity);
     }

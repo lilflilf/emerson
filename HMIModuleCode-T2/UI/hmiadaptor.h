@@ -178,13 +178,15 @@ public:
 signals:
     void widthCalibrationFinish(const bool &_Result);
     void heightCalibrationFinish(const bool &_Result);
-    void signalEnableDialog(bool okVisable, bool cancelVisable, QString okText, QString cancelText, QString typeIco,QString titleText,QString centerText);
+    void signalEnableDialog(bool okVisable, bool cancelVisable, QString okText, QString cancelText, QString typeIco,QString titleText,QString centerText,bool isQuit);
     void signalDisableDialog();
     void signalWeldCycleCompleted(bool result);
+    void signalButtonStateChanged(QString buttonName,bool state);
 public slots:
     void slotWeldCycleCompleted(bool result);
     void slotEnableDialog(struct BransonMessageBox &MsgBox);
     void slotDisableDialog(struct BransonMessageBox &MsgBox);
+    void slotButtonState(const unsigned long status);
 };
 
 #endif // HMIADAPTOR_H

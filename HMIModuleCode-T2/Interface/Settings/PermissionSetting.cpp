@@ -59,23 +59,24 @@ bool PermissionSetting::_Recall()
     {
         unsigned int FunIndex = _interface->StatusData.CurrentFunIndex.at(i);
         tmpStruct.Identifier = AllFunctionNameList.at(FunIndex);
-        if((_interface->StatusData.PasswordData[1].PWPermissions & (0x01 << FunIndex))
-            == (0x01 << FunIndex))
+        unsigned long Comparison = (0x01 << FunIndex);
+        if((_interface->StatusData.PasswordData[1].PWPermissions & Comparison) ==
+                Comparison)
             tmpStruct.Level1 = true;
         else
             tmpStruct.Level1 = false;
-        if((_interface->StatusData.PasswordData[2].PWPermissions & (0x01 << FunIndex))
-            == (0x01 << FunIndex))
+        if((_interface->StatusData.PasswordData[2].PWPermissions & Comparison) ==
+                Comparison)
             tmpStruct.Level2 = true;
         else
             tmpStruct.Level2 = false;
-        if((_interface->StatusData.PasswordData[3].PWPermissions & (0x01 << FunIndex))
-            == (0x01 << FunIndex))
+        if((_interface->StatusData.PasswordData[3].PWPermissions & Comparison) ==
+                Comparison)
             tmpStruct.Level3 = true;
         else
             tmpStruct.Level3 = false;
-        if((_interface->StatusData.PasswordData[4].PWPermissions & (0x01 << FunIndex))
-            == (0x01 << FunIndex))
+        if((_interface->StatusData.PasswordData[4].PWPermissions & Comparison) ==
+                Comparison)
             tmpStruct.Level4 = true;
         else
             tmpStruct.Level4 = false;
@@ -104,30 +105,37 @@ bool PermissionSetting::_Set()
         QString str = CurrentPermissionList.at(i).Identifier;
         int FunIndex = AllFunctionNameList.indexOf(str);
         _interface->StatusData.CurrentFunIndex.insert(i, FunIndex);
+        unsigned long Comparison = (0x01 << FunIndex);
         if(CurrentPermissionList.at(i).Level1 == true)
             _interface->StatusData.PasswordData[1].PWPermissions
-                    |= (0x01 << FunIndex);
+                    |= Comparison;
         else
             _interface->StatusData.PasswordData[1].PWPermissions
-                    &= ~(0x01 << FunIndex);
+                    &= ~Comparison;
         if(CurrentPermissionList.at(i).Level2 == true)
             _interface->StatusData.PasswordData[2].PWPermissions
-                    |= (0x01 << FunIndex);
+                    |= Comparison;
         else
             _interface->StatusData.PasswordData[2].PWPermissions
-                    &= ~(0x01 << FunIndex);
+                    &= ~Comparison;
         if(CurrentPermissionList.at(i).Level3 == true)
             _interface->StatusData.PasswordData[3].PWPermissions
-                    |= (0x01 << FunIndex);
+                    |= Comparison;
         else
             _interface->StatusData.PasswordData[3].PWPermissions
-                    &= ~(0x01 << FunIndex);
+                    &= ~Comparison;
         if(CurrentPermissionList.at(i).Level4 == true)
             _interface->StatusData.PasswordData[4].PWPermissions
-                    |= (0x01 << FunIndex);
+                    |= Comparison;
         else
             _interface->StatusData.PasswordData[4].PWPermissions
-                    &= ~(0x01 << FunIndex);
+                    &= ~Comparison;
+
+        qDebug()<<_interface->StatusData.PasswordData[1].PWPermissions<<
+                  _interface->StatusData.PasswordData[2].PWPermissions<<
+                  _interface->StatusData.PasswordData[3].PWPermissions<<
+                  _interface->StatusData.PasswordData[4].PWPermissions;
+
 
     }
     _interface->StatusData.WriteStatusDataToQSetting();

@@ -79,6 +79,8 @@
 #define MINPERCENTTEACHMODE   1
 #define MAXSIGMATEACHMODE     9
 #define MINSIGMATEACHMODE     1
+#define MINTESTQUANTITY       1
+#define MAXTESTQUANTITY       50
 
 //Used by the program to consistently change from PSI to BAR
 #define PRESS2BARFACTOR  (0.1 / 14.5)
@@ -158,6 +160,7 @@ enum ScreenShowDataType{
     DINGraphTimeMS,
     DINGraphPower,
     DINGraphHeight,
+    DINTestQuantity,
     DIN_end,
 };
 

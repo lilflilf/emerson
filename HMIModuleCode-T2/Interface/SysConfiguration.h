@@ -246,7 +246,7 @@ struct HARD_SOFT_SETTINGS
 
 struct IAComElement
 {
-    unsigned int COMport;          //Stores the value of the Comm Port
+    int COMport;          //Stores the value of the Comm Port
     int BaudRate;          //Stores the setting for the Baud Rate of the comm port
 };
 

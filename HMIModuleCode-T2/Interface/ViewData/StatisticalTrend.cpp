@@ -44,6 +44,8 @@ bool StatisticalTrend::GetCurrentWeldResultOneByOne(QMap<int, QString>* ResultIn
     DataList[QUALITYPOSTHEIGHT].clear();
     RawQualityWindowList[QUALITYPOSTHEIGHT].clear();
     struct WeldActualParameter CurrentWeldActual;
+    if(ResultIndex->isEmpty() == true)
+        return false;
     QMap<int, QString>::const_iterator i = ResultIndex->constBegin();
     while (i != ResultIndex->constEnd()) {
         bResult =_DBWeldResult->QueryOneRecordFromTable(i.key(), i.value(), &CurrentWeldResultRecord);
