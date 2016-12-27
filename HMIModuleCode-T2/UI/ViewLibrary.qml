@@ -49,7 +49,7 @@ Item {
             anchors.topMargin: 2
             anchors.left: parent.left
             anchors.leftMargin: 2
-            height: 50*3+4
+            height: 50*5+4
             width: parent.width-4
             CButton {
                 id: part
@@ -278,14 +278,14 @@ Item {
                     exclusiveGroup: checkGroup
                     onCheckedChanged: {
                         if (workOrderRadio.checked) {
-                            workOrderRadio.backgroundItem.source = "qrc:/images/images/icon-bg.png"
+                            workOrder.backgroundItem.source = "qrc:/images/images/icon-bg.png"
                             headRepeater.model = wordkOrderTitle
                             viewLib.count = wordkOrderTitle.count
                             button2.x = 0
                             listView.model = workOrderModel
                         }
                         else {
-                            workOrderRadio.backgroundItem.source = ""
+                            workOrder.backgroundItem.source = ""
                         }
                     }
                 }
@@ -797,20 +797,22 @@ Item {
         property string selectPartName: ""
         visible: false
         anchors.centerIn: parent
-        width: 639
+        width: 670
         height: 390
         z: leftArea.z+2
         source: "qrc:/images/images/dialogbg.png"
         onVisibleChanged: {
             if (dialog.visible) {
                 if (shrinkRadio.checked) {
+                    inputshrinkId.inputText = shrinkModel.get(selectIndx).shrinkid
                     inputTemperature.inputText = shrinkModel.get(selectIndx).temperature
                     inputtimeText.inputText = shrinkModel.get(selectIndx).times
                 } else if (workOrderRadio.checked) {
-                    dialog.oldWorkName = workOrderModel.getWorkOrderValue(selectIndx,"WorkOrderName")
-                    dialog.selectPartName = workOrderModel.getWorkOrderValue(selectIndx,"PART")
-                    inputTemperature.inputText = dialog.oldWorkName
+                    dialog.oldWorkName = workOrderModel.getValue(selectIndx,"WorkOrderName")
+                    dialog.selectPartName = workOrderModel.getValue(selectIndx,"PART")
+                    inputshrinkId.inputText = dialog.oldWorkName
                     selectPart.text = dialog.selectPartName
+                    inputtimeText.inputText = workOrderModel.getValue(selectIndx,"QUANTITY")
                 }
             }
         }
@@ -824,7 +826,7 @@ Item {
             height: 60
             font.pointSize: 18
             font.family: "arial"
-            text: workOrderRadio.checked ? qsTr("Work Order Name") : qsTr("Shrink Tube ID")
+            text: workOrderRadio.checked ? qsTr("Work Order Name") : qsTr("Shrink Tube Name")
             verticalAlignment: Qt.AlignVCenter
             horizontalAlignment: Qt.AlignRight
             color: "white"
@@ -841,21 +843,7 @@ Item {
             inputWidth: 375
             inputColor: "white"
             inputHeight: 60
-            inputText: shrinkModel.get(selectIndx).shrinkid
-            onInputFocusChanged: {
-                if (inputshrinkId.inputFocus) {
-                    keyNum.visible = true
-                    keyNum.titleText = timeText.text
-                    if (shrinkRadio.checked) {
-                        keyNum.currentValue = shrinkModel.get(selectIndx).shrinkid
-                    } else if (workOrderRadio.checked) {
-                        keyNum.currentValue = workOrderModel.getWorkOrderValue(selectIndx,"WorkOrderName")
-                    }
-                    keyNum.minvalue = "1"
-                    keyNum.maxvalue = "20"
-                }
-
-            }
+            inputText: ""
         }
         Text {
             id: temperatureText
@@ -882,7 +870,7 @@ Item {
             height: 60
             visible: workOrderRadio.checked
             clip: true
-            text: workOrderModel.getWorkOrderValue(selectIndx, "PART")
+            text: ""
             onClicked: {
                 addExit.visible = true
             }
@@ -897,7 +885,7 @@ Item {
             height: 60
             inputWidth: 375
             visible: shrinkRadio.checked
-            inputText: shrinkModel.get(selectIndx).temperature
+            inputText: ""
             onInputFocusChanged: {
                 if (inputTemperature.inputFocus) {
                     keyNum.visible = true
@@ -934,7 +922,7 @@ Item {
             width: 375
             height: 60
             inputWidth: 375
-            inputText: shrinkModel.get(selectIndx).times
+            inputText: ""
             onInputFocusChanged: {
                 if (inputtimeText.inputFocus) {
                     keyNum.visible = true
@@ -942,7 +930,7 @@ Item {
                     if (shrinkRadio.checked) {
                         keyNum.currentValue = shrinkModel.get(selectIndx).times
                     } else if (workOrderRadio.checked) {
-                        keyNum.currentValue = workOrderModel.getWorkOrderValue(selectIndx,"QUANTITY")
+                        keyNum.currentValue = workOrderModel.getValue(selectIndx,"QUANTITY")
                     }
                     keyNum.minvalue = "1"
                     keyNum.maxvalue = "20"
@@ -980,7 +968,7 @@ Item {
                     shrinkModel.remove(selectIndx)
                     shrinkModel.insert(selectIndx,{shrinkid:inputshrinkId.inputText,temperature:inputTemperature.inputText,times:inputtimeText.inputText})
                 } else if (workOrderRadio.checked) {
-                    workOrderModel.updateRecordIntoTable(workOrderModel.getWorkOrderValue(selectIndx,"WorkOrderId"),dialog.oldWorkName,inputshrinkId.inputText,dialog.selectPartId,dialog.selectPartName,inputtimeText.inputText)
+                    workOrderModel.updateRecordIntoTable(workOrderModel.getValue(selectIndx,"WorkOrderId"),dialog.oldWorkName,inputshrinkId.inputText,dialog.selectPartId,dialog.selectPartName,inputtimeText.inputText)
                 }
                 backGround.visible = false
                 dialog.visible = false

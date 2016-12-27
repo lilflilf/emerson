@@ -37,7 +37,7 @@ Item {
                         }
                     }
                     loader.item.selectSplice(workOrderModel.getSpliceList(selectIndx)[0])
-                    loader.item.qliantity = workOrderModel.getWorkOrderValue(selectIndx, "QUANTITY")
+                    loader.item.qliantity = workOrderModel.getValue(selectIndx, "QUANTITY")
                 }
                 hmiAdaptor.operateProcessExec("Start")
             }
@@ -342,7 +342,7 @@ Item {
         onClicked: {
             if (selectIndx < 0)
                 return
-            workOrderModel.removeValue(workOrderModel.getWorkOrderValue(selectIndx,"WorkOrderId"),workOrderModel.getWorkOrderValue(selectIndx,"WorkOrderName"))
+            workOrderModel.removeValue(workOrderModel.getValue(selectIndx,"WorkOrderId"),workOrderModel.getValue(selectIndx,"WorkOrderName"))
         }
     }
     CButton {
@@ -376,7 +376,7 @@ Item {
         onClicked: {
             if (operate.selectIndx != -1) {
                 workOrderModel.editNew(workOrderModel.getPartId(operate.selectIndx))
-                partModel.getPartInfo(true,workOrderModel.getPartId(selectIndx),workOrderModel.getWorkOrderValue(selectIndx,"PART"))
+                partModel.getPartInfo(true,workOrderModel.getPartId(selectIndx),workOrderModel.getValue(selectIndx,"PART"))
                 loader.source = "qrc:/UI/OperateDetails.qml"
             }
         }
@@ -405,14 +405,14 @@ Item {
         source: "qrc:/images/images/dialogbg.png"
         onBIsEditChanged: {
             if (bIsEdit) {
-               inputworkId.inputText = workOrderModel.getWorkOrderValue(selectIndx, "WorkOrderName")
-               selectPart.text = workOrderModel.getWorkOrderValue(selectIndx, "PART")
-               inputquantity.inputText = workOrderModel.getWorkOrderValue( selectIndx, "QUANTITY")
+               inputworkId.inputText = workOrderModel.getValue(selectIndx, "WorkOrderName")
+               selectPart.text = workOrderModel.getValue(selectIndx, "PART")
+               inputquantity.inputText = workOrderModel.getValue( selectIndx, "QUANTITY")
             }
         }
         onVisibleChanged: {
             if (dialog.bIsEdit && dialog.visible) {
-                dialog.oldWorkOrderName = workOrderModel.getWorkOrderValue(selectIndx, "WorkOrderName")
+                dialog.oldWorkOrderName = workOrderModel.getValue(selectIndx, "WorkOrderName")
             } else if (!dialog.bIsEdit && dialog.visible) {
                 inputquantity.inputText = ""
                 inputworkId.inputText = ""
@@ -446,7 +446,7 @@ Item {
             inputWidth: 375
             inputColor: "white"
             inputHeight: 60
-            inputText: dialog.bIsEdit ? workOrderModel.getWorkOrderValue(selectIndx, "WorkOrderName") : ""
+            inputText: dialog.bIsEdit ? workOrderModel.getValue(selectIndx, "WorkOrderName") : ""
         }
         Text {
             id: selectTips
@@ -473,7 +473,7 @@ Item {
             width: 375
             height: 60
             clip: true
-            text: dialog.bIsEdit ? workOrderModel.getWorkOrderValue(selectIndx, "PART") : qsTr("SELECT PART")
+            text: dialog.bIsEdit ? workOrderModel.getValue(selectIndx, "PART") : qsTr("SELECT PART")
             onClicked: {
                 addExit.visible = true
             }
@@ -502,12 +502,12 @@ Item {
             width: 375
             height: 60
             inputWidth: 375
-            inputText: dialog.bIsEdit ? workOrderModel.getWorkOrderValue( selectIndx, "QUANTITY") : ""
+            inputText: dialog.bIsEdit ? workOrderModel.getValue( selectIndx, "QUANTITY") : ""
             onInputFocusChanged: {
                 if (inputquantity.inputFocus) {
                     keyNum.visible = true
                     keyNum.titleText = quantity.text
-                    keyNum.currentValue = dialog.bIsEdit ? workOrderModel.getWorkOrderValue( selectIndx, "QUANTITY") : ""
+                    keyNum.currentValue = dialog.bIsEdit ? workOrderModel.getValue( selectIndx, "QUANTITY") : ""
                     keyNum.minvalue = "1"
                     keyNum.maxvalue = "20"
                 }
@@ -549,7 +549,7 @@ Item {
                 backGround.opacity = 0
                 dialog.visible = false
                 if (dialog.bIsEdit)
-                    workOrderModel.updateRecordIntoTable(workOrderModel.getWorkOrderValue(selectIndx, "workOrderId"),dialog.oldWorkOrderName, inputworkId.inputText,selectPart.partId,selectPart.text, inputquantity.inputText )
+                    workOrderModel.updateRecordIntoTable(workOrderModel.getValue(selectIndx, "workOrderId"),dialog.oldWorkOrderName, inputworkId.inputText,selectPart.partId,selectPart.text, inputquantity.inputText )
                 else {
                     workOrderModel.insertRecordIntoTable(inputworkId.inputText,selectPart.partId,selectPart.text,inputquantity.inputText)
                     selectPart.text = qsTr("SELECT PART")
