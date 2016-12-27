@@ -280,14 +280,14 @@ Window {
                 cdialog.msgTypeIco = typeIco
                 cdialog.titleText = titleText
                 cdialog.visible = true
-                cdialog.isQuit = isQuit
+                cdialog.bisQuit = isQuit
             }
             onSignalDisableDialog: {
                 cdialog.visible = false
 
                 cdialog.okvisible = false
                 cdialog.cancelvisible = false
-                cdialog.okText = okText
+                cdialog.okText = ""
                 cdialog.cancelText = ""
                 cdialog.centerText = ""
                 cdialog.msgTypeIco = ""

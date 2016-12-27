@@ -871,7 +871,7 @@ void HmiAdaptor::slotEnableDialog(BransonMessageBox &MsgBox)
 {
     bransonMessageBox = MsgBox;
     this->func_ptr = bransonMessageBox.func_ptr;
-    qDebug() << "slotEnableDialog" << bransonMessageBox._Object;
+    qDebug() << "slotEnableDialog" << bransonMessageBox._Object << (MsgBox.TipsMode & OFF_ON_LINE);
     bool okVisable = true;
     bool cancelVisable = false;
     QString okText;
