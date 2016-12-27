@@ -371,7 +371,7 @@ Item {
             else
                 type ="update"
             wireId = wireModel.insertValueToTable(type,topLeft.item.myWireName,topLeft.item.myWireId,hmiAdaptor.getCurrentOperatorId(),topLeft.item.myColor,
-                                         topLeft.item.myStripeColor,topLeft.item.myStripeType,topLeft.item.myText,topLeft.item.myWireType,0,1,0)
+                                         topLeft.item.myStripeColor,topLeft.item.myStripeType,topLeft.item.myGauge,topLeft.item.myAwg,topLeft.item.myWireType,0,1,0)
             if (wireId != -1)
                 wireIdList.push(wireId)
         }
@@ -383,7 +383,7 @@ Item {
                 else
                     type ="update"
                 wireId = wireModel.insertValueToTable(type,listModelLeft.get(j).wireName,listModelLeft.get(j).wireId,hmiAdaptor.getCurrentOperatorId(),listModelLeft.get(j).mycolor,
-                                         listModelLeft.get(j).stripeColor,listModelLeft.get(j).stripeType,listModelLeft.get(j).myText,listModelLeft.get(j).wireType,0,0,1)
+                                         listModelLeft.get(j).stripeColor,listModelLeft.get(j).stripeType,listModelLeft.get(j).gauge,listModelLeft.get(j).gaugeawg,listModelLeft.get(j).wireType,0,0,1)
                 if (wireId != -1)
                     wireIdList.push(wireId)
             }
@@ -395,7 +395,7 @@ Item {
             else
                 type ="update"
             wireId = wireModel.insertValueToTable(type,bottomLeft.item.myWireName,bottomLeft.item.myWireId,hmiAdaptor.getCurrentOperatorId(),bottomLeft.item.myColor,
-                                         bottomLeft.item.myStripeColor,bottomLeft.item.myStripeType,bottomLeft.item.myText,bottomLeft.item.myWireType,0,1,2)
+                                         bottomLeft.item.myStripeColor,bottomLeft.item.myStripeType,bottomLeft.item.myGauge,bottomLeft.item.myAwg,bottomLeft.item.myWireType,0,1,2)
             if (wireId != -1)
                 wireIdList.push(wireId)
         }
@@ -407,7 +407,7 @@ Item {
             else
                 type ="update"
             wireId = wireModel.insertValueToTable(type,topRight.item.myWireName,topRight.item.myWireId,hmiAdaptor.getCurrentOperatorId(),topRight.item.myColor,
-                                         topRight.item.myStripeColor,topRight.item.myStripeType,topRight.item.myText,topRight.item.myWireType,1,1,0)
+                                         topRight.item.myStripeColor,topRight.item.myStripeType,topRight.item.myGauge,topRight.item.myAwg,topRight.item.myWireType,1,1,0)
             if (wireId != -1)
                 wireIdList.push(wireId)
 
@@ -419,7 +419,7 @@ Item {
                     type = "insert"
                 else
                     type ="update"
-                wireId = wireModel.insertValueToTable(type,listModelRight.get(i).wireName,listModelRight.get(i).wireId,hmiAdaptor.getCurrentOperatorId(),listModelRight.get(i).mycolor,listModelRight.get(i).stripeColor,listModelRight.get(i).stripeType,listModelRight.get(i).linetext,listModelRight.get(i).wireType,1,0,1)
+                wireId = wireModel.insertValueToTable(type,listModelRight.get(i).wireName,listModelRight.get(i).wireId,hmiAdaptor.getCurrentOperatorId(),listModelRight.get(i).mycolor,listModelRight.get(i).stripeColor,listModelRight.get(i).stripeType,listModelRight.get(i).gauge,listModelRight.get(i).gaugeawg,listModelRight.get(i).wireType,1,0,1)
                 if (wireId != -1)
                     wireIdList.push(wireId)
             }
@@ -431,7 +431,7 @@ Item {
             else
                 type ="update"
             wireId = wireModel.insertValueToTable(type,bottomRight.item.myWireName,bottomRight.item.myWireId,hmiAdaptor.getCurrentOperatorId(),bottomRight.item.myColor,
-                                         bottomRight.item.myStripeColor,bottomRight.item.myStripeType,bottomRight.item.myText,bottomRight.item.myWireType,1,1,2)
+                                         bottomRight.item.myStripeColor,bottomRight.item.myStripeType,bottomRight.item.myGauge,bottomRight.item.myAwg,bottomRight.item.myWireType,1,1,2)
             if (wireId != -1)
                 wireIdList.push(wireId)
         }
@@ -999,8 +999,8 @@ Item {
             property var position: "leftList"
             property alias isCheck: radioButtonLeft.checked
             property alias myWireName: myWireNameLeft.text
-            property var myGauge: -1
-            property var myAwg: -1
+            property var myGauge: 10
+            property var myAwg: 37
             property var myWireType: 1
             property var myStripeColor: ""
             property var myStripeType: -1
@@ -1125,8 +1125,8 @@ Item {
             property var position: "rightList"
             property alias isCheck: radioButton.checked
             property alias myWireName: myWireNameRight.text
-            property var myGauge: -1
-            property var myAwg: -1
+            property var myGauge: 10
+            property var myAwg: 37
             property var myWireType: 1 // wireTypeText.text
             property var myStripeColor:  "" // stripeColor.color
             property var myStripeType: -1

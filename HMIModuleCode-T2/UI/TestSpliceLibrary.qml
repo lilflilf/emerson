@@ -39,6 +39,7 @@ Item {
             loader.source = ""
             testDialog.visible = true
         }
+
         onSignalSaveSplice: {
             hmiAdaptor.teachModeSaveSplice();
             loader.source = ""
@@ -361,12 +362,14 @@ Item {
         onSignalInputNum: {
             keyNum.visible = true
             keyNum.titleText = qsTr("#of Splices")
-            keyNum.maxvalue = "20"
-            keyNum.minvalue = "0"
             if (text == qsTr("#of Splices")) {
                 keyNum.currentValue = "0"
+                keyNum.maxvalue = hmiAdaptor.getTestQuantity(0,true)
+                keyNum.minvalue = hmiAdaptor.getTestQuantity(0,false)
             } else {
                 keyNum.currentValue = text
+                keyNum.maxvalue = hmiAdaptor.getTestQuantity(text,true)
+                keyNum.minvalue = hmiAdaptor.getTestQuantity(text,false)
             }
         }
     }

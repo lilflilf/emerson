@@ -15,7 +15,7 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
 
     workOrderModel = new WorkOrderModel(this);
     QStringList list;
-    list << "workOrderId" << "name" << "date" << "middle" << "count";
+    list << "WorkOrderId" << "WorkOrderName" << "DateCreated" << "PART" << "QUANTITY";
     workOrderModel->setRoles(list);
     workOrderModel->setModelList();
 
@@ -263,6 +263,31 @@ QString HmiAdaptor::maintenanceCountGetValue(int code, int index)
     }
     qDebug() << "maintenanceCountGetValue" << value << code << index;
     return value;
+}
+
+QString HmiAdaptor::maintenanceCountGetImage(int index)
+{
+    QString source = "";
+    switch (index) {
+    case 0:
+        source = "qrc:/images/images/Horn.JPG";
+        break;
+    case 1:
+        source = "qrc:/images/images/Anvil_Tip.JPG";
+        break;
+    case 2:
+        source = "qrc:/images/images/Gather_Tip.JPG";
+        break;
+    case 3:
+        source = "qrc:/images/images/Booster.JPG";
+        break;
+    case 4:
+        source = "qrc:/images/images/Converter.JPG";
+        break;
+    default:
+        break;
+    }
+    return source;
 }
 
 QString HmiAdaptor::getMaintenanceVerson(int index)
@@ -878,7 +903,7 @@ void HmiAdaptor::slotEnableDialog(BransonMessageBox &MsgBox)
     qDebug() << "slotEnableDialog" << bransonMessageBox._Object << (MsgBox.TipsMode & OFF_ON_LINE);
     bool okVisable = true;
     bool cancelVisable = false;
-    QString okText;
+    QString okText = "OK";;
     QString cancelText;
     QString typeIco;
     bool isQuit = false;
@@ -1124,7 +1149,6 @@ void HmiAdaptor::stopTeachMode()
 void HmiAdaptor::statisticalTrendApply(int SpliceID, QString SpliceName, unsigned int time_from, unsigned int time_to)
 {
     statisticalTrend->_apply(SpliceID,SpliceName,time_from,time_to);
-    qDebug()<<"111111111111"<<statisticalTrend->RawQualityWindowList[0]<<statisticalTrend->CurrentWeldParameterList.count();
 }
 
 QList<int> HmiAdaptor::getStatisticalTrendDataList(int index)
@@ -1182,6 +1206,14 @@ QString HmiAdaptor::getAmplitudeToString(int value, bool bIsMax)
     }
 }
 
+QString HmiAdaptor::getTestQuantity(int value, bool bIsMax)
+{
+    if (bIsMax) {
+        return m_variantToString->TestQuantity(value).Maximum;
+    } else {
+        return m_variantToString->TestQuantity(value).Minimum;
+    }
+}
 void HmiAdaptor::teachModeSaveSplice()
 {
     spliceModel->updateSplice(operateProcess->CurrentSplice);
