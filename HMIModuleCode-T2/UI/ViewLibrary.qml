@@ -52,6 +52,62 @@ Item {
             height: 50*5+4
             width: parent.width-4
             CButton {
+                id: workOrder
+                width: column.width
+                textColor: "white"
+                RadioButton {
+                    id: workOrderRadio
+                    visible: false
+                    exclusiveGroup: checkGroup
+                    onCheckedChanged: {
+                        if (workOrderRadio.checked) {
+                            workOrder.backgroundItem.source = "qrc:/images/images/icon-bg.png"
+                            headRepeater.model = wordkOrderTitle
+                            viewLib.count = wordkOrderTitle.count
+                            button2.x = 0
+                            listView.model = workOrderModel
+                        }
+                        else {
+                            workOrder.backgroundItem.source = ""
+                        }
+                    }
+                }
+                backgroundComponent: Image {
+                    anchors.fill: parent
+                    source: ""
+                }
+                onClicked: {
+                    if (!workOrderRadio.checked)
+                        workOrderRadio.checked = !workOrderRadio.checked
+                }
+                Component.onCompleted: {
+                    workOrderRadio.checked = true
+                }
+                Line {
+                    width: parent.width
+                    height: 1
+                    lineColor: "#1987ab"
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: 3
+                }
+                Image {
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                    anchors.rightMargin: 18
+                    source: "qrc:/images/images/right.png"
+                }
+                Text {
+                    text: qsTr("WorkOrder")
+                    font.pointSize: 20
+                    font.family: "arial"
+                    color: "white"
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.left: parent.left
+                    anchors.leftMargin: 10
+                }
+            }
+
+            CButton {
                 id: part
                 width: column.width
                 textColor: "white"
@@ -81,9 +137,6 @@ Item {
                 onClicked: {
                     if (!partRadio.checked)
                         partRadio.checked = !partRadio.checked
-                }
-                Component.onCompleted: {
-                    partRadio.checked = true
                 }
                 Line {
                     width: parent.width
@@ -260,58 +313,6 @@ Item {
                 }
                 Text {
                     text: qsTr("Insulation")
-                    font.pointSize: 20
-                    font.family: "arial"
-                    color: "white"
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.left: parent.left
-                    anchors.leftMargin: 10
-                }
-            }
-            CButton {
-                id: workOrder
-                width: column.width
-                textColor: "white"
-                RadioButton {
-                    id: workOrderRadio
-                    visible: false
-                    exclusiveGroup: checkGroup
-                    onCheckedChanged: {
-                        if (workOrderRadio.checked) {
-                            workOrder.backgroundItem.source = "qrc:/images/images/icon-bg.png"
-                            headRepeater.model = wordkOrderTitle
-                            viewLib.count = wordkOrderTitle.count
-                            button2.x = 0
-                            listView.model = workOrderModel
-                        }
-                        else {
-                            workOrder.backgroundItem.source = ""
-                        }
-                    }
-                }
-                backgroundComponent: Image {
-                    anchors.fill: parent
-                    source: ""
-                }
-                onClicked: {
-                    if (!workOrderRadio.checked)
-                        workOrderRadio.checked = !workOrderRadio.checked
-                }
-                Line {
-                    width: parent.width
-                    height: 1
-                    lineColor: "#1987ab"
-                    anchors.bottom: parent.bottom
-                    anchors.bottomMargin: 3
-                }
-                Image {
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.right: parent.right
-                    anchors.rightMargin: 18
-                    source: "qrc:/images/images/right.png"
-                }
-                Text {
-                    text: qsTr("WorkOrder")
                     font.pointSize: 20
                     font.family: "arial"
                     color: "white"
@@ -650,7 +651,7 @@ Item {
                         color: "white"
                         clip: true
                         elide: Text.ElideRight
-                        text: listView.model == shrinkModel ? shrinkGetValue(listIndex,index) : listView.model.getValue((listIndex,headRepeater.model.get(index).title == "PART#" ? "PART" : headRepeater.model.get(index).title))
+                        text: listView.model == shrinkModel ? shrinkGetValue(listIndex,index) : listView.model.getValue(listIndex,headRepeater.model.get(index).title == "PART#" ? "PART" : headRepeater.model.get(index).title)
                         MouseArea {
                             anchors.fill: parent
 //                            z:10
