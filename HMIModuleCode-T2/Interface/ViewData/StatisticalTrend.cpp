@@ -215,9 +215,29 @@ bool StatisticalTrend::GetStatisticsParameter()
     return bResult;
 }
 
+void StatisticalTrend::Initialization()
+{
+    CurrentWeldParameterList.clear();
+    struct StatisticsParameter CurrentStatisticsParameter[4];
+    for(int i = 0; i< 4; i++)
+    {
+        CurrentStatisticsParameter[i].Cpk.clear();
+        CurrentStatisticsParameter[i].LowerControlLimit = 0;
+        CurrentStatisticsParameter[i].LowerSpecLimit = 0;
+        CurrentStatisticsParameter[i].Mean.clear();
+        CurrentStatisticsParameter[i].Median.clear();
+        CurrentStatisticsParameter[i].SampleSize.clear();
+        CurrentStatisticsParameter[i].Sigma.clear();
+        CurrentStatisticsParameter[i].UpperControlLimit = 0;
+        CurrentStatisticsParameter[i].UpperSpecLimit = 0;
+        RawQualityWindowList[i].clear();
+    }
+}
+
 void StatisticalTrend::_apply(int SpliceID, QString SpliceName,
                               unsigned int time_from, unsigned int time_to)
 {
+    Initialization();
     bool bResult = GetCurrentPresetFromLibrary(SpliceID, SpliceName);
     if(bResult == true)
         bResult = GetCurrentWeldResultList(CurrentPreset.SpliceName,
