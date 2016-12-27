@@ -58,7 +58,7 @@ DBWorkOrderTable::DBWorkOrderTable()
     {
         if(!WorkOrderDBObj.tables().contains("WorkOrder")){
             CreateNewTable();
-            InsertTestDataIntoTable();
+//            InsertTestDataIntoTable();
         }
     }
     WorkOrderDBObj.close();

@@ -136,7 +136,7 @@ DBPresetTable::DBPresetTable()
     {
         if(!SpliceDBObj.tables().contains("Preset")){
             CreateNewTable();
-            InsertTestDataIntoTable();
+//            InsertTestDataIntoTable();
         }
     }
     SpliceDBObj.close();
