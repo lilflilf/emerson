@@ -56,7 +56,7 @@ signals:
 
 public slots:
     void setRoles(const QStringList &names);
-    Q_INVOKABLE QVariant getWorkOrderValue(int index, QString key);
+    Q_INVOKABLE QVariant getValue(int index, QString key);
     Q_INVOKABLE void removeValue(int id, QString name);
     Q_INVOKABLE int getPartId(int index);
     Q_INVOKABLE QList<int> getSpliceList();
@@ -123,6 +123,8 @@ public slots:
     Q_INVOKABLE bool getWeldMode(QString type,int index);
     Q_INVOKABLE QList<int> getWireIdList();
     Q_INVOKABLE QString graphTimeToString(int time);
+    Q_INVOKABLE QString graphPowerToString(int power);
+    Q_INVOKABLE QString graphHeightToString(int height);
 
     void updateSplice(PresetElement presetElement);
 private:

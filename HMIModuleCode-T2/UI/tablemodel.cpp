@@ -184,7 +184,7 @@ QVariant WorkOrderModel::getStructValue(QString key)
         return workOrderElement.WorkOrderName;
 }
 
-QVariant WorkOrderModel::getWorkOrderValue(int index, QString key)
+QVariant WorkOrderModel::getValue(int index, QString key)
 {
     QMap<int,QString>::iterator it; //遍历map
     int i = 0;
@@ -201,7 +201,6 @@ QVariant WorkOrderModel::getWorkOrderValue(int index, QString key)
     WorkOrderElement myWorkOrder;
     m_workOrderAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myWorkOrder);
     QHash<QString, QVariant> WorkOrderModelHash;
-    qDebug()<<"11111111111111111111111"<<myWorkOrder.PartIndex.begin().value();
     WorkOrderModelHash.insert("WorkOrderId",myWorkOrder.WorkOrderID);
     WorkOrderModelHash.insert("WorkOrderName",myWorkOrder.WorkOrderName);
     WorkOrderModelHash.insert("DateCreated",QDateTime::fromTime_t(myWorkOrder.CreatedDate).toString("MM/dd/yyyy hh:mm"));
@@ -1029,6 +1028,16 @@ QList<int> SplicesModel::getWireIdList()
 QString SplicesModel::graphTimeToString(int time)
 {
     return variantToString->GraphTimeToString(time);
+}
+
+QString SplicesModel::graphPowerToString(int power)
+{
+    return variantToString->GraphPowerToString(power);
+}
+
+QString SplicesModel::graphHeightToString(int height)
+{
+    return variantToString->GraphHeightToString(height);
 }
 
 void SplicesModel::updateSplice(PresetElement presetElement)

@@ -96,6 +96,7 @@ public:
     Q_INVOKABLE void removeCarTemplate(QString name);
     Q_INVOKABLE QString getCurrentOperatorId();
     Q_INVOKABLE void calibrationMaintenanceExecute(int code);
+    Q_INVOKABLE void hornCalibrationComplete(int temp);
     Q_INVOKABLE int randPoint();
     Q_INVOKABLE QString copyFileToPath(QString source);
 
