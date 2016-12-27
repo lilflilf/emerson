@@ -685,6 +685,7 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
 //            IACommand(IAComHostReady, 1);
         //--Set Correct Flag
         _M2010->ReceiveFlags.WELDdata = true;
+        emit WeldResultSignal(_M2010->ReceiveFlags.WELDdata);
         break;
     case IASigPower:           //Data Signature = "04"
         // Frame head 3 bytes + ":" 7 characters
@@ -1001,7 +1002,7 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         }
         RawHeightDataGraph.CurrentIndex = num;
         _M2010->ReceiveFlags.HeightGraphData = true;
-        emit WeldResultFeedback(_M2010->ReceiveFlags.HeightGraphData);
+        emit HeightGraphSignal(_M2010->ReceiveFlags.HeightGraphData);
         break;
     default:
         break;
