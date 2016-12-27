@@ -32,6 +32,7 @@ public:
     virtual bool _start();
     virtual bool _stop();
     virtual bool _execute(int funCode);
+    void HornCalibrationComplete(int Amplitude);
 public:
     explicit Calibration();
 

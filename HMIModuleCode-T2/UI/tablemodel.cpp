@@ -1030,6 +1030,16 @@ QString SplicesModel::graphTimeToString(int time)
     return variantToString->GraphTimeToString(time);
 }
 
+QString SplicesModel::graphPowerToString(int power)
+{
+    return variantToString->GraphPowerToString(power);
+}
+
+QString SplicesModel::graphHeightToString(int height)
+{
+    return variantToString->GraphHeightToString(height);
+}
+
 void SplicesModel::updateSplice(PresetElement presetElement)
 {
     m_spliceAdaptor->UpdateRecordIntoTable(&presetElement);

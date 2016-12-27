@@ -123,6 +123,8 @@ public slots:
     Q_INVOKABLE bool getWeldMode(QString type,int index);
     Q_INVOKABLE QList<int> getWireIdList();
     Q_INVOKABLE QString graphTimeToString(int time);
+    Q_INVOKABLE QString graphPowerToString(int power);
+    Q_INVOKABLE QString graphHeightToString(int height);
 
     void updateSplice(PresetElement presetElement);
 private:

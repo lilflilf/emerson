@@ -6,14 +6,19 @@ enum TOOLINGCOUNT
 {
     HORNCHANGE,
     HORNRESET,
+    HORN80PERCENTALARM,
     ANVILTIPCHANGE,
     ANVILTIPRESET,
+    ANVILTIP80PERCENTALARM,
     GATHERCHANGE,
     GATHERRESET,
+    GATHER80PERCENTALARM,
     ANVILGUIDECHANGE,
     ANVILGUIDERESET,
+    ANVILGUID80PERCENTALARM,
     CONVERTERCHANGE,
     CONVERTERRESET,
+    CONVERTER80PERCENTALARM,
     ACTUATOR,
 };
 struct MaintenanceCounterForScreen
@@ -21,18 +26,23 @@ struct MaintenanceCounterForScreen
     BRANSONDATA HornCounterLimit;
     QString HornCurrentCount;
     QString HornDateStarted;
+    bool Horn80PercentAlarm;
     BRANSONDATA AnvilTipCounterLimit;
     QString AnvilTipCurrentCount;
     QString AnvilTipDateStarted;
+    bool Anvil80PercentAlarm;
     BRANSONDATA GatherCounterLimit;
     QString GatherCurrentCount;
     QString GatherDateStarted;
+    bool Gather80PercentAlarm;
     BRANSONDATA AnvilGuideCounterLimit;
     QString AnvilGuideCurrentCount;
     QString AnvilGuideDateStarted;
+    bool AnvilGuide80PercentAlarm;
     BRANSONDATA ConverterCounterLimit;
     QString ConverterCurrentCount;
     QString ConverterDateStarted;
+    bool Converter80PercentAlarm;
     QString ActuatorCurrentCount;
     QString ActuatorDateStarted;
     QString ActuatorSoftwareVersion;
