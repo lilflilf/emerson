@@ -40,7 +40,6 @@ public:
 private:
     void CheckAWGAreaTable();
     void CheckVersionFile(VersionList CurrVersions);
-    void CheckBransonFolder();
 public:
     static MODstart* Instance();
 protected:

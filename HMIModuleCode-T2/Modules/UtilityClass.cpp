@@ -58,11 +58,16 @@ bool UtilityClass::WriteToBinaryFile(void *SourceStruct, QString DestDirectory)
 bool UtilityClass::MapJsonToString(QMap<int, QString>* _SourceMap, QString &DestString)
 {
     QJsonObject json;
+    int i = 0;
+    QString str = "";
     if(_SourceMap == NULL)
         return false;
-    QMap<int, QString>::const_iterator i = _SourceMap->constBegin();
-    while (i != _SourceMap->constEnd()) {
-        json.insert(QString::number(i.key(),10),i.value());
+    QMap<int, QString>::const_iterator iterator = _SourceMap->constBegin();
+    while (iterator != _SourceMap->constEnd()) {
+        QString value = QString::number(iterator.key(), 10) + ";";
+        value += (iterator.value() + ";");
+        json.insert(QString::number(i, 10),str);
+        ++iterator;
         ++i;
     }
     QJsonDocument document;
@@ -87,12 +92,16 @@ bool UtilityClass::StringJsonToMap(QString SourceString, QMap<int, QString>* _De
             QJsonObject obj = parse_document.object();
             if(_DestMap->isEmpty() == false)
                 _DestMap->clear();
-            QJsonObject::const_iterator tmp = obj.constBegin();
+            QJsonObject::const_iterator iterator = obj.constBegin();
             for(int i = 0; i< obj.count(); i++)
             {
-                tmp = obj.constFind(QString::number(i, 10));
-                if(tmp != obj.constEnd())
-                    _DestMap->insert(tmp.key().toInt(), tmp.value().toString());
+                iterator = obj.constFind(QString::number(i, 10));
+                if(iterator != obj.constEnd())
+                {
+                    QString value = iterator.value().toString();
+                    QStringList strList = value.split(";");
+                    _DestMap->insert(((QString)strList.at(0)).toInt(), strList.at(1));
+                }
             }
             bResult = true;
 
@@ -104,22 +113,28 @@ bool UtilityClass::StringJsonToMap(QString SourceString, QMap<int, QString>* _De
 bool UtilityClass::MapJsonToString(QMap<int, struct PARTATTRIBUTE> *_SourceMap, QString &DestString)
 {
     QJsonObject json;
+    int i = 0;
     if(_SourceMap == NULL)
         return false;
-    QMap<int, struct PARTATTRIBUTE>::const_iterator i = _SourceMap->constBegin();
-    while (i != _SourceMap->constEnd()) {
-        QString key = QString::number(i.key(),10);
-        int tmp = ((struct PARTATTRIBUTE)i.value()).SpliceID;
-        QString value = QString::number(tmp, 10) + ";";
-        QString str = ((struct PARTATTRIBUTE)i.value()).SpliceName + ";";
-        value += str;
-        tmp = ((struct PARTATTRIBUTE)i.value()).CurrentWorkstation;
+    QMap<int, struct PARTATTRIBUTE>::const_iterator iterator = _SourceMap->constBegin();
+    while (iterator != _SourceMap->constEnd()) {
+        QString key = QString::number(i, 10);
+
+        QString str = QString::number(iterator.key(), 10) + ";";
+        QString value = str;
+        int tmp = ((struct PARTATTRIBUTE)iterator.value()).SpliceID;
         str = QString::number(tmp, 10) + ";";
         value += str;
-        tmp = ((struct PARTATTRIBUTE)i.value()).CurrentBoardLayoutZone;
+        str = ((struct PARTATTRIBUTE)iterator.value()).SpliceName + ";";
+        value += str;
+        tmp = ((struct PARTATTRIBUTE)iterator.value()).CurrentWorkstation;
+        str = QString::number(tmp, 10) + ";";
+        value += str;
+        tmp = ((struct PARTATTRIBUTE)iterator.value()).CurrentBoardLayoutZone;
         str = QString::number(tmp, 10) + ";";
         value += str;
         json.insert(key,value);
+        ++iterator;
         ++i;
     }
     QJsonDocument document;
@@ -144,19 +159,20 @@ bool UtilityClass::StringJsonToMap(QString SourceString, QMap<int, struct PARTAT
             QJsonObject obj = parse_document.object();
             if (_DestMap->isEmpty() == false)
                 _DestMap->clear();
-            QJsonObject::const_iterator tmp = obj.constBegin();
+            QJsonObject::const_iterator iterator = obj.constBegin();
             for(int i = 0; i< obj.count(); i++){
-                tmp = obj.constFind(QString::number(i, 10));
-                if(tmp != obj.constEnd())
+                iterator = obj.constFind(QString::number(i, 10));
+                if(iterator != obj.constEnd())
                 {
-                    QString value = tmp.value().toString();
+                    QString value = iterator.value().toString();
                     struct PARTATTRIBUTE PartAttribute;
                     QStringList strList = value.split(";");
-                    PartAttribute.SpliceID = ((QString)strList.at(0)).toInt();
-                    PartAttribute.SpliceName = strList.at(1);
-                    PartAttribute.CurrentWorkstation = ((QString)strList.at(2)).toInt();
-                    PartAttribute.CurrentBoardLayoutZone = ((QString)strList.at(3)).toInt();
-                    _DestMap->insert(tmp.key().toInt(), PartAttribute);
+                    int key = ((QString)strList.at(0)).toInt();
+                    PartAttribute.SpliceID = ((QString)strList.at(1)).toInt();
+                    PartAttribute.SpliceName = strList.at(2);
+                    PartAttribute.CurrentWorkstation = ((QString)strList.at(3)).toInt();
+                    PartAttribute.CurrentBoardLayoutZone = ((QString)strList.at(4)).toInt();
+                    _DestMap->insert(key, PartAttribute);
                 }
             }
             bResult = true;
@@ -169,11 +185,19 @@ bool UtilityClass::StringJsonToMap(QString SourceString, QMap<int, struct PARTAT
 bool UtilityClass::MapJsonToString(QMap<int, int> *_SourceMap, QString &DestString)
 {
     QJsonObject json;
+    int i = 0;
+    QString str = "";
+    QString value = "";
     if(_SourceMap == NULL)
         return false;
-    QMap<int, int>::const_iterator i = _SourceMap->constBegin();
-    while (i != _SourceMap->constEnd()) {
-        json.insert(QString::number(i.key(),10),i.value());
+    QMap<int, int>::const_iterator iterator = _SourceMap->constBegin();
+    while (iterator != _SourceMap->constEnd()) {
+        str = QString::number(iterator.key(),10) + ";";
+        value += str;
+        str = QString::number(iterator.value(), 10) + ";";
+        value += str;
+        json.insert(QString::number(i, 10), value);
+        ++iterator;
         ++i;
     }
     QJsonDocument document;
@@ -198,12 +222,15 @@ bool UtilityClass::StringJsonToMap(QString SourceString, QMap<int, int> *_DestMa
             QJsonObject obj = parse_document.object();
             if(_DestMap->isEmpty() == false)
                 _DestMap->clear();
-            QJsonObject::const_iterator tmp = obj.constBegin();
+            QJsonObject::const_iterator iterator = obj.constBegin();
             for(int i = 0; i < obj.count(); i++)
             {
-                tmp = obj.constFind(QString::number(i, 10));
-                if(tmp != obj.constEnd())
-                    _DestMap->insert(tmp.key().toInt(), tmp.value().toInt());
+                iterator = obj.constFind(QString::number(i, 10));
+                if(iterator != obj.constEnd())
+                {
+                    QStringList StringList = iterator.value().toString().split(";");
+                    _DestMap->insert(((QString)StringList.at(0)).toInt(), ((QString)StringList.at(1)).toInt());
+                }
             }
             bResult = true;
         }
