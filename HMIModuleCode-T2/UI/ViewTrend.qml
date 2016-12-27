@@ -10,6 +10,11 @@ Item {
     property var datalist: new Array()
     property var weldActualLsit: new Array()
     property var statisticsList: new Array()
+    property var redMax: -1
+    property var redMin: -1
+    property var yellowMax: -1
+    property var yellowMin: -1
+    property var currentIndex: -1
     width: Screen.width*0.7
     height: Screen.height*0.6
     MyTimeSelect {
@@ -315,6 +320,14 @@ Item {
                         var spliceId = spliceModel.getValue(searchArea.selectNum,"SpliceId")
                         hmiAdaptor.statisticalTrendApply(spliceId,workOrderName.text,fromtime,totime)
                         datalist = hmiAdaptor.getStatisticalTrendDataList(0)
+
+                        spliceModel.editNew(spliceId)
+                        viewTrend.redMax = spliceModel.getRawData("Time+")
+                        viewTrend.redMin = spliceModel.getRawData("Time-")
+                        viewTrend.yellowMax = hmiAdaptor.controlLimitProcess("Time+",datalist,viewTrend.redMax,viewTrend.redMin)
+                        viewTrend.yellowMin = hmiAdaptor.controlLimitProcess("Time-",datalist,viewTrend.redMax,viewTrend.redMin)
+
+                        qualityListViewTwo.model = 0
                         qualityListViewTwo.model = datalist.length
                         selectRepeater.itemAt(0).bIsCheck = true
                         weldActualLsit = hmiAdaptor.getWeldActualParameterDataList(0)
@@ -356,13 +369,15 @@ Item {
             height: 2
         }
         Line {
-            anchors.top: parent.top
-            anchors.topMargin: parent.height * 0.2
+            id: yellowMaxLine
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: parent.height * 0.8
             lineColor: "yellow"
             width: parent.width
             height: 2
         }
         Line {
+            id: yellowMinLine
             anchors.bottom: parent.bottom
             anchors.bottomMargin: parent.height * 0.2
             lineColor: "yellow"
@@ -382,6 +397,22 @@ Item {
             height: parent.height
             lineColor: "green"
         }
+    }
+    onYellowMaxChanged: {
+        var margin = fiveLine.height * 0.1 + (yellowMax - redMin)/(redMax - redMin) * fiveLine.height * 0.8
+        if (margin < 0)
+            margin = 0
+        else if (margin > Screen.height * 0.32)
+            margin = Screen.height * 0.32
+        yellowMaxLine.anchors.bottomMargin = margin
+    }
+    onYellowMinChanged: {
+        var margin = fiveLine.height * 0.1 + (yellowMin - redMin)/(redMax - redMin) * fiveLine.height * 0.8
+        if (margin < 0)
+            margin = 0
+        else if (margin > Screen.height * 0.32)
+            margin = Screen.height * 0.32
+        yellowMinLine.anchors.bottomMargin = margin
     }
 
     ListView {
@@ -455,16 +486,20 @@ Item {
         id: qualityListViewTwoDelegate
         Item {
             width: 8
-            height: Screen.height * 0.25
+            height: Screen.height * 0.32
             Rectangle {
                 id: point
                 radius: 100
                 width: 4
                 height: 4
-                anchors.top: parent.top
-                anchors.topMargin: 50
+                anchors.bottom: parent.bottom
                 Component.onCompleted: {
-                    point.anchors.topMargin = hmiAdaptor.randPoint() + qualityListViewTwo.height / 2 - 20
+                    var margin = (datalist[index]-redMin)/(redMax - redMin) * fiveLine.height * 0.8 + fiveLine.height * 0.1
+                    if (margin < 0)
+                        margin = 0
+                    else if (margin > Screen.height * 0.32)
+                        margin = Screen.height * 0.32
+                    point.anchors.bottomMargin = margin //hmiAdaptor.randPoint() + qualityListViewTwo.height / 2 - 20
                 }
             }
         }
@@ -511,6 +546,33 @@ Item {
                 onClicked: {
                     weldModelCheck.checked = !weldModelCheck.checked
                     datalist = hmiAdaptor.getStatisticalTrendDataList(index)
+
+                    if (index == 0) {
+                        viewTrend.redMax = spliceModel.getRawData("Time+")
+                        viewTrend.redMin = spliceModel.getRawData("Time-")
+                        viewTrend.yellowMax = hmiAdaptor.controlLimitProcess("Time+",datalist,viewTrend.redMax,viewTrend.redMin)
+                        viewTrend.yellowMin = hmiAdaptor.controlLimitProcess("Time-",datalist,viewTrend.redMax,viewTrend.redMin)
+                    }
+                    else if (index == 1) {
+                        viewTrend.redMax = spliceModel.getRawData("Power+")
+                        viewTrend.redMin = spliceModel.getRawData("Power-")
+                        viewTrend.yellowMax = hmiAdaptor.controlLimitProcess("Power+",datalist,viewTrend.redMax,viewTrend.redMin)
+                        viewTrend.yellowMin = hmiAdaptor.controlLimitProcess("Power-",datalist,viewTrend.redMax,viewTrend.redMin)
+                    }
+                    else if (index == 2) {
+                        viewTrend.redMax = spliceModel.getRawData("Pre-Height+")
+                        viewTrend.redMin = spliceModel.getRawData("Pre-Height-")
+                        viewTrend.yellowMax = hmiAdaptor.controlLimitProcess("Pre-Height+",datalist,viewTrend.redMax,viewTrend.redMin)
+                        viewTrend.yellowMin = hmiAdaptor.controlLimitProcess("Pre-Height-",datalist,viewTrend.redMax,viewTrend.redMin)
+                    }
+                    else if (index == 3) {
+                        viewTrend.redMax = spliceModel.getRawData("Post-Height+")
+                        viewTrend.redMin = spliceModel.getRawData("Post-Height-")
+                        viewTrend.yellowMax = hmiAdaptor.controlLimitProcess("Post-Height+",datalist,viewTrend.redMax,viewTrend.redMin)
+                        viewTrend.yellowMin = hmiAdaptor.controlLimitProcess("Post-Height-",datalist,viewTrend.redMax,viewTrend.redMin)
+                    }
+
+                    qualityListViewTwo.model = 0
                     qualityListViewTwo.model = datalist.length
                     button.x = 0
                     weldActualLsit = hmiAdaptor.getWeldActualParameterDataList(0)

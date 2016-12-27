@@ -121,7 +121,7 @@ Item {
                     height: leftLine.height / 10
                     color: "#adaeae"
                     font.pixelSize: 14
-                    text: ((11-index) * alarmModel.getAxes("Power") * 0.1).toFixed(0) //((10 - index) / 10 * myCanvas.powerMax).toFixed(0)  //(7 - index) * 100
+                    text: spliceModel.graphPowerToString(((11-index) * alarmModel.getAxes("Power") * 0.1).toFixed(0)) //((10 - index) / 10 * myCanvas.powerMax).toFixed(0)  //(7 - index) * 100
                     verticalAlignment: Qt.AlignTop
                 }
             }
@@ -162,7 +162,7 @@ Item {
                     height: rightLine.height / 10
                     color: "#adaeae"
                     font.pixelSize: 14
-                    text: index == 0 ? (alarmModel.getAxes("Pre-Height") + (alarmModel.getAxes("Pre-Height") - alarmModel.getAxes("Post-Height"))/8).toFixed(0) : (alarmModel.getAxes("Pre-Height") - (alarmModel.getAxes("Pre-Height") - alarmModel.getAxes("Post-Height"))/8*(index-1)).toFixed(0)
+                    text: spliceModel.graphHeightToString(index == 0 ? (alarmModel.getAxes("Pre-Height") + (alarmModel.getAxes("Pre-Height") - alarmModel.getAxes("Post-Height"))/8).toFixed(0) : (alarmModel.getAxes("Pre-Height") - (alarmModel.getAxes("Pre-Height") - alarmModel.getAxes("Post-Height"))/8*(index-1)).toFixed(0))
 //                    text: ((11 - index) * alarmModel.getAxes("Post-Height") * 0.1).toFixed(0) /// 10 * myCanvas.heightMax).toFixed(0) //(7 - index) * 100
                     verticalAlignment: Qt.AlignTop
                 }
