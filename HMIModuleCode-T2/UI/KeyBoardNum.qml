@@ -1,3 +1,13 @@
+/*******************************************************************
+Copyright:http://www.sinux.com.cn
+Date:2016/12/26
+Author:zhangjiyong&lilongfei
+Description: keyBoardnum component,By setting the exposed properties,
+change the maximum minimunm value,the data Model is listModel
+The function interface:
+    currentClickIndex()
+    hmiAdaptor.getStringUnit()
+*******************************************************************/
 import QtQuick 2.7
 import QtQuick.Layouts 1.0
 import QtQuick.Window 2.2

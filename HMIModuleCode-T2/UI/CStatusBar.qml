@@ -1,3 +1,10 @@
+/*******************************************************************
+Copyright:http://www.sinux.com.cn
+Date:2016/12/26
+Author:zhangjiyong&lilongfei
+Description:status bar component,it is showed time
+The function interface:
+*******************************************************************/
 import QtQuick 2.7
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
@@ -7,6 +14,7 @@ import QtQuick.Window 2.2
 Item {
     width: Screen.width
     height: Screen.height * 0.03
+
     Rectangle {
         anchors.fill: parent
 //        color: "#fac834"

@@ -869,6 +869,7 @@ void HmiAdaptor::slotEnableDialog(BransonMessageBox &MsgBox)
 {
     bransonMessageBox = MsgBox;
     this->func_ptr = bransonMessageBox.func_ptr;
+    qDebug() << "slotEnableDialog" << bransonMessageBox._Object;
     bool okVisable = true;
     bool cancelVisable = false;
     QString okText;
@@ -1009,13 +1010,12 @@ int HmiAdaptor::timeChangeToInt(QString time)
 void HmiAdaptor::setOperateProcess(int spliceId, bool isText)
 {
     m_spliceAdaptor->QueryOneRecordFromTable(spliceId,&operateProcess->CurrentSplice);
-    if (isText == false)
-    {
-        operateProcess->CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderID = workOrderModel->getStructValue("WorkOrderId").toInt();
-        operateProcess->CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderName = workOrderModel->getStructValue("WorkOrderName").toString();
-        operateProcess->CurrentNecessaryInfo.CurrentPart.PartID = partModel->getStruceValue("PartId").toInt();
-        operateProcess->CurrentNecessaryInfo.CurrentPart.PartName = partModel->getStruceValue("PartName").toString();
-    }
+    operateProcess->CurrentNecessaryInfo.IsTestProcess = isText;
+    operateProcess->CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderID = workOrderModel->getStructValue("WorkOrderId").toInt();
+    operateProcess->CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderName = workOrderModel->getStructValue("WorkOrderName").toString();
+    operateProcess->CurrentNecessaryInfo.CurrentPart.PartID = partModel->getStruceValue("PartId").toInt();
+    operateProcess->CurrentNecessaryInfo.CurrentPart.PartName = partModel->getStruceValue("PartName").toString();
+
 }
 
 void HmiAdaptor::operateProcessExec(QString type)
@@ -1068,6 +1068,16 @@ int HmiAdaptor::controlLimitProcess(QString type, QList<int> list, int redMax, i
     }
 }
 
+void HmiAdaptor::teachModeProcess()
+{
+    operateProcess->TeachModeProcess();
+}
+
+void HmiAdaptor::stopTeachMode()
+{
+    operateProcess->StopTeachMode();
+}
+
 void HmiAdaptor::statisticalTrendApply(int SpliceID, QString SpliceName, unsigned int time_from, unsigned int time_to)
 {
     statisticalTrend->_apply(SpliceID,SpliceName,time_from,time_to);
@@ -1075,6 +1085,13 @@ void HmiAdaptor::statisticalTrendApply(int SpliceID, QString SpliceName, unsigne
 
 void HmiAdaptor::msgBoxClick(bool clickOK)
 {
-    if (clickOK && this->func_ptr != NULL && bransonMessageBox._Object != NULL)
+    if (clickOK && this->func_ptr != NULL && bransonMessageBox._Object != NULL) {
+        qDebug() << "msgBoxClick" << this->func_ptr << bransonMessageBox._Object;
         this->func_ptr(bransonMessageBox._Object);
+    }
+}
+
+void HmiAdaptor::teachModeSaveSplice()
+{
+    spliceModel->updateSplice(operateProcess->CurrentSplice);
 }

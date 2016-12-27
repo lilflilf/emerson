@@ -79,6 +79,7 @@ protected:
 private:
     BransonMessageBox MessageBox;
     static InterfaceClass* _instance;
+    BransonMessageBox tmpMsgBox;
 public:
     ~InterfaceClass();
 };

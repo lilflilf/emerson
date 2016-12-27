@@ -17,6 +17,7 @@
 #include <QObject>
 #include <QSettings>
 #include <QDir>
+#include <QDebug>
 MODstart* MODstart::_instance = 0;
 bool MODstart::Checkmaintenancelimit_EaWeld = false;
 bool MODstart::ApplicationFirstStartFlag = false;
@@ -538,6 +539,7 @@ void MODstart::CheckAWGAreaTable()
 //This funciton only for the Offline Initialization in case of the controller is not detected
 void MODstart::OfflineInitialization(void* ptr)
 {
+    qDebug() << "OfflineInitialization";
     ModRunSetup *_ModRunSetup = ModRunSetup::Instance();
 //    M10INI *_M10INI = M10INI::Instance();
     M2010 *_M2010 = M2010::Instance();

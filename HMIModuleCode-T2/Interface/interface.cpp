@@ -26,12 +26,12 @@ InterfaceClass::~InterfaceClass()
 
 void InterfaceClass::cMsgBox(struct BransonMessageBox* MsgBox)
 {
-    MessageBox.MsgPrompt = MsgBox->MsgPrompt;
-    MessageBox.MsgTitle = MsgBox->MsgTitle;
-    MessageBox.TipsMode = MsgBox->TipsMode;
-    MessageBox.func_ptr = MsgBox->func_ptr;
-    MessageBox._Object = MsgBox->_Object;
-    emit EnableErrorMessageSignal(MessageBox);
+    tmpMsgBox.MsgPrompt = MsgBox->MsgPrompt;
+    tmpMsgBox.MsgTitle = MsgBox->MsgTitle;
+    tmpMsgBox.TipsMode = MsgBox->TipsMode;
+    tmpMsgBox.func_ptr = MsgBox->func_ptr;
+    tmpMsgBox._Object = MsgBox->_Object;
+    emit EnableErrorMessageSignal(tmpMsgBox);
 }
 
 void InterfaceClass::dlgMaintWarning()

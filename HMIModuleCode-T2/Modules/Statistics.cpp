@@ -7,7 +7,8 @@
 #include "SaveReplace.h"
 #include "Interface/Interface.h"
 #include "UtilityClass.h"
-#include "QDateTime"
+#include <QDateTime>
+#include <QDebug>
 Statistics* Statistics::_instance = 0;
 Statistics* Statistics::Instance()
 {
@@ -158,15 +159,15 @@ void Statistics::UpdateSoftLimitData(bool ShowResults)
     }             //SLindexer
 }
 
-void Statistics::RotateOut(StatStats SumStats, int OldData)
+void Statistics::RotateOut(StatStats &SumStats, int OldData)
 {
     SumStats.Sum = SumStats.Sum - OldData;
     SumStats.Sum_sqr = SumStats.Sum_sqr - (OldData * OldData);
 }
 
-void Statistics::RotateIn(StatStats SumStats, int& DataEvent, int NewData)
+void Statistics::RotateIn(StatStats &SumStats, QList<int>& DataEvent, int NewData)
 {
-    DataEvent = NewData;
+    DataEvent.append(NewData);
     SumStats.Sum = SumStats.Sum + NewData;
     SumStats.Sum_sqr = SumStats.Sum_sqr + (NewData * NewData);
 }
@@ -190,10 +191,10 @@ void Statistics::EnterM20DataEvent()
        RotateOut(Splice_Stat.Height, Splice_Stat.HeightData.Data[ptr]);
     }
 
-    RotateIn(Splice_Stat.Time, Splice_Stat.TimeData.Data[ptr], _M102IA->IAactual.Time);
-    RotateIn(Splice_Stat.Power, Splice_Stat.PowerData.Data[ptr], _M102IA->IAactual.Power);
-    RotateIn(Splice_Stat.Pre_hght, Splice_Stat.PreHghtData.Data[ptr], _M102IA->IAactual.Preheight);
-    RotateIn(Splice_Stat.Height, Splice_Stat.HeightData.Data[ptr], _M102IA->IAactual.Height);
+    RotateIn(Splice_Stat.Time, Splice_Stat.TimeData.Data, _M102IA->IAactual.Time);
+    RotateIn(Splice_Stat.Power, Splice_Stat.PowerData.Data, _M102IA->IAactual.Power);
+    RotateIn(Splice_Stat.Pre_hght, Splice_Stat.PreHghtData.Data, _M102IA->IAactual.Preheight);
+    RotateIn(Splice_Stat.Height, Splice_Stat.HeightData.Data, _M102IA->IAactual.Height);
 
     Splice_Stat.prts_count = Splice_Stat.prts_count + 1;
     Splice_Stat.data_ptr = _M2010->IncPtrCircular(Splice_Stat.data_ptr, M20_Data_Pnt_MI);
@@ -493,10 +494,23 @@ void Statistics::CalcConfLimits(PresetElement *_Splice)
     if (pre_hght_upper_limit > MAXPREHEIGHT) pre_hght_upper_limit = MAXPREHEIGHT;
     if (height_lower_limit < 0) height_lower_limit = MINHEIGHT;
     if (height_upper_limit > MAXHEIGHT) height_upper_limit = MAXHEIGHT;
+    qDebug()<<"time_lower_limit: "<<time_lower_limit<<
+              "time_upper_limit: "<<time_upper_limit<<
+              "power_lower_limit: "<<power_lower_limit<<
+              "power_upper_limit: "<<power_upper_limit<<
+              "pre_hght_lower_limit: "<<pre_hght_lower_limit<<
+              "pre_hght_upper_limit: "<<pre_hght_upper_limit<<
+              "height_lower_limit: "<<height_lower_limit<<
+              "height_upper_limit: "<<height_upper_limit;
+
 }
 
 void Statistics::GetLimitsAfterWeld(PresetElement *_Splice)
 {
+    if(_Splice->TestSetting.TeachModeSetting.TeachModeType != AUTO)
+        return;
+    if(Splice_Stat.prts_count != TEACH_AUTO_THRESHOLD)
+        return;
     power_lower_limit = Power_Average * 0.9;
     power_upper_limit = Power_Average * 1.1;
     pre_hght_lower_limit = PreHeight_Avreage * 0.9;
@@ -520,4 +534,12 @@ void Statistics::GetLimitsAfterWeld(PresetElement *_Splice)
       _Splice->WeldSettings.QualitySetting.Height.Minus = int(height_lower_limit);
       _Splice->WeldSettings.QualitySetting.Height.Plus = int(height_upper_limit);
    }
+   qDebug()<<"Time.Minus: "<<_Splice->WeldSettings.QualitySetting.Time.Minus<<
+             "Time.Plus: "<<_Splice->WeldSettings.QualitySetting.Time.Plus<<
+             "Power.Minus: "<<_Splice->WeldSettings.QualitySetting.Power.Minus<<
+             "Power.Plus: "<<_Splice->WeldSettings.QualitySetting.Power.Plus<<
+             "Preheight.Minus: "<<_Splice->WeldSettings.QualitySetting.Preheight.Minus<<
+             "Preheight.Plus: "<<_Splice->WeldSettings.QualitySetting.Preheight.Plus<<
+             "Height.Minus: "<<_Splice->WeldSettings.QualitySetting.Height.Minus<<
+             "Height.Plus: "<<_Splice->WeldSettings.QualitySetting.Height.Plus;
 }

@@ -104,6 +104,9 @@ public:
     Q_INVOKABLE void setOperateProcess(int spliceId, bool isText);
     Q_INVOKABLE void operateProcessExec(QString type);
     Q_INVOKABLE int  controlLimitProcess(QString type,QList<int> list,int redMax,int redMin);
+    Q_INVOKABLE void teachModeProcess();
+    Q_INVOKABLE void stopTeachMode();
+
 
     /********permissionsetting func**************/
     Q_INVOKABLE bool permissionsettingExecute(QString code);
@@ -133,6 +136,8 @@ public:
     Q_INVOKABLE void statisticalTrendApply(int SpliceID, QString SpliceName, unsigned int time_from, unsigned int time_to);
 
     Q_INVOKABLE void msgBoxClick(bool clickOK);
+    Q_INVOKABLE void teachModeSaveSplice();
+
     BransonMessageBox bransonMessageBox;
     InterfaceClass *interfaceClass;
     MakeWeldProcess *operateProcess;
