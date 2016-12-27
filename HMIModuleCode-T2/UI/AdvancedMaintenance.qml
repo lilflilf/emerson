@@ -27,6 +27,54 @@ Item {
 //        hmiAdaptor.maintenanceStop(2);
 //    }
 
+    Connections {
+        target: hmiAdaptor
+        onSignalButtonStateChanged: {
+            if (buttonName == "Anvilarm") {
+                if (state)
+                    button1.backgroundComponent = buttonBackTrue
+                else
+                    button1.backgroundComponent = buttonBackFalse
+            }
+            else if (buttonName == "Gather") {
+                if (state)
+                    button2.backgroundComponent = buttonBackTrue
+                else
+                    button2.backgroundComponent = buttonBackFalse
+            }
+            else if (buttonName == "Safety") {
+                if (state)
+                    button3.backgroundComponent = buttonBackTrue
+                else
+                    button3.backgroundComponent = buttonBackFalse
+            }
+            else if (buttonName == "Cutter") {
+                if (state)
+                    button4.backgroundComponent = buttonBackTrue
+                else
+                    button4.backgroundComponent = buttonBackFalse
+            }
+            else if (buttonName == "Cooling Tooling") {
+                if (state)
+                    button5.backgroundComponent = buttonBackTrue
+                else
+                    button5.backgroundComponent = buttonBackFalse
+            }
+            else if (buttonName == "Cooling Converter") {
+                if (state)
+                    button6.backgroundComponent = buttonBackTrue
+                else
+                    button6.backgroundComponent = buttonBackFalse
+            }
+            else if (buttonName == "Crash") {
+                if (state)
+                    button7.backgroundComponent = buttonBackTrue
+                else
+                    button7.backgroundComponent = buttonBackFalse
+            }
+        }
+    }
+
     Column {
         id: column1
         anchors.left: parent.left
@@ -58,12 +106,29 @@ Item {
 //    CONVERTERCOOLINGCLICK,
 //    TOOLINGCOOLINGCLICK,
 
+    Component {
+        id: buttonBackTrue
+        Rectangle {
+            anchors.fill: parent
+            color: "green"
+        }
+    }
+    Component {
+        id: buttonBackFalse
+        Image {
+            anchors.fill: parent
+            source: "qrc:/images/images/icon-bg.png"
+        }
+    }
+
     Column {
+        id: buttonColumn1
         anchors.left:column1.right
         anchors.top: column1.top
         anchors.leftMargin: 60
         spacing: 10
         CButton {
+            id: button1
             width: 250
             text: qsTr("1-Anvil Arm")
             onClicked: {
@@ -71,6 +136,7 @@ Item {
             }
         }
         CButton {
+            id: button2
             width: 250
             text: qsTr("2-Gather")
             onClicked: {
@@ -78,6 +144,7 @@ Item {
             }
         }
         CButton {
+            id: button3
             width: 250
             text: qsTr("3-Safety")
             onClicked: {
@@ -93,6 +160,7 @@ Item {
         anchors.leftMargin: 60
         spacing: 10
         CButton {
+            id: button4
             width: 250
             text: qsTr("4-Cutter")
             onClicked: {
@@ -100,6 +168,7 @@ Item {
             }
         }
         CButton {
+            id: button5
             width: 250
             text: qsTr("5-Cooling Tooling")
             onClicked: {
@@ -107,6 +176,7 @@ Item {
             }
         }
         CButton {
+            id: button6
             width: 250
             text: qsTr("6-Cooling Converter")
             onClicked: {
@@ -114,6 +184,7 @@ Item {
             }
         }
         CButton {
+            id: button7
             width: 250
             text: qsTr("7-Crash")
             onClicked: {

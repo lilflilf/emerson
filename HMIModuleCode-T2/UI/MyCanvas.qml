@@ -97,7 +97,7 @@ Item {
                     width: bottomLine.width / 10
                     color: "#adaeae"
                     font.pixelSize: 14
-                    text: (index * alarmModel.getAxes("Time") * 0.1).toFixed(0) //  (index / 10 * myCanvas.timeMax).toFixed(2)
+                    text: spliceModel.graphTimeToString((index * alarmModel.getAxes("Time") * 0.1 * 10).toFixed(0)) //  (index / 10 * myCanvas.timeMax).toFixed(2)
                     horizontalAlignment: Qt.AlignLeft
                 }
             }

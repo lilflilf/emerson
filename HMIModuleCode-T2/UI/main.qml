@@ -44,6 +44,18 @@ Window {
       17-- settings Data Communication
       18--settings Branson Setting
       */
+    function checkAllInterface(index)
+    {
+        if (index == 20) {
+           if (hmiAdaptor.needPassWord("Teach Mode")) {
+                return true
+           } else {
+               return false
+           }
+        } else {
+            checkNeedPassWd(index)
+        }
+    }
 
     function checkNeedPassWd(index)
     {
@@ -221,7 +233,7 @@ Window {
 //            contentLoader.source = "qrc:/UI/BransonSetting.qml"
 //            break;
         case 19:
-            headBar.titleText = qsTr("Edit Wire")
+            headBar.titleText = qsTr("Edit Existing")
             contentLoader.source = "qrc:/UI/EditWire.qml"
             break;
         default:
@@ -268,6 +280,19 @@ Window {
                 cdialog.msgTypeIco = typeIco
                 cdialog.titleText = titleText
                 cdialog.visible = true
+                cdialog.isQuit = isQuit
+            }
+            onSignalDisableDialog: {
+                cdialog.visible = false
+
+                cdialog.okvisible = false
+                cdialog.cancelvisible = false
+                cdialog.okText = okText
+                cdialog.cancelText = ""
+                cdialog.centerText = ""
+                cdialog.msgTypeIco = ""
+                cdialog.titleText = ""
+                cdialog.isQuit = false
             }
         }
     }

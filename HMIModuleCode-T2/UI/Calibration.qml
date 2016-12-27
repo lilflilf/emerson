@@ -173,12 +173,12 @@ Item {
                         keyNum.visible = true
                         if (line1.inputText == qsTr("enter value here")) {
                             keyNum.currentValue = "0"
-                            keyNum.minvalue = "0"
-                            keyNum.maxvalue = "20"
+                            keyNum.minvalue = hmiAdaptor.getAmplitudeToString(0,false)
+                            keyNum.maxvalue = hmiAdaptor.getAmplitudeToString(0,true)
                         } else {
                             keyNum.currentValue = line1.inputText
-                            keyNum.minvalue = "0"
-                            keyNum.maxvalue = "20"
+                            keyNum.minvalue = hmiAdaptor.getAmplitudeToString(line1.inputText,false)
+                            keyNum.maxvalue = hmiAdaptor.getAmplitudeToString(line1.inputText,true)
                         }
                     }
                 }

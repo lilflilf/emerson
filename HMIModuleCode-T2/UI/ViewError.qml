@@ -35,6 +35,7 @@ Item {
         anchors.right: parent.right
         anchors.bottom:  parent.bottom
         text: qsTr("Export Data")
+        iconSource: "qrc:/images/images/export.png"
         anchors.bottomMargin: 10
         anchors.rightMargin: 20
     }

@@ -71,7 +71,9 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
     toolChange = new ToolChange;
     statisticalTrend = new StatisticalTrend;
     interfaceClass = InterfaceClass::Instance();
+    m_variantToString = VariantToString::Instance();
 
+    connect(advanceMaintenance, SIGNAL(IOstatusFeedback(ulong)),this,SLOT(slotButtonState(ulong)));
     connect(interfaceClass, SIGNAL(EnableErrorMessageSignal(BransonMessageBox&)), this, SLOT(slotEnableDialog(BransonMessageBox&)));
     connect(interfaceClass, SIGNAL(DisableErrorMessageSignal(BransonMessageBox&)), this, SLOT(slotDisableDialog(BransonMessageBox&)));
 
@@ -875,6 +877,7 @@ void HmiAdaptor::slotEnableDialog(BransonMessageBox &MsgBox)
     QString okText;
     QString cancelText;
     QString typeIco;
+    bool isQuit = false;
     if (MsgBox.TipsMode & OKOnly)
     {
         cancelVisable = false;
@@ -915,12 +918,48 @@ void HmiAdaptor::slotEnableDialog(BransonMessageBox &MsgBox)
     {
         typeIco = "qrc:/images/images/alarm.ico";
     }
-    emit signalEnableDialog(okVisable, cancelVisable, okText, "CANCEL", typeIco, MsgBox.MsgTitle, MsgBox.MsgPrompt);
+
+    if (MsgBox.TipsMode & OFF_ON_LINE)
+        isQuit = true;
+    emit signalEnableDialog(okVisable, cancelVisable, okText, "CANCEL", typeIco, MsgBox.MsgTitle, MsgBox.MsgPrompt,isQuit);
 }
 
 void HmiAdaptor::slotDisableDialog(BransonMessageBox &MsgBox)
 {
     emit signalDisableDialog();
+}
+
+void HmiAdaptor::slotButtonState(const unsigned long status)
+{
+    if ((status & HORN_ON) == HORN_ON)
+        emit signalButtonStateChanged("AnvilArm", true);
+    else
+        emit signalButtonStateChanged("AnvilArm", false);
+
+    if ((status & GATHER_ON) == GATHER_ON)
+        emit signalButtonStateChanged("Gather", true);
+    else
+        emit signalButtonStateChanged("Gather", false);
+    if ((status & COVER_OPEN) == COVER_OPEN)
+        emit signalButtonStateChanged("Safety", true);
+    else
+        emit signalButtonStateChanged("Safety", false);
+    if ((status & CUTTER_ON) == CUTTER_ON)
+        emit signalButtonStateChanged("Cutter", true);
+    else
+        emit signalButtonStateChanged("Cutter", false);
+    if ((status & TOOLINGCOOL_ON) == TOOLINGCOOL_ON)
+        emit signalButtonStateChanged("Cooling Tooling", true);
+    else
+        emit signalButtonStateChanged("Cooling Tooling", false);
+    if ((status & CONVERTERCOOL_ON) == CONVERTERCOOL_ON)
+        emit signalButtonStateChanged("Cooling Converter", true);
+    else
+        emit signalButtonStateChanged("Cooling Converter", false);
+    if ((status & CRASH_ON) == CRASH_ON)
+        emit signalButtonStateChanged("Crash", true);
+    else
+        emit signalButtonStateChanged("Crash", false);
 }
 
 bool HmiAdaptor::stringRegexMatch(QString exp, QString value)
@@ -1081,6 +1120,45 @@ void HmiAdaptor::stopTeachMode()
 void HmiAdaptor::statisticalTrendApply(int SpliceID, QString SpliceName, unsigned int time_from, unsigned int time_to)
 {
     statisticalTrend->_apply(SpliceID,SpliceName,time_from,time_to);
+    qDebug()<<"111111111111"<<statisticalTrend->RawQualityWindowList[0]<<statisticalTrend->CurrentWeldParameterList.count();
+}
+
+QList<int> HmiAdaptor::getStatisticalTrendDataList(int index)
+{
+    return statisticalTrend->RawQualityWindowList[index];
+}
+
+QStringList HmiAdaptor::getWeldActualParameterDataList(int index)
+{
+    QStringList list;
+    if (statisticalTrend->CurrentWeldParameterList.count() == 0) {
+        return list;
+    }
+    list.append(statisticalTrend->CurrentWeldParameterList[index].CrossSection);
+    list.append(statisticalTrend->CurrentWeldParameterList[index].Time);
+    list.append(statisticalTrend->CurrentWeldParameterList[index].Energy);
+    list.append(statisticalTrend->CurrentWeldParameterList[index].PeakPower);
+    list.append(statisticalTrend->CurrentWeldParameterList[index].WeldPressure);
+    list.append(statisticalTrend->CurrentWeldParameterList[index].PreHeight);
+    list.append(statisticalTrend->CurrentWeldParameterList[index].TriggerPressure);
+    list.append(statisticalTrend->CurrentWeldParameterList[index].PostHeight);
+    list.append(statisticalTrend->CurrentWeldParameterList[index].Amplitude);
+    list.append(statisticalTrend->CurrentWeldParameterList[index].PartName);
+    list.append(statisticalTrend->CurrentWeldParameterList[index].Width);
+    list.append(statisticalTrend->CurrentWeldParameterList[index].DateCreated);
+    list.append(statisticalTrend->CurrentWeldParameterList[index].WorkOrderName);
+    return list;
+}
+
+QStringList HmiAdaptor::getCurrentStatisticsParameterList(int index)
+{
+    QStringList list;
+    list.append(statisticalTrend->CurrentStatisticsParameter[index].SampleSize);
+    list.append(statisticalTrend->CurrentStatisticsParameter[index].Mean);
+    list.append(statisticalTrend->CurrentStatisticsParameter[index].Median);
+    list.append(statisticalTrend->CurrentStatisticsParameter[index].Sigma);
+    list.append(statisticalTrend->CurrentStatisticsParameter[index].Cpk);
+    return list;
 }
 
 void HmiAdaptor::msgBoxClick(bool clickOK)
@@ -1088,6 +1166,15 @@ void HmiAdaptor::msgBoxClick(bool clickOK)
     if (clickOK && this->func_ptr != NULL && bransonMessageBox._Object != NULL) {
         qDebug() << "msgBoxClick" << this->func_ptr << bransonMessageBox._Object;
         this->func_ptr(bransonMessageBox._Object);
+    }
+}
+
+QString HmiAdaptor::getAmplitudeToString(int value, bool bIsMax)
+{
+    if (bIsMax) {
+        return m_variantToString->AmplitudeToString(value).Maximum;
+    } else {
+        return m_variantToString->AmplitudeToString(value).Minimum;
     }
 }
 

@@ -43,18 +43,6 @@ Item {
         ExclusiveGroup {
             id: checkGroup
         }
-        CButton {
-            width: parent.width - 40
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 20
-            anchors.left: parent.left
-            anchors.leftMargin: 20
-            iconSource: "qrc:/images/images/import.png"
-            spacing: 10
-            text: qsTr("IMPORT")
-
-        }
-
         Column {
             id: column
             anchors.top: parent.top
@@ -692,6 +680,7 @@ Item {
         CButton {
             width: (parent.width-54)/4
             textColor: "white"
+            iconSource: "qrc:/images/images/cancel.png"
             text: qsTr("Delete")
             onClicked: {
                 if (selectIndx < 0) {
@@ -711,12 +700,14 @@ Item {
         CButton {
             width: (parent.width-54)/4
             textColor: "white"
-            text: qsTr("Export")
+            text: qsTr("Export Data")
+            iconSource: "qrc:/images/images/export.png"
         }
         CButton {
             width: (parent.width-54)/4
+            iconSource: "qrc:/images/images/import.png"
             textColor: "white"
-            text: qsTr("Back")
+            text: qsTr("IMPORT")
         }
     }
     Rectangle {
@@ -931,5 +922,10 @@ Item {
                 }
             }
         }
+    }
+
+    Loader {
+        id: editLoader
+        anchors.fill: parent
     }
 }

@@ -23,6 +23,7 @@ Item {
     property alias msgTypeIco: msgType.source
     property alias titleText: headText.text
     signal cliceTo(bool reb)
+    property bool isQuit: false
     Rectangle {
         id: backGround
         anchors.fill: parent
@@ -81,6 +82,10 @@ Item {
             pointSize: 16
             text: ""
             onClicked: {
+                if (isQuit) {
+                    hmiAdaptor.quit()
+                    Qt.quit()
+                }
                 dialog.visible = false
                 cliceTo(true)
             }
