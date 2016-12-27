@@ -40,6 +40,7 @@ Item {
             testDialog.visible = true
         }
         onSignalSaveSplice: {
+            hmiAdaptor.teachModeSaveSplice();
             loader.source = ""
         }
     }
@@ -319,6 +320,8 @@ Item {
             backGround.opacity = 0.5
             testDialog.visible = true
             spliceModel.editNew(spliceModel.getValue(selectIndx,"SpliceId"))
+            testDialog.setData()
+
         }
     }
     Rectangle {
@@ -338,9 +341,6 @@ Item {
         width: 435
         height: 540
         onVisibleChanged: {
-            if (testDialog.visible)
-                testDialog.setData()
-
         }
 
         onSignalAdvanceSettingStart: {

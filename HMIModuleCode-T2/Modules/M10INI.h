@@ -151,11 +151,7 @@ struct System_Configuration{
 
 
 
-#define BRANSON_INI_FILE        "Amtech.bin" //StatusData is stored in this file
-
-#define BRANSON_LASTWELD_FILE  "BransonLastWeld.bin" //Array DataCell() is stored in this file
-
-
+#define BRANSON_INI_FILE        "Branson.ini" //StatusData is stored in this file
 
 class M10INI
 {

@@ -22,7 +22,9 @@ enum TipsScreenMode{
     Exclamation = 0x20, //show Warning sign
     Information = 0x40, //show Information sign
     Alarm       = 0x80, //show Alarm sign
-    OFF_ON_LINE = 0x100,//show On Line and Off Line
+    QualityAlarm = 0x100, //show Alarm Sign, and only for the lock on alarm.
+    OFF_ON_LINE = 0x200,//show On Line and Off Line
+
 };
 struct BransonMessageBox{
     QString MsgTitle;

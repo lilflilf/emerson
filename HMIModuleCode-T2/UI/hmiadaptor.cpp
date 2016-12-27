@@ -1011,13 +1011,12 @@ int HmiAdaptor::timeChangeToInt(QString time)
 void HmiAdaptor::setOperateProcess(int spliceId, bool isText)
 {
     m_spliceAdaptor->QueryOneRecordFromTable(spliceId,&operateProcess->CurrentSplice);
-    if (isText == false)
-    {
-        operateProcess->CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderID = workOrderModel->getStructValue("WorkOrderId").toInt();
-        operateProcess->CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderName = workOrderModel->getStructValue("WorkOrderName").toString();
-        operateProcess->CurrentNecessaryInfo.CurrentPart.PartID = partModel->getStruceValue("PartId").toInt();
-        operateProcess->CurrentNecessaryInfo.CurrentPart.PartName = partModel->getStruceValue("PartName").toString();
-    }
+    operateProcess->CurrentNecessaryInfo.IsTestProcess = isText;
+    operateProcess->CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderID = workOrderModel->getStructValue("WorkOrderId").toInt();
+    operateProcess->CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderName = workOrderModel->getStructValue("WorkOrderName").toString();
+    operateProcess->CurrentNecessaryInfo.CurrentPart.PartID = partModel->getStruceValue("PartId").toInt();
+    operateProcess->CurrentNecessaryInfo.CurrentPart.PartName = partModel->getStruceValue("PartName").toString();
+
 }
 
 void HmiAdaptor::operateProcessExec(QString type)
@@ -1068,6 +1067,16 @@ int HmiAdaptor::controlLimitProcess(QString type, QList<int> list, int redMax, i
         operateProcess->ControlLimitProcess(QUALITYPOSTHEIGHT,list,redMax,redMin,&upper,&lower);
         return lower;
     }
+}
+
+void HmiAdaptor::teachModeProcess()
+{
+    operateProcess->TeachModeProcess();
+}
+
+void HmiAdaptor::stopTeachMode()
+{
+    operateProcess->StopTeachMode();
 }
 
 void HmiAdaptor::statisticalTrendApply(int SpliceID, QString SpliceName, unsigned int time_from, unsigned int time_to)
@@ -1129,4 +1138,9 @@ QString HmiAdaptor::getAmplitudeToString(int value, bool bIsMax)
     } else {
         return m_variantToString->AmplitudeToString(value).Minimum;
     }
+}
+
+void HmiAdaptor::teachModeSaveSplice()
+{
+    spliceModel->updateSplice(operateProcess->CurrentSplice);
 }

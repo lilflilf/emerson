@@ -1019,6 +1019,16 @@ QList<int> SplicesModel::getWireIdList()
     return list;
 }
 
+QString SplicesModel::graphTimeToString(int time)
+{
+    return variantToString->GraphTimeToString(time);
+}
+
+void SplicesModel::updateSplice(PresetElement presetElement)
+{
+    m_spliceAdaptor->UpdateRecordIntoTable(&presetElement);
+}
+
 
 void SplicesModel::removeValue(int id, QString name)
 {

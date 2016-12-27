@@ -32,7 +32,7 @@ Item {
                     return
                 }
             }
-
+            hmiAdaptor.teachModeProcess()
             setData()
             hmiAdaptor.operateProcessExec("Execute")
 
@@ -46,19 +46,32 @@ Item {
         qualityWindow.preModel = alarmModel.getPointList("Pre-Height",spliceModel.getStructValue("SpliceName",""),spliceModel.getHashCode())
         qualityWindow.postModel = alarmModel.getPointList("Post-Height",spliceModel.getStructValue("SpliceName",""),spliceModel.getHashCode())
 
+//        qualityWindow.qualityModel.clear()
+//        if (qualityWindow.timeModel.length > 0) {
+//            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Time+"),"redMin":spliceModel.getRawData("Time-"),"yellowMax":4,"yellowMin":1,"current":qualityWindow.timeModel[qualityWindow.timeModel.length - 1],"currentText":"23"})
+//            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Power+"),"redMin":spliceModel.getRawData("Power-"),"yellowMax":4,"yellowMin":1,"current":qualityWindow.powerModel[qualityWindow.powerModel.length - 1],"currentText":"123"})
+//            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Pre-Height+"),"redMin":spliceModel.getRawData("Pre-Height-"),"yellowMax":4,"yellowMin":1,"current":qualityWindow.preModel[qualityWindow.preModel.length - 1],"currentText":"2512"})
+//            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Post-Height+"),"redMin":spliceModel.getRawData("Post-Height-"),"yellowMax":4,"yellowMin":1,"current":qualityWindow.postModel[qualityWindow.postModel.length - 1],"currentText":"43"})
+//        }
+//        else {
+//            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Time+"),"redMin":spliceModel.getRawData("Time-"),"yellowMax":4,"yellowMin":1,"current":-1,"currentText":"23"})
+//            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Power+"),"redMin":spliceModel.getRawData("Power-"),"yellowMax":4,"yellowMin":1,"current":-1,"currentText":"123"})
+//            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Pre-Height+"),"redMin":spliceModel.getRawData("Pre-Height-"),"yellowMax":4,"yellowMin":1,"current":-1,"currentText":"2512"})
+//            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Post-Height+"),"redMin":spliceModel.getRawData("Post-Height-"),"yellowMax":4,"yellowMin":1,"current":-1,"currentText":"43"})
+
+//        }
         qualityWindow.qualityModel.clear()
         if (qualityWindow.timeModel.length > 0) {
-            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Time+"),"redMin":spliceModel.getRawData("Time-"),"yellowMax":4,"yellowMin":1,"current":qualityWindow.timeModel[qualityWindow.timeModel.length - 1],"currentText":"23"})
-            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Power+"),"redMin":spliceModel.getRawData("Power-"),"yellowMax":4,"yellowMin":1,"current":qualityWindow.powerModel[qualityWindow.powerModel.length - 1],"currentText":"123"})
-            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Pre-Height+"),"redMin":spliceModel.getRawData("Pre-Height-"),"yellowMax":4,"yellowMin":1,"current":qualityWindow.preModel[qualityWindow.preModel.length - 1],"currentText":"2512"})
-            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Post-Height+"),"redMin":spliceModel.getRawData("Post-Height-"),"yellowMax":4,"yellowMin":1,"current":qualityWindow.postModel[qualityWindow.postModel.length - 1],"currentText":"43"})
+            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Time+"),"redMin":spliceModel.getRawData("Time-"),"yellowMax":hmiAdaptor.controlLimitProcess("Time+",qualityWindow.timeModel,spliceModel.getRawData("Time+"),spliceModel.getRawData("Time-")),"yellowMin":hmiAdaptor.controlLimitProcess("Time-",qualityWindow.timeModel,spliceModel.getRawData("Time+"),spliceModel.getRawData("Time-")),"current":qualityWindow.timeModel[qualityWindow.timeModel.length - 1],"currentText":"23"})
+            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Power+"),"redMin":spliceModel.getRawData("Power-"),"yellowMax":hmiAdaptor.controlLimitProcess("Power+",qualityWindow.powerModel,spliceModel.getRawData("Power+"),spliceModel.getRawData("Power-")),"yellowMin":hmiAdaptor.controlLimitProcess("Power-",qualityWindow.powerModel,spliceModel.getRawData("Power+"),spliceModel.getRawData("Power-")),"current":qualityWindow.powerModel[qualityWindow.powerModel.length - 1],"currentText":"123"})
+            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Pre-Height+"),"redMin":spliceModel.getRawData("Pre-Height-"),"yellowMax":hmiAdaptor.controlLimitProcess("Time+",qualityWindow.preModel,spliceModel.getRawData("Pre-Height+"),spliceModel.getRawData("Pre-Height-")),"yellowMin":hmiAdaptor.controlLimitProcess("Pre-Height-",qualityWindow.preModel,spliceModel.getRawData("Pre-Height+"),spliceModel.getRawData("Pre-Height-")),"current":qualityWindow.preModel[qualityWindow.preModel.length - 1],"currentText":"2512"})
+            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Post-Height+"),"redMin":spliceModel.getRawData("Post-Height-"),"yellowMax":hmiAdaptor.controlLimitProcess("Time+",qualityWindow.postModel,spliceModel.getRawData("Post-Height+"),spliceModel.getRawData("Post-Height-")),"yellowMin":hmiAdaptor.controlLimitProcess("Post-Height-",qualityWindow.postModel,spliceModel.getRawData("Post-Height+"),spliceModel.getRawData("Post-Height-")),"current":qualityWindow.postModel[qualityWindow.postModel.length - 1],"currentText":"43"})
         }
         else {
-            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Time+"),"redMin":spliceModel.getRawData("Time-"),"yellowMax":4,"yellowMin":1,"current":-1,"currentText":"23"})
-            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Power+"),"redMin":spliceModel.getRawData("Power-"),"yellowMax":4,"yellowMin":1,"current":-1,"currentText":"123"})
-            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Pre-Height+"),"redMin":spliceModel.getRawData("Pre-Height-"),"yellowMax":4,"yellowMin":1,"current":-1,"currentText":"2512"})
-            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Post-Height+"),"redMin":spliceModel.getRawData("Post-Height-"),"yellowMax":4,"yellowMin":1,"current":-1,"currentText":"43"})
-
+            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Time+"),"redMin":spliceModel.getRawData("Time-"),"yellowMax":-1,"yellowMin":-1,"current":-1,"currentText":"23"})
+            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Power+"),"redMin":spliceModel.getRawData("Power-"),"yellowMax":-1,"yellowMin":-1,"current":-1,"currentText":"123"})
+            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Pre-Height+"),"redMin":spliceModel.getRawData("Pre-Height-"),"yellowMax":-1,"yellowMin":-1,"current":-1,"currentText":"2512"})
+            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Post-Height+"),"redMin":spliceModel.getRawData("Post-Height-"),"yellowMax":-1,"yellowMin":-1,"current":-1,"currentText":"43"})
         }
         qualityWindow.setData()
     }
@@ -301,11 +314,6 @@ Item {
         }
     }
 
-
-
-
-
-
     CButton {
         id: finish
         width: 300
@@ -314,6 +322,7 @@ Item {
         anchors.bottom: parent.bottom
         text: qsTr("FINISH SAMPLE")
         onClicked: {
+            hmiAdaptor.stopTeachMode()
             finish.visible = false
             rightBottom.visible = true
             leftBottomItem.visible = false
@@ -345,12 +354,15 @@ Item {
         id: cdialog
         anchors.centerIn: parent
         okvisible: true
-        okText: "OK"
+        okText: "Accept"
         cancelvisible: true
-        cancelText: "CANCEL"
-        centerText: "Stand Teach Mode"
+        cancelText: "Reject"
+        titleText: "Teach Mode - Standard"
+        centerText: "Please hit the button to start next"
         visible: false
         onCliceTo: {
+            if (reb)
+                hmiAdaptor.teachModeProcess()
             setData()
             hmiAdaptor.operateProcessExec("Execute")
         }
@@ -366,6 +378,7 @@ Item {
         centerText: "Test Complete"
         visible: false
         onCliceTo: {
+            hmiAdaptor.stopTeachMode()
             root.checkNeedPassWd(3)
         }
 

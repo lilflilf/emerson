@@ -221,19 +221,20 @@ bool M10runMode::CheckWeldData(int weldresult)
                 _M2010->M10Run.Alarm_found = true;
         }
         // HEIGHT CHECK FINISH
-        //check: is there some error due to parameters going out of bound
-        if(_M2010->M10Run.Alarm_found == false)
-        {
-            PreviousWeldValid = true;
-            if(_Interface->ApplicationFirstStartFlag == false)
-            {
-                Update_Counter();
-                _M10INI->ValidWeldData = true;
-                _Statistics->UpdateSoftLimitData();
-            }
-        }else
-            PreviousWeldValid = false;
     }
+    //check: is there some error due to parameters going out of bound
+    if(_M2010->M10Run.Alarm_found == false)
+    {
+        PreviousWeldValid = true;
+        if(_Interface->ApplicationFirstStartFlag == false)
+        {
+            Update_Counter();
+            _M10INI->ValidWeldData = true;
+            _Statistics->UpdateSoftLimitData();
+        }
+    }else
+        PreviousWeldValid = false;
+
     return Invalidweld;
 }
 
@@ -244,5 +245,33 @@ void M10runMode::CalculateTeachMode(PresetElement *_Splice)
     if(_M2010->M10Run.Alarm_found == false)
     {
         _Statistics->CalcConfLimits(_Splice);
+    }
+}
+
+void M10runMode::TeachModeFinished(PresetElement *_Splice)
+{
+    Statistics* _Statistics = Statistics::Instance();
+    if(_Splice->WeldSettings.AdvanceSetting.WeldMode != TIME)
+    {
+        _Splice->WeldSettings.QualitySetting.Time.Minus =
+                (int)_Statistics->time_lower_limit;
+        _Splice->WeldSettings.QualitySetting.Time.Plus =
+                (int)_Statistics->time_upper_limit;
+    }
+    _Splice->WeldSettings.QualitySetting.Power.Minus =
+            (int)_Statistics->power_lower_limit;
+    _Splice->WeldSettings.QualitySetting.Power.Plus =
+            (int)_Statistics->power_upper_limit;
+    _Splice->WeldSettings.QualitySetting.Preheight.Minus =
+            (int)_Statistics->pre_hght_lower_limit;
+    _Splice->WeldSettings.QualitySetting.Preheight.Plus =
+            (int)_Statistics->pre_hght_upper_limit;
+    if((_Splice->WeldSettings.AdvanceSetting.WeldMode !=  HEIGHT) &&
+            (_Splice->WeldSettings.AdvanceSetting.WeldMode != ENERGYWITHHEIGHT))
+    {
+        _Splice->WeldSettings.QualitySetting.Height.Minus =
+                (int)_Statistics->height_lower_limit;
+        _Splice->WeldSettings.QualitySetting.Height.Plus =
+                (int)_Statistics->height_upper_limit;
     }
 }

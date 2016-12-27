@@ -109,7 +109,7 @@ public:
     void InitTextFromSplice(M10Part SpliceData);
     void PostWeld_Indicators_Update(); // called in check weld data
     void UpdateMaintenanceData();
-    void Set_All_Exit(bool TeachModeSamplesFinished);
+    void TeachModeFinished(PresetElement* _Splice);
 private:
     void Escape_Teach_Auto_Invalid_Welds(bool Alarm_found);
     void RestartSeqOnAlarm();

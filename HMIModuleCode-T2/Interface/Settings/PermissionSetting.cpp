@@ -41,16 +41,6 @@ void PermissionSetting::_Default()
     HMI_PRINT;
 }
 
-void PermissionSetting::_Ok()
-{
-    HMI_PRINT;
-}
-
-void PermissionSetting::_Cancel()
-{
-    HMI_PRINT;
-}
-
 void PermissionSetting::LockOnAlarm()
 {
     HMI_PRINT;
@@ -100,10 +90,6 @@ bool PermissionSetting::_Recall()
 
 bool PermissionSetting::_Set()
 {
-    for(int i = 0; i< CurrentPermissionList.size();i++)
-    {
-        qDebug() << "cccccccccccc " << CurrentPermissionList.at(i).Level1 << CurrentPermissionList.at(i).Level2 <<CurrentPermissionList.at(i).Level3 << CurrentPermissionList.at(i).Level4;
-    }
     InterfaceClass* _interface = InterfaceClass::Instance();
 //    if(CurrentPermissionList.empty() == true)
 //        return false;
@@ -144,5 +130,6 @@ bool PermissionSetting::_Set()
                     &= ~(0x01 << FunIndex);
 
     }
+    _interface->StatusData.WriteStatusDataToQSetting();
     return true;
 }

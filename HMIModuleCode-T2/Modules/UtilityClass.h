@@ -5,6 +5,7 @@
 #include <QObject>
 #include "Interface/Definition.h"
 #include "UtilityDefine.h"
+#include "Interface/SysConfiguration.h"
 
 class UtilityClass
 {  
@@ -34,6 +35,13 @@ public:
 
     bool MapJsonToString(QMap<int, struct PARTATTRIBUTE> *_SourceMap, QString &DestString);
     bool StringJsonToMap(QString SourceString, QMap<int, struct PARTATTRIBUTE> *_DestMap);
+
+    bool MapJsonToString(QMap<int, int>* _SourceMap, QString &DestString);
+    bool StringJsonToMap(QString SourceString, QMap<int, int>* _DestMap);
+
+    bool ListJsonToString(QList<struct ShrinkTubeData>* _SourceList, QString &DestString);
+
+    bool StringJsonToList(QString SourceString, QList<struct ShrinkTubeData> *_DestList);
 
 public:
     static UtilityClass* Instance();

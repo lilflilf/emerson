@@ -41,6 +41,7 @@ private:
     QMap<int, QString> RetrievedWeldResultIndexList;
     QList<float> DataList[4];
 private:
+    void Initialization();
     bool GetCurrentPresetFromLibrary(int SpliceID, QString SpliceName);
     bool GetCurrentWeldResultList(QString SpliceName, unsigned int HashCode,
                                   unsigned int time_from, unsigned int time_to);

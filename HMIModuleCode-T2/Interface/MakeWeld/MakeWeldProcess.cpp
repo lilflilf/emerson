@@ -147,7 +147,9 @@ bool MakeWeldProcess::HeightGraphReceive()
 
 void MakeWeldProcess::TeachModeProcess()
 {
+    qDebug() << "TeachModeProcess";
     M10runMode* _M10runMode = M10runMode::Instance();
+    Statistics *_Statistics = Statistics::Instance();
 //    InterfaceClass *_Interface = InterfaceClass::Instance();
 //    if(CurrentNecessaryInfo.IsTestProcess == true)
 //    {
@@ -174,6 +176,7 @@ void MakeWeldProcess::TeachModeProcess()
 
 //    }
     _M10runMode->CalculateTeachMode(&CurrentSplice);
+    _Statistics->GetLimitsAfterWeld(&CurrentSplice);
 }
 
 void MakeWeldProcess::WeldCycleDaemonThread(void* _obj)
@@ -518,6 +521,6 @@ void MakeWeldProcess::ControlLimitProcess(QUALITYTYPE Type, QList<int> &RawList,
 
 void MakeWeldProcess::StopTeachMode()
 {
-    Statistics *_Statistics = Statistics::Instance();
-    _Statistics->GetLimitsAfterWeld(&CurrentSplice);
+    M10runMode* _M10runMode = M10runMode::Instance();
+    _M10runMode->TeachModeFinished(&CurrentSplice);
 }

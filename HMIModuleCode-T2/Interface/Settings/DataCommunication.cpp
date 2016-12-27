@@ -74,20 +74,32 @@ bool DataCommunication::_Set()
     _Interface->StatusData.ModularProductionEnabled = CurrentDataCommunication.ModularProduction;
     str = CurrentDataCommunication.ServerPort.Current;
     _Interface->StatusData.ServerPort = _Utility->StringToFormatedData(DINServerPortNumber,str);
+    _Interface->StatusData.WriteStatusDataToQSetting();
     return true;
 }
 
 void DataCommunication::_Default()
 {
-    HMI_PRINT;
+    InterfaceClass* _Interface = InterfaceClass::Instance();
+    UtilityClass* _Utility = UtilityClass::Instance();
+    _Interface->StatusData.ShrinkTubeMode =
+            _Interface->DefaultStatusData.ShrinkTubeMode;
+
+    QString str;
+    _Interface->StatusData.ShrinkTubeDefaults.clear();
+    struct ShrinkTubeData tmpShrinkTube;
+    for(int i = 0; i< _Interface->DefaultStatusData.ShrinkTubeDefaults.size();i++)
+    {
+        tmpShrinkTube.Name = _Interface->DefaultStatusData.ShrinkTubeDefaults.at(i).Name;
+        tmpShrinkTube.temp = _Interface->DefaultStatusData.ShrinkTubeDefaults.at(i).temp;
+        tmpShrinkTube.Time = _Interface->DefaultStatusData.ShrinkTubeDefaults.at(i).Time;
+        _Interface->StatusData.ShrinkTubeDefaults.insert(i, tmpShrinkTube);
+    }
+    _Interface->StatusData.NetworkingEnabled = _Interface->DefaultStatusData.NetworkingEnabled;
+    _Interface->StatusData.RemoteDataLogging = _Interface->DefaultStatusData.RemoteDataLogging;
+    _Interface->StatusData.RemoteGraphData = _Interface->DefaultStatusData.RemoteGraphData;
+    _Interface->StatusData.ModularProductionEnabled = _Interface->DefaultStatusData.ModularProductionEnabled;
+    _Interface->StatusData.ServerPort = _Interface->StatusData.ServerPort;
+    _Interface->StatusData.WriteStatusDataToQSetting();
 }
 
-void DataCommunication::_Cancel()
-{
-    HMI_PRINT;
-}
-
-void DataCommunication::_Ok()
-{
-    HMI_PRINT;
-}
