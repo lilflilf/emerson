@@ -248,3 +248,7 @@ void Calibration::RunSonics100UnPressed()
     _M102IA->SendIACommand(IAComAuxMotion, DO_SONICS_OFF);
 }
 
+void Calibration::HornCalibrationComplete(int Amplitude)
+{
+
+}
