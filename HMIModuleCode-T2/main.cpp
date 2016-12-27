@@ -53,6 +53,7 @@ int main(int argc, char *argv[])
     bool success = translator.load("displayChinese_zh_CN.qm");
     app.installTranslator(&translator);
     QQmlApplicationEngine engine;
+
     HmiAdaptor *hmiAdaptor = new HmiAdaptor();
     hmiAdaptor->taskBarHeight = y;
     engine.rootContext()->setContextProperty("hmiAdaptor",hmiAdaptor);

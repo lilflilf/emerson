@@ -11,6 +11,8 @@
 #include <QTimer>
 HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
 {
+    interfaceClass = InterfaceClass::Instance();
+
     workOrderModel = new WorkOrderModel(this);
     QStringList list;
     list << "workOrderId" << "name" << "date" << "middle" << "count";
@@ -526,6 +528,8 @@ bool HmiAdaptor::permissionsettingExecute(QString code)
         permissionSetting->_Default();
     else if (code == "_Clear")
         permissionSetting->CurrentPermissionList.clear();
+    else if (code == "_Init")
+        permissionSetting->InitializeFRAM();
     return true;
 }
 
