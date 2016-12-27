@@ -220,6 +220,7 @@ Item {
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 20
             text: qsTr("Export Data")
+            iconSource: "qrc:/images/images/export.png"
         }
         ExclusiveGroup {
             id: listviewPositionGroup

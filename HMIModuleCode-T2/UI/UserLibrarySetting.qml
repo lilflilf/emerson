@@ -264,6 +264,7 @@ Item {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 20
         width: 300
+        iconSource: "qrc:/images/images/cancel.png"
         text: qsTr("Delete")
         textColor: "white"
         onClicked: {

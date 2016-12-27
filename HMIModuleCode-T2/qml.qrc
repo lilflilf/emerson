@@ -174,5 +174,6 @@
         <file>images/Portuguese&amp;Brazil.png</file>
         <file>images/Spanish&amp;Mexcio.png</file>
         <file>images/us&amp;English.png</file>
+        <file>images/export.png</file>
     </qresource>
 </RCC>

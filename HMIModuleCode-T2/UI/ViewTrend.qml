@@ -7,9 +7,11 @@ import QtQuick.Dialogs 1.2
 
 Item {
     id: viewTrend
+    property var datalist: new Array()
+    property var weldActualLsit: new Array()
+    property var statisticsList: new Array()
     width: Screen.width*0.7
     height: Screen.height*0.6
-
     MyTimeSelect {
         id: newCalendar
         anchors.centerIn: parent
@@ -312,14 +314,20 @@ Item {
                         var totime = hmiAdaptor.timeChangeToInt(mycalendar2.text + " " + mytimeSelect2.text)
                         var spliceId = spliceModel.getValue(searchArea.selectNum,"SpliceId")
                         hmiAdaptor.statisticalTrendApply(spliceId,workOrderName.text,fromtime,totime)
+                        datalist = hmiAdaptor.getStatisticalTrendDataList(0)
+                        qualityListViewTwo.model = datalist.length
+                        selectRepeater.itemAt(0).bIsCheck = true
+                        weldActualLsit = hmiAdaptor.getWeldActualParameterDataList(0)
+                        for (var i = 0; i < leftTextModel.count; i++) {
+                            leftTextModel.set(i,{myvalue:weldActualLsit[i]})
+                        }
+                        statisticsList = hmiAdaptor.getCurrentStatisticsParameterList(0)
+                        for (var j = 0; j < rightTextModel.count; j++) {
+                            rightTextModel.set(j,{myvalue:statisticsList[j]})
+                        }
                     }
                 }
             }
-//            CButton {
-//                id: backButton
-//                width: parent.width
-//                text: qsTr("Back")
-//            }
         }
 
     }
@@ -384,7 +392,7 @@ Item {
         anchors.top: parent.top
         anchors.topMargin: 20
         delegate: qualityListViewTwoDelegate
-        model: 200
+        model: datalist.length
     }
     Rectangle {
         id: scrollbar
@@ -415,6 +423,10 @@ Item {
             onXChanged: {
                 scrollLine.x = button.x/(scrollbar.width-50)*qualityListViewTwo.width
                 qualityListViewTwo.currentIndex = scrollLine.x*qualityListViewTwo.contentWidth/qualityListViewTwo.width/8
+                weldActualLsit = hmiAdaptor.getWeldActualParameterDataList((scrollLine.x/8).toFixed(0))
+                for (var i = 0; i < leftTextModel.count; i++) {
+                    leftTextModel.set(i,{myvalue:weldActualLsit[i]})
+                }
             }
         }
     }
@@ -453,6 +465,9 @@ Item {
             }
         }
     }
+    ExclusiveGroup {
+        id: weldModelGrop
+    }
 
     Row {
         id: selectButton
@@ -461,22 +476,106 @@ Item {
         anchors.top: qualityListViewTwo.bottom
         anchors.topMargin: 50
         spacing: 30
-        CButton {
-            width: (qualityListViewTwo.width - 90) / 4
-            text: qsTr("Time")
+        Repeater {
+            id: selectRepeater
+            model : [qsTr("Time"),qsTr("Pre-Height"),qsTr("Post-Hight"),qsTr("Peak Power")]
+            CButton {
+                id: timeButton
+                property alias bIsCheck: weldModelCheck.checked
+                width: (qualityListViewTwo.width - 90) / 4
+                text: modelData
+                textColor: weldModelCheck.checked ? "white" : "black"
+                backgroundComponent: Rectangle {
+                    anchors.centerIn: parent
+                    anchors.fill: parent
+                    radius: 3
+                    color: weldModelCheck.checked ? "#0079c1" : "#ffffff"
+                    Rectangle{
+                        anchors.fill: parent
+                        anchors.margins: 1
+                        radius: 3
+                        anchors.centerIn: parent
+                        color: weldModelCheck.checked ? "#0079c1" : "#ffffff"
+                    }
+                }
+                RadioButton {
+                    id: weldModelCheck
+                    exclusiveGroup: weldModelGrop
+                    visible: false
+                    checked: index == 0 ? true : false
+                }
+                onClicked: {
+                    weldModelCheck.checked = !weldModelCheck.checked
+                    datalist = hmiAdaptor.getStatisticalTrendDataList(index)
+                    qualityListViewTwo.model = datalist.length
+                    button.x = 0
+                    weldActualLsit = hmiAdaptor.getWeldActualParameterDataList(0)
+                    for (var i = 0; i < leftTextModel.count; i++) {
+                        leftTextModel.set(i,{myvalue:weldActualLsit[i]})
+                    }
+                    statisticsList = hmiAdaptor.getCurrentStatisticsParameterList(index)
+                    for (var j = 0; j < rightTextModel.count; j++) {
+                        rightTextModel.set(j,{myvalue:statisticsList[j]})
+                    }
+                }
+            }
         }
-        CButton {
-            width: (qualityListViewTwo.width - 90) / 4
-            text: qsTr("Pre-Height")
-        }
-        CButton {
-            width: (qualityListViewTwo.width - 90) / 4
-            text: qsTr("Post-Hight")
-        }
-        CButton {
-            width: (qualityListViewTwo.width - 90) / 4
-            text: qsTr("Peak Power")
-        }
+//        CButton {
+//            id: preHeightButton
+//            width: (qualityListViewTwo.width - 90) / 4
+//            text: qsTr("Pre-Height")
+//            backgroundComponent: Rectangle{
+//                id: backColor2
+//                anchors.fill: parent
+//                anchors.margins: 1
+//                radius: 3
+//                anchors.centerIn: parent
+//                color: "#ffffff"
+//            }
+//            textColor: weldModelCheck2.checked ? "white" : "black"
+//            RadioButton {
+//                id: weldModelCheck2
+//                exclusiveGroup: weldModelGrop
+//                visible: false
+//                onCheckedChanged: {
+//                    if (weldModelCheck2.checked)
+//                        backColor2.color = "#0079c1"
+//                    else
+//                        backColor2.color = "#ffffff"
+//                }
+//            }
+//        }
+//        CButton {
+//            id: postHightButton
+//            width: (qualityListViewTwo.width - 90) / 4
+//            text: qsTr("Post-Hight")
+//            backgroundComponent: Rectangle{
+//                id: backColor3
+//                anchors.fill: parent
+//                anchors.margins: 1
+//                radius: 3
+//                anchors.centerIn: parent
+//                color: "#ffffff"
+//            }
+//            textColor: weldModelCheck3.checked ? "white" : "black"
+//            RadioButton {
+//                id: weldModelCheck3
+//                exclusiveGroup: weldModelGrop
+//                visible: false
+//                onCheckedChanged: {
+//                    if (weldModelCheck3.checked)
+//                        backColor3.color = "#0079c1"
+//                    else
+//                        backColor3.color = "#ffffff"
+//                }
+//            }
+//        }
+
+
+//        CButton {
+//            width: (qualityListViewTwo.width - 90) / 4
+//            text: qsTr("Peak Power")
+//        }
     }
     Text {
         id: bottomText
@@ -490,20 +589,28 @@ Item {
     ListModel {
         id: leftTextModel
         Component.onCompleted: {
-            leftTextModel.append({"mytitle":qsTr("Cross section:"),"myvalue":"xxxxxx","mytitle2":"Weld Time:","myvalue2":"xxxxxx"})
-            leftTextModel.append({"mytitle":qsTr("Energy:"),"myvalue":"xxxxxx","mytitle2":"Peak Power:","myvalue2":"xxxxxx"})
-            leftTextModel.append({"mytitle":qsTr("Weld Pressure:"),"myvalue":"xxxxxx","mytitle2":"Pre-Heigh:","myvalue2":"xxxxxx"})
-            leftTextModel.append({"mytitle":qsTr("Trigger Pressure:"),"myvalue":"xxxxxx","mytitle2":"Post-Heigh:","myvalue2":"xxxxxx"})
-            leftTextModel.append({"mytitle":qsTr("Amplitude:"),"myvalue":"xxxxxx","mytitle2":"Part Name:","myvalue2":"xxxxxx"})
-            leftTextModel.append({"mytitle":qsTr("Width:"),"myvalue":"xxxxxx","mytitle2":"Date Created:","myvalue2":"xxxxxx"})
-            leftTextModel.append({"mytitle":qsTr("Work Order Name:"),"myvalue":"xxxxxx","mytitle2":"","myvalue2":""})
+            leftTextModel.append({"mytitle":qsTr("Cross section:"),"myvalue":""})
+            leftTextModel.append({"mytitle":qsTr("Weld Time:"),"myvalue":""})
+            leftTextModel.append({"mytitle":qsTr("Energy:"),"myvalue":"",})
+            leftTextModel.append({"mytitle":qsTr("Peak Power:"),"myvalue":""})
+            leftTextModel.append({"mytitle":qsTr("Weld Pressure:"),"myvalue":""})
+            leftTextModel.append({"mytitle":qsTr("Pre-Heigh:"),"myvalue":""})
+            leftTextModel.append({"mytitle":qsTr("Trigger Pressure:"),"myvalue":""})
+            leftTextModel.append({"mytitle":qsTr("Post-Heigh:"),"myvalue":""})
+            leftTextModel.append({"mytitle":qsTr("Amplitude:"),"myvalue":""})
+            leftTextModel.append({"mytitle":qsTr("Part Name:"),"myvalue":""})
+            leftTextModel.append({"mytitle":qsTr("Width:"),"myvalue":""})
+            leftTextModel.append({"mytitle":qsTr("Date Created:"),"myvalue":""})
+            leftTextModel.append({"mytitle":qsTr("Work Order Name:"),"myvalue":""})
         }
     }
 
-    Column {
+    Grid {
         id: leftTextList
         anchors.left: qualityListViewTwo.left
         anchors.top: bottomText.bottom
+        columnSpacing: 5
+        columns: 2
         Repeater {
             model: leftTextModel
             delegate: Row {
@@ -522,20 +629,20 @@ Item {
                     width: qualityListViewTwo.width / 8
                     text: myvalue
                 }
-                Text {
-                    font.family: "arial"
-                    font.pointSize: 16
-                    color: "white"
-                    width: qualityListViewTwo.width / 8 + 40
-                    text: mytitle2
-                }
-                Text {
-                    font.family: "arial"
-                    font.pointSize: 16
-                    color: "white"
-                    width: qualityListViewTwo.width / 8
-                    text: myvalue2
-                }
+//                Text {
+//                    font.family: "arial"
+//                    font.pointSize: 16
+//                    color: "white"
+//                    width: qualityListViewTwo.width / 8 + 40
+//                    text: mytitle2
+//                }
+//                Text {
+//                    font.family: "arial"
+//                    font.pointSize: 16
+//                    color: "white"
+//                    width: qualityListViewTwo.width / 8
+//                    text: myvalue2
+//                }
             }
         }
     }
@@ -553,11 +660,11 @@ Item {
     ListModel {
         id: rightTextModel
         Component.onCompleted: {
-            rightTextModel.append({"mytitle":qsTr("Sample Size:"),"myvalue":"xxxxxx"})
-            rightTextModel.append({"mytitle":qsTr("Mean:"),"myvalue":"xxxxxx"})
-            rightTextModel.append({"mytitle":qsTr("Median:"),"myvalue":"xxxxxx"})
-            rightTextModel.append({"mytitle":qsTr("Sigma:"),"myvalue":"xxxxxx"})
-            rightTextModel.append({"mytitle":qsTr("CPK:"),"myvalue":"xxxxxx"})
+            rightTextModel.append({"mytitle":qsTr("Sample Size:"),"myvalue":""})
+            rightTextModel.append({"mytitle":qsTr("Mean:"),"myvalue":""})
+            rightTextModel.append({"mytitle":qsTr("Median:"),"myvalue":""})
+            rightTextModel.append({"mytitle":qsTr("Sigma:"),"myvalue":""})
+            rightTextModel.append({"mytitle":qsTr("CPK:"),"myvalue":""})
         }
     }
     Column {
@@ -590,7 +697,7 @@ Item {
         anchors.bottom: parent.bottom
         anchors.right: selectButton.right
         width: 200
-        text: qsTr("Export")
+        text: qsTr("Export Data")
+        iconSource: "qrc:/images/images/export.png"
     }
-
 }

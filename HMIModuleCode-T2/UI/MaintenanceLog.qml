@@ -394,7 +394,8 @@ Item {
         anchors.bottomMargin: 20
         anchors.right: parent.right
         anchors.rightMargin: 20
-        text: qsTr("Export")
+        text: qsTr("Export Data")
+        iconSource: "qrc:/images/images/export.png"
     }
 
     ExclusiveGroup {

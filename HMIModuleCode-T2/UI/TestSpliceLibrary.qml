@@ -345,7 +345,12 @@ Item {
 
         onSignalAdvanceSettingStart: {
             testSpliceLibrary.setCheckIndex = checkIndex
-            loader.source = "qrc:/UI/AdvanceSetting.qml"
+            if (root.checkAllInterface(20)) {
+                passDialog.visible = true
+                passDialog.pageName = "Teach Mode"
+            } else {
+                loader.source = "qrc:/UI/AdvanceSetting.qml"
+            }
         }
         onSignalTestStart: {
             testDialog.visible = false
@@ -393,6 +398,16 @@ Item {
         onInputTextChanged: {
             if (keyNum.inputText != "") {
                 testDialog.inputNum = keyNum.inputText
+            }
+        }
+    }
+    CPassWordDialog {
+        id: passDialog
+        anchors.fill: parent
+        visible: false
+        onVisibleChanged: {
+            if (visible ==  false) {
+                loader.source = "qrc:/UI/AdvanceSetting.qml"
             }
         }
     }

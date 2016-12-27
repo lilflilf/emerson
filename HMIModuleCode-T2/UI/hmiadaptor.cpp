@@ -71,6 +71,7 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
     toolChange = new ToolChange;
     statisticalTrend = new StatisticalTrend;
     interfaceClass = InterfaceClass::Instance();
+    m_variantToString = VariantToString::Instance();
 
     connect(interfaceClass, SIGNAL(EnableErrorMessageSignal(BransonMessageBox&)), this, SLOT(slotEnableDialog(BransonMessageBox&)));
     connect(interfaceClass, SIGNAL(DisableErrorMessageSignal(BransonMessageBox&)), this, SLOT(slotDisableDialog(BransonMessageBox&)));
@@ -1072,6 +1073,45 @@ int HmiAdaptor::controlLimitProcess(QString type, QList<int> list, int redMax, i
 void HmiAdaptor::statisticalTrendApply(int SpliceID, QString SpliceName, unsigned int time_from, unsigned int time_to)
 {
     statisticalTrend->_apply(SpliceID,SpliceName,time_from,time_to);
+    qDebug()<<"111111111111"<<statisticalTrend->RawQualityWindowList[0]<<statisticalTrend->CurrentWeldParameterList.count();
+}
+
+QList<int> HmiAdaptor::getStatisticalTrendDataList(int index)
+{
+    return statisticalTrend->RawQualityWindowList[index];
+}
+
+QStringList HmiAdaptor::getWeldActualParameterDataList(int index)
+{
+    QStringList list;
+    if (statisticalTrend->CurrentWeldParameterList.count() == 0) {
+        return list;
+    }
+    list.append(statisticalTrend->CurrentWeldParameterList[index].CrossSection);
+    list.append(statisticalTrend->CurrentWeldParameterList[index].Time);
+    list.append(statisticalTrend->CurrentWeldParameterList[index].Energy);
+    list.append(statisticalTrend->CurrentWeldParameterList[index].PeakPower);
+    list.append(statisticalTrend->CurrentWeldParameterList[index].WeldPressure);
+    list.append(statisticalTrend->CurrentWeldParameterList[index].PreHeight);
+    list.append(statisticalTrend->CurrentWeldParameterList[index].TriggerPressure);
+    list.append(statisticalTrend->CurrentWeldParameterList[index].PostHeight);
+    list.append(statisticalTrend->CurrentWeldParameterList[index].Amplitude);
+    list.append(statisticalTrend->CurrentWeldParameterList[index].PartName);
+    list.append(statisticalTrend->CurrentWeldParameterList[index].Width);
+    list.append(statisticalTrend->CurrentWeldParameterList[index].DateCreated);
+    list.append(statisticalTrend->CurrentWeldParameterList[index].WorkOrderName);
+    return list;
+}
+
+QStringList HmiAdaptor::getCurrentStatisticsParameterList(int index)
+{
+    QStringList list;
+    list.append(statisticalTrend->CurrentStatisticsParameter[index].SampleSize);
+    list.append(statisticalTrend->CurrentStatisticsParameter[index].Mean);
+    list.append(statisticalTrend->CurrentStatisticsParameter[index].Median);
+    list.append(statisticalTrend->CurrentStatisticsParameter[index].Sigma);
+    list.append(statisticalTrend->CurrentStatisticsParameter[index].Cpk);
+    return list;
 }
 
 void HmiAdaptor::msgBoxClick(bool clickOK)
@@ -1079,5 +1119,14 @@ void HmiAdaptor::msgBoxClick(bool clickOK)
     if (clickOK && this->func_ptr != NULL && bransonMessageBox._Object != NULL) {
         qDebug() << "msgBoxClick" << this->func_ptr << bransonMessageBox._Object;
         this->func_ptr(bransonMessageBox._Object);
+    }
+}
+
+QString HmiAdaptor::getAmplitudeToString(int value, bool bIsMax)
+{
+    if (bIsMax) {
+        return m_variantToString->AmplitudeToString(value).Maximum;
+    } else {
+        return m_variantToString->AmplitudeToString(value).Minimum;
     }
 }

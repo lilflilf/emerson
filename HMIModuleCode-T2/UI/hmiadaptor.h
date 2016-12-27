@@ -131,13 +131,20 @@ public:
     Q_INVOKABLE bool dataCommunicationGetSwitch(QString index);
     Q_INVOKABLE QStringList dataCommunicationGetValue(QString index);
     Q_INVOKABLE bool dataCommunicationSetValue(QList<bool> boolList, QStringList strList, QString ip, QString port);
+
+
     Q_INVOKABLE void statisticalTrendApply(int SpliceID, QString SpliceName, unsigned int time_from, unsigned int time_to);
+    Q_INVOKABLE QList<int> getStatisticalTrendDataList(int index);
+    Q_INVOKABLE QStringList getWeldActualParameterDataList(int index);
+    Q_INVOKABLE QStringList getCurrentStatisticsParameterList(int index);
+    Q_INVOKABLE QString getAmplitudeToString(int value, bool bIsMax);
 
     Q_INVOKABLE void msgBoxClick(bool clickOK);
     BransonMessageBox bransonMessageBox;
     InterfaceClass *interfaceClass;
     MakeWeldProcess *operateProcess;
     DBPresetTable *m_spliceAdaptor;
+    VariantToString *m_variantToString;
 
     WorkOrderModel *workOrderModel;
     SplicesModel *spliceModel;

@@ -44,6 +44,18 @@ Window {
       17-- settings Data Communication
       18--settings Branson Setting
       */
+    function checkAllInterface(index)
+    {
+        if (index == 20) {
+           if (hmiAdaptor.needPassWord("Teach Mode")) {
+                return true
+           } else {
+               return false
+           }
+        } else {
+            checkNeedPassWd(index)
+        }
+    }
 
     function checkNeedPassWd(index)
     {
@@ -221,7 +233,7 @@ Window {
 //            contentLoader.source = "qrc:/UI/BransonSetting.qml"
 //            break;
         case 19:
-            headBar.titleText = qsTr("Edit Wire")
+            headBar.titleText = qsTr("Edit Existing")
             contentLoader.source = "qrc:/UI/EditWire.qml"
             break;
         default:
