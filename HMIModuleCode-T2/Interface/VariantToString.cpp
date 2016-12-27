@@ -417,6 +417,17 @@ struct BRANSONDATA VariantToString::SigmaTeachModeToString(int parameter)
 
 }
 
+struct BRANSONDATA VariantToString::TestQuantity(int parameter)
+{
+    struct BRANSONDATA tmpData;
+    tmpData.Current = _Utility->FormatedDataToString(DINTestQuantity, parameter);
+    tmpData.Maximum = _Utility->FormatedDataToString(DINTestQuantity,
+                    _Utility->txtData[DINTestQuantity].max);
+    tmpData.Minimum = _Utility->FormatedDataToString(DINTestQuantity,
+                    _Utility->txtData[DINTestQuantity].min);
+    return tmpData;
+}
+
 //Weld History
 QString VariantToString::WeldModeToString(enum WELDMODE weldmode, enum STEPWELDMODE stepmode)
 {
