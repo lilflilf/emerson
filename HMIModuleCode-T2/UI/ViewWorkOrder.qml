@@ -236,7 +236,6 @@ Item {
                 Component.onCompleted: {
                     listIndex = index
                 }
-
                 Row {
                     width: parent.width
                     height: parent.height
@@ -245,25 +244,30 @@ Item {
                     Repeater {
                         id: listRepeater
                         model: headModel.count
-                        delegate:  Text {
-                            anchors.verticalCenter: parent.verticalCenter
+                        delegate: Item {
                             width: 200
-                            font.family: "arial"
-                            font.pixelSize: 20
-                            color: "white"
-                            clip: true
-                            elide: Text.ElideRight
-                            text: weldHistoryModel.getValue(listIndex,headModel.get(index).key)
-                            MouseArea {
+                            height: 50
+                            CButton {
                                 anchors.fill: parent
-//                                visible: index == (headModel.count - 1) ? true : false
-//                                z:20
-                                hoverEnabled: true
+                                textColor: "white"
+                                visible: index == (headModel.count - 1) ? true : false
+                                text: weldHistoryModel.getValue(listIndex,headModel.get(index).key)
                                 onClicked: {
                                     alarmModel.editNew(weldHistoryModel.getValue(listIndex,"WeldHistoryId"),weldHistoryModel.getValue(listIndex,"OperatorName"))
                                     myCanvas.visible = true
                                     myCanvas.setPoint()
                                 }
+                            }
+                            Text {
+                                anchors.verticalCenter: parent.verticalCenter
+                                width: 200
+                                font.family: "arial"
+                                font.pixelSize: 20
+                                color: "white"
+                                clip: true
+                                visible: index != (headModel.count-1) ? true : false
+                                elide: Text.ElideRight
+                                text: weldHistoryModel.getValue(listIndex,headModel.get(index).key)
                             }
                         }
                     }
