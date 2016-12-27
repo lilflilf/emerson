@@ -2367,7 +2367,7 @@ void WireModel::removeValue(int id, QString name)
     setModelList();
 }
 
-int WireModel::insertValueToTable(QString type,QString wireName,int wireId,int operatorId,QString color,QString stripeColor,int stripeType,QString gauge,int wireType,int side,int verside,int position)
+int WireModel::insertValueToTable(QString type,QString wireName,int wireId,int operatorId,QString color,QString stripeColor,int stripeType,int gauge, int awgGauge,int wireType,int side,int verside,int position)
 {
 
 //    QString WireName;
@@ -2383,6 +2383,7 @@ int WireModel::insertValueToTable(QString type,QString wireName,int wireId,int o
 //    enum HorizontalLocation Side;
 //    enum VerticalLocation VerticalSide;
 //    enum VerticalPosition Position;
+    int a,b;
     int insertWireId;
     WireElement insertWire;
     insertWire.WireName = wireName;
@@ -2391,7 +2392,8 @@ int WireModel::insertValueToTable(QString type,QString wireName,int wireId,int o
     insertWire.Color = color;
     insertWire.Stripe.Color = stripeColor;
     insertWire.Stripe.TypeOfStripe = (StripeType)stripeType;
-    stringToVariant->GaugeToInt(gauge,insertWire.GaugeAWG,insertWire.Gauge);
+    insertWire.GaugeAWG = awgGauge;
+    insertWire.Gauge = gauge;
     insertWire.TypeOfWire = (MetalType)wireType;
     insertWire.Side = (HorizontalLocation)side;
     insertWire.VerticalSide = (VerticalLocation)verside;

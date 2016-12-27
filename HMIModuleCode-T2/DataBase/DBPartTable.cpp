@@ -57,7 +57,7 @@ DBPartTable::DBPartTable()
     {
         if(!PartDBObj.tables().contains("Part")) {
             CreateNewTable();
-            InsertTestDataIntoTable();
+//            InsertTestDataIntoTable();
         }
     }
     PartDBObj.close();

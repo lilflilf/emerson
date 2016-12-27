@@ -39,7 +39,7 @@ Item {
 
         for (var i = 0; i < 6; i++)
         {
-            listModel.set(i,{"imageSourece":"","mylimit":hmiAdaptor.maintenanceCountGetValue(i,2), "mycurrent":hmiAdaptor.maintenanceCountGetValue(i,3),"createDate":hmiAdaptor.maintenanceCountGetValue(i,4),"maxLimit":hmiAdaptor.maintenanceCountGetValue(i,5),"minLimit":hmiAdaptor.maintenanceCountGetValue(i,6),"myreset":qsTr("Reset")})
+            listModel.set(i,{"imageSourece":hmiAdaptor.maintenanceCountGetImage(i),"mylimit":hmiAdaptor.maintenanceCountGetValue(i,2), "mycurrent":hmiAdaptor.maintenanceCountGetValue(i,3),"createDate":hmiAdaptor.maintenanceCountGetValue(i,4),"maxLimit":hmiAdaptor.maintenanceCountGetValue(i,5),"minLimit":hmiAdaptor.maintenanceCountGetValue(i,6),"myreset":qsTr("Reset")})
         }
     }
 
@@ -158,7 +158,7 @@ Item {
                 Image {
                     width: 160
                     height: 60
-                    //source:  imageSouce //"file:///c:/ToolChangeImage/group2/wiredemo.jpg"
+                    source:  imageSourece //"file:///c:/ToolChangeImage/group2/wiredemo.jpg"
                 }
                 MiniKeyNumInput {
                     id: input

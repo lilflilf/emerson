@@ -25,6 +25,7 @@ Window {
     //     flags: Qt.Window | 0x00800000
 
     Component.onCompleted: {
+        hmiAdaptor.initModel()
 //        root.showMaximized()
         //w.setWindowFlags(w.windowFlags()& ~Qt::WindowMaximizeButtonHint&  ~Qt::WindowMinimizeButtonHint);
 //        w.showMaximized();

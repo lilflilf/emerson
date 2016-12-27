@@ -11,6 +11,8 @@
 #include <QTimer>
 HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
 {
+    interfaceClass = InterfaceClass::Instance();
+
     workOrderModel = new WorkOrderModel(this);
     QStringList list;
     list << "WorkOrderId" << "WorkOrderName" << "DateCreated" << "PART" << "QUANTITY";
@@ -261,6 +263,31 @@ QString HmiAdaptor::maintenanceCountGetValue(int code, int index)
     }
     qDebug() << "maintenanceCountGetValue" << value << code << index;
     return value;
+}
+
+QString HmiAdaptor::maintenanceCountGetImage(int index)
+{
+    QString source = "";
+    switch (index) {
+    case 0:
+        source = "qrc:/images/images/Horn.JPG";
+        break;
+    case 1:
+        source = "qrc:/images/images/Anvil_Tip.JPG";
+        break;
+    case 2:
+        source = "qrc:/images/images/Gather_Tip.JPG";
+        break;
+    case 3:
+        source = "qrc:/images/images/Booster.JPG";
+        break;
+    case 4:
+        source = "qrc:/images/images/Converter.JPG";
+        break;
+    default:
+        break;
+    }
+    return source;
 }
 
 QString HmiAdaptor::getMaintenanceVerson(int index)
@@ -526,6 +553,8 @@ bool HmiAdaptor::permissionsettingExecute(QString code)
         permissionSetting->_Default();
     else if (code == "_Clear")
         permissionSetting->CurrentPermissionList.clear();
+    else if (code == "_Init")
+        permissionSetting->InitializeFRAM();
     return true;
 }
 
@@ -874,7 +903,7 @@ void HmiAdaptor::slotEnableDialog(BransonMessageBox &MsgBox)
     qDebug() << "slotEnableDialog" << bransonMessageBox._Object << (MsgBox.TipsMode & OFF_ON_LINE);
     bool okVisable = true;
     bool cancelVisable = false;
-    QString okText;
+    QString okText = "OK";;
     QString cancelText;
     QString typeIco;
     bool isQuit = false;

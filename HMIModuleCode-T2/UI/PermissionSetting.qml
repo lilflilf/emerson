@@ -9,6 +9,12 @@ Item {
     property var currentIdentifier: ""
 
     Component.onCompleted: {
+        initPage()
+    }
+    function initPage()
+    {
+        listModel.clear()
+        menuModel.clear()
         var i = 0;
         var list = new Array();
         list = hmiAdaptor.permissionsettingGetValue("CurrentIdentifier")
@@ -27,7 +33,6 @@ Item {
                 menuModel.append({name:list[i],opacityValue:0.5})
         }
         fourLevelIdentifier = hmiAdaptor.permissionsettingGetValue("FourLevelIdentifier")
-
     }
 
     Image {
@@ -390,6 +395,7 @@ Item {
         height: 1
         color: "#0d0f11"
     }
+
     CButton {
         id: initialButton
         anchors.left: parent.left
@@ -399,6 +405,10 @@ Item {
         width: 300
         text: qsTr("Initial Fram")
         textColor: "white"
+        onClicked: {
+            permissionsettingExecute("_Init")
+            initPage()
+        }
     }
     CButton {
         id: okButton
@@ -434,6 +444,8 @@ Item {
         textColor: "white"
         iconSource: "qrc:/images/images/cancel.png"
         onClicked: {
+            hmiAdaptor.permissionsettingExecute("_Recall");
+            initPage()
         }
     }
     Rectangle {
