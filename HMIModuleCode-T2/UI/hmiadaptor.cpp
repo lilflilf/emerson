@@ -494,7 +494,12 @@ bool HmiAdaptor::borrowLogin(QString passwd, QString pageName)
         return false;
 }
 
-QString HmiAdaptor::getCurrentOperatorId()
+int HmiAdaptor::getCurrentOperatorId()
+{
+    return interfaceClass->CurrentOperator.OperatorID;
+}
+
+QString HmiAdaptor::getCurrentOperatorName()
 {
     return interfaceClass->CurrentOperator.OperatorName;
 }
