@@ -406,8 +406,10 @@ public:
     void SendPresetToIA(int PresetNo);
     bool WaitForResponseAfterSent(int TimeOut = 3000, bool *CheckResponseFlag = NULL);
 signals:
-    void WeldResultSignal(bool &_status);
+    void WeldCycleSignal(bool &_status);
+    void AlarmStatusSignal(bool &_status);
     void HeightGraphSignal(bool &_status);
+    void PowerGraphSignal(bool &_status);
 public:
     static M102IA* Instance();
 protected:
