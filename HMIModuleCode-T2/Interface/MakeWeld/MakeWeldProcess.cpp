@@ -25,8 +25,10 @@ MakeWeldProcess::MakeWeldProcess(QObject *parent) : QObject(parent)
 {
     M102IA* _M102IA = M102IA::Instance();
     WeldCycleStatus = true;
-    connect(_M102IA, SIGNAL(WeldResultSignal(bool&)),
-            this,SLOT(CheckWeldAlarm(bool&)));
+    PowerGraphReady = false;
+    HeightGraphReady = false;
+    connect(_M102IA, SIGNAL(AlarmStatusSignal(bool&)),
+            this,SLOT(AnyAlarmEventSlot(bool&)));
 }
 
 void MakeWeldProcess::UpdateIAFields()
@@ -109,7 +111,6 @@ bool MakeWeldProcess::PowerGraphReceive()
     M102IA *_M102IA = M102IA::Instance();
     M2010 *_M2010 = M2010::Instance();
     int Index;
-
     Index = _M102IA->RawPowerDataGraph.CurrentIndex;
     if(Index != (_M102IA->RawPowerDataGraph.TotalFrame - 1))
     {
@@ -128,13 +129,13 @@ bool MakeWeldProcess::HeightGraphReceive()
     M102IA *_M102IA = M102IA::Instance();
     M2010 *_M2010 = M2010::Instance();
     int Index;
-
     Index = _M102IA->RawHeightDataGraph.CurrentIndex;
     if(Index != (_M102IA->RawHeightDataGraph.TotalFrame - 1))
     {
         _M2010->ReceiveFlags.HeightGraphData = false;
         _M102IA->SendIACommand(IAComSendHeightGraph, Index);
         _M102IA->WaitForResponseAfterSent(5000, &_M2010->ReceiveFlags.HeightGraphData);
+        m_triedCount++;
     }else
         bResult = true;
     return bResult;
@@ -163,8 +164,11 @@ void MakeWeldProcess::WeldCycleDaemonThread(void* _obj)
     switch(_ObjectPtr->CurrentStep)
     {
     case POWERFst:
-        if(_ObjectPtr->PowerGraphReceive() == false)
+        if(_ObjectPtr->PowerGraphReady == false)
+        {
+            _M102IA->WaitForResponseAfterSent(3000, &_ObjectPtr->PowerGraphReady);
             _ObjectPtr->m_triedCount++;
+        }
         else
         {
             _ObjectPtr->CurrentWeldResult.PowerGraph.clear();
@@ -181,8 +185,9 @@ void MakeWeldProcess::WeldCycleDaemonThread(void* _obj)
         }
         break;
     case HEIGHTSnd:
-        if(_ObjectPtr->HeightGraphReceive() == false)
+        if(_ObjectPtr->HeightGraphReady == false)
         {
+            _M102IA->WaitForResponseAfterSent(3000, &_ObjectPtr->HeightGraphReady);
             _ObjectPtr->m_triedCount++;
         }
         else
@@ -209,6 +214,9 @@ void MakeWeldProcess::WeldCycleDaemonThread(void* _obj)
             tmpMsgBox.func_ptr = NULL;
             _Interface->cMsgBox(&tmpMsgBox);
             _ObjectPtr->WeldCycleStatus = false;
+            _ObjectPtr->CurrentWeldResult.PowerGraph.clear();
+            _ObjectPtr->CurrentWeldResult.PostHeightGraph.clear();
+
         }else
         {
             _ObjectPtr->WeldCycleStatus = true;
@@ -238,22 +246,33 @@ void MakeWeldProcess::WeldCycleDaemonThread(void* _obj)
     }
 }
 
-void MakeWeldProcess::WeldResultFeedbackEventSlot(bool& bResult)
+void MakeWeldProcess::WeldResultEventSlot(bool& bResult)
 {
     if(bResult == false)
         return;
     UpdateWeldResult();
     m_triedCount = 0;
     CurrentStep = POWERFst;
+    WeldCycleStatus = false;
     m_Thread->setStopEnabled(false);
     m_Thread->setSuspendEnabled(false);
     m_Thread->start();
 }
 
-void MakeWeldProcess::CheckWeldAlarm(bool &bResult)
+void MakeWeldProcess::AnyAlarmEventSlot(bool &bResult)
 {
     M10runMode* _M10runMode = M10runMode::Instance();
     _M10runMode->CheckWeldData(-1);
+}
+
+void MakeWeldProcess::PowerGraphEventSlot(bool &bResult)
+{
+    PowerGraphReady = PowerGraphReceive();
+}
+
+void MakeWeldProcess::HeightGraphEventSlot(bool &bResult)
+{
+    HeightGraphReady = HeightGraphReceive();
 }
 
 bool MakeWeldProcess::_start()
@@ -281,9 +300,13 @@ bool MakeWeldProcess::_start()
             if(CurrentSplice.TestSetting.TeachModeSetting.TeachModeType != UNDEFINED)
                 _M10runMode->init_m20_data_events(&CurrentSplice);
         }
+        connect(_M102IA, SIGNAL(WeldCycleSignal(bool&)),
+                this,SLOT(WeldResultEventSlot(bool&)));
+        connect(_M102IA, SIGNAL(PowerGraphSignal(bool&)),
+                this, SLOT(PowerGraphEventSlot(bool&)));
         connect(_M102IA, SIGNAL(HeightGraphSignal(bool&)),
-                this,SLOT(WeldResultFeedbackEventSlot(bool&)));
-        disconnect(_M102IA, SIGNAL(WeldResultSignal(bool&)),0,0);
+                this, SLOT(HeightGraphEventSlot(bool&)));
+
     }
     return bResult;
 }
@@ -329,6 +352,8 @@ bool MakeWeldProcess::_execute()
     bool bResult = true;
     int Retries = 0;
     struct BransonMessageBox tmpMsgBox;
+    PowerGraphReady = false;
+    HeightGraphReady = false;
     UpdateIAFields();
     _M2010->ReceiveFlags.SYSTEMid = false;
     while(_M2010->ReceiveFlags.SYSTEMid == false)

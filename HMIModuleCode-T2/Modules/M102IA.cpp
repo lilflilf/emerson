@@ -685,7 +685,10 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
 //            IACommand(IAComHostReady, 1);
         //--Set Correct Flag
         _M2010->ReceiveFlags.WELDdata = true;
-        emit WeldResultSignal(_M2010->ReceiveFlags.WELDdata);
+        if((IAactual.Alarmflags & 0x4000) == 0x4000)
+            emit WeldCycleSignal(_M2010->ReceiveFlags.WELDdata);
+        else
+            emit AlarmStatusSignal(_M2010->ReceiveFlags.WELDdata);
         break;
     case IASigPower:           //Data Signature = "04"
         // Frame head 3 bytes + ":" 7 characters
@@ -728,6 +731,7 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         }
         RawPowerDataGraph.CurrentIndex = num;
         _M2010->ReceiveFlags.PowerGraphData = true;
+        emit PowerGraphSignal(_M2010->ReceiveFlags.PowerGraphData);
         break;
     case IASigSerialNumber:
         SerialNoData = _M2010->ParseSerialNumber(HexString.mid(9, 32));
