@@ -428,6 +428,17 @@ struct BRANSONDATA VariantToString::TestQuantity(int parameter)
     return tmpData;
 }
 
+struct BRANSONDATA VariantToString::SequenceQuantity(int parameter)
+{
+    struct BRANSONDATA tmpData;
+    tmpData.Current = _Utility->FormatedDataToString(DINSequenceQuantity, parameter);
+    tmpData.Maximum = _Utility->FormatedDataToString(DINSequenceQuantity,
+                    _Utility->txtData[DINSequenceQuantity].max);
+    tmpData.Minimum = _Utility->FormatedDataToString(DINSequenceQuantity,
+                    _Utility->txtData[DINSequenceQuantity].min);
+    return tmpData;
+}
+
 //Weld History
 QString VariantToString::WeldModeToString(enum WELDMODE weldmode, enum STEPWELDMODE stepmode)
 {

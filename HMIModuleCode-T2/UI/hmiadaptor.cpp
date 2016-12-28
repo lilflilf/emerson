@@ -11,9 +11,9 @@
 #include <QTimer>
 HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
 {
+
     interfaceClass = InterfaceClass::Instance();
     operateProcess = MakeWeldProcess::Instance();
-
     workOrderModel = new WorkOrderModel(this);
     QStringList list;
     list << "WorkOrderId" << "WorkOrderName" << "DateCreated" << "PART" << "QUANTITY";
@@ -66,6 +66,7 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
          << "Width" << "TriggerPressure" << "WeldPressure" << "Time+" << "Time-" << "Power+" << "Power-" << "Pre-Height+" << "Pre-Height-" << "Height+" << "Height-" << "count";
     spliceModel->setRoles(listSplice);
     spliceModel->setModelList();
+
 
     advanceMaintenance = new AdvancedMaintenance;
     calibration = new Calibration;
@@ -980,9 +981,9 @@ void HmiAdaptor::slotButtonState(const unsigned long status)
     else
         emit signalButtonStateChanged("Gather", false);
     if ((status & COVER_OPEN) == COVER_OPEN)
-        emit signalButtonStateChanged("Safety", true);
-    else
         emit signalButtonStateChanged("Safety", false);
+    else
+        emit signalButtonStateChanged("Safety", true);
     if ((status & CUTTER_ON) == CUTTER_ON)
         emit signalButtonStateChanged("Cutter", true);
     else

@@ -50,6 +50,7 @@ public:
     struct BRANSONDATA SigmaTeachModeToString(int);
 
     struct BRANSONDATA TestQuantity(int);
+    struct BRANSONDATA SequenceQuantity(int);
 
 
 

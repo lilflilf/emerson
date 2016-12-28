@@ -488,7 +488,7 @@ Item {
             height: 60
             font.pointSize: 18
             font.family: "arial"
-            text: qsTr("Qliantity")
+            text: qsTr("Quantity")
             verticalAlignment: Qt.AlignVCenter
             horizontalAlignment: Qt.AlignRight
             color: "white"
