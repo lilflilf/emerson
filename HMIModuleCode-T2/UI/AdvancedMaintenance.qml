@@ -324,6 +324,9 @@ Item {
         CButton {
             text: qsTr("Reset")
             width: (rowButton2.width-20)/2
+            onClicked: {
+                hmiAdaptor.maintenanceReset()
+            }
         }
         CButton {
             text: qsTr("Default Setting")

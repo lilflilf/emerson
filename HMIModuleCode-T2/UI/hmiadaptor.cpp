@@ -437,6 +437,11 @@ void HmiAdaptor::maintenanceStop(int page)
     mutex.unlock();
 }
 
+void HmiAdaptor::maintenanceReset()
+{
+    advanceMaintenance->Reset();
+}
+
 
 bool HmiAdaptor::login(QString passwd)
 {

@@ -118,6 +118,11 @@ bool AdvancedMaintenance::_execute(int funCode)
     return bResult;
 }
 
+void AdvancedMaintenance::Reset()
+{
+
+}
+
 void AdvancedMaintenance::AnvilArm_Click()
 {
 //Procedure to bring the Horn Up/Down for the Mod 9 & Mod 10
