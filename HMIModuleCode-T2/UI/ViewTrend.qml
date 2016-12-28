@@ -458,7 +458,12 @@ Item {
             onXChanged: {
                 scrollLine.x = button.x/(scrollbar.width-50)*qualityListViewTwo.width
                 qualityListViewTwo.currentIndex = scrollLine.x*qualityListViewTwo.contentWidth/qualityListViewTwo.width/8
-                weldActualLsit = hmiAdaptor.getWeldActualParameterDataList((scrollLine.x/8).toFixed(0))
+                if ((scrollLine.x/8).toFixed(0) >= datalist.length) {
+                    weldActualLsit = hmiAdaptor.getWeldActualParameterDataList(datalist.length-1)
+                } else {
+                    weldActualLsit = hmiAdaptor.getWeldActualParameterDataList((scrollLine.x/8).toFixed(0))
+                }
+
                 for (var i = 0; i < leftTextModel.count; i++) {
                     leftTextModel.set(i,{myvalue:weldActualLsit[i]})
                 }
