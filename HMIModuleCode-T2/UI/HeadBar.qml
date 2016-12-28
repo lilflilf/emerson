@@ -429,7 +429,7 @@ Item {
                 dialog.visible = true
                 okButton.visible = false
                 helpTitle.visible = true
-                helpTitle.text = qsTr("Current Operator: ") + hmiAdaptor.getCurrentOperatorId() //Jerry Wang"
+                helpTitle.text = qsTr("Current Operator: ") + hmiAdaptor.getCurrentOperatorName() //Jerry Wang"
                 personColumn.visible = true
                 background.opacity = 0.5
             }

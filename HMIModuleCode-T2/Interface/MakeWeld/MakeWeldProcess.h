@@ -30,7 +30,8 @@ private:
     int m_triedCount;
     GRAPHSTEP CurrentStep;
     bool WeldCycleStatus;
-//    OperatorElement CurrentOperator;
+    bool PowerGraphReady;
+    bool HeightGraphReady;
 private:
     void UpdateIAFields();
     void UpdateWeldResult();
@@ -41,8 +42,10 @@ private:
 signals:
     void WeldCycleCompleted(const bool &_status);
 public slots:
-    void WeldResultFeedbackEventSlot(bool &bResult);
-    void CheckWeldAlarm();
+    void WeldResultEventSlot(bool &bResult);
+    void AnyAlarmEventSlot(bool &bResult);
+    void HeightGraphEventSlot(bool &bResult);
+    void PowerGraphEventSlot(bool &bResult);
 public:
     bool _start();
     bool _stop();

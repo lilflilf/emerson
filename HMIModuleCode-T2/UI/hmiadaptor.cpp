@@ -12,6 +12,7 @@
 HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
 {
     interfaceClass = InterfaceClass::Instance();
+    operateProcess = MakeWeldProcess::Instance();
 
     workOrderModel = new WorkOrderModel(this);
     QStringList list;
@@ -86,7 +87,6 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
     connect(calibration,SIGNAL(WidthCalibrationFinish(bool)),this,SIGNAL(widthCalibrationFinish(bool)));
     connect(calibration,SIGNAL(HeightCalibrationFinish(bool)),this,SIGNAL(heightCalibrationFinish(bool)));
 
-    operateProcess = MakeWeldProcess::Instance();
     connect(operateProcess,SIGNAL(WeldCycleCompleted(bool)),this,SLOT(slotWeldCycleCompleted(bool)));
     m_spliceAdaptor = DBPresetTable::Instance();
 }
@@ -494,7 +494,12 @@ bool HmiAdaptor::borrowLogin(QString passwd, QString pageName)
         return false;
 }
 
-QString HmiAdaptor::getCurrentOperatorId()
+int HmiAdaptor::getCurrentOperatorId()
+{
+    return interfaceClass->CurrentOperator.OperatorID;
+}
+
+QString HmiAdaptor::getCurrentOperatorName()
 {
     return interfaceClass->CurrentOperator.OperatorName;
 }
@@ -523,6 +528,11 @@ void HmiAdaptor::removeCarTemplate(QString name)
 void HmiAdaptor::calibrationMaintenanceExecute(int code)
 {
     calibration->_execute(code);
+}
+
+void HmiAdaptor::hornCalibrationComplete(int temp)
+{
+    calibration->HornCalibrationComplete(temp);
 }
 
 int HmiAdaptor::randPoint()
