@@ -980,9 +980,9 @@ void HmiAdaptor::slotButtonState(const unsigned long status)
     else
         emit signalButtonStateChanged("Gather", false);
     if ((status & COVER_OPEN) == COVER_OPEN)
-        emit signalButtonStateChanged("Safety", true);
-    else
         emit signalButtonStateChanged("Safety", false);
+    else
+        emit signalButtonStateChanged("Safety", true);
     if ((status & CUTTER_ON) == CUTTER_ON)
         emit signalButtonStateChanged("Cutter", true);
     else
