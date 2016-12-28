@@ -1029,6 +1029,7 @@ QList<int> SplicesModel::getWireIdList()
 
 QString SplicesModel::graphTimeToString(int time)
 {
+    qDebug() << "graphTimeToString" << time << variantToString->GraphTimeToString(time);
     return variantToString->GraphTimeToString(time);
 }
 
@@ -1040,6 +1041,36 @@ QString SplicesModel::graphPowerToString(int power)
 QString SplicesModel::graphHeightToString(int height)
 {
     return variantToString->GraphHeightToString(height);
+}
+
+QString SplicesModel::timePlusToString(int time)
+{
+    return variantToString->TimePlusToString(time).Maximum;
+}
+
+QString SplicesModel::timeMinusToString(int time)
+{
+    return variantToString->TimeMinusToString(time).Minimum;
+}
+
+QString SplicesModel::actualTimeToString(int ActualTime)
+{
+    return variantToString->ActualTimeToString(ActualTime);
+}
+
+QString SplicesModel::actualPowerToString(int ActualPower)
+{
+    return variantToString->ActualPowerToString(ActualPower);
+}
+
+QString SplicesModel::actualPreHeightToString(int ActualPreHeight)
+{
+    return variantToString->ActualPreHeightToString(ActualPreHeight);
+}
+
+QString SplicesModel::actualHeightToString(int ActualHeight)
+{
+    return variantToString->ActualHeightToString(ActualHeight);
 }
 
 void SplicesModel::updateSplice(PresetElement presetElement)

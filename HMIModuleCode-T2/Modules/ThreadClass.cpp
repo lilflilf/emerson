@@ -35,9 +35,7 @@ void ThreadClass::run()
             {
                 qDebug()<<"Thread suspend";
             }
-            qDebug()<<"123";
             QThread::msleep(500);
-            qDebug()<<"234";
         }
     }else{
         qDebug()<<"No function need to be executed";

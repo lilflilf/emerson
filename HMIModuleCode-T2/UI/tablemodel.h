@@ -126,6 +126,13 @@ public slots:
     Q_INVOKABLE QString graphPowerToString(int power);
     Q_INVOKABLE QString graphHeightToString(int height);
 
+    QString timePlusToString(int time);
+    QString timeMinusToString(int time);
+    QString actualTimeToString(int ActualTime);
+    QString actualPowerToString(int ActualPower);
+    QString actualPreHeightToString(int ActualPreHeight);
+    QString actualHeightToString(int ActualHeight);
+
     void updateSplice(PresetElement presetElement);
 private:
     QHash<int, QByteArray> m_roleNames;

@@ -383,9 +383,9 @@ void UtilityClass::InitializeTextData()
 
     SetTextData(DINAmplitude,0, MINAMPLITUDE,
                 _Interface->StatusData.Soft_Settings.Horn_Calibrate, 1, 1, "%dμm");
-    SetTextData(DINActTime, 0, MINTIME, MAXTIME, 2, 0.005, "%.2fs");
-    SetTextData(DINTimePl, 0, MINTIME, MAXTIME, 2, 0.005, "%.2fs");
-    SetTextData(DINTimeMs, 0, MINTIME, MAXTIME, 2, 0.005, "%.2fs");
+    SetTextData(DINActTime, 0, MINTIME, MAXTIME, 2, 0.01, "%.2fs");
+    SetTextData(DINTimePl, 0, MINTIME, MAXTIME, 2, 0.01, "%.2fs");
+    SetTextData(DINTimeMs, 0, MINTIME, MAXTIME, 2, 0.01, "%.2fs");
     SetTextData(DINActPower, 0, MINPOWER, Maxpower, 100, 1, "%dW");
     SetTextData(DINPowerPl, 0, MINPOWER, Maxpower, 100, 1, "%dW");
     SetTextData(DINPowerMs, 0, MINPOWER,
@@ -451,7 +451,7 @@ void UtilityClass::InitializeTextData()
     SetTextData(DINConverterLimit, 0, MINCONVERTERLIMIT, MAXCONVERTERLIMIT, 1, 1, "%d");
     SetTextData(DINPercentTeachMode, 0, MINPERCENTTEACHMODE, MAXPERCENTTEACHMODE, 1, 1, "%d%");
     SetTextData(DINSigmaTeachMode, 0, MINSIGMATEACHMODE, MAXSIGMATEACHMODE, 1, 1, "%d");
-    SetTextData(DINGraphTimeMS, 0, MINTIME, MAXTIME, 2, 0.5, "%d");
+    SetTextData(DINGraphTimeMS, 0, MINTIME, MAXTIME, 2, 1, "%d");
     SetTextData(DINGraphPower, 0, MINPOWER, Maxpower, 100, 1, "%d");
     SetTextData(DINGraphHeight, 0, MINHEIGHT, MAXHEIGHT, 2, 0.01, "%.2f");
     SetTextData(DINTestQuantity, 0, MINTESTQUANTITY, MAXTESTQUANTITY, 1, 1, "%d");

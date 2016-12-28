@@ -41,6 +41,25 @@ Item {
         }
     }
 
+    function getText(index,value,type)
+    {
+        if (index == 0)
+        {
+            if (type == "max")
+                return spliceModel.actualTimeToString(value);
+            else if (type =="min")
+                return spliceModel.actualTimeToString(value);
+            else if (type == "current")
+                return spliceModel.actualTimeToString(value);
+        }
+        else if (index == 1)
+            return spliceModel.actualPowerToString(value);
+        else if (index == 2)
+            return spliceModel.actualPreHeightToString(value);
+        else if (index == 3)
+            return spliceModel.actualHeightToString(value);
+    }
+
     Text {
         id: qualityWindowTitle
         text: qsTr("QualityWindow")
@@ -116,10 +135,10 @@ Item {
 
                     Text {
                         id: lineValue
-                        text: current //qsTr("170")
+                        text: getText(index,current,"current") //qsTr("170")
                         font.family: "arial"
                         color: "white"
-                        font.pointSize: 16
+                        font.pointSize: 14
                         anchors.left: parent.right
                     }
                 }
@@ -137,7 +156,7 @@ Item {
                     width: parent.width
                     height: 2
                     Text {
-                        text: redMax
+                        text: getText(index,redMax,"max")
                         font.family: "arial"
                         color: "white"
                         font.pointSize: 12
@@ -148,13 +167,13 @@ Item {
                 }
                 Line {
                     anchors.bottom: parent.bottom
-                    anchors.bottomMargin: yellowMax /(redMax-redMin) * parent.height * 0.8 + parent.height * 0.1
+                    anchors.bottomMargin:  yellowMax > redMax ? parent.height : (yellowMax - redMin) /(redMax-redMin) * parent.height * 0.8 + parent.height * 0.1
                     lineColor: "yellow"
                     width: parent.width
                     height: 2
                     visible: yellowMax == -1 ? false : true
                     Text {
-                        text: yellowMax
+                        text: getText(index,yellowMax,"current")
                         font.family: "arial"
                         color: "white"
                         font.pointSize: 12
@@ -165,13 +184,13 @@ Item {
                 }
                 Line {
                     anchors.bottom: parent.bottom
-                    anchors.bottomMargin: yellowMin /(redMax-redMin) * parent.height * 0.8 + parent.height * 0.1
+                    anchors.bottomMargin: yellowMin < redMin ? 0 : (yellowMin- redMin) /(redMax-redMin) * parent.height * 0.8 + parent.height * 0.1
                     lineColor: "yellow"
                     width: parent.width
                     height: 2
                     visible: yellowMin == -1 ? false : true
                     Text {
-                        text: yellowMin
+                        text: getText(index,yellowMin,"current")
                         font.family: "arial"
                         color: "white"
                         font.pointSize: 12
@@ -187,7 +206,7 @@ Item {
                     width: parent.width
                     height: 2
                     Text {
-                        text: redMin
+                        text: getText(index,redMin,"min")
                         font.family: "arial"
                         color: "white"
                         font.pointSize: 12

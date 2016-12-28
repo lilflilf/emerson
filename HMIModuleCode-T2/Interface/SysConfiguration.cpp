@@ -373,7 +373,7 @@ bool Status_Data::ReadStatusDataFromQSetting()
 
 void Status_Data::WriteStatusDataToQSetting()
 {
-    QString str;
+    QString str; //BransonInitial
     M10INI* _M10INI = M10INI::Instance();
     UtilityClass* _Utility = UtilityClass::Instance();
     QString FileName = _M10INI->ConfigFilesPath + BRANSON_INI_FILE;
@@ -385,38 +385,38 @@ void Status_Data::WriteStatusDataToQSetting()
     settings.setValue("CreatedDate", CreatedDate);
     settings.setValue("OperatorName", OperatorName);
 
-        settings.beginGroup("Soft_Settings");
-        settings.setValue("Lang_Support", Soft_Settings.Lang_Support);
-        settings.setValue("Horn_Calibrate", Soft_Settings.Horn_Calibrate);
-        settings.setValue("AutoPreburst", Soft_Settings.AutoPreburst);
-        settings.setValue("SonicGenWatts", Soft_Settings.SonicGenWatts);
-        settings.setValue("ToolCoverIgnore", Soft_Settings.ToolCoverIgnore);
-        settings.setValue("Pressure2Unit", Soft_Settings.Pressure2Unit);
-        settings.setValue("Mm2Awg", Soft_Settings.Mm2Awg);
-        settings.setValue("PWWidth2Height", Soft_Settings.PWWidth2Height);
-        settings.setValue("MinAmplitude", Soft_Settings.MinAmplitude);
-        settings.setValue("MinPressure", Soft_Settings.MinPressure);
-        settings.setValue("WeldFormula", Soft_Settings.WeldFormula);
-        settings.setValue("RunCount", Soft_Settings.RunCount);
-        settings.setValue("Teach_Mode", Soft_Settings.Teach_Mode);
-        settings.setValue("TunePoint", Soft_Settings.TunePoint);
-        settings.setValue("FrequencyOffset", Soft_Settings.FrequencyOffset);
-        settings.endGroup();
+    settings.beginGroup("Soft_Settings");
+    settings.setValue("Lang_Support", Soft_Settings.Lang_Support);
+    settings.setValue("Horn_Calibrate", Soft_Settings.Horn_Calibrate);
+    settings.setValue("AutoPreburst", Soft_Settings.AutoPreburst);
+    settings.setValue("SonicGenWatts", Soft_Settings.SonicGenWatts);
+    settings.setValue("ToolCoverIgnore", Soft_Settings.ToolCoverIgnore);
+    settings.setValue("Pressure2Unit", Soft_Settings.Pressure2Unit);
+    settings.setValue("Mm2Awg", Soft_Settings.Mm2Awg);
+    settings.setValue("PWWidth2Height", Soft_Settings.PWWidth2Height);
+    settings.setValue("MinAmplitude", Soft_Settings.MinAmplitude);
+    settings.setValue("MinPressure", Soft_Settings.MinPressure);
+    settings.setValue("WeldFormula", Soft_Settings.WeldFormula);
+    settings.setValue("RunCount", Soft_Settings.RunCount);
+    settings.setValue("Teach_Mode", Soft_Settings.Teach_Mode);
+    settings.setValue("TunePoint", Soft_Settings.TunePoint);
+    settings.setValue("FrequencyOffset", Soft_Settings.FrequencyOffset);
+    settings.endGroup();
 
-        settings.beginGroup("Cust_Data");
-            settings.beginGroup("mod10a_settings");
-                settings.setValue("UnsignedWeldData", Cust_Data.mod10a_settings.UnsignedWeldData);
-                settings.setValue("AfterBurstDelay", Cust_Data.mod10a_settings.AfterBurstDelay);
-                settings.setValue("AfterBurstDuration", Cust_Data.mod10a_settings.AfterBurstDuration);
-                settings.setValue("EnergyWindowPL", Cust_Data.mod10a_settings.EnergyWindowPL);
-                settings.setValue("PreBurstIndex", Cust_Data.mod10a_settings.PreBurstIndex);
-            settings.endGroup();
-            for(int i = 0; i < WIDTH_ADJ; i++)
-            {
-                str = QString("cust_qual_range%1").arg(QString::number(i,10));
-                settings.setValue(str,Cust_Data.cust_qual_range[i]);
-            }
-        settings.endGroup();
+    settings.beginGroup("Cust_Data");
+    settings.beginGroup("mod10a_settings");
+    settings.setValue("UnsignedWeldData", Cust_Data.mod10a_settings.UnsignedWeldData);
+    settings.setValue("AfterBurstDelay", Cust_Data.mod10a_settings.AfterBurstDelay);
+    settings.setValue("AfterBurstDuration", Cust_Data.mod10a_settings.AfterBurstDuration);
+    settings.setValue("EnergyWindowPL", Cust_Data.mod10a_settings.EnergyWindowPL);
+    settings.setValue("PreBurstIndex", Cust_Data.mod10a_settings.PreBurstIndex);
+    settings.endGroup();
+    for(int i = 0; i < WIDTH_ADJ; i++)
+    {
+        str = QString("cust_qual_range%1").arg(QString::number(i,10));
+        settings.setValue(str,Cust_Data.cust_qual_range[i]);
+    }
+    settings.endGroup();
 
     settings.beginGroup("HSDATA");
     for(int i = 0; i< END_SL; i++)
@@ -546,5 +546,6 @@ void Status_Data::WriteStatusDataToQSetting()
 
     _Utility->MapJsonToString(&carTemplate, str);
     settings.setValue("carTemplate", str);
+
     settings.endGroup();
 }

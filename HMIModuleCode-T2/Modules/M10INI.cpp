@@ -554,8 +554,9 @@ void M10INI::Save_StatusData(bool WithUpdate)
     else
         _Interface->tempStatusData = _Interface->StatusData;
 
-    bool bResult = _Utility->WriteToBinaryFile(&_Interface->StatusData,
-                                   (ConfigFilesPath + BRANSON_INI_FILE));
+    bool bResult = true;
+//    bool bResult = _Utility->WriteToBinaryFile(&_Interface->StatusData,
+//                                   (ConfigFilesPath + BRANSON_INI_FILE));
     if (bResult == true)
     {
 

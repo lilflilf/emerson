@@ -24,6 +24,7 @@ PresetElement::PresetElement()
     WeldSettings.QualitySetting.Time.Minus = MINTIME;
     WeldSettings.QualitySetting.Time.Plus = MAXTIME;               //Seconds * 200
     WeldSettings.QualitySetting.Power.Minus = MINPOWER;
+    _Utility->InitializeTextData();
     WeldSettings.QualitySetting.Power.Plus = _Utility->Maxpower;
     WeldSettings.QualitySetting.Preheight.Minus = MINHEIGHT;
     WeldSettings.QualitySetting.Preheight.Plus = MAXHEIGHT;               //mm * 100

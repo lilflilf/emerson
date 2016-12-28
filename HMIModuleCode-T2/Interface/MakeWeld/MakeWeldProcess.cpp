@@ -54,8 +54,10 @@ void MakeWeldProcess::UpdateIAFields()
     //11B = Egy/Hgt
 
     _M102IA->IAsetup.ModeFlags = CurrentSplice.WeldSettings.AdvanceSetting.WeldMode;
-    _M102IA->IAsetup.Time.max = CurrentSplice.WeldSettings.QualitySetting.Time.Plus / 2;
-    _M102IA->IAsetup.Time.min = CurrentSplice.WeldSettings.QualitySetting.Time.Minus / 2;
+    _M102IA->IAsetup.Time.max = CurrentSplice.WeldSettings.QualitySetting.Time.Plus;
+    qDebug()<<"Time.Max: "<< _M102IA->IAsetup.Time.max;
+    _M102IA->IAsetup.Time.min = CurrentSplice.WeldSettings.QualitySetting.Time.Minus;
+    qDebug()<<"Time.Min: "<< _M102IA->IAsetup.Time.min;
     _M102IA->IAsetup.Power.max = CurrentSplice.WeldSettings.QualitySetting.Power.Plus;
     _M102IA->IAsetup.Power.min = CurrentSplice.WeldSettings.QualitySetting.Power.Minus;
     _M102IA->IAsetup.Preheight.max = CurrentSplice.WeldSettings.QualitySetting.Preheight.Plus;
@@ -499,8 +501,8 @@ void MakeWeldProcess::ControlLimitProcess(QUALITYTYPE Type, QList<int> &RawList,
     switch(Type)
     {
     case QUALITYTIME:
-        *UCL = UpperControlValue / _Utility->txtData[DINActTime].Factor;
-        *LCL = LowerControlValue / _Utility->txtData[DINActTime].Factor;
+        *UCL = (UpperControlValue) / _Utility->txtData[DINActTime].Factor;
+        *LCL = (LowerControlValue) / _Utility->txtData[DINActTime].Factor;
         break;
     case QUALITYPOWER:
         *UCL = UpperControlValue / _Utility->txtData[DINActPower].Factor;

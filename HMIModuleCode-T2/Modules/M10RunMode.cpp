@@ -184,44 +184,40 @@ bool M10runMode::CheckWeldData(int weldresult)
     if((_M102IA->IAactual.Alarmflags & 0x100000) == 0x100000)
         _M2010->M10Run.Alarm_found = true;
 
-    if(WeldResultID == -1) return true;
     //Check if this is the current weld data. (WeldDone Flag)
     if((_M102IA->IAactual.Alarmflags & 0x4000) != 0x4000)
     {
-        if(_Interface->ApplicationFirstStartFlag == true)
-        {
-            if(_M2010->M10Run.Alarm_found == true)
-                _AlarmMsg->Initialization(WeldResultID);
-            return true;
-        }
-
+        if(_M2010->M10Run.Alarm_found == true)
+            _AlarmMsg->Initialization(WeldResultID);
+        return true;
+    }
+    if(WeldResultID == -1) return true;
         // PREHEIGHT CHECK FINISH
 
-        //TIME CHECK BEGINS
-        //Watch for time error: Special condition because of units change
-        //Bit 5 is the time error flag
-        if((_M102IA->IAactual.Alarmflags & 0x20) == 0x20)
-        {
-            //if time is too low system will handle is properly, if time is too high
-            //the system clips the data
-            if (_M102IA->IAactual.Time >= _M102IA->IAsetup.Time.min)
-                _M102IA->IAactual.Time = _M102IA->IAsetup.Time.max + 1;
-            _M2010->M10Run.Alarm_found = true;
-        }
-        //POWER CHECK START
-        if((_M102IA->IAactual.Alarmflags & 0x40) == 0x40)
-        {
-            _M2010->M10Run.Alarm_found = true;
-        }
-        // POWER CHECK FINISH
-        // HEIGHT
-        if((_Interface->StatusData.Machineflags.Word[0] & 0x8000) == 0x8000)
-        {
-            if ((_M102IA->IAactual.Alarmflags & 0x80) == 0x80)
-                _M2010->M10Run.Alarm_found = true;
-        }
-        // HEIGHT CHECK FINISH
+    //TIME CHECK BEGINS
+    //Watch for time error: Special condition because of units change
+    //Bit 5 is the time error flag
+    if((_M102IA->IAactual.Alarmflags & 0x20) == 0x20)
+    {
+        //if time is too low system will handle is properly, if time is too high
+        //the system clips the data
+        if (_M102IA->IAactual.Time >= _M102IA->IAsetup.Time.min)
+            _M102IA->IAactual.Time = _M102IA->IAsetup.Time.max + 1;
+        _M2010->M10Run.Alarm_found = true;
     }
+    //POWER CHECK START
+    if((_M102IA->IAactual.Alarmflags & 0x40) == 0x40)
+    {
+        _M2010->M10Run.Alarm_found = true;
+    }
+    // POWER CHECK FINISH
+    // HEIGHT
+    if((_Interface->StatusData.Machineflags.Word[0] & 0x8000) == 0x8000)
+    {
+        if ((_M102IA->IAactual.Alarmflags & 0x80) == 0x80)
+            _M2010->M10Run.Alarm_found = true;
+    }
+    // HEIGHT CHECK FINISH
     //check: is there some error due to parameters going out of bound
     if(_M2010->M10Run.Alarm_found == false)
     {
@@ -233,7 +229,10 @@ bool M10runMode::CheckWeldData(int weldresult)
             _Statistics->UpdateSoftLimitData();
         }
     }else
+    {
         PreviousWeldValid = false;
+        _AlarmMsg->Initialization(WeldResultID);
+    }
 
     return Invalidweld;
 }

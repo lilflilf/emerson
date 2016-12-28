@@ -1,9 +1,11 @@
 #ifndef ALARMMESSAGE_H
 #define ALARMMESSAGE_H
 #include <QString>
+#include <QObject>
 
 class AlarmMessage
 {
+Q_OBJECT
 private:
     bool AlarmPresent;
     int WeldResultID;
@@ -12,6 +14,7 @@ private:
     void ShowText(int weldresult);
     void UpdateAlarmLog(QString AlarmStr, QString AlarmType, int WeldResultID);
     static void ResetAnyAlarm(void* _obj);
+
 public:
     void Initialization(int weldresult);
 public:

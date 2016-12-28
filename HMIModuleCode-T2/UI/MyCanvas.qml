@@ -29,9 +29,9 @@ Item {
         leftRepeater.model = 0
         rightRepeater.model = 0
         bottomRepeater.model = 0
-        leftRepeater.model = 10
+        leftRepeater.model = 12
         rightRepeater.model = 10
-        bottomRepeater.model = 10
+        bottomRepeater.model = 12
         var powerList = new Array;
         var heightList = new Array;
         var pointx
@@ -94,10 +94,10 @@ Item {
                 id: bottomRepeater
                 model: 11
                 delegate: Text {
-                    width: bottomLine.width / 10
+                    width: bottomLine.width / 11
                     color: "#adaeae"
                     font.pixelSize: 14
-                    text: spliceModel.graphTimeToString((index * alarmModel.getAxes("Time") * 0.1 * 10).toFixed(0)) //  (index / 10 * myCanvas.timeMax).toFixed(2)
+                    text: index == 11 ? "" : spliceModel.graphTimeToString((index * alarmModel.getAxes("Time") * 0.1 * 10).toFixed(0)) //  (index / 10 * myCanvas.timeMax).toFixed(2)
                     horizontalAlignment: Qt.AlignLeft
                 }
             }
@@ -116,12 +116,12 @@ Item {
             anchors.right: leftLine.left
             Repeater {
                 id: leftRepeater
-                model: 11
+                model: 12
                 delegate: Text {
-                    height: leftLine.height / 10
+                    height: leftLine.height / 11
                     color: "#adaeae"
                     font.pixelSize: 14
-                    text: spliceModel.graphPowerToString(((11-index) * alarmModel.getAxes("Power") * 0.1).toFixed(0)) //((10 - index) / 10 * myCanvas.powerMax).toFixed(0)  //(7 - index) * 100
+                    text: index == 0 ? "" : spliceModel.graphPowerToString(((12-index) * alarmModel.getAxes("Power") * 0.1).toFixed(0)) //((10 - index) / 10 * myCanvas.powerMax).toFixed(0)  //(7 - index) * 100
                     verticalAlignment: Qt.AlignTop
                 }
             }

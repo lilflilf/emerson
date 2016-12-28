@@ -33,7 +33,7 @@
 #define MAXWIDTH2032     980                //mm * 100
 #define MAXWELDPRESSURE  800                //PSI * 10
 #define MAXAMPLITUDE     150                //microns
-#define MAXTIME          1000               //Seconds * 200
+#define MAXTIME          500               //Seconds * 100
 #define MAXSTEPTIME      5000               //Seconds * 1000
 #define MINSTEPENERGY    0                  //Joules
 
