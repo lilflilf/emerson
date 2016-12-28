@@ -11,9 +11,9 @@
 #include <QTimer>
 HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
 {
+
     interfaceClass = InterfaceClass::Instance();
     operateProcess = MakeWeldProcess::Instance();
-
     workOrderModel = new WorkOrderModel(this);
     QStringList list;
     list << "WorkOrderId" << "WorkOrderName" << "DateCreated" << "PART" << "QUANTITY";
@@ -66,6 +66,7 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
          << "Width" << "TriggerPressure" << "WeldPressure" << "Time+" << "Time-" << "Power+" << "Power-" << "Pre-Height+" << "Pre-Height-" << "Height+" << "Height-" << "count";
     spliceModel->setRoles(listSplice);
     spliceModel->setModelList();
+
 
     advanceMaintenance = new AdvancedMaintenance;
     calibration = new Calibration;

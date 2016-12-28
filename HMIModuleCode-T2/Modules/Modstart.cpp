@@ -39,9 +39,6 @@ MODstart::MODstart()
     ModRunSetup *_ModRunSetup = ModRunSetup::Instance();
     InterfaceClass *_Interface = InterfaceClass::Instance();
 
-    _ModRunSetup->OfflineModeEnabled = true;
-    _ModRunSetup->GlobalOfflineModeEnabled = true;
-
     int check_result = 0;
 
     App.Major    = "24";
