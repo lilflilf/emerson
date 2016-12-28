@@ -650,7 +650,7 @@ Item {
                         color: "white"
                         clip: true
                         elide: Text.ElideRight
-                        text: listView.model == shrinkModel ? shrinkGetValue(listIndex,index) : listView.model.getValue((listIndex,headRepeater.model.get(index).title == "PART#" ? "PART" : headRepeater.model.get(index).title))
+                        text: listView.model == shrinkModel ? shrinkGetValue(listIndex,index) : listView.model.getValue(listIndex,headRepeater.model.get(index).title == "PART#" ? "PART" : headRepeater.model.get(index).title)
                         MouseArea {
                             anchors.fill: parent
 //                            z:10

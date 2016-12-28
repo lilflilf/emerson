@@ -125,8 +125,10 @@ bool WorkOrderModel::updateRecordIntoTable(int workId,QString oldWorkName, QStri
     struct WorkOrderElement tempWorkOrder;
     m_workOrderAdaptor->QueryOneRecordFromTable(workId, oldWorkName,&tempWorkOrder);
     tempWorkOrder.WorkOrderName = workName;
-    tempWorkOrder.PartIndex.remove(tempWorkOrder.PartIndex.begin().key());
-    tempWorkOrder.PartIndex.insert(partId, partName);
+    if (partName != tempWorkOrder.PartIndex.begin().value()) {
+        tempWorkOrder.PartIndex.remove(tempWorkOrder.PartIndex.begin().key());
+        tempWorkOrder.PartIndex.insert(partId, partName);
+    }
     tempWorkOrder.Quantity = count;
     m_workOrderAdaptor->UpdateRecordIntoTable(&tempWorkOrder);
     setModelList();
