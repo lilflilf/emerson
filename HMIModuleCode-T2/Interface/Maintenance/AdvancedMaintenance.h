@@ -100,6 +100,7 @@ public:
     virtual bool _start();
     virtual bool _stop();
     virtual bool _execute(int funCode);
+    void Reset();
 public:
     explicit AdvancedMaintenance();
 signals:

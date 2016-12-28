@@ -755,7 +755,7 @@ QString SplicesModel::getStructValue(QString valueKey, QString valueType)
 
 int SplicesModel::getRawData(QString key)
 {
-    if (key == "Time-")
+    if (key == "Time-")        
         return presetElement.WeldSettings.QualitySetting.Time.Minus;
     else if (key == "Time+")
         return presetElement.WeldSettings.QualitySetting.Time.Plus;
