@@ -520,6 +520,7 @@ void M10INI::Get_INI_File()
     }else
     {
         _Interface->StatusData = _Interface->DefaultStatusData;
+        _Interface->StatusData.WriteStatusDataToQSetting();
     }
 
     switch (_Interface->StatusData.MachineType)
