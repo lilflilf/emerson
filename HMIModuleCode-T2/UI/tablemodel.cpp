@@ -1737,6 +1737,7 @@ AlarmModel::AlarmModel(QObject *parent) :
     QAbstractTableModel(parent)
 {
     m_alarmAdaptor = DBAlarmLogTable::Instance();
+    m_spliceAdaptor = DBPresetTable::Instance();
     m_weldHistoryAdaptor = DBWeldResultTable::Instance();
     alarms = new QMap<int, QString>();
     variantToString = VariantToString::Instance();
@@ -1856,9 +1857,10 @@ QVariant AlarmModel::data(const QModelIndex &index, int role) const
 //        list << "CreatedDate" << "Alarm/ErrorType" << "Alarm/ErrorLevel" << "Message" << "SpliceName";
 
         AlarmElement myAlarm;
-        WeldResultElement weldResult;
+        PresetElement splice;
+
         m_alarmAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myAlarm);
-        m_weldHistoryAdaptor->QueryOneRecordFromTable(myAlarm.WeldResultID,&weldResult);
+        m_spliceAdaptor->QueryOneRecordFromTable(myAlarm.SpliceID,&splice);
         QString temp;
         if (columnIdx == 0)
             value = QVariant::fromValue(myAlarm.AlarmID);
@@ -1873,7 +1875,7 @@ QVariant AlarmModel::data(const QModelIndex &index, int role) const
         } else if (columnIdx == 4)
             value = QVariant::fromValue(myAlarm.AlarmMsg);
         else if (columnIdx == 5) {
-            value = QVariant::fromValue(weldResult.CurrentSplice.SpliceName);
+            value = QVariant::fromValue(splice.SpliceName);
         }
     }
     return value;
@@ -1970,16 +1972,15 @@ QVariant AlarmModel::getAlarmValue(int index, QString key)
     //        list << "CreatedDate" << "Alarm/ErrorType" << "Alarm/ErrorLevel" << "Message" << "SpliceName";
 
     AlarmElement myAlarm;
-    WeldResultElement weldResult;
     m_alarmAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myAlarm);
-    m_weldHistoryAdaptor->QueryOneRecordFromTable(myAlarm.WeldResultID,&weldResult);
+    m_spliceAdaptor->QueryOneRecordFromTable(myAlarm.SpliceID,&m_splice);
     QHash<QString, QVariant> AlarmModelHash;
     AlarmModelHash.insert("AlarmId",myAlarm.AlarmID);
     AlarmModelHash.insert("CreatedDate",QDateTime::fromTime_t(myAlarm.CreatedDate).toString("MM/dd/yyyy hh:mm"));
     AlarmModelHash.insert("Alarm/ErrorType",myAlarm.AlarmType);
     AlarmModelHash.insert("Alarm/ErrorLevel",variantToString->AlarmLevelToString(myAlarm.AlarmType));
     AlarmModelHash.insert("Message",myAlarm.AlarmMsg);//myOperator.PermissionLevel;
-    AlarmModelHash.insert("SpliceName",weldResult.CurrentSplice.SpliceName);//myOperator.PermissionLevel;
+    AlarmModelHash.insert("SpliceName",m_splice.SpliceName);//myOperator.PermissionLevel;
 
     if (key == "") {
         return AlarmModelHash;
