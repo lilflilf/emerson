@@ -7,7 +7,7 @@ AlarmElement::AlarmElement()
     AlarmMsg.clear();
     CreatedDate = 0;
     AlarmType = NONEALARM;
-    WeldResultID = -1;
+    SpliceID = -1;
     OperatorID = -1;
 }
 
@@ -20,7 +20,7 @@ AlarmElement AlarmElement::operator=(const AlarmElement &AlarmObject)
     this->AlarmMsg = AlarmObject.AlarmMsg;
     this->CreatedDate = AlarmObject.CreatedDate;
     this->AlarmType = AlarmObject.AlarmType;
-    this->WeldResultID = AlarmObject.WeldResultID;
+    this->SpliceID = AlarmObject.SpliceID;
     this->OperatorID = AlarmObject.OperatorID;
     return *this;
 }
