@@ -120,7 +120,12 @@ bool AdvancedMaintenance::_execute(int funCode)
 
 void AdvancedMaintenance::Reset()
 {
-
+    M2010* _M2010 = M2010::Instance();
+    M102IA* _M102IA = M102IA::Instance();
+    //Send Command to reset
+    _M2010->M10Run.Alarm_found = false;
+    _M102IA->IACommand(IAComSigLightOff);
+    _M102IA->IACommand(IAComClrAlarms);
 }
 
 void AdvancedMaintenance::AnvilArm_Click()
