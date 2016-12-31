@@ -11,7 +11,7 @@ public:
     unsigned int CreatedDate;
 //    enum ALARMTYPE AlarmType;
     QString AlarmType;
-    int WeldResultID;
+    int SpliceID;
     int OperatorID;
 public:
     AlarmElement operator=(const AlarmElement &AlarmObject);
