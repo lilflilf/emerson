@@ -20,7 +20,7 @@ AlarmMessage::AlarmMessage()
 //    AlarmPresent = false;
 }
 
-void AlarmMessage::Initialization(int weldresult)
+void AlarmMessage::Initialization(int SpliceID)
 {
     M102IA *_M102IA = M102IA::Instance();
     InterfaceClass *_Interface = InterfaceClass::Instance();
@@ -34,12 +34,12 @@ void AlarmMessage::Initialization(int weldresult)
         tmpMsgBox.func_ptr = NULL;
         _Interface->cMsgBox(&tmpMsgBox);
     }else{
-        ShowText(weldresult);
+        ShowText(SpliceID);
     }
 
 }
 
-void AlarmMessage::ShowText(int weldresult)
+void AlarmMessage::ShowText(int SpliceID)
 {
     M102IA *_M102IA = M102IA::Instance();
     InterfaceClass* _Interface = InterfaceClass::Instance();
@@ -52,7 +52,7 @@ void AlarmMessage::ShowText(int weldresult)
     {
         AlarmMsg += QString::number(Index + 1, 10) + ". " + QObject::tr("WIDTH ERROR");
         QString AlarmType = _Var2Str->AlarmTypeToString(MOTORERROR);
-        UpdateAlarmLog(AlarmMsg, AlarmType, weldresult);
+        UpdateAlarmLog(AlarmMsg, AlarmType, SpliceID);
         Index++;
     }
     //Overload
@@ -62,7 +62,7 @@ void AlarmMessage::ShowText(int weldresult)
             AlarmMsg += "\n";
         AlarmMsg += QString::number(Index + 1, 10) + ". " + QObject::tr("Power OVERLOAD");
         QString AlarmType = _Var2Str->AlarmTypeToString(OVERLOADALARM);
-        UpdateAlarmLog(AlarmMsg, AlarmType, weldresult);
+        UpdateAlarmLog(AlarmMsg, AlarmType, SpliceID);
         Index++;
     }
     //Safety
@@ -72,7 +72,7 @@ void AlarmMessage::ShowText(int weldresult)
             AlarmMsg += "\n";
         AlarmMsg += QString::number(Index + 1, 10) + ". " + QObject::tr("Weld Safety Alarm");
         QString AlarmType = _Var2Str->AlarmTypeToString(SAFETYERROR);
-        UpdateAlarmLog(AlarmMsg, AlarmType, weldresult);
+        UpdateAlarmLog(AlarmMsg, AlarmType, SpliceID);
         Index++;
     }
     //Height Error
@@ -82,7 +82,7 @@ void AlarmMessage::ShowText(int weldresult)
             AlarmMsg += "\n";
         AlarmMsg += QString::number(Index + 1, 10) + ". " + QObject::tr("Height System failure");
         QString AlarmType = _Var2Str->AlarmTypeToString(HEIGHTENCODERERROR);
-        UpdateAlarmLog(AlarmMsg, AlarmType, weldresult);
+        UpdateAlarmLog(AlarmMsg, AlarmType, SpliceID);
         Index++;
     }
     //Time Error
@@ -101,7 +101,7 @@ void AlarmMessage::ShowText(int weldresult)
             Index++;
         }
         QString AlarmType = _Var2Str->AlarmTypeToString(TIMEALARM);
-        UpdateAlarmLog(AlarmMsg, AlarmType, weldresult);
+        UpdateAlarmLog(AlarmMsg, AlarmType, SpliceID);
     }
     //Power Error
     if((_M102IA->IAactual.Alarmflags & 0x40) == 0x40)
@@ -118,7 +118,7 @@ void AlarmMessage::ShowText(int weldresult)
             Index++;
         }
         QString AlarmType = _Var2Str->AlarmTypeToString(PEAKPOWERALARM);
-        UpdateAlarmLog(AlarmMsg, AlarmType, weldresult);
+        UpdateAlarmLog(AlarmMsg, AlarmType, SpliceID);
     }
     //PostHeight Error
     if((_M102IA->IAactual.Alarmflags & 0x80) == 0x80)
@@ -135,7 +135,7 @@ void AlarmMessage::ShowText(int weldresult)
             Index++;
         }
         QString AlarmType = _Var2Str->AlarmTypeToString(HEIGHTALARM);
-        UpdateAlarmLog(AlarmMsg, AlarmType, weldresult);
+        UpdateAlarmLog(AlarmMsg, AlarmType, SpliceID);
     }
     //PerHeight Error
     if((_M102IA->IAactual.Alarmflags & 0x04) == 0x04)
@@ -151,7 +151,7 @@ void AlarmMessage::ShowText(int weldresult)
             Index++;
         }
         QString AlarmType = _Var2Str->AlarmTypeToString(PREHEIGHTALARM);
-        UpdateAlarmLog(AlarmMsg, AlarmType, weldresult);
+        UpdateAlarmLog(AlarmMsg, AlarmType, SpliceID);
     }
     //Sense 24V
     if((_M102IA->IAactual.Alarmflags & 0x10000) == 0x10000)
@@ -160,7 +160,7 @@ void AlarmMessage::ShowText(int weldresult)
             AlarmMsg += "\n";
         AlarmMsg += QString::number(Index + 1, 10) + ". " + QObject::tr("Power supply for solenoid valve is smaller than 24V");
         QString AlarmType = _Var2Str->AlarmTypeToString(VOL24ERROR);
-        UpdateAlarmLog(AlarmMsg, AlarmType, weldresult);
+        UpdateAlarmLog(AlarmMsg, AlarmType, SpliceID);
         Index++;
     }
     //Cutter Alarm for the New Wire Splicer
@@ -170,7 +170,7 @@ void AlarmMessage::ShowText(int weldresult)
             AlarmMsg += "\n";
         AlarmMsg += QString::number(Index + 1, 10) + ". " + QObject::tr("New wire splicer cutter alarm");
         QString AlarmType = _Var2Str->AlarmTypeToString(CUTERROR);
-        UpdateAlarmLog(AlarmMsg, AlarmType, weldresult);
+        UpdateAlarmLog(AlarmMsg, AlarmType, SpliceID);
         Index++;
     }
     //Lock Key Alarm for New Wire Splicer
@@ -188,7 +188,7 @@ void AlarmMessage::ShowText(int weldresult)
             AlarmMsg += "\n";
         AlarmMsg += QString::number(Index + 1, 10) + ". " + QObject::tr("Please check Actuator Board connecting");
         QString AlarmType = _Var2Str->AlarmTypeToString(IDCHIPERROR);
-        UpdateAlarmLog(AlarmMsg, AlarmType, weldresult);
+        UpdateAlarmLog(AlarmMsg, AlarmType, SpliceID);
         Index++;
     }
     //FRAM, RAM error
@@ -198,7 +198,7 @@ void AlarmMessage::ShowText(int weldresult)
             AlarmMsg += "\n";
         AlarmMsg += QString::number(Index + 1, 10) + ". " + QObject::tr("FRAM, RAM error");
         QString AlarmType = _Var2Str->AlarmTypeToString(RAMERROR);
-        UpdateAlarmLog(AlarmMsg, AlarmType, weldresult);
+        UpdateAlarmLog(AlarmMsg, AlarmType, SpliceID);
         Index++;
     }
     struct BransonMessageBox tmpMsgBox;
@@ -208,7 +208,7 @@ void AlarmMessage::ShowText(int weldresult)
     tmpMsgBox.func_ptr = AlarmMessage::ResetAnyAlarm;
     tmpMsgBox._Object = this;
     _Interface->cMsgBox(&tmpMsgBox);
-
+    qDebug()<<"Alarm Send";
 }
 
 void AlarmMessage::ResetAnyAlarm(void* _obj)
@@ -252,7 +252,7 @@ void AlarmMessage::RunModeMouseButton()
     }
 }
 
-void AlarmMessage::UpdateAlarmLog(QString AlarmStr, QString AlarmType, int WeldResultID)
+void AlarmMessage::UpdateAlarmLog(QString AlarmStr, QString AlarmType, int SpliceID)
 {
     InterfaceClass *_Interface = InterfaceClass::Instance();
     DBAlarmLogTable *_AlarmLog = DBAlarmLogTable::Instance();
@@ -260,6 +260,6 @@ void AlarmMessage::UpdateAlarmLog(QString AlarmStr, QString AlarmType, int WeldR
     CurrentAlarm.AlarmMsg = AlarmStr;
     CurrentAlarm.AlarmType = AlarmType;
     CurrentAlarm.OperatorID = _Interface->CurrentOperator.OperatorID;
-    CurrentAlarm.WeldResultID = WeldResultID;
+    CurrentAlarm.SpliceID = SpliceID;
     _AlarmLog->InsertRecordIntoTable(&CurrentAlarm);
 }
