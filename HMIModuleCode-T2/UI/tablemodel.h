@@ -251,8 +251,10 @@ public:
 
     QStringList m_idList;
     DBAlarmLogTable *m_alarmAdaptor;
+    DBPresetTable *m_spliceAdaptor;
     QMap<int, QString> *alarms;
     DBWeldResultTable *m_weldHistoryAdaptor;
+    PresetElement m_splice;
 
     WeldResultElement weldResultElement;
     QDateTime startTime;
