@@ -158,10 +158,8 @@ void MakeWeldProcess::WeldCycleDaemonThread(void* _obj)
     M102IA *_M102IA = M102IA::Instance();
     InterfaceClass *_Interface = InterfaceClass::Instance();
     MakeWeldProcess* _ObjectPtr = (MakeWeldProcess*)_obj;
-    M10runMode* _M10runMode = M10runMode::Instance();
     Statistics* _Statistics = Statistics::Instance();
     DBWeldResultTable* _WeldResultDB = DBWeldResultTable::Instance();
-    bool Invalidweld = false;
     //1. Receive Power and Height Graph Data
     switch(_ObjectPtr->CurrentStep)
     {
@@ -227,13 +225,7 @@ void MakeWeldProcess::WeldCycleDaemonThread(void* _obj)
         int iResult =
             _WeldResultDB->InsertRecordIntoTable(&_ObjectPtr->CurrentWeldResult);
         _ObjectPtr->CurrentWeldResult.WeldResultID = iResult;
-        //3. Alarm handle
-        Invalidweld = _M10runMode->CheckWeldData(iResult);
-        //4. Update Maintenance Count
-        if(Invalidweld == false)
-            _M10runMode->UpdateMaintenanceData(); //Increment Maintenance Counters here
-        //5. Teach Mode
-//        _ObjectPtr->TeachModeProcess();
+
         //6. Shrink Tube
         //7. Remote Data sending
         _Statistics->HistoryEvent(_ObjectPtr->CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderName,
@@ -250,12 +242,20 @@ void MakeWeldProcess::WeldCycleDaemonThread(void* _obj)
 
 void MakeWeldProcess::WeldResultEventSlot(bool& bResult)
 {
+    bool Invalidweld = false;
+    M10runMode* _M10runMode = M10runMode::Instance();
     if(bResult == false)
         return;
     UpdateWeldResult();
     m_triedCount = 0;
     CurrentStep = POWERFst;
     WeldCycleStatus = false;
+    //3. Alarm handle
+    Invalidweld = _M10runMode->CheckWeldData(CurrentSplice.SpliceID);
+    //4. Update Maintenance Count
+    if(Invalidweld == false)
+        _M10runMode->UpdateMaintenanceData(); //Increment Maintenance Counters here
+
     m_Thread->setStopEnabled(false);
     m_Thread->setSuspendEnabled(false);
     m_Thread->start();
