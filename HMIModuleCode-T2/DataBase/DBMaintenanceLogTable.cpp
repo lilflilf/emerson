@@ -171,7 +171,7 @@ bool DBMaintenanceLogTable::QueryOneRecordFromTable(int ID, QString TypeDefine, 
     QDateTime TimeLabel = QDateTime::fromString(query.value("CreatedDate").toString(),
                                                 "yyyy/MM/dd hh:mm:ss");
     ((MaintenanceLogElement*)_obj)->CreatedDate = TimeLabel.toTime_t();
-    ((MaintenanceLogElement*)_obj)->OperatorID = query.value("OperaterID").toInt();
+    ((MaintenanceLogElement*)_obj)->OperatorID = query.value("OperatorID").toInt();
     MaintenanceLogDBObj.close();
     return bResult;
 }
@@ -213,7 +213,7 @@ bool DBMaintenanceLogTable::QueryOneRecordFromTable(int ID, void *_obj)
     QDateTime TimeLabel = QDateTime::fromString(query.value("CreatedDate").toString(),
                                                 "yyyy/MM/dd hh:mm:ss");
     ((MaintenanceLogElement*)_obj)->CreatedDate = TimeLabel.toTime_t();
-    ((MaintenanceLogElement*)_obj)->OperatorID = query.value("OperaterID").toInt();
+    ((MaintenanceLogElement*)_obj)->OperatorID = query.value("OperatorID").toInt();
     MaintenanceLogDBObj.close();
     return bResult;
 }
