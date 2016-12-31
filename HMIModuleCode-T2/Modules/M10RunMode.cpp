@@ -4,6 +4,7 @@
 #include "M2010.h"
 #include "Statistics.h"
 #include "UtilityClass.h"
+#include "ModRunSetup.h"
 #include "MODstart.h"
 #include "Interface/Interface.h"
 #include "AlarmMessage.h"
@@ -20,7 +21,7 @@ M10runMode* M10runMode::Instance()
 
 M10runMode::M10runMode()
 {
-
+    ESTOPMessage = false;
 }
 
 /*It gets the value of Splice_Stat structure from temporary/permanent Stat file*/
@@ -28,10 +29,10 @@ M10runMode::M10runMode()
 void M10runMode::init_m20_data_events(PresetElement *_Splice)
 {
     QString StatFileFound;
-    M2010* _M2010 = M2010::Instance();
+//    M2010* _M2010 = M2010::Instance();
     M10INI* _M10INI = M10INI::Instance();
     Statistics* _Statistics = Statistics::Instance();
-    UtilityClass* _Utility = UtilityClass::Instance();
+//    UtilityClass* _Utility = UtilityClass::Instance();
 
     tempStatFile = _Splice->SpliceName;
     StatFileFound = _M10INI->ConfigFilesPath + tempStatFile + ".ini";
@@ -85,7 +86,7 @@ void M10runMode::Update_Counter()
     //Enter the Data and update the counters if no errors are found during weld
     //This section must be editted, note that the part counter is updated AFTER the data is saved
     Statistics *_Statistics = Statistics::Instance();
-    InterfaceClass *_Interface = InterfaceClass::Instance();
+//    InterfaceClass *_Interface = InterfaceClass::Instance();
     _Statistics->EnterM20DataEvent();
     Save_Data_Events();
 }
@@ -273,4 +274,101 @@ void M10runMode::TeachModeFinished(PresetElement *_Splice)
         _Splice->WeldSettings.QualitySetting.Height.Plus =
                 (int)_Statistics->height_upper_limit;
     }
+}
+
+void M10runMode::SafetyAlertMsg(unsigned long IOStatus)
+{
+    InterfaceClass *_Interface = InterfaceClass::Instance();
+    if(_Interface->StatusData.Soft_Settings.ToolCoverIgnore == true) return;
+    if((IOStatus & 0x04) == 0x04) return;
+    struct BransonMessageBox tmpMsgBox;
+
+    tmpMsgBox.MsgTitle = QObject::tr("WARNING");
+    tmpMsgBox.MsgPrompt = QObject::tr("Tool Cover Safety Alert!");
+    tmpMsgBox.TipsMode = Exclamation;
+    tmpMsgBox.func_ptr = NULL;
+    _Interface->cMsgBox(&tmpMsgBox);
+}
+
+void M10runMode::Run_E_Stop_Screen(unsigned long LastIOStatus)
+{
+    InterfaceClass *_Interface = InterfaceClass::Instance();
+    ModRunSetup *_ModeRunSetup = ModRunSetup::Instance();
+    M2010 *_M2010 = M2010::Instance();
+    M102IA *_M102IA = M102IA::Instance();
+    if ((LastIOStatus & 0x20) == 0x20)
+    {
+        struct BransonMessageBox tmpMsgBox;
+        if ((_Interface->FirstScreenComesUp == true) && (ESTOPMessage == false))
+        {
+            _Interface->DispearMsgBox();
+        }
+        if (ESTOPMessage == false)
+        {
+            tmpMsgBox.MsgTitle = QObject::tr("ALARM");
+            tmpMsgBox.MsgPrompt = QObject::tr("EMERGENCY STOP ON!");
+            tmpMsgBox.TipsMode = Alarm;
+            tmpMsgBox.func_ptr = NULL;
+            _Interface->cMsgBox(&tmpMsgBox);
+        }
+        _M2010->M10Run.E_Stop_Signal = true;
+        //frmMessage.Show vbModeless, Screen.ActiveForm
+        _ModeRunSetup->OfflineModeEnabled = true;
+    }else{
+        if (_M2010->M10Run.E_Stop_Signal == true)
+        {
+            _ModeRunSetup->OfflineModeEnabled = false;
+            _Interface->DispearMsgBox();
+            _M102IA->IACommand(IAComSetM10Mode);
+//            If Prog_Mode = Operator_SCREEN Or Prog_Mode = Stats_SCREEN Or _
+//                Prog_Mode = Setup_SCREEN Then
+//                SendIACommand IAComSendWeldData, 0
+//                SendCommandSetRunMode 1
+//                IACommand IAComHostReady
+//                SendCommandSetRunMode 1
+//            End If
+       }
+    }
+}
+
+void M10runMode::LockAlertMsg(unsigned long IOStatus)
+{
+    struct BransonMessageBox tmpMsgBox;
+    InterfaceClass *_Interface = InterfaceClass::Instance();
+    if((IOStatus & 0x80000) == 0)
+    {
+        tmpMsgBox.MsgTitle = QObject::tr("Information");
+        tmpMsgBox.MsgPrompt = QObject::tr("Physical key access!");
+        tmpMsgBox.TipsMode = Information;
+        tmpMsgBox.func_ptr = NULL;
+        _Interface->cMsgBox(&tmpMsgBox);
+        _Interface->StatusData.LockKeyFlag = true;
+    }else
+        _Interface->StatusData.LockKeyFlag = false;
+}
+
+void M10runMode::FootPedalMsg(unsigned long IOStatus)
+{
+    struct BransonMessageBox tmpMsgBox;
+    InterfaceClass *_Interface = InterfaceClass::Instance();
+    if ((IOStatus & 0x02) == 0)
+    {
+        tmpMsgBox.MsgTitle = QObject::tr("Information");
+        tmpMsgBox.MsgPrompt = QObject::tr("Only use Foot Pedal to Start!");
+        tmpMsgBox.TipsMode = Information;
+        tmpMsgBox.func_ptr = NULL;
+        _Interface->cMsgBox(&tmpMsgBox);
+        _Interface->StatusData.FootPedalFlag = true;
+    }else
+        _Interface->StatusData.FootPedalFlag = false;
+}
+
+void M10runMode::RemoteReset()
+{
+    bool IsQualityAlarm = false;
+    M102IA *_M102IA = M102IA::Instance();
+    if(((_M102IA->IAactual.Alarmflags & 0x80) == 0x80) || ((_M102IA->IAactual.Alarmflags & 0x40) == 0x40) ||
+        ((_M102IA->IAactual.Alarmflags & 0x20) == 0x20) || ((_M102IA->IAactual.Alarmflags & 0x04) == 0x04))
+        IsQualityAlarm = true;
+
 }

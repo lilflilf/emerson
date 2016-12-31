@@ -41,9 +41,9 @@ MODstart::MODstart()
 
     int check_result = 0;
 
-    App.Major    = "24";
+    App.Major    = "26";
     App.Minor    = "73";
-    App.Revision = "815-Level1-T1";
+    App.Revision = "814-HMI-T6";
 
     _Interface->FirstScreenComesUp = false;
     _MDefine->ModeChangeFlag = false;

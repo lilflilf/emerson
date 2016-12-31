@@ -52,6 +52,7 @@ public:
     bool ApplicationFirstStartFlag;
 public:
     void cMsgBox(struct BransonMessageBox* MsgBox);
+    void DispearMsgBox();
     void dlgMaintWarning();
     //Recall for Screen
     void DatabaseOperating(int OperatingType, void*);

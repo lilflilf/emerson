@@ -5,10 +5,10 @@
 #include "ModRunSetup.h"
 #include "BransonSerial.h"
 #include "Statistics.h"
-#include "ModRunSetup.h"
 #include "M10runMode.h"
 #include "UtilityClass.h"
 #include "TimerClass.h"
+#include "AlarmMessage.h"
 #include "Interface/Interface.h"
 #include "Interface/MakeWeld//MakeWeldProcess.h"
 #include <QCoreApplication>
@@ -629,12 +629,15 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
     ModRunSetup *_ModRunSetup = ModRunSetup::Instance();
     UtilityClass* _Utility = UtilityClass::Instance();
     InterfaceClass *_Interface = InterfaceClass::Instance();
+    M10runMode *_M10runMode = M10runMode::Instance();
+    AlarmMessage *_AlarmMsg = AlarmMessage::Instance();
     const QString Colon = ":";
 
     int i;
     int Index, temp, Div;
     QString TempString = "";
     QString PowerString;
+    unsigned int ResetType;
     struct BransonMessageBox tmpMsgBox;
     _M10INI->GlobalSignature = tmpDataSignature;
     switch(tmpDataSignature)
@@ -793,7 +796,7 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         IOstatus.IO = LastIOSwitchData.IO;
 //        LastIOstatus.IO = CLng(LastIOSwitchData.WordData)
         _M2010->ReceiveFlags.IOSWITCHdata = true;
-//        CheckIAControl
+        CheckIAControl();
         break;
     case IASigAbortEnable:
         temp = MakeHexWordNumber(HexString.mid(9, 4));
@@ -964,6 +967,13 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
     case IASigActuatorSerialNum:
         ActuatorSerialNum = _M2010->ParseSerialNumber(HexString.mid(9, 64));
         _M2010->ReceiveFlags.ActuatorSerialNumData = true;
+        break;
+    case IASigResetReady:
+        ResetType = MakeHexWordNumber(HexString.mid(9, 4));
+        if (_AlarmMsg->IsAlarmShown() == true)
+        {
+            _M10runMode->RemoteReset();
+        }
         break;
     case IASigHeightGraph:
         // Frame head 3 bytes + ":" 7 characters
@@ -1214,5 +1224,80 @@ void M102IA::SendPresetToIA(int PresetNo)
     {
         QByteArray Buffer = OutStructure.toLatin1();
         BransonSerial::IAportSend(Buffer);
+    }
+}
+void M102IA::CheckIAControl()
+{
+    M2010 *_M2010 = M2010::Instance();
+    M10runMode *_M10runMode = M10runMode::Instance();
+    //This function is used to Analyse the IO status data coming from controller
+    // and to show/do neccessary action.
+    if ((_M2010->ReceiveFlags.IOdata == true) || (_M2010->ReceiveFlags.IOSWITCHdata == true))
+    {
+        _M2010->ReceiveFlags.IOdata = false;
+        _M2010->ReceiveFlags.IOSWITCHdata = false;
+        //Tool Cover Problem
+        if ((IOstatus.IO & 0x04) != (LastIOstatus.IO & 0x04))
+        {
+            //Look at PalmButton #1 & PalmButton #2
+            if ((IOstatus.IO & 0xC0) == 0xC0)
+            {
+                LastIOstatus.IO = IOstatus.IO;
+                _M10runMode->SafetyAlertMsg(IOstatus.IO);
+            }
+        }
+        //E-Stop check and AirSwitch monitor
+        if (((IOstatus.IO & 0x20) == 0x20) || ((IOstatus.IO & 0x08) == 0x08))
+            _M2010->IAready = false;
+        else
+            _M2010->IAready = true;
+        //E-Stop Warning
+        if ((IOstatus.IO & 0x20) != (LastIOstatus.IO & 0x20))
+        {
+            //Run E-Stop Warning
+            LastIOstatus.IO = IOstatus.IO;
+            _M10runMode->Run_E_Stop_Screen(LastIOstatus.IO);
+        }
+        else
+        {
+//            if (LastIOstatus.IO & 0x20)
+//                _M10runMode->Run_E_Stop_Screen(LastIOstatus.IO);
+        }
+        //check low-air pressure switch
+        if ((IOstatus.IO & 0x08) != (LastIOstatus.IO & 0x08))
+        {
+            LastIOstatus.IO = IOstatus.IO;
+            //See if you have to run the low-pressure warning!
+
+        }
+        //check lock key
+        if ((IOstatus.IO & 0x80000) != (LastIOstatus.IO & 0x80000))
+        {
+            LastIOstatus.IO = IOstatus.IO;
+            _M10runMode->LockAlertMsg(IOstatus.IO);
+        }
+        //check IN0 for the footPedal
+        if ((IOstatus.IO & 0x02) != (LastIOstatus.IO & 0x02))
+        {
+            LastIOstatus.IO = IOstatus.IO;
+            _M10runMode->FootPedalMsg(IOstatus.IO);
+        }
+        //check Ac Voltage
+        if ((IOstatus.ACV < IOstatus.ACmin) || (IOstatus.ACV > IOstatus.ACmax))
+        {
+            //Shut Down the System
+        }
+        if ((IOstatus.IO & 0x40000) != (LastIOstatus.IO & 0x40000))
+        {
+            LastIOstatus.IO = IOstatus.IO;
+//         'RemoteReset
+//          ' Remote reset will work only if lock on alarm is not set.
+//          'If ((IAready) And (StatusData.LockonAlarm = 0) And (dlgCutMsg.AlarmPresent = True)) Then
+//          'If ((IAready) And (dlgCutMsg.AlarmPresent = True)) Then
+//             'dlgCutMsg.RunModeMouseButton
+//           '  RemoteReset
+//          'End If
+        }
+        //End of Checking IO Data
     }
 }

@@ -79,6 +79,7 @@ public:
 //    Timer tmrM10runMode;
     bool WidthError;
     int valueReturned_fromEndCount;
+    bool ESTOPMessage;
 
 //    Object objDriveSystem; //File System Object
 public:
@@ -95,9 +96,10 @@ public:
 
     void CalculateTeachMode(PresetElement* _Splice);
 
-    void SafetyAlertMsg();
-    void FootPedalMsg();
-    void Run_E_Stop_Screen();
+    void SafetyAlertMsg(unsigned long IOStatus);
+    void FootPedalMsg(unsigned long IOStatus);
+    void Run_E_Stop_Screen(unsigned long LastIOStatus);
+    void LockAlertMsg(unsigned long IOStatus);
 
     void Save_Data_Events();
     void CycleAbortMsg();
@@ -110,6 +112,7 @@ public:
     void PostWeld_Indicators_Update(); // called in check weld data
     void UpdateMaintenanceData();
     void TeachModeFinished(PresetElement* _Splice);
+    void RemoteReset();
 private:
     void Escape_Teach_Auto_Invalid_Welds(bool Alarm_found);
     void RestartSeqOnAlarm();

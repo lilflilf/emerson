@@ -17,14 +17,14 @@ AlarmMessage* AlarmMessage::Instance()
 
 AlarmMessage::AlarmMessage()
 {
-//    AlarmPresent = false;
+    AlarmPresent = false;
 }
 
 void AlarmMessage::Initialization(int SpliceID)
 {
     M102IA *_M102IA = M102IA::Instance();
     InterfaceClass *_Interface = InterfaceClass::Instance();
-//    AlarmPresent = false;
+    AlarmPresent = false;
     struct BransonMessageBox tmpMsgBox;
     if(_M102IA->SendCommandSetRunMode(0) == false)
     {
@@ -208,7 +208,7 @@ void AlarmMessage::ShowText(int SpliceID)
     tmpMsgBox.func_ptr = AlarmMessage::ResetAnyAlarm;
     tmpMsgBox._Object = this;
     _Interface->cMsgBox(&tmpMsgBox);
-    qDebug()<<"Alarm Send";
+    AlarmPresent = true;
 }
 
 void AlarmMessage::ResetAnyAlarm(void* _obj)
@@ -216,6 +216,7 @@ void AlarmMessage::ResetAnyAlarm(void* _obj)
     M102IA *_M102IA = M102IA::Instance();
     _M102IA->Generate_Beep();
     ((AlarmMessage*)_obj)->RunModeMouseButton();
+    ((AlarmMessage*)_obj)->AlarmPresent = false;
 }
 
 void AlarmMessage::RunModeMouseButton()
@@ -262,4 +263,9 @@ void AlarmMessage::UpdateAlarmLog(QString AlarmStr, QString AlarmType, int Splic
     CurrentAlarm.OperatorID = _Interface->CurrentOperator.OperatorID;
     CurrentAlarm.SpliceID = SpliceID;
     _AlarmLog->InsertRecordIntoTable(&CurrentAlarm);
+}
+
+bool AlarmMessage::IsAlarmShown()
+{
+    return AlarmPresent;
 }

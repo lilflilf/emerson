@@ -103,6 +103,11 @@ void InterfaceClass::cMsgBox(struct BransonMessageBox* MsgBox)
     emit EnableErrorMessageSignal(tmpMsgBox);
 }
 
+void InterfaceClass::DispearMsgBox()
+{
+    emit DisableErrorMessageSignal(tmpMsgBox);
+}
+
 void InterfaceClass::dlgMaintWarning()
 {
     M10INI *ptr_M10INI = M10INI::Instance();

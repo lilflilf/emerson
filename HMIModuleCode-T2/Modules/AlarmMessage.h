@@ -15,6 +15,7 @@ private:
     static void ResetAnyAlarm(void* _obj);
 
 public:
+    bool IsAlarmShown();
     void Initialization(int SpliceID);
 public:
     static AlarmMessage* Instance();
