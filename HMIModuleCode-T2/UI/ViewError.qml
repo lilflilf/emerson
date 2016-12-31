@@ -21,8 +21,10 @@ Item {
         anchors.top: tipsRec.bottom
         anchors.topMargin: 5
         anchors.bottom: scrollbar2.top
-        anchors.left: headTitle.left
+//        anchors.left: headTitle.left
+        anchors.left: back.right
         anchors.leftMargin: 20
+//        anchors.leftMargin: 20
         width: headTitle.width
         clip: true
         model: alarmModel
@@ -134,6 +136,23 @@ Item {
                 }
             }
 
+            ListModel {
+                id: searchModel
+                ListElement {title:qsTr("Weld time alarm")}
+                ListElement {title:qsTr("Weld Peak Power alarm")}
+                ListElement {title:qsTr("Weld Pre-height alarm")}
+                ListElement {title:qsTr("Weld Post-height alarm")}
+                ListElement {title:qsTr("Overload")}
+                ListElement {title:qsTr("Motor error")}
+                ListElement {title:qsTr("Height encoder error")}
+                ListElement {title:qsTr("Safety cover error")}
+                ListElement {title:qsTr("24V checking")}
+                ListElement {title:qsTr("Cutter error")}
+                ListElement {title:qsTr("ID Chip error")}
+                ListElement {title:qsTr("Fram error")}
+                ListElement {title:qsTr("E-Stop")}
+            }
+
             ListView {
                 id: searchList
                 anchors.top: allText.bottom
@@ -142,7 +161,7 @@ Item {
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: 20 + exportdata.height
                 clip: true
-                model: alarmModel
+                model: searchModel
                 delegate: Component {
                     id: seachComponent
                     Item {
@@ -156,7 +175,7 @@ Item {
                             font.pixelSize: 16
                             color: "white"
                             elide: Text.ElideRight
-                            text: Alarm/ErrorType
+                            text: title
                         }
                         MouseArea {
                             anchors.fill: parent
@@ -195,7 +214,7 @@ Item {
                 onClicked: {
                     if (searchArea.selectNum != -2) {
                         searchArea.visible = false
-                        workOrderName.text = searchList.model.getAlarmValue(searchArea.selectNum,"Alarm/ErrorType")
+                        workOrderName.text = searchList.model.get(searchArea.selectNum).title
                     } else {
                         searchArea.visible = false
                         workOrderName.text = qsTr("All")
@@ -532,7 +551,7 @@ Item {
                 clip: true
                 Repeater {
                     id: listRepeater
-                    model: viewLib.count
+                    model: alarmTitleModel.count
                     delegate:  Text {
                         anchors.verticalCenter: parent.verticalCenter
                         width: 200
@@ -541,14 +560,14 @@ Item {
                         color: "white"
                         clip: true
                         elide: Text.ElideRight
-                        text: listView.model.getValue(listIndex,headRepeater.model.get(index).title)
+                        text: listView.model.getAlarmValue(listIndex,headRepeater.model.get(index).title)
                     }
                 }
             }
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    selectIndx = index
+//                    selectIndx = index
                     selectCheck.checked = !selectCheck.checked
                 }
             }
