@@ -1226,14 +1226,13 @@ void M102IA::SendPresetToIA(int PresetNo)
         BransonSerial::IAportSend(Buffer);
     }
 }
-
-void M102IA::CheckIOEventSlot(bool &_status)
+void M102IA::CheckIAControl()
 {
+    M2010 *_M2010 = M2010::Instance();
+    M10runMode *_M10runMode = M10runMode::Instance();
     //This function is used to Analyse the IO status data coming from controller
     // and to show/do neccessary action.
-    M2010* _M2010 = M2010::Instance();
-    if ((_M2010->ReceiveFlags.IOdata == true) ||
-            (_M2010->ReceiveFlags.IOSWITCHdata == true))
+    if ((_M2010->ReceiveFlags.IOdata == true) || (_M2010->ReceiveFlags.IOSWITCHdata == true))
     {
         _M2010->ReceiveFlags.IOdata = false;
         _M2010->ReceiveFlags.IOSWITCHdata = false;
@@ -1241,61 +1240,64 @@ void M102IA::CheckIOEventSlot(bool &_status)
         if ((IOstatus.IO & 0x04) != (LastIOstatus.IO & 0x04))
         {
             //Look at PalmButton #1 & PalmButton #2
-            if (((IOstatus.IO & 0x40) == 0x40) && ((IOstatus.IO & 0x80) == 0x80))
+            if ((IOstatus.IO & 0xC0) == 0xC0)
             {
-                LastIOstatus.IO = LastIOstatus.IO Eqv (LastIOstatus.IO And &H4 Eqv _
-                                IOstatus.IO And &H4)
-                SafetyAlertMsg
+                LastIOstatus.IO = IOstatus.IO;
+                _M10runMode->SafetyAlertMsg(IOstatus.IO);
             }
         }
         //E-Stop check and AirSwitch monitor
         if (((IOstatus.IO & 0x20) == 0x20) || ((IOstatus.IO & 0x08) == 0x08))
-             _M2010->IAready = false;
+            _M2010->IAready = false;
         else
-             _M2010->IAready = true;
-          '//E-Stop Warning
-          If (IOstatus.IO And &H20) <> (LastIOstatus.IO And &H20) Then
-             '//Run E-Stop Warning
-             LastIOstatus.IO = LastIOstatus.IO Eqv (LastIOstatus.IO And &H20 Eqv _
-                              IOstatus.IO And &H20)
-             Run_E_Stop_Screen
-          Else
-             If (LastIOstatus.IO And &H20) Then Run_E_Stop_Screen
-          End If
-          '//check low-air pressure switch
-          If (IOstatus.IO And &H8) <> (LastIOstatus.IO And &H8) Then
-             LastIOstatus.IO = LastIOstatus.IO Eqv (LastIOstatus.IO And &H8 Eqv _
-                            IOstatus.IO And &H8)
-             '//See if you have to run the low-pressure warning!
+            _M2010->IAready = true;
+        //E-Stop Warning
+        if ((IOstatus.IO & 0x20) != (LastIOstatus.IO & 0x20))
+        {
+            //Run E-Stop Warning
+            LastIOstatus.IO = IOstatus.IO;
+            _M10runMode->Run_E_Stop_Screen(LastIOstatus.IO);
+        }
+        else
+        {
+//            if (LastIOstatus.IO & 0x20)
+//                _M10runMode->Run_E_Stop_Screen(LastIOstatus.IO);
+        }
+        //check low-air pressure switch
+        if ((IOstatus.IO & 0x08) != (LastIOstatus.IO & 0x08))
+        {
+            LastIOstatus.IO = IOstatus.IO;
+            //See if you have to run the low-pressure warning!
 
-          End If
-          '//check lock key
-          If (IOstatus.IO And &H80000) <> (LastIOstatus.IO And &H80000) Then
-            LastIOstatus.IO = LastIOstatus.IO Eqv (LastIOstatus.IO And &H80000 Eqv _
-                            IOstatus.IO And &H80000)
-            LockAlertMsg
-          End If
-          '//check IN0 for the footPedal
-          If (IOstatus.IO And &H2) <> (LastIOstatus.IO And &H2) Then
-            LastIOstatus.IO = LastIOstatus.IO Eqv (LastIOstatus.IO And &H2 Eqv _
-                            IOstatus.IO And &H2)
-            FootPedalMsg
-          End If
-          '//check Ac Voltage
-          If (IOstatus.ACV < IOstatus.ACmin) Or (IOstatus.ACV > IOstatus.ACmax) Then
-             '//Shut Down the System
-          End If
-          If (IOstatus.IO And &H40000) <> (LastIOstatus.IO And &H40000) Then
-             LastIOstatus.IO = LastIOstatus.IO Eqv (LastIOstatus.IO And &H40000 Eqv _
-                              IOstatus.IO And &H40000)
-            'RemoteReset
-             ' Remote reset will work only if lock on alarm is not set.
-             'If ((IAready) And (StatusData.LockonAlarm = 0) And (dlgCutMsg.AlarmPresent = True)) Then
-             'If ((IAready) And (dlgCutMsg.AlarmPresent = True)) Then
-                'dlgCutMsg.RunModeMouseButton
-              '  RemoteReset
-             'End If
-          End If
-       '//End of Checking IO Data
+        }
+        //check lock key
+        if ((IOstatus.IO & 0x80000) != (LastIOstatus.IO & 0x80000))
+        {
+            LastIOstatus.IO = IOstatus.IO;
+            _M10runMode->LockAlertMsg(IOstatus.IO);
+        }
+        //check IN0 for the footPedal
+        if ((IOstatus.IO & 0x02) != (LastIOstatus.IO & 0x02))
+        {
+            LastIOstatus.IO = IOstatus.IO;
+            _M10runMode->FootPedalMsg(IOstatus.IO);
+        }
+        //check Ac Voltage
+        if ((IOstatus.ACV < IOstatus.ACmin) || (IOstatus.ACV > IOstatus.ACmax))
+        {
+            //Shut Down the System
+        }
+        if ((IOstatus.IO & 0x40000) != (LastIOstatus.IO & 0x40000))
+        {
+            LastIOstatus.IO = IOstatus.IO;
+//         'RemoteReset
+//          ' Remote reset will work only if lock on alarm is not set.
+//          'If ((IAready) And (StatusData.LockonAlarm = 0) And (dlgCutMsg.AlarmPresent = True)) Then
+//          'If ((IAready) And (dlgCutMsg.AlarmPresent = True)) Then
+//             'dlgCutMsg.RunModeMouseButton
+//           '  RemoteReset
+//          'End If
+        }
+        //End of Checking IO Data
     }
 }
