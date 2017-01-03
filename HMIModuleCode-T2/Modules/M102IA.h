@@ -400,7 +400,7 @@ public:
     long GetLongValue(QString InputString,int Ref);
     int ParseHexStructure(QString HexString, int tmpDataSignature);
     bool SetIAWidth(int WidthSet = -1, bool SettingCheck = true);
-
+    void CheckIAControl();
     void SendCommandData(int CommandData);
     bool SendCommandSetRunMode(int CommandData);
     void SendPresetToIA(int PresetNo);
