@@ -410,8 +410,6 @@ signals:
     void AlarmStatusSignal(bool &_status);
     void HeightGraphSignal(bool &_status);
     void PowerGraphSignal(bool &_status);
-public slots:
-    void CheckIOEventSlot(bool &_status);
 public:
     static M102IA* Instance();
 protected:
