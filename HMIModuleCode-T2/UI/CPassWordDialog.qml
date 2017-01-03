@@ -126,6 +126,7 @@ Item {
                 else if (event.key == Qt.Key_3) {
                     mimaShow.text = mimaShow.text + "●"
                     mima.text = mima.text + "3"
+
                 }
                 else if (event.key == Qt.Key_4) {
                     mimaShow.text = mimaShow.text + "●"
