@@ -9,17 +9,17 @@ Item {
     width: Screen.width
     height: Screen.height * 0.8
     property var teachCount: 0
+    property int quantity: 0
+    property bool bIsLimite: false
     Component.onCompleted: {
         hmiAdaptor.operateProcessExec("Start")
     }
-//    Component.onDestruction: {
-//        hmiAdaptor.operateProcessExec("Stop")
-//    }
 
     Connections {
         target: hmiAdaptor
         onSignalWeldCycleCompleted: {
             teachCount++
+            progressBar.value = teachCount
             if (spliceModel.getStructValue("TeachMode","") == 0 || spliceModel.getStructValue("TeachMode","") == 3)
             {
                 cdialog.visible = true
@@ -194,7 +194,9 @@ Item {
             anchors.top: partCount.bottom
             anchors.topMargin: 20
             anchors.left: parent.left
-            value: 0.5
+            minimum: 0
+            maximum: bIsLimite ? 1 : quantity
+            value:  bIsLimite ? 0.5 : 0
         }
         Text {
             id: weld
@@ -217,11 +219,13 @@ Item {
             anchors.right: parent.right
             ListModel {
                 id: leftBottomModel
-                ListElement { name: qsTr("ENERGY(J)"); myvalue: "50"}
-                ListElement { name: qsTr("T.P.(PSI)"); myvalue: "20"}
-                ListElement { name: qsTr("W.P.(PSI)"); myvalue: "20"}
-                ListElement { name: qsTr("AMP(um)"); myvalue: "50"}
-                ListElement { name: qsTr("WIDTH(mm)"); myvalue: "10.00"}
+                Component.onCompleted: {
+                    leftBottomModel.append({ name: qsTr("ENERGY(J)"),myvalue: spliceModel.getStructValue("Energy","current")})
+                    leftBottomModel.append({ name: qsTr("T.P.(PSI)"),myvalue: spliceModel.getStructValue("Trigger Pressure","current")})
+                    leftBottomModel.append({ name: qsTr("W.P.(PSI)"),myvalue: spliceModel.getStructValue("Weld Pressure","current")})
+                    leftBottomModel.append({ name: qsTr("AMP(um)"),myvalue: spliceModel.getStructValue("Amplitude","current")})
+                    leftBottomModel.append({ name: qsTr("WIDTH(mm)"),myvalue: spliceModel.getStructValue("Width","current")})
+                }
             }
 
             ListView {

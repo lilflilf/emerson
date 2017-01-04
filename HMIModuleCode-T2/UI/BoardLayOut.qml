@@ -23,7 +23,6 @@ Item {
     height: parent.height
     property int columns: 0
     property int rows: 0
-    property int theIndex: 0
     property int count: 0
     property int maxSplicePerWork: 0
     property int maxSplicePerZone: 0

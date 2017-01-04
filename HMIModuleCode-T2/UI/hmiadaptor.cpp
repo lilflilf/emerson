@@ -909,6 +909,9 @@ void HmiAdaptor::slotWeldCycleCompleted(bool result)
     if (result) {
         alarmModel->weldResultElement = operateProcess->CurrentWeldResult;
         emit signalWeldCycleCompleted(result);
+        maintenanceCountExecute("_Recall");
+        int count = maintenanceCountGetValue(0,3).toInt();
+        emit signalMantenaneceCount(count);
     }
 }
 
@@ -1055,6 +1058,9 @@ bool HmiAdaptor::keyNumStringMatch(QString minValue, QString maxValue, QString v
     }
     if(minNum.toFloat(&ok) > 10 && value.toFloat(&ok) < minNum.toFloat(&ok)) {
         return true;
+    }
+    if (value.length() == 1 && value == ".") {
+        return false;
     }
     if (minNum.toFloat(&ok) < 1) {
         if (value.length() >=3 && minNum.length() >= 3) {

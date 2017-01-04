@@ -21,6 +21,12 @@ Item {
         anchors.fill: parent
         onLoaded: {
             if (loader.source == "qrc:/UI/TestDetail.qml") {
+                if (testDialog.inputNum == qsTr("#of Splices") || testDialog.inputNum == 0) {
+                    loader.item.bIsLimite = true
+                } else {
+                    loader.item.quantity = testDialog.inputNum
+                    loader.item.bIsLimite = false
+                }
                 loader.item.selectSplice(spliceModel.getValue(selectIndx,"SpliceId"))
                 alarmModel.setStartTime();
             }
