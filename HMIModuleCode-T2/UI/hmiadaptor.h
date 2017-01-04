@@ -187,6 +187,7 @@ signals:
     void signalDisableDialog();
     void signalWeldCycleCompleted(bool result);
     void signalButtonStateChanged(QString buttonName,bool state);
+    void signalMantenaneceCount(int count);
 public slots:
     void slotWeldCycleCompleted(bool result);
     void slotEnableDialog(struct BransonMessageBox &MsgBox);

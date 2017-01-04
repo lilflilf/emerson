@@ -948,7 +948,11 @@ Item {
         MouseArea {
             anchors.fill: parent
             onClicked: {
-
+                if (templateModel.count == 0 && template2.visible && temPlateDialog.visible == false) {
+                    backGround.visible = false
+                    backGround.opacity = 0
+                    template2.visible = false
+                }
             }
         }
     }
@@ -1201,11 +1205,6 @@ Item {
                 for (var i = 0; i < templateList.length; i++) {
                     templateModel.append({name:templateList[i]})
                 }
-
-//                templateModel.append({name:"GM"})
-//                templateModel.append({name:"Toyota"})
-//                templateModel.append({name:"Volks Wagen"})
-//                templateModel.append({name:"BYD"})
             }
         }
         Image {
@@ -1428,8 +1427,8 @@ Item {
             text: qsTr("Cancel")
             textColor: "white"
             onClicked: {
-                backGround.visible = false
-                backGround.opacity = 0
+//                backGround.visible = false
+//                backGround.opacity = 0
                 addnewBlack.visible = false
                 temPlateDialog.visible = false
                 addNewBack.opacity = 0

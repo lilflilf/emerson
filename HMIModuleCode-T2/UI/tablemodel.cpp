@@ -43,7 +43,6 @@ QVariant WorkOrderModel::data(const QModelIndex &index, int role) const
             value = QVariant::fromValue(QDateTime::fromTime_t(myWorkOrder.CreatedDate).toString("MM/dd/yyyy hh:mm"));
         else if (columnIdx == 3)
         {
-            qDebug() << "fffffffffffffffff" << myWorkOrder.PartIndex.count();
             QString temp = "";
             if (myWorkOrder.PartIndex.count() > 0)
                 temp = myWorkOrder.PartIndex.begin().value();
@@ -121,7 +120,6 @@ int WorkOrderModel::getCurrentIndex(QString info)
 
 bool WorkOrderModel::updateRecordIntoTable(int workId,QString oldWorkName, QString workName, int partId, QString partName, int count)
 {
-    qDebug() << "updateRecordIntoTable" << workId << oldWorkName << workName << partId << partName << count;
     struct WorkOrderElement tempWorkOrder;
     m_workOrderAdaptor->QueryOneRecordFromTable(workId, oldWorkName,&tempWorkOrder);
     tempWorkOrder.WorkOrderName = workName;
@@ -140,6 +138,7 @@ bool WorkOrderModel::insertRecordIntoTable(QString workName, int partId, QString
     tempWorkOrder.WorkOrderName = workName;
     tempWorkOrder.Quantity = count;
     tempWorkOrder.PartIndex.insert(partId,partName);
+    qDebug() << "insertRecordIntoTable"<<tempWorkOrder.PartIndex.count();
     m_workOrderAdaptor->InsertRecordIntoTable(&tempWorkOrder);
     setModelList();
 }

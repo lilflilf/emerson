@@ -507,6 +507,9 @@ Item {
         MouseArea {
             anchors.fill: parent
             onClicked: {
+                background.visible = true
+                background.opacity = 0.5
+                alarmlog.visible = true
             }
         }
     }
@@ -776,6 +779,7 @@ Item {
                     helpTitle.visible = false
                     background.opacity = 0
                     dialog.visible = false
+                    alarmlog.visible = false
                 }
             }
         }
@@ -799,6 +803,7 @@ Item {
                 helpTitle.visible = false
                 helpValue.visible = false
                 background.opacity = 0
+                alarmlog.visible = false
             }
         }
         CButton {
@@ -817,6 +822,244 @@ Item {
                 helpTitle.visible = false
                 helpValue.visible = false
                 background.opacity = 0
+            }
+        }
+    }
+
+    Rectangle {
+        id: alarmlog
+        z: background.z +1
+        anchors.top: parent.top
+        anchors.topMargin: (Screen.height-alarmlog.height)/2
+        anchors.left: parent.left
+        anchors.leftMargin: (Screen.width - alarmlog.width)/2
+        width: Screen.width*0.9
+        height: Screen.width*0.4
+        color: "#6d6e71"
+        visible: false
+        Text {
+            id: alarmtitle
+            anchors.top: parent.top
+            anchors.topMargin: 10
+            anchors.left: parent.left
+            anchors.leftMargin: 50
+            width: parent.width/4
+            color: "white"
+            clip: true
+            font.pixelSize: 27
+            font.family: "arial"
+            text: qsTr("Alarm Log")
+        }
+        ListModel {
+            id: alarmTitleModel
+            ListElement {title:qsTr("CreatedDate")}
+            ListElement {title:qsTr("Alarm/ErrorType")}
+            ListElement {title:qsTr("Alarm/ErrorLevel")}
+            ListElement {title:qsTr("Message")}
+            ListElement {title:qsTr("SpliceName")}
+        }
+        Row {
+            id: headTitle
+            anchors.top: alarmtitle.bottom
+            anchors.topMargin: 15
+            anchors.left: parent.left
+            anchors.leftMargin: 50
+            width: parent.width-80
+            spacing: 10
+            clip: true
+            Repeater {
+                id: headRepeater
+                model: alarmTitleModel
+                delegate:  Text {
+                    verticalAlignment: Qt.AlignVCenter
+                    width: (parent.width-40)/5
+                    font.family: "arial"
+                    font.pixelSize: 18
+                    color: "white"
+                    elide: Text.ElideRight
+                    clip: true
+                    text: title
+                }
+            }
+        }
+
+        Rectangle {
+            id: tipsRec1
+            anchors.top: headTitle.bottom
+            anchors.topMargin: 4
+            width: parent.width
+            height: 1
+            color: "white"
+        }
+        Rectangle {
+            id: tipsRec2
+            anchors.top: tipsRec1.bottom
+            width: parent.width
+            height: 1
+            color: "#0d0f11"
+        }
+        ExclusiveGroup{
+            id: mos
+        }
+        ListView {
+            id: listView
+            anchors.top: tipsRec2.bottom
+            anchors.topMargin: 10
+            anchors.left: parent.left
+            anchors.leftMargin: 50
+            anchors.right: parent.right
+            anchors.rightMargin: 30
+            anchors.bottom: bottomTip1.top
+            model: alarmModel
+            clip: true
+            delegate: listDelegate
+        }
+        Component {
+            id: listDelegate
+            Item {
+                width: listView.width
+                height: 40
+                clip: true
+                property var listIndex: 0
+                Component.onCompleted: {
+                    listIndex = index
+                }
+                Row {
+                    width: parent.width
+                    height: parent.height
+                    spacing: 10
+                    clip: true
+                    Repeater {
+                        id: listRepeater
+                        model: alarmTitleModel.count
+                        delegate:  Text {
+                            anchors.verticalCenter: parent.verticalCenter
+                            width: (parent.width-40)/5
+                            font.family: "arial"
+                            font.pixelSize: 14
+                            color: "white"
+                            clip: true
+                            elide: Text.ElideRight
+                            text: listView.model.getAlarmValue(listIndex,headRepeater.model.get(index).title)
+                        }
+                    }
+                }
+            }
+        }
+        Image {
+            id: scrollUp2
+            anchors.top: tipsRec2.bottom
+            anchors.topMargin: 2
+            anchors.left: listView.right
+            anchors.leftMargin: 4
+            width: 17
+            height: 10
+            visible: listView.contentHeight > listView.height ? true : false
+            source: "qrc:/images/images/up.png"
+        }
+        Image {
+            id: scrollDown2
+            anchors.bottom: bottomTip1.top
+            anchors.bottomMargin: 2
+            anchors.left: listView.right
+            anchors.leftMargin: 4
+            width: 17
+            height: 10
+            visible: listView.contentHeight > listView.height ? true : false
+            source: "qrc:/images/images/down.png"
+        }
+        Rectangle {
+            id: scrollbar2
+            width: 10
+            height: listView.height-24
+            anchors.top: scrollUp2.bottom
+            anchors.left: listView.right
+            anchors.leftMargin: 4
+            color: "#585858"
+            radius: 10
+            visible: listView.contentHeight > listView.height ? true : false
+            Rectangle {
+                id: button2
+                anchors.left: parent.left
+                y: (listView.visibleArea.yPosition < 0 ) ? 0 : (listView.contentY+listView.height>listView.contentHeight) ?
+                    scrollbar2.height - button2.height : listView.visibleArea.yPosition * scrollbar2.height
+                width: 10
+                height: listView.visibleArea.heightRatio * scrollbar2.height;
+                color: "#ccbfbf"
+                radius: 10
+                // 鼠标区域
+                MouseArea {
+                    id: mouseArea2
+                    anchors.fill: button2
+                    drag.target: button2
+                    drag.axis: Drag.YAxis
+                    drag.minimumY: 0
+                    drag.maximumY: scrollbar2.height - button2.height
+                    // 拖动
+                    onMouseYChanged: {
+                        listView.contentY = button2.y / scrollbar2.height * listView.contentHeight
+                    }
+                }
+            }
+        }
+
+        Rectangle {
+            id: bottomTip1
+            anchors.bottom: bottomTip2.top
+            width: parent.width
+            clip: true
+            height: 1
+            color: "white"
+        }
+        Rectangle {
+            id: bottomTip2
+            anchors.bottom: select.top
+            anchors.bottomMargin: 20
+            width: parent.width
+            clip: true
+            height: 1
+            color: "#0d0f11"
+        }
+        CButton {
+            id: select
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 10
+            anchors.right: parent.right
+            anchors.rightMargin: 20
+            width: 200
+            height: 50
+            clip: true
+            iconSource: "qrc:/images/images/OK.png"
+            text: qsTr("OK")
+            textColor: "white"
+            onClicked: {
+                personColumn.visible = false
+                background.visible = false
+                helpTitle.visible = false
+                alarmlog.visible = false
+                background.opacity = 0
+                dialog.visible = false
+             }
+        }
+
+        CButton {
+            id: cancel
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 10
+            anchors.right: select.left
+            anchors.rightMargin: 25
+            width: 200
+            height: 50
+            text: qsTr("Cancel")
+            iconSource: "qrc:/images/images/cancel.png"
+            textColor: "white"
+            onClicked: {
+                personColumn.visible = false
+                background.visible = false
+                helpTitle.visible = false
+                alarmlog.visible = false
+                background.opacity = 0
+                dialog.visible = false
             }
         }
     }
