@@ -2,16 +2,23 @@
 #define BRASONSOCKET_H
 
 #include <QObject>
+#include <QTcpSocket>
 
-class BrasonSocket : public QObject
+class BransonSocket : public QObject
 {
     Q_OBJECT
+private:
+    bool IsActivated;
 public:
-    explicit BrasonSocket(QObject *parent = 0);
-
+    QTcpSocket *m_pConnectSocket; //client connect socket
+    bool IsAvailableSocket();
+    void SocketSendData(QString);
+    explicit BransonSocket(QObject *parent = 0);
+    ~BransonSocket();
 signals:
 
 public slots:
+    void ReadTcpDataSlot();
 };
 
 #endif // BRASONSOCKET_H

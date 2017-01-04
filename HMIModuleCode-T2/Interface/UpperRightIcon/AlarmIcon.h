@@ -5,6 +5,12 @@
 class AlarmIcon
 {
 public:
+    void ResetAlarmItem(int AlarmID);
+public:
+    static AlarmIcon* Instance();
+private:
+    static AlarmIcon* _instance;
+private:
     AlarmIcon();
 };
 

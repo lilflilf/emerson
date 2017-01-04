@@ -4,6 +4,7 @@
 #include "M2010.h"
 #include "M102IA.h"
 #include "BransonSerial.h"
+#include "BransonServer.h"
 #include "ModRunSetup.h"
 #include "Password.h"
 #include "Statistics.h"
@@ -38,6 +39,7 @@ MODstart::MODstart()
     Statistics *_Statistics = Statistics::Instance();
     ModRunSetup *_ModRunSetup = ModRunSetup::Instance();
     InterfaceClass *_Interface = InterfaceClass::Instance();
+    BransonServer* _Server = BransonServer::Instance();
 
     int check_result = 0;
 
@@ -167,7 +169,7 @@ MODstart::MODstart()
         //Open Ethernet serer
         if (_Interface->StatusData.NetworkingEnabled == true)
         {
-//            AmtechServer.OpenEthernetserver();
+            _Server->OpenEthernetServer();
         }
     }
 }
@@ -460,6 +462,7 @@ void MODstart::OfflineInitialization(void* ptr)
     M2010 *_M2010 = M2010::Instance();
     Statistics *_Statistics = Statistics::Instance();
     InterfaceClass* _Interface = InterfaceClass::Instance();
+    BransonServer* _Server = BransonServer::Instance();
     _ModRunSetup->OfflineModeEnabled = true;
     _ModRunSetup->GlobalOfflineModeEnabled = true;
 
@@ -475,7 +478,7 @@ void MODstart::OfflineInitialization(void* ptr)
     //Open Ethernet serer
     if (_Interface->StatusData.NetworkingEnabled == true)
     {
-//        AmtechServer.OpenEthernetserver();
+        _Server->OpenEthernetServer();
     }
     ptr = NULL;
 }
