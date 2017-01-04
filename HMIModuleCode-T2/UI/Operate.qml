@@ -570,10 +570,9 @@ Item {
         anchors.centerIn: parent
         width: parent.width*0.9
         height: parent.width*0.4
-
         visible: false
         listModel: partModel
-        titleName: qsTr("ADD WORK ORDEAR")
+        titleName: qsTr("ADD PART")
         componentName: qsTr("PART NAME")
         componentData: qsTr("DATE CREATED")
         componentMiddle: qsTr("# OF SPLICE")
@@ -587,6 +586,11 @@ Item {
             selectPart.partId = modelId
             selectPart.text = name
             addExit.visible = false
+        }
+        onVisibleChanged: {
+            if (addExit.visible) {
+                addExit.clearSelect()
+            }
         }
     }
     KeyBoardNum {

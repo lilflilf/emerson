@@ -1057,18 +1057,26 @@ bool HmiAdaptor::keyNumStringMatch(QString minValue, QString maxValue, QString v
         return false;
     }
     if(minNum.toFloat(&ok) > 10 && value.toFloat(&ok) < minNum.toFloat(&ok)) {
-        return true;
+         return true;
     }
     if (value.length() == 1 && value == ".") {
         return false;
     }
-    if (minNum.toFloat(&ok) < 1) {
+    if (minNum.toFloat(&ok) < 1 && minNum.toFloat(&ok) != 0) {
         if (value.length() >=3 && minNum.length() >= 3) {
-            if (value.at(2) < minNum.at(2)) {
+            if (value.toFloat(&ok) < minNum.toFloat(&ok)) {
                 return false;
             }
         } else {
-            return true;
+            if (value.toFloat(&ok) >= 1) {
+                if (value.toFloat(&ok) >= minNum.toFloat(&ok) && value.toFloat(&ok) <= maxNum.toFloat(&ok)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return true;
+            }
         }
     }
     if (value.toFloat(&ok) >= minNum.toFloat(&ok) && value.toFloat(&ok) <= maxNum.toFloat(&ok)) {
@@ -1236,6 +1244,25 @@ QString HmiAdaptor::getTestQuantity(int value, bool bIsMax)
         return m_variantToString->TestQuantity(value).Minimum;
     }
 }
+
+QString HmiAdaptor::getShrinkTemperatureToString(int value, bool bIsMax)
+{
+    if (bIsMax) {
+        return m_variantToString->ShrinkTemperatureToString(value).Maximum;
+    } else {
+        return m_variantToString->ShrinkTemperatureToString(value).Minimum;
+    }
+}
+
+QString HmiAdaptor::getShrinkTimeToString(int value, bool bIsMax)
+{
+    if (bIsMax) {
+        return m_variantToString->ShrinkTimeToString(value).Maximum;
+    } else {
+        return m_variantToString->ShrinkTimeToString(value).Minimum;
+    }
+}
+
 void HmiAdaptor::teachModeSaveSplice()
 {
     spliceModel->updateSplice(operateProcess->CurrentSplice);

@@ -222,7 +222,7 @@ Item {
                     anchors.leftMargin: 10
                     width: (parent.width-40)/5
                     elide: Text.ElideRight
-                    text: (listModel == spliceModel) ? TotalWires : (listModel == wireModel) ? Gauge : ProcessMode
+                    text: (listModel == spliceModel) ? TotalWires : (listModel == wireModel) ? Gauge : MaxSplicesPerZone
                     color: "white"
                     clip: true
                     font.pixelSize: 14

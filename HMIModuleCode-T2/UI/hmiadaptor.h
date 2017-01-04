@@ -102,7 +102,6 @@ public:
     Q_INVOKABLE int randPoint();
     Q_INVOKABLE QString copyFileToPath(QString source);
 
-
     Q_INVOKABLE int timeChangeToInt(QString time);
 
     Q_INVOKABLE void setOperateProcess(int spliceId, bool isText);
@@ -145,6 +144,8 @@ public:
     Q_INVOKABLE QStringList getCurrentStatisticsParameterList(int index);
     Q_INVOKABLE QString getAmplitudeToString(int value, bool bIsMax);
     Q_INVOKABLE QString getTestQuantity(int value, bool bIsMax);
+    Q_INVOKABLE QString getShrinkTemperatureToString(int value, bool bIsMax);
+    Q_INVOKABLE QString getShrinkTimeToString(int value, bool bIsMax);
 
     Q_INVOKABLE void msgBoxClick(bool clickOK);
     Q_INVOKABLE void teachModeSaveSplice();
