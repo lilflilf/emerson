@@ -1,5 +1,7 @@
 #include "AlarmIcon.h"
 #include <QDebug>
+#include "DataBase/DBAlarmLogTable.h"
+#include "Interface/AlarmElement.h"
 AlarmIcon* AlarmIcon::_instance = NULL;
 AlarmIcon* AlarmIcon::Instance()
 {
@@ -15,5 +17,14 @@ AlarmIcon::AlarmIcon()
 
 void AlarmIcon::ResetAlarmItem(int AlarmID)
 {
+    DBAlarmLogTable* _AlarmLog = DBAlarmLogTable::Instance();
+    AlarmElement CurrentAlarm;
+    bool bResult = _AlarmLog->QueryOneRecordFromTable(AlarmID, &CurrentAlarm);
+    if(bResult == true)
+    {
+        CurrentAlarm.IsReseted = true;
+        _AlarmLog->UpdateRecordIntoTable(&CurrentAlarm);
+    }
+
     qDebug()<<"ResetAlarmItem";
 }

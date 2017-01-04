@@ -85,6 +85,7 @@ public:
     Q_INVOKABLE QString maintenanceCountGetImage(int index);
     Q_INVOKABLE void maintenanceCountReset(QString code);
     Q_INVOKABLE void maintenanceCountSetLimit(QString code, QString value);
+    Q_INVOKABLE void maintenanceCount80PercentAlarm(QString code, QString value);
     Q_INVOKABLE void maintenanceStart(int page);
     Q_INVOKABLE void maintenanceStop(int page);
     Q_INVOKABLE void maintenanceReset();
