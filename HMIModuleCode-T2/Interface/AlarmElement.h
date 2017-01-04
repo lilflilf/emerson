@@ -13,6 +13,7 @@ public:
     QString AlarmType;
     int SpliceID;
     int OperatorID;
+    bool IsReseted;
 public:
     AlarmElement operator=(const AlarmElement &AlarmObject);
 public:

@@ -1,6 +1,7 @@
 #include "DataCommunication.h"
 #include "Interface/Interface.h"
 #include "Modules/UtilityClass.h"
+#include "Modules/BransonServer.h"
 #include <QDebug>
 DataCommunication::DataCommunication()
 {
@@ -11,6 +12,7 @@ bool DataCommunication::_Recall()
 {
     InterfaceClass* _Interface = InterfaceClass::Instance();
     UtilityClass* _Utility = UtilityClass::Instance();
+    BransonServer* _Server = BransonServer::Instance();
     CurrentDataCommunication.GlobalShrinkTubeMode = _Interface->StatusData.ShrinkTubeMode;
     CurrentDataCommunication.MaxmmTemp
             = _Utility->FormatedDataToString(DINShrinkTubeTemperature, ShrinkTubeMaxTemp);
@@ -46,6 +48,7 @@ bool DataCommunication::_Recall()
     CurrentDataCommunication.ServerPort.Maximum = str;
     str = _Utility->FormatedDataToString(DINServerPortNumber, MINSERVER_PORT_NUMBER);
     CurrentDataCommunication.ServerPort.Minimum = str;
+    CurrentDataCommunication.IPConfiguration = _Server->GetHostAddress();
     return true;
 }
 

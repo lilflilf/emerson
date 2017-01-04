@@ -304,11 +304,11 @@ public:
     Maint_Log_File Maint_Data;
     double Time_Average, Power_Average, PreHeight_Avreage, Height_Average;
 private:
-    QString HeaderString();
     QString GraphData(enum ScreenShowDataType DataType, QList<int> *_GraphData);
     void RotateIn(StatStats &SumStats, QList<int>& DataEvent, int NewData);
     void RotateOut(StatStats &SumStats, int OldData);
 public:
+    QString HeaderString();
     void UpdateSoftLimitData(bool ShowResults = true);
 
     void UpdateSpliceStatStats();

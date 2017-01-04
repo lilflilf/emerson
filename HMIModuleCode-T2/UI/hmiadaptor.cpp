@@ -130,6 +130,7 @@ void HmiAdaptor::maintenanceCountExecute(QString code)
 QString HmiAdaptor::maintenanceCountGetValue(int code, int index)
 {
     QString value;
+    bool bResult;
     if (code == 0)
     {
         switch (index) {
@@ -148,6 +149,12 @@ QString HmiAdaptor::maintenanceCountGetValue(int code, int index)
         case 6:
             value = maintenanceCount->CurrentMaintenanceCounter.HornCounterLimit.Minimum;
             break;
+        case 7:
+            bResult = maintenanceCount->CurrentMaintenanceCounter.Horn80PercentAlarm;
+            if(bResult == true)
+                value = "left";
+            else
+                value = "right";
         default:
             break;
         }
@@ -170,6 +177,12 @@ QString HmiAdaptor::maintenanceCountGetValue(int code, int index)
         case 6:
             value = maintenanceCount->CurrentMaintenanceCounter.AnvilTipCounterLimit.Minimum;
             break;
+        case 7:
+            bResult = maintenanceCount->CurrentMaintenanceCounter.Anvil80PercentAlarm;
+            if(bResult == true)
+                value = "left";
+            else
+                value = "right";
         default:
             break;
         }
@@ -191,6 +204,13 @@ QString HmiAdaptor::maintenanceCountGetValue(int code, int index)
             break;
         case 6:
             value = maintenanceCount->CurrentMaintenanceCounter.GatherCounterLimit.Minimum;
+            break;
+        case 7:
+            bResult = maintenanceCount->CurrentMaintenanceCounter.Gather80PercentAlarm;
+            if(bResult == true)
+                value = "left";
+            else
+                value = "right";
             break;
         default:
             break;
@@ -214,6 +234,12 @@ QString HmiAdaptor::maintenanceCountGetValue(int code, int index)
         case 6:
             value = maintenanceCount->CurrentMaintenanceCounter.AnvilGuideCounterLimit.Minimum;
             break;
+        case 7:
+            bResult = maintenanceCount->CurrentMaintenanceCounter.AnvilGuide80PercentAlarm;
+            if(bResult == true)
+                value = "left";
+            else
+                value = "right";
         default:
             break;
         }
@@ -236,6 +262,12 @@ QString HmiAdaptor::maintenanceCountGetValue(int code, int index)
         case 6:
             value = maintenanceCount->CurrentMaintenanceCounter.ConverterCounterLimit.Minimum;
             break;
+        case 7:
+            bResult = maintenanceCount->CurrentMaintenanceCounter.Converter80PercentAlarm;
+            if(bResult == true)
+                value = "left";
+            else
+                value = "right";
         default:
             break;
         }
@@ -384,6 +416,11 @@ void HmiAdaptor::maintenanceCountSetLimit(QString code, QString value)
         maintenanceCount->CurrentMaintenanceCounter.ConverterCounterLimit.Current = value;
         maintenanceCount->_execute(TOOLINGCOUNT::CONVERTERCHANGE);
     }
+}
+
+void HmiAdaptor::maintenanceCount80PercentAlarm(QString code, QString value)
+{
+    qDebug()<<"80%alarm code"<<code<<"value"<<value;
 }
 
 void HmiAdaptor::maintenanceStart(int page)

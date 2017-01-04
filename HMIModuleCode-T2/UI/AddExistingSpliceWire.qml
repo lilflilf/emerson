@@ -3,7 +3,7 @@ Copyright:http://www.sinux.com.cn
 Date:2016/12/26
 Author:zhangjiyong&lilongfei
 Description:add existing splice or wire or part,data from the listModel(partModel,WireModel,SpliceModel).
-select signal is signalAddExistSelectClick()
+select signal is signalAddExistSelectClick(int modelId, string name)
 cancel signal is signalAddExistCancel()
 *******************************************************************/
 import QtQuick 2.4

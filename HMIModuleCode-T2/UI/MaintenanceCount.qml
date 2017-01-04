@@ -39,7 +39,14 @@ Item {
 
         for (var i = 0; i < 6; i++)
         {
-            listModel.set(i,{"imageSourece":hmiAdaptor.maintenanceCountGetImage(i),"mylimit":hmiAdaptor.maintenanceCountGetValue(i,2), "mycurrent":hmiAdaptor.maintenanceCountGetValue(i,3),"createDate":hmiAdaptor.maintenanceCountGetValue(i,4),"maxLimit":hmiAdaptor.maintenanceCountGetValue(i,5),"minLimit":hmiAdaptor.maintenanceCountGetValue(i,6),"myreset":qsTr("Reset")})
+            listModel.set(i,{"imageSourece":hmiAdaptor.maintenanceCountGetImage(i),
+                             "mylimit"     :hmiAdaptor.maintenanceCountGetValue(i,2),
+                             "mycurrent"   :hmiAdaptor.maintenanceCountGetValue(i,3),
+                             "createDate"  :hmiAdaptor.maintenanceCountGetValue(i,4),
+                             "maxLimit"    :hmiAdaptor.maintenanceCountGetValue(i,5),
+                             "minLimit"    :hmiAdaptor.maintenanceCountGetValue(i,6),
+                             "myreset"     :qsTr("Reset"),
+                             "mystate"     :hmiAdaptor.maintenanceCountGetValue(i,7)})
         }
     }
 
@@ -99,7 +106,7 @@ Item {
         }
         Text {
             width: 160
-            text: qsTr("On/Off")
+            text: qsTr("80% Alarm")
             color: "white"
             font.family: "arial"
             font.pixelSize: 25
@@ -238,11 +245,18 @@ Item {
                     visible: index == 5 ? true : false
                 }
                 Switch2 {
+                    id: myswitch
                     width: 175
                     textLeft: qsTr("On")
                     textRight: qsTr("Off")
                     clip: true
-                    state: "left"
+                    state: mystate
+                    visible: index == 5 ? false : true
+                    onStateChanged: {
+                        hmiAdaptor.maintenanceCount80PercentAlarm(mytitle, myswitch.state)
+//                        hmiAdaptor.maintenanceCountExecute("_Recall")
+//                        initPage()
+                    }
                 }
             }
         }
