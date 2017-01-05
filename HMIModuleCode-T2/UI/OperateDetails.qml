@@ -73,6 +73,7 @@ Item {
 
     function selectSplice(spliceId)
     {
+        console.log("selectSplice",spliceId)
         spliceModel.editNew(spliceId)
         setData()
         var list = new Array
@@ -86,7 +87,9 @@ Item {
             spliceDetailsItem.addWireFromSplice()
         }
         hmiAdaptor.setOperateProcess(spliceId, false)
+        console.log("selectSplice222222222222")
         hmiAdaptor.operateProcessExec("Execute")
+        console.log("selectSplice3333333333333")
     }
 
     Text {
@@ -464,11 +467,17 @@ Item {
         clip: true
         visible: showFlag != 3 ? true : false
         onClicked: {
+            console.log("1111111111111")
             progressBar.current++
+            console.log("22222222222222")
             progressBar.jumpToNext()
+            console.log("33333333333333",progressBar.current)
             selectSplice(spliceList[progressBar.current-1])
+            console.log("4444444444444444")
             spliceLocation.setTreeModelOver(progressBar.current)
+            console.log("55555555555555")
             offline.setSatusOffLineOver(progressBar.current)
+            console.log("666666666666")
         }
     }
     Text {

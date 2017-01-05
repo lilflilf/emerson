@@ -30,6 +30,8 @@ Item {
 
     function setStusOffLineBack(index)
     {
+
+        console.log("setStusOffLineBack",index)
         if (index + 7 > maxNum) {
             var count2 = offLine.maxNum
             if (offLine.maxNum > 8)
@@ -58,6 +60,7 @@ Item {
 
     function setStusOffLineUpdate(index)
     {
+        console.log("setStusOffLineUpdate",index)
         if (index + 7 > maxNum) {
             var count2 = offLine.maxNum
             if (offLine.maxNum > 8)
@@ -86,6 +89,7 @@ Item {
 
     function setSatusOffLineOver(index)
     {
+        console.log("setSatusOffLineOver",index)
         if (index + 7 > maxNum) {
             var count2 = offLine.maxNum
             if (offLine.maxNum > 8)

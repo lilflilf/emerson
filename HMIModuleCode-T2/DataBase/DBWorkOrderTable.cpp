@@ -1,6 +1,7 @@
 #include "DBWorkOrderTable.h"
 #include "Modules/UtilityClass.h"
 #include "Interface/WorkOrderElement.h"
+#include "Interface/interface.h"
 #include <QDebug>
 
 DBWorkOrderTable* DBWorkOrderTable::_instance = NULL;
@@ -61,6 +62,39 @@ DBWorkOrderTable::DBWorkOrderTable()
 //            InsertTestDataIntoTable();
         }
     }
+    WorkOrderDBObj.close();
+}
+bool DBWorkOrderTable::OpenDBObject()
+{
+    bool bResult = false;
+    struct BransonMessageBox tmpMsgBox;
+    InterfaceClass* _Interface = InterfaceClass::Instance();
+    if(WorkOrderDBObj.open() == false)
+    {
+        if(mIsModularProduction == true)
+        {
+            tmpMsgBox.MsgTitle = QObject::tr("ERROR");
+            tmpMsgBox.MsgPrompt = QObject::tr("Please make sure All the production files has been in the Modular Production!");
+            tmpMsgBox.TipsMode = Critical;
+            tmpMsgBox.func_ptr = NULL;
+            _Interface->cMsgBox(&tmpMsgBox);
+        }
+        bResult = false;
+    }else
+        bResult = true;
+    return bResult;
+}
+
+void DBWorkOrderTable::SwitchOperatorDBObj(bool IsModularProduction)
+{
+    mIsModularProduction = IsModularProduction;
+    if(IsModularProduction == true)
+        DatabaseDir = "c:\\BransonData\\Modular Production\\";
+    else
+        DatabaseDir = "c:\\BransonData\\Library\\";
+    WorkOrderDBObj = QSqlDatabase::addDatabase("QSQLITE", "WorkOrderDBObjConnect");
+    WorkOrderDBObj.setDatabaseName(DatabaseDir + WorkOrderFile);
+    OpenDBObject();
     WorkOrderDBObj.close();
 }
 
