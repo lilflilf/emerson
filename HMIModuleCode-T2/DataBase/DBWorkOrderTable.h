@@ -10,6 +10,9 @@ private:
     static QString DatabaseDir;
 private:
     QSqlDatabase WorkOrderDBObj;
+    bool mIsModularProduction;
+private:
+    bool OpenDBObject();
 public:
     virtual bool CreateNewTable();
     virtual int InsertRecordIntoTable(void* _obj);
@@ -24,6 +27,7 @@ public:
     virtual bool QueryOnlyUseTime(unsigned int time_from, unsigned int time_to, QMap<int, QString> *_obj);
     virtual bool QueryUseNameAndTime(QString Name, unsigned int time_from,
                 unsigned int time_to, QMap<int, QString>* _obj);
+    void SwitchOperatorDBObj(bool IsModularProduction);
 
     bool exportData(int workOrderId, QString fileUrl);
     int importData(QString value,QMap<int, QString> partMap);

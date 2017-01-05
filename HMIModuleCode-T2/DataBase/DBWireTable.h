@@ -32,6 +32,7 @@ public:
     QString GetExportString(int wireId);
 
     int ImportData(QString value);
+    bool SwitchOperatorDBObj(bool IsModularProduction);
 
 public:
     static DBWireTable* Instance();

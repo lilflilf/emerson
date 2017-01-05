@@ -28,6 +28,7 @@ public:
     bool exportData(int spliceId, QString fileUrl);
     int importData(QString value,QMap<int, QString> wireIdMap);
     QString GetExportString(int spliceId);
+    bool SwitchOperatorDBObj(bool IsModularProduction);
 
 public:
     static DBPresetTable* Instance();
