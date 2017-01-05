@@ -52,7 +52,7 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
     list.clear();
     list << "AlarmId" <<"CreatedDate" << "Alarm/ErrorType" << "Alarm/ErrorLevel" << "Message" << "SpliceName";
     alarmModel->setRoles(list);
-    alarmModel->setModelList();
+    alarmModel->setModelList(false);
 
     maintenanceLogModel = new MaintenanceLogModel(this);
     list.clear();
@@ -130,6 +130,7 @@ void HmiAdaptor::maintenanceCountExecute(QString code)
 QString HmiAdaptor::maintenanceCountGetValue(int code, int index)
 {
     QString value;
+    bool bResult;
     if (code == 0)
     {
         switch (index) {
@@ -148,6 +149,12 @@ QString HmiAdaptor::maintenanceCountGetValue(int code, int index)
         case 6:
             value = maintenanceCount->CurrentMaintenanceCounter.HornCounterLimit.Minimum;
             break;
+        case 7:
+            bResult = maintenanceCount->CurrentMaintenanceCounter.Horn80PercentAlarm;
+            if(bResult == true)
+                value = "left";
+            else
+                value = "right";
         default:
             break;
         }
@@ -170,6 +177,12 @@ QString HmiAdaptor::maintenanceCountGetValue(int code, int index)
         case 6:
             value = maintenanceCount->CurrentMaintenanceCounter.AnvilTipCounterLimit.Minimum;
             break;
+        case 7:
+            bResult = maintenanceCount->CurrentMaintenanceCounter.Anvil80PercentAlarm;
+            if(bResult == true)
+                value = "left";
+            else
+                value = "right";
         default:
             break;
         }
@@ -191,6 +204,13 @@ QString HmiAdaptor::maintenanceCountGetValue(int code, int index)
             break;
         case 6:
             value = maintenanceCount->CurrentMaintenanceCounter.GatherCounterLimit.Minimum;
+            break;
+        case 7:
+            bResult = maintenanceCount->CurrentMaintenanceCounter.Gather80PercentAlarm;
+            if(bResult == true)
+                value = "left";
+            else
+                value = "right";
             break;
         default:
             break;
@@ -214,6 +234,12 @@ QString HmiAdaptor::maintenanceCountGetValue(int code, int index)
         case 6:
             value = maintenanceCount->CurrentMaintenanceCounter.AnvilGuideCounterLimit.Minimum;
             break;
+        case 7:
+            bResult = maintenanceCount->CurrentMaintenanceCounter.AnvilGuide80PercentAlarm;
+            if(bResult == true)
+                value = "left";
+            else
+                value = "right";
         default:
             break;
         }
@@ -236,6 +262,12 @@ QString HmiAdaptor::maintenanceCountGetValue(int code, int index)
         case 6:
             value = maintenanceCount->CurrentMaintenanceCounter.ConverterCounterLimit.Minimum;
             break;
+        case 7:
+            bResult = maintenanceCount->CurrentMaintenanceCounter.Converter80PercentAlarm;
+            if(bResult == true)
+                value = "left";
+            else
+                value = "right";
         default:
             break;
         }
@@ -382,6 +414,25 @@ void HmiAdaptor::maintenanceCountSetLimit(QString code, QString value)
     else if (code == "Converter"){
         maintenanceCount->CurrentMaintenanceCounter.ConverterCounterLimit.Current = value;
         maintenanceCount->_execute(TOOLINGCOUNT::CONVERTERCHANGE);
+    }
+}
+
+void HmiAdaptor::maintenanceCount80PercentAlarm(QString code, QString value)
+{
+//    qDebug()<<"80%alarm code"<<code<<"value"<<value;
+    if (code == "Horn")
+        maintenanceCount->_execute(TOOLINGCOUNT::HORN80PERCENTALARM);
+    else if (code == "AnvilTip") {
+        maintenanceCount->_execute(TOOLINGCOUNT::ANVILTIP80PERCENTALARM);
+    }
+    else if (code == "Gather"){
+        maintenanceCount->_execute(TOOLINGCOUNT::GATHER80PERCENTALARM);
+    }
+    else if (code == "AnvilGuide"){
+        maintenanceCount->_execute(TOOLINGCOUNT::ANVILGUID80PERCENTALARM);
+    }
+    else if (code == "Converter"){
+        maintenanceCount->_execute(TOOLINGCOUNT::CONVERTER80PERCENTALARM);
     }
 }
 
@@ -908,6 +959,9 @@ void HmiAdaptor::slotWeldCycleCompleted(bool result)
     if (result) {
         alarmModel->weldResultElement = operateProcess->CurrentWeldResult;
         emit signalWeldCycleCompleted(result);
+        maintenanceCountExecute("_Recall");
+        int count = maintenanceCountGetValue(0,3).toInt();
+        emit signalMantenaneceCount(count);
     }
 }
 
@@ -1053,15 +1107,26 @@ bool HmiAdaptor::keyNumStringMatch(QString minValue, QString maxValue, QString v
         return false;
     }
     if(minNum.toFloat(&ok) > 10 && value.toFloat(&ok) < minNum.toFloat(&ok)) {
-        return true;
+         return true;
     }
-    if (minNum.toFloat(&ok) < 1) {
+    if (value.length() == 1 && value == ".") {
+        return false;
+    }
+    if (minNum.toFloat(&ok) < 1 && minNum.toFloat(&ok) != 0) {
         if (value.length() >=3 && minNum.length() >= 3) {
-            if (value.at(2) < minNum.at(2)) {
+            if (value.toFloat(&ok) < minNum.toFloat(&ok)) {
                 return false;
             }
         } else {
-            return true;
+            if (value.toFloat(&ok) >= 1) {
+                if (value.toFloat(&ok) >= minNum.toFloat(&ok) && value.toFloat(&ok) <= maxNum.toFloat(&ok)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return true;
+            }
         }
     }
     if (value.toFloat(&ok) >= minNum.toFloat(&ok) && value.toFloat(&ok) <= maxNum.toFloat(&ok)) {
@@ -1229,6 +1294,25 @@ QString HmiAdaptor::getTestQuantity(int value, bool bIsMax)
         return m_variantToString->TestQuantity(value).Minimum;
     }
 }
+
+QString HmiAdaptor::getShrinkTemperatureToString(int value, bool bIsMax)
+{
+    if (bIsMax) {
+        return m_variantToString->ShrinkTemperatureToString(value).Maximum;
+    } else {
+        return m_variantToString->ShrinkTemperatureToString(value).Minimum;
+    }
+}
+
+QString HmiAdaptor::getShrinkTimeToString(int value, bool bIsMax)
+{
+    if (bIsMax) {
+        return m_variantToString->ShrinkTimeToString(value).Maximum;
+    } else {
+        return m_variantToString->ShrinkTimeToString(value).Minimum;
+    }
+}
+
 void HmiAdaptor::teachModeSaveSplice()
 {
     spliceModel->updateSplice(operateProcess->CurrentSplice);
@@ -1338,4 +1422,18 @@ int HmiAdaptor::importPart(QString partStr)
     }
     int partId = partModel->importData(partString,tempMap);
     return partId;
+}
+void HmiAdaptor::setAlarmModelList(bool bIsNeedReset)
+{
+    alarmModel->setModelList(bIsNeedReset);
+}
+
+void HmiAdaptor::viewLibraryMovePart(int id, QString name)
+{
+    emit signalMovePart(id,name);
+}
+
+void HmiAdaptor::viewLibraryMoveSplice(int id, QString name)
+{
+    emit signalMoveSplice(id,name);
 }

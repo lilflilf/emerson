@@ -43,7 +43,6 @@ QVariant WorkOrderModel::data(const QModelIndex &index, int role) const
             value = QVariant::fromValue(QDateTime::fromTime_t(myWorkOrder.CreatedDate).toString("MM/dd/yyyy hh:mm"));
         else if (columnIdx == 3)
         {
-            qDebug() << "fffffffffffffffff" << myWorkOrder.PartIndex.count();
             QString temp = "";
             if (myWorkOrder.PartIndex.count() > 0)
                 temp = myWorkOrder.PartIndex.begin().value();
@@ -121,7 +120,6 @@ int WorkOrderModel::getCurrentIndex(QString info)
 
 bool WorkOrderModel::updateRecordIntoTable(int workId,QString oldWorkName, QString workName, int partId, QString partName, int count)
 {
-    qDebug() << "updateRecordIntoTable" << workId << oldWorkName << workName << partId << partName << count;
     struct WorkOrderElement tempWorkOrder;
     m_workOrderAdaptor->QueryOneRecordFromTable(workId, oldWorkName,&tempWorkOrder);
     tempWorkOrder.WorkOrderName = workName;
@@ -140,6 +138,7 @@ bool WorkOrderModel::insertRecordIntoTable(QString workName, int partId, QString
     tempWorkOrder.WorkOrderName = workName;
     tempWorkOrder.Quantity = count;
     tempWorkOrder.PartIndex.insert(partId,partName);
+    qDebug() << "insertRecordIntoTable"<<tempWorkOrder.PartIndex.count();
     m_workOrderAdaptor->InsertRecordIntoTable(&tempWorkOrder);
     setModelList();
 }
@@ -967,7 +966,7 @@ int SplicesModel::saveSplice(bool bIsEdit)
     if (bIsEdit)
     {
         m_spliceAdaptor->UpdateRecordIntoTable(&presetElement);
-        return -1;
+        return presetElement.SpliceID;
     }
     else
     {
@@ -1383,6 +1382,7 @@ void PartModel::getPartInfo(bool bIsEdit, int id, QString name)
     if (bIsEdit) {
         m_partAdaptor->QueryOneRecordFromTable(id,name,m_Part);
     } else {
+        delete m_Part;
         m_Part = NULL;
         m_Part = new PartElement();
     }
@@ -1921,6 +1921,7 @@ void AlarmModel::setModelList(QString name, unsigned int time_from, unsigned int
     if (m_alarmAdaptor->QueryUseNameAndTime(name,time_from,time_to,alarms))
         qDebug( )<< "AlarmModel " << alarms->count();
     endResetModel();
+    getAlarmbIsShowFlag();
 }
 
 void AlarmModel::setModelList(unsigned int time_from, unsigned int time_to)
@@ -1930,15 +1931,21 @@ void AlarmModel::setModelList(unsigned int time_from, unsigned int time_to)
     if (m_alarmAdaptor->QueryOnlyUseTime(time_from,time_to,alarms))
         qDebug( )<< "AlarmModel " << alarms->count();
     endResetModel();
+    getAlarmbIsShowFlag();
 }
 
-void AlarmModel::setModelList()
+void AlarmModel::setModelList(bool bIsNeedReset)
 {
     beginResetModel();
     alarms->clear();
-    if (m_alarmAdaptor->QueryEntireTable(alarms))
-        qDebug( )<< "AlarmModel" << alarms->count();
+    if (bIsNeedReset) {
+        m_alarmAdaptor->QueryOnlyUseField("IsReseted",QVariant(false),alarms);
+    } else {
+        m_alarmAdaptor->QueryEntireTable(alarms);
+    }
+    qDebug( )<< "AlarmModel" << alarms->count()<<bIsNeedReset;
     endResetModel();
+    getAlarmbIsShowFlag();
 }
 
 void AlarmModel::searchAlarmLog(QString name, unsigned int time_from, unsigned int time_to)
@@ -2025,7 +2032,25 @@ QVariant AlarmModel::getAlarmValue(int index, QString key)
 void AlarmModel::removeValue(int id, QString name)
 {
     m_alarmAdaptor->DeleteOneRecordFromTable(id,name);
-    setModelList();
+    setModelList(false);
+}
+
+void AlarmModel::updateAlarmLog(int id)
+{
+    AlarmIcon *alarmIcon = AlarmIcon::Instance();
+    alarmIcon->ResetAlarmItem(id);
+    setModelList(false);
+}
+
+void AlarmModel::getAlarmbIsShowFlag()
+{
+    QMap<int, QString> tempalarms;
+    m_alarmAdaptor->QueryOnlyUseField("IsReseted",QVariant(false),&tempalarms);
+    if (tempalarms.count()) {
+        emit signalShowFlag(true);
+    } else {
+        emit signalShowFlag(false);
+    }
 }
 
 /*****************WorkOrderHistory************************/

@@ -33,6 +33,9 @@ Item {
                 return
             }
         }
+        onSignalMantenaneceCount: {
+            progressBar3.value = count
+        }
     }
 
 //    Component.onCompleted: {
@@ -349,7 +352,7 @@ Item {
         text: qsTr("PART COUNTER 0/")+ qliantity
         color: "white"
         Connections {
-            target: showFlag != 3 ?  progressBar : ""
+            target: progressBar
             onCycleDone: {
                 cycleCount++
                 if (cycleCount > qliantity)
@@ -477,7 +480,7 @@ Item {
         anchors.bottomMargin: 6
         font.pointSize: 13
         font.family: "arial"
-        text: qsTr("MAINTENANCE COUNTER 68K/125K")
+        text: qsTr("MAINTENANCE COUNTER") + hmiAdaptor.maintenanceCountGetValue(0,3) + "/" + hmiAdaptor.maintenanceCountGetValue(0,2)
         color: "white"
     }
     CProgressBar {
@@ -487,9 +490,9 @@ Item {
         anchors.bottomMargin: 20
         width: showFlag == 1 ? qualityWindow.width/2-20 : (showFlag == 2 ? qualityWindow.width : spliceDetailsItem.width)
         height: 10
-        maximum: 125
-        minimum: 1
-        value: 60
+        maximum: hmiAdaptor.maintenanceCountGetValue(0,2)
+        minimum: 0
+        value: hmiAdaptor.maintenanceCountGetValue(0,3)
     }
     CDialog {
         id: cdialog

@@ -9,12 +9,12 @@ const QString SQLSentence[] = {
     "CREATE TABLE AlarmLog ("                       /*0 Create Alarm Table*/
     "ID INTEGER PRIMARY KEY AUTOINCREMENT, "
     "AlarmMsg VARCHAR, CreatedDate VARCHAR, "
-    "AlarmType VARCHAR, SpliceID INT, OperatorID INT)",
+    "AlarmType VARCHAR, SpliceID INT, OperatorID INT, IsReseted BOOLEAN)",
 
     "INSERT INTO AlarmLog ("                        /*1 Insert record into Alarm Table*/
     "AlarmMsg, CreatedDate, AlarmType, "
-    "SpliceID, OperatorID) "
-    "VALUES (?, ?, ?, ?, ?)",
+    "SpliceID, OperatorID, IsReseted) "
+    "VALUES (?, ?, ?, ?, ?, ?)",
 
     "SELECT ID, AlarmType FROM AlarmLog",           /*2 Query Entire Alarm Table */
 
@@ -28,7 +28,7 @@ const QString SQLSentence[] = {
                                                 /*6 Delete One Record from Alarm Table*/
 
     "UPDATE AlarmLog SET AlarmMsg = ?, CreatedDate = ?, AlarmType = ?, "
-    "SpliceID = ?, OperatorID = ? WHERE ID = ?",
+    "SpliceID = ?, OperatorID = ? , IsReseted = ? WHERE ID = ?",
                                                 /*7 Update One Record to Alarm Table*/
 
 };
@@ -90,6 +90,7 @@ int DBAlarmLogTable::InsertRecordIntoTable(void *_obj)
     query.addBindValue(((AlarmElement*)_obj)->AlarmType);
     query.addBindValue(((AlarmElement*)_obj)->SpliceID);
     query.addBindValue(((AlarmElement*)_obj)->OperatorID);
+    query.addBindValue(((AlarmElement*)_obj)->IsReseted);
 
     bResult = query.exec();
     if (bResult == false)   //run SQL
@@ -172,6 +173,7 @@ bool DBAlarmLogTable::QueryOneRecordFromTable(int ID, QString AlarmType, void *_
     ((AlarmElement*)_obj)->AlarmType = query.value("AlarmType").toString();
     ((AlarmElement*)_obj)->SpliceID = query.value("SpliceID").toInt();
     ((AlarmElement*)_obj)->OperatorID = query.value("OperatorID").toInt();
+    ((AlarmElement*)_obj)->IsReseted = query.value("IsReseted").toBool();
     AlarmLogDBObj.close();
     return bResult;
 }
@@ -215,6 +217,7 @@ bool DBAlarmLogTable::QueryOneRecordFromTable(int ID, void* _obj)
     ((AlarmElement*)_obj)->AlarmType = query.value("AlarmType").toString();
     ((AlarmElement*)_obj)->SpliceID = query.value("SpliceID").toInt();
     ((AlarmElement*)_obj)->OperatorID = query.value("OperatorID").toInt();
+    ((AlarmElement*)_obj)->IsReseted = query.value("IsReseted").toBool();
     AlarmLogDBObj.close();
     return bResult;
 }
@@ -282,6 +285,7 @@ bool DBAlarmLogTable::UpdateRecordIntoTable(void *_obj)
     query.addBindValue(((AlarmElement*)_obj)->AlarmType);
     query.addBindValue(((AlarmElement*)_obj)->SpliceID);
     query.addBindValue(((AlarmElement*)_obj)->OperatorID);
+    query.addBindValue(((AlarmElement*)_obj)->IsReseted);
     query.addBindValue(((AlarmElement*)_obj)->AlarmID);
 
     bResult = query.exec();
@@ -369,4 +373,42 @@ bool DBAlarmLogTable::QueryUseNameAndTime(QString AlarmType, unsigned int time_f
 
     AlarmLogDBObj.close();
     return bResult;
+}
+
+bool DBAlarmLogTable::QueryOnlyUseField(QString FieldName, QVariant Value, QMap<int, QString> *_obj, bool Orderby)
+{
+    if(_obj == NULL)
+        return false;
+
+    QSqlQuery query(AlarmLogDBObj);
+    bool bResult = AlarmLogDBObj.open();
+    if(bResult == false)
+        return bResult;
+
+    if(bResult == true)
+    {
+        QString queryStr = "";
+        if(Orderby == true)
+            queryStr = QString("SELECT ID, AlarmType FROM AlarmLog WHERE %1 = ? ORDER BY CreatedDate ASC").arg(FieldName);
+        else
+            queryStr = QString("SELECT ID, AlarmType FROM AlarmLog WHERE %1 = ? ORDER BY CreatedDate DESC").arg(FieldName);
+        query.prepare(queryStr);
+        query.addBindValue(Value);
+        bResult = query.exec();
+    }
+    if(bResult == true)
+    {
+        _obj->clear();
+        while(query.next())
+            _obj->insert(query.value("ID").toInt(),
+                           query.value("AlarmType").toString());
+    }
+    else
+    {
+        qDebug() << "Alarm Table SQL ERROR:"<< query.lastError();
+    }
+
+    AlarmLogDBObj.close();
+    return bResult;
+
 }

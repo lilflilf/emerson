@@ -8,6 +8,7 @@ class AlarmMessage
 private:
     bool AlarmPresent;
     int WeldResultID;
+    QList<int> mAlarmIDList;
 private:
     void RunModeMouseButton();
     void ShowText(int SpliceID);

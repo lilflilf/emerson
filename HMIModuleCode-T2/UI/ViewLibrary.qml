@@ -721,11 +721,13 @@ Item {
             textColor: "white"
             text: qsTr("Edit")
             onClicked: {
-                if (partRadio.checked)
+                if (partRadio.checked) {
                     root.checkNeedPassWd(0)
-                else if (spliceRadio.checked)
+                    hmiAdaptor.viewLibraryMovePart(partModel.getValue(selectIndx,"PartId"),partModel.getValue(selectIndx,"PartName"))
+                } else if (spliceRadio.checked) {
                     root.checkNeedPassWd(0)
-                else if (wireRadio.checked)
+                    hmiAdaptor.viewLibraryMoveSplice(spliceModel.getValue(selectIndx,"SpliceId"),spliceModel.getValue(selectIndx,"SpliceName"))
+                } else if (wireRadio.checked)
                     root.checkNeedPassWd(19)
                 else if (shrinkRadio.checked){
                     if (selectIndx < 0) {
@@ -857,6 +859,9 @@ Item {
                 }
             }
         }
+        onSelectPartNameChanged: {
+            selectPart.text = dialog.selectPartName
+        }
         Text {
             id: shrinkId
             anchors.top: parent.top
@@ -934,8 +939,8 @@ Item {
                     if (shrinkRadio.checked) {
                         keyNum.currentValue = shrinkModel.get(selectIndx).temperature
                     }
-                    keyNum.minvalue = "1"
-                    keyNum.maxvalue = "20"
+                    keyNum.minvalue = hmiAdaptor.getShrinkTemperatureToString(keyNum.currentValue,false)
+                    keyNum.maxvalue = hmiAdaptor.getShrinkTemperatureToString(keyNum.currentValue,true)
                 }
             }
         }
@@ -970,11 +975,13 @@ Item {
                     keyNum.titleText = timeText.text
                     if (shrinkRadio.checked) {
                         keyNum.currentValue = shrinkModel.get(selectIndx).times
+                        keyNum.minvalue = hmiAdaptor.getShrinkTimeToString(keyNum.currentValue,false)
+                        keyNum.maxvalue = hmiAdaptor.getShrinkTimeToString(keyNum.currentValue,true)
                     } else if (workOrderRadio.checked) {
                         keyNum.currentValue = workOrderModel.getValue(selectIndx,"QUANTITY")
+                        keyNum.minvalue = hmiAdaptor.getTestQuantity(keyNum.currentValue,false)
+                        keyNum.maxvalue = hmiAdaptor.getTestQuantity(keyNum.currentValue,true)
                     }
-                    keyNum.minvalue = "1"
-                    keyNum.maxvalue = "20"
                 }
             }
         }
@@ -1087,6 +1094,11 @@ Item {
             dialog.selectPartId = modelId
             dialog.selectPartName = name
             addExit.visible = false
+        }
+        onVisibleChanged: {
+            if (addExit.visible) {
+                addExit.clearSelect()
+            }
         }
     }
     Loader {

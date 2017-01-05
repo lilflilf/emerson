@@ -253,7 +253,7 @@ Item {
         color: "white"
         text: qsTr("Server Port")
     }
-    MyLineEdit {
+    MiniKeyNumInput {
         id: serverPortEdit
         anchors.verticalCenter: serverPort.verticalCenter
         anchors.right: parent.right
@@ -261,9 +261,17 @@ Item {
         width: parent.width*0.3
         height: 50
         inputWidth: parent.width*0.3
-        inputHeight: 48
-        horizontalAlignment: Qt.AlignHCenter
-        inputText: "4000"
+        inputText: "0"
+        onInputFocusChanged: {
+            if (serverPortEdit.inputFocus) {
+                backGround.visible = true
+                keyNum.visible = true
+                keyNum.titleText = serverPort.text
+                keyNum.currentValue = serverPortEdit.inputText
+                keyNum.minvalue = "0"
+                keyNum.maxvalue = "65535"
+            }
+        }
     }
 
     CButton {
@@ -285,5 +293,67 @@ Item {
         anchors.rightMargin: 24
         text: qsTr("Ping Test")
         width: parent.width*0.3
+    }
+    Rectangle {
+        id: backGround
+        anchors.fill: parent
+        color: "black"
+        opacity: 0.5
+        visible: false
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+            }
+        }
+
+    }
+    KeyBoardNum {
+        id: keyNum
+        anchors.centerIn: parent
+        width: 962
+        height: 526
+        visible: false
+        titleText: ""
+        maxvalue: "4"
+        minvalue: "1"
+        currentValue: "4"
+        onCurrentClickIndex: {
+            if (index == 15) {
+                if (hmiAdaptor.comepareCurrentValue(keyNum.minvalue,keyNum.maxvalue,keyNum.inputText)) {
+                    if (serverPortEdit.inputFocus) {
+                        serverPortEdit.inputText = keyNum.inputText
+                        serverPortEdit.inputFocus = false
+                    } else if (serverPortEdit.inputFocus) {
+                        serverPortEdit.inputText = keyNum.inputText
+                        serverPortEdit.inputFocus = false
+                    }
+                    backGround.visible = false
+                    keyNum.visible = false
+                    keyNum.inputText = ""
+                    keyNum.tempValue = ""
+                } else {
+                    keyNum.timeRun = true
+                }
+            } else if (index == 11) {
+                if (serverPortEdit.inputFocus) {
+                    serverPortEdit.inputFocus = false
+                } else if (serverPortEdit.inputFocus) {
+                    serverPortEdit.inputFocus = false
+                }
+                backGround.visible = false
+                keyNum.visible = false
+                keyNum.inputText = ""
+                keyNum.tempValue = ""
+            }
+        }
+        onInputTextChanged: {
+            if (keyNum.inputText != "") {
+                if (serverPortEdit.inputFocus) {
+                    serverPortEdit.inputText = keyNum.inputText
+                } else if (serverPortEdit.inputFocus) {
+                    serverPortEdit.inputText = keyNum.inputText
+                }
+            }
+        }
     }
 }

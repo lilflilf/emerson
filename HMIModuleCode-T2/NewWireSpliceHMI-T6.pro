@@ -2,6 +2,7 @@ TEMPLATE = app
 
 QT += qml quick
 QT += serialport
+QT += network
 QT += sql axcontainer
 CONFIG += c++11
 RC_FILE = res.rc
@@ -10,7 +11,8 @@ static {
     QTPLUGIN += qtvirtualkeyboardplugin
 }
 TRANSLATIONS = displayChinese_zh_CN.ts \
-               displayFrench_zh_CN.ts
+               displayFrench_zh_CN.ts\
+               displayEnglish_zh_CN.ts
 
 #lupdate_only{
 #    SOURCES += UI/*.qml
@@ -63,7 +65,10 @@ SOURCES += main.cpp \
     Modules/TimerClass.cpp \
     Modules/ThreadClass.cpp \
     Interface/MakeWeld/MakeWeldProcess.cpp \
-    Interface/SysConfiguration.cpp
+    Interface/SysConfiguration.cpp \
+    Modules/BransonServer.cpp \
+    Modules/BransonSocket.cpp \
+    Interface/UpperRightIcon/AlarmIcon.cpp
 
 
 
@@ -131,7 +136,10 @@ HEADERS += \
     Modules/TimerClass.h \
     Modules/ThreadClass.h \
     Interface/MakeWeld/MakeWeldProcess.h \
-    Interface/SysConfiguration.h
+    Interface/SysConfiguration.h \
+    Modules/BransonServer.h \
+    Modules/BransonSocket.h \
+    Interface/UpperRightIcon/AlarmIcon.h
 
 DISTFILES += \
 #    UI/displayChinese_zh_CN.qm \

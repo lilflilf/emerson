@@ -47,6 +47,7 @@ void AlarmMessage::ShowText(int SpliceID)
     int Index = 0;
     QString AlarmMsg;
     AlarmMsg.clear();
+    mAlarmIDList.clear();
     //Width Error
     if((_M102IA->IAactual.Alarmflags & 0x800) == 0x800)
     {
@@ -213,10 +214,26 @@ void AlarmMessage::ShowText(int SpliceID)
 
 void AlarmMessage::ResetAnyAlarm(void* _obj)
 {
+    AlarmElement CurrentAlarm;
+    bool bResult = false;
     M102IA *_M102IA = M102IA::Instance();
+    DBAlarmLogTable *_AlarmLog = DBAlarmLogTable::Instance();
     _M102IA->Generate_Beep();
-    ((AlarmMessage*)_obj)->RunModeMouseButton();
-    ((AlarmMessage*)_obj)->AlarmPresent = false;
+    AlarmMessage* _Alarm = (AlarmMessage*)_obj;
+    _Alarm->RunModeMouseButton();
+    _Alarm->AlarmPresent = false;
+    if(_Alarm->mAlarmIDList.count() == 0)
+        return;
+    for(int i = 0; i < _Alarm->mAlarmIDList.count(); i++)
+    {
+        bResult = _AlarmLog->QueryOneRecordFromTable(_Alarm->mAlarmIDList.at(i),&CurrentAlarm);
+        if(bResult == true)
+        {
+            CurrentAlarm.IsReseted = true;
+            _AlarmLog->UpdateRecordIntoTable(&CurrentAlarm);
+        }
+    }
+    _Alarm->mAlarmIDList.clear();
 }
 
 void AlarmMessage::RunModeMouseButton()
@@ -262,7 +279,13 @@ void AlarmMessage::UpdateAlarmLog(QString AlarmStr, QString AlarmType, int Splic
     CurrentAlarm.AlarmType = AlarmType;
     CurrentAlarm.OperatorID = _Interface->CurrentOperator.OperatorID;
     CurrentAlarm.SpliceID = SpliceID;
-    _AlarmLog->InsertRecordIntoTable(&CurrentAlarm);
+    CurrentAlarm.IsReseted = false;
+    int AlarmID = _AlarmLog->InsertRecordIntoTable(&CurrentAlarm);
+    if(AlarmID != -1)
+    {
+        mAlarmIDList.append(AlarmID);
+        _Interface->ShownAlarmSign();
+    }
 }
 
 bool AlarmMessage::IsAlarmShown()

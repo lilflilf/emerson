@@ -59,6 +59,7 @@ public:
     Q_INVOKABLE QString maintenanceCountGetImage(int index);
     Q_INVOKABLE void maintenanceCountReset(QString code);
     Q_INVOKABLE void maintenanceCountSetLimit(QString code, QString value);
+    Q_INVOKABLE void maintenanceCount80PercentAlarm(QString code, QString value);
     Q_INVOKABLE void maintenanceStart(int page);
     Q_INVOKABLE void maintenanceStop(int page);
     Q_INVOKABLE void maintenanceReset();
@@ -75,7 +76,6 @@ public:
     Q_INVOKABLE void hornCalibrationComplete(int temp);
     Q_INVOKABLE int randPoint();
     Q_INVOKABLE QString copyFileToPath(QString source);
-
 
     Q_INVOKABLE int timeChangeToInt(QString time);
 
@@ -119,9 +119,14 @@ public:
     Q_INVOKABLE QStringList getCurrentStatisticsParameterList(int index);
     Q_INVOKABLE QString getAmplitudeToString(int value, bool bIsMax);
     Q_INVOKABLE QString getTestQuantity(int value, bool bIsMax);
+    Q_INVOKABLE QString getShrinkTemperatureToString(int value, bool bIsMax);
+    Q_INVOKABLE QString getShrinkTimeToString(int value, bool bIsMax);
 
     Q_INVOKABLE void msgBoxClick(bool clickOK);
     Q_INVOKABLE void teachModeSaveSplice();
+    Q_INVOKABLE void setAlarmModelList(bool bIsNeedReset);
+    Q_INVOKABLE void viewLibraryMovePart(int id, QString name);
+    Q_INVOKABLE void viewLibraryMoveSplice(int id, QString name);
 
     Q_INVOKABLE void importData(QString fileUrl);
     Q_INVOKABLE int importSplice(QString spliceStr);
@@ -164,6 +169,9 @@ signals:
     void signalDisableDialog();
     void signalWeldCycleCompleted(bool result);
     void signalButtonStateChanged(QString buttonName,bool state);
+    void signalMantenaneceCount(int count);
+    void signalMovePart(int id, QString name);
+    void signalMoveSplice(int id, QString name);
 public slots:
     void slotWeldCycleCompleted(bool result);
     void slotEnableDialog(struct BransonMessageBox &MsgBox);

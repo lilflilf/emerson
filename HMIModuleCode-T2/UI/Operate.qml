@@ -377,6 +377,7 @@ Item {
             if (operate.selectIndx != -1) {
                 workOrderModel.editNew(workOrderModel.getPartId(operate.selectIndx))
                 partModel.getPartInfo(true,workOrderModel.getPartId(selectIndx),workOrderModel.getValue(selectIndx,"PART"))
+                hmiAdaptor.maintenanceCountExecute("_Recall")
                 loader.source = "qrc:/UI/OperateDetails.qml"
             }
         }
@@ -507,9 +508,14 @@ Item {
                 if (inputquantity.inputFocus) {
                     keyNum.visible = true
                     keyNum.titleText = quantity.text
-                    keyNum.currentValue = dialog.bIsEdit ? workOrderModel.getValue( selectIndx, "QUANTITY") : ""
-                    keyNum.minvalue = "1"
-                    keyNum.maxvalue = "20"
+                    keyNum.currentValue = inputquantity.inputText
+                    if (inputquantity.inputText == "") {
+                        keyNum.minvalue = hmiAdaptor.getTestQuantity(0,false)
+                        keyNum.maxvalue = hmiAdaptor.getTestQuantity(0,true)
+                    } else {
+                        keyNum.minvalue = hmiAdaptor.getTestQuantity(inputquantity.inputText,false)
+                        keyNum.maxvalue = hmiAdaptor.getTestQuantity(inputquantity.inputText,true)
+                    }
                 }
             }
         }
@@ -549,7 +555,7 @@ Item {
                 backGround.opacity = 0
                 dialog.visible = false
                 if (dialog.bIsEdit)
-                    workOrderModel.updateRecordIntoTable(workOrderModel.getValue(selectIndx, "workOrderId"),dialog.oldWorkOrderName, inputworkId.inputText,selectPart.partId,selectPart.text, inputquantity.inputText )
+                    workOrderModel.updateRecordIntoTable(workOrderModel.getValue(selectIndx, "WorkOrderId"),dialog.oldWorkOrderName, inputworkId.inputText,selectPart.partId,selectPart.text, inputquantity.inputText )
                 else {
                     workOrderModel.insertRecordIntoTable(inputworkId.inputText,selectPart.partId,selectPart.text,inputquantity.inputText)
                     selectPart.text = qsTr("SELECT PART")
@@ -564,10 +570,9 @@ Item {
         anchors.centerIn: parent
         width: parent.width*0.9
         height: parent.width*0.4
-
         visible: false
         listModel: partModel
-        titleName: qsTr("ADD WORK ORDEAR")
+        titleName: qsTr("ADD PART")
         componentName: qsTr("PART NAME")
         componentData: qsTr("DATE CREATED")
         componentMiddle: qsTr("# OF SPLICE")
@@ -581,6 +586,11 @@ Item {
             selectPart.partId = modelId
             selectPart.text = name
             addExit.visible = false
+        }
+        onVisibleChanged: {
+            if (addExit.visible) {
+                addExit.clearSelect()
+            }
         }
     }
     KeyBoardNum {

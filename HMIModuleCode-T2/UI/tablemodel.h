@@ -27,6 +27,7 @@
 #include "Interface/variantToString.h"
 #include "Interface/StringToVariant.h"
 #include "Interface/Settings/PermissionSetting.h"
+#include "Interface/UpperRightIcon/AlarmIcon.h"
 
 class WorkOrderModel : public QAbstractTableModel
 {
@@ -254,7 +255,7 @@ public:
     explicit AlarmModel(QObject *parent = 0);
     void setModelList(QString name, unsigned int time_from, unsigned int time_to);
     void setModelList(unsigned int time_from, unsigned int time_to);
-    void setModelList();
+    void setModelList(bool bIsNeedReset);
 
     QStringList m_idList;
     DBAlarmLogTable *m_alarmAdaptor;
@@ -287,9 +288,11 @@ public slots:
     Q_INVOKABLE QList<int> getPointList(QString key, QString spliceName, uint hashCode);
     Q_INVOKABLE int getAxes(QString key);
     Q_INVOKABLE void setStartTime();
-
+    Q_INVOKABLE void updateAlarmLog(int id);
+    Q_INVOKABLE void getAlarmbIsShowFlag();
     Q_INVOKABLE void editNew(int weldId, QString weldName);
-
+signals:
+    void signalShowFlag(bool bIsShow);
 private:
     QHash<int, QByteArray> m_roleNames;
     VariantToString *variantToString;
