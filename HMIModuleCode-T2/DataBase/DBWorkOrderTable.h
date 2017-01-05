@@ -2,7 +2,7 @@
 #define DBWORKORDERTABLE_H
 
 #include "Sqlit3Class.h"
-
+#include "DBPartTable.h"
 class DBWorkOrderTable: public SQLITCLASS
 {
 private:
@@ -24,11 +24,15 @@ public:
     virtual bool QueryOnlyUseTime(unsigned int time_from, unsigned int time_to, QMap<int, QString> *_obj);
     virtual bool QueryUseNameAndTime(QString Name, unsigned int time_from,
                 unsigned int time_to, QMap<int, QString>* _obj);
+
+    bool exportData(int workOrderId, QString fileUrl);
+    int importData(QString value,QMap<int, QString> partMap);
 public:
     static DBWorkOrderTable* Instance();
 protected:
     DBWorkOrderTable();
     bool InsertTestDataIntoTable();
+    DBPartTable *partTable;
 private:
     static DBWorkOrderTable* _instance;
 public:

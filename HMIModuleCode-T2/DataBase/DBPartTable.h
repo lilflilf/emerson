@@ -26,6 +26,7 @@ public:
                 unsigned int time_to, QMap<int, QString>* _obj);
     bool exportData(int partId, QString fileUrl);
     int importData(QString value,QMap<int, QString> spliceIdMap);
+    QString GetExportString(int partId);
 public:
     static DBPartTable* Instance();
 protected:

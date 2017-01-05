@@ -2107,6 +2107,7 @@ Item {
             backGround.opacity = 0
             backGround.visible = false
             insulation.text = qsTr("  Insulation: ") + shrinkSet.shrinkId + qsTr(" Temp:") + shrinkSet.shrinkTemp + qsTr(" Time:") + shrinkSet.shrinkTime
+            hmiAdaptor.addInsulation(shrinkSet.shrinkId,shrinkSet.shrinkTemp,shrinkSet.shrinkTime)
         }
         onCancelClick: {
             shrinkSet.visible = false

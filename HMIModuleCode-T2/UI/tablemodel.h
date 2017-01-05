@@ -73,6 +73,9 @@ public slots:
     Q_INVOKABLE bool updateRecordIntoTable(int workId, QString oldWorkName, QString workName, int partId, QString partName, int count);
     Q_INVOKABLE bool insertRecordIntoTable(QString workName, int partId, QString partName, int count);
 
+    Q_INVOKABLE bool exportData(int workOrderId, QString fileUrl);
+    Q_INVOKABLE int importData(QString value, QMap<int,QString> partMap);
+
 private:
     QHash<int, QByteArray> m_roleNames;
 };
@@ -198,6 +201,7 @@ public slots:
 
     Q_INVOKABLE bool exportData(int partId, QString fileUrl);
     Q_INVOKABLE int importData(QString filePath, QMap<int,QString> spliceMap);
+    Q_INVOKABLE QString getPartName(int partId);
    // int getCurrentIndex(QString info);
 
 //    Q_INVOKABLE bool updateRecordIntoTable(int workId, QString oldWorkName, QString workName, int partId, QString partName, int count);
