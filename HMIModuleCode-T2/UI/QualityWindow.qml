@@ -16,6 +16,7 @@ Item {
     property var selectIndex: 0
     property alias qualityListViewTwoModel: qualityListViewTwo.model
     property var partCount: 0
+    property bool bisTest: false
     function setData()
     {
         qualityListViewTwo.model = 0
@@ -414,7 +415,7 @@ Item {
 //                    point.anchors.topMargin = parent.height/2 // hmiAdaptor.randPoint() + 80 //index + clickType
                 }
                 Text {
-                    text: index == 0 ? operateDetail.cycleCount : ""
+                    text: index == 0 ?  bisTest == true ? testDetail.teachCount : operateDetail.cycleCount : ""
                     font.family: "arial"
                     font.pixelSize: 20
                     color: "white"
