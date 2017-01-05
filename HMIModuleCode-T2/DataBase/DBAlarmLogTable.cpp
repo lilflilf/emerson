@@ -285,8 +285,8 @@ bool DBAlarmLogTable::UpdateRecordIntoTable(void *_obj)
     query.addBindValue(((AlarmElement*)_obj)->AlarmType);
     query.addBindValue(((AlarmElement*)_obj)->SpliceID);
     query.addBindValue(((AlarmElement*)_obj)->OperatorID);
-    query.addBindValue(((AlarmElement*)_obj)->AlarmID);
     query.addBindValue(((AlarmElement*)_obj)->IsReseted);
+    query.addBindValue(((AlarmElement*)_obj)->AlarmID);
 
     bResult = query.exec();
     if(bResult == false)

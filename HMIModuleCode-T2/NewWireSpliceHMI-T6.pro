@@ -11,13 +11,13 @@ static {
     QTPLUGIN += qtvirtualkeyboardplugin
 }
 TRANSLATIONS = displayChinese_zh_CN.ts \
-               displayFrench_zh_CN.ts
+               displayFrench_zh_CN.ts\
+               displayEnglish_zh_CN.ts
 
 #lupdate_only{
 #    SOURCES += UI/*.qml
 #}
 SOURCES += main.cpp \
-    UI/Utility.cpp \
     Modules/Modstart.cpp \
     Modules/MDefine.cpp \
     Modules/M10INI.cpp \
@@ -82,7 +82,6 @@ QML_IMPORT_PATH =
 include(deployment.pri)
 
 HEADERS += \
-    UI/Utility.h \
     Modules/Modstart.h \
     Modules/MDefine.h \
     Modules/M10INI.h \
