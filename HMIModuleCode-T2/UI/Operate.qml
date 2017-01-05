@@ -48,6 +48,10 @@ Item {
         onSignalFileDialogCancel: {
             loader.source = ""
         }
+        onSignalChoseFile: {
+            loader.source = ""
+            hmiAdaptor.importData(fileName)
+        }
     }
     Row {
         id: headTitle
@@ -358,7 +362,7 @@ Item {
         clip: true
         textColor: "white"
         onClicked: {
-            loader.source = "qrc:/UI/MyFileDialog.qml"
+            loader.source = "qrc:/UI/MySelectFileDialog.qml"
         }
     }
     CButton {
