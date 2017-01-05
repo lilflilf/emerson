@@ -510,6 +510,7 @@ Item {
                 background.visible = true
                 background.opacity = 0.5
                 alarmlog.visible = true
+                hmiAdaptor.setAlarmModelList(true)
             }
         }
     }
@@ -903,6 +904,7 @@ Item {
         }
         ListView {
             id: listView
+            property int selectIndx: -1
             anchors.top: tipsRec2.bottom
             anchors.topMargin: 10
             anchors.left: parent.left
@@ -941,6 +943,30 @@ Item {
                             clip: true
                             elide: Text.ElideRight
                             text: listView.model.getAlarmValue(listIndex,headRepeater.model.get(index).title)
+                        }
+                    }
+                }
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        listView.selectIndx = index
+                        selectCheck.checked = !selectCheck.checked
+                    }
+                }
+                Rectangle {
+                    id: backGround
+                    anchors.fill: parent
+                    color: "black"
+                    opacity: 0//opacityValue
+                    RadioButton {
+                        id: selectCheck
+                        exclusiveGroup: mos
+                        visible: false
+                        onCheckedChanged: {
+                            if (checked)
+                                backGround.opacity = 0.3
+                            else
+                                backGround.opacity = 0
                         }
                     }
                 }
@@ -1030,15 +1056,19 @@ Item {
             height: 50
             clip: true
             iconSource: "qrc:/images/images/OK.png"
-            text: qsTr("OK")
+            text: qsTr("Reset")
             textColor: "white"
             onClicked: {
-                personColumn.visible = false
-                background.visible = false
-                helpTitle.visible = false
-                alarmlog.visible = false
-                background.opacity = 0
-                dialog.visible = false
+                if (listView.selectIndx != -1) {
+                    personColumn.visible = false
+                    background.visible = false
+                    helpTitle.visible = false
+                    alarmlog.visible = false
+                    background.opacity = 0
+                    dialog.visible = false
+                    console.log("33333333333333333",listView.selectIndx)
+                    alarmModel.updateAlarmLog(alarmModel.getAlarmValue(listView.selectIndx,"AlarmId"))
+                }
              }
         }
 
@@ -1060,6 +1090,7 @@ Item {
                 alarmlog.visible = false
                 background.opacity = 0
                 dialog.visible = false
+                hmiAdaptor.setAlarmModelList(false)
             }
         }
     }

@@ -52,7 +52,7 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
     list.clear();
     list << "AlarmId" <<"CreatedDate" << "Alarm/ErrorType" << "Alarm/ErrorLevel" << "Message" << "SpliceName";
     alarmModel->setRoles(list);
-    alarmModel->setModelList();
+    alarmModel->setModelList(false);
 
     maintenanceLogModel = new MaintenanceLogModel(this);
     list.clear();
@@ -1304,3 +1304,9 @@ void HmiAdaptor::teachModeSaveSplice()
 {
     spliceModel->updateSplice(operateProcess->CurrentSplice);
 }
+
+void HmiAdaptor::setAlarmModelList(bool bIsNeedReset)
+{
+    alarmModel->setModelList(bIsNeedReset);
+}
+

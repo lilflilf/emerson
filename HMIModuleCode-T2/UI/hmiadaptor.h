@@ -150,6 +150,7 @@ public:
 
     Q_INVOKABLE void msgBoxClick(bool clickOK);
     Q_INVOKABLE void teachModeSaveSplice();
+    Q_INVOKABLE void setAlarmModelList(bool bIsNeedReset);
 
     BransonMessageBox bransonMessageBox;
     InterfaceClass *interfaceClass;
