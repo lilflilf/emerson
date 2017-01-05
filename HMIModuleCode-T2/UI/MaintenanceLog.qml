@@ -380,13 +380,24 @@ Item {
         anchors.left: headRows.left
         anchors.top: headRows.bottom
         anchors.topMargin: 5
-        anchors.bottom: exportButton.top
+        anchors.bottom: line2.top
         anchors.bottomMargin: 20
         model: maintenanceLogModel
         delegate: listDelegate
         width: headRows.width // headModel.count * 200 + (headModel.count - 1) * 30
         clip: true
     }
+
+    Line {
+        id: line2
+        width: headRows.width
+        anchors.left: headRows.left
+        anchors.bottom: exportButton.top
+        anchors.bottomMargin: 10
+        height: 2
+        lineColor: "white"
+    }
+
     CButton {
         id: exportButton
         width: 200

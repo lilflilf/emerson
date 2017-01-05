@@ -36,7 +36,7 @@ Item {
 
     CButton {
         id: exportdata
-        width: 300
+        width: 200
         anchors.right: parent.right
         anchors.bottom:  parent.bottom
         text: qsTr("Export Data")
