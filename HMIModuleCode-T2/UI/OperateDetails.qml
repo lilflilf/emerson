@@ -21,6 +21,11 @@ Item {
         target: hmiAdaptor
         onSignalWeldCycleCompleted: {
             progressBar.current++
+            if (operateDetail.cycleCount == operateDetail.qliantity) {
+                cdialog.visible = true
+                hmiAdaptor.operateProcessExec("Stop")
+                return
+            }
             spliceLocation.setTreeModelOver()
             progressBar.moveToNext()
             selectSplice(spliceList[progressBar.current-1])
@@ -36,12 +41,7 @@ Item {
         }
         onSignalMantenaneceCount: {
             progressBar3.value = count
-        }
-    }
-    onCycleCountChanged: {
-        if (operateDetail.cycleCount == operateDetail.qliantity) {
-            cdialog.visible = true
-            hmiAdaptor.operateProcessExec("Stop")
+            maintenance.text = qsTr("MAINTENANCE COUNTER") + count + "/" + hmiAdaptor.maintenanceCountGetValue(0,2)
         }
     }
 
@@ -474,17 +474,16 @@ Item {
         clip: true
         visible: showFlag != 3 ? true : false
         onClicked: {
-            console.log("1111111111111")
             progressBar.current++
-            console.log("22222222222222")
+            if (operateDetail.cycleCount == operateDetail.qliantity) {
+                cdialog.visible = true
+                hmiAdaptor.operateProcessExec("Stop")
+                return
+            }
             progressBar.jumpToNext()
-            console.log("33333333333333",progressBar.current)
             selectSplice(spliceList[progressBar.current-1])
-            console.log("4444444444444444")
             spliceLocation.setTreeModelOver(progressBar.current)
-            console.log("55555555555555")
             offline.setSatusOffLineOver(progressBar.current)
-            console.log("666666666666")
         }
     }
     Text {

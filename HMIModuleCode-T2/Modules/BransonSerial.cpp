@@ -200,13 +200,13 @@ void BransonSerial::comIAportReadEventSlot()
 
 bool BransonSerial::IAportSend(QByteArray data)
 {
-    _Mutex->lock();
-    qDebug()<<"Lock True";
+//    _Mutex->lock();
+//    qDebug()<<"Lock True";
     QByteArray tmpBuffer = data;
     bool bResult = false;
     int iResult = comIAport->write(tmpBuffer);
-    _Mutex->unlock();
-    qDebug()<<"Lock False";
+//    _Mutex->unlock();
+//    qDebug()<<"Lock False";
     if(iResult == -1)
         bResult = false;
     else

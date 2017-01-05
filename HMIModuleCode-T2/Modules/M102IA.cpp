@@ -1150,9 +1150,7 @@ void M102IA::SendPresetToIA(int PresetNo)
         return;
     if(PresetNo == 0)
         PresetAddress = IAPRESET0;
-    qDebug()<<"SendIACommand";
     SendIACommand(IAAmpStepParameters, 0);
-    qDebug()<<"SendIACommandEND";
 
     memset(hexRecord.ByteData, 0, sizeof(hexRecord.ByteData));
     //1st record
@@ -1225,9 +1223,7 @@ void M102IA::SendPresetToIA(int PresetNo)
     if (_ModRunSetup->OfflineModeEnabled == false)
     {
         QByteArray Buffer = OutStructure.toLatin1();
-        qDebug()<<"IAPortSend";
         BransonSerial::IAportSend(Buffer);
-        qDebug()<<"IAPortSendEND";
     }
 }
 void M102IA::CheckIAControl()

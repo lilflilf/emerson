@@ -56,6 +56,7 @@ Item {
         nameList = partModel.getCurrentPartOfSpliceName()
         var idList = new Array()
         idList = partModel.getCurrentPartOfSpliceId()
+        console.log("aaaaaaaaaaaaa",idList)
         for (var i = 0; i < nameList.length; i++) {
             if (corlorlist[i] == -1 || zoneList[i] == -1) {
                 spliceList.listModel.append({"SpliceName":nameList[i],"stationColor":"white","station":"?","SpliceId":idList[i]})
@@ -1157,6 +1158,7 @@ Item {
         }
         onSignalAddExistSelectClick: {
             //que hanshu
+
             if (addExit.listModel == partModel) {
                 selectPartUpdataPage(modelId,name)
             } else if (addExit.listModel == spliceModel) {
