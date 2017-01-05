@@ -133,5 +133,12 @@ Item {
         color: "white"
         text: total
     }
-
+    Rectangle {
+        anchors.top: totalprogress.top
+        anchors.left: totalprogress.right
+        color: "#626465"
+        width: nextprogress.width
+        height: parent.height/2
+        z: 10
+    }
 }

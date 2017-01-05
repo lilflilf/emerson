@@ -21,6 +21,7 @@ Item {
         target: hmiAdaptor
         onSignalWeldCycleCompleted: {
             progressBar.current++
+            console.log("aaaaaaaaaaaaaaaaa",operateDetail.cycleCount,operateDetail.qliantity)
             spliceLocation.setTreeModelOver()
             progressBar.moveToNext()
             selectSplice(spliceList[progressBar.current-1])
@@ -28,13 +29,19 @@ Item {
                 offline.setStusOffLineUpdate(progressBar.current)
             else if (showFlag == 1)
                 spliceLocation.updateTreeModel(progressBar.current)
-            if (operateDetail.cycleCount == operateDetail.qliantity) {
-                cdialog.visible = true
-                return
-            }
+//            console.log("333333331111",operateDetail.cycleCount,operateDetail.qliantity)
+//            if (operateDetail.cycleCount == operateDetail.qliantity) {
+//                cdialog.visible = true
+//                return
+//            }
         }
         onSignalMantenaneceCount: {
             progressBar3.value = count
+        }
+    }
+    onCycleCountChanged: {
+        if (operateDetail.cycleCount == operateDetail.qliantity) {
+            cdialog.visible = true
         }
     }
 

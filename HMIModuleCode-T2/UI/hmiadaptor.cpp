@@ -87,9 +87,11 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
 
     connect(calibration,SIGNAL(WidthCalibrationFinish(bool)),this,SIGNAL(widthCalibrationFinish(bool)));
     connect(calibration,SIGNAL(HeightCalibrationFinish(bool)),this,SIGNAL(heightCalibrationFinish(bool)));
+    connect(interfaceClass,SIGNAL(ThereAreAlarmItemsSignal()),this,SLOT(slotGetAlarmFlag()));
 
     connect(operateProcess,SIGNAL(WeldCycleCompleted(bool)),this,SLOT(slotWeldCycleCompleted(bool)));
     m_spliceAdaptor = DBPresetTable::Instance();
+
 }
 
 HmiAdaptor::~HmiAdaptor()
@@ -963,6 +965,11 @@ void HmiAdaptor::slotWeldCycleCompleted(bool result)
         int count = maintenanceCountGetValue(0,3).toInt();
         emit signalMantenaneceCount(count);
     }
+}
+
+void HmiAdaptor::slotGetAlarmFlag()
+{
+    emit alarmModel->signalShowFlag(true);
 }
 
 void HmiAdaptor::slotEnableDialog(BransonMessageBox &MsgBox)
