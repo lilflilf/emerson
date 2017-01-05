@@ -9,6 +9,9 @@ Item {
     id: viewError
     width: Screen.width*0.7
     height: Screen.height*0.6
+    Component.onCompleted: {
+        hmiAdaptor.setAlarmModelList(false)
+    }
 
     MyTimeSelect {
         id: newCalendar

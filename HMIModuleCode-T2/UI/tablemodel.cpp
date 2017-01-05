@@ -1898,12 +1898,16 @@ void AlarmModel::setModelList(unsigned int time_from, unsigned int time_to)
     endResetModel();
 }
 
-void AlarmModel::setModelList()
+void AlarmModel::setModelList(bool bIsNeedReset)
 {
     beginResetModel();
     alarms->clear();
-    if (m_alarmAdaptor->QueryEntireTable(alarms))
-        qDebug( )<< "AlarmModel" << alarms->count();
+    if (bIsNeedReset) {
+        m_alarmAdaptor->QueryOnlyUseField("IsReseted",QVariant(false),alarms);
+    } else {
+        m_alarmAdaptor->QueryEntireTable(alarms);
+    }
+    qDebug( )<< "AlarmModel" << alarms->count()<<bIsNeedReset;
     endResetModel();
 }
 
@@ -1974,6 +1978,7 @@ QVariant AlarmModel::getAlarmValue(int index, QString key)
     m_alarmAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myAlarm);
     m_spliceAdaptor->QueryOneRecordFromTable(myAlarm.SpliceID,&m_splice);
     QHash<QString, QVariant> AlarmModelHash;
+    qDebug()<<"getAlarmValue"<<myAlarm.IsReseted;
     AlarmModelHash.insert("AlarmId",myAlarm.AlarmID);
     AlarmModelHash.insert("CreatedDate",QDateTime::fromTime_t(myAlarm.CreatedDate).toString("MM/dd/yyyy hh:mm"));
     AlarmModelHash.insert("Alarm/ErrorType",myAlarm.AlarmType);
@@ -1991,7 +1996,14 @@ QVariant AlarmModel::getAlarmValue(int index, QString key)
 void AlarmModel::removeValue(int id, QString name)
 {
     m_alarmAdaptor->DeleteOneRecordFromTable(id,name);
-    setModelList();
+    setModelList(false);
+}
+
+void AlarmModel::updateAlarmLog(int id)
+{
+    AlarmIcon *alarmIcon = AlarmIcon::Instance();
+    alarmIcon->ResetAlarmItem(id);
+    setModelList(false);
 }
 
 /*****************WorkOrderHistory************************/
