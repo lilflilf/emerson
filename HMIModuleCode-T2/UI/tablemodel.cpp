@@ -611,6 +611,9 @@ QString SplicesModel::getStructValue(QString valueKey, QString valueType)
     else if (valueKey == "SpliceName") {
         return presetElement.SpliceName;
     }
+    else if (valueKey == "SpliceId") {
+        return QString("%1").arg(presetElement.SpliceID);
+    }
     else if (valueKey == "ShrinkId") {
         return presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID;
     }

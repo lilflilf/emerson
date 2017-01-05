@@ -106,6 +106,7 @@ void HmiAdaptor::setTestSpliceId(int spliceId)
 
 int HmiAdaptor::getTestSpliceId()
 {
+    qDebug() << "getTestSpliceId";
     int id;
     id = testSpliceId;
     testSpliceId = -1;

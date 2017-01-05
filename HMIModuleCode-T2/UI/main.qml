@@ -339,6 +339,10 @@ Window {
             {
                 contentLoader.item.initPage()
             }
+            else if (initIndex == 0)
+            {
+                contentLoader.item.initEdit()
+            }
         }
     }
     Connections {

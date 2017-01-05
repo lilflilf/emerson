@@ -361,7 +361,12 @@ Item {
         CButton {
             width: 300
             height: 79
-            text: qsTr("EDITE SPLICE")
+            text: qsTr("EDIT SPLICE")
+            onClicked: {
+                hmiAdaptor.setTestSpliceId(spliceModel.getStructValue("SpliceId",""))
+                root.checkNeedPassWd(0)
+//                hmiAdaptor.viewLibraryMoveSplice(spliceModel.getStructValue("SpliceId",""),spliceModel.getStructValue("SpliceName",""))
+            }
         }
         CButton {
             width: 300
