@@ -633,3 +633,57 @@ int DBPartTable::importData(QString value, QMap<int, QString> spliceIdMap)
     }
     return ret;
 }
+
+QString DBPartTable::GetExportString(int partId)
+{
+    QString tempSpliceData;
+    QString spliceData;
+    QString queryStr;
+    QString lineValue = "";
+    QSqlQuery query(PartDBObj);
+    bool bResult = PartDBObj.open();
+    if(bResult == true)
+    {
+        queryStr = QString("SELECT * FROM Part WHERE ID == '%1'").arg(partId);
+        query.prepare(queryStr);
+        bResult = query.exec();
+        if (bResult) {
+            bResult = query.next();
+            if(bResult) {
+                for (int i = 0;i < 12;i++)
+                {
+                    if (i == 11)
+                    {
+                        QJsonParseError json_error;
+                        QJsonDocument parse_document = QJsonDocument::fromJson(query.value(i).toString().toLatin1(), &json_error);
+                        if(json_error.error == QJsonParseError::NoError)
+                        {
+                            if(parse_document.isObject())
+                            {
+                                QJsonObject obj = parse_document.object();
+                                QJsonObject::const_iterator iterator = obj.constBegin();
+                                for(int i = 0; i< obj.count(); i++)
+                                {
+                                    iterator = obj.constFind(QString::number(i, 10));
+                                    if(iterator != obj.constEnd())
+                                    {
+                                        QString value = iterator.value().toString();
+                                        QStringList strList = value.split(";");
+                                        tempSpliceData = spliceTable->GetExportString(((QString)strList.at(0)).toInt());
+                                        spliceData.append(tempSpliceData + "|");
+                                    }
+                                }
+                            }
+                        }
+                        lineValue.append(spliceData + "@");
+                    }
+                    else
+                        lineValue.append(query.value(i).toString() + "@");
+                }
+
+            }
+        }
+        PartDBObj.close();
+    }
+    return lineValue;
+}

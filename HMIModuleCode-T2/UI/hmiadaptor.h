@@ -131,11 +131,18 @@ public:
     Q_INVOKABLE void importData(QString fileUrl);
     Q_INVOKABLE int importSplice(QString spliceStr);
     Q_INVOKABLE int importPart(QString partStr);
+    Q_INVOKABLE int importWorkOrder(QString workOrderStr);
+
+    Q_INVOKABLE void addInsulation(QString insualtionId, QString temp, QString time);
+    Q_INVOKABLE void exportShrink(QString insualtionId, QString temp, QString time, QString fileUrl);
+    Q_INVOKABLE void removeShrink(int selectIndex);
+
     BransonMessageBox bransonMessageBox;
     InterfaceClass *interfaceClass;
     MakeWeldProcess *operateProcess;
     DBPresetTable *m_spliceAdaptor;
     VariantToString *m_variantToString;
+    StringToVariant *m_stringToVariant;
 
     WorkOrderModel *workOrderModel;
     SplicesModel *spliceModel;
@@ -177,6 +184,7 @@ public slots:
     void slotEnableDialog(struct BransonMessageBox &MsgBox);
     void slotDisableDialog(struct BransonMessageBox &MsgBox);
     void slotButtonState(const unsigned long status);
+    void slotGetAlarmFlag();
 };
 
 #endif // HMIADAPTOR_H

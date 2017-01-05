@@ -38,6 +38,14 @@ Item {
 
         }
     }
+    onTeachCountChanged: {
+        if (spliceModel.getStructValue("TestModel","") == 1)
+        {
+            if (teachCount >= spliceModel.getStructValue("TestCount","")) {
+                cdialog2.visible = true
+            }
+        }
+    }
 
     function setData()
     {

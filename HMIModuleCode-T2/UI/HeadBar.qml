@@ -32,6 +32,9 @@ Item {
     //        anchors.fill: parent
     //        source: "qrc:/images/images/headbg.png"
     //    }
+    Component.onCompleted: {
+        hmiAdaptor.setAlarmModelList(false);
+    }
     Connections{
         target: alarmModel
         onSignalShowFlag: {

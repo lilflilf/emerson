@@ -143,6 +143,18 @@ bool WorkOrderModel::insertRecordIntoTable(QString workName, int partId, QString
     setModelList();
 }
 
+bool WorkOrderModel::exportData(int workOrderId, QString fileUrl)
+{
+    return m_workOrderAdaptor->exportData(workOrderId,fileUrl);
+}
+
+int WorkOrderModel::importData(QString value, QMap<int, QString> partMap)
+{
+    int ret = m_workOrderAdaptor->importData(value,partMap);
+    setModelList();
+    return ret;
+}
+
 int WorkOrderModel::getPartId(int index)
 {
     QMap<int,QString>::iterator it; //遍历map
@@ -205,7 +217,10 @@ QVariant WorkOrderModel::getValue(int index, QString key)
     WorkOrderModelHash.insert("WorkOrderId",myWorkOrder.WorkOrderID);
     WorkOrderModelHash.insert("WorkOrderName",myWorkOrder.WorkOrderName);
     WorkOrderModelHash.insert("DateCreated",QDateTime::fromTime_t(myWorkOrder.CreatedDate).toString("MM/dd/yyyy hh:mm"));
-    WorkOrderModelHash.insert("PART",myWorkOrder.PartIndex.begin().value());
+    QString temp = "";
+    if (myWorkOrder.PartIndex.count() > 0)
+        temp = myWorkOrder.PartIndex.begin().value();
+    WorkOrderModelHash.insert("PART",temp);
     WorkOrderModelHash.insert("QUANTITY",myWorkOrder.Quantity);
     if (key == "") {
         return WorkOrderModelHash;
@@ -1299,6 +1314,14 @@ int PartModel::importData(QString filePath, QMap<int, QString> spliceMap)
     int ret = m_partAdaptor->importData(filePath,spliceMap);
     setModelList();
     return ret;
+}
+
+QString PartModel::getPartName(int partId)
+{
+    PartElement myPart;
+    bool reb;
+    reb = m_partAdaptor->QueryOneRecordFromTable(partId,&myPart);
+    return myPart.PartName;
 }
 
 
