@@ -35,6 +35,7 @@ void InterfaceClass::CheckBransonFolder()
     {
         objDriveSystem.mkdir("c:\\BransonData\\"); //Creates a new directory or folder.
         objDriveSystem.mkdir("c:\\BransonData\\Library\\");
+        objDriveSystem.mkdir("c:\\BransonData\\");
         objDriveSystem.mkdir("c:\\BransonData\\History\\");
         objDriveSystem.mkdir("c:\\BransonData\\ToolChangeImage\\");
         objDriveSystem.mkdir("c:\\BransonData\\History\\Graph\\");
@@ -108,35 +109,40 @@ void InterfaceClass::DispearMsgBox()
     emit DisableErrorMessageSignal(tmpMsgBox);
 }
 
-void InterfaceClass::dlgMaintWarning()
+void InterfaceClass::ShownAlarmSign()
 {
-    M10INI *ptr_M10INI = M10INI::Instance();
-    for(int i = 0; i < 8; i++)
-    {
-        if(i <= 3)
-        {
-            if ((StatusData.CurrentMaintenanceLimits[i] >=
-                    StatusData.MaintenanceLimits[i]) &&
-                    (StatusData.MaintenanceLimits[i] != 0))
-            {
-
-            }
-
-        }
-        else{
-            if ((StatusData.CurrentMaintenanceLimits[i] >=
-              StatusData.MaintenanceLimits[i]) &&
-                (StatusData.MaintenanceLimits[i] != 0))
-            {
-
-            }
-        }
-    }
+    emit ThereAreAlarmItemsSignal();
 }
 
-void InterfaceClass::BackupStatusData()
-{
-    M10INI* _M10INI = M10INI::Instance();
-    _M10INI->Save_StatusData();
-}
+//void InterfaceClass::dlgMaintWarning()
+//{
+//    M10INI *ptr_M10INI = M10INI::Instance();
+//    for(int i = 0; i < 8; i++)
+//    {
+//        if(i <= 3)
+//        {
+//            if ((StatusData.CurrentMaintenanceLimits[i] >=
+//                    StatusData.MaintenanceLimits[i]) &&
+//                    (StatusData.MaintenanceLimits[i] != 0))
+//            {
+
+//            }
+
+//        }
+//        else{
+//            if ((StatusData.CurrentMaintenanceLimits[i] >=
+//              StatusData.MaintenanceLimits[i]) &&
+//                (StatusData.MaintenanceLimits[i] != 0))
+//            {
+
+//            }
+//        }
+//    }
+//}
+
+//void InterfaceClass::BackupStatusData()
+//{
+//    M10INI* _M10INI = M10INI::Instance();
+//    _M10INI->Save_StatusData();
+//}
 

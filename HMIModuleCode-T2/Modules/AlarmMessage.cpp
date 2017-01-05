@@ -282,7 +282,10 @@ void AlarmMessage::UpdateAlarmLog(QString AlarmStr, QString AlarmType, int Splic
     CurrentAlarm.IsReseted = false;
     int AlarmID = _AlarmLog->InsertRecordIntoTable(&CurrentAlarm);
     if(AlarmID != -1)
+    {
         mAlarmIDList.append(AlarmID);
+        _Interface->ShownAlarmSign();
+    }
 }
 
 bool AlarmMessage::IsAlarmShown()

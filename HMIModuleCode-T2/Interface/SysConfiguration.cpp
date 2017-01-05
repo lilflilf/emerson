@@ -378,10 +378,8 @@ void Status_Data::WriteStatusDataToQSetting()
     UtilityClass* _Utility = UtilityClass::Instance();
     QString FileName = _M10INI->ConfigFilesPath + BRANSON_INI_FILE;
     QSettings settings(FileName, QSettings::IniFormat);
-    qDebug()<<"File Name"<<FileName;
     settings.beginGroup("BransonInitial");
     settings.setValue("RevCode", RevCode);
-    qDebug()<<"RevCode"<<RevCode;
     settings.setValue("CreatedDate", CreatedDate);
     settings.setValue("OperatorName", OperatorName);
 

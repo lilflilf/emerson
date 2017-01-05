@@ -53,28 +53,30 @@ public:
 public:
     void cMsgBox(struct BransonMessageBox* MsgBox);
     void DispearMsgBox();
-    void dlgMaintWarning();
+    void ShownAlarmSign();
+//    void dlgMaintWarning();
     //Recall for Screen
-    void DatabaseOperating(int OperatingType, void*);
+//    void DatabaseOperating(int OperatingType, void*);
 
     //Following for the screen recall
 
-    void BackupStatusData();
+//    void BackupStatusData();
 
-    bool SQLQuery(void* _DBObj, QMap<int, QString>* _EntireTableInfo);
-    bool SQLQuery(void* _DBObj, int ID, QString Name, void* _DataStructure);
+//    bool SQLQuery(void* _DBObj, QMap<int, QString>* _EntireTableInfo);
+//    bool SQLQuery(void* _DBObj, int ID, QString Name, void* _DataStructure);
 
-    bool SQLInsert(void* _DBObj, void* _DataStructure);
+//    bool SQLInsert(void* _DBObj, void* _DataStructure);
 
-    bool SQLUpdate(void* _DBObj, void* _DataStructure);
+//    bool SQLUpdate(void* _DBObj, void* _DataStructure);
 
-    bool SQLDelete(void* _DBObj);
-    bool SQLDelete(void* _DBObj, int ID, QString Name);
+//    bool SQLDelete(void* _DBObj);
+//    bool SQLDelete(void* _DBObj, int ID, QString Name);
 private:
     void CheckBransonFolder();
 signals:
     void EnableErrorMessageSignal(struct BransonMessageBox &MsgBox);
     void DisableErrorMessageSignal(struct BransonMessageBox &MsgBox);
+    void ThereAreAlarmItemsSignal();
 protected:
     InterfaceClass(QObject *parent = 0);
 private:

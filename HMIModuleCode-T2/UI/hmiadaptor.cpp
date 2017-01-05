@@ -420,7 +420,7 @@ void HmiAdaptor::maintenanceCountSetLimit(QString code, QString value)
 
 void HmiAdaptor::maintenanceCount80PercentAlarm(QString code, QString value)
 {
-    qDebug()<<"80%alarm code"<<code<<"value"<<value;
+//    qDebug()<<"80%alarm code"<<code<<"value"<<value;
     if (code == "Horn")
         maintenanceCount->_execute(TOOLINGCOUNT::HORN80PERCENTALARM);
     else if (code == "AnvilTip") {
