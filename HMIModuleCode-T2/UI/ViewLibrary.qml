@@ -810,10 +810,10 @@ Item {
     Connections {
         target: fileSelectLoader.item
         onSignalFileDialogCancel: {
-            fileLoader.source = ""
+            fileSelectLoader.source = ""
         }
         onSignalChoseFile: {
-            fileLoader.source = ""
+            fileSelectLoader.source = ""
             hmiAdaptor.importData(fileName)
             initPage()
         }

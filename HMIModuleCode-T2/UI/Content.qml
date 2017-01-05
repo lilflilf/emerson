@@ -102,6 +102,21 @@ Item {
         }
     }
 
+    Connections {
+        target: fileSelectLoader.item
+        onSignalFileDialogCancel: {
+            fileSelectLoader.source = ""
+        }
+        onSignalChoseFile: {
+            fileSelectLoader.source = ""
+            hmiAdaptor.importData(fileName)
+        }
+    }
+    Loader {
+        id: fileSelectLoader
+        anchors.fill: parent
+    }
+
     Loader {
         id: loader
         z: 10
@@ -276,6 +291,7 @@ Item {
                 width: (parent.width-20) / 2 - 12
                 pointSize: 16
                 onClicked: {
+                    fileSelectLoader.source = "qrc:/UI/MySelectFileDialog.qml"
                 }
             }
             CButton {
