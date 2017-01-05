@@ -555,7 +555,6 @@ Item {
                     state: "left"
                     opacity: 0.8
                     onStateChanged: {
-                        console.log("onStateChanged",wireDirection.state,spliceDetailsItem.selectDirection,detailIsChang)
                         if(detailIsChang)
                             return
                         if (spliceDetailsItem.selectDirection != wireDirection.state)

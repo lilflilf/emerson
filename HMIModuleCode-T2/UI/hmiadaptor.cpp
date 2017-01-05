@@ -1310,3 +1310,12 @@ void HmiAdaptor::setAlarmModelList(bool bIsNeedReset)
     alarmModel->setModelList(bIsNeedReset);
 }
 
+void HmiAdaptor::viewLibraryMovePart(int id, QString name)
+{
+    emit signalMovePart(id,name);
+}
+
+void HmiAdaptor::viewLibraryMoveSplice(int id, QString name)
+{
+    emit signalMoveSplice(id,name);
+}

@@ -32,6 +32,12 @@ Item {
     //        anchors.fill: parent
     //        source: "qrc:/images/images/headbg.png"
     //    }
+    Connections{
+        target: alarmModel
+        onSignalShowFlag: {
+            alarmButton.visible = bIsShow
+        }
+    }
 
     MouseArea {
         z: 9

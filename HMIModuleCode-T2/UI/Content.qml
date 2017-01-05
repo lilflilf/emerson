@@ -38,18 +38,69 @@ Item {
         anchors.fill: parent
         source: "qrc:/images/images/bg.png"
     }
+
+    function selectPartUpdataPage(id,name)
+    {
+        partModel.getPartInfo(true,id,name)
+        edit1.inputText = partModel.getWorkStationCount()
+        edit2.inputText = partModel.getWorkStationMaxSplicePerStation()
+        edit3.inputText = partModel.getWorkStationRows()
+        edit4.inputText = partModel.getWorkStationColumns()
+        edit5.inputText = partModel.getWorkStationMaxSplicePerZone()
+        edit6.inputText = name
+        var corlorlist = new Array()
+            corlorlist = partModel.getWorkStationCorlor()
+        var zoneList = new Array()
+        zoneList = partModel.geteWorkStationZone()
+        var nameList = new Array()
+        nameList = partModel.getCurrentPartOfSpliceName()
+        var idList = new Array()
+        idList = partModel.getCurrentPartOfSpliceId()
+        for (var i = 0; i < nameList.length; i++) {
+            if (corlorlist[i] == -1 || zoneList[i] == -1) {
+                spliceList.listModel.append({"SpliceName":nameList[i],"stationColor":"white","station":"?","SpliceId":idList[i]})
+            } else {
+                spliceList.listModel.append({"SpliceName":nameList[i],"stationColor":arrayColor[corlorlist[i]],"station":arrayzone[zoneList[i]],"SpliceId":idList[i]})
+            }
+        }
+        if (partModel.getPartOnlineOrOffLine())
+            basicSwitch.state = "right"
+        else
+            basicSwitch.state = "left"
+    }
+
     Connections {
         target: loader.item
         onSignalSaveSplice: {
-            if (spliceId != -1)
-                spliceList.listModel.append({"SpliceName":spliceModel.getStructValue("SpliceName","") ,"stationColor":"white","station":"?","SpliceId":spliceId})
-            else if (spliceId == -1)
+            if (bIsEdit) {
                 content.selectSplice(content.selectSpliceId)
-
+                for (var i = 0; i < listModel.count; i++) {
+                    if (listModel.get(i).SpliceId == spliceId) {
+                        listModel.set(i,{"SpliceName":spliceModel.getStructValue("SpliceName","")})
+                    }
+                }
+            } else {
+                spliceList.listModel.append({"SpliceName":spliceModel.getStructValue("SpliceName","") ,"stationColor":"white","station":"?","SpliceId":spliceId})
+            }
             loader.source = ""
             titleTextChanged("Create New")
         }
     }
+
+    Connections {
+        target: hmiAdaptor
+        onSignalMovePart: {
+            selectPartUpdataPage(id,name)
+        }
+        onSignalMoveSplice: {
+            bIsEditSplice = true
+            spliceModel.editNew(id)
+            loader.source = "qrc:/UI/CreatWire.qml"
+            loader.item.bIsFromLib = true
+            titleTextChanged(qsTr("Edit Existing"))
+        }
+    }
+
     Loader {
         id: loader
         z: 10
@@ -1107,32 +1158,7 @@ Item {
         onSignalAddExistSelectClick: {
             //que hanshu
             if (addExit.listModel == partModel) {
-                partModel.getPartInfo(true,modelId,name)
-                edit1.inputText = partModel.getWorkStationCount()
-                edit2.inputText = partModel.getWorkStationMaxSplicePerStation()
-                edit3.inputText = partModel.getWorkStationRows()
-                edit4.inputText = partModel.getWorkStationColumns()
-                edit5.inputText = partModel.getWorkStationMaxSplicePerZone()
-                edit6.inputText = name
-                var corlorlist = new Array()
-                    corlorlist = partModel.getWorkStationCorlor()
-                var zoneList = new Array()
-                zoneList = partModel.geteWorkStationZone()
-                var nameList = new Array()
-                nameList = partModel.getCurrentPartOfSpliceName()
-                var idList = new Array()
-                idList = partModel.getCurrentPartOfSpliceId()
-                for (var i = 0; i < nameList.length; i++) {
-                    if (corlorlist[i] == -1 || zoneList[i] == -1) {
-                        spliceList.listModel.append({"SpliceName":nameList[i],"stationColor":"white","station":"?","SpliceId":idList[i]})
-                    } else {
-                        spliceList.listModel.append({"SpliceName":nameList[i],"stationColor":arrayColor[corlorlist[i]],"station":arrayzone[zoneList[i]],"SpliceId":idList[i]})
-                    }
-                }
-                if (partModel.getPartOnlineOrOffLine())
-                    basicSwitch.state = "right"
-                else
-                    basicSwitch.state = "left"
+                selectPartUpdataPage(modelId,name)
             } else if (addExit.listModel == spliceModel) {
                 var bIsFind = false
                 for (var i = 0; i < listModel.count; i++) {

@@ -966,7 +966,7 @@ int SplicesModel::saveSplice(bool bIsEdit)
     if (bIsEdit)
     {
         m_spliceAdaptor->UpdateRecordIntoTable(&presetElement);
-        return -1;
+        return presetElement.SpliceID;
     }
     else
     {
@@ -1349,6 +1349,7 @@ void PartModel::getPartInfo(bool bIsEdit, int id, QString name)
     if (bIsEdit) {
         m_partAdaptor->QueryOneRecordFromTable(id,name,m_Part);
     } else {
+        delete m_Part;
         m_Part = NULL;
         m_Part = new PartElement();
     }
@@ -1887,6 +1888,7 @@ void AlarmModel::setModelList(QString name, unsigned int time_from, unsigned int
     if (m_alarmAdaptor->QueryUseNameAndTime(name,time_from,time_to,alarms))
         qDebug( )<< "AlarmModel " << alarms->count();
     endResetModel();
+    getAlarmbIsShowFlag();
 }
 
 void AlarmModel::setModelList(unsigned int time_from, unsigned int time_to)
@@ -1896,6 +1898,7 @@ void AlarmModel::setModelList(unsigned int time_from, unsigned int time_to)
     if (m_alarmAdaptor->QueryOnlyUseTime(time_from,time_to,alarms))
         qDebug( )<< "AlarmModel " << alarms->count();
     endResetModel();
+    getAlarmbIsShowFlag();
 }
 
 void AlarmModel::setModelList(bool bIsNeedReset)
@@ -1909,6 +1912,7 @@ void AlarmModel::setModelList(bool bIsNeedReset)
     }
     qDebug( )<< "AlarmModel" << alarms->count()<<bIsNeedReset;
     endResetModel();
+    getAlarmbIsShowFlag();
 }
 
 void AlarmModel::searchAlarmLog(QString name, unsigned int time_from, unsigned int time_to)
@@ -1978,7 +1982,6 @@ QVariant AlarmModel::getAlarmValue(int index, QString key)
     m_alarmAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myAlarm);
     m_spliceAdaptor->QueryOneRecordFromTable(myAlarm.SpliceID,&m_splice);
     QHash<QString, QVariant> AlarmModelHash;
-    qDebug()<<"getAlarmValue"<<myAlarm.IsReseted;
     AlarmModelHash.insert("AlarmId",myAlarm.AlarmID);
     AlarmModelHash.insert("CreatedDate",QDateTime::fromTime_t(myAlarm.CreatedDate).toString("MM/dd/yyyy hh:mm"));
     AlarmModelHash.insert("Alarm/ErrorType",myAlarm.AlarmType);
@@ -2004,6 +2007,17 @@ void AlarmModel::updateAlarmLog(int id)
     AlarmIcon *alarmIcon = AlarmIcon::Instance();
     alarmIcon->ResetAlarmItem(id);
     setModelList(false);
+}
+
+void AlarmModel::getAlarmbIsShowFlag()
+{
+    QMap<int, QString> tempalarms;
+    m_alarmAdaptor->QueryOnlyUseField("IsReseted",QVariant(false),&tempalarms);
+    if (tempalarms.count()) {
+        emit signalShowFlag(true);
+    } else {
+        emit signalShowFlag(false);
+    }
 }
 
 /*****************WorkOrderHistory************************/

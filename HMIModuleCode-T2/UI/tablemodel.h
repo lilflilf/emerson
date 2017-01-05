@@ -282,9 +282,10 @@ public slots:
     Q_INVOKABLE int getAxes(QString key);
     Q_INVOKABLE void setStartTime();
     Q_INVOKABLE void updateAlarmLog(int id);
-
+    Q_INVOKABLE void getAlarmbIsShowFlag();
     Q_INVOKABLE void editNew(int weldId, QString weldName);
-
+signals:
+    void signalShowFlag(bool bIsShow);
 private:
     QHash<int, QByteArray> m_roleNames;
     VariantToString *variantToString;

@@ -151,6 +151,8 @@ public:
     Q_INVOKABLE void msgBoxClick(bool clickOK);
     Q_INVOKABLE void teachModeSaveSplice();
     Q_INVOKABLE void setAlarmModelList(bool bIsNeedReset);
+    Q_INVOKABLE void viewLibraryMovePart(int id, QString name);
+    Q_INVOKABLE void viewLibraryMoveSplice(int id, QString name);
 
     BransonMessageBox bransonMessageBox;
     InterfaceClass *interfaceClass;
@@ -191,6 +193,8 @@ signals:
     void signalWeldCycleCompleted(bool result);
     void signalButtonStateChanged(QString buttonName,bool state);
     void signalMantenaneceCount(int count);
+    void signalMovePart(int id, QString name);
+    void signalMoveSplice(int id, QString name);
 public slots:
     void slotWeldCycleCompleted(bool result);
     void slotEnableDialog(struct BransonMessageBox &MsgBox);

@@ -23,9 +23,9 @@ Item {
 
     property var weldModel: -1
     property var stepModel: -1
-
+    property bool bIsFromLib: false
     property bool firstComeIn: true
-    signal signalSaveSplice(var spliceId)
+    signal signalSaveSplice(var spliceId,var bIsEdit)
     property bool crossSection: false
     property int selectIndex: 0
     property bool detailIsChang: true
@@ -1428,8 +1428,10 @@ Item {
 
                 var spliceId = spliceModel.saveSplice(creatWire.bIsEditSplice)
                 wireModel.updateSpliceIdToWire(list, spliceId)
+                if(creatWire.bIsFromLib)
+                    return
 //                if (spliceId != -1 && !creatWire.bIsEditSplice)
-                    signalSaveSplice(spliceId)
+                    signalSaveSplice(spliceId,creatWire.bIsEditSplice)
             }
         }
     }

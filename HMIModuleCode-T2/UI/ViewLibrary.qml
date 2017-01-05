@@ -721,11 +721,13 @@ Item {
             textColor: "white"
             text: qsTr("Edit Details")
             onClicked: {
-                if (partRadio.checked)
+                if (partRadio.checked) {
                     root.checkNeedPassWd(0)
-                else if (spliceRadio.checked)
+                    hmiAdaptor.viewLibraryMovePart(partModel.getValue(selectIndx,"PartId"),partModel.getValue(selectIndx,"PartName"))
+                } else if (spliceRadio.checked) {
                     root.checkNeedPassWd(0)
-                else if (wireRadio.checked)
+                    hmiAdaptor.viewLibraryMoveSplice(spliceModel.getValue(selectIndx,"SpliceId"),spliceModel.getValue(selectIndx,"SpliceName"))
+                } else if (wireRadio.checked)
                     root.checkNeedPassWd(19)
                 else if (shrinkRadio.checked){
                     if (selectIndx < 0) {
@@ -816,6 +818,9 @@ Item {
                     inputtimeText.inputText = workOrderModel.getValue(selectIndx,"QUANTITY")
                 }
             }
+        }
+        onSelectPartNameChanged: {
+            selectPart.text = dialog.selectPartName
         }
         Text {
             id: shrinkId
