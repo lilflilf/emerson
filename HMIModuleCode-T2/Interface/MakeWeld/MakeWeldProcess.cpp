@@ -79,6 +79,7 @@ void MakeWeldProcess::UpdateWeldResult()
     CurrentWeldResult.ActualResult.ActualEnergy = _M102IA->IAactual.Energy;
     CurrentWeldResult.ActualResult.ActualWidth = _M102IA->IAactual.Width;
     CurrentWeldResult.ActualResult.ActualTime = _M102IA->IAactual.Time;
+    qDebug()<<"Current Time"<< _M102IA->IAactual.Time;
     CurrentWeldResult.ActualResult.ActualPeakPower = _M102IA->IAactual.Power;
     CurrentWeldResult.ActualResult.ActualPreheight = _M102IA->IAactual.Preheight;
     CurrentWeldResult.ActualResult.ActualAmplitude = _M102IA->IAactual.Amplitude;
@@ -357,22 +358,17 @@ bool MakeWeldProcess::_execute()
     PowerGraphReady = false;
     HeightGraphReady = false;
     UpdateIAFields();
-    qDebug()<<"Step1";
     _M2010->ReceiveFlags.SYSTEMid = false;
     while(_M2010->ReceiveFlags.SYSTEMid == false)
     {
         if(Retries < 2)
         {
-            qDebug()<<"SendPreset";
             _M102IA->SendPresetToIA(0);
-            qDebug()<<"SendPresetEnd";
             _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.SYSTEMid);
             Retries++;
         }else
             break;
-        qDebug()<<"Retries"<<Retries;
     }
-    qDebug()<<"Step2";
     if( Retries >= 2)
     {
         tmpMsgBox.MsgTitle = QObject::tr("ERROR");
@@ -382,7 +378,6 @@ bool MakeWeldProcess::_execute()
         _Interface->cMsgBox(&tmpMsgBox);
         bResult = false;
     }
-    qDebug()<<"Step3"<<bResult;
     if(bResult == false)
         return bResult;
 
@@ -390,14 +385,12 @@ bool MakeWeldProcess::_execute()
     _M102IA->SendIACommand(IAComSetPressure, CurrentSplice.WeldSettings.BasicSetting.TrigPres);
     _M102IA->SendIACommand(IAComSetAmplitude, CurrentSplice.WeldSettings.BasicSetting.Amplitude);
     _M102IA->SendIACommand(IAComSetPreburst, CurrentSplice.WeldSettings.AdvanceSetting.PreBurst);
-    qDebug()<<"Step4"<<WeldCycleStatus;
 
     if(WeldCycleStatus == false)
     {
         bResult = false;
         return bResult;
     }
-    qDebug()<<"Step5";
     Retries = 0;
     _M2010->ReceiveFlags.HostReadyData = false;
     while(_M2010->ReceiveFlags.HostReadyData == false)
@@ -408,7 +401,6 @@ bool MakeWeldProcess::_execute()
         if(Retries > 3)
             break;
     }
-    qDebug()<<"Step6";
     if(Retries > 3)
     {
         tmpMsgBox.MsgTitle = QObject::tr("ERROR");
@@ -418,7 +410,6 @@ bool MakeWeldProcess::_execute()
         _Interface->cMsgBox(&tmpMsgBox);
         bResult = false;
     }
-    qDebug()<<"Step7";
     return bResult;
 }
 

@@ -19,32 +19,26 @@ Item {
         target: hmiAdaptor
         onSignalWeldCycleCompleted: {
             teachCount++
+            if (spliceModel.getStructValue("TestModel","") == 1)
+            {
+                if (teachCount >= spliceModel.getStructValue("TestCount","")) {
+                    cdialog2.visible = true
+                    hmiAdaptor.operateProcessExec("Stop")
+
+                    return
+                }
+            }
             progressBar.value = teachCount
             if (spliceModel.getStructValue("TeachMode","") == 0 || spliceModel.getStructValue("TeachMode","") == 3)
             {
                 cdialog.visible = true
                 return
             }
-            if (spliceModel.getStructValue("TestModel","") == 1)
-            {
-                if (teachCount >= spliceModel.getStructValue("TestCount","")) {
-                    cdialog2.visible = true
-                    return
-                }
-            }
+
             hmiAdaptor.teachModeProcess()
             setData()
             hmiAdaptor.operateProcessExec("Execute")
 
-        }
-    }
-    onTeachCountChanged: {
-        if (spliceModel.getStructValue("TestModel","") == 1)
-        {
-            if (teachCount >= spliceModel.getStructValue("TestCount","")) {
-                cdialog2.visible = true
-                hmiAdaptor.operateProcessExec("Stop")
-            }
         }
     }
 
