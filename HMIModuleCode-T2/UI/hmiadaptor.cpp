@@ -961,9 +961,10 @@ void HmiAdaptor::slotWeldCycleCompleted(bool result)
     if (result) {
         alarmModel->weldResultElement = operateProcess->CurrentWeldResult;
         emit signalWeldCycleCompleted(result);
-        maintenanceCountExecute("_Recall");
-        int count = maintenanceCountGetValue(0,3).toInt();
-        emit signalMantenaneceCount(count);
+
+        //        maintenanceCountExecute("_Recall");
+//        int count = maintenanceCountGetValue(0,3).toInt();
+        emit signalMantenaneceCount(interfaceClass->StatusData.CurrentMaintenanceLimits[0]);
     }
 }
 
