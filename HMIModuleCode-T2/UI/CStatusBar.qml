@@ -14,8 +14,8 @@ import QtQuick.Window 2.2
 Item {
     width: Screen.width
     height: Screen.height * 0.03
-
     Rectangle {
+        id: back
         anchors.fill: parent
 //        color: "#fac834"
         color: "#004b8d"

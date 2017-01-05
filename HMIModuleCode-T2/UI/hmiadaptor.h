@@ -27,35 +27,9 @@
 class HmiAdaptor : public QObject
 {
     Q_OBJECT
-//    Q_ENUMS(StripeType)
-//    Q_ENUMS(MetalType)
-//    Q_ENUMS(HorizontalLocation)
-//    Q_ENUMS(VerticalLocation)
-//    Q_ENUMS(VerticalPosition)
-//    Q_ENUMS(BUTTONCLICK)
-//    Q_ENUMS(CALIBRATE)
+
     Q_ENUMS(FormulaRange)
-
 public:
-//    enum CALIBRATE
-//    {
-//        WIDTH_CALIBRATE,
-//        HEIGHT_CALIBRATE,
-//        AMPLITUDE_CALIBRATE_PRESS,
-//        AMPLITUDE_CALIBRATE_UPPRESS,
-//    };
-
-//    enum BUTTONCLICK
-//    {
-//        ANVILARMCLICK,
-//        ANVILCLICK,
-//        GATHERCLICK,
-//        CUTTERCLICK,
-//        CRASHCLICK,
-//        SAFETYCLICK,
-//        CONVERTERCOOLINGCLICK,
-//        TOOLINGCOOLINGCLICK,
-//    };
     enum FormulaRange
     {
         EnergyR1,
@@ -154,6 +128,9 @@ public:
     Q_INVOKABLE void viewLibraryMovePart(int id, QString name);
     Q_INVOKABLE void viewLibraryMoveSplice(int id, QString name);
 
+    Q_INVOKABLE void importData(QString fileUrl);
+    Q_INVOKABLE int importSplice(QString spliceStr);
+    Q_INVOKABLE int importPart(QString partStr);
     BransonMessageBox bransonMessageBox;
     InterfaceClass *interfaceClass;
     MakeWeldProcess *operateProcess;

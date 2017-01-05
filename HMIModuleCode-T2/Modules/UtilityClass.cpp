@@ -7,6 +7,7 @@
 #include <QJsonParseError>
 #include <QDebug>
 #include "Interface/Interface.h"
+
 UtilityClass* UtilityClass::_instance = NULL;
 UtilityClass* UtilityClass::Instance()
 {

@@ -719,7 +719,7 @@ Item {
             width: (parent.width-54)/4
             iconSource: "qrc:/images/images/stting.png"
             textColor: "white"
-            text: qsTr("Edit Details")
+            text: qsTr("Edit")
             onClicked: {
                 if (partRadio.checked) {
                     root.checkNeedPassWd(0)
@@ -766,18 +766,58 @@ Item {
                 }
             }
         }
+
         CButton {
             width: (parent.width-54)/4
             textColor: "white"
-            text: qsTr("Export Data")
+            text: qsTr("Export")
             iconSource: "qrc:/images/images/export.png"
+            onClicked: {
+                fileLoader.source = "qrc:/UI/MySaveFileDialog.qml"
+            }
         }
         CButton {
             width: (parent.width-54)/4
             iconSource: "qrc:/images/images/import.png"
             textColor: "white"
-            text: qsTr("IMPORT")
+            text: qsTr("Import")
+            onClicked: {
+                fileSelectLoader.source = "qrc:/UI/MySelectFileDialog.qml"
+            }
         }
+    }
+    Connections {
+        target: fileLoader.item
+        onSignalFileDialogCancel: {
+            fileLoader.source = ""
+        }
+        onSignalChoseFile: {
+            fileLoader.source = ""
+            if (wireRadio.checked && selectIndx != -1)
+                wireModel.exportData(wireModel.getValue(selectIndx,"WireId"),fileName)
+            else if (spliceRadio.checked && selectIndx != -1)
+                spliceModel.exportData(spliceModel.getValue(selectIndx,"SpliceId"),fileName)
+            else if (partRadio.checked && selectIndx != -1)
+                partModel.exportData(partModel.getValue(selectIndx,"PartId"),fileName)
+        }
+    }
+    Connections {
+        target: fileSelectLoader.item
+        onSignalFileDialogCancel: {
+            fileLoader.source = ""
+        }
+        onSignalChoseFile: {
+            fileLoader.source = ""
+            hmiAdaptor.importData(fileName)
+        }
+    }
+    Loader {
+        id: fileLoader
+        anchors.fill: parent
+    }
+    Loader {
+        id: fileSelectLoader
+        anchors.fill: parent
     }
     Rectangle {
         id: backGround

@@ -294,7 +294,6 @@ QString HmiAdaptor::maintenanceCountGetValue(int code, int index)
             break;
         }
     }
-    qDebug() << "maintenanceCountGetValue" << value << code << index;
     return value;
 }
 
@@ -1003,19 +1002,19 @@ void HmiAdaptor::slotEnableDialog(BransonMessageBox &MsgBox)
 
     if (MsgBox.TipsMode & Critical)
     {
-        typeIco = "qrc:/images/images/error.ico";
+        typeIco = "qrc:/images/images/error1.png";
     }
     else if (MsgBox.TipsMode & Exclamation)
     {
-        typeIco = "qrc:/images/images/alarm.ico";
+        typeIco = "qrc:/images/images/alarm1.png";
     }
     else if (MsgBox.TipsMode & Information)
     {
-        typeIco = "qrc:/images/images/information.ico";
+        typeIco = "qrc:/images/images/information1.png";
     }
     else if (MsgBox.TipsMode & Alarm)
     {
-        typeIco = "qrc:/images/images/alarm.ico";
+        typeIco = "qrc:/images/images/alarm1.png";
     }
 
     if (MsgBox.TipsMode & OFF_ON_LINE)
@@ -1319,6 +1318,111 @@ void HmiAdaptor::teachModeSaveSplice()
     spliceModel->updateSplice(operateProcess->CurrentSplice);
 }
 
+void HmiAdaptor::importData(QString fileUrl)
+{
+    QString fileSource;
+    fileSource = fileUrl;
+    if (fileSource.contains("file:///"))
+        fileSource = fileSource.mid(8);
+    QFile csvFile(fileSource);
+    QStringList CSVList;
+    CSVList.clear();
+
+
+    if (csvFile.open(QIODevice::ReadWrite))
+    {
+        QTextStream stream(&csvFile);
+        while (!stream.atEnd())
+        {
+            CSVList.push_back(stream.readLine());
+        }
+        csvFile.close();
+    }
+    if (CSVList.size() > 1) {
+        if (CSVList.at(0) == "WireData")
+            wireModel->importData(CSVList[1]);
+        else if (CSVList.at(0) == "SpliceData") {
+            importSplice(CSVList[1]);
+        }
+        else if (CSVList.at(0) == "PartData") {
+            importPart(CSVList[1]);
+        }
+    }
+}
+
+int HmiAdaptor::importSplice(QString spliceStr)
+{
+    QStringList tempList;
+    QStringList wireList;
+    QList<int> wireIdList;
+    QString temp;
+    QString spliceString;
+    QMap<int,QString> tempMap;
+    int i;
+    tempList = spliceStr.split(",");
+
+    temp = tempList.at(tempList.count() - 2);
+    temp.replace(".",",");
+    wireList = temp.split(";");
+    for (i = 0;i < wireList.count();i++)
+    {
+        if (wireList[i] != "")
+            wireIdList.push_back(wireModel->importData(wireList[i]));
+    }
+    qDebug() << "w1" << wireList;
+    qDebug() << "w2" << wireIdList;
+
+    for (i = 0; i < wireIdList.count();i++)
+    {
+        if (wireIdList[i] != -1)
+            tempMap.insert(wireIdList[i],wireModel->getWireName(wireIdList[i]));
+    }
+
+    for (int j = 0;j < tempList.count(); j++)
+    {
+        spliceString.append(tempList[j] + ",");
+    }
+    int spliceId = spliceModel->importData(spliceString,tempMap);
+    if (spliceId != -1)
+        wireModel->updateSpliceIdToWire(wireIdList,spliceId);
+    return spliceId;
+}
+
+int HmiAdaptor::importPart(QString partStr)
+{
+    QStringList tempList;
+    QStringList spliceList;
+    QList<int> spliceIdList;
+    QString temp;
+    QString partString;
+    QMap<int,QString> tempMap;
+    int i;
+    tempList = partStr.split(",");
+    if (tempList.count() > 2)
+        temp = tempList.at(tempList.count() - 2);
+    else
+        return -1;
+    temp.replace("*",",");
+    spliceList = temp.split("|");
+    for (i = 0;i < spliceList.count();i++)
+    {
+        if (spliceList[i] != "")
+            spliceIdList.push_back(importSplice(spliceList[i]));
+    }
+    qDebug() << "x1" << spliceList;
+    for (i = 0; i < spliceIdList.count();i++)
+    {
+        if (spliceIdList[i] != -1)
+            tempMap.insert(spliceIdList[i],spliceModel->getSpliceName(spliceIdList[i]));
+    }
+
+    for (int j = 0;j < tempList.count(); j++)
+    {
+        partString.append(tempList[j] + ",");
+    }
+    int partId = partModel->importData(partString,tempMap);
+    return partId;
+}
 void HmiAdaptor::setAlarmModelList(bool bIsNeedReset)
 {
     alarmModel->setModelList(bIsNeedReset);

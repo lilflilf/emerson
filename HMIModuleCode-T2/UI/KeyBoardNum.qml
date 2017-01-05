@@ -40,6 +40,8 @@ Item {
         font.pixelSize: 27
         color: "white"
         text: ""
+        visible: keyBoardnum.visible
+
     }
     Text {
         id: waring
@@ -163,6 +165,7 @@ Item {
         }
     }
     Grid {
+        id: grid
         anchors.top: parent.top
         anchors.topMargin: 94
         anchors.left: rec2.right
@@ -173,6 +176,51 @@ Item {
         rowSpacing: 5
         columns: 4
         rows: 4
+        visible: keyBoardnum.visible
+        onVisibleChanged: {
+            if (grid.visible)
+                forceActiveFocus()
+        }
+
+        Keys.enabled: true
+        Keys.onPressed: {
+            console.log("ffffffffffffffffffffffffffffffff",event.key)
+
+            if (event.key == Qt.Key_Backspace) {
+                var TempSTring = ""
+                for (var i = 0; i < tempValue.length-1;i++) {
+                    TempSTring += tempValue.charAt(i)
+                }
+                tempValue = TempSTring
+                inputText = TempSTring + hmiAdaptor.getStringUnit(keyBoardnum.minvalue)
+            }
+            else if (event.key >= Qt.Key_0 && event.key <= Qt.Key_9)
+            {
+                tempValue += event.key - 48
+                if (hmiAdaptor.keyNumStringMatch(keyBoardnum.minvalue,keyBoardnum.maxvalue,keyBoardnum.tempValue)) {
+                    inputText = tempValue + hmiAdaptor.getStringUnit(keyBoardnum.minvalue)
+                } else {
+                    timer.running = true
+                    var Temp = ""
+                    for (var j = 0; j < tempValue.length-1;j++) {
+                        Temp += tempValue.charAt(j)
+                    }
+                    tempValue = Temp
+                }
+            }
+            else if (event.key == Qt.Key_Return)
+            {
+                currentClickIndex(15)
+            }
+            else if (event.key == Qt.Key_Escape)
+            {
+                inputText = keyBoardnum.currentValue
+                keyBoardnum.visible = false
+                tempValue = ""
+                currentClickIndex(11)
+            }
+        }
+
         Repeater {
             model: listModel
             delegate: Image {

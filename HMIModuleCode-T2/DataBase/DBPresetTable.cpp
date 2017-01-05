@@ -3,6 +3,11 @@
 #include "Interface/PresetElement.h"
 #include <QHash>
 #include <QDebug>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QByteArray>
+#include <QJsonParseError>
+#include <QFile>
 
 DBPresetTable* DBPresetTable::_instance = NULL;
 QString DBPresetTable::SpliceDBFile = "Splice.db";
@@ -140,6 +145,7 @@ DBPresetTable::DBPresetTable()
         }
     }
     SpliceDBObj.close();
+    wireTable = DBWireTable::Instance();
 }
 
 void DBPresetTable::InsertTestDataIntoTable()
@@ -908,4 +914,210 @@ bool DBPresetTable::QueryUseNameAndTime(QString Name, unsigned int time_from,
 
     SpliceDBObj.close();
     return bResult;
+}
+
+bool DBPresetTable::exportData(int spliceId, QString fileUrl)
+{
+    QString queryStr;
+    QString lineValue = "";
+    QSqlQuery query(SpliceDBObj);
+    QString wireData;
+    bool bResult = SpliceDBObj.open();
+    bool ok;
+    QString tempWireData;
+    QString fileSource;
+    if(bResult == true)
+    {
+        queryStr = QString("SELECT * FROM Preset WHERE ID == '%1'").arg(spliceId);
+        query.prepare(queryStr);
+        bResult = query.exec();
+        if (bResult) {
+            bResult = query.next();
+            if(bResult) {
+                for (int i = 0;i < 69;i++)
+                {
+                    if (i == 68)
+                    {
+                        QJsonParseError json_error;
+                        QJsonDocument parse_document = QJsonDocument::fromJson(query.value(i).toString().toLatin1(), &json_error);
+                        if(json_error.error == QJsonParseError::NoError)
+                        {
+                            if(parse_document.isObject())
+                            {
+                                QJsonObject obj = parse_document.object();
+                                QJsonObject::const_iterator iterator = obj.constBegin();
+                                for(int i = 0; i< obj.count(); i++)
+                                {
+                                    iterator = obj.constFind(QString::number(i, 10));
+                                    if(iterator != obj.constEnd())
+                                    {
+                                        QString value = iterator.value().toString();
+                                        QStringList strList = value.split(";");
+                                        tempWireData = wireTable->GetExportString(((QString)strList.at(0)).toInt());
+                                        wireData.append(tempWireData + ";");
+                                    }
+                                }
+                            }
+                        }
+                        lineValue.append(wireData + ",");
+                    }
+                    else
+                        lineValue.append(query.value(i).toString() + ",");
+                }
+
+                fileSource = fileUrl;
+                if (fileSource.contains("file:///"))
+                    fileSource = fileSource.mid(8);
+                QFile csvFile(fileSource);
+                if (csvFile.open(QIODevice::Text | QIODevice::ReadWrite | QIODevice::Truncate))
+                {
+                    QTextStream out(&csvFile);
+                    out << "SpliceData" << '\n' << lineValue;
+                    csvFile.close();
+                }
+            }
+        }
+        SpliceDBObj.close();
+    }
+    return bResult;
+}
+
+int DBPresetTable::importData(QString value, QMap<int, QString> wireIdMap)
+{
+    QString spliceString;
+    QStringList spliceList;
+    PresetElement mySplice;
+    bool ok;
+    int ret;
+    UtilityClass* _Utility = UtilityClass::Instance();
+
+    spliceString = value;
+    spliceList = spliceString.split(",");
+    if (spliceList.count() > 60)
+    {
+        mySplice.SpliceName = spliceList[1];
+        mySplice.OperatorID = QString(spliceList[3]).toInt(&ok,10);
+        mySplice.CrossSection = QString(spliceList[4]).toInt(&ok,10);
+        mySplice.PresetPicNamePath = spliceList[5];
+        mySplice.Verified = spliceList[6] == "0" ? false : true;
+        mySplice.WeldSettings.BasicSetting.Energy = QString(spliceList[7]).toInt(&ok,10);
+        mySplice.WeldSettings.BasicSetting.Amplitude = QString(spliceList[8]).toInt(&ok,10);
+        mySplice.WeldSettings.BasicSetting.Width = QString(spliceList[9]).toInt(&ok,10);
+        mySplice.WeldSettings.BasicSetting.Pressure = QString(spliceList[10]).toInt(&ok,10);
+        mySplice.WeldSettings.BasicSetting.TrigPres = QString(spliceList[11]).toInt(&ok,10);
+
+        mySplice.WeldSettings.QualitySetting.Time.Plus = QString(spliceList[12]).toInt(&ok,10);
+        mySplice.WeldSettings.QualitySetting.Time.Minus = QString(spliceList[13]).toInt(&ok,10);
+        mySplice.WeldSettings.QualitySetting.Power.Plus = QString(spliceList[14]).toInt(&ok,10);
+        mySplice.WeldSettings.QualitySetting.Power.Minus = QString(spliceList[15]).toInt(&ok,10);
+        mySplice.WeldSettings.QualitySetting.Preheight.Plus = QString(spliceList[16]).toInt(&ok,10);
+        mySplice.WeldSettings.QualitySetting.Preheight.Minus = QString(spliceList[17]).toInt(&ok,10);
+        mySplice.WeldSettings.QualitySetting.Height.Plus = QString(spliceList[18]).toInt(&ok,10);
+        mySplice.WeldSettings.QualitySetting.Height.Minus = QString(spliceList[19]).toInt(&ok,10);
+        mySplice.WeldSettings.QualitySetting.Force.Plus = QString(spliceList[20]).toInt(&ok,10);
+        mySplice.WeldSettings.QualitySetting.Force.Minus = QString(spliceList[21]).toInt(&ok,10);
+
+        mySplice.WeldSettings.AdvanceSetting.WeldMode = (WELDMODE)QString(spliceList[22]).toInt(&ok,10);
+        mySplice.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode = (STEPWELDMODE)QString(spliceList[23]).toInt(&ok,10);
+        mySplice.WeldSettings.AdvanceSetting.StepWeld.EnergyToStep = QString(spliceList[24]).toInt(&ok,10);
+        mySplice.WeldSettings.AdvanceSetting.StepWeld.TimeToStep = QString(spliceList[25]).toInt(&ok,10);
+        mySplice.WeldSettings.AdvanceSetting.StepWeld.PowerToStep = QString(spliceList[26]).toInt(&ok,10);
+        mySplice.WeldSettings.AdvanceSetting.StepWeld.Amplitude2 = QString(spliceList[27]).toInt(&ok,10);
+        mySplice.WeldSettings.AdvanceSetting.PreBurst = QString(spliceList[28]).toInt(&ok,10);
+        mySplice.WeldSettings.AdvanceSetting.HoldTime = QString(spliceList[29]).toInt(&ok,10);
+        mySplice.WeldSettings.AdvanceSetting.SqzTime = QString(spliceList[30]).toInt(&ok,10);
+        mySplice.WeldSettings.AdvanceSetting.ABDelay = QString(spliceList[31]).toInt(&ok,10);
+        mySplice.WeldSettings.AdvanceSetting.ABDur = QString(spliceList[32]).toInt(&ok,10);
+        mySplice.WeldSettings.AdvanceSetting.CutOff = QString(spliceList[33]).toInt(&ok,10);
+        mySplice.WeldSettings.AdvanceSetting.CutOffSpliceTime = QString(spliceList[34]).toInt(&ok,10);
+        mySplice.WeldSettings.AdvanceSetting.AntiSide = QString(spliceList[35]).toInt(&ok,10);
+        mySplice.WeldSettings.AdvanceSetting.AntiSideSpliceTime = QString(spliceList[36]).toInt(&ok,10);
+        mySplice.WeldSettings.AdvanceSetting.MeasuredWidth = QString(spliceList[37]).toInt(&ok,10);
+        mySplice.WeldSettings.AdvanceSetting.MeasuredHeight = QString(spliceList[38]).toInt(&ok,10);
+
+        mySplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkOption = spliceList[39] == "0" ? false : true;
+        mySplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID = spliceList[40];
+        mySplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime = QString(spliceList[41]).toInt(&ok,10);
+        mySplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTemperature = QString(spliceList[42]).toInt(&ok,10);
+        mySplice.HashCode = QString(spliceList[43]).toUInt(&ok,10);
+
+        mySplice.TestSetting.Qutanty = QString(spliceList[44]).toInt(&ok,10);
+        mySplice.TestSetting.StopCount = QString(spliceList[45]).toInt(&ok,10);
+        mySplice.TestSetting.TestMode = (TESTMODE)QString(spliceList[46]).toInt(&ok,10);
+        mySplice.TestSetting.TeachModeSetting.TeachModeType = (TEACH_MODE_TYPE)QString(spliceList[47]).toInt(&ok,10);
+        for(int i = 0; i < 18; i++)
+            mySplice.TestSetting.TeachModeSetting.TeachModequal_Window[i] = QString(spliceList[i + 48]).toInt(&ok,10);
+        mySplice.TestSetting.TestingDone = spliceList[66] == "0" ? false : true;
+
+        QString tmpStr;
+        mySplice.WireIndex = wireIdMap;
+        mySplice.NoOfWires =  mySplice.WireIndex.size();
+        ret =  InsertRecordIntoTable(&mySplice);
+        while (ret == -1) {
+            qDebug() << "splice";
+            QMap<int ,QString> tempMap;
+            QueryOnlyUseName(mySplice.SpliceName, &tempMap);
+            if (tempMap.size() > 0) {
+                mySplice.SpliceName = mySplice.SpliceName + "(1)";
+                ret = InsertRecordIntoTable(&mySplice);
+            }
+            else if (tempMap.size() == 0)
+                return -1;
+        }
+    }
+    return ret;
+}
+
+QString DBPresetTable::GetExportString(int spliceId)
+{
+    QString tempWireData;
+    QString wireData;
+    QString queryStr;
+    QString lineValue = "";
+    QSqlQuery query(SpliceDBObj);
+    bool bResult = SpliceDBObj.open();
+    if(bResult == true)
+    {
+        queryStr = QString("SELECT * FROM Preset WHERE ID == '%1'").arg(spliceId);
+        query.prepare(queryStr);
+        bResult = query.exec();
+        if (bResult) {
+            bResult = query.next();
+            if(bResult) {
+                for (int i = 0;i < 69;i++)
+                {
+                    if (i == 68)
+                    {
+                        QJsonParseError json_error;
+                        QJsonDocument parse_document = QJsonDocument::fromJson(query.value(i).toString().toLatin1(), &json_error);
+                        if(json_error.error == QJsonParseError::NoError)
+                        {
+                            if(parse_document.isObject())
+                            {
+                                QJsonObject obj = parse_document.object();
+                                QJsonObject::const_iterator iterator = obj.constBegin();
+                                for(int i = 0; i< obj.count(); i++)
+                                {
+                                    iterator = obj.constFind(QString::number(i, 10));
+                                    if(iterator != obj.constEnd())
+                                    {
+                                        QString value = iterator.value().toString();
+                                        QStringList strList = value.split(";");
+                                        tempWireData = wireTable->GetExportString(((QString)strList.at(0)).toInt());
+                                        wireData.append(tempWireData + ";");
+                                    }
+                                }
+                            }
+                        }
+                        lineValue.append(wireData + "*");
+                    }
+                    else
+                        lineValue.append(query.value(i).toString() + "*");
+                }
+
+            }
+        }
+        SpliceDBObj.close();
+    }
+    return lineValue;
 }

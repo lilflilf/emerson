@@ -949,6 +949,7 @@ Item {
             delegate: left
             interactive: false
         }
+
         ListView {
             id: listViewRight
             anchors.left: parent.left
@@ -1116,6 +1117,7 @@ Item {
             }
         }
     }
+
     Component {
         id: right
         Item {
