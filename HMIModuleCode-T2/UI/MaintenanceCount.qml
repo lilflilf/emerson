@@ -254,8 +254,6 @@ Item {
                     visible: index == 5 ? false : true
                     onStateChanged: {
                         hmiAdaptor.maintenanceCount80PercentAlarm(mytitle, myswitch.state)
-//                        hmiAdaptor.maintenanceCountExecute("_Recall")
-//                        initPage()
                     }
                 }
             }
