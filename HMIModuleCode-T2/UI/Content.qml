@@ -968,6 +968,11 @@ Item {
             width: 250
             pointSize: 16
             onClicked: {
+                if (content.selectSpliceId != -1)
+                {
+                    hmiAdaptor.setTestSpliceId(selectSpliceId)
+                    root.checkNeedPassWd(3)
+                }
             }
         }
         Text {

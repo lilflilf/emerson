@@ -8,6 +8,21 @@ Item {
     id: testSpliceLibrary
     property int selectIndx: -1
     property int setCheckIndex: -1
+
+    property var testSpliceId: -1
+    function initPage()
+    {
+        testSpliceLibrary.testSpliceId = hmiAdaptor.getTestSpliceId()
+        if (testSpliceLibrary.testSpliceId != -1)
+        {
+            backGround.visible = true
+            backGround.opacity = 0.5
+            testDialog.visible = true
+            spliceModel.editNew(testSpliceLibrary.testSpliceId)
+            testDialog.setData()
+        }
+    }
+
     Image {
         anchors.fill: parent
         source: "qrc:/images/images/bg.png"
@@ -27,7 +42,7 @@ Item {
                     loader.item.quantity = testDialog.inputNum
                     loader.item.bIsLimite = false
                 }
-                loader.item.selectSplice(spliceModel.getValue(selectIndx,"SpliceId"))
+                loader.item.selectSplice(testSpliceLibrary.testSpliceId)
                 alarmModel.setStartTime();
             }
             else if (loader.source == "qrc:/UI/AdvanceSetting.qml")
@@ -328,7 +343,6 @@ Item {
             testDialog.visible = true
             spliceModel.editNew(spliceModel.getValue(selectIndx,"SpliceId"))
             testDialog.setData()
-
         }
     }
     Rectangle {

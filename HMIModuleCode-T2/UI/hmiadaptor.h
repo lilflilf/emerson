@@ -50,6 +50,8 @@ public:
 
     explicit HmiAdaptor(QObject *parent = 0);
     ~HmiAdaptor();
+    Q_INVOKABLE void setTestSpliceId(int spliceId);
+    Q_INVOKABLE int getTestSpliceId();
 
     Q_INVOKABLE void quit();
     Q_INVOKABLE void openFileDialog();
@@ -169,6 +171,7 @@ public:
     StatisticalTrend *statisticalTrend;
     int taskBarHeight;
     void (*func_ptr)(void*);
+    int testSpliceId;
 signals:
     void widthCalibrationFinish(const bool &_Result);
     void heightCalibrationFinish(const bool &_Result);

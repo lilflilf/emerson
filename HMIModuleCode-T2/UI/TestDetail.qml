@@ -210,7 +210,7 @@ Item {
             font.pointSize: 14
             font.family: "arial"
             anchors.bottomMargin: 10
-            text: testDetail.teachCount + "/" + testDetail.quantity
+            text: testDetail.teachCount + "/" + (spliceModel.getStructValue("TestModel","") == 0 ? "--" : testDetail.quantity)
         }
 
         Text {
