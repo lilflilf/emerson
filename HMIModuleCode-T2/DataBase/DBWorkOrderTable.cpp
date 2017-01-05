@@ -1,7 +1,13 @@
 #include "DBWorkOrderTable.h"
 #include "Modules/UtilityClass.h"
 #include "Interface/WorkOrderElement.h"
+#include "Interface/interface.h"
 #include <QDebug>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QByteArray>
+#include <QJsonParseError>
+#include <QFile>
 
 DBWorkOrderTable* DBWorkOrderTable::_instance = NULL;
 QString DBWorkOrderTable::WorkOrderFile = "WorkOrder.db";
@@ -52,6 +58,7 @@ DBWorkOrderTable* DBWorkOrderTable::Instance()
 
 DBWorkOrderTable::DBWorkOrderTable()
 {
+    partTable = DBPartTable::Instance();
     WorkOrderDBObj = QSqlDatabase::addDatabase("QSQLITE", "WorkOrderDBObjConnect");
     WorkOrderDBObj.setDatabaseName(DatabaseDir + WorkOrderFile);
     if(WorkOrderDBObj.open())
@@ -61,6 +68,39 @@ DBWorkOrderTable::DBWorkOrderTable()
 //            InsertTestDataIntoTable();
         }
     }
+    WorkOrderDBObj.close();
+}
+bool DBWorkOrderTable::OpenDBObject()
+{
+    bool bResult = false;
+    struct BransonMessageBox tmpMsgBox;
+    InterfaceClass* _Interface = InterfaceClass::Instance();
+    if(WorkOrderDBObj.open() == false)
+    {
+        if(mIsModularProduction == true)
+        {
+            tmpMsgBox.MsgTitle = QObject::tr("ERROR");
+            tmpMsgBox.MsgPrompt = QObject::tr("Please make sure All the production files has been in the Modular Production!");
+            tmpMsgBox.TipsMode = Critical;
+            tmpMsgBox.func_ptr = NULL;
+            _Interface->cMsgBox(&tmpMsgBox);
+        }
+        bResult = false;
+    }else
+        bResult = true;
+    return bResult;
+}
+
+void DBWorkOrderTable::SwitchOperatorDBObj(bool IsModularProduction)
+{
+    mIsModularProduction = IsModularProduction;
+    if(IsModularProduction == true)
+        DatabaseDir = "c:\\BransonData\\Modular Production\\";
+    else
+        DatabaseDir = "c:\\BransonData\\Library\\";
+    WorkOrderDBObj = QSqlDatabase::addDatabase("QSQLITE", "WorkOrderDBObjConnect");
+    WorkOrderDBObj.setDatabaseName(DatabaseDir + WorkOrderFile);
+    OpenDBObject();
     WorkOrderDBObj.close();
 }
 
@@ -482,4 +522,102 @@ bool DBWorkOrderTable::QueryUseNameAndTime(QString Name, unsigned int time_from,
 
     WorkOrderDBObj.close();
     return bResult;
+}
+
+bool DBWorkOrderTable::exportData(int workOrderId, QString fileUrl)
+{
+    qDebug() << "DBWorkOrderTable " << workOrderId << fileUrl;
+    QString queryStr;
+    QString lineValue = "";
+    QSqlQuery query(WorkOrderDBObj);
+    QString partData;
+    bool bResult = WorkOrderDBObj.open();
+    bool ok;
+    QString tempPartData;
+    QString fileSource;
+    if(bResult == true)
+    {
+        queryStr = QString("SELECT * FROM WorkOrder WHERE ID == '%1'").arg(workOrderId);
+        query.prepare(queryStr);
+        bResult = query.exec();
+        if (bResult) {
+            bResult = query.next();
+            if(bResult) {
+                for (int i = 0;i < 12;i++)
+                {
+                    if (i == 10)
+                    {
+                        QJsonParseError json_error;
+                        QJsonDocument parse_document = QJsonDocument::fromJson(query.value(i).toString().toLatin1(), &json_error);
+                        if(json_error.error == QJsonParseError::NoError)
+                        {
+                            if(parse_document.isObject())
+                            {
+                                QJsonObject obj = parse_document.object();
+                                QJsonObject::const_iterator iterator = obj.constBegin();
+                                for(int i = 0; i< obj.count(); i++)
+                                {
+                                    iterator = obj.constFind(QString::number(i, 10));
+                                    if(iterator != obj.constEnd())
+                                    {
+                                        QString value = iterator.value().toString();
+                                        QStringList strList = value.split(";");
+                                        tempPartData = partTable->GetExportString(((QString)strList.at(0)).toInt());
+                                        partData.append(tempPartData + "$");
+                                    }
+                                }
+                            }
+                        }
+                        lineValue.append(partData + ",");
+                    }
+                    else
+                        lineValue.append(query.value(i).toString() + ",");
+                }
+                fileSource = fileUrl;
+                if (fileSource.contains("file:///"))
+                    fileSource = fileSource.mid(8);
+                QFile csvFile(fileSource);
+                if (csvFile.open(QIODevice::Text | QIODevice::ReadWrite | QIODevice::Truncate))
+                {
+                    QTextStream out(&csvFile);
+                    out << "WorkOrderData" << '\n' << lineValue;
+                    csvFile.close();
+                }
+            }
+        }
+        WorkOrderDBObj.close();
+    }
+    return bResult;
+}
+
+int DBWorkOrderTable::importData(QString value, QMap<int, QString> partMap)
+{
+    QString lineData;
+    QStringList lineList;
+    WorkOrderElement myWorkOrder;
+    bool ok;
+    int ret;
+
+    lineData = value;
+    lineList = lineData.split(",");
+    if (lineList.size() >= 11) {
+        myWorkOrder.WorkOrderName = lineList[1];
+        myWorkOrder.OperatorID = QString(lineList[3]).toInt(&ok,10);
+        myWorkOrder.NoOfPart = partMap.size();
+        myWorkOrder.Quantity = QString(lineList[5]).toInt(&ok,10);
+        myWorkOrder.PartIndex = partMap;
+    }
+    ret = InsertRecordIntoTable(&myWorkOrder);
+    while (ret == -1) {
+        qDebug() << "part";
+        QMap<int ,QString> tempMap;
+        QueryOnlyUseName(myWorkOrder.WorkOrderName, &tempMap);
+        if (tempMap.size() > 0) {
+            myWorkOrder.WorkOrderName = myWorkOrder.WorkOrderName + "(1)";
+            ret = InsertRecordIntoTable(&myWorkOrder);
+        }
+        else if (tempMap.size() == 0)
+            return -1;
+    }
+    return ret;
 }

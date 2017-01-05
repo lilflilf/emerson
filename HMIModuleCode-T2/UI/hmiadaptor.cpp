@@ -76,7 +76,7 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
     statisticalTrend = new StatisticalTrend;
     interfaceClass = InterfaceClass::Instance();
     m_variantToString = VariantToString::Instance();
-
+    m_stringToVariant = StringToVariant::Instance();
     connect(advanceMaintenance, SIGNAL(IOstatusFeedback(ulong)),this,SLOT(slotButtonState(ulong)));
     connect(interfaceClass, SIGNAL(EnableErrorMessageSignal(BransonMessageBox&)), this, SLOT(slotEnableDialog(BransonMessageBox&)));
     connect(interfaceClass, SIGNAL(DisableErrorMessageSignal(BransonMessageBox&)), this, SLOT(slotDisableDialog(BransonMessageBox&)));
@@ -1355,6 +1355,14 @@ void HmiAdaptor::importData(QString fileUrl)
         else if (CSVList.at(0) == "PartData") {
             importPart(CSVList[1]);
         }
+        else if (CSVList.at(0) == "ShrinkData") {
+            QStringList shrinkList = QString(CSVList.at(1)).split(",");
+            if (shrinkList.count() >= 2)
+                addInsulation(shrinkList[0],shrinkList[1],shrinkList[2]);
+        }
+        else if (CSVList.at(0) == "WorkOrderData") {
+            importWorkOrder(CSVList[1]);
+        }
     }
 }
 
@@ -1377,8 +1385,6 @@ int HmiAdaptor::importSplice(QString spliceStr)
         if (wireList[i] != "")
             wireIdList.push_back(wireModel->importData(wireList[i]));
     }
-    qDebug() << "w1" << wireList;
-    qDebug() << "w2" << wireIdList;
 
     for (i = 0; i < wireIdList.count();i++)
     {
@@ -1398,6 +1404,7 @@ int HmiAdaptor::importSplice(QString spliceStr)
 
 int HmiAdaptor::importPart(QString partStr)
 {
+    qDebug() << "importPartppppppp" << partStr;
     QStringList tempList;
     QStringList spliceList;
     QList<int> spliceIdList;
@@ -1417,7 +1424,6 @@ int HmiAdaptor::importPart(QString partStr)
         if (spliceList[i] != "")
             spliceIdList.push_back(importSplice(spliceList[i]));
     }
-    qDebug() << "x1" << spliceList;
     for (i = 0; i < spliceIdList.count();i++)
     {
         if (spliceIdList[i] != -1)
@@ -1430,6 +1436,81 @@ int HmiAdaptor::importPart(QString partStr)
     }
     int partId = partModel->importData(partString,tempMap);
     return partId;
+}
+
+int HmiAdaptor::importWorkOrder(QString workOrderStr)
+{
+    QStringList tempList;
+    QStringList partList;
+    QList<int> partIdList;
+    QString temp;
+    QString partString;
+    QMap<int,QString> tempMap;
+    int i;
+    tempList = workOrderStr.split(",");
+    if (tempList.count() > 2)
+        temp = tempList.at(tempList.count() - 3);
+    else
+        return -1;
+    temp.replace("@",",");
+    partList = temp.split("$");
+    for (i = 0;i < partList.count();i++)
+    {
+        if (partList[i] != "")
+            partIdList.push_back(importPart(partList[i]));
+    }
+    for (i = 0; i < partIdList.count();i++)
+    {
+        if (partIdList[i] != -1)
+            tempMap.insert(partIdList[i],partModel->getPartName(partIdList[i]));
+    }
+
+    for (int j = 0;j < tempList.count(); j++)
+    {
+        partString.append(tempList[j] + ",");
+    }
+    int partId = workOrderModel->importData(partString,tempMap);
+    return partId;
+}
+
+void HmiAdaptor::addInsulation(QString insualtionId, QString temp, QString time)
+{
+    qDebug() << "addInsulation";
+    ShrinkTubeData shrinkData;
+    shrinkData.Name = insualtionId;
+    shrinkData.temp = m_stringToVariant->ShrinkTemperatureToInt(temp);
+    shrinkData.Time = m_stringToVariant->ShrinkTimeToInt(time);
+    interfaceClass->StatusData.ShrinkTubeDefaults.append(shrinkData);
+    interfaceClass->StatusData.WriteStatusDataToQSetting();
+}
+
+void HmiAdaptor::exportShrink(QString insualtionId, QString temp, QString time,QString fileUrl)
+{
+    QString fileSource = fileUrl;
+    QString lineValue;
+    if (fileSource.contains("file:///"))
+        fileSource = fileSource.mid(8);
+
+    lineValue.append(insualtionId + ",");
+    lineValue.append(temp + ",");
+    lineValue.append(time + ",");
+
+    QFile csvFile(fileSource);
+    if (csvFile.open(QIODevice::Text | QIODevice::ReadWrite | QIODevice::Truncate))
+    {
+        QTextStream out(&csvFile);
+        out << "ShrinkData" << '\n' << lineValue;
+        csvFile.close();
+    }
+}
+
+void HmiAdaptor::removeShrink(int selectIndex)
+{
+    if (interfaceClass->StatusData.ShrinkTubeDefaults.size() >= selectIndex + 1)
+    {
+        interfaceClass->StatusData.ShrinkTubeDefaults.removeAt(selectIndex);
+        interfaceClass->StatusData.WriteStatusDataToQSetting();
+    }
 }
 void HmiAdaptor::setAlarmModelList(bool bIsNeedReset)
 {

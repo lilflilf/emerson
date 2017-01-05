@@ -32,14 +32,16 @@ Item {
 
     function updateTreeModel(current)
     {
+        console.log("updateTreeModel",current)
         var i,j
         if (current == 1) {
             for ( j = 0; j < listModel.count; j++) {
                 var bIsFind1 = false
                 for (i = 0; i < listModel.get(j).subNode.count; i++) {
                     if (listModel.get(j).subNode.get(i).spliceNo == 1) {
-                        listModel.get(j).subNode.set(i,{"spliceColor":"#00afe9"})
+                        listModel.get(j).subNode.set(i,{"spliceColor":"#00aa7e"})
                         bIsFind1 = true
+                        spliceLocationStats.workStation = array[j]
                         break;
                     }
                 }
@@ -49,7 +51,7 @@ Item {
                 var bIsFind5 = false
                 for (i = 0; i < listModel.get(j).subNode.count; i++) {
                     if (listModel.get(j).subNode.get(i).spliceNo == 2) {
-                        listModel.get(j).subNode.set(i,{"spliceColor":"#00aa7e"})
+                        listModel.get(j).subNode.set(i,{"spliceColor":"#00afe9"})
                         bIsFind5 = true
                         break;
                     }
@@ -106,6 +108,7 @@ Item {
     }
     function setTreeModelBack(current)
     {
+        console.log("setTreeModelBack",current)
         var i,j
         var count = current+2,next = current+1
         for ( j = 0; j < listModel.count; j++) {
@@ -146,13 +149,15 @@ Item {
 
     function setTreeModelOver(current)
     {
+        console.log("setTreeModelOver",current)
         var i,j
         if (current == 1) {
             for ( j = 0; j < listModel.count; j++) {
                 var bIsFind1 = false
                 for (i = 0; i < listModel.get(j).subNode.count; i++) {
                     if (listModel.get(j).subNode.get(i).spliceNo == 1) {
-                        listModel.get(j).subNode.set(i,{"spliceColor":"#00afe9"})
+                        listModel.get(j).subNode.set(i,{"spliceColor":"#00aa7e"})
+                        spliceLocationStats.workStation = array[j]
                         bIsFind1 = true
                         break;
                     }
@@ -163,7 +168,7 @@ Item {
                 var bIsFind5 = false
                 for (i = 0; i < listModel.get(j).subNode.count; i++) {
                     if (listModel.get(j).subNode.get(i).spliceNo == 2) {
-                        listModel.get(j).subNode.set(i,{"spliceColor":"#00aa7e"})
+                        listModel.get(j).subNode.set(i,{"spliceColor":"#00afe9"})
                         bIsFind5 = true
                         break;
                     }

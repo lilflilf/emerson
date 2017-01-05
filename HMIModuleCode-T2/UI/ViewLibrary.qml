@@ -21,6 +21,7 @@ Item {
 
     function initPage()
     {
+        shrinkModel.clear()
         var list
         list = hmiAdaptor.dataCommunicationGetValue("shrinkData")
         if (list.length % 3 == 0)
@@ -763,6 +764,7 @@ Item {
                     workOrderModel.removeValue(workOrderModel.getValue(selectIndx,"WorkOrderId"),workOrderModel.getValue(selectIndx,"WorkOrderName"))
                 else if (shrinkRadio.checked){
                     shrinkModel.remove(selectIndx)
+                    hmiAdaptor.removeShrink(selectIndx)
                 }
             }
         }
@@ -799,6 +801,10 @@ Item {
                 spliceModel.exportData(spliceModel.getValue(selectIndx,"SpliceId"),fileName)
             else if (partRadio.checked && selectIndx != -1)
                 partModel.exportData(partModel.getValue(selectIndx,"PartId"),fileName)
+            else if (shrinkRadio.checked && selectIndx != -1)
+                hmiAdaptor.exportShrink(shrinkModel.get(selectIndx).shrinkid,shrinkModel.get(selectIndx).temperature,shrinkModel.get(selectIndx).times,fileName)
+            else if (workOrderRadio.checked && selectIndx != -1)
+                workOrderModel.exportData(workOrderModel.getValue(selectIndx,"WorkOrderId"),fileName)
         }
     }
     Connections {
@@ -809,6 +815,7 @@ Item {
         onSignalChoseFile: {
             fileLoader.source = ""
             hmiAdaptor.importData(fileName)
+            initPage()
         }
     }
     Loader {

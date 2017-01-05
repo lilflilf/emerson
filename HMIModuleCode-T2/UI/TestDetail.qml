@@ -43,6 +43,7 @@ Item {
         {
             if (teachCount >= spliceModel.getStructValue("TestCount","")) {
                 cdialog2.visible = true
+                hmiAdaptor.operateProcessExec("Stop")
             }
         }
     }
