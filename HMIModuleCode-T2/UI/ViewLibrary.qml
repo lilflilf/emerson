@@ -22,6 +22,7 @@ Item {
     function initPage()
     {
         shrinkModel.clear()
+        hmiAdaptor.dataCommunicationExecute("_Recall");
         var list
         list = hmiAdaptor.dataCommunicationGetValue("shrinkData")
         if (list.length % 3 == 0)
@@ -815,7 +816,8 @@ Item {
         onSignalChoseFile: {
             fileSelectLoader.source = ""
             hmiAdaptor.importData(fileName)
-            initPage()
+            if (shrinkRadio.checked)
+                initPage()
         }
     }
     Loader {
