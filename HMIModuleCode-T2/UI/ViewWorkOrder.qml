@@ -215,7 +215,7 @@ Item {
         }
         CButton {
             id: exportData
-            width: 250
+            width: 200
             anchors.right: rightItem.right
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 20

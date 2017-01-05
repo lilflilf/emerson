@@ -1065,6 +1065,7 @@ bool SplicesModel::exportData(int spliceId, QString fileUrl)
 int SplicesModel::importData(QString value, QMap<int, QString> wireIdMap)
 {
     int ret = m_spliceAdaptor->importData(value,wireIdMap);
+    qDebug()<<"111111111111111111111111111111111";
     setModelList();
     return ret;
 }
