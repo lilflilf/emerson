@@ -4,7 +4,7 @@ import QtQuick.Layouts 1.0
 import QtQuick.Window 2.2
 
 Item {
-    id: operateDetail
+    id: testDetail
     signal signalSaveSplice()
     width: Screen.width
     height: Screen.height * 0.8
@@ -24,18 +24,19 @@ Item {
                 if (teachCount >= spliceModel.getStructValue("TestCount","")) {
                     cdialog2.visible = true
                     hmiAdaptor.operateProcessExec("Stop")
-
                     return
                 }
             }
             progressBar.value = teachCount
-            if (spliceModel.getStructValue("TeachMode","") == 0 || spliceModel.getStructValue("TeachMode","") == 3)
+            if (spliceModel.getStructValue("TeachMode","") == 0)
             {
                 cdialog.visible = true
                 return
             }
-
-            hmiAdaptor.teachModeProcess()
+            if (spliceModel.getStructValue("TeachMode","") != 3)
+            {
+                hmiAdaptor.teachModeProcess()
+            }
             setData()
             hmiAdaptor.operateProcessExec("Execute")
 
@@ -162,7 +163,7 @@ Item {
         anchors.top: operateTitle.top
         anchors.right: parent.right
         anchors.rightMargin: 30
-
+        bisTest: true
     }
     SpliceDetails {
         id: spliceDetailsItem
@@ -201,6 +202,17 @@ Item {
             maximum: bIsLimite ? 1 : quantity
             value:  bIsLimite ? 0.5 : 0
         }
+        Text {
+            id: present
+            anchors.right: progressBar.right
+            anchors.bottom: progressBar.top
+            color: "white"
+            font.pointSize: 14
+            font.family: "arial"
+            anchors.bottomMargin: 10
+            text: testDetail.teachCount + "/" + testDetail.quantity
+        }
+
         Text {
             id: weld
             text: qsTr("Weld Parameters - Actual")
@@ -329,7 +341,10 @@ Item {
         anchors.bottom: parent.bottom
         text: qsTr("FINISH SAMPLE")
         onClicked: {
-            hmiAdaptor.stopTeachMode()
+            if (spliceModel.getStructValue("TeachMode","") != 3)
+            {
+                hmiAdaptor.stopTeachMode()
+            }
             finish.visible = false
             rightBottom.visible = true
             leftBottomItem.visible = false
@@ -385,7 +400,10 @@ Item {
         centerText: "Test Complete"
         visible: false
         onCliceTo: {
-            hmiAdaptor.stopTeachMode()
+            if (spliceModel.getStructValue("TeachMode","") != 3)
+            {
+                hmiAdaptor.stopTeachMode()
+            }
             root.checkNeedPassWd(3)
         }
 

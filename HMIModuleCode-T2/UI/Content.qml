@@ -109,6 +109,9 @@ Item {
         }
         onSignalChoseFile: {
             fileSelectLoader.source = ""
+            backGround.visible = true
+            backGround.opacity = 0.7
+            addExit.visible = true
             hmiAdaptor.importData(fileName)
         }
     }
