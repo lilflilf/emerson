@@ -21,7 +21,6 @@ Item {
         target: hmiAdaptor
         onSignalWeldCycleCompleted: {
             progressBar.current++
-            console.log("aaaaaaaaaaaaaaaaa",operateDetail.cycleCount,operateDetail.qliantity)
             spliceLocation.setTreeModelOver()
             progressBar.moveToNext()
             selectSplice(spliceList[progressBar.current-1])
@@ -42,6 +41,7 @@ Item {
     onCycleCountChanged: {
         if (operateDetail.cycleCount == operateDetail.qliantity) {
             cdialog.visible = true
+            hmiAdaptor.operateProcessExec("Stop")
         }
     }
 
@@ -506,7 +506,7 @@ Item {
         anchors.centerIn: parent
         okvisible: true
         okText: "OK"
-        cancelvisible: true
+        cancelvisible: false
         cancelText: "CANCEL"
         centerText: "Operate complete"
         visible: false
