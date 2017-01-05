@@ -133,7 +133,7 @@ Item {
         font.pixelSize: 20
         color: "white"
         height: 70
-        text: qsTr("Modular Producation\nMode")
+        text: qsTr("Modular Production\nMode")
     }
     Switch2 {
         id: modularSwitch

@@ -6,7 +6,6 @@
 #include "Modules/Modstart.h"
 #include <QQuickView>
 #include <QQmlEngine>
-//  ↵
 #include "TestCase/databasetest.h"
 #include "UI/alpainteditem.h"
 #include "UI/hmiadaptor.h"
@@ -41,7 +40,6 @@ int main(int argc, char *argv[])
 //    // 获取开始按钮句柄,并显示
 //    WndHandle2 = FindWindow(TEXT("Button"), NULL);
 //    ShowWindow(WndHandle2, SW_HIDE);
-
 
     qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
 

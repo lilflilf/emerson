@@ -2,7 +2,7 @@
 #define DBPARTTABLE_H
 
 #include "Sqlit3Class.h"
-
+#include "DBPresetTable.h"
 class DBPartTable : public SQLITCLASS
 {
 private:
@@ -24,11 +24,14 @@ public:
     virtual bool QueryOnlyUseTime(unsigned int time_from, unsigned int time_to, QMap<int, QString> *_obj);
     virtual bool QueryUseNameAndTime(QString Name, unsigned int time_from,
                 unsigned int time_to, QMap<int, QString>* _obj);
+    bool exportData(int partId, QString fileUrl);
+    int importData(QString value,QMap<int, QString> spliceIdMap);
 public:
     static DBPartTable* Instance();
 protected:
     DBPartTable();
     void InsertTestDataIntoTable();
+    DBPresetTable *spliceTable;
 private:
     static DBPartTable* _instance;
 public:

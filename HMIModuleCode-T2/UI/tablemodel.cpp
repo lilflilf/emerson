@@ -1042,6 +1042,27 @@ QString SplicesModel::graphHeightToString(int height)
     return variantToString->GraphHeightToString(height);
 }
 
+bool SplicesModel::exportData(int spliceId, QString fileUrl)
+{
+    m_spliceAdaptor->exportData(spliceId, fileUrl);
+}
+
+int SplicesModel::importData(QString value, QMap<int, QString> wireIdMap)
+{
+    int ret = m_spliceAdaptor->importData(value,wireIdMap);
+    setModelList();
+    return ret;
+}
+
+QString SplicesModel::getSpliceName(int spliceId)
+{
+    PresetElement  tempSplice;
+    if (m_spliceAdaptor->QueryOneRecordFromTable(spliceId,&tempSplice))
+        return tempSplice.SpliceName;
+    else
+        return "";
+}
+
 QString SplicesModel::timePlusToString(int time)
 {
     return variantToString->TimePlusToString(time).Maximum;
@@ -1266,6 +1287,18 @@ QVariant PartModel::getStruceValue(QString key)
         return m_Part->PartID;
     else if (key == "PartName")
         return m_Part->PartName;
+}
+
+bool PartModel::exportData(int partId, QString fileUrl)
+{
+    return m_partAdaptor->exportData(partId,fileUrl);
+}
+
+int PartModel::importData(QString filePath, QMap<int, QString> spliceMap)
+{
+    int ret = m_partAdaptor->importData(filePath,spliceMap);
+    setModelList();
+    return ret;
 }
 
 
@@ -2410,6 +2443,13 @@ void WireModel::setTemplateModelList()
     endResetModel();
 }
 
+QString WireModel::getWireName(int wireId)
+{
+    WireElement myWire;
+    m_wireAdaptor->QueryOneRecordFromTable(wireId,&myWire);
+    return myWire.WireName;
+}
+
 void WireModel::setModelList()
 {
     beginResetModel();
@@ -2585,6 +2625,19 @@ int WireModel::getStructValue3(QString key, QString value)
 QString WireModel::getStructValue4(int gauge, int awg)
 {
     return variantToString->GaugeToString(gauge,awg).Current;
+}
+
+bool WireModel::exportData(int wireId, QString fileUrl)
+{
+    return m_wireAdaptor->ExportData(wireId,fileUrl);
+}
+
+int WireModel::importData(QString filePath)
+{
+    int wireId;
+    wireId =  m_wireAdaptor->ImportData(filePath);
+    setModelList();
+    return wireId;
 }
 
 int WireModel::columnCount(const QModelIndex &parent) const

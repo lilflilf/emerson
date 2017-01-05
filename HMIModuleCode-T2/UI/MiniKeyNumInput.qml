@@ -5,7 +5,6 @@ Item {
     property alias inputText: mytext.text
     property bool inputFocus: false
     property alias inputWidth: miniKey.width
-
     CButton {
         id: miniKey
         height: parent.height

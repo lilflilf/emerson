@@ -2,6 +2,11 @@
 #include "Modules/UtilityClass.h"
 #include "Interface/PartElement.h"
 #include <QDebug>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QByteArray>
+#include <QJsonParseError>
+#include <QFile>
 
 DBPartTable* DBPartTable::_instance = NULL;
 QString DBPartTable::PartDBFile   = "Part.db";
@@ -51,6 +56,7 @@ DBPartTable* DBPartTable::Instance()
 
 DBPartTable::DBPartTable()
 {
+    spliceTable = DBPresetTable::Instance();
     PartDBObj = QSqlDatabase::addDatabase("QSQLITE", "PartDBObjConnect");
     PartDBObj.setDatabaseName(DatabaseDir + PartDBFile);
     if(PartDBObj.open())
@@ -511,4 +517,119 @@ bool DBPartTable::QueryUseNameAndTime(QString Name, unsigned int time_from,
 
     PartDBObj.close();
     return bResult;
+}
+
+bool DBPartTable::exportData(int partId, QString fileUrl)
+{
+    QString queryStr;
+    QString lineValue = "";
+    QSqlQuery query(PartDBObj);
+    QString spliceData;
+    bool bResult = PartDBObj.open();
+    bool ok;
+    QString tempWireData;
+    QString fileSource;
+    if(bResult == true)
+    {
+        queryStr = QString("SELECT * FROM Part WHERE ID == '%1'").arg(partId);
+        query.prepare(queryStr);
+        bResult = query.exec();
+        if (bResult) {
+            bResult = query.next();
+            if(bResult) {
+                for (int i = 0;i < 12;i++)
+                {
+                    if (i == 11)
+                    {
+                        QJsonParseError json_error;
+                        QJsonDocument parse_document = QJsonDocument::fromJson(query.value(i).toString().toLatin1(), &json_error);
+                        if(json_error.error == QJsonParseError::NoError)
+                        {
+                            if(parse_document.isObject())
+                            {
+                                QJsonObject obj = parse_document.object();
+                                QJsonObject::const_iterator iterator = obj.constBegin();
+                                for(int i = 0; i< obj.count(); i++)
+                                {
+                                    iterator = obj.constFind(QString::number(i, 10));
+                                    if(iterator != obj.constEnd())
+                                    {
+                                        QString value = iterator.value().toString();
+                                        QStringList strList = value.split(";");
+                                        tempWireData = spliceTable->GetExportString(((QString)strList.at(0)).toInt());
+                                        spliceData.append(tempWireData + "|");
+                                    }
+                                }
+                            }
+                        }
+                        lineValue.append(spliceData + ",");
+                    }
+                    else
+                        lineValue.append(query.value(i).toString() + ",");
+                }
+                fileSource = fileUrl;
+                if (fileSource.contains("file:///"))
+                    fileSource = fileSource.mid(8);
+                QFile csvFile(fileSource);
+                if (csvFile.open(QIODevice::Text | QIODevice::ReadWrite | QIODevice::Truncate))
+                {
+                    QTextStream out(&csvFile);
+                    out << "PartData" << '\n' << lineValue;
+                    csvFile.close();
+                }
+            }
+        }
+        PartDBObj.close();
+    }
+    return bResult;
+}
+
+int DBPartTable::importData(QString value, QMap<int, QString> spliceIdMap)
+{
+    QString lineData;
+    QStringList lineList;
+    bool ok;
+    int ret;
+
+    lineData = value;
+    lineList = lineData.split(",");
+    if (lineList.size() >= 11) {
+        PartElement myPart;
+        myPart.PartName = lineList[1];
+        myPart.CreatedDate = QDateTime::fromString(lineList[2],"yyyy/MM/dd hh:mm:ss").toTime_t();
+        myPart.OperatorID = QString(lineList[3]).toInt(&ok,10);
+        myPart.PartTypeSetting.ProcessMode = (PROCESSMODE)QString(lineList[4]).toInt(&ok,10);
+        myPart.PartTypeSetting.WorkStations.TotalWorkstation = QString(lineList[5]).toInt(&ok,10);
+        myPart.PartTypeSetting.WorkStations.MaxSplicesPerWorkstation = QString(lineList[6]).toInt(&ok,10);
+        myPart.PartTypeSetting.BoardLayout.Rows = QString(lineList[7]).toInt(&ok,10);
+        myPart.PartTypeSetting.BoardLayout.Columns = QString(lineList[8]).toInt(&ok,10);
+        myPart.PartTypeSetting.BoardLayout.MaxSplicesPerZone = QString(lineList[9]).toInt(&ok,10);
+        QMap<int ,struct PARTATTRIBUTE> tempMap;
+
+        int i = 0;
+        QMap<int,QString>::iterator it; //遍历map
+        for ( it = spliceIdMap.begin(); it != spliceIdMap.end(); ++it ) {
+            struct PARTATTRIBUTE temp;
+            temp.SpliceID = it.key();
+            temp.SpliceName = it.value();
+            tempMap.insert(i,temp);
+            i++;
+        }
+        myPart.SpliceList = tempMap;
+        myPart.NoOfSplice = myPart.SpliceList.size();
+
+        ret = InsertRecordIntoTable(&myPart);
+        while (ret == -1) {
+            qDebug() << "part";
+            QMap<int ,QString> tempMap;
+            QueryOnlyUseName(myPart.PartName, &tempMap);
+            if (tempMap.size() > 0) {
+                myPart.PartName = myPart.PartName + "(1)";
+                ret = InsertRecordIntoTable(&myPart);
+            }
+            else if (tempMap.size() == 0)
+                return -1;
+        }
+    }
+    return ret;
 }

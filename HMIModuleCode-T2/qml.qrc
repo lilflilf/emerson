@@ -56,6 +56,8 @@
         <file>UI/MiniKeyNumInput.qml</file>
         <file>UI/CDialog.qml</file>
         <file>UI/CPassWordDialog.qml</file>
+        <file>UI/MySaveFileDialog.qml</file>
+        <file>UI/MySelectFileDialog.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file>images/you.png</file>
@@ -180,5 +182,8 @@
         <file>images/Converter.JPG</file>
         <file>images/Gather_Tip.JPG</file>
         <file>images/Horn.JPG</file>
+        <file>images/alarm1.png</file>
+        <file>images/error1.png</file>
+        <file>images/information1.png</file>
     </qresource>
 </RCC>

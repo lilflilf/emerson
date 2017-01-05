@@ -6,6 +6,7 @@ Description: main interface,load the welcome screen and menu interface
 The function interface:
     checkNeedPassWd()
     showDialog()
+    contentLoader
 *******************************************************************/
 import QtQuick 2.7
 import QtQuick.Controls 1.4
@@ -19,11 +20,9 @@ Window {
     height: Screen.height - 1 //767
     visible: true
     title: qsTr("NewWireSplice")
-    flags: Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint|Qt.Window
+    flags: Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint | Qt.Window
 //    flags: Qt.FramelessWindowHint |Qt.Window //| Qt.WindowSystemMenuHint | 0x00800000 | Qt.WindowFullscreenButtonHint
     signal dialogReturn(bool reb)
-    //     flags: Qt.Window | 0x00800000
-
     Component.onCompleted: {
 //        root.showMaximized()
         //w.setWindowFlags(w.windowFlags()& ~Qt::WindowMaximizeButtonHint&  ~Qt::WindowMinimizeButtonHint);
