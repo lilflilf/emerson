@@ -125,6 +125,9 @@ public slots:
     Q_INVOKABLE QString graphTimeToString(int time);
     Q_INVOKABLE QString graphPowerToString(int power);
     Q_INVOKABLE QString graphHeightToString(int height);
+    Q_INVOKABLE bool exportData(int spliceId, QString fileUrl);
+    Q_INVOKABLE int importData(QString value, QMap<int,QString> wireIdMap);
+    Q_INVOKABLE QString getSpliceName(int spliceId);
 
     QString timePlusToString(int time);
     QString timeMinusToString(int time);
@@ -191,6 +194,9 @@ public slots:
     Q_INVOKABLE void savePartInfo(bool bIsEdit, int operatorId);
     Q_INVOKABLE int count();
     Q_INVOKABLE QVariant getStruceValue(QString key);
+
+    Q_INVOKABLE bool exportData(int partId, QString fileUrl);
+    Q_INVOKABLE int importData(QString filePath, QMap<int,QString> spliceMap);
    // int getCurrentIndex(QString info);
 
 //    Q_INVOKABLE bool updateRecordIntoTable(int workId, QString oldWorkName, QString workName, int partId, QString partName, int count);
@@ -239,6 +245,7 @@ public slots:
 private:
     QHash<int, QByteArray> m_roleNames;
 };
+
 
 class AlarmModel : public QAbstractTableModel
 {
@@ -360,7 +367,7 @@ public slots:
     Q_INVOKABLE void setModelList();
     Q_INVOKABLE void setTemplateModelList();
 
-
+    Q_INVOKABLE QString getWireName(int wireId);
     Q_INVOKABLE QVariant getValue(int index, QString key);
     Q_INVOKABLE int count();
     Q_INVOKABLE void removeValue(int id, QString name);
@@ -374,6 +381,8 @@ public slots:
     Q_INVOKABLE int getStructValue3(QString key, QString value);
     Q_INVOKABLE QString getStructValue4(int gauge, int awg);
 
+    Q_INVOKABLE bool exportData(int wireId, QString fileUrl);
+    Q_INVOKABLE int importData(QString filePath);
 
 private:
     QHash<int, QByteArray> m_roleNames;

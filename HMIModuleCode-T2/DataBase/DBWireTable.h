@@ -27,6 +27,12 @@ public:
                 unsigned int time_to, QMap<int, QString>* _obj);
 
     bool QueryOnlyUseField(QString FieldName, QString value, QMap<int, QString> *_obj, bool Orderby = true);
+
+    bool ExportData(int wireId, QString fileUrl);
+    QString GetExportString(int wireId);
+
+    int ImportData(QString value);
+
 public:
     static DBWireTable* Instance();
 protected:

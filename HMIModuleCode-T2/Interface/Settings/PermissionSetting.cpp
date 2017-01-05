@@ -82,10 +82,10 @@ bool PermissionSetting::_Recall()
             tmpStruct.Level4 = false;
         CurrentPermissionList.insert(i,tmpStruct);
     }
-    for(int i = 0; i< CurrentPermissionList.size();i++)
-    {
-        qDebug() << "xxxxxxxxxxxxx " << CurrentPermissionList.at(i).Level1 << CurrentPermissionList.at(i).Level2 <<CurrentPermissionList.at(i).Level3 << CurrentPermissionList.at(i).Level4;
-    }
+//    for(int i = 0; i< CurrentPermissionList.size();i++)
+//    {
+//        qDebug() << "xxxxxxxxxxxxx " << CurrentPermissionList.at(i).Level1 << CurrentPermissionList.at(i).Level2 <<CurrentPermissionList.at(i).Level3 << CurrentPermissionList.at(i).Level4;
+//    }
     return true;
 }
 
