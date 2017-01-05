@@ -97,20 +97,26 @@ Item {
             horizontalAlignment: Qt.AlignRight
             color: "white"
         }
-        MyLineEdit {
+        MiniKeyNumInput {
             id: inputTemperature
-            property var partId: 1
             anchors.top: inputshrinkId.bottom
             anchors.topMargin: 20
             anchors.right: parent.right
             anchors.rightMargin: 72
-            horizontalAlignment: Qt.AlignHCenter
             width: 375
             height: 60
             inputWidth: 375
-            inputColor: "white"
-            inputHeight: 60
-            inputText: " "
+            inputText: ""
+            onInputFocusChanged: {
+                if (inputTemperature.inputFocus) {
+                    keyNum.visible = true
+                    background.visible = true
+                    keyNum.currentValue = inputTemperature.inputText
+                    keyNum.titleText = temperatureText.text
+                    keyNum.minvalue = hmiAdaptor.getShrinkTemperatureToString(0,false)
+                    keyNum.maxvalue = hmiAdaptor.getShrinkTemperatureToString(0,true)
+                }
+            }
         }
         Text {
             id: timeText
@@ -127,7 +133,7 @@ Item {
             horizontalAlignment: Qt.AlignRight
             color: "white"
         }
-        MyLineEdit {
+        MiniKeyNumInput {
             id: inputtimeText
             anchors.top: temperatureText.bottom
             anchors.topMargin: 20
@@ -136,10 +142,17 @@ Item {
             width: 375
             height: 60
             inputWidth: 375
-            inputHeight: 60
-            inputColor: "white"
-            horizontalAlignment: Qt.AlignHCenter
-            inputText: " "
+            inputText: ""
+            onInputFocusChanged: {
+                if (inputtimeText.inputFocus) {
+                    keyNum.visible = true
+                    background.visible = true
+                    keyNum.titleText = timeText.text
+                    keyNum.currentValue = inputtimeText.inputText
+                    keyNum.minvalue = hmiAdaptor.getShrinkTimeToString(0,false)
+                    keyNum.maxvalue = hmiAdaptor.getShrinkTimeToString(0,true)
+                }
+            }
         }
         CButton {
             anchors.right: sure.left
@@ -215,6 +228,69 @@ Item {
                     }
                 }
 
+            }
+        }
+    }
+    Rectangle {
+        id: background
+        anchors.fill: parent
+        color: "black"
+        opacity: 0.5
+        visible: false
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+            }
+        }
+    }
+
+    KeyBoardNum {
+        id: keyNum
+        anchors.centerIn: parent
+        z: leftArea.z+3
+        width: 962
+        height: 526
+        visible: false
+        titleText: ""
+        maxvalue: "4"
+        minvalue: "1"
+        currentValue: "4"
+        onCurrentClickIndex: {
+            if (index == 15) {
+                if (hmiAdaptor.comepareCurrentValue(keyNum.minvalue,keyNum.maxvalue,keyNum.inputText)) {
+                    if (inputTemperature.inputFocus) {
+                        inputTemperature.inputText = keyNum.inputText
+                        inputTemperature.inputFocus = false
+                    } else if (inputtimeText.inputFocus) {
+                        inputtimeText.inputText = keyNum.inputText
+                        inputtimeText.inputFocus = false
+                    }
+                    background.visible = false
+                    keyNum.visible = false
+                    keyNum.inputText = ""
+                    keyNum.tempValue = ""
+                } else {
+                    keyNum.timeRun = true
+                }
+            } else if (index == 11) {
+                if (inputTemperature.inputFocus) {
+                    inputTemperature.inputFocus = false
+                } else if (inputtimeText.inputFocus) {
+                    inputtimeText.inputFocus = false
+                }
+                background.visible = false
+                keyNum.visible = false
+                keyNum.inputText = ""
+                keyNum.tempValue = ""
+            }
+        }
+        onInputTextChanged: {
+            if (keyNum.inputText != "") {
+                if (inputTemperature.inputFocus) {
+                    inputTemperature.inputText = keyNum.inputText
+                } else if (inputtimeText.inputFocus) {
+                    inputtimeText.inputText = keyNum.inputText
+                }
             }
         }
     }
