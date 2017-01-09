@@ -1055,7 +1055,6 @@ void HmiAdaptor::slotButtonState(const unsigned long status)
         emit signalButtonStateChanged("AnvilArm", true);
     else
         emit signalButtonStateChanged("AnvilArm", false);
-
     if ((status & GATHER_ON) == GATHER_ON)
         emit signalButtonStateChanged("Gather", true);
     else
