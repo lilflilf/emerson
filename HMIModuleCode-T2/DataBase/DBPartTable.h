@@ -8,8 +8,12 @@ class DBPartTable : public SQLITCLASS
 private:
     static QString PartDBFile;
     static QString DatabaseDir;
+    static QString ModularDatabaseDir;
 private:
     QSqlDatabase PartDBObj;
+    bool mIsModularProduction;
+private:
+    bool OpenDBObject();
 public:
     virtual bool CreateNewTable();
     virtual int InsertRecordIntoTable(void* _obj);
@@ -24,9 +28,10 @@ public:
     virtual bool QueryOnlyUseTime(unsigned int time_from, unsigned int time_to, QMap<int, QString> *_obj);
     virtual bool QueryUseNameAndTime(QString Name, unsigned int time_from,
                 unsigned int time_to, QMap<int, QString>* _obj);
+    virtual void SwitchDBObject(bool IsModularProduction);
+
     bool exportData(int partId, QString fileUrl);
     int importData(QString value,QMap<int, QString> spliceIdMap);
-    bool SwitchOperatorDBObj(bool IsModularProduction);
     QString GetExportString(int partId);
 public:
     static DBPartTable* Instance();

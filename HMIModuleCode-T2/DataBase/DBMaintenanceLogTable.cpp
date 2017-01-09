@@ -59,13 +59,18 @@ DBMaintenanceLogTable::~DBMaintenanceLogTable()
     MaintenanceLogDBObj.close();
 }
 
+void DBMaintenanceLogTable::SwitchDBObject(bool IsModularProduction)
+{
+    return;
+}
+
 bool DBMaintenanceLogTable::CreateNewTable()
 {
     QSqlQuery query(MaintenanceLogDBObj);
     bool bResult = MaintenanceLogDBObj.open();
     bResult = query.exec(SQLSentence[CREATE]);   //run SQL
     if(bResult == false)
-        qDebug() << "Maintenance SQL ERROR:"<< query.lastError();
+        qDebug() << "Maintenance Table SQL ERROR:"<< query.lastError();
     MaintenanceLogDBObj.close();
     return bResult;
 }
@@ -142,7 +147,7 @@ bool DBMaintenanceLogTable::QueryOneRecordFromTable(int ID, QString TypeDefine, 
     bool bResult = MaintenanceLogDBObj.open();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Maintenance Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 

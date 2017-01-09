@@ -2,6 +2,7 @@
 #include "Interface/Interface.h"
 #include "Modules/UtilityClass.h"
 #include "Modules/BransonServer.h"
+#include "DataBase/DBWorkOrderTable.h"
 #include <QDebug>
 DataCommunication::DataCommunication()
 {
@@ -13,6 +14,7 @@ bool DataCommunication::_Recall()
     InterfaceClass* _Interface = InterfaceClass::Instance();
     UtilityClass* _Utility = UtilityClass::Instance();
     BransonServer* _Server = BransonServer::Instance();
+    qDebug()<<"_Recall";
     CurrentDataCommunication.GlobalShrinkTubeMode = _Interface->StatusData.ShrinkTubeMode;
     CurrentDataCommunication.MaxmmTemp
             = _Utility->FormatedDataToString(DINShrinkTubeTemperature, ShrinkTubeMaxTemp);
@@ -56,6 +58,11 @@ bool DataCommunication::_Set()
 {
     InterfaceClass* _Interface = InterfaceClass::Instance();
     UtilityClass* _Utility = UtilityClass::Instance();
+    DBWorkOrderTable* _WorkOrderTable = DBWorkOrderTable::Instance();
+    DBPartTable*      _PartTable      = DBPartTable::Instance();
+    DBPresetTable*    _SpliceTable    = DBPresetTable::Instance();
+    DBWireTable*      _WireTable      = DBWireTable::Instance();
+    qDebug()<<"_Set";
     _Interface->StatusData.ShrinkTubeMode =
             CurrentDataCommunication.GlobalShrinkTubeMode;
 
@@ -74,7 +81,14 @@ bool DataCommunication::_Set()
     _Interface->StatusData.NetworkingEnabled = CurrentDataCommunication.EthernetMode;
     _Interface->StatusData.RemoteDataLogging = CurrentDataCommunication.RemoteDataLogging;
     _Interface->StatusData.RemoteGraphData = CurrentDataCommunication.RemoteGraphData;
-    _Interface->StatusData.ModularProductionEnabled = CurrentDataCommunication.ModularProduction;
+    if(_Interface->StatusData.ModularProductionEnabled != CurrentDataCommunication.ModularProduction)
+    {
+        _Interface->StatusData.ModularProductionEnabled = CurrentDataCommunication.ModularProduction;
+        _WorkOrderTable->SwitchDBObject(_Interface->StatusData.ModularProductionEnabled);
+        _PartTable->SwitchDBObject(_Interface->StatusData.ModularProductionEnabled);
+        _SpliceTable->SwitchDBObject(_Interface->StatusData.ModularProductionEnabled);
+        _WireTable->SwitchDBObject(_Interface->StatusData.ModularProductionEnabled);
+    }
     str = CurrentDataCommunication.ServerPort.Current;
     _Interface->StatusData.ServerPort = _Utility->StringToFormatedData(DINServerPortNumber,str);
     _Interface->StatusData.WriteStatusDataToQSetting();
@@ -84,7 +98,7 @@ bool DataCommunication::_Set()
 void DataCommunication::_Default()
 {
     InterfaceClass* _Interface = InterfaceClass::Instance();
-    UtilityClass* _Utility = UtilityClass::Instance();
+//    UtilityClass* _Utility = UtilityClass::Instance();
     _Interface->StatusData.ShrinkTubeMode =
             _Interface->DefaultStatusData.ShrinkTubeMode;
 

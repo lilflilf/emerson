@@ -8,6 +8,7 @@ class DBWorkOrderTable: public SQLITCLASS
 private:
     static QString WorkOrderFile;
     static QString DatabaseDir;
+    static QString ModularDatabaseDir;
 private:
     QSqlDatabase WorkOrderDBObj;
     bool mIsModularProduction;
@@ -27,7 +28,7 @@ public:
     virtual bool QueryOnlyUseTime(unsigned int time_from, unsigned int time_to, QMap<int, QString> *_obj);
     virtual bool QueryUseNameAndTime(QString Name, unsigned int time_from,
                 unsigned int time_to, QMap<int, QString>* _obj);
-    void SwitchOperatorDBObj(bool IsModularProduction);
+    virtual void SwitchDBObject(bool IsModularProduction);
 
     bool exportData(int workOrderId, QString fileUrl);
     int importData(QString value,QMap<int, QString> partMap);

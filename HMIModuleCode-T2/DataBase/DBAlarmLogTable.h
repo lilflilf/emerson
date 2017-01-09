@@ -23,6 +23,8 @@ public:
     virtual bool QueryOnlyUseTime(unsigned int time_from, unsigned int time_to, QMap<int, QString> *_obj);
     virtual bool QueryUseNameAndTime(QString Name, unsigned int time_from,
                 unsigned int time_to, QMap<int, QString>* _obj);
+    virtual void SwitchDBObject(bool IsModularProduction);
+
     bool QueryOnlyUseField(QString FieldName, QVariant Value, QMap<int, QString> *_obj, bool Orderby = true);
 public:
     static DBAlarmLogTable* Instance();

@@ -1,6 +1,7 @@
 #include "DBPresetTable.h"
 #include "Modules/UtilityClass.h"
 #include "Interface/PresetElement.h"
+#include "Interface/interface.h"
 #include <QHash>
 #include <QDebug>
 #include <QJsonObject>
@@ -8,10 +9,13 @@
 #include <QByteArray>
 #include <QJsonParseError>
 #include <QFile>
+#include <QDir>
 
 DBPresetTable* DBPresetTable::_instance = NULL;
 QString DBPresetTable::SpliceDBFile = "Splice.db";
 QString DBPresetTable::DatabaseDir = "c:\\BransonData\\Library\\";
+QString DBPresetTable::ModularDatabaseDir = "c:\\BransonData\\Modular Production\\";
+
 const QString SQLSentence[] = {
     "CREATE TABLE Preset ("                 /*0 Create Preset Table*/
     "ID INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -148,6 +152,54 @@ DBPresetTable::DBPresetTable()
     wireTable = DBWireTable::Instance();
 }
 
+bool DBPresetTable::OpenDBObject()
+{
+    bool bResult = false;
+    struct BransonMessageBox tmpMsgBox;
+    InterfaceClass* _Interface = InterfaceClass::Instance();
+    QDir DBDirectory;
+    if(mIsModularProduction == true)
+    {
+        if (DBDirectory.exists(ModularDatabaseDir + SpliceDBFile) == false)
+        {
+            tmpMsgBox.MsgTitle = QObject::tr("ERROR");
+            tmpMsgBox.MsgPrompt = QObject::tr("Please make sure All the production files has been in the Modular Production!");
+            tmpMsgBox.TipsMode = Critical;
+            tmpMsgBox.func_ptr = NULL;
+            _Interface->cMsgBox(&tmpMsgBox);
+            qDebug()<<"Send Alarm signal";
+            return bResult;
+        }
+    }
+
+    QSqlQuery query(SpliceDBObj);
+    if(SpliceDBObj.open() == false)
+    {
+
+        qDebug() << "SQL Open:"<< query.lastError();
+        bResult = false;
+    }else
+        bResult = true;
+    return bResult;
+}
+
+void DBPresetTable::SwitchDBObject(bool IsModularProduction)
+{
+    mIsModularProduction = IsModularProduction;
+    {SpliceDBObj.close();}
+    if(mIsModularProduction == true)
+    {
+        SpliceDBObj.setDatabaseName(ModularDatabaseDir + SpliceDBFile);
+    }
+    else
+    {
+        SpliceDBObj.setDatabaseName(DatabaseDir + SpliceDBFile);
+    }
+
+    OpenDBObject();
+    SpliceDBObj.close();
+}
+
 void DBPresetTable::InsertTestDataIntoTable()
 {
     struct PresetElement tmpSplice;
@@ -238,7 +290,7 @@ bool DBPresetTable::CreateNewTable()
     bResult = query.exec(SQLSentence[CREATE]);   //run SQL
 
     if(bResult == false)
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Preset Table SQL ERROR:"<< query.lastError();
 
     SpliceDBObj.close();
 
@@ -253,7 +305,7 @@ int DBPresetTable::InsertRecordIntoTable(void *_obj)
         return false;
 
     QSqlQuery query(SpliceDBObj);
-    bResult = SpliceDBObj.open();
+    bResult = OpenDBObject();
     if(bResult == false)
     {
         qDebug() << "SQL Open:"<< query.lastError();
@@ -334,7 +386,7 @@ int DBPresetTable::InsertRecordIntoTable(void *_obj)
     bResult = query.exec();   //run SQL
 
     if (bResult == false)
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Preset Table SQL ERROR:"<< query.lastError();
     else
         iResult = query.lastInsertId().toInt(&bResult);
     if(bResult == false)
@@ -349,7 +401,7 @@ bool DBPresetTable::QueryEntireTable(QMap<int, QString> *_obj)
     if(_obj == NULL)
         return false;
     QSqlQuery query(SpliceDBObj);
-    bool bResult = SpliceDBObj.open();
+    bool bResult = OpenDBObject();
     if(bResult == false)
         return bResult;
 
@@ -365,7 +417,7 @@ bool DBPresetTable::QueryEntireTable(QMap<int, QString> *_obj)
     }
     else
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Preset Table SQL ERROR:"<< query.lastError();
     }
 
     SpliceDBObj.close();
@@ -378,11 +430,11 @@ bool DBPresetTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
     if(_obj == NULL)
         return false;
     QSqlQuery query(SpliceDBObj);
-    bool bResult = SpliceDBObj.open();
+    bool bResult = OpenDBObject();
     UtilityClass *_Utility = UtilityClass::Instance();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Preset Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
@@ -394,7 +446,7 @@ bool DBPresetTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
     if(bResult == false)
     {
         SpliceDBObj.close();
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Preset Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
@@ -535,11 +587,11 @@ bool DBPresetTable::QueryOneRecordFromTable(int ID, void *_obj)
     if(_obj == NULL)
         return false;
     QSqlQuery query(SpliceDBObj);
-    bool bResult = SpliceDBObj.open();
+    bool bResult = OpenDBObject();
     UtilityClass *_Utility = UtilityClass::Instance();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Preset Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
@@ -550,7 +602,7 @@ bool DBPresetTable::QueryOneRecordFromTable(int ID, void *_obj)
     if(bResult == false)
     {
         SpliceDBObj.close();
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Preset Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
@@ -689,17 +741,17 @@ bool DBPresetTable::QueryOneRecordFromTable(int ID, void *_obj)
 bool DBPresetTable::DeleteEntireTable()
 {
     QSqlQuery query(SpliceDBObj);
-    bool bResult = SpliceDBObj.open();
+    bool bResult = OpenDBObject();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Preset Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
     bResult = query.exec(SQLSentence[DELETE_ENTIRE_TABLE]);
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Preset Table SQL ERROR:"<< query.lastError();
     }
 
     SpliceDBObj.close();
@@ -709,10 +761,10 @@ bool DBPresetTable::DeleteEntireTable()
 bool DBPresetTable::DeleteOneRecordFromTable(int ID, QString Name)
 {
     QSqlQuery query(SpliceDBObj);
-    bool bResult = SpliceDBObj.open();
+    bool bResult = OpenDBObject();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Preset Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
@@ -723,7 +775,7 @@ bool DBPresetTable::DeleteOneRecordFromTable(int ID, QString Name)
     bResult = query.exec();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Preset Table SQL ERROR:"<< query.lastError();
     }
     SpliceDBObj.close();
     return bResult;
@@ -735,10 +787,10 @@ bool DBPresetTable::UpdateRecordIntoTable(void *_obj)
         return false;
     UtilityClass* _Utility = UtilityClass::Instance();
     QSqlQuery query(SpliceDBObj);
-    bool bResult = SpliceDBObj.open();
+    bool bResult = OpenDBObject();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Preset Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
@@ -808,7 +860,7 @@ bool DBPresetTable::UpdateRecordIntoTable(void *_obj)
     bResult = query.exec();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Preset Table SQL ERROR:"<< query.lastError();
     }
     SpliceDBObj.close();
     return bResult;
@@ -821,7 +873,7 @@ bool DBPresetTable::QueryOnlyUseName(QString Name, QMap<int, QString> *_obj)
         return false;
 
     QSqlQuery query(SpliceDBObj);
-    bool bResult = SpliceDBObj.open();
+    bool bResult = OpenDBObject();
     if(bResult == false)
         return bResult;
 
@@ -839,7 +891,7 @@ bool DBPresetTable::QueryOnlyUseName(QString Name, QMap<int, QString> *_obj)
     }
     else
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Preset Table SQL ERROR:"<< query.lastError();
     }
 
     SpliceDBObj.close();
@@ -852,7 +904,7 @@ bool DBPresetTable::QueryOnlyUseTime(unsigned int time_from, unsigned int time_t
         return false;
 
     QSqlQuery query(SpliceDBObj);
-    bool bResult = SpliceDBObj.open();
+    bool bResult = OpenDBObject();
     if(bResult == false)
         return bResult;
 
@@ -874,7 +926,7 @@ bool DBPresetTable::QueryOnlyUseTime(unsigned int time_from, unsigned int time_t
     }
     else
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Preset Table SQL ERROR:"<< query.lastError();
     }
 
     SpliceDBObj.close();
@@ -888,7 +940,7 @@ bool DBPresetTable::QueryUseNameAndTime(QString Name, unsigned int time_from,
         return false;
 
     QSqlQuery query(SpliceDBObj);
-    bool bResult = SpliceDBObj.open();
+    bool bResult = OpenDBObject();
     if(bResult == false)
         return bResult;
 
@@ -909,7 +961,7 @@ bool DBPresetTable::QueryUseNameAndTime(QString Name, unsigned int time_from,
     }
     else
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Preset Table SQL ERROR:"<< query.lastError();
     }
 
     SpliceDBObj.close();
@@ -922,7 +974,7 @@ bool DBPresetTable::exportData(int spliceId, QString fileUrl)
     QString lineValue = "";
     QSqlQuery query(SpliceDBObj);
     QString wireData;
-    bool bResult = SpliceDBObj.open();
+    bool bResult = OpenDBObject();
     bool ok;
     QString tempWireData;
     QString fileSource;
@@ -1075,7 +1127,7 @@ QString DBPresetTable::GetExportString(int spliceId)
     QString queryStr;
     QString lineValue = "";
     QSqlQuery query(SpliceDBObj);
-    bool bResult = SpliceDBObj.open();
+    bool bResult = OpenDBObject();
     if(bResult == true)
     {
         queryStr = QString("SELECT * FROM Preset WHERE ID == '%1'").arg(spliceId);
