@@ -8,9 +8,12 @@ class DBPresetTable : public SQLITCLASS
 private:
     static QString SpliceDBFile;
     static QString DatabaseDir;
+    static QString ModularDatabaseDir;
 private:
     QSqlDatabase SpliceDBObj;
-
+    bool mIsModularProduction;
+private:
+    bool OpenDBObject();
 public:
     virtual bool CreateNewTable();
     virtual int InsertRecordIntoTable(void* _obj);
@@ -25,11 +28,11 @@ public:
     virtual bool QueryOnlyUseTime(unsigned int time_from, unsigned int time_to, QMap<int, QString> *_obj);
     virtual bool QueryUseNameAndTime(QString Name, unsigned int time_from,
                 unsigned int time_to, QMap<int, QString>* _obj);
+    virtual void SwitchDBObject(bool IsModularProduction);
+
     bool exportData(int spliceId, QString fileUrl);
     int importData(QString value,QMap<int, QString> wireIdMap);
     QString GetExportString(int spliceId);
-    bool SwitchOperatorDBObj(bool IsModularProduction);
-
 public:
     static DBPresetTable* Instance();
 protected:

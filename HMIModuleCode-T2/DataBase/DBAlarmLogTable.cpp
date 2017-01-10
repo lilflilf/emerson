@@ -57,6 +57,11 @@ DBAlarmLogTable::~DBAlarmLogTable()
     AlarmLogDBObj.close();
 }
 
+void DBAlarmLogTable::SwitchDBObject(bool IsModularProduction)
+{
+    return;
+}
+
 bool DBAlarmLogTable::CreateNewTable()
 {
     QSqlQuery query(AlarmLogDBObj);
@@ -142,7 +147,7 @@ bool DBAlarmLogTable::QueryOneRecordFromTable(int ID, QString AlarmType, void *_
     bool bResult = AlarmLogDBObj.open();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Alarm Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
@@ -187,7 +192,7 @@ bool DBAlarmLogTable::QueryOneRecordFromTable(int ID, void* _obj)
     bool bResult = AlarmLogDBObj.open();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Alarm Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
@@ -228,14 +233,14 @@ bool DBAlarmLogTable::DeleteEntireTable()
     bool bResult = AlarmLogDBObj.open();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Alarm Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
     bResult = query.exec(SQLSentence[DELETE_ENTIRE_TABLE]);
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Alarm Table SQL ERROR:"<< query.lastError();
     }
 
     AlarmLogDBObj.close();
@@ -248,7 +253,7 @@ bool DBAlarmLogTable::DeleteOneRecordFromTable(int ID, QString AlarmType)
     bool bResult = AlarmLogDBObj.open();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Alarm Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
@@ -259,7 +264,7 @@ bool DBAlarmLogTable::DeleteOneRecordFromTable(int ID, QString AlarmType)
     bResult = query.exec();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Alarm Table SQL ERROR:"<< query.lastError();
     }
     AlarmLogDBObj.close();
     return bResult;
@@ -291,7 +296,7 @@ bool DBAlarmLogTable::UpdateRecordIntoTable(void *_obj)
     bResult = query.exec();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Alarm Table SQL ERROR:"<< query.lastError();
     }
     AlarmLogDBObj.close();
     return bResult;

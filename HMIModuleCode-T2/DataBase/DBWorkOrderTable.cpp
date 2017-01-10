@@ -8,11 +8,12 @@
 #include <QByteArray>
 #include <QJsonParseError>
 #include <QFile>
+#include <QDir>
 
 DBWorkOrderTable* DBWorkOrderTable::_instance = NULL;
 QString DBWorkOrderTable::WorkOrderFile = "WorkOrder.db";
 QString DBWorkOrderTable::DatabaseDir = "c:\\BransonData\\Library\\";
-
+QString DBWorkOrderTable::ModularDatabaseDir = "c:\\BransonData\\Modular Production\\";
 const QString SQLSentence[] = {
     "CREATE TABLE WorkOrder ("                  /*0 Create WorkOrder Table*/
     "ID INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -70,36 +71,51 @@ DBWorkOrderTable::DBWorkOrderTable()
     }
     WorkOrderDBObj.close();
 }
+
 bool DBWorkOrderTable::OpenDBObject()
 {
     bool bResult = false;
     struct BransonMessageBox tmpMsgBox;
     InterfaceClass* _Interface = InterfaceClass::Instance();
-    if(WorkOrderDBObj.open() == false)
+    QDir DBDirectory;
+    if(mIsModularProduction == true)
     {
-        if(mIsModularProduction == true)
+        if (DBDirectory.exists(ModularDatabaseDir + WorkOrderFile) == false)
         {
             tmpMsgBox.MsgTitle = QObject::tr("ERROR");
             tmpMsgBox.MsgPrompt = QObject::tr("Please make sure All the production files has been in the Modular Production!");
             tmpMsgBox.TipsMode = Critical;
             tmpMsgBox.func_ptr = NULL;
             _Interface->cMsgBox(&tmpMsgBox);
+            qDebug()<<"Send Alarm signal";
+            return bResult;
         }
+    }
+
+    QSqlQuery query(WorkOrderDBObj);
+    if(WorkOrderDBObj.open() == false)
+    {
+
+        qDebug() << "SQL Open:"<< query.lastError();
         bResult = false;
     }else
         bResult = true;
     return bResult;
 }
 
-void DBWorkOrderTable::SwitchOperatorDBObj(bool IsModularProduction)
+void DBWorkOrderTable::SwitchDBObject(bool IsModularProduction)
 {
     mIsModularProduction = IsModularProduction;
+    {WorkOrderDBObj.close();}
     if(IsModularProduction == true)
-        DatabaseDir = "c:\\BransonData\\Modular Production\\";
+    {
+        WorkOrderDBObj.setDatabaseName(ModularDatabaseDir + WorkOrderFile);
+    }
     else
-        DatabaseDir = "c:\\BransonData\\Library\\";
-    WorkOrderDBObj = QSqlDatabase::addDatabase("QSQLITE", "WorkOrderDBObjConnect");
-    WorkOrderDBObj.setDatabaseName(DatabaseDir + WorkOrderFile);
+    {
+        WorkOrderDBObj.setDatabaseName(DatabaseDir + WorkOrderFile);
+    }
+
     OpenDBObject();
     WorkOrderDBObj.close();
 }
@@ -143,11 +159,11 @@ bool DBWorkOrderTable::CreateNewTable()
 {
     QSqlQuery query(WorkOrderDBObj);
     bool bResult = WorkOrderDBObj.open();
-
-    bResult = query.exec(SQLSentence[CREATE]);   //run SQL
+    if(bResult == true)
+        bResult = query.exec(SQLSentence[CREATE]);   //run SQL
 
     if(bResult == false)
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Work Order SQL ERROR:"<< query.lastError();
 
     WorkOrderDBObj.close();
 
@@ -162,7 +178,7 @@ int DBWorkOrderTable::InsertRecordIntoTable(void *_obj)
         return false;
 
     QSqlQuery query(WorkOrderDBObj);
-    bResult = WorkOrderDBObj.open();
+    bResult = OpenDBObject();
     if(bResult == false)
     {
         qDebug() << "SQL Open:"<< query.lastError();
@@ -194,7 +210,7 @@ int DBWorkOrderTable::InsertRecordIntoTable(void *_obj)
     bResult = query.exec();   //run SQL
 
     if(bResult == false)
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Work Order SQL ERROR:"<< query.lastError();
     else
         iResult = query.lastInsertId().toInt(&bResult);
     if(bResult == false)
@@ -208,7 +224,7 @@ bool DBWorkOrderTable::QueryEntireTable(QMap<int, QString> *_obj)
     if(_obj == NULL)
         return false;
     QSqlQuery query(WorkOrderDBObj);
-    bool bResult = WorkOrderDBObj.open();
+    bool bResult = OpenDBObject();
     if(bResult == false)
         return bResult;
 
@@ -224,7 +240,7 @@ bool DBWorkOrderTable::QueryEntireTable(QMap<int, QString> *_obj)
     }
     else
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Work Order SQL ERROR:"<< query.lastError()<< __LINE__;
     }
 
     WorkOrderDBObj.close();
@@ -237,10 +253,10 @@ bool DBWorkOrderTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
         return false;
     UtilityClass *_Utility = UtilityClass::Instance();
     QSqlQuery query(WorkOrderDBObj);
-    bool bResult = WorkOrderDBObj.open();
+    bool bResult = OpenDBObject();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Work Order SQL ERROR:"<< query.lastError()<< __LINE__;
         return bResult;
     }
 
@@ -252,7 +268,7 @@ bool DBWorkOrderTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
     if(bResult == false)
     {
         WorkOrderDBObj.close();
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Work Order SQL ERROR:"<< query.lastError()<< __LINE__;
         return bResult;
     }
 
@@ -291,10 +307,10 @@ bool DBWorkOrderTable::QueryOneRecordFromTable(int ID, void *_obj)
         return false;
     UtilityClass *_Utility = UtilityClass::Instance();
     QSqlQuery query(WorkOrderDBObj);
-    bool bResult = WorkOrderDBObj.open();
+    bool bResult = OpenDBObject();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Work Order SQL ERROR:"<< query.lastError()<< __LINE__;
         return bResult;
     }
 
@@ -305,7 +321,7 @@ bool DBWorkOrderTable::QueryOneRecordFromTable(int ID, void *_obj)
     if(bResult == false)
     {
         WorkOrderDBObj.close();
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Work Order SQL ERROR:"<< query.lastError()<< __LINE__;
         return bResult;
     }
 
@@ -341,17 +357,17 @@ bool DBWorkOrderTable::QueryOneRecordFromTable(int ID, void *_obj)
 bool DBWorkOrderTable::DeleteEntireTable()
 {
     QSqlQuery query(WorkOrderDBObj);
-    bool bResult = WorkOrderDBObj.open();
+    bool bResult = OpenDBObject();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Work Order SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
     bResult = query.exec(SQLSentence[DELETE_ENTIRE_TABLE]);
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Work Order SQL ERROR:"<< query.lastError();
     }
     WorkOrderDBObj.close();
     return bResult;
@@ -360,10 +376,10 @@ bool DBWorkOrderTable::DeleteEntireTable()
 bool DBWorkOrderTable::DeleteOneRecordFromTable(int ID, QString Name)
 {
     QSqlQuery query(WorkOrderDBObj);
-    bool bResult = WorkOrderDBObj.open();
+    bool bResult = OpenDBObject();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Work Order SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
@@ -374,7 +390,7 @@ bool DBWorkOrderTable::DeleteOneRecordFromTable(int ID, QString Name)
     bResult = query.exec();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Work Order SQL ERROR:"<< query.lastError();
     }
     WorkOrderDBObj.close();
     return bResult;
@@ -386,7 +402,7 @@ bool DBWorkOrderTable::UpdateRecordIntoTable(void *_obj)
         return false;
     UtilityClass* _Utility = UtilityClass::Instance();
     QSqlQuery query(WorkOrderDBObj);
-    bool bResult = WorkOrderDBObj.open();
+    bool bResult = OpenDBObject();
     if(bResult == false)
     {
         qDebug() << "SQL ERROR1:"<< query.lastError();
@@ -414,7 +430,7 @@ bool DBWorkOrderTable::UpdateRecordIntoTable(void *_obj)
     bResult = query.exec();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Work Order SQL ERROR:"<< query.lastError();
     }
     WorkOrderDBObj.close();
     return bResult;
@@ -426,7 +442,7 @@ bool DBWorkOrderTable::QueryOnlyUseName(QString Name, QMap<int, QString> *_obj)
         return false;
 
     QSqlQuery query(WorkOrderDBObj);
-    bool bResult = WorkOrderDBObj.open();
+    bool bResult = OpenDBObject();
     if(bResult == false)
         return bResult;
 
@@ -444,7 +460,7 @@ bool DBWorkOrderTable::QueryOnlyUseName(QString Name, QMap<int, QString> *_obj)
     }
     else
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Work Order SQL ERROR:"<< query.lastError();
     }
 
     WorkOrderDBObj.close();
@@ -457,7 +473,7 @@ bool DBWorkOrderTable::QueryOnlyUseTime(unsigned int time_from, unsigned int tim
         return false;
 
     QSqlQuery query(WorkOrderDBObj);
-    bool bResult = WorkOrderDBObj.open();
+    bool bResult = OpenDBObject();
     if(bResult == false)
         return bResult;
 
@@ -480,7 +496,7 @@ bool DBWorkOrderTable::QueryOnlyUseTime(unsigned int time_from, unsigned int tim
     }
     else
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Work Order SQL ERROR:"<< query.lastError();
     }
 
     WorkOrderDBObj.close();
@@ -494,7 +510,7 @@ bool DBWorkOrderTable::QueryUseNameAndTime(QString Name, unsigned int time_from,
         return false;
 
     QSqlQuery query(WorkOrderDBObj);
-    bool bResult = WorkOrderDBObj.open();
+    bool bResult = OpenDBObject();
     if(bResult == false)
         return bResult;
 
@@ -517,7 +533,7 @@ bool DBWorkOrderTable::QueryUseNameAndTime(QString Name, unsigned int time_from,
     }
     else
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Work Order SQL ERROR:"<< query.lastError();
     }
 
     WorkOrderDBObj.close();
@@ -531,7 +547,7 @@ bool DBWorkOrderTable::exportData(int workOrderId, QString fileUrl)
     QString lineValue = "";
     QSqlQuery query(WorkOrderDBObj);
     QString partData;
-    bool bResult = WorkOrderDBObj.open();
+    bool bResult = OpenDBObject();
     bool ok;
     QString tempPartData;
     QString fileSource;

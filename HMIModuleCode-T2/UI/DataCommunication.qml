@@ -181,20 +181,20 @@ Item {
             width: (rownButton.width-96)/3
             onClicked: {
 
-//                var boolList = new Array()
-//                boolList.push(networkSwitch.state == "right")
-//                boolList.push(remoteSwitch.state == "right")
-//                boolList.push(graphSwitch.state == "right")
-//                boolList.push(modularSwitch.state == "right")
-//                var strList = new Array()
+                var boolList = new Array()
+                boolList.push(networkSwitch.state == "right")
+                boolList.push(remoteSwitch.state == "right")
+                boolList.push(graphSwitch.state == "right")
+                boolList.push(modularSwitch.state == "right")
+                var strList = new Array();
 //                for (var i = 0 ; i < testModel.count; i++)
 //                {
 //                    strList.push(testModel.get(i).shrinkid)
 //                    strList.push(testModel.get(i).temperature)
 //                    strList.push(testModel.get(i).times)
 //                }
-//                hmiAdaptor.dataCommunicationSetValue(boolList,strList,ipConfig.text,serverPortEdit.inputText)
-//                hmiAdaptor.dataCommunicationExecute("_Set")
+                hmiAdaptor.dataCommunicationSetValue(boolList,strList,ipConfig.text,serverPortEdit.inputText)
+                hmiAdaptor.dataCommunicationExecute("_Set")
             }
         }
     }

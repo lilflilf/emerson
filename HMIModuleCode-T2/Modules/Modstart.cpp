@@ -12,6 +12,10 @@
 #include "Interface/Interface.h"
 #include "UtilityClass.h"
 #include "TimerClass.h"
+#include "DataBase/DBWorkOrderTable.h"
+#include "DataBase/DBPartTable.h"
+#include "DataBase/DBPresetTable.h"
+#include "DataBase/DBWireTable.h"
 #include <QString>
 #include <QCoreApplication>
 #include <QObject>
@@ -40,12 +44,16 @@ MODstart::MODstart()
     ModRunSetup *_ModRunSetup = ModRunSetup::Instance();
     InterfaceClass *_Interface = InterfaceClass::Instance();
     BransonServer* _Server = BransonServer::Instance();
+    DBWorkOrderTable* _WorkOrderTable = DBWorkOrderTable::Instance();
+    DBPartTable*      _PartTable = DBPartTable::Instance();
+    DBPresetTable*    _SpliceTable = DBPresetTable::Instance();
+    DBWireTable*      _WireTable = DBWireTable::Instance();
 
     int check_result = 0;
 
     App.Major    = "26";
     App.Minor    = "73";
-    App.Revision = "814-HMI-T6";
+    App.Revision = "814-HMI-T7";
 
     _Interface->FirstScreenComesUp = false;
     _MDefine->ModeChangeFlag = false;
@@ -170,6 +178,13 @@ MODstart::MODstart()
         if (_Interface->StatusData.NetworkingEnabled == true)
         {
             _Server->OpenEthernetServer();
+        }
+        if (_Interface->StatusData.ModularProductionEnabled == true)
+        {
+            _WorkOrderTable->SwitchDBObject(_Interface->StatusData.ModularProductionEnabled);
+            _PartTable->SwitchDBObject(_Interface->StatusData.ModularProductionEnabled);
+            _SpliceTable->SwitchDBObject(_Interface->StatusData.ModularProductionEnabled);
+            _WireTable->SwitchDBObject(_Interface->StatusData.ModularProductionEnabled);
         }
     }
 }
@@ -463,6 +478,10 @@ void MODstart::OfflineInitialization(void* ptr)
     Statistics *_Statistics = Statistics::Instance();
     InterfaceClass* _Interface = InterfaceClass::Instance();
     BransonServer* _Server = BransonServer::Instance();
+    DBWorkOrderTable* _WorkOrderTable = DBWorkOrderTable::Instance();
+    DBPartTable* _PartTable = DBPartTable::Instance();
+    DBPresetTable* _SpliceTable = DBPresetTable::Instance();
+    DBWireTable* _WireTable = DBWireTable::Instance();
     _ModRunSetup->OfflineModeEnabled = true;
     _ModRunSetup->GlobalOfflineModeEnabled = true;
 
@@ -479,6 +498,13 @@ void MODstart::OfflineInitialization(void* ptr)
     if (_Interface->StatusData.NetworkingEnabled == true)
     {
         _Server->OpenEthernetServer();
+    }
+    if (_Interface->StatusData.ModularProductionEnabled == true)
+    {
+        _WorkOrderTable->SwitchDBObject(_Interface->StatusData.ModularProductionEnabled);
+        _PartTable->SwitchDBObject(_Interface->StatusData.ModularProductionEnabled);
+        _SpliceTable->SwitchDBObject(_Interface->StatusData.ModularProductionEnabled);
+        _WireTable->SwitchDBObject(_Interface->StatusData.ModularProductionEnabled);
     }
     ptr = NULL;
 }

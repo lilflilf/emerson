@@ -917,8 +917,8 @@ bool HmiAdaptor::dataCommunicationExecute(QString code)
     else if (code == "_Set") {
         return dataCommunication->_Set();
     }
-//    else if (code == "_Default")
-//        dataCommunication->_Default();
+    else if (code == "_Default")
+        dataCommunication->_Default();
     return true;
 }
 
@@ -971,14 +971,14 @@ bool HmiAdaptor::dataCommunicationSetValue(QList<bool> boolList, QStringList str
     dataCommunication->CurrentDataCommunication.RemoteDataLogging = boolList[1];
     dataCommunication->CurrentDataCommunication.RemoteGraphData = boolList[2];
     dataCommunication->CurrentDataCommunication.ModularProduction = boolList[3];
-    dataCommunication->CurrentDataCommunication.IPConfiguration = ip;
+//    dataCommunication->CurrentDataCommunication.IPConfiguration = ip;
     dataCommunication->CurrentDataCommunication.ServerPort.Current = port;
-    for (int i = 0;i < strList.count() / 3; i++)
-    {
-        dataCommunication->CurrentDataCommunication.ShrinkTubeDefault[i].Name = strList[i*3];
-        dataCommunication->CurrentDataCommunication.ShrinkTubeDefault[i].Temp = strList[i*3+1];
-        dataCommunication->CurrentDataCommunication.ShrinkTubeDefault[i].Time = strList[i*3+2];
-    }
+//    for (int i = 0;i < strList.count() / 3; i++)
+//    {
+//        dataCommunication->CurrentDataCommunication.ShrinkTubeDefault[i].Name = strList[i*3];
+//        dataCommunication->CurrentDataCommunication.ShrinkTubeDefault[i].Temp = strList[i*3+1];
+//        dataCommunication->CurrentDataCommunication.ShrinkTubeDefault[i].Time = strList[i*3+2];
+//    }
     return true;
 }
 
@@ -1067,7 +1067,6 @@ void HmiAdaptor::slotButtonState(const unsigned long status)
         emit signalButtonStateChanged("AnvilArm", true);
     else
         emit signalButtonStateChanged("AnvilArm", false);
-
     if ((status & GATHER_ON) == GATHER_ON)
         emit signalButtonStateChanged("Gather", true);
     else

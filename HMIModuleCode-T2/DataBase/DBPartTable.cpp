@@ -1,16 +1,20 @@
 #include "DBPartTable.h"
 #include "Modules/UtilityClass.h"
 #include "Interface/PartElement.h"
+#include "Interface/interface.h"
 #include <QDebug>
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QByteArray>
 #include <QJsonParseError>
 #include <QFile>
+#include <QDir>
 
 DBPartTable* DBPartTable::_instance = NULL;
 QString DBPartTable::PartDBFile   = "Part.db";
 QString DBPartTable::DatabaseDir = "c:\\BransonData\\Library\\";
+QString DBPartTable::ModularDatabaseDir = "c:\\BransonData\\Modular Production\\";
+
 const QString SQLSentence[] = {
     "CREATE TABLE Part ("                       /*0 Create Part Table*/
     "ID INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -66,6 +70,54 @@ DBPartTable::DBPartTable()
 //            InsertTestDataIntoTable();
         }
     }
+    PartDBObj.close();
+}
+
+bool DBPartTable::OpenDBObject()
+{
+    bool bResult = false;
+    struct BransonMessageBox tmpMsgBox;
+    InterfaceClass* _Interface = InterfaceClass::Instance();
+    QDir DBDirectory;
+    if(mIsModularProduction == true)
+    {
+        if (DBDirectory.exists(ModularDatabaseDir + PartDBFile) == false)
+        {
+            tmpMsgBox.MsgTitle = QObject::tr("ERROR");
+            tmpMsgBox.MsgPrompt = QObject::tr("Please make sure All the production files has been in the Modular Production!");
+            tmpMsgBox.TipsMode = Critical;
+            tmpMsgBox.func_ptr = NULL;
+            _Interface->cMsgBox(&tmpMsgBox);
+            qDebug()<<"Send Alarm signal";
+            return bResult;
+        }
+    }
+
+    QSqlQuery query(PartDBObj);
+    if(PartDBObj.open() == false)
+    {
+
+        qDebug() << "SQL Open:"<< query.lastError();
+        bResult = false;
+    }else
+        bResult = true;
+    return bResult;
+}
+
+void DBPartTable::SwitchDBObject(bool IsModularProduction)
+{
+    mIsModularProduction = IsModularProduction;
+    {PartDBObj.close();}
+    if(mIsModularProduction == true)
+    {
+        PartDBObj.setDatabaseName(ModularDatabaseDir + PartDBFile);
+    }
+    else
+    {
+        PartDBObj.setDatabaseName(DatabaseDir + PartDBFile);
+    }
+
+    OpenDBObject();
     PartDBObj.close();
 }
 
@@ -130,7 +182,7 @@ bool DBPartTable::CreateNewTable()
     bResult = query.exec(SQLSentence[CREATE]);   //run SQL
 
     if(bResult == false)
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Part Table SQL ERROR:"<< query.lastError();
 
     PartDBObj.close();
 
@@ -145,7 +197,7 @@ int DBPartTable::InsertRecordIntoTable(void *_obj)
         return false;
 
     QSqlQuery query(PartDBObj);
-    bResult = PartDBObj.open();
+    bResult = OpenDBObject();
     if(bResult == false)
     {
         qDebug() << "SQL Open:"<< query.lastError();
@@ -179,7 +231,7 @@ int DBPartTable::InsertRecordIntoTable(void *_obj)
 
     bResult = query.exec();
     if (bResult == false)   //run SQL
-        qDebug() << "SQL ERROR InsertRecordIntoTable:"<< query.lastError();
+        qDebug() << "Part Table SQL ERROR:"<< query.lastError();
     else
         iResult = query.lastInsertId().toInt(&bResult);
     if(bResult == false)
@@ -194,7 +246,7 @@ bool DBPartTable::QueryEntireTable(QMap<int, QString> *_obj)
         return false;
 
     QSqlQuery query(PartDBObj);
-    bool bResult = PartDBObj.open();
+    bool bResult = OpenDBObject();
     if(bResult == false)
         return bResult;
 
@@ -210,7 +262,7 @@ bool DBPartTable::QueryEntireTable(QMap<int, QString> *_obj)
     }
     else
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Part Table SQL ERROR:"<< query.lastError();
     }
 
     PartDBObj.close();
@@ -225,10 +277,10 @@ bool DBPartTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
 
     UtilityClass *_Utility = UtilityClass::Instance();
     QSqlQuery query(PartDBObj);
-    bool bResult = PartDBObj.open();
+    bool bResult = OpenDBObject();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Part Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
@@ -240,7 +292,7 @@ bool DBPartTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
     if(bResult == false)
     {
         PartDBObj.close();
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Part Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
@@ -283,10 +335,10 @@ bool DBPartTable::QueryOneRecordFromTable(int ID, void *_obj)
 
     UtilityClass *_Utility = UtilityClass::Instance();
     QSqlQuery query(PartDBObj);
-    bool bResult = PartDBObj.open();
+    bool bResult = OpenDBObject();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Part Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
@@ -297,7 +349,7 @@ bool DBPartTable::QueryOneRecordFromTable(int ID, void *_obj)
     if(bResult == false)
     {
         PartDBObj.close();
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Part Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
@@ -336,17 +388,17 @@ bool DBPartTable::QueryOneRecordFromTable(int ID, void *_obj)
 bool DBPartTable::DeleteEntireTable()
 {
     QSqlQuery query(PartDBObj);
-    bool bResult = PartDBObj.open();
+    bool bResult = OpenDBObject();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Part Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
     bResult = query.exec(SQLSentence[DELETE_ENTIRE_TABLE]);
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Part Table SQL ERROR:"<< query.lastError();
     }
 
     PartDBObj.close();
@@ -356,10 +408,10 @@ bool DBPartTable::DeleteEntireTable()
 bool DBPartTable::DeleteOneRecordFromTable(int ID, QString Name)
 {
     QSqlQuery query(PartDBObj);
-    bool bResult = PartDBObj.open();
+    bool bResult = OpenDBObject();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Part Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
@@ -370,7 +422,7 @@ bool DBPartTable::DeleteOneRecordFromTable(int ID, QString Name)
     bResult = query.exec();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Part Table SQL ERROR:"<< query.lastError();
     }
     PartDBObj.close();
     return bResult;
@@ -382,7 +434,7 @@ bool DBPartTable::UpdateRecordIntoTable(void *_obj)
         return false;
     UtilityClass* _Utility = UtilityClass::Instance();
     QSqlQuery query(PartDBObj);
-    bool bResult = PartDBObj.open();
+    bool bResult = OpenDBObject();
     if(bResult == false)
     {
         qDebug() << "SQL ERROR1:"<< query.lastError();
@@ -409,7 +461,7 @@ bool DBPartTable::UpdateRecordIntoTable(void *_obj)
     bResult = query.exec();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Part Table SQL ERROR:"<< query.lastError();
     }
     PartDBObj.close();
     return bResult;
@@ -421,7 +473,7 @@ bool DBPartTable::QueryOnlyUseName(QString Name, QMap<int, QString> *_obj)
         return false;
 
     QSqlQuery query(PartDBObj);
-    bool bResult = PartDBObj.open();
+    bool bResult = OpenDBObject();
     if(bResult == false)
         return bResult;
 
@@ -439,7 +491,7 @@ bool DBPartTable::QueryOnlyUseName(QString Name, QMap<int, QString> *_obj)
     }
     else
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Part Table SQL ERROR:"<< query.lastError();
     }
 
     PartDBObj.close();
@@ -452,7 +504,7 @@ bool DBPartTable::QueryOnlyUseTime(unsigned int time_from, unsigned int time_to,
         return false;
 
     QSqlQuery query(PartDBObj);
-    bool bResult = PartDBObj.open();
+    bool bResult = OpenDBObject();
     if(bResult == false)
         return bResult;
 
@@ -474,7 +526,7 @@ bool DBPartTable::QueryOnlyUseTime(unsigned int time_from, unsigned int time_to,
     }
     else
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Part Table SQL ERROR:"<< query.lastError();
     }
 
     PartDBObj.close();
@@ -488,7 +540,7 @@ bool DBPartTable::QueryUseNameAndTime(QString Name, unsigned int time_from,
         return false;
 
     QSqlQuery query(PartDBObj);
-    bool bResult = PartDBObj.open();
+    bool bResult = OpenDBObject();
     if(bResult == false)
         return bResult;
 
@@ -512,7 +564,7 @@ bool DBPartTable::QueryUseNameAndTime(QString Name, unsigned int time_from,
     }
     else
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Part Table SQL ERROR:"<< query.lastError();
     }
 
     PartDBObj.close();
@@ -525,7 +577,7 @@ bool DBPartTable::exportData(int partId, QString fileUrl)
     QString lineValue = "";
     QSqlQuery query(PartDBObj);
     QString spliceData;
-    bool bResult = PartDBObj.open();
+    bool bResult = OpenDBObject();
     bool ok;
     QString tempWireData;
     QString fileSource;
@@ -641,7 +693,7 @@ QString DBPartTable::GetExportString(int partId)
     QString queryStr;
     QString lineValue = "";
     QSqlQuery query(PartDBObj);
-    bool bResult = PartDBObj.open();
+    bool bResult = OpenDBObject();
     if(bResult == true)
     {
         queryStr = QString("SELECT * FROM Part WHERE ID == '%1'").arg(partId);

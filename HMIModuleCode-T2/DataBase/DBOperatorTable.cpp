@@ -54,6 +54,11 @@ DBOperatorTable::~DBOperatorTable()
     OperatorDBObj.close();
 }
 
+void DBOperatorTable::SwitchDBObject(bool IsModularProduction)
+{
+    return;
+}
+
 bool DBOperatorTable::CreateNewTable()
 {
     QSqlQuery query(OperatorDBObj);
@@ -288,7 +293,7 @@ bool DBOperatorTable::UpdateRecordIntoTable(void *_obj)
     bResult = query.exec();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Operator Table SQL ERROR:"<< query.lastError();
     }
     OperatorDBObj.close();
     return bResult;
@@ -318,7 +323,7 @@ bool DBOperatorTable::QueryOnlyUseName(QString Name, QMap<int, QString> *_obj)
     }
     else
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Operator Table SQL ERROR:"<< query.lastError();
     }
 
     OperatorDBObj.close();
@@ -353,7 +358,7 @@ bool DBOperatorTable::QueryOnlyUseTime(unsigned int time_from, unsigned int time
     }
     else
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Operator Table SQL ERROR:"<< query.lastError();
     }
 
     OperatorDBObj.close();
@@ -391,7 +396,7 @@ bool DBOperatorTable::QueryUseNameAndTime(QString Name, unsigned int time_from,
     }
     else
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Operator Table SQL ERROR:"<< query.lastError();
     }
 
     OperatorDBObj.close();
