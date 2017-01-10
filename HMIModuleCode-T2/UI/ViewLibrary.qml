@@ -724,8 +724,9 @@ Item {
             text: qsTr("Edit")
             onClicked: {
                 if (partRadio.checked) {
+                    hmiAdaptor.setEditPartId(partModel.getValue(selectIndx,"PartId"))
                     root.checkNeedPassWd(0)
-                    hmiAdaptor.viewLibraryMovePart(partModel.getValue(selectIndx,"PartId"),partModel.getValue(selectIndx,"PartName"))
+//                    hmiAdaptor.viewLibraryMovePart(partModel.getValue(selectIndx,"PartId"),partModel.getValue(selectIndx,"PartName"))
                 } else if (spliceRadio.checked) {
                     hmiAdaptor.setTestSpliceId(spliceModel.getValue(selectIndx,"SpliceId"))
                     root.checkNeedPassWd(0)

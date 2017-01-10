@@ -12,7 +12,6 @@ Item {
     property var testSpliceId: -1
     function initPage()
     {
-        testSpliceLibrary.testSpliceId = hmiAdaptor.getTestSpliceId()
         if (testSpliceLibrary.testSpliceId != -1)
         {
             backGround.visible = true

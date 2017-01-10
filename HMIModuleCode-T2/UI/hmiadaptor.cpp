@@ -92,6 +92,7 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
     connect(operateProcess,SIGNAL(WeldCycleCompleted(bool)),this,SLOT(slotWeldCycleCompleted(bool)));
     m_spliceAdaptor = DBPresetTable::Instance();
     testSpliceId = -1;
+    editPartId = -1;
 }
 
 HmiAdaptor::~HmiAdaptor()
@@ -108,7 +109,6 @@ int HmiAdaptor::getTestSpliceId()
 {
     int id;
     id = testSpliceId;
-    testSpliceId = -1;
     return id;
 }
 
@@ -121,7 +121,18 @@ int HmiAdaptor::getEditWireId()
 {
     int id;
     id = editWireId;
-    editWireId = -1;
+    return id;
+}
+
+void HmiAdaptor::setEditPartId(int partId)
+{
+    editPartId = partId;
+}
+
+int HmiAdaptor::getEditPartId()
+{
+    int id;
+    id = editPartId;
     return id;
 }
 

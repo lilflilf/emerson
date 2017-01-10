@@ -23,6 +23,8 @@ Item {
     property bool bIsDrag: false
     property bool bIsEdit: false
     property bool bIsBoard: true
+    property int partId: -1
+    property int spliceId: -1
     property string draColor: ""
     property bool bIsEditSplice: false
     property bool bIsFirst: false
@@ -41,14 +43,16 @@ Item {
 
     function initEdit()
     {
-        var spliceId = hmiAdaptor.getTestSpliceId();
-        if (spliceId != -1)
+        if (content.spliceId != -1)
         {
             bIsEditSplice = true
-            spliceModel.editNew(spliceId)
+            spliceModel.editNew(content.spliceId)
             loader.source = "qrc:/UI/CreatWire.qml"
             loader.item.bIsFromLib = true
             titleTextChanged(qsTr("Edit Existing"))
+        } else if (content.partId != -1) {
+            var partName = partModel.getPartName(content.partId)
+            selectPartUpdataPage(content.partId,partName)
         }
     }
 
@@ -69,7 +73,6 @@ Item {
         nameList = partModel.getCurrentPartOfSpliceName()
         var idList = new Array()
         idList = partModel.getCurrentPartOfSpliceId()
-        console.log("aaaaaaaaaaaaa",idList)
         for (var i = 0; i < nameList.length; i++) {
             if (corlorlist[i] == -1 || zoneList[i] == -1) {
                 spliceList.listModel.append({"SpliceName":nameList[i],"stationColor":"white","station":"?","SpliceId":idList[i]})
@@ -107,6 +110,7 @@ Item {
             selectPartUpdataPage(id,name)
         }
         onSignalMoveSplice: {
+            console.log("5555555555555555555555")
             bIsEditSplice = true
             spliceModel.editNew(id)
             loader.source = "qrc:/UI/CreatWire.qml"

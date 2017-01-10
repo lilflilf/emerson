@@ -17,6 +17,7 @@ Item {
     width: Screen.width
     height: Screen.height
     signal signalSaveSplice()
+    property int editWirdId: -1
     property bool detailIsChang: true
     property variant colorArray: ["#ff6699","#ff0033","#33FFCC","#cc99ff","#cc0099","#930202","#99ccff","#f79428",
         "#0000cc","Olive","#ffff33","#ffcc00","#cc9909","#66ff00","#009900","#00cc66","#3366ff","#cc33cc","#cc9966","#9400D3"]
@@ -30,10 +31,9 @@ Item {
 
     function initPage()
     {
-        var wireId = hmiAdaptor.getEditWireId()
-        if (wireId == -1)
+        if (creatWire.editWirdId == -1)
             return
-        wireModel.addFromLibrary(wireId)
+        wireModel.addFromLibrary(creatWire.editWirdId)
 
 //        WireModelHash.insert("WireType",metalType);
 //        WireModelHash.insert("WireColor",wireElement.Color);
@@ -855,10 +855,8 @@ Item {
                     wireType = itemType.state == "left" ? 0 : 1
                     side = itemSide.state == "left" ? 0 : 1
                     location = itemLocation.state == "left" ? 0 : 1
-
-                    wireModel.insertValueToTable("update",wireName.inputText,hmiAdaptor.getEditWireId(),hmiAdaptor.getCurrentOperatorId(),itemColor.color,
+                    wireModel.insertValueToTable("update",wireName.inputText,creatWire.editWirdId,hmiAdaptor.getCurrentOperatorId(),itemColor.color,
                                                  itemStripe.color,itemStripe.stripeType,gauge,awg,wireType,side,location,column1.positionIndex)
-
                 }
             }
         }

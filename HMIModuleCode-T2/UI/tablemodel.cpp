@@ -2481,6 +2481,7 @@ void WireModel::setModelList()
 {
     beginResetModel();
     wires->clear();
+    qDebug( )<< "WireModel";
     if (m_wireAdaptor->QueryEntireTable(wires))
         qDebug( )<< "WireModel" << wires->count();
     endResetModel();
@@ -2544,6 +2545,7 @@ int WireModel::insertValueToTable(QString type,QString wireName,int wireId,int o
         qDebug() << "1";
         WireElement wireTemp;
         m_wireAdaptor->QueryOneRecordFromTable(wireId,&wireTemp);
+        qDebug()<<"insertValueToTable"<<insertWire.SpliceID<<wireTemp.SpliceID<<wireId;
         if (wireTemp == insertWire) {
             qDebug() << "2";
             return wireId;

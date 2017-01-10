@@ -337,14 +337,18 @@ Window {
             }
             else if (initIndex == 3)
             {
+                contentLoader.item.testSpliceId = hmiAdaptor.getTestSpliceId()
                 contentLoader.item.initPage()
             }
             else if (initIndex == 0)
             {
+                contentLoader.item.partId = hmiAdaptor.getEditPartId()
+                contentLoader.item.spliceId = hmiAdaptor.getTestSpliceId()
                 contentLoader.item.initEdit()
             }
             else if (initIndex == 19)
             {
+                contentLoader.item.editWirdId = hmiAdaptor.getEditWireId()
                 contentLoader.item.initPage()
             }
         }

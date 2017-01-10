@@ -55,7 +55,8 @@ public:
 
     Q_INVOKABLE void setEditWireId(int wireId);
     Q_INVOKABLE int getEditWireId();
-
+    Q_INVOKABLE void setEditPartId(int partId);
+    Q_INVOKABLE int getEditPartId();
 
     Q_INVOKABLE void quit();
     Q_INVOKABLE void openFileDialog();
@@ -177,6 +178,7 @@ public:
     void (*func_ptr)(void*);
     int testSpliceId;
     int editWireId;
+    int editPartId;
 signals:
     void widthCalibrationFinish(const bool &_Result);
     void heightCalibrationFinish(const bool &_Result);
