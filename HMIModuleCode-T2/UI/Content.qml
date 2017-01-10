@@ -39,6 +39,19 @@ Item {
         source: "qrc:/images/images/bg.png"
     }
 
+    function initEdit()
+    {
+        var spliceId = hmiAdaptor.getTestSpliceId();
+        if (spliceId != -1)
+        {
+            bIsEditSplice = true
+            spliceModel.editNew(spliceId)
+            loader.source = "qrc:/UI/CreatWire.qml"
+            loader.item.bIsFromLib = true
+            titleTextChanged(qsTr("Edit Existing"))
+        }
+    }
+
     function selectPartUpdataPage(id,name)
     {
         partModel.getPartInfo(true,id,name)
@@ -968,6 +981,11 @@ Item {
             width: 250
             pointSize: 16
             onClicked: {
+                if (content.selectSpliceId != -1)
+                {
+                    hmiAdaptor.setTestSpliceId(selectSpliceId)
+                    root.checkNeedPassWd(3)
+                }
             }
         }
         Text {

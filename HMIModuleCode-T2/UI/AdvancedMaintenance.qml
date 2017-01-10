@@ -30,7 +30,7 @@ Item {
     Connections {
         target: hmiAdaptor
         onSignalButtonStateChanged: {
-            if (buttonName == "Anvilarm") {
+            if (buttonName == "AnvilArm") {
                 if (state)
                     button1.backgroundComponent = buttonBackTrue
                 else

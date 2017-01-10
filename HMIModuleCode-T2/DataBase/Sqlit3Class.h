@@ -36,6 +36,7 @@ public:
     virtual bool QueryOnlyUseTime(unsigned int time_from, unsigned int time_to, QMap<int, QString>* _obj) = 0;
     virtual bool QueryUseNameAndTime(QString Name, unsigned int time_from,
                 unsigned int time_to, QMap<int, QString>* _obj) = 0;
+    virtual void SwitchDBObject(bool IsModularProduction) = 0;
 };
 
 #endif // SQLITCLASS_H

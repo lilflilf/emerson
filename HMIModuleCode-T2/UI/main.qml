@@ -335,6 +335,18 @@ Window {
                 contentLoader.item.bIsEdit = true
                 contentLoader.item.bIsFirst = true
             }
+            else if (initIndex == 3)
+            {
+                contentLoader.item.initPage()
+            }
+            else if (initIndex == 0)
+            {
+                contentLoader.item.initEdit()
+            }
+            else if (initIndex == 19)
+            {
+                contentLoader.item.initPage()
+            }
         }
     }
     Connections {

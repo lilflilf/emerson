@@ -379,6 +379,7 @@ public slots:
     Q_INVOKABLE int count();
     Q_INVOKABLE void removeValue(int id, QString name);
     Q_INVOKABLE int insertValueToTable(QString type, QString wireName, int wireId, int operatorId, QString color, QString stripeColor, int stripeType, int gauge, int awgGauge, int wireType, int side, int verside, int position);
+
     Q_INVOKABLE void updateSpliceIdToWire(QList<int> wireList, int spliceId);
 
     Q_INVOKABLE void createNew();

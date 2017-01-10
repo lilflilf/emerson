@@ -79,12 +79,17 @@ DBWeldResultTable::~DBWeldResultTable()
     WeldResultDBObj.close();
 }
 
+void DBWeldResultTable::SwitchDBObject(bool IsModularProduction)
+{
+    return;
+}
+
 bool DBWeldResultTable::CreateNewTable()
 {
     QSqlQuery query(WeldResultDBObj);
     bool bResult = query.exec(SQLSentence[CREATE]);
     if(bResult == false)
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Weld Result SQL ERROR:"<< query.lastError();
     return bResult;
 }
 
@@ -182,7 +187,7 @@ int DBWeldResultTable::InsertRecordIntoTable(void *_obj)
         bResult = query.exec();
     }
     if (bResult == false)   //run SQL
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Weld Result SQL ERROR:"<< query.lastError();
     else
         iResult = query.lastInsertId().toInt(&bResult);
     if(bResult == false)
@@ -213,7 +218,7 @@ bool DBWeldResultTable::QueryEntireTable(QMap<int, QString> *_obj)
     }
     else
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Weld Result SQL ERROR:"<< query.lastError();
     }
 
     WeldResultDBObj.close();
@@ -230,7 +235,7 @@ bool DBWeldResultTable::QueryOneRecordFromTable(int ID, QString OperatorName, vo
     bool bResult = WeldResultDBObj.open();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Weld Result SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
@@ -242,7 +247,7 @@ bool DBWeldResultTable::QueryOneRecordFromTable(int ID, QString OperatorName, vo
     if(bResult == false)
     {
         WeldResultDBObj.close();
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Weld Result SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
@@ -313,7 +318,7 @@ bool DBWeldResultTable::QueryOneRecordFromTable(int ID, void *_obj)
     bool bResult = WeldResultDBObj.open();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Weld Result SQL ERROR:"<< query.lastError();
         return bResult;
     }
     query.prepare(SQLSentence[QUERY_ONE_RECORD_ONLY_ID]);
@@ -322,7 +327,7 @@ bool DBWeldResultTable::QueryOneRecordFromTable(int ID, void *_obj)
     if(bResult == false)
     {
         WeldResultDBObj.close();
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Weld Result SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
@@ -410,7 +415,7 @@ bool DBWeldResultTable::DeleteOneRecordFromTable(int ID, QString OperatorName)
     bool bResult = WeldResultDBObj.open();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Weld Result SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
@@ -421,7 +426,7 @@ bool DBWeldResultTable::DeleteOneRecordFromTable(int ID, QString OperatorName)
     bResult = query.exec();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Weld Result SQL ERROR:"<< query.lastError();
     }
     WeldResultDBObj.close();
     return bResult;
@@ -476,7 +481,7 @@ bool DBWeldResultTable::UpdateRecordIntoTable(void *_obj)
     bResult = query.exec();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Weld Result SQL ERROR:"<< query.lastError();
     }
     WeldResultDBObj.close();
     return bResult;
@@ -506,7 +511,7 @@ bool DBWeldResultTable::QueryOnlyUseName(QString Name, QMap<int, QString> *_obj)
     }
     else
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Weld Result SQL ERROR:"<< query.lastError();
     }
 
     WeldResultDBObj.close();
@@ -541,7 +546,7 @@ bool DBWeldResultTable::QueryOnlyUseTime(unsigned int time_from, unsigned int ti
     }
     else
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Weld Result SQL ERROR:"<< query.lastError();
     }
 
     WeldResultDBObj.close();
@@ -579,7 +584,7 @@ bool DBWeldResultTable::QueryUseNameAndTime(QString Name, unsigned int time_from
     }
     else
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Weld Result SQL ERROR:"<< query.lastError();
     }
 
     WeldResultDBObj.close();
@@ -899,7 +904,7 @@ bool DBWeldResultTable::QueryBySomeFields(QString SpliceName, unsigned int HashC
     }
     else
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Weld Result SQL ERROR:"<< query.lastError();
     }
 
     return bResult;
@@ -914,7 +919,7 @@ bool DBWeldResultTable::QueryOneRecordWithGraph(int ID, QString OperatorName, vo
     bool bResult = WeldResultDBObj.open();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Weld Result SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
@@ -926,7 +931,7 @@ bool DBWeldResultTable::QueryOneRecordWithGraph(int ID, QString OperatorName, vo
     if(bResult == false)
     {
         WeldResultDBObj.close();
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Weld Result SQL ERROR:"<< query.lastError();
         return bResult;
     }
 

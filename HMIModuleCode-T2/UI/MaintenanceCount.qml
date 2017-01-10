@@ -33,7 +33,7 @@ Item {
         listModel.append({mytitle:qsTr("Horn")})
         listModel.append({mytitle:qsTr("AnvilTip")})
         listModel.append({mytitle:qsTr("Gather")})
-        listModel.append({mytitle:qsTr("AnvilGuide")})
+        listModel.append({mytitle:qsTr("HornGuide")})
         listModel.append({mytitle:qsTr("Converter")})
         listModel.append({mytitle:qsTr("Actuator")})
 

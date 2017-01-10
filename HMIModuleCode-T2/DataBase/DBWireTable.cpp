@@ -1,11 +1,14 @@
 #include "DBWireTable.h"
 #include <QDebug>
 #include "Interface/WireElement.h"
+#include "Interface/interface.h"
 #include <QFile>
+#include <QDir>
 
 DBWireTable* DBWireTable::_instance = NULL;
 QString DBWireTable::WireDBFile   = "Wire.db";
 QString DBWireTable::DatabaseDir = "c:\\BransonData\\Library\\";
+QString DBWireTable::ModularDatabaseDir = "c:\\BransonData\\Modular Production\\";
 
 const QString SQLSentence[] = {
     "CREATE TABLE Wire ("                   /*0 Create Wire Table*/
@@ -56,6 +59,54 @@ DBWireTable::DBWireTable()
     WireDBObj.close();
 }
 
+bool DBWireTable::OpenDBObject()
+{
+    bool bResult = false;
+    struct BransonMessageBox tmpMsgBox;
+    InterfaceClass* _Interface = InterfaceClass::Instance();
+    QDir DBDirectory;
+    if(mIsModularProduction == true)
+    {
+        if (DBDirectory.exists(ModularDatabaseDir + WireDBFile) == false)
+        {
+            tmpMsgBox.MsgTitle = QObject::tr("ERROR");
+            tmpMsgBox.MsgPrompt = QObject::tr("Please make sure All the production files has been in the Modular Production!");
+            tmpMsgBox.TipsMode = Critical;
+            tmpMsgBox.func_ptr = NULL;
+            _Interface->cMsgBox(&tmpMsgBox);
+            qDebug()<<"Send Alarm signal";
+            return bResult;
+        }
+    }
+
+    QSqlQuery query(WireDBObj);
+    if(WireDBObj.open() == false)
+    {
+
+        qDebug() << "SQL Open:"<< query.lastError();
+        bResult = false;
+    }else
+        bResult = true;
+    return bResult;
+}
+
+void DBWireTable::SwitchDBObject(bool IsModularProduction)
+{
+    mIsModularProduction = IsModularProduction;
+    {WireDBObj.close();}
+    if(mIsModularProduction == true)
+    {
+        WireDBObj.setDatabaseName(ModularDatabaseDir + WireDBFile);
+    }
+    else
+    {
+        WireDBObj.setDatabaseName(DatabaseDir + WireDBFile);
+    }
+
+    OpenDBObject();
+    WireDBObj.close();
+}
+
 DBWireTable::~DBWireTable()
 {
     WireDBObj.close();
@@ -69,7 +120,7 @@ bool DBWireTable::CreateNewTable()
     bResult = query.exec(SQLSentence[CREATE]);   //run SQL
 
     if(bResult == false)
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Wire Table SQL ERROR:"<< query.lastError();
 
     WireDBObj.close();
 
@@ -84,10 +135,10 @@ int DBWireTable::InsertRecordIntoTable(void *_obj)
         return false;
 
     QSqlQuery query(WireDBObj);
-    bResult = WireDBObj.open();
+    bResult = OpenDBObject();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Wire Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
@@ -109,7 +160,7 @@ int DBWireTable::InsertRecordIntoTable(void *_obj)
 
     bResult = query.exec();   //run SQL
     if(bResult == false)
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Wire Table SQL ERROR:"<< query.lastError();
     else
         iResult = query.lastInsertId().toInt(&bResult);
     if(bResult == false)
@@ -124,7 +175,7 @@ bool DBWireTable::QueryEntireTable(QMap<int, QString> *_obj)
         return false;
 
     QSqlQuery query(WireDBObj);
-    bool bResult = WireDBObj.open();
+    bool bResult = OpenDBObject();
     if(bResult == false)
         return bResult;
 
@@ -138,7 +189,7 @@ bool DBWireTable::QueryEntireTable(QMap<int, QString> *_obj)
     }
     else
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Wire Table SQL ERROR:"<< query.lastError();
     }
 
     WireDBObj.close();
@@ -150,10 +201,10 @@ bool DBWireTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
     if(_obj == NULL)
         return false;
     QSqlQuery query(WireDBObj);
-    bool bResult = WireDBObj.open();
+    bool bResult = OpenDBObject();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Wire Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
@@ -165,7 +216,7 @@ bool DBWireTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
     if(bResult == false)
     {
         WireDBObj.close();
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Wire Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
@@ -204,10 +255,10 @@ bool DBWireTable::QueryOneRecordFromTable(int ID, void *_obj)
     if(_obj == NULL)
         return false;
     QSqlQuery query(WireDBObj);
-    bool bResult = WireDBObj.open();
+    bool bResult = OpenDBObject();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Wire Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
@@ -218,7 +269,7 @@ bool DBWireTable::QueryOneRecordFromTable(int ID, void *_obj)
     if(bResult == false)
     {
         WireDBObj.close();
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Wire Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
@@ -255,16 +306,16 @@ bool DBWireTable::QueryOneRecordFromTable(int ID, void *_obj)
 bool DBWireTable::DeleteEntireTable()
 {
     QSqlQuery query(WireDBObj);
-    bool bResult = WireDBObj.open();
+    bool bResult = OpenDBObject();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Wire Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
     bResult = query.exec(SQLSentence[DELETE_ENTIRE_TABLE]);
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Wire Table SQL ERROR:"<< query.lastError();
     }
     WireDBObj.close();
     return bResult;
@@ -273,10 +324,10 @@ bool DBWireTable::DeleteEntireTable()
 bool DBWireTable::DeleteOneRecordFromTable(int ID, QString Name)
 {
     QSqlQuery query(WireDBObj);
-    bool bResult = WireDBObj.open();
+    bool bResult = OpenDBObject();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Wire Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
@@ -287,7 +338,7 @@ bool DBWireTable::DeleteOneRecordFromTable(int ID, QString Name)
     bResult = query.exec();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Wire Table SQL ERROR:"<< query.lastError();
     }
     WireDBObj.close();
     return bResult;
@@ -298,10 +349,10 @@ bool DBWireTable::UpdateRecordIntoTable(void *_obj)
     if(_obj == NULL)
         return false;
     QSqlQuery query(WireDBObj);
-    bool bResult = WireDBObj.open();
+    bool bResult = OpenDBObject();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Wire Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
@@ -325,7 +376,7 @@ bool DBWireTable::UpdateRecordIntoTable(void *_obj)
     bResult = query.exec();
     if(bResult == false)
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Wire Table SQL ERROR:"<< query.lastError();
     }
     WireDBObj.close();
     return bResult;
@@ -337,7 +388,7 @@ bool DBWireTable::QueryOnlyUseName(QString Name, QMap<int, QString> *_obj)
         return false;
 
     QSqlQuery query(WireDBObj);
-    bool bResult = WireDBObj.open();
+    bool bResult = OpenDBObject();
     if(bResult == false)
         return bResult;
 
@@ -355,7 +406,7 @@ bool DBWireTable::QueryOnlyUseName(QString Name, QMap<int, QString> *_obj)
     }
     else
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Wire Table SQL ERROR:"<< query.lastError();
     }
 
     WireDBObj.close();
@@ -368,7 +419,7 @@ bool DBWireTable::QueryOnlyUseTime(unsigned int time_from, unsigned int time_to,
         return false;
 
     QSqlQuery query(WireDBObj);
-    bool bResult = WireDBObj.open();
+    bool bResult = OpenDBObject();
     if(bResult == false)
         return bResult;
 
@@ -391,7 +442,7 @@ bool DBWireTable::QueryOnlyUseTime(unsigned int time_from, unsigned int time_to,
     }
     else
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Wire Table SQL ERROR:"<< query.lastError();
     }
 
     WireDBObj.close();
@@ -405,7 +456,7 @@ bool DBWireTable::QueryUseNameAndTime(QString Name, unsigned int time_from,
         return false;
 
     QSqlQuery query(WireDBObj);
-    bool bResult = WireDBObj.open();
+    bool bResult = OpenDBObject();
     if(bResult == false)
         return bResult;
 
@@ -428,7 +479,7 @@ bool DBWireTable::QueryUseNameAndTime(QString Name, unsigned int time_from,
     }
     else
     {
-        qDebug() << "SQL ERROR:"<< query.lastError();
+        qDebug() << "Wire Table SQL ERROR:"<< query.lastError();
     }
 
     WireDBObj.close();
@@ -442,7 +493,7 @@ bool DBWireTable::QueryOnlyUseField(QString FieldName, QString value, QMap<int, 
         return false;
 
     QSqlQuery query(WireDBObj);
-    bool bResult = WireDBObj.open();
+    bool bResult = OpenDBObject();
     if(bResult == true)
     {
         if(Orderby == true)
@@ -473,7 +524,7 @@ bool DBWireTable::ExportData(int wireId, QString fileUrl)
     QString lineValue = "";
     QSqlQuery query(WireDBObj);
     QString fileSource;
-    bool bResult = WireDBObj.open();
+    bool bResult = OpenDBObject();
     if(bResult == true)
     {
         queryStr = QString("SELECT * FROM Wire WHERE ID == '%1'").arg(wireId);
@@ -511,7 +562,7 @@ QString DBWireTable::GetExportString(int wireId)
     QString queryStr;
     QString lineValue = "";
     QSqlQuery query(WireDBObj);
-    bool bResult = WireDBObj.open();
+    bool bResult = OpenDBObject();
     if(bResult == true)
     {
         queryStr = QString("SELECT * FROM Wire WHERE ID == '%1'").arg(wireId);

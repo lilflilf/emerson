@@ -24,7 +24,7 @@ public:
     virtual bool QueryOnlyUseTime(unsigned int time_from, unsigned int time_to, QMap<int, QString> *_obj);
     virtual bool QueryUseNameAndTime(QString Name, unsigned int time_from,
                 unsigned int time_to, QMap<int, QString>* _obj);
-    bool SwitchOperatorDBObj(bool IsModularProduction);
+    virtual void SwitchDBObject(bool IsModularProduction);
 public:
     static DBOperatorTable* Instance();
 protected:

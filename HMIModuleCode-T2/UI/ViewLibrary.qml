@@ -727,10 +727,13 @@ Item {
                     root.checkNeedPassWd(0)
                     hmiAdaptor.viewLibraryMovePart(partModel.getValue(selectIndx,"PartId"),partModel.getValue(selectIndx,"PartName"))
                 } else if (spliceRadio.checked) {
+                    hmiAdaptor.setTestSpliceId(spliceModel.getValue(selectIndx,"SpliceId"))
                     root.checkNeedPassWd(0)
-                    hmiAdaptor.viewLibraryMoveSplice(spliceModel.getValue(selectIndx,"SpliceId"),spliceModel.getValue(selectIndx,"SpliceName"))
-                } else if (wireRadio.checked)
+//                    hmiAdaptor.viewLibraryMoveSplice(spliceModel.getValue(selectIndx,"SpliceId"),spliceModel.getValue(selectIndx,"SpliceName"))
+                } else if (wireRadio.checked) {
+                    hmiAdaptor.setEditWireId(wireModel.getValue(selectIndx,"WireId"));
                     root.checkNeedPassWd(19)
+                }
                 else if (shrinkRadio.checked){
                     if (selectIndx < 0) {
                         return

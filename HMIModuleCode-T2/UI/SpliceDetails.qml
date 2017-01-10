@@ -372,6 +372,7 @@ Item {
                 type ="update"
             wireId = wireModel.insertValueToTable(type,topLeft.item.myWireName,topLeft.item.myWireId,hmiAdaptor.getCurrentOperatorId(),topLeft.item.myColor,
                                          topLeft.item.myStripeColor,topLeft.item.myStripeType,topLeft.item.myGauge,topLeft.item.myAwg,topLeft.item.myWireType,0,1,0)
+
             if (wireId != -1)
                 wireIdList.push(wireId)
         }

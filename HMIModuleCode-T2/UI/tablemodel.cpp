@@ -611,6 +611,9 @@ QString SplicesModel::getStructValue(QString valueKey, QString valueType)
     else if (valueKey == "SpliceName") {
         return presetElement.SpliceName;
     }
+    else if (valueKey == "SpliceId") {
+        return QString("%1").arg(presetElement.SpliceID);
+    }
     else if (valueKey == "ShrinkId") {
         return presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID;
     }
@@ -2538,14 +2541,21 @@ int WireModel::insertValueToTable(QString type,QString wireName,int wireId,int o
         return insertWireId;
     }
     else if (type == "update") {
+        qDebug() << "1";
         WireElement wireTemp;
         m_wireAdaptor->QueryOneRecordFromTable(wireId,&wireTemp);
-        if (wireTemp == insertWire)
+        if (wireTemp == insertWire) {
+            qDebug() << "2";
             return wireId;
+        }
         else
         {
-            if (m_wireAdaptor->UpdateRecordIntoTable(&insertWire))
+            qDebug() << "3";
+            insertWire.SpliceID = wireTemp.SpliceID;
+            if (m_wireAdaptor->UpdateRecordIntoTable(&insertWire)) {
+                qDebug() << "4" << wireId;
                 return wireId;
+            }
             return -1;
         }
     }
@@ -2595,8 +2605,8 @@ QVariant WireModel::getStructValue(QString key)
     WireModelHash.insert("WireColor",wireElement.Color);
     WireModelHash.insert("WireName",wireElement.WireName);
     WireModelHash.insert("WireDirection",(int)wireElement.Side);
-    WireModelHash.insert("WirePosition",wireElement.Position);
-    WireModelHash.insert("WireBasic",wireElement.VerticalSide);
+    WireModelHash.insert("WirePosition",(int)wireElement.Position);
+    WireModelHash.insert("WireBasic",(int)wireElement.VerticalSide);
     WireModelHash.insert("WireId",wireElement.WireID);
 
 //    WireModelHash.insert("OperatorName",myWire.OperatorID);
@@ -2625,8 +2635,10 @@ QString WireModel::getStructValue2(QString key, QString type)
         else if (type == "min")
             return variantToString->GaugeToString(wireElement.Gauge,wireElement.GaugeAWG).Minimum;
     }
-    else if (key == "StripeColor")
+    else if (key == "StripeColor") {
+        qDebug() << "ccccccccccccccc" << wireElement.Stripe.Color;
         return wireElement.Stripe.Color;
+    }
 
 }
 
