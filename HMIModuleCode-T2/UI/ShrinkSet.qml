@@ -247,7 +247,6 @@ Item {
     KeyBoardNum {
         id: keyNum
         anchors.centerIn: parent
-        z: leftArea.z+3
         width: 962
         height: 526
         visible: false
