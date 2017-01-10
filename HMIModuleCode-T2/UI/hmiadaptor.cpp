@@ -106,10 +106,22 @@ void HmiAdaptor::setTestSpliceId(int spliceId)
 
 int HmiAdaptor::getTestSpliceId()
 {
-    qDebug() << "getTestSpliceId";
     int id;
     id = testSpliceId;
     testSpliceId = -1;
+    return id;
+}
+
+void HmiAdaptor::setEditWireId(int wireId)
+{
+    editWireId = wireId;
+}
+
+int HmiAdaptor::getEditWireId()
+{
+    int id;
+    id = editWireId;
+    editWireId = -1;
     return id;
 }
 

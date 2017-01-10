@@ -28,6 +28,32 @@ Item {
 //        spliceDetailsItem.selectPosition = selectPosition
 //    }
 
+    function initPage()
+    {
+        var wireId = hmiAdaptor.getEditWireId()
+        if (wireId == -1)
+            return
+        wireModel.addFromLibrary(wireId)
+
+//        WireModelHash.insert("WireType",metalType);
+//        WireModelHash.insert("WireColor",wireElement.Color);
+//        WireModelHash.insert("WireName",wireElement.WireName);
+//        WireModelHash.insert("WireDirection",(int)wireElement.Side);
+//        WireModelHash.insert("WirePosition",wireElement.Position);
+//        WireModelHash.insert("WireBasic",wireElement.VerticalSide);
+//        WireModelHash.insert("WireId",wireElement.WireID);
+
+        wireName.inputText = wireModel.getStructValue("WireName")
+        itemColor.color = wireModel.getStructValue("WireColor")
+        itemStripe.color = wireModel.getStructValue2("StripeColor","")
+        itemStripe.stripeType = wireModel.getStructValue3("StripeType","")
+        itemGauge.text = wireModel.getStructValue2("Gauge","current")
+        itemType.state = wireModel.getStructValue("WireType") == 0 ? "left" : "right";
+        itemSide.state = wireModel.getStructValue("WireDirection") == 0 ? "left" : "right";
+        itemLocation.state = wireModel.getStructValue("WireBasic") == 0 ? "left" : "right";
+        column1.positionIndex = wireModel.getStructValue("WirePosition")
+    }
+
     SwipeView {
         width: Screen.width * 0.3
         height: parent.height
@@ -119,11 +145,11 @@ Item {
                 }
                 Rectangle {
                     id: rectcolor
-                    width: 80
+                    width: 100
                     height: 34
                     color: "green"
                     anchors.right: parent.right
-                    anchors.rightMargin: 150
+                    anchors.rightMargin: 130
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
@@ -141,17 +167,18 @@ Item {
             }
             Component {
                 id: colorPicker
-                Rectangle {
+                Image {
                     id: backColor
                     property var pickColor: ""
-                    width: 550
-                    height: 170
+                    width: 852
+                    height: 384
+                    source: "qrc:/images/images/colorPickerBg.png"
                     Grid {
                         id: colorGrid
                         anchors.left: parent.left
-                        anchors.leftMargin: 16
+                        anchors.leftMargin: 20
                         anchors.top: parent.top
-                        anchors.topMargin: 10
+                        anchors.topMargin: 60
                         columns: 10
                         rows: 2
                         spacing: 2
@@ -159,15 +186,15 @@ Item {
                             model: colorArray.length
                             Rectangle {
                                 id: colorRec
-                                width: 50
-                                height: 50
+                                width: 80
+                                height: 80
                                 color: colorArray[index]
                                 Rectangle {
                                     id: border
                                     width: colorRec.width + 2
                                     height: colorRec.height + 2
                                     color: Qt.rgba(0,0,0,0)
-                                    border.color: "black"
+                                    border.color: "white"
                                     border.width: 4
                                     anchors.centerIn: colorRec
                                     visible: radioButton.checked ? true : false
@@ -183,7 +210,6 @@ Item {
                                         radioButton.checked = !radioButton.checked
                                         if (radioButton.checked) {
                                             backColor.pickColor = colorArray[index]
-                                            console.log("color picker == ",colorArray[index])
                                         }
                                     }
                                 }
@@ -192,54 +218,46 @@ Item {
                     }
                     Row {
                         id: bottomRow
-                        spacing: 30
+                        spacing: 20
                         anchors.right: parent.right
                         anchors.rightMargin: 20
                         anchors.bottom: parent.bottom
-                        anchors.bottomMargin: 10
+                        anchors.bottomMargin: 20
                         CButton {
-                            width: 150
-                            height: 40
+                            width: 200
                             text: qsTr("CANCEL")
-                            textColor: "black"
-                            backgroundComponent: Component {
-                                Item {
-                                    Rectangle {
-                                        anchors.centerIn: parent
-                                        anchors.fill: parent
-                                        color: Qt.rgba(255,255,255,0.3)
-                                        border.color: "blue"
-                                        border.width: 2
-                                    }
-                                }
-                            }
+                            textColor: "white"
                             onClicked: {
                                 colorLoader.sourceComponent = null
                             }
                         }
                         CButton {
-                            width: 150
-                            height: 40
+                            width: 200
                             iconSource: "qrc:/images/images/OK.png"
                             text: qsTr("OK")
-                            textColor: "black"
-                            backgroundComponent: Component {
-                                Item {
-                                    Rectangle {
-                                        anchors.centerIn: parent
-                                        anchors.fill: parent
-                                        color: Qt.rgba(255,255,255,0.3)
-                                        border.color: "blue"
-                                        border.width: 2
-                                    }
-                                }
-                            }
+                            textColor: "white"
                             onClicked: {
                                 if (pickColor == "")
                                     return
-                                itemColor.color = pickColor
-//                                spliceDetailsItem.selectColor = pickColor
-                                colorLoader.sourceComponent = null
+                                if (colorLoader.sourceComponent == colorPicker)
+                                {
+                                    itemColor.color = pickColor
+//                                    spliceDetailsItem.selectColor = pickColor
+                                    colorLoader.sourceComponent = null
+                                }
+                                else if (colorLoader.sourceComponent == stripePicker)
+                                {
+                                    if (colorLoader.item.radioCheck == -1)
+                                        return
+
+                                    itemStripe.color = pickColor
+                                    itemStripe.stripeType = colorLoader.item.radioCheck
+//                                    spliceDetailsItem.selectWireStripeColor = pickColor
+//                                    spliceDetailsItem.selectWireStripeType = colorLoader.item.radioCheck
+
+                                    colorLoader.sourceComponent = null
+
+                                }
                             }
                         }
                     }
@@ -253,6 +271,19 @@ Item {
                 height: 34
                 anchors.top: itemColor.bottom
                 anchors.topMargin: 10
+                property alias color: stripeBack.color
+                property var stripeType: -1
+//                onColorChanged: {
+//                    if(detailIsChang)
+//                        return
+//                    spliceDetailsItem.selectWireStripeColor = itemStripe.color
+//                }
+//                onStripeTypeChanged: {
+//                    if(detailIsChang)
+//                        return
+//                    spliceDetailsItem.selectWireStripeType = itemStripe.stripeType
+//                }
+
                 Label {
                     id: labelStripe
                     color: "#8295a0"
@@ -265,15 +296,53 @@ Item {
                 }
                 Rectangle {
                     id: stripeBack
-                    width: 80
+                    width: 100
                     height: 34
                     color: "green"
                     anchors.right: parent.right
-                    anchors.rightMargin: 150
+                    anchors.rightMargin: 130
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
                             colorLoader.sourceComponent = stripePicker
+                        }
+                    }
+                    Rectangle {
+                        color: "black"
+                        height: 5
+                        width: parent.width
+                        anchors.verticalCenter: parent.verticalCenter
+                        visible: itemStripe.stripeType == 0 ? true : false
+                    }
+                    Rectangle {
+                        color: "black"
+                        height: 5
+                        width: parent.width
+                        anchors.centerIn: parent
+                        rotation: 17
+                        visible: itemStripe.stripeType == 1 ? true : false
+                    }
+                    Rectangle {
+                        color: "black"
+                        width: 5
+                        height: parent.height
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        visible: itemStripe.stripeType == 2 ? true : false
+                    }
+                    Row {
+                        height: parent.height
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        spacing: 20
+                        visible: itemStripe.stripeType == 3 ? true : false
+                        Rectangle {
+                            color: "black"
+                            width: 5
+                            height: parent.height
+                        }
+                        Rectangle {
+                            color: "black"
+                            width: 5
+                            height: parent.height
                         }
                     }
                 }
@@ -281,22 +350,26 @@ Item {
 
             Component {
                 id: stripePicker
-                Rectangle {
+                Image {
+                    property var radioCheck: -1
                     id: backStripe
-                    width: 550
-                    height: 270
+//                    width: 550
+//                    height: 270
+                    source: "qrc:/images/images/colorPickerBg.png"
+                    width: 852
+                    height: 504
                     Row {
                         spacing: 30
                         anchors.horizontalCenter: parent.horizontalCenter
                         anchors.top: parent.top
-                        anchors.topMargin: 30
+                        anchors.topMargin: 20
                         Rectangle {
-                            width: 100
-                            height: 40
+                            width: 180
+                            height: 80
                             border.width: 2
                             border.color: "black"
                             Rectangle {
-                                color: "green"
+                                color: "black"
                                 height: 5
                                 width: parent.width
                                 anchors.verticalCenter: parent.verticalCenter
@@ -306,7 +379,7 @@ Item {
                                 width: parent.width + 10
                                 height: parent.height + 10
                                 color: Qt.rgba(0,0,0,0)
-                                border.color: "black"
+                                border.color: "white"
                                 border.width: 2
                                 anchors.centerIn: parent
                                 visible: radioButton.checked ? true : false
@@ -320,17 +393,19 @@ Item {
                                 anchors.fill: parent
                                 onClicked: {
                                     radioButton.checked = !radioButton.checked
+                                    if (radioButton.checked)
+                                        radioCheck = 0
                                 }
                             }
 
                         }
                         Rectangle {
-                            width: 100
-                            height: 40
+                            width: 180
+                            height: 80
                             border.width: 2
                             border.color: "black"
                             Rectangle {
-                                color: "green"
+                                color: "black"
                                 height: 5
                                 width: parent.width
                                 anchors.centerIn: parent
@@ -340,7 +415,7 @@ Item {
                                 width: parent.width + 10
                                 height: parent.height + 10
                                 color: Qt.rgba(0,0,0,0)
-                                border.color: "black"
+                                border.color: "white"
                                 border.width: 2
                                 anchors.centerIn: parent
                                 visible: radioButton1.checked ? true : false
@@ -354,28 +429,30 @@ Item {
                                 anchors.fill: parent
                                 onClicked: {
                                     radioButton1.checked = !radioButton1.checked
+                                    if (radioButton1.checked)
+                                        radioCheck = 1
                                 }
                             }
                         }
                         Rectangle {
-                            width: 100
-                            height: 40
+                            width: 180
+                            height: 80
                             border.width: 2
                             border.color: "black"
-                            Rectangle {
-                                color: "green"
-                                height: 5
-                                width: parent.width
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
                             Rectangle {
                                 width: parent.width + 10
                                 height: parent.height + 10
                                 color: Qt.rgba(0,0,0,0)
-                                border.color: "black"
+                                border.color: "white"
                                 border.width: 2
                                 anchors.centerIn: parent
                                 visible: radioButton2.checked ? true : false
+                            }
+                            Rectangle {
+                                color: "black"
+                                width: 5
+                                height: parent.height
+                                anchors.horizontalCenter: parent.horizontalCenter
                             }
                             RadioButton {
                                 id: radioButton2
@@ -386,25 +463,38 @@ Item {
                                 anchors.fill: parent
                                 onClicked: {
                                     radioButton2.checked = !radioButton2.checked
+                                    if (radioButton2.checked)
+                                        radioCheck = 2
                                 }
                             }
                         }
                         Rectangle {
-                            width: 100
-                            height: 40
+                            width: 180
+                            height: 80
                             border.width: 2
                             border.color: "black"
-                            Rectangle {
-                                color: "green"
-                                height: 5
-                                width: parent.width
-                                anchors.verticalCenter: parent.verticalCenter
+                            Row {
+                                height: parent.height
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                spacing: 20
+                                Rectangle {
+                                    color: "black"
+                                    width: 5
+                                    height: parent.height
+                                }
+                                Rectangle {
+                                    color: "black"
+                                    width: 5
+                                    height: parent.height
+                                }
                             }
+
+
                             Rectangle {
                                 width: parent.width + 10
                                 height: parent.height + 10
                                 color: Qt.rgba(0,0,0,0)
-                                border.color: "black"
+                                border.color: "white"
                                 border.width: 2
                                 anchors.centerIn: parent
                                 visible: radioButton3.checked ? true : false
@@ -418,6 +508,8 @@ Item {
                                 anchors.fill: parent
                                 onClicked: {
                                     radioButton3.checked = !radioButton3.checked
+                                    if (radioButton3.checked)
+                                        radioCheck = 3
                                 }
                             }
                         }
@@ -430,12 +522,15 @@ Item {
 
             }
 
+
+
             Item {
                 id: itemGauge
                 width: parent.width
                 height: 34
                 anchors.top: itemStripe.bottom
                 anchors.topMargin: 10
+                property alias text: edit2.inputText
                 Label {
                     id: labelGauge
                     color: "#8295a0"
@@ -449,10 +544,10 @@ Item {
                 MiniKeyNumInput {
                     id: edit2
                     anchors.right: parent.right
-                    anchors.rightMargin: 150
-                    width: 80
+                    anchors.rightMargin: 130
+                    width: 100
                     height: 34
-                    inputWidth: 80//parent.width * 0.3
+                    inputWidth: 100 //parent.width * 0.3
 //                    inputHeight: 34//parent.height
 //                    horizontalAlignment: Qt.AlignHCenter
 //                    maxSize: 20
@@ -463,16 +558,18 @@ Item {
                             backGround.opacity = 0.5
                             keyNum.visible = true
                             keyNum.titleText = labelGauge.text
-                            keyNum.currentValue = "1.12mm"
-                            keyNum.minvalue = "1.00mm"
-                            keyNum.maxvalue = "10.99mm"
+                            keyNum.currentValue = wireModel.getStructValue2("Gauge","current") //"1.12mm"
+                            keyNum.minvalue = wireModel.getStructValue2("Gauge","min") //"1.00mm"
+                            keyNum.maxvalue = wireModel.getStructValue2("Gauge","max") //"10.99mm"
                         }
                     }
 
                     onInputTextChanged: {
                         if(detailIsChang)
                             return
-                        spliceDetailsItem.selectText = inputText
+//                        spliceDetailsItem.selectText = hmiAdaptor.getStringValue(inputText) //inputText
+//                        spliceDetailsItem.selectWireGauge = wireModel.getStructValue3("Gauge",inputText);
+//                        spliceDetailsItem.selectWireAWG = wireModel.getStructValue3("awg",inputText);
                     }
                 }
             }
@@ -482,6 +579,7 @@ Item {
                 height: 34
                 anchors.top: itemGauge.bottom
                 anchors.topMargin: 10
+                property alias state: typeSwitch.state
                 Label {
                     id: labelType
                     color: "#8295a0"
@@ -534,6 +632,7 @@ Item {
                 height: 34
                 anchors.top: position.bottom
                 anchors.topMargin: 15
+                property alias state: wireDirection.state
                 Label {
                     id: labelSide
                     color: "#8295a0"
@@ -568,6 +667,7 @@ Item {
                 height: 34
                 anchors.top: itemSide.bottom
                 anchors.topMargin: 15
+                property alias state: basicSwitch.state
                 Label {
                     id: labelLocation
                     color: "#8295a0"
@@ -606,6 +706,20 @@ Item {
                 anchors.right: parent.right
                 spacing: 10
                 visible: false
+                property var positionIndex: -1
+                onPositionIndexChanged: {
+                    topRadio.checked = false
+                    midRadio.checked = false
+                    bottomRadio.checked = false
+
+                    if (column1.positionIndex == 0)
+                        topRadio.checked = true
+                    else if(column1.positionIndex == 1)
+                        midRadio.checked = true
+                    else if (column1.positionIndex == 2)
+                        bottomRadio.checked = true
+                }
+
                 ExclusiveGroup {
                     id: tabPositionGroup;
                 }
@@ -642,7 +756,8 @@ Item {
                             if (detailIsChang)
                                 return
                             if (checked)
-                                spliceDetailsItem.selectLocation = "top"
+                                column1.positionIndex = 0
+//                                spliceDetailsItem.selectLocation = "top"
                         }
                     }
                 }
@@ -670,7 +785,7 @@ Item {
                             if (detailIsChang)
                                 return
                             if (checked)
-                                spliceDetailsItem.selectLocation = "middle"
+                                column1.positionIndex = 1
                         }
                     }
                 }
@@ -693,6 +808,7 @@ Item {
                         source: "qrc:/images/images/down.png"
                     }
                     RadioButton {
+                        id: bottomRadio
                         scale: 2
                         anchors.left: parent.left
                         anchors.leftMargin: 80
@@ -702,7 +818,7 @@ Item {
                             if (detailIsChang)
                                 return
                             if (checked)
-                                spliceDetailsItem.selectLocation = "bottom"
+                                column1.positionIndex = 2
                         }
                     }
                 }
@@ -717,16 +833,31 @@ Item {
                 color: "#375566"
                 height: 1
             }
-
             CButton {
                 id: save
-                text: qsTr("SAVE TO WIRE\nLIBRARY")
+                text: qsTr("UPDATE TO WIRE\nLIBRARY")
                 pointSize: 12
                 anchors.bottom: parent.bottom
                 width: parent.width * 0.5
                 anchors.right: parent.right
                 anchors.rightMargin: 10
                 onClicked: {
+//                    int WireModel::insertValueToTable(QString type,QString wireName,int wireId,int operatorId,QString color,QString stripeColor,int stripeType,int gauge, int awgGauge,int wireType,int side,int verside,int position)
+
+                    var wireType;
+                    var side;
+                    var location;
+                    var gauge;
+                    var awg;
+                    gauge = wireModel.getStructValue3("Gauge",itemGauge.text)
+                    awg = wireModel.getStructValue3("awg",itemGauge.text)
+
+                    wireType = itemType.state == "left" ? 0 : 1
+                    side = itemSide.state == "left" ? 0 : 1
+                    location = itemLocation.state == "left" ? 0 : 1
+
+                    wireModel.insertValueToTable("update",wireName.inputText,hmiAdaptor.getEditWireId(),hmiAdaptor.getCurrentOperatorId(),itemColor.color,
+                                                 itemStripe.color,itemStripe.stripeType,gauge,awg,wireType,side,location,column1.positionIndex)
 
                 }
             }
@@ -784,19 +915,19 @@ Item {
         }
     }
 
-//    Rectangle {
-//        id: backGround
-//        anchors.fill: parent
-//        color: "black"
-//        opacity: 0.7
-//        visible: false //content.bIsEdit ? true : false
-//        MouseArea {
-//            anchors.fill: parent
-//            onClicked: {
+    Rectangle {
+        id: backGround
+        anchors.fill: parent
+        color: "black"
+        opacity: 0.7
+        visible: false
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
 
-//            }
-//        }
-//    }
+            }
+        }
+    }
     KeyBoardNum {
         id: keyNum
         anchors.centerIn: parent
@@ -823,7 +954,7 @@ Item {
                     edit2.inputFocus = false
                 }
                 backGround.visible = false
-                background.opacity = 0
+                backGround.opacity = 0
                 keyNum.visible = false
                 keyNum.inputText = ""
                 keyNum.tempValue = ""
@@ -837,4 +968,5 @@ Item {
             }
         }
     }
+
 }
