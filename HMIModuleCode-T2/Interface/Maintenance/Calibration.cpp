@@ -6,6 +6,7 @@
 #include "AdvancedMaintenance.h"
 #include "MaintenanceLog.h"
 #include "DataBase/DBMaintenanceLogTable.h"
+#include "Modules/typedef.h"
 #include <QDateTime>
 #include <QDebug>
 Calibration::Calibration()
@@ -250,5 +251,5 @@ void Calibration::RunSonics100UnPressed()
 
 void Calibration::HornCalibrationComplete(int Amplitude)
 {
-
+    UNUSED(Amplitude);
 }

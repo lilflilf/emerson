@@ -22,7 +22,7 @@
 #include "Interface/ViewData/StatisticalTrend.h"
 #define TOPATH "C:/BransonData/Library/SpliceImage/"
 
-#define HMI_PRINT (qDebug() <<"HMI adapter:" << __FILE__ << __FUNCTION__ << __LINE__ << ": ")
+//#define HMI_PRINT (qDebug() <<"HMI adapter:" << __FILE__ << __FUNCTION__ << __LINE__ << ": ")
 
 class HmiAdaptor : public QObject
 {

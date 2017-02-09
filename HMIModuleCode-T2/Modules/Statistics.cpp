@@ -485,6 +485,8 @@ void Statistics::CalcConfLimits(PresetElement *_Splice)
         height_lower_limit = height_x_bar * (1 - (_Splice->TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_MSRG] * 0.01));
         height_upper_limit = height_x_bar * (1 + (_Splice->TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_PLRG] * 0.01));
         break;
+    case UNDEFINED:
+        break;
     }
     if (time_lower_limit < 0) time_lower_limit = MINTIME;
     if (time_upper_limit > (MAXTIME / 2)) time_lower_limit = MAXTIME / 2;

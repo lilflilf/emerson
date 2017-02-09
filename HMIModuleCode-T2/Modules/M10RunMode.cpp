@@ -365,10 +365,10 @@ void M10runMode::FootPedalMsg(unsigned long IOStatus)
 
 void M10runMode::RemoteReset()
 {
-    bool IsQualityAlarm = false;
-    M102IA *_M102IA = M102IA::Instance();
-    if(((_M102IA->IAactual.Alarmflags & 0x80) == 0x80) || ((_M102IA->IAactual.Alarmflags & 0x40) == 0x40) ||
-        ((_M102IA->IAactual.Alarmflags & 0x20) == 0x20) || ((_M102IA->IAactual.Alarmflags & 0x04) == 0x04))
-        IsQualityAlarm = true;
+//    bool IsQualityAlarm = false;
+//    M102IA *_M102IA = M102IA::Instance();
+//    if(((_M102IA->IAactual.Alarmflags & 0x80) == 0x80) || ((_M102IA->IAactual.Alarmflags & 0x40) == 0x40) ||
+//        ((_M102IA->IAactual.Alarmflags & 0x20) == 0x20) || ((_M102IA->IAactual.Alarmflags & 0x04) == 0x04))
+//        IsQualityAlarm = true;
 
 }

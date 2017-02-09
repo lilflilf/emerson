@@ -65,6 +65,7 @@ bool DBWireTable::OpenDBObject()
     struct BransonMessageBox tmpMsgBox;
     InterfaceClass* _Interface = InterfaceClass::Instance();
     QDir DBDirectory;
+    mIsModularProduction = _Interface->StatusData.EnableModularFlag;
     if(mIsModularProduction == true)
     {
         if (DBDirectory.exists(ModularDatabaseDir + WireDBFile) == false)
@@ -591,7 +592,7 @@ int DBWireTable::ImportData(QString value)
     QString lineData;
     QStringList lineList;
     bool ok;
-    int ret;
+    int ret = -1;
 
     lineData = value;
     lineList = lineData.split(",");

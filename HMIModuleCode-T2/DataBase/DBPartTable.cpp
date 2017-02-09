@@ -79,6 +79,7 @@ bool DBPartTable::OpenDBObject()
     struct BransonMessageBox tmpMsgBox;
     InterfaceClass* _Interface = InterfaceClass::Instance();
     QDir DBDirectory;
+    mIsModularProduction = _Interface->StatusData.EnableModularFlag;
     if(mIsModularProduction == true)
     {
         if (DBDirectory.exists(ModularDatabaseDir + PartDBFile) == false)
@@ -578,7 +579,7 @@ bool DBPartTable::exportData(int partId, QString fileUrl)
     QSqlQuery query(PartDBObj);
     QString spliceData;
     bool bResult = OpenDBObject();
-    bool ok;
+//    bool ok;
     QString tempWireData;
     QString fileSource;
     if(bResult == true)
@@ -641,7 +642,7 @@ int DBPartTable::importData(QString value, QMap<int, QString> spliceIdMap)
     QString lineData;
     QStringList lineList;
     bool ok;
-    int ret;
+    int ret = -1;
 
     lineData = value;
     lineList = lineData.split(",");

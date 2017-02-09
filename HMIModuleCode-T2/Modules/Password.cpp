@@ -14,18 +14,3 @@ Password::Password()
 {
 
 }
-
-int Password::CheckPasswordDataEntries(PWPMasks PWPMask)
-{
-    return 0;
-}
-
-void Password::SetPWPIMasks()
-{
-    PWPIMasks[PWPIMaintenance] = PWPMaintMask;
-    PWPIMasks[PWPISetup]       = PWPSetupMask;
-    PWPIMasks[PWPIOptions]     = PWPOptionsMask;
-    PWPIMasks[PWPIBuild]       = PWPBuildMask;
-    PWPIMasks[PWPIRecall]      = PWPRecallMask;
-    PWPIMasks[PWPITeach]       = PWPTeachMask;
-}

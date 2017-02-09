@@ -1,5 +1,6 @@
 #include "DBOperatorTable.h"
 #include "Interface/Settings/OperatorLibrary.h"
+#include "Modules/typedef.h"
 #include <QDebug>
 
 DBOperatorTable* DBOperatorTable::_instance = NULL;
@@ -56,6 +57,7 @@ DBOperatorTable::~DBOperatorTable()
 
 void DBOperatorTable::SwitchDBObject(bool IsModularProduction)
 {
+    UNUSED(IsModularProduction);
     return;
 }
 

@@ -1,6 +1,7 @@
 #include "DBWeldResultTable.h"
 #include "Modules/UtilityClass.h"
 #include "Interface/WeldResultElement.h"
+#include "Modules/typedef.h"
 #include <QSettings>
 #include <QDir>
 #include <QDebug>
@@ -81,6 +82,7 @@ DBWeldResultTable::~DBWeldResultTable()
 
 void DBWeldResultTable::SwitchDBObject(bool IsModularProduction)
 {
+    UNUSED(IsModularProduction);
     return;
 }
 
