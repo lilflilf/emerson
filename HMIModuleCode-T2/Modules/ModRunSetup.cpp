@@ -2,6 +2,7 @@
 #include "M102IA.h"
 #include "M2010.h"
 #include "M10INI.h"
+#include "typedef.h"
 #include <QCoreApplication>
 #include <QDateTime>
 #include <QString>
@@ -34,6 +35,7 @@ void ModRunSetup::M10initiate(bool bLoadFail)
 {
     //Initialize system
     bool SearchResult;
+    UNUSED(bLoadFail);
     M2010  *ptr_M2010  = M2010::Instance();
 //    MDefine *ptr_MDefine = MDefine::Instance();
     SaveReplace *ptr_SaveReplace = SaveReplace::Instance();

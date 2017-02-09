@@ -48,7 +48,8 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
     QString locale = QLocale::system().name();
     QTranslator translator;
-    bool success = translator.load("displayChinese_zh_CN.qm");
+//    bool success = translator.load("displayChinese_zh_CN.qm");
+    translator.load("displayChinese_zh_CN.qm");
     app.installTranslator(&translator);
     QQmlApplicationEngine engine;
 
@@ -64,7 +65,8 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("alarmModel",hmiAdaptor->alarmModel);
     engine.rootContext()->setContextProperty("maintenanceLogModel",hmiAdaptor->maintenanceLogModel);
     engine.load(QUrl(QStringLiteral("qrc:/UI/main.qml")));
-    MODstart* _ModStart = MODstart::Instance();
+//    MODstart* _ModStart = MODstart::Instance();
+    MODstart::Instance();
 
     return app.exec();
 }

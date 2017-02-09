@@ -125,16 +125,6 @@ void M2010::PutLastRunRecord(int TypeMade, QString PartName)
 
 //}
 
-/****************************************************************************************************/
-/*The first splice the system sees or used when the load files are a problem.                       */
-/*It provides all the default values to the Splice made.                                            */
-/*CustRev and RevDate have been removed and Step variables have been added from the Splice structure*/
-/****************************************************************************************************/
-void M2010::MakeDefaultSplice(M10Part SpliceName)
-{
-
-}
-
 int M2010::DecPtrCircular(int ptr, int ptrMAX)
 {
     /*These functions are designed for manipulating pointers with values 0 to ptrMAX*/
@@ -202,7 +192,7 @@ void M2010::ConvertHeightGraphData(QStringList SourceGraphDataList, QList<int> *
     WeldPoints = (int)(LenString/4);
     Points = WeldPoints - 5;
     int j = 0;
-    bool bResult;
+//    bool bResult;
     for(int i = 0; i < Points; i++)
     {
         Str = GraphString.mid(j, 4);
@@ -260,16 +250,12 @@ void M2010::load_splice_file()
 
     if (PresetChanged == true)
        Splice = TempPreset;
-    else
-        LoadSpliceFile(M10Run.Run_Splice, Splice);//On failure, sets M10Run.Run_Splice=""
 
     if (M10Run.Run_Splice == "")                  //Create and/or use default preset.
     {
-        MakeDefaultSplice(Splice);                //Set Splice Part Structure to initial data in case there is no Run_file.dat
         ptr_SaveReplace->CalculateSpliceData();
         ptr_Statistics->ZeroM20DataEvents();
         M10Run.Run_Splice = Splice.PartNo;
-        SaveSpliceFile(true);                     //Update run_file.dat
     }
     InterfaceClass* _Interface = InterfaceClass::Instance();
     if (_Interface->StatusData.Soft_Settings.Teach_Mode != AUTO)
@@ -331,74 +317,8 @@ void M2010::UpdateIAfields()
 void M2010::ReZeroSpliceData()
 {
 //    int i,j;
-    MakeDefaultSplice(Splice);
     //Kill the first wire in the default splice
     Splice.Area = 0;
     Splice.NoOfWires = 0;
     Splice.Energy = 0;
-}
-
-void M2010::UpdateSpliceData()
-{
-    UpdateThisSplice(Splice);
-}
-
-/***************************************************************************************************/
-/*ThisSplice is always Splice, DO NOT CHANGE                                                       */
-/*The Splice is updated with the related values from the data structure and stored in the .PRT file*/
-/*Update Splice structure with the Amplitude Step related parameters                               */
-/*It updates the .PRT file only when invoked on Teach Mode                                         */
-/***************************************************************************************************/
-void M2010::UpdateThisSplice(M10Part ThisSplice)
-{
-    int FileNumber;
-}
-
-/*************************************************************************************/
-/* This routine replaces the many, many file accesses in the old program             */
-/* Because of the variety of input possibilities the process must include checking to*/
-/* see if it is a file, path, or part name submitted.                                */
-/* The assumption is that it is either a part name or a legitimate part file name    */
-/* The Splice structure is then updated from the .PRT file.                          */
-/* RevCode of .PRT is compared and updated with the DEFINEDREVCODE(current RevCode)  */
-/*************************************************************************************/
-void M2010::LoadSpliceFile(QString sPartDescription, M10Part PartDest)
-{
-
-}
-
-/****************************************************************/
-/*This routine saves the Splice structure in the .PRT file only */
-/* when the current preset is asked to save.                    */
-/*Till that time it is in RAM and acts as the working Preset.   */
-/****************************************************************/
-void M2010::SaveSpliceFile(bool bUpdateRun, bool SaveOriginalSplice)
-{
-
-}
-
-int M2010::MakeIntEven(int DataIn, bool RoundDown)
-{
-    return DataIn;
-}
-
-/***************************************************************************************/
-/*This function compares the Revcode of the .PRT file and the Defined RevCode          */
-/* and updates the PRT file in case the Revcode used is different from the current one.*/
-/***************************************************************************************/
-void M2010::UpdateRevCode(string sFilePath, M10Part PartDest, int PrtRevCode)
-{
-    int i;
-    M10PartRevThree PartDestRevThree;
-    M10PartRevTwo   PartDestRevTwo;
-}
-
-int M2010::GetTeachModeRunCount()
-{
-    int tmpRunCount;
-    if (Splice.PresetTeachModeSetting == GLOBALS)
-    {
-
-    }
-    return tmpRunCount;
 }

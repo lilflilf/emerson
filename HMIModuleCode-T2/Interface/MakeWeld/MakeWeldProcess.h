@@ -4,6 +4,7 @@
 #include "Interface/PresetElement.h"
 #include "Interface/WeldResultElement.h"
 #include "Modules/ThreadClass.h"
+#include <QTimer>
 struct NecessaryInfo
 {
     struct WorkOrderIndex CurrentWorkOrder;
@@ -27,6 +28,8 @@ public:
 
 private:
     static ThreadClass* m_Thread;
+    static QTimer *m_DaemonTmr;
+    static bool m_bTmrRunningFlag;
     int m_triedCount;
     GRAPHSTEP CurrentStep;
     bool WeldCycleStatus;
@@ -46,6 +49,7 @@ public slots:
     void AnyAlarmEventSlot(bool &bResult);
     void HeightGraphEventSlot(bool &bResult);
     void PowerGraphEventSlot(bool &bResult);
+    void TimeoutEventSlot();
 public:
     bool _start();
     bool _stop();

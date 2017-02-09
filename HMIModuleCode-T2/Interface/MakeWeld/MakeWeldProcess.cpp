@@ -9,10 +9,13 @@
 #include "Modules/UtilityClass.h"
 #include "Modules/StatisticalFunction.h"
 #include "Modules/Statistics.h"
+#include "Modules/typedef.h"
 #include <QDateTime>
 #include <QDebug>
 MakeWeldProcess* MakeWeldProcess::_instance = NULL;
 ThreadClass* MakeWeldProcess::m_Thread = NULL;
+QTimer* MakeWeldProcess::m_DaemonTmr = NULL;
+bool MakeWeldProcess::m_bTmrRunningFlag = false;
 MakeWeldProcess* MakeWeldProcess::Instance()
 {
     if(_instance == NULL){
@@ -264,18 +267,36 @@ void MakeWeldProcess::WeldResultEventSlot(bool& bResult)
 
 void MakeWeldProcess::AnyAlarmEventSlot(bool &bResult)
 {
+    UNUSED(bResult);
     M10runMode* _M10runMode = M10runMode::Instance();
     _M10runMode->CheckWeldData(-1);
 }
 
 void MakeWeldProcess::PowerGraphEventSlot(bool &bResult)
 {
+    UNUSED(bResult);
     PowerGraphReady = PowerGraphReceive();
 }
 
 void MakeWeldProcess::HeightGraphEventSlot(bool &bResult)
 {
+    UNUSED(bResult);
     HeightGraphReady = HeightGraphReceive();
+}
+
+void MakeWeldProcess::TimeoutEventSlot()
+{
+    M102IA *_M102IA = M102IA::Instance();
+    M2010  *_M2010  = M2010::Instance();
+    m_DaemonTmr->stop();
+    m_bTmrRunningFlag = true;
+
+    _M2010->ReceiveFlags.HostReadyData = false;
+    _M102IA->IACommand(IAComHostReady);
+    _M102IA->WaitForResponseAfterSent(5000,&_M2010->ReceiveFlags.HostReadyData);
+
+    m_bTmrRunningFlag = false;
+    m_DaemonTmr->start(200);//200 ms
 }
 
 bool MakeWeldProcess::_start()
@@ -286,6 +307,7 @@ bool MakeWeldProcess::_start()
     struct BransonMessageBox tmpMsgBox;
     _Interface->FirstScreenComesUp = true;
     bool bResult = true;
+    qDebug()<<"Make Weld Start";
     if(_M102IA->SendCommandSetRunMode(1) == false)
     {
         tmpMsgBox.MsgTitle = QObject::tr("ERROR");
@@ -303,6 +325,14 @@ bool MakeWeldProcess::_start()
             if(CurrentSplice.TestSetting.TeachModeSetting.TeachModeType != UNDEFINED)
                 _M10runMode->init_m20_data_events(&CurrentSplice);
         }
+
+        m_DaemonTmr = NULL;
+        m_DaemonTmr = new QTimer(this);
+        connect(m_DaemonTmr, SIGNAL(timeout()),this, SLOT(TimeoutEventSlot()));
+        m_DaemonTmr->setInterval(500);//200mssecond
+        m_DaemonTmr->start();
+        m_bTmrRunningFlag = false;
+        qDebug()<<"m_DaemonTmr created";
         connect(_M102IA, SIGNAL(WeldCycleSignal(bool&)),
                 this,SLOT(WeldResultEventSlot(bool&)));
         connect(_M102IA, SIGNAL(PowerGraphSignal(bool&)),
@@ -320,8 +350,12 @@ bool MakeWeldProcess::_stop()
     InterfaceClass *_Interface = InterfaceClass::Instance();
     struct BransonMessageBox tmpMsgBox;
     bool bResult = true;
-    disconnect(_M102IA, SIGNAL(WeldResultFeedback(bool&)),this, SLOT(WeldResultFeedbackEventSlot(bool&)));
-    qDebug()<<"Operate Stop";
+    disconnect(_M102IA, SIGNAL(WeldCycleSignal(bool&)),this, SLOT(WeldResultEventSlot(bool&)));
+    if(m_DaemonTmr != NULL)
+    {
+        if(m_DaemonTmr->isActive() == true)
+            m_DaemonTmr->stop();
+    }
     if(_M102IA->SendCommandSetRunMode(0) == false)
     {
         tmpMsgBox.MsgTitle = QObject::tr("ERROR");
@@ -331,6 +365,7 @@ bool MakeWeldProcess::_stop()
         _Interface->cMsgBox(&tmpMsgBox);
         bResult = false;
     }
+    //Delete Thread and release resource
     if(m_Thread != NULL)
     {
         m_Thread->setSuspendEnabled(true);
@@ -339,8 +374,14 @@ bool MakeWeldProcess::_stop()
         delete m_Thread;
         m_Thread = NULL;
     }
-    connect(_M102IA, SIGNAL(WeldResultSignal(bool&)),
-            this,SLOT(CheckWeldAlarm(bool&)));
+    //Delect Thread and release resource
+    if(m_DaemonTmr != NULL)
+    {
+        delete m_DaemonTmr;
+        m_DaemonTmr = NULL;
+    }
+    connect(_M102IA, SIGNAL(AlarmStatusSignal(bool&)),
+            this,SLOT(AnyAlarmEventSlot(bool&)));
     return bResult;
 }
 

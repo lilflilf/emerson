@@ -2,6 +2,7 @@
 #include "MaintenanceLog.h"
 #include "Interface/Interface.h"
 #include "DataBase/DBMaintenanceLogTable.h"
+#include "Modules/typedef.h"
 #include <QDateTime>
 ToolChange::ToolChange()
 {
@@ -36,5 +37,6 @@ bool ToolChange::_stop()
 
 bool ToolChange::_execute(int funCode)
 {
+    UNUSED(funCode);
     return true;
 }
