@@ -1,4 +1,5 @@
 #include "hmiadaptor.h"
+#include "Modules/typedef.h"
 #include <qdebug.h>
 #include <QSqlQuery>
 #include <QSqlError>
@@ -370,6 +371,8 @@ QString HmiAdaptor::getMaintenanceVerson(int index)
         break;
     case 1:
         value = maintenanceCount->CurrentMaintenanceCounter.ActuatorSoftwareVersion;
+        if(value.isEmpty() == true)
+            value = QObject::tr("Actuator not online!");
         break;
     case 2:
         value = maintenanceCount->CurrentMaintenanceCounter.ActuatorSerialNumber;
@@ -399,12 +402,17 @@ QString HmiAdaptor::getSoftVerson(int index)
         break;
     case 4:
         value = _Interface->CurrentVersions.ControllerVersion;
+        if(value.isEmpty() == true)
+            value = QObject::tr("Controller not online!");
         break;
     case 5:
         value = _Interface->CurrentVersions.SoftwareVersion;
+        qDebug()<<"Software Version"<<value;
         break;
     case 6:
         value = _Interface->CurrentVersions.ActuatorVersion;
+        if(value.isEmpty() == true)
+            value = QObject::tr("Actuator not online!");
         break;
     default:
         break;
@@ -459,6 +467,7 @@ void HmiAdaptor::maintenanceCountSetLimit(QString code, QString value)
 void HmiAdaptor::maintenanceCount80PercentAlarm(QString code, QString value)
 {
 //    qDebug()<<"80%alarm code"<<code<<"value"<<value;
+    UNUSED(value);
     if (code == "Horn")
         maintenanceCount->_execute(TOOLINGCOUNT::HORN80PERCENTALARM);
     else if (code == "AnvilTip") {
@@ -625,9 +634,10 @@ void HmiAdaptor::calibrationMaintenanceExecute(int code)
     calibration->_execute(code);
 }
 
-void HmiAdaptor::hornCalibrationComplete(int temp)
+void HmiAdaptor::hornCalibrationComplete(QString AmplitudeStr)
 {
-    calibration->HornCalibrationComplete(temp);
+    int iAmplitude = m_stringToVariant->AmplitudeToInt(AmplitudeStr);
+    calibration->HornCalibrationComplete(iAmplitude);
 }
 
 int HmiAdaptor::randPoint()
@@ -699,19 +709,19 @@ bool HmiAdaptor::needPassWord(QString pageName)
 
 QStringList HmiAdaptor::permissionsettingGetValue(QString code)
 {
+    QStringList currentIdentifier;
+    currentIdentifier.empty();
     if (code == "AllFunctionNameList")
-        return permissionSetting->AllFunctionNameList;
+        currentIdentifier = permissionSetting->AllFunctionNameList;
     else if (code == "FourLevelIdentifier")
-        return permissionSetting->FourLevelIdentifier;
+        currentIdentifier = permissionSetting->FourLevelIdentifier;
     else if (code == "CurrentIdentifier"){
-        QStringList currentIdentifier;
         for (int i = 0; i < permissionSetting->CurrentPermissionList.count(); i++)
         {
             currentIdentifier << permissionSetting->CurrentPermissionList.at(i).Identifier;
         }
-        return currentIdentifier;
     }
-
+    return currentIdentifier;
 }
 
 bool HmiAdaptor::permissionsettingGetChecked(QString stringIndex, int level)
@@ -978,6 +988,8 @@ QStringList HmiAdaptor::dataCommunicationGetValue(QString index)
 
 bool HmiAdaptor::dataCommunicationSetValue(QList<bool> boolList, QStringList strList, QString ip, QString port)
 {
+    UNUSED(strList);
+    UNUSED(ip);
     dataCommunication->CurrentDataCommunication.EthernetMode = boolList[0];
     dataCommunication->CurrentDataCommunication.RemoteDataLogging = boolList[1];
     dataCommunication->CurrentDataCommunication.RemoteGraphData = boolList[2];
@@ -1069,6 +1081,7 @@ void HmiAdaptor::slotEnableDialog(BransonMessageBox &MsgBox)
 
 void HmiAdaptor::slotDisableDialog(BransonMessageBox &MsgBox)
 {
+    UNUSED(MsgBox);
     emit signalDisableDialog();
 }
 
@@ -1225,39 +1238,41 @@ int HmiAdaptor::controlLimitProcess(QString type, QList<int> list, int redMax, i
 {
     int upper;
     int lower;
+    int iResult;
     if (type == "Time+") {
         operateProcess->ControlLimitProcess(QUALITYTIME,list,redMax,redMin,&upper,&lower);
-        return upper;
+        iResult = upper;
     }
     else if (type == "Time-") {
         operateProcess->ControlLimitProcess(QUALITYTIME,list,redMax,redMin,&upper,&lower);
-        return lower;
+        iResult = lower;
     }
     else if (type == "Power+") {
         operateProcess->ControlLimitProcess(QUALITYPOWER,list,redMax,redMin,&upper,&lower);
         qDebug() << "controlLimitProcess" << list << redMax << redMin << upper<< lower;
-        return upper;
+        iResult = upper;
     }
     else if (type == "Power-") {
         operateProcess->ControlLimitProcess(QUALITYPOWER,list,redMax,redMin,&upper,&lower);
-        return lower;
+        iResult = lower;
     }
     else if (type == "Pre-Height+") {
         operateProcess->ControlLimitProcess(QUALITYPREHEIGHT,list,redMax,redMin,&upper,&lower);
-        return upper;
+        iResult = upper;
     }
     else if (type == "Pre-Height-") {
         operateProcess->ControlLimitProcess(QUALITYPREHEIGHT,list,redMax,redMin,&upper,&lower);
-        return lower;
+        iResult = lower;
     }
     else if (type == "Post-Height+") {
         operateProcess->ControlLimitProcess(QUALITYPOSTHEIGHT,list,redMax,redMin,&upper,&lower);
-        return upper;
+        iResult = upper;
     }
     else if (type == "Post-Height-") {
         operateProcess->ControlLimitProcess(QUALITYPOSTHEIGHT,list,redMax,redMin,&upper,&lower);
-        return lower;
+        iResult = lower;
     }
+    return iResult;
 }
 
 void HmiAdaptor::teachModeProcess()
@@ -1321,13 +1336,50 @@ void HmiAdaptor::msgBoxClick(bool clickOK)
     }
 }
 
-QString HmiAdaptor::getAmplitudeToString(int value, bool bIsMax)
+QString HmiAdaptor::getDefaultAmplitudeToString(int value, int TypeEnum)
 {
-    if (bIsMax) {
-        return m_variantToString->AmplitudeToString(value).Maximum;
-    } else {
-        return m_variantToString->AmplitudeToString(value).Minimum;
+    interfaceClass = InterfaceClass::Instance();
+    QString ResultStr = "";
+    int tmpValue = 0;
+
+    switch(TypeEnum) {
+    case CUR_VALUE:
+        tmpValue = interfaceClass->StatusData.Soft_Settings.Horn_Calibrate;
+        ResultStr = m_variantToString->DefaultAmpToString(tmpValue).Current;
+        break;
+    case MIN_VALUE:
+        ResultStr = m_variantToString->DefaultAmpToString(value).Minimum;
+        break;
+    case MAX_VALUE:
+        ResultStr = m_variantToString->DefaultAmpToString(value).Maximum;
+        break;
+    default:
+        ResultStr = m_variantToString->DefaultAmpToString(0).Current;
     }
+    return ResultStr;
+}
+
+QString HmiAdaptor::getAmplitudeToString(int value, int TypeEnum)
+{
+    interfaceClass = InterfaceClass::Instance();
+    QString ResultStr = "";
+    int tmpValue = 0;
+
+    switch(TypeEnum) {
+    case CUR_VALUE:
+        tmpValue = interfaceClass->StatusData.Soft_Settings.Horn_Calibrate;
+        ResultStr = m_variantToString->AmplitudeToString(tmpValue).Current;
+        break;
+    case MIN_VALUE:
+        ResultStr = m_variantToString->AmplitudeToString(value).Minimum;
+        break;
+    case MAX_VALUE:
+        ResultStr = m_variantToString->AmplitudeToString(value).Maximum;
+        break;
+    default:
+        ResultStr = m_variantToString->AmplitudeToString(0).Current;
+    }
+    return ResultStr;
 }
 
 QString HmiAdaptor::getTestQuantity(int value, bool bIsMax)

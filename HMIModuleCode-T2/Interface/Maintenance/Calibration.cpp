@@ -249,7 +249,19 @@ void Calibration::RunSonics100UnPressed()
     _M102IA->SendIACommand(IAComAuxMotion, DO_SONICS_OFF);
 }
 
-void Calibration::HornCalibrationComplete(int Amplitude)
+void Calibration::HornCalibrationComplete(int iAmplitude)
 {
-    UNUSED(Amplitude);
+    DEBUG_PRINT(iAmplitude);
+    bool bResult = false;
+    M102IA* _M102IA = M102IA::Instance();
+    M2010* _M2010 = M2010::Instance();
+    InterfaceClass* _Interface = InterfaceClass::Instance();
+    _Interface->StatusData.Soft_Settings.Horn_Calibrate = iAmplitude;
+    _M102IA->SendIACommand(IAComSetHornCalibAmplitude, iAmplitude);
+    _M102IA->WaitForResponseAfterSent(500, &bResult);
+    _M2010->ReceiveFlags.HORNamplitude = false;
+    _M102IA->SendIACommand(IAComSendHornAmplitude, 0);
+    _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.HORNamplitude);
+    _Interface->StatusData.WriteStatusDataToQSetting();
+
 }

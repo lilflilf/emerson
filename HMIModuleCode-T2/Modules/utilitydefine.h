@@ -164,6 +164,7 @@ enum ScreenShowDataType{
     DINGraphHeight,
     DINTestQuantity,
     DINSequenceQuantity,
+    DINDefaultAmplitude,
     DIN_end,
 };
 

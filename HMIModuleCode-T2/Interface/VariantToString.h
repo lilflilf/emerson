@@ -19,6 +19,7 @@ public:
     QString CrossSectionToString(int);
     struct BRANSONDATA EnergyToString(int);
     struct BRANSONDATA AmplitudeToString(int);
+    struct BRANSONDATA DefaultAmpToString(int);
     struct BRANSONDATA WidthToString(int);
     struct BRANSONDATA TriggerPressureToString(int);
     struct BRANSONDATA WeldPressureToString(int);

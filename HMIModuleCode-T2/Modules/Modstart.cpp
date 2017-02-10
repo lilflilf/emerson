@@ -472,7 +472,7 @@ void MODstart::CheckAWGAreaTable()
 void MODstart::OfflineInitialization(void* ptr)
 {
     qDebug() << "OfflineInitialization";
-    UNUSED(ptr);
+    MODstart *_MODstart = (MODstart*)ptr;
     ModRunSetup *_ModRunSetup = ModRunSetup::Instance();
 //    M10INI *_M10INI = M10INI::Instance();
     M2010 *_M2010 = M2010::Instance();
@@ -493,6 +493,11 @@ void MODstart::OfflineInitialization(void* ptr)
     _M2010->load_splice_file(); // 2
 
     _Interface->StatusData.LockKeyFlag = false;
+    //Prepare Current VersaGraphics Version String.
+    _Interface->CurrentVersions.SoftwareVersion
+            = _MODstart->App.Major + "."
+            + _MODstart->App.Minor + "."
+            + _MODstart->App.Revision;
 
     _Statistics->UpdateSoftLimitData(false);
     //Open Ethernet serer

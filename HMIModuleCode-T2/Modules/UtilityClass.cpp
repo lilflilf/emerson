@@ -457,6 +457,7 @@ void UtilityClass::InitializeTextData()
     SetTextData(DINGraphHeight, 0, MINHEIGHT, MAXHEIGHT, 2, 0.01, "%.2f");
     SetTextData(DINTestQuantity, 0, MINTESTQUANTITY, MAXTESTQUANTITY, 1, 1, "%d");
     SetTextData(DINSequenceQuantity, 0, MINSEQUENCEQUANTITY, MAXSEQUENCEQUANTITY, 1, 1, "%d");
+    SetTextData(DINDefaultAmplitude, 0, MINAMPLITUDE, MAXAMPLITUDE, 1, 1, "%dμm");
 }
 
 void UtilityClass::SetTextData(ScreenShowDataType TypeIndex,int Data,int min, int max,
