@@ -2400,7 +2400,10 @@ QVariant WeldHistoryModel::getValue(int index, QString key)
     WeldResultElement myHistory;
     PresetElement presetElement;
     if (!historyList.contains(index)) {
-        m_weldHistoryAdaptor->QueryOneRecordFromTable(orderId,historys->value(orderId),&myHistory);
+        if(historys->value(orderId).isEmpty() == true)
+            m_weldHistoryAdaptor->QueryOneRecordFromTable(orderId, &myHistory);
+        else
+            m_weldHistoryAdaptor->QueryOneRecordFromTable(orderId,historys->value(orderId),&myHistory);
         historyList.insert(index,myHistory);
     } else {
         myHistory = historyList.value(index);
