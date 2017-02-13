@@ -280,9 +280,9 @@ Item {
                 width: parent.width - 20
                 pointSize: 16
                 onClicked: {
+                    spliceModel.createNew()
                     loader.source = "qrc:/UI/CreatWire.qml"
                     titleTextChanged("Create Splice")
-                    spliceModel.createNew()
                 }
             }
             CButton {

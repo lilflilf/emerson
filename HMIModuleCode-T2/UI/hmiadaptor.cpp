@@ -1220,7 +1220,6 @@ void HmiAdaptor::setOperateProcess(int spliceId, bool isText)
     operateProcess->CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderName = workOrderModel->getStructValue("WorkOrderName").toString();
     operateProcess->CurrentNecessaryInfo.CurrentPart.PartID = partModel->getStruceValue("PartId").toInt();
     operateProcess->CurrentNecessaryInfo.CurrentPart.PartName = partModel->getStruceValue("PartName").toString();
-
 }
 
 void HmiAdaptor::operateProcessExec(QString type)

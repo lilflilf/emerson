@@ -194,9 +194,10 @@ QList<int> WorkOrderModel::getSpliceList()
     return list;
 }
 
-void WorkOrderModel::editNew(int index)
+void WorkOrderModel::editNew(int index,int workOrderId)
 {
     m_partAdaptor->QueryOneRecordFromTable(index,&partElement);
+    m_workOrderAdaptor->QueryOneRecordFromTable(workOrderId,&workOrderElement);
 }
 
 QVariant WorkOrderModel::getStructValue(QString key)

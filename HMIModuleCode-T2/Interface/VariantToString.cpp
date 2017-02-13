@@ -164,7 +164,7 @@ struct BRANSONDATA VariantToString::PowerMinusToString(int Power)
 {
     struct BRANSONDATA tmpData;
     tmpData.Current = _Utility->FormatedDataToString(DINPowerMs, Power);
-    tmpData.Maximum = _Utility->FormatedDataToFloat(DINPowerMs,
+    tmpData.Maximum = _Utility->FormatedDataToString(DINPowerMs,
                     _Utility->txtData[DINPowerMs].max);
     tmpData.Minimum = _Utility->FormatedDataToString(DINPowerMs,
                     _Utility->txtData[DINPowerMs].min);

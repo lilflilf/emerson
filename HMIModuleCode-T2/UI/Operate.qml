@@ -8,6 +8,7 @@ import QtQuick.Dialogs 1.2
 Item {
     id: operate
     property int selectIndx: -1
+    property int selectWorkId: -1
     Image {
         anchors.fill: parent
         source: "qrc:/images/images/bg.png"
@@ -246,6 +247,7 @@ Item {
                 anchors.fill: parent
                 onClicked: {
                     operate.selectIndx = index
+                    operate.selectWorkId = WorkOrderId
                     selectCheck.checked = !selectCheck.checked
                 }
             }
@@ -379,7 +381,7 @@ Item {
         textColor: "white"
         onClicked: {
             if (operate.selectIndx != -1) {
-                workOrderModel.editNew(workOrderModel.getPartId(operate.selectIndx))
+                workOrderModel.editNew(workOrderModel.getPartId(operate.selectIndx),operate.selectWorkId)
                 partModel.getPartInfo(true,workOrderModel.getPartId(selectIndx),workOrderModel.getValue(selectIndx,"PART"))
                 hmiAdaptor.maintenanceCountExecute("_Recall")
                 loader.source = "qrc:/UI/OperateDetails.qml"

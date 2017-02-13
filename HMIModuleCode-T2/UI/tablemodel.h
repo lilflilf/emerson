@@ -61,7 +61,7 @@ public slots:
     Q_INVOKABLE void removeValue(int id, QString name);
     Q_INVOKABLE int getPartId(int index);
     Q_INVOKABLE QList<int> getSpliceList();
-    Q_INVOKABLE void editNew(int index);
+    Q_INVOKABLE void editNew(int index, int workOrderId);
     Q_INVOKABLE QVariant getStructValue(QString key);
 
     //    QString getContacterName(QString contacterId);
