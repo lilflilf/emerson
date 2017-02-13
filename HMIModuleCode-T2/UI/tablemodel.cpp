@@ -2542,20 +2542,17 @@ int WireModel::insertValueToTable(QString type,QString wireName,int wireId,int o
         return insertWireId;
     }
     else if (type == "update") {
-        qDebug() << "1";
         WireElement wireTemp;
         m_wireAdaptor->QueryOneRecordFromTable(wireId,&wireTemp);
         qDebug()<<"insertValueToTable"<<insertWire.SpliceID<<wireTemp.SpliceID<<wireId;
         if (wireTemp == insertWire) {
-            qDebug() << "2";
             return wireId;
         }
         else
         {
-            qDebug() << "3";
             insertWire.SpliceID = wireTemp.SpliceID;
             if (m_wireAdaptor->UpdateRecordIntoTable(&insertWire)) {
-                qDebug() << "4" << wireId;
+                setModelList();
                 return wireId;
             }
             return -1;
