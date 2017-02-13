@@ -65,11 +65,8 @@ public:
     string PWIdentifierEntry;
     string PWPasswordEntry;
     int MinPermissionReq;
-    long PWPIMasks[PWPIEnd - 1];
+    long PWPIMasks[PWPIEnd];
     PasswordQueryTasks PasswordQueryTask;
-public:
-    int CheckPasswordDataEntries(PWPMasks PWPMask = PWPAdminOnly);
-    void SetPWPIMasks();
 public:
     static Password* Instance();
 protected:

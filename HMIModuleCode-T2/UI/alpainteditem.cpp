@@ -1,12 +1,13 @@
 #include "alpainteditem.h"
+#include "Modules/typedef.h"
 ALPaintedItem::ALPaintedItem(QQuickItem *parent)
     : QQuickPaintedItem(parent),
     m_brushColor(QColor(0, 0, 0 ,255)),
     m_eraserColor(QColor(255,255,255,255)),
-    m_bFlag(true),
-    m_bErasered(false),
     m_pDrawPath(NULL),
-    m_penWidth(NULL)
+    m_penWidth(0),
+    m_bFlag(true),
+    m_bErasered(false)
 {
     setAcceptedMouseButtons(Qt::LeftButton);
     //myStart();
@@ -96,6 +97,7 @@ void ALPaintedItem::myPoint(QPointF point)
 
 void ALPaintedItem::mousePressEvent(QMouseEvent *event)
 {
+    UNUSED(event);
 //    if(!(event->button() & acceptedMouseButtons()))
 //    {
 //        QQuickPaintedItem::mousePressEvent(event);

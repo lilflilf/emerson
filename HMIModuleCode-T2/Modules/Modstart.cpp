@@ -16,6 +16,7 @@
 #include "DataBase/DBPartTable.h"
 #include "DataBase/DBPresetTable.h"
 #include "DataBase/DBWireTable.h"
+#include "typedef.h"
 #include <QString>
 #include <QCoreApplication>
 #include <QObject>
@@ -53,7 +54,7 @@ MODstart::MODstart()
 
     App.Major    = "26";
     App.Minor    = "73";
-    App.Revision = "814-HMI-T7";
+    App.Revision = "814-HMI-T8";
 
     _Interface->FirstScreenComesUp = false;
     _MDefine->ModeChangeFlag = false;
@@ -256,10 +257,9 @@ void MODstart::GlobalInitM10()
     M2010 *ptr_M2010 = M2010::Instance();
     M10INI *ptr_M10INI = M10INI::Instance();
     M102IA *ptr_M102IA = M102IA::Instance();
-    Password *ptr_Password = Password::Instance();
+//    Password *ptr_Password = Password::Instance();
     UtilityClass *_Utility = UtilityClass::Instance();
     InterfaceClass *_Interface = InterfaceClass::Instance();
-    ptr_Password->SetPWPIMasks();
     ptr_M2010->M10Run.Auto_Set_Mode = false;
     ptr_M2010->M10Run.Load_From_Lib = false;
     ptr_M2010->M10Run.Initial_Startup = true;
@@ -472,6 +472,7 @@ void MODstart::CheckAWGAreaTable()
 void MODstart::OfflineInitialization(void* ptr)
 {
     qDebug() << "OfflineInitialization";
+    MODstart *_MODstart = (MODstart*)ptr;
     ModRunSetup *_ModRunSetup = ModRunSetup::Instance();
 //    M10INI *_M10INI = M10INI::Instance();
     M2010 *_M2010 = M2010::Instance();
@@ -492,6 +493,11 @@ void MODstart::OfflineInitialization(void* ptr)
     _M2010->load_splice_file(); // 2
 
     _Interface->StatusData.LockKeyFlag = false;
+    //Prepare Current VersaGraphics Version String.
+    _Interface->CurrentVersions.SoftwareVersion
+            = _MODstart->App.Major + "."
+            + _MODstart->App.Minor + "."
+            + _MODstart->App.Revision;
 
     _Statistics->UpdateSoftLimitData(false);
     //Open Ethernet serer

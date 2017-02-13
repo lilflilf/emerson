@@ -78,6 +78,7 @@ bool DBWorkOrderTable::OpenDBObject()
     struct BransonMessageBox tmpMsgBox;
     InterfaceClass* _Interface = InterfaceClass::Instance();
     QDir DBDirectory;
+    mIsModularProduction = _Interface->StatusData.EnableModularFlag;
     if(mIsModularProduction == true)
     {
         if (DBDirectory.exists(ModularDatabaseDir + WorkOrderFile) == false)
@@ -107,7 +108,7 @@ void DBWorkOrderTable::SwitchDBObject(bool IsModularProduction)
 {
     mIsModularProduction = IsModularProduction;
     {WorkOrderDBObj.close();}
-    if(IsModularProduction == true)
+    if(mIsModularProduction == true)
     {
         WorkOrderDBObj.setDatabaseName(ModularDatabaseDir + WorkOrderFile);
     }
@@ -548,7 +549,6 @@ bool DBWorkOrderTable::exportData(int workOrderId, QString fileUrl)
     QSqlQuery query(WorkOrderDBObj);
     QString partData;
     bool bResult = OpenDBObject();
-    bool ok;
     QString tempPartData;
     QString fileSource;
     if(bResult == true)

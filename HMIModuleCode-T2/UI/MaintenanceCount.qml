@@ -272,7 +272,7 @@ Item {
             font.pointSize: 14
         }
         Text {
-            text: qsTr("Actuator Software Verson Number: ") + hmiAdaptor.getMaintenanceVerson(1)
+            text: qsTr("Actuator Software Verson: ") + hmiAdaptor.getMaintenanceVerson(1)
             color: "white"
             font.family: "arial"
             font.pointSize: 14

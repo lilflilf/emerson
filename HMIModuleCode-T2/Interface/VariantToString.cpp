@@ -57,14 +57,25 @@ struct BRANSONDATA VariantToString::EnergyToString(int Energy)
     return tmpData;
 }
 
-struct BRANSONDATA VariantToString::AmplitudeToString(int Amplitude)
+struct BRANSONDATA VariantToString::AmplitudeToString(int iAmplitude)
 {
     struct BRANSONDATA tmpData;
-    tmpData.Current = _Utility->FormatedDataToString(DINAmplitude, Amplitude);
+    tmpData.Current = _Utility->FormatedDataToString(DINAmplitude, iAmplitude);
     tmpData.Maximum = _Utility->FormatedDataToString(DINAmplitude,
                     _Utility->txtData[DINAmplitude].max);
     tmpData.Minimum = _Utility->FormatedDataToString(DINAmplitude,
                     _Utility->txtData[DINAmplitude].min);
+    return tmpData;
+}
+
+struct BRANSONDATA VariantToString::DefaultAmpToString(int iAmplitude)
+{
+    struct BRANSONDATA tmpData;
+    tmpData.Current = _Utility->FormatedDataToString(DINDefaultAmplitude, iAmplitude);
+    tmpData.Maximum = _Utility->FormatedDataToString(DINDefaultAmplitude,
+                    _Utility->txtData[DINDefaultAmplitude].max);
+    tmpData.Minimum = _Utility->FormatedDataToString(DINDefaultAmplitude,
+                    _Utility->txtData[DINDefaultAmplitude].min);
     return tmpData;
 }
 

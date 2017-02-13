@@ -158,6 +158,7 @@ bool DBPresetTable::OpenDBObject()
     struct BransonMessageBox tmpMsgBox;
     InterfaceClass* _Interface = InterfaceClass::Instance();
     QDir DBDirectory;
+    mIsModularProduction = _Interface->StatusData.EnableModularFlag;
     if(mIsModularProduction == true)
     {
         if (DBDirectory.exists(ModularDatabaseDir + SpliceDBFile) == false)
@@ -975,7 +976,7 @@ bool DBPresetTable::exportData(int spliceId, QString fileUrl)
     QSqlQuery query(SpliceDBObj);
     QString wireData;
     bool bResult = OpenDBObject();
-    bool ok;
+//    bool ok;
     QString tempWireData;
     QString fileSource;
     if(bResult == true)
@@ -1040,8 +1041,8 @@ int DBPresetTable::importData(QString value, QMap<int, QString> wireIdMap)
     QStringList spliceList;
     PresetElement mySplice;
     bool ok;
-    int ret;
-    UtilityClass* _Utility = UtilityClass::Instance();
+    int ret = -1;
+//    UtilityClass* _Utility = UtilityClass::Instance();
 
     spliceString = value;
     spliceList = spliceString.split(",");

@@ -22,7 +22,7 @@
 #include "Interface/ViewData/StatisticalTrend.h"
 #define TOPATH "C:/BransonData/Library/SpliceImage/"
 
-#define HMI_PRINT (qDebug() <<"HMI adapter:" << __FILE__ << __FUNCTION__ << __LINE__ << ": ")
+//#define HMI_PRINT (qDebug() <<"HMI adapter:" << __FILE__ << __FUNCTION__ << __LINE__ << ": ")
 
 class HmiAdaptor : public QObject
 {
@@ -80,7 +80,7 @@ public:
     Q_INVOKABLE int getCurrentOperatorId();
     Q_INVOKABLE QString getCurrentOperatorName();
     Q_INVOKABLE void calibrationMaintenanceExecute(int code);
-    Q_INVOKABLE void hornCalibrationComplete(int temp);
+    Q_INVOKABLE void hornCalibrationComplete(QString AmplitudeStr);
     Q_INVOKABLE int randPoint();
     Q_INVOKABLE QString copyFileToPath(QString source);
 
@@ -124,7 +124,8 @@ public:
     Q_INVOKABLE QList<int> getStatisticalTrendDataList(int index);
     Q_INVOKABLE QStringList getWeldActualParameterDataList(int index);
     Q_INVOKABLE QStringList getCurrentStatisticsParameterList(int index);
-    Q_INVOKABLE QString getAmplitudeToString(int value, bool bIsMax);
+    Q_INVOKABLE QString getAmplitudeToString(int value, int TypeEnum);
+    Q_INVOKABLE QString getDefaultAmplitudeToString(int value, int TypeEnum);
     Q_INVOKABLE QString getTestQuantity(int value, bool bIsMax);
     Q_INVOKABLE QString getShrinkTemperatureToString(int value, bool bIsMax);
     Q_INVOKABLE QString getShrinkTimeToString(int value, bool bIsMax);

@@ -5,7 +5,7 @@
 PresetElement::PresetElement()
 {
     UtilityClass *_Utility = UtilityClass::Instance();
-    InterfaceClass *_Interface = InterfaceClass::Instance();
+//    InterfaceClass *_Interface = InterfaceClass::Instance();
     RevCode = -1;
     SpliceID = -1;
     SpliceName.clear();

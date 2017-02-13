@@ -139,7 +139,8 @@ HEADERS += \
     Interface/SysConfiguration.h \
     Modules/BransonServer.h \
     Modules/BransonSocket.h \
-    Interface/UpperRightIcon/AlarmIcon.h
+    Interface/UpperRightIcon/AlarmIcon.h \
+    Modules/typedef.h
 
 DISTFILES += \
 #    UI/displayChinese_zh_CN.qm \

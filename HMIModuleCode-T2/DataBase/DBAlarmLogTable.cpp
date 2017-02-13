@@ -1,5 +1,6 @@
 #include "DBAlarmLogTable.h"
 #include "Interface/AlarmElement.h"
+#include "Modules/typedef.h"
 #include <QDebug>
 
 DBAlarmLogTable* DBAlarmLogTable::_instance = NULL;
@@ -59,6 +60,7 @@ DBAlarmLogTable::~DBAlarmLogTable()
 
 void DBAlarmLogTable::SwitchDBObject(bool IsModularProduction)
 {
+    UNUSED(IsModularProduction);
     return;
 }
 

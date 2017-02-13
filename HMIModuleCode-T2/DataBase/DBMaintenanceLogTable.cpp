@@ -1,5 +1,6 @@
 #include "DBMaintenanceLogTable.h"
 #include "Interface/Maintenance/MaintenanceLog.h"
+#include "Modules/typedef.h"
 #include <QDebug>
 
 DBMaintenanceLogTable* DBMaintenanceLogTable::_instance = NULL;
@@ -61,6 +62,7 @@ DBMaintenanceLogTable::~DBMaintenanceLogTable()
 
 void DBMaintenanceLogTable::SwitchDBObject(bool IsModularProduction)
 {
+    UNUSED(IsModularProduction);
     return;
 }
 

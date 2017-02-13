@@ -1,4 +1,5 @@
 #include "tablemodel.h"
+#include "Modules/typedef.h"
 #include <QDebug>
 #include <QQmlPropertyMap>
 
@@ -21,6 +22,7 @@ QVariant WorkOrderModel::data(const QModelIndex &index, int role) const
     {
         int columnIdx = role - Qt::UserRole - 1;
         int rowId;
+        UNUSED(rowId);
         QMap<int,QString>::iterator it; //遍历map
         int i = 0;
         for ( it = workOrders->begin(); it != workOrders->end(); ++it ) {
@@ -77,6 +79,7 @@ void WorkOrderModel::setModelList()
 
 int WorkOrderModel::rowCount(const QModelIndex & parent) const
 {
+    UNUSED(parent);
     return workOrders->count();
 }
 
@@ -89,11 +92,15 @@ int WorkOrderModel::count()
 
 int WorkOrderModel::columnCount(const QModelIndex &parent) const
 {
+    UNUSED(parent);
     return 1;
 }
 
 QVariant WorkOrderModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
+    UNUSED(section);
+    UNUSED(orientation);
+    UNUSED(role);
     return QVariant();
 }
 
@@ -130,6 +137,7 @@ bool WorkOrderModel::updateRecordIntoTable(int workId,QString oldWorkName, QStri
     tempWorkOrder.Quantity = count;
     m_workOrderAdaptor->UpdateRecordIntoTable(&tempWorkOrder);
     setModelList();
+    return true;
 }
 
 bool WorkOrderModel::insertRecordIntoTable(QString workName, int partId, QString partName, int count)
@@ -141,6 +149,7 @@ bool WorkOrderModel::insertRecordIntoTable(QString workName, int partId, QString
     qDebug() << "insertRecordIntoTable"<<tempWorkOrder.PartIndex.count();
     m_workOrderAdaptor->InsertRecordIntoTable(&tempWorkOrder);
     setModelList();
+    return true;
 }
 
 bool WorkOrderModel::exportData(int workOrderId, QString fileUrl)
@@ -160,6 +169,7 @@ int WorkOrderModel::getPartId(int index)
     QMap<int,QString>::iterator it; //遍历map
     int i = 0;
     int orderId;
+    UNUSED(orderId);
     for ( it = workOrders->begin(); it != workOrders->end(); ++it ) {
         if (i == index){
             orderId = it.key();
@@ -191,10 +201,12 @@ void WorkOrderModel::editNew(int index)
 
 QVariant WorkOrderModel::getStructValue(QString key)
 {
+    QVariant ResultRtn;
     if (key == "WorkOrderId")
-        return workOrderElement.WorkOrderID;
+        ResultRtn = workOrderElement.WorkOrderID;
     else if (key == "WorkOrderName")
-        return workOrderElement.WorkOrderName;
+        ResultRtn = workOrderElement.WorkOrderName;
+    return ResultRtn;
 }
 
 QVariant WorkOrderModel::getValue(int index, QString key)
@@ -202,6 +214,7 @@ QVariant WorkOrderModel::getValue(int index, QString key)
     QMap<int,QString>::iterator it; //遍历map
     int i = 0;
     int orderId;
+    UNUSED(orderId);
     for ( it = workOrders->begin(); it != workOrders->end(); ++it ) {
         if (i == index){
             orderId = it.key();
@@ -256,6 +269,7 @@ QVariant SplicesModel::data(const QModelIndex &index, int role) const
     {
         int columnIdx = role - Qt::UserRole - 1;
         int rowId;
+        UNUSED(rowId);
         QMap<int,QString>::iterator it; //遍历map
         int i = 0;
         for ( it = splices->begin(); it != splices->end(); ++it ) {
@@ -362,6 +376,7 @@ void SplicesModel::setModelList()
 
 int SplicesModel::rowCount(const QModelIndex & parent) const
 {
+    UNUSED(parent);
     return splices->count();
 }
 
@@ -377,417 +392,423 @@ void SplicesModel::calculateSpliceData()
 
 QString SplicesModel::getStructValue(QString valueKey, QString valueType)
 {
+    QString ResultStr = "";
     if (valueKey == "Energy") {
         if (valueType == "current")
-            return variantToString->EnergyToString(presetElement.WeldSettings.BasicSetting.Energy).Current;
+            ResultStr = variantToString->EnergyToString(presetElement.WeldSettings.BasicSetting.Energy).Current;
         else if (valueType == "max")
-            return variantToString->EnergyToString(presetElement.WeldSettings.BasicSetting.Energy).Maximum;
+            ResultStr = variantToString->EnergyToString(presetElement.WeldSettings.BasicSetting.Energy).Maximum;
         else if (valueType == "min")
-            return variantToString->EnergyToString(presetElement.WeldSettings.BasicSetting.Energy).Minimum;
+            ResultStr = variantToString->EnergyToString(presetElement.WeldSettings.BasicSetting.Energy).Minimum;
     }
     else if (valueKey == "Trigger Pressure") {
         if (valueType == "current")
-            return variantToString->TriggerPressureToString(presetElement.WeldSettings.BasicSetting.TrigPres).Current;
+            ResultStr = variantToString->TriggerPressureToString(presetElement.WeldSettings.BasicSetting.TrigPres).Current;
         else if (valueType == "max")
-            return variantToString->TriggerPressureToString(presetElement.WeldSettings.BasicSetting.TrigPres).Maximum;
+            ResultStr = variantToString->TriggerPressureToString(presetElement.WeldSettings.BasicSetting.TrigPres).Maximum;
         else if (valueType == "min")
-            return variantToString->TriggerPressureToString(presetElement.WeldSettings.BasicSetting.TrigPres).Minimum;
+            ResultStr = variantToString->TriggerPressureToString(presetElement.WeldSettings.BasicSetting.TrigPres).Minimum;
     }
     else if (valueKey == "Amplitude") {
         if (valueType == "current")
-            return variantToString->AmplitudeToString(presetElement.WeldSettings.BasicSetting.Amplitude).Current;
+            ResultStr = variantToString->AmplitudeToString(presetElement.WeldSettings.BasicSetting.Amplitude).Current;
         else if (valueType == "max")
-            return variantToString->AmplitudeToString(presetElement.WeldSettings.BasicSetting.Amplitude).Maximum;
+            ResultStr = variantToString->AmplitudeToString(presetElement.WeldSettings.BasicSetting.Amplitude).Maximum;
         else if (valueType == "min")
-            return variantToString->AmplitudeToString(presetElement.WeldSettings.BasicSetting.Amplitude).Minimum;
+            ResultStr = variantToString->AmplitudeToString(presetElement.WeldSettings.BasicSetting.Amplitude).Minimum;
     }
     else if (valueKey == "Weld Pressure") {
         if (valueType == "current")
-            return variantToString->WeldPressureToString(presetElement.WeldSettings.BasicSetting.Pressure).Current;
+            ResultStr = variantToString->WeldPressureToString(presetElement.WeldSettings.BasicSetting.Pressure).Current;
         else if (valueType == "max")
-            return variantToString->WeldPressureToString(presetElement.WeldSettings.BasicSetting.Pressure).Maximum;
+            ResultStr = variantToString->WeldPressureToString(presetElement.WeldSettings.BasicSetting.Pressure).Maximum;
         else if (valueType == "min")
-            return variantToString->WeldPressureToString(presetElement.WeldSettings.BasicSetting.Pressure).Minimum;
+            ResultStr = variantToString->WeldPressureToString(presetElement.WeldSettings.BasicSetting.Pressure).Minimum;
     }
     else if (valueKey == "Width") {
         if (valueType == "current")
-            return variantToString->WidthToString(presetElement.WeldSettings.BasicSetting.Width).Current;
+            ResultStr = variantToString->WidthToString(presetElement.WeldSettings.BasicSetting.Width).Current;
         else if (valueType == "max")
-            return variantToString->WidthToString(presetElement.WeldSettings.BasicSetting.Width).Maximum;
+            ResultStr = variantToString->WidthToString(presetElement.WeldSettings.BasicSetting.Width).Maximum;
         else if (valueType == "min")
-            return variantToString->WidthToString(presetElement.WeldSettings.BasicSetting.Width).Minimum;
+            ResultStr = variantToString->WidthToString(presetElement.WeldSettings.BasicSetting.Width).Minimum;
     }
     else if (valueKey == "Time-") {
         if (valueType == "current")
-            return variantToString->TimeMinusToString(presetElement.WeldSettings.QualitySetting.Time.Minus).Current;
+            ResultStr = variantToString->TimeMinusToString(presetElement.WeldSettings.QualitySetting.Time.Minus).Current;
         else if (valueType == "max")
-            return variantToString->TimeMinusToString(presetElement.WeldSettings.QualitySetting.Time.Minus).Maximum;
+            ResultStr = variantToString->TimeMinusToString(presetElement.WeldSettings.QualitySetting.Time.Minus).Maximum;
         else if (valueType == "min")
-            return variantToString->TimeMinusToString(presetElement.WeldSettings.QualitySetting.Time.Minus).Minimum;
+            ResultStr = variantToString->TimeMinusToString(presetElement.WeldSettings.QualitySetting.Time.Minus).Minimum;
     }
     else if (valueKey == "Time+") {
         if (valueType == "current")
-            return variantToString->TimePlusToString(presetElement.WeldSettings.QualitySetting.Time.Plus).Current;
+            ResultStr = variantToString->TimePlusToString(presetElement.WeldSettings.QualitySetting.Time.Plus).Current;
         else if (valueType == "max")
-            return variantToString->TimePlusToString(presetElement.WeldSettings.QualitySetting.Time.Plus).Maximum;
+            ResultStr = variantToString->TimePlusToString(presetElement.WeldSettings.QualitySetting.Time.Plus).Maximum;
         else if (valueType == "min")
-            return variantToString->TimePlusToString(presetElement.WeldSettings.QualitySetting.Time.Plus).Minimum;
+            ResultStr = variantToString->TimePlusToString(presetElement.WeldSettings.QualitySetting.Time.Plus).Minimum;
     }
     else if (valueKey == "Power-") {
         if (valueType == "current")
-            return variantToString->PowerMinusToString(presetElement.WeldSettings.QualitySetting.Power.Minus).Current;
+            ResultStr = variantToString->PowerMinusToString(presetElement.WeldSettings.QualitySetting.Power.Minus).Current;
         else if (valueType == "max")
-            return variantToString->PowerMinusToString(presetElement.WeldSettings.QualitySetting.Power.Minus).Maximum;
+            ResultStr = variantToString->PowerMinusToString(presetElement.WeldSettings.QualitySetting.Power.Minus).Maximum;
         else if (valueType == "min")
-            return variantToString->PowerMinusToString(presetElement.WeldSettings.QualitySetting.Power.Minus).Minimum;
+            ResultStr = variantToString->PowerMinusToString(presetElement.WeldSettings.QualitySetting.Power.Minus).Minimum;
     }
     else if (valueKey == "Power+") {
         if (valueType == "current")
-            return variantToString->PowerPlusToString(presetElement.WeldSettings.QualitySetting.Power.Plus).Current;
+            ResultStr = variantToString->PowerPlusToString(presetElement.WeldSettings.QualitySetting.Power.Plus).Current;
         else if (valueType == "max")
-            return variantToString->PowerPlusToString(presetElement.WeldSettings.QualitySetting.Power.Plus).Maximum;
+            ResultStr = variantToString->PowerPlusToString(presetElement.WeldSettings.QualitySetting.Power.Plus).Maximum;
         else if (valueType == "min")
-            return variantToString->PowerPlusToString(presetElement.WeldSettings.QualitySetting.Power.Plus).Minimum;
+            ResultStr = variantToString->PowerPlusToString(presetElement.WeldSettings.QualitySetting.Power.Plus).Minimum;
     }
     else if (valueKey == "Pre-Height-") {
         if (valueType == "current")
-            return variantToString->PreHeightMinusToString(presetElement.WeldSettings.QualitySetting.Preheight.Minus).Current;
+            ResultStr = variantToString->PreHeightMinusToString(presetElement.WeldSettings.QualitySetting.Preheight.Minus).Current;
         else if (valueType == "max")
-            return variantToString->PreHeightMinusToString(presetElement.WeldSettings.QualitySetting.Preheight.Minus).Maximum;
+            ResultStr = variantToString->PreHeightMinusToString(presetElement.WeldSettings.QualitySetting.Preheight.Minus).Maximum;
         else if (valueType == "min")
-            return variantToString->PreHeightMinusToString(presetElement.WeldSettings.QualitySetting.Preheight.Minus).Minimum;
+            ResultStr = variantToString->PreHeightMinusToString(presetElement.WeldSettings.QualitySetting.Preheight.Minus).Minimum;
     }
     else if (valueKey == "Pre-Height+") {
         if (valueType == "current")
-            return variantToString->PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight.Plus).Current;
+            ResultStr = variantToString->PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight.Plus).Current;
         else if (valueType == "max")
-            return variantToString->PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight.Plus).Maximum;
+            ResultStr = variantToString->PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight.Plus).Maximum;
         else if (valueType == "min")
-            return variantToString->PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight.Plus).Minimum;
+            ResultStr = variantToString->PreHeightPlusToString(presetElement.WeldSettings.QualitySetting.Preheight.Plus).Minimum;
     }
     else if (valueKey == "Post-Height-") {
         if (valueType == "current")
-            return variantToString->HeightMinusToString(presetElement.WeldSettings.QualitySetting.Height.Minus).Current;
+            ResultStr = variantToString->HeightMinusToString(presetElement.WeldSettings.QualitySetting.Height.Minus).Current;
         else if (valueType == "max")
-            return variantToString->HeightMinusToString(presetElement.WeldSettings.QualitySetting.Height.Minus).Maximum;
+            ResultStr = variantToString->HeightMinusToString(presetElement.WeldSettings.QualitySetting.Height.Minus).Maximum;
         else if (valueType == "min")
-            return variantToString->HeightMinusToString(presetElement.WeldSettings.QualitySetting.Height.Minus).Minimum;
+            ResultStr = variantToString->HeightMinusToString(presetElement.WeldSettings.QualitySetting.Height.Minus).Minimum;
     }
     else if (valueKey == "Post-Height+") {
         if (valueType == "current")
-            return variantToString->HeightPlusToString(presetElement.WeldSettings.QualitySetting.Height.Plus).Current;
+            ResultStr = variantToString->HeightPlusToString(presetElement.WeldSettings.QualitySetting.Height.Plus).Current;
         else if (valueType == "max")
-            return variantToString->HeightPlusToString(presetElement.WeldSettings.QualitySetting.Height.Plus).Maximum;
+            ResultStr = variantToString->HeightPlusToString(presetElement.WeldSettings.QualitySetting.Height.Plus).Maximum;
         else if (valueType == "min")
-            return variantToString->HeightPlusToString(presetElement.WeldSettings.QualitySetting.Height.Plus).Minimum;
+            ResultStr = variantToString->HeightPlusToString(presetElement.WeldSettings.QualitySetting.Height.Plus).Minimum;
     }
     else if (valueKey == "Step-Energy") {
         if (valueType == "current")
-            return variantToString->StepEnergyToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.EnergyToStep).Current;
+            ResultStr = variantToString->StepEnergyToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.EnergyToStep).Current;
         else if (valueType == "max")
-            return variantToString->StepEnergyToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.EnergyToStep).Maximum;
+            ResultStr = variantToString->StepEnergyToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.EnergyToStep).Maximum;
         else if (valueType == "min")
-            return variantToString->StepEnergyToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.EnergyToStep).Minimum;
+            ResultStr = variantToString->StepEnergyToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.EnergyToStep).Minimum;
     }
     else if (valueKey == "Step-Time") {
         if (valueType == "current")
-            return variantToString->PreHeightPlusToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.TimeToStep).Current;
+            ResultStr = variantToString->PreHeightPlusToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.TimeToStep).Current;
         else if (valueType == "max")
-            return variantToString->PreHeightPlusToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.TimeToStep).Maximum;
+            ResultStr = variantToString->PreHeightPlusToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.TimeToStep).Maximum;
         else if (valueType == "min")
-            return variantToString->PreHeightPlusToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.TimeToStep).Minimum;
+            ResultStr = variantToString->PreHeightPlusToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.TimeToStep).Minimum;
     }
     else if (valueKey == "Step-Power") {
         if (valueType == "current")
-            return variantToString->PreHeightPlusToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.PowerToStep).Current;
+            ResultStr = variantToString->PreHeightPlusToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.PowerToStep).Current;
         else if (valueType == "max")
-            return variantToString->PreHeightPlusToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.PowerToStep).Maximum;
+            ResultStr = variantToString->PreHeightPlusToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.PowerToStep).Maximum;
         else if (valueType == "min")
-            return variantToString->PreHeightPlusToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.PowerToStep).Minimum;
+            ResultStr = variantToString->PreHeightPlusToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.PowerToStep).Minimum;
     }
     else if (valueKey == "Amplitude A") {
         if (valueType == "current")
-            return variantToString->PreHeightPlusToString(presetElement.WeldSettings.BasicSetting.Amplitude).Current;
+            ResultStr = variantToString->PreHeightPlusToString(presetElement.WeldSettings.BasicSetting.Amplitude).Current;
         else if (valueType == "max")
-            return variantToString->PreHeightPlusToString(presetElement.WeldSettings.BasicSetting.Amplitude).Maximum;
+            ResultStr = variantToString->PreHeightPlusToString(presetElement.WeldSettings.BasicSetting.Amplitude).Maximum;
         else if (valueType == "min")
-            return variantToString->PreHeightPlusToString(presetElement.WeldSettings.BasicSetting.Amplitude).Minimum;
+            ResultStr = variantToString->PreHeightPlusToString(presetElement.WeldSettings.BasicSetting.Amplitude).Minimum;
     }
     else if (valueKey == "Amplitude B") {
         if (valueType == "current")
-            return variantToString->PreHeightPlusToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.Amplitude2).Current;
+            ResultStr = variantToString->PreHeightPlusToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.Amplitude2).Current;
         else if (valueType == "max")
-            return variantToString->PreHeightPlusToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.Amplitude2).Maximum;
+            ResultStr = variantToString->PreHeightPlusToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.Amplitude2).Maximum;
         else if (valueType == "min")
-            return variantToString->PreHeightPlusToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.Amplitude2).Minimum;
+            ResultStr = variantToString->PreHeightPlusToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.Amplitude2).Minimum;
     }
     else if (valueKey == "Pre Burst") {
         if (valueType == "current")
-            return variantToString->PreBurstTimeToString(presetElement.WeldSettings.AdvanceSetting.PreBurst).Current;
+            ResultStr = variantToString->PreBurstTimeToString(presetElement.WeldSettings.AdvanceSetting.PreBurst).Current;
         else if (valueType == "max")
-            return variantToString->PreBurstTimeToString(presetElement.WeldSettings.AdvanceSetting.PreBurst).Maximum;
+            ResultStr = variantToString->PreBurstTimeToString(presetElement.WeldSettings.AdvanceSetting.PreBurst).Maximum;
         else if (valueType == "min")
-            return variantToString->PreBurstTimeToString(presetElement.WeldSettings.AdvanceSetting.PreBurst).Minimum;
+            ResultStr = variantToString->PreBurstTimeToString(presetElement.WeldSettings.AdvanceSetting.PreBurst).Minimum;
     }
     else if (valueKey == "Hold Time") {
         if (valueType == "current")
-            return variantToString->HoldTimeToString(presetElement.WeldSettings.AdvanceSetting.HoldTime).Current;
+            ResultStr = variantToString->HoldTimeToString(presetElement.WeldSettings.AdvanceSetting.HoldTime).Current;
         else if (valueType == "max")
-            return variantToString->HoldTimeToString(presetElement.WeldSettings.AdvanceSetting.HoldTime).Maximum;
+            ResultStr = variantToString->HoldTimeToString(presetElement.WeldSettings.AdvanceSetting.HoldTime).Maximum;
         else if (valueType == "min")
-            return variantToString->HoldTimeToString(presetElement.WeldSettings.AdvanceSetting.HoldTime).Minimum;
+            ResultStr = variantToString->HoldTimeToString(presetElement.WeldSettings.AdvanceSetting.HoldTime).Minimum;
     }
     else if (valueKey == "After Burst") {
         if (valueType == "current")
-            return variantToString->AfterBurstDuringToString(presetElement.WeldSettings.AdvanceSetting.ABDur).Current;
+            ResultStr = variantToString->AfterBurstDuringToString(presetElement.WeldSettings.AdvanceSetting.ABDur).Current;
         else if (valueType == "max")
-            return variantToString->AfterBurstDuringToString(presetElement.WeldSettings.AdvanceSetting.ABDur).Maximum;
+            ResultStr = variantToString->AfterBurstDuringToString(presetElement.WeldSettings.AdvanceSetting.ABDur).Maximum;
         else if (valueType == "min")
-            return variantToString->AfterBurstDuringToString(presetElement.WeldSettings.AdvanceSetting.ABDur).Minimum;
+            ResultStr = variantToString->AfterBurstDuringToString(presetElement.WeldSettings.AdvanceSetting.ABDur).Minimum;
     }
     else if (valueKey == "Squeeze Time") {
         if (valueType == "current")
-            return variantToString->SqueezeTimeToString(presetElement.WeldSettings.AdvanceSetting.SqzTime).Current;
+            ResultStr = variantToString->SqueezeTimeToString(presetElement.WeldSettings.AdvanceSetting.SqzTime).Current;
         else if (valueType == "max")
-            return variantToString->SqueezeTimeToString(presetElement.WeldSettings.AdvanceSetting.SqzTime).Maximum;
+            ResultStr = variantToString->SqueezeTimeToString(presetElement.WeldSettings.AdvanceSetting.SqzTime).Maximum;
         else if (valueType == "min")
-            return variantToString->SqueezeTimeToString(presetElement.WeldSettings.AdvanceSetting.SqzTime).Minimum;
+            ResultStr = variantToString->SqueezeTimeToString(presetElement.WeldSettings.AdvanceSetting.SqzTime).Minimum;
     }
     else if (valueKey == "ActualWidth") {
         if (valueType == "current")
-            return variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.MeasuredWidth).Current;
+            ResultStr = variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.MeasuredWidth).Current;
         else if (valueType == "max")
-            return variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.MeasuredWidth).Maximum;
+            ResultStr = variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.MeasuredWidth).Maximum;
         else if (valueType == "min")
-            return variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.MeasuredWidth).Minimum;
+            ResultStr = variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.MeasuredWidth).Minimum;
     }
     else if (valueKey == "ActualHeight") {
         if (valueType == "current")
-            return variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.MeasuredHeight).Current;
+            ResultStr = variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.MeasuredHeight).Current;
         else if (valueType == "max")
-            return variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.MeasuredHeight).Maximum;
+            ResultStr = variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.MeasuredHeight).Maximum;
         else if (valueType == "min")
-            return variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.MeasuredHeight).Minimum;
+            ResultStr = variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.MeasuredHeight).Minimum;
     }
     else if (valueKey == "Unload Time") {
         if (valueType == "current")
-            return variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.AntiSideSpliceTime).Current;
+            ResultStr = variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.AntiSideSpliceTime).Current;
         else if (valueType == "max")
-            return variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.AntiSideSpliceTime).Maximum;
+            ResultStr = variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.AntiSideSpliceTime).Maximum;
         else if (valueType == "min")
-            return variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.AntiSideSpliceTime).Minimum;
+            ResultStr = variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.AntiSideSpliceTime).Minimum;
     }
     else if (valueKey == "Load Time") {
         if (valueType == "current")
-            return variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.CutOffSpliceTime).Current;
+            ResultStr = variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.CutOffSpliceTime).Current;
         else if (valueType == "max")
-            return variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.CutOffSpliceTime).Maximum;
+            ResultStr = variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.CutOffSpliceTime).Maximum;
         else if (valueType == "min")
-            return variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.CutOffSpliceTime).Minimum;
+            ResultStr = variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.CutOffSpliceTime).Minimum;
     }
     else if (valueKey == "Anti-Side") {
         if (presetElement.WeldSettings.AdvanceSetting.AntiSide)
-            return "left";
+            ResultStr = "left";
         else
-            return "right";
+            ResultStr = "right";
     }
     else if (valueKey == "Cut Off") {
         if (presetElement.WeldSettings.AdvanceSetting.CutOff)
-            return "left";
+            ResultStr = "left";
         else
-            return "right";
+            ResultStr = "right";
     }
     else if (valueKey == "Insulation") {
         if (presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkOption)
-            return "left";
+            ResultStr = "left";
         else
-            return "right";
+            ResultStr = "right";
     }
     else if (valueKey == "PicPath") {
         if (presetElement.PresetPicNamePath.isEmpty())
-            return " ";
-        return presetElement.PresetPicNamePath;
+            ResultStr = " ";
+        ResultStr = presetElement.PresetPicNamePath;
     }
     else if (valueKey == "SpliceName") {
-        return presetElement.SpliceName;
+        ResultStr = presetElement.SpliceName;
     }
     else if (valueKey == "SpliceId") {
-        return QString("%1").arg(presetElement.SpliceID);
+        ResultStr = QString("%1").arg(presetElement.SpliceID);
     }
     else if (valueKey == "ShrinkId") {
-        return presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID;
+        ResultStr = presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID;
     }
     else if (valueKey == "ShrinkTemp") {
-        return variantToString->ShrinkTemperatureToString(presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTemperature).Current;
+        ResultStr = variantToString->ShrinkTemperatureToString(presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTemperature).Current;
     }
     else if (valueKey == "ShrinkTime") {
-        return variantToString->ShrinkTimeToString(presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime).Current;
+        ResultStr = variantToString->ShrinkTimeToString(presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime).Current;
     }
     else if (valueKey == "Cross Section") {
-        return variantToString->CrossSectionToString(presetElement.CrossSection);
+        ResultStr = variantToString->CrossSectionToString(presetElement.CrossSection);
     }
     else if (valueKey == "Cross Section") {
-        return variantToString->CrossSectionToString(presetElement.CrossSection);
+        ResultStr = variantToString->CrossSectionToString(presetElement.CrossSection);
     }
     else if (valueKey == "TestStandardTime+") {
         if (valueType == "current")
-            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_PLRG]).Current;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_PLRG]).Current;
         else if (valueType == "max")
-            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_PLRG]).Maximum;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_PLRG]).Maximum;
         else if (valueType == "min")
-            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_PLRG]).Minimum;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_PLRG]).Minimum;
     }
     else if (valueKey == "TestStandardTime-") {
         if (valueType == "current")
-            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_MSRG]).Current;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_MSRG]).Current;
         else if (valueType == "max")
-            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_MSRG]).Maximum;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_MSRG]).Maximum;
         else if (valueType == "min")
-            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_MSRG]).Minimum;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_MSRG]).Minimum;
     }
     else if (valueKey == "TestStandardPower+") {
         if (valueType == "current")
-            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_PLRG]).Current;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_PLRG]).Current;
         else if (valueType == "max")
-            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_PLRG]).Maximum;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_PLRG]).Maximum;
         else if (valueType == "min")
-            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_PLRG]).Minimum;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_PLRG]).Minimum;
     }
     else if (valueKey == "TestStandardPower-") {
         if (valueType == "current")
-            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_MSRG]).Current;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_MSRG]).Current;
         else if (valueType == "max")
-            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_MSRG]).Maximum;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_MSRG]).Maximum;
         else if (valueType == "min")
-            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_MSRG]).Minimum;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_MSRG]).Minimum;
     }
     else if (valueKey == "TestStandardPre+") {
         if (valueType == "current")
-            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_PLRG]).Current;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_PLRG]).Current;
         else if (valueType == "max")
-            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_PLRG]).Maximum;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_PLRG]).Maximum;
         else if (valueType == "min")
-            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_PLRG]).Minimum;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_PLRG]).Minimum;
     }
     else if (valueKey == "TestStandardPre-") {
         if (valueType == "current")
-            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_MSRG]).Current;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_MSRG]).Current;
         else if (valueType == "max")
-            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_MSRG]).Maximum;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_MSRG]).Maximum;
         else if (valueType == "min")
-            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_MSRG]).Minimum;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_MSRG]).Minimum;
     }
     else if (valueKey == "TestStandardPost+") {
         if (valueType == "current")
-            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_PLRG]).Current;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_PLRG]).Current;
         else if (valueType == "max")
-            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_PLRG]).Maximum;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_PLRG]).Maximum;
         else if (valueType == "min")
-            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_PLRG]).Minimum;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_PLRG]).Minimum;
     }
     else if (valueKey == "TestStandardPost-") {
         if (valueType == "current")
-            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_MSRG]).Current;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_MSRG]).Current;
         else if (valueType == "max")
-            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_MSRG]).Maximum;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_MSRG]).Maximum;
         else if (valueType == "min")
-            return variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_MSRG]).Minimum;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_MSRG]).Minimum;
     }
     else if (valueKey == "TestSigmaTime+") {
         if (valueType == "current")
-            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_CONFRG_PL]).Current;
+            ResultStr = variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_CONFRG_PL]).Current;
         else if (valueType == "max")
-            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_CONFRG_PL]).Maximum;
+            ResultStr = variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_CONFRG_PL]).Maximum;
         else if (valueType == "min")
-            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_CONFRG_PL]).Minimum;
+            ResultStr = variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_CONFRG_PL]).Minimum;
     }
     else if (valueKey == "TestSigmaTime-") {
         if (valueType == "current")
-            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_CONFRG_MS]).Current;
+            ResultStr = variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_CONFRG_MS]).Current;
         else if (valueType == "max")
-            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_CONFRG_MS]).Maximum;
+            ResultStr = variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_CONFRG_MS]).Maximum;
         else if (valueType == "min")
-            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_CONFRG_MS]).Minimum;
+            ResultStr = variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_CONFRG_MS]).Minimum;
     }
     else if (valueKey == "TestSigmaPower+") {
         if (valueType == "current")
-            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_CONFRG_PL]).Current;
+            ResultStr = variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_CONFRG_PL]).Current;
         else if (valueType == "max")
-            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_CONFRG_PL]).Maximum;
+            ResultStr = variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_CONFRG_PL]).Maximum;
         else if (valueType == "min")
-            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_CONFRG_PL]).Minimum;
+            ResultStr = variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_CONFRG_PL]).Minimum;
     }
     else if (valueKey == "TestSigmaPower-") {
         if (valueType == "current")
-            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_CONFRG_MS]).Current;
+            ResultStr = variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_CONFRG_MS]).Current;
         else if (valueType == "max")
-            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_CONFRG_MS]).Maximum;
+            ResultStr = variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_CONFRG_MS]).Maximum;
         else if (valueType == "min")
-            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_CONFRG_MS]).Minimum;
+            ResultStr = variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_CONFRG_MS]).Minimum;
     }
     else if (valueKey == "TestSigmaPre+") {
         if (valueType == "current")
-            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_CONFRG_PL]).Current;
+            ResultStr = variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_CONFRG_PL]).Current;
         else if (valueType == "max")
-            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_CONFRG_PL]).Maximum;
+            ResultStr = variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_CONFRG_PL]).Maximum;
         else if (valueType == "min")
-            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_CONFRG_PL]).Minimum;
+            ResultStr = variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_CONFRG_PL]).Minimum;
     }
     else if (valueKey == "TestSigmaPre-") {
         if (valueType == "current")
-            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_CONFRG_MS]).Current;
+            ResultStr = variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_CONFRG_MS]).Current;
         else if (valueType == "max")
-            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_CONFRG_MS]).Maximum;
+            ResultStr = variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_CONFRG_MS]).Maximum;
         else if (valueType == "min")
-            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_CONFRG_MS]).Minimum;
+            ResultStr = variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_CONFRG_MS]).Minimum;
     }
     else if (valueKey == "TestSigmaPost+") {
         if (valueType == "current")
-            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_CONFRG_PL]).Current;
+            ResultStr = variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_CONFRG_PL]).Current;
         else if (valueType == "max")
-            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_CONFRG_PL]).Maximum;
+            ResultStr = variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_CONFRG_PL]).Maximum;
         else if (valueType == "min")
-            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_CONFRG_PL]).Minimum;
+            ResultStr = variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_CONFRG_PL]).Minimum;
     }
     else if (valueKey == "TestSigmaPost-") {
         if (valueType == "current")
-            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_CONFRG_MS]).Current;
+            ResultStr = variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_CONFRG_MS]).Current;
         else if (valueType == "max")
-            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_CONFRG_MS]).Maximum;
+            ResultStr = variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_CONFRG_MS]).Maximum;
         else if (valueType == "min")
-            return variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_CONFRG_MS]).Minimum;
+            ResultStr = variantToString->SigmaTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_CONFRG_MS]).Minimum;
     }
     else if (valueKey == "TestModel") {
-        return QString("%1").arg((int)presetElement.TestSetting.TestMode);
+        ResultStr = QString("%1").arg((int)presetElement.TestSetting.TestMode);
     }
     else if (valueKey == "TestCount") {
-        return QString("%1").arg(presetElement.TestSetting.Qutanty);
+        ResultStr = QString("%1").arg(presetElement.TestSetting.Qutanty);
     }
     else if (valueKey == "TeachMode") {
-        return QString("%1").arg((int)presetElement.TestSetting.TeachModeSetting.TeachModeType);
+        ResultStr = QString("%1").arg((int)presetElement.TestSetting.TeachModeSetting.TeachModeType);
     }
     else
-        return "";
+        ResultStr = "";
+    return ResultStr;
 }
 
 int SplicesModel::getRawData(QString key)
 {
+    int iResult = 0;
     if (key == "Time-")        
-        return presetElement.WeldSettings.QualitySetting.Time.Minus;
+        iResult = presetElement.WeldSettings.QualitySetting.Time.Minus;
     else if (key == "Time+")
-        return presetElement.WeldSettings.QualitySetting.Time.Plus;
+        iResult = presetElement.WeldSettings.QualitySetting.Time.Plus;
     else if (key == "Power-")
-        return presetElement.WeldSettings.QualitySetting.Power.Minus;
+        iResult = presetElement.WeldSettings.QualitySetting.Power.Minus;
     else if (key == "Power+")
-        return presetElement.WeldSettings.QualitySetting.Power.Plus;
+        iResult = presetElement.WeldSettings.QualitySetting.Power.Plus;
     else if (key == "Pre-Height-")
-        return presetElement.WeldSettings.QualitySetting.Preheight.Minus;
+        iResult = presetElement.WeldSettings.QualitySetting.Preheight.Minus;
     else if (key == "Pre-Height+")
-        return presetElement.WeldSettings.QualitySetting.Preheight.Plus;
+        iResult = presetElement.WeldSettings.QualitySetting.Preheight.Plus;
     else if (key == "Post-Height-")
-        return presetElement.WeldSettings.QualitySetting.Height.Minus;
+        iResult = presetElement.WeldSettings.QualitySetting.Height.Minus;
     else if (key == "Post-Height+")
-        return presetElement.WeldSettings.QualitySetting.Height.Plus;
+        iResult = presetElement.WeldSettings.QualitySetting.Height.Plus;
+    else
+        iResult = 0;
+    return iResult;
 }
 
 void SplicesModel::setStructValue(QString valueKey, QVariant value)
@@ -1012,26 +1033,32 @@ void SplicesModel::editNew(int spliceId)
 
 QString SplicesModel::getString(QString type, int value)
 {
+    QString ResultStr = "";
     if (type == "CrossSection")
-        return variantToString->CrossSectionToString(value);
+        ResultStr = variantToString->CrossSectionToString(value);
+    else
+        ResultStr = "";
+    return ResultStr;
 }
 
 bool SplicesModel::getWeldMode(QString type, int index)
 {
+    bool bResult = false;
     if (type == "weld")
     {
         if ((int)presetElement.WeldSettings.AdvanceSetting.WeldMode == index)
-            return true;
+            bResult = true;
         else
-            return false;
+            bResult = false;
     }
     else if (type == "step")
     {
         if ((int)presetElement.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode == index)
-            return true;
+            bResult = true;
         else
-            return false;
+            bResult = false;
     }
+    return bResult;
 }
 
 QList<int> SplicesModel::getWireIdList()
@@ -1063,6 +1090,7 @@ QString SplicesModel::graphHeightToString(int height)
 bool SplicesModel::exportData(int spliceId, QString fileUrl)
 {
     m_spliceAdaptor->exportData(spliceId, fileUrl);
+    return true;
 }
 
 int SplicesModel::importData(QString value, QMap<int, QString> wireIdMap)
@@ -1126,11 +1154,15 @@ void SplicesModel::removeValue(int id, QString name)
 
 int SplicesModel::columnCount(const QModelIndex &parent) const
 {
+    UNUSED(parent);
     return 1;
 }
 
 QVariant SplicesModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
+    UNUSED(section);
+    UNUSED(orientation);
+    UNUSED(role);
     return QVariant();
 }
 
@@ -1153,6 +1185,7 @@ QVariant SplicesModel::getValue(int index, QString key)
     QMap<int,QString>::iterator it; //遍历map
     int i = 0;
     int orderId;
+    UNUSED(orderId);
     for ( it = splices->begin(); it != splices->end(); ++it ) {
         if (i == index){
             orderId = it.key();
@@ -1218,6 +1251,7 @@ QVariant PartModel::data(const QModelIndex &index, int role) const
     {
         int columnIdx = role - Qt::UserRole - 1;
         int rowId;
+        UNUSED(rowId);
         QMap<int,QString>::iterator it; //遍历map
         int i = 0;
         for ( it = parts->begin(); it != parts->end(); ++it ) {
@@ -1291,6 +1325,7 @@ void PartModel::setModelList()
 
 int PartModel::rowCount(const QModelIndex & parent) const
 {
+    UNUSED(parent);
     return parts->count();
 }
 
@@ -1302,10 +1337,12 @@ int PartModel::count()
 
 QVariant PartModel::getStruceValue(QString key)
 {
+    QVariant varResult = -1;
     if (key == "PartId")
-        return m_Part->PartID;
+        varResult = m_Part->PartID;
     else if (key == "PartName")
-        return m_Part->PartName;
+        varResult = m_Part->PartName;
+    return varResult;
 }
 
 bool PartModel::exportData(int partId, QString fileUrl)
@@ -1324,6 +1361,7 @@ QString PartModel::getPartName(int partId)
 {
     PartElement myPart;
     bool reb;
+    UNUSED(reb);
     reb = m_partAdaptor->QueryOneRecordFromTable(partId,&myPart);
     return myPart.PartName;
 }
@@ -1331,11 +1369,15 @@ QString PartModel::getPartName(int partId)
 
 int PartModel::columnCount(const QModelIndex &parent) const
 {
+    UNUSED(parent);
     return 1;
 }
 
 QVariant PartModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
+    UNUSED(section);
+    UNUSED(orientation);
+    UNUSED(role);
     return QVariant();
 }
 
@@ -1360,6 +1402,7 @@ QVariant PartModel::getValue(int index, QString key)
     QMap<int,QString>::iterator it; //遍历map
     int i = 0;
     int orderId;
+    UNUSED(orderId);
     for ( it = parts->begin(); it != parts->end(); ++it ) {
         if (i == index){
             orderId = it.key();
@@ -1575,6 +1618,7 @@ QVariant OperatorModel::data(const QModelIndex &index, int role) const
     {
         int columnIdx = role - Qt::UserRole - 1;
         int rowId;
+        UNUSED(rowId);
         QMap<int,QString>::iterator it; //遍历map
         int i = 0;
         for ( it = operators->begin(); it != operators->end(); ++it ) {
@@ -1639,10 +1683,13 @@ void OperatorModel::editNew(int index)
 
 QString OperatorModel::getStruckValue(QString key)
 {
+    QString ResultStr = "";
     if (key == "OperatorName")
-        return operatorElement.OperatorName;
+        ResultStr = operatorElement.OperatorName;
     else if (key == "PassWord")
-        return operatorElement.Password;
+        ResultStr = operatorElement.Password;
+    else
+        ResultStr = "";
 //    else if (key == "Level") {
 //        QString level = "";
 //        if (operatorElement.PermissionLevel == PASSWORDCONTROL::SUPERUSER)
@@ -1657,11 +1704,13 @@ QString OperatorModel::getStruckValue(QString key)
 //            level = "OPEN";
 //        return level;
 //    }
+    return ResultStr;
 }
 
 
 int OperatorModel::rowCount(const QModelIndex & parent) const
 {
+    UNUSED(parent);
     return operators->count();
 }
 
@@ -1735,11 +1784,15 @@ void OperatorModel::updateOperator(int id, QString name, QString passwd, int lev
 
 int OperatorModel::columnCount(const QModelIndex &parent) const
 {
+    UNUSED(parent);
     return 1;
 }
 
 QVariant OperatorModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
+    UNUSED(section);
+    UNUSED(orientation);
+    UNUSED(role);
     return QVariant();
 }
 
@@ -1764,6 +1817,7 @@ QVariant OperatorModel::getOperatorValue(int index, QString key)
     QMap<int,QString>::iterator it; //遍历map
     int i = 0;
     int orderId;
+    UNUSED(orderId);
     for ( it = operators->begin(); it != operators->end(); ++it ) {
         if (i == index){
             orderId = it.key();
@@ -1870,14 +1924,16 @@ QList<int> AlarmModel::getPointList(QString key, QString spliceName, uint hashCo
 
 int AlarmModel::getAxes(QString key)
 {
+    int iResult = -1;
     if (key == "Time")
-        return weldResultElement.ActualResult.ActualTime;
+        iResult = weldResultElement.ActualResult.ActualTime;
     else if (key == "Power")
-        return weldResultElement.ActualResult.ActualPeakPower;
+        iResult = weldResultElement.ActualResult.ActualPeakPower;
     else if (key == "Pre-Height")
-        return weldResultElement.ActualResult.ActualPreheight;
+        iResult = weldResultElement.ActualResult.ActualPreheight;
     else if (key == "Post-Height")
-        return weldResultElement.ActualResult.ActualPostheight;
+        iResult = weldResultElement.ActualResult.ActualPostheight;
+    return iResult;
 }
 
 void AlarmModel::setStartTime()
@@ -1888,6 +1944,7 @@ void AlarmModel::setStartTime()
 void AlarmModel::editNew(int weldId, QString weldName)
 {
     bool reb;
+    UNUSED(reb);
     reb = m_weldHistoryAdaptor->QueryOneRecordWithGraph(weldId,weldName,&weldResultElement);
 //    qDebug() << "editNew" << weldId << weldName << reb << weldResultElement.PowerGraph;
 }
@@ -1903,6 +1960,7 @@ QVariant AlarmModel::data(const QModelIndex &index, int role) const
     {
         int columnIdx = role - Qt::UserRole - 1;
         int rowId;
+        UNUSED(rowId);
         QMap<int,QString>::iterator it; //遍历map
         int i = 0;
         for ( it = alarms->begin(); it != alarms->end(); ++it ) {
@@ -1986,6 +2044,7 @@ void AlarmModel::searchAlarmLog(QString name, unsigned int time_from, unsigned i
 
 int AlarmModel::rowCount(const QModelIndex & parent) const
 {
+    UNUSED(parent);
     return alarms->count();
 }
 
@@ -1998,11 +2057,16 @@ int AlarmModel::count()
 
 int AlarmModel::columnCount(const QModelIndex &parent) const
 {
+    UNUSED(parent);
     return 1;
 }
 
-QVariant AlarmModel::headerData(int section, Qt::Orientation orientation, int role) const
+QVariant AlarmModel::headerData(int section, Qt::Orientation orientation,
+                                int role) const
 {
+    UNUSED(section);
+    UNUSED(orientation);
+    UNUSED(role);
     return QVariant();
 }
 
@@ -2027,6 +2091,7 @@ QVariant AlarmModel::getAlarmValue(int index, QString key)
     QMap<int,QString>::iterator it; //遍历map
     int i = 0;
     int orderId;
+    UNUSED(orderId);
     for ( it = alarms->begin(); it != alarms->end(); ++it ) {
         if (i == index){
             orderId = it.key();
@@ -2104,6 +2169,7 @@ QVariant WeldHistoryModel::data(const QModelIndex &index, int role) const
     {
         int columnIdx = role - Qt::UserRole - 1;
         int rowId;
+        UNUSED(rowId);
         QMap<int,QString>::iterator it; //遍历map
         int i = 0;
         for ( it = historys->begin(); it != historys->end(); ++it ) {
@@ -2239,6 +2305,7 @@ void WeldHistoryModel::setModelList()
 
 int WeldHistoryModel::rowCount(const QModelIndex & parent) const
 {
+    UNUSED(parent);
     return historys->count();
 }
 
@@ -2257,11 +2324,15 @@ void WeldHistoryModel::removeValue(int id, QString name)
 
 int WeldHistoryModel::columnCount(const QModelIndex &parent) const
 {
+    UNUSED(parent);
     return 1;
 }
 
 QVariant WeldHistoryModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
+    UNUSED(section);
+    UNUSED(orientation);
+    UNUSED(role);
     return QVariant();
 }
 
@@ -2372,6 +2443,7 @@ QVariant WireModel::data(const QModelIndex &index, int role) const
     {
         int columnIdx = role - Qt::UserRole - 1;
         int rowId;
+        UNUSED(rowId);
         QMap<int,QString>::iterator it; //遍历map
         int i = 0;
         for ( it = wires->begin(); it != wires->end(); ++it ) {
@@ -2489,6 +2561,7 @@ void WireModel::setModelList()
 
 int WireModel::rowCount(const QModelIndex & parent) const
 {
+    UNUSED(parent);
     return wires->count();
 }
 
@@ -2519,7 +2592,7 @@ int WireModel::insertValueToTable(QString type,QString wireName,int wireId,int o
 //    enum HorizontalLocation Side;
 //    enum VerticalLocation VerticalSide;
 //    enum VerticalPosition Position;
-    int a,b;
+//    int a,b;
     int insertWireId;
     WireElement insertWire;
     insertWire.WireName = wireName;
@@ -2626,35 +2699,38 @@ QVariant WireModel::getStructValue(QString key)
 
 QString WireModel::getStructValue2(QString key, QString type)
 {
+    QString ResultStr = "";
     if (key == "Gauge"){
         if (type == "current")
-            return variantToString->GaugeToString(wireElement.Gauge,wireElement.GaugeAWG).Current;
+            ResultStr = variantToString->GaugeToString(wireElement.Gauge,wireElement.GaugeAWG).Current;
         else if (type == "max")
-            return variantToString->GaugeToString(wireElement.Gauge,wireElement.GaugeAWG).Maximum;
+            ResultStr = variantToString->GaugeToString(wireElement.Gauge,wireElement.GaugeAWG).Maximum;
         else if (type == "min")
-            return variantToString->GaugeToString(wireElement.Gauge,wireElement.GaugeAWG).Minimum;
+            ResultStr = variantToString->GaugeToString(wireElement.Gauge,wireElement.GaugeAWG).Minimum;
     }
     else if (key == "StripeColor") {
         qDebug() << "ccccccccccccccc" << wireElement.Stripe.Color;
-        return wireElement.Stripe.Color;
+        ResultStr = wireElement.Stripe.Color;
     }
-
+    return ResultStr;
 }
 
 int WireModel::getStructValue3(QString key, QString value)
 {
-    int gauge;
-    int awg;
+    int gauge,awg, iResult = -1;
     if (key == "Gauge"){
         stringToVariant->GaugeToInt(value,awg,gauge);
-        return gauge;
+        iResult = gauge;
     }
     else if (key == "awg") {
         stringToVariant->GaugeToInt(value,awg,gauge);
-        return awg;
+        iResult = awg;
     }
     else if (key == "StripeType")
-        return (int)wireElement.Stripe.TypeOfStripe;
+        iResult = (int)wireElement.Stripe.TypeOfStripe;
+    else
+        iResult = -1;
+    return iResult;
 }
 
 QString WireModel::getStructValue4(int gauge, int awg)
@@ -2677,11 +2753,15 @@ int WireModel::importData(QString filePath)
 
 int WireModel::columnCount(const QModelIndex &parent) const
 {
+    UNUSED(parent);
     return 1;
 }
 
 QVariant WireModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
+    UNUSED(section);
+    UNUSED(orientation);
+    UNUSED(role);
     return QVariant();
 }
 
@@ -2705,6 +2785,7 @@ QVariant WireModel::getValue(int index, QString key)
     QMap<int,QString>::iterator it; //遍历map
     int i = 0;
     int orderId;
+    UNUSED(orderId);
     for ( it = wires->begin(); it != wires->end(); ++it ) {
         if (i == index){
             orderId = it.key();
@@ -2791,6 +2872,7 @@ QVariant MaintenanceLogModel::data(const QModelIndex &index, int role) const
     {
         int columnIdx = role - Qt::UserRole - 1;
         int rowId;
+        UNUSED(rowId);
         QMap<int,QString>::iterator it; //遍历map
         int i = 0;
         for ( it = logs->begin(); it != logs->end(); ++it ) {
@@ -2853,6 +2935,7 @@ void MaintenanceLogModel::setModelList()
 
 int MaintenanceLogModel::rowCount(const QModelIndex & parent) const
 {
+    UNUSED(parent);
     return logs->count();
 }
 
@@ -2869,11 +2952,15 @@ void MaintenanceLogModel::removeValue(int id, QString name)
 
 int MaintenanceLogModel::columnCount(const QModelIndex &parent) const
 {
+    UNUSED(parent);
     return 1;
 }
 
 QVariant MaintenanceLogModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
+    UNUSED(section);
+    UNUSED(orientation);
+    UNUSED(role);
     return QVariant();
 }
 
@@ -2898,6 +2985,7 @@ QVariant MaintenanceLogModel::getValue(int index, QString key)
     QMap<int,QString>::iterator it; //遍历map
     int i = 0;
     int orderId;
+    UNUSED(orderId);
     for ( it = logs->begin(); it != logs->end(); ++it ) {
         if (i == index){
             orderId = it.key();

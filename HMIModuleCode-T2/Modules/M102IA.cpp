@@ -637,7 +637,7 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
     int Index, temp, Div;
     QString TempString = "";
     QString PowerString;
-    unsigned int ResetType;
+//    unsigned int ResetType;
     struct BransonMessageBox tmpMsgBox;
     _M10INI->GlobalSignature = tmpDataSignature;
     switch(tmpDataSignature)
@@ -969,7 +969,7 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         _M2010->ReceiveFlags.ActuatorSerialNumData = true;
         break;
     case IASigResetReady:
-        ResetType = MakeHexWordNumber(HexString.mid(9, 4));
+//        ResetType = MakeHexWordNumber(HexString.mid(9, 4));
         if (_AlarmMsg->IsAlarmShown() == true)
         {
             _M10runMode->RemoteReset();

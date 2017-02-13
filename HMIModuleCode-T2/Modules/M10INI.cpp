@@ -118,7 +118,7 @@ void M10INI::Save_LastWeldGraph()
 
 void M10INI::SetDefaultWeldFormula(Status_Data* _DataStruct)
 {
-    InterfaceClass* _Interface = InterfaceClass::Instance();
+//    InterfaceClass* _Interface = InterfaceClass::Instance();
     //This function will set the weld seeting formulas to default values for the very 1st time.
     //Original Packard formula:
     //   Energy = 111 * area
@@ -494,7 +494,7 @@ void M10INI::Get_INI_File()
 {
     //Check for presence of Branson.bin file if not present will create.
     QString FileName;
-    Password *_Password = Password::Instance();
+//    Password *_Password = Password::Instance();
     M2010    *_M2010    = M2010::Instance();
     InterfaceClass *_Interface = InterfaceClass::Instance();
     UtilityClass *_Utility = UtilityClass::Instance();
@@ -546,7 +546,7 @@ void M10INI::Save_StatusData(bool WithUpdate)
 {
 //    Saves temp data into data and stores the file
     InterfaceClass* _Interface = InterfaceClass::Instance();
-    UtilityClass* _Utility = UtilityClass::Instance();
+//    UtilityClass* _Utility = UtilityClass::Instance();
     M2010    *_M2010    = M2010::Instance();
 
     if (WithUpdate == true)

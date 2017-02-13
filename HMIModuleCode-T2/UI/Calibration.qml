@@ -168,13 +168,13 @@ Item {
                         backGround.visible = true
                         keyNum.visible = true
                         if (line1.inputText == qsTr("enter value here")) {
-                            keyNum.currentValue = "0"
-                            keyNum.minvalue = hmiAdaptor.getAmplitudeToString(0,false)
-                            keyNum.maxvalue = hmiAdaptor.getAmplitudeToString(0,true)
+                            keyNum.currentValue = hmiAdaptor.getDefaultAmplitudeToString(0, 0)
+                            keyNum.minvalue = hmiAdaptor.getDefaultAmplitudeToString(0, 1)
+                            keyNum.maxvalue = hmiAdaptor.getDefaultAmplitudeToString(0, 2)
                         } else {
                             keyNum.currentValue = line1.inputText
-                            keyNum.minvalue = hmiAdaptor.getAmplitudeToString(line1.inputText,false)
-                            keyNum.maxvalue = hmiAdaptor.getAmplitudeToString(line1.inputText,true)
+                            keyNum.minvalue = hmiAdaptor.getDefaultAmplitudeToString(line1.inputText, 1)
+                            keyNum.maxvalue = hmiAdaptor.getDefaultAmplitudeToString(line1.inputText, 2)
                         }
                     }
                 }
