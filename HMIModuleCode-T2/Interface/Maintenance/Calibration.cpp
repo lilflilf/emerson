@@ -251,7 +251,7 @@ void Calibration::RunSonics100UnPressed()
 
 void Calibration::HornCalibrationComplete(int iAmplitude)
 {
-    DEBUG_PRINT(iAmplitude);
+//    DEBUG_PRINT(iAmplitude);
     bool bResult = false;
     M102IA* _M102IA = M102IA::Instance();
     M2010* _M2010 = M2010::Instance();

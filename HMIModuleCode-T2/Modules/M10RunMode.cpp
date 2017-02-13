@@ -8,6 +8,7 @@
 #include "MODstart.h"
 #include "Interface/Interface.h"
 #include "AlarmMessage.h"
+#include "typedef.h"
 #include <QDateTime>
 
 M10runMode* M10runMode::_instance = 0;
