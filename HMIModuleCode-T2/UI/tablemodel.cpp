@@ -1972,8 +1972,11 @@ void AlarmModel::editNew(int weldId, QString weldName)
 {
     bool reb;
     UNUSED(reb);
-    reb = m_weldHistoryAdaptor->QueryOneRecordWithGraph(weldId,weldName,&weldResultElement);
-//    qDebug() << "editNew" << weldId << weldName << reb << weldResultElement.PowerGraph;
+    if(weldName.isEmpty() == true)
+        reb = m_weldHistoryAdaptor->QueryOneRecordWithGraph(weldId, &weldResultElement);
+    else
+        reb = m_weldHistoryAdaptor->QueryOneRecordWithGraph(weldId,weldName,&weldResultElement);
+    qDebug() << "editNew" << weldId << weldName << reb << weldResultElement.PowerGraph;
 }
 
 QVariant AlarmModel::data(const QModelIndex &index, int role) const

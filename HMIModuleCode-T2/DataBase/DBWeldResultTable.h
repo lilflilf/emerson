@@ -44,6 +44,7 @@ public:
                            unsigned int time_from, unsigned int time_to,
                            enum FieldType OrderField = CreatedDateType, bool Orderby = true);
     bool QueryOneRecordWithGraph(int ID, QString Name, void* _obj);
+    bool QueryOneRecordWithGraph(int ID, void* _obj);
     bool QueryBySomeFields(QString SpliceName, unsigned int HashCode,
                            unsigned int time_from, unsigned int time_to, QMap<int, QString> *_obj);
 public:

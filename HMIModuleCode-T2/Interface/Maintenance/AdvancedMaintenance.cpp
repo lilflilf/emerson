@@ -335,7 +335,7 @@ void AdvancedMaintenance::TimeoutEventSlot()
         _Interface->cMsgBox(&tmpMsgBox);
     }
     IsTimerRunning = false;
-    qDebug()<<"Timer running";
+//    qDebug()<<"Timer running";
     Timer->start(1000);//1 second
 }
 
