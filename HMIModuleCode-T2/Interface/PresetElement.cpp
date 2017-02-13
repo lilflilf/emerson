@@ -2,6 +2,7 @@
 #include "Interface.h"
 #include "Modules/M2010.h"
 #include "Modules/UtilityClass.h"
+#include "Modules/typedef.h"
 PresetElement::PresetElement()
 {
     UtilityClass *_Utility = UtilityClass::Instance();
@@ -26,6 +27,7 @@ PresetElement::PresetElement()
     WeldSettings.QualitySetting.Power.Minus = MINPOWER;
     _Utility->InitializeTextData();
     WeldSettings.QualitySetting.Power.Plus = _Utility->Maxpower;
+//    DEBUG_PRINT(_Utility->Maxpower);
     WeldSettings.QualitySetting.Preheight.Minus = MINHEIGHT;
     WeldSettings.QualitySetting.Preheight.Plus = MAXHEIGHT;               //mm * 100
     WeldSettings.QualitySetting.Height.Minus = MINHEIGHT;

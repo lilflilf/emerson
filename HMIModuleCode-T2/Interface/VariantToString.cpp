@@ -1,5 +1,6 @@
 #include "VariantToString.h"
 #include "Interface/Interface.h"
+#include "Modules/typedef.h"
 UtilityClass* VariantToString::_Utility = NULL;
 VariantToString* VariantToString::_instance = NULL;
 VariantToString* VariantToString::Instance()
@@ -147,6 +148,7 @@ QString VariantToString::Time_MinusToString(int Time)
 struct BRANSONDATA VariantToString::PowerPlusToString(int Power)
 {
     struct BRANSONDATA tmpData;
+//    DEBUG_PRINT (Power);
     tmpData.Current = _Utility->FormatedDataToString(DINPowerPl, Power);
     tmpData.Maximum = _Utility->FormatedDataToString(DINPowerPl,
                     _Utility->txtData[DINPowerPl].max);
@@ -164,7 +166,7 @@ struct BRANSONDATA VariantToString::PowerMinusToString(int Power)
 {
     struct BRANSONDATA tmpData;
     tmpData.Current = _Utility->FormatedDataToString(DINPowerMs, Power);
-    tmpData.Maximum = _Utility->FormatedDataToFloat(DINPowerMs,
+    tmpData.Maximum = _Utility->FormatedDataToString(DINPowerMs,
                     _Utility->txtData[DINPowerMs].max);
     tmpData.Minimum = _Utility->FormatedDataToString(DINPowerMs,
                     _Utility->txtData[DINPowerMs].min);

@@ -101,7 +101,6 @@ void MakeWeldProcess::UpdateWeldResult()
             = CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderName;
     CurrentWeldResult.CurrentPart.PartID = CurrentNecessaryInfo.CurrentPart.PartID;
     CurrentWeldResult.CurrentPart.PartName = CurrentNecessaryInfo.CurrentPart.PartName;
-
     CurrentWeldResult.CurrentSplice.SpliceID = CurrentSplice.SpliceID;
     CurrentWeldResult.CurrentSplice.SpliceName = CurrentSplice.SpliceName;
     CurrentWeldResult.CurrentSplice.SpliceHash = CurrentSplice.HashCode;
@@ -125,7 +124,6 @@ bool MakeWeldProcess::PowerGraphReceive()
         _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.PowerGraphData);
     }else
         bResult = true;
-
     return bResult;
 }
 
@@ -228,12 +226,14 @@ void MakeWeldProcess::WeldCycleDaemonThread(void* _obj)
         //2. Save the Weld result into the Database
         int iResult =
             _WeldResultDB->InsertRecordIntoTable(&_ObjectPtr->CurrentWeldResult);
+        qDebug()<<"Ordername"<<_ObjectPtr->CurrentWeldResult.CurrentWorkOrder.WorkOrderName;
         _ObjectPtr->CurrentWeldResult.WeldResultID = iResult;
 
         //6. Shrink Tube
         //7. Remote Data sending
         _Statistics->HistoryEvent(_ObjectPtr->CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderName,
                 _ObjectPtr->CurrentNecessaryInfo.CurrentPart.PartName, &_ObjectPtr->CurrentWeldResult, &_ObjectPtr->CurrentSplice);
+
         if((_M102IA->IAactual.Alarmflags & 0x4000) == 0x4000)
             _ObjectPtr->WeldCycleStatus = true;
         else
@@ -294,9 +294,9 @@ void MakeWeldProcess::TimeoutEventSlot()
     _M2010->ReceiveFlags.HostReadyData = false;
     _M102IA->IACommand(IAComHostReady);
     _M102IA->WaitForResponseAfterSent(5000,&_M2010->ReceiveFlags.HostReadyData);
-
+    DEBUG_PRINT(_M2010->ReceiveFlags.HostReadyData);
     m_bTmrRunningFlag = false;
-    m_DaemonTmr->start(200);//200 ms
+    m_DaemonTmr->start(1000);//1000 ms
 }
 
 bool MakeWeldProcess::_start()
@@ -326,13 +326,12 @@ bool MakeWeldProcess::_start()
                 _M10runMode->init_m20_data_events(&CurrentSplice);
         }
 
-        m_DaemonTmr = NULL;
-        m_DaemonTmr = new QTimer(this);
-        connect(m_DaemonTmr, SIGNAL(timeout()),this, SLOT(TimeoutEventSlot()));
-        m_DaemonTmr->setInterval(500);//200mssecond
-        m_DaemonTmr->start();
-        m_bTmrRunningFlag = false;
-        qDebug()<<"m_DaemonTmr created";
+//        m_DaemonTmr = NULL;
+//        m_DaemonTmr = new QTimer(this);
+//        connect(m_DaemonTmr, SIGNAL(timeout()),this, SLOT(TimeoutEventSlot()));
+//        m_DaemonTmr->setInterval(1000);//200mssecond
+//        m_DaemonTmr->start();
+//        m_bTmrRunningFlag = false;
         connect(_M102IA, SIGNAL(WeldCycleSignal(bool&)),
                 this,SLOT(WeldResultEventSlot(bool&)));
         connect(_M102IA, SIGNAL(PowerGraphSignal(bool&)),

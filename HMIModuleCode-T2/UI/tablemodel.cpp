@@ -203,7 +203,10 @@ QVariant WorkOrderModel::getStructValue(QString key)
 {
     QVariant ResultRtn;
     if (key == "WorkOrderId")
+    {
         ResultRtn = workOrderElement.WorkOrderID;
+        qDebug()<<"WorkOrderID"<<workOrderElement.WorkOrderID;
+    }
     else if (key == "WorkOrderName")
         ResultRtn = workOrderElement.WorkOrderName;
     return ResultRtn;
@@ -451,19 +454,42 @@ QString SplicesModel::getStructValue(QString valueKey, QString valueType)
     }
     else if (valueKey == "Power-") {
         if (valueType == "current")
-            ResultStr = variantToString->PowerMinusToString(presetElement.WeldSettings.QualitySetting.Power.Minus).Current;
+        {
+            ResultStr = variantToString->PowerMinusToString
+                (presetElement.WeldSettings.QualitySetting.Power.Minus).Current;
+        }
         else if (valueType == "max")
-            ResultStr = variantToString->PowerMinusToString(presetElement.WeldSettings.QualitySetting.Power.Minus).Maximum;
+        {
+            ResultStr = variantToString->PowerMinusToString
+                (presetElement.WeldSettings.QualitySetting.Power.Minus).Maximum;
+        }
         else if (valueType == "min")
-            ResultStr = variantToString->PowerMinusToString(presetElement.WeldSettings.QualitySetting.Power.Minus).Minimum;
+        {
+            ResultStr = variantToString->PowerMinusToString
+                (presetElement.WeldSettings.QualitySetting.Power.Minus).Minimum;
+        }
     }
     else if (valueKey == "Power+") {
         if (valueType == "current")
-            ResultStr = variantToString->PowerPlusToString(presetElement.WeldSettings.QualitySetting.Power.Plus).Current;
+        {
+//            if(presetElement.WeldSettings.QualitySetting.Power.Plus == 0)
+//            {
+//                _Utility->InitializeTextData();
+//                presetElement.WeldSettings.QualitySetting.Power.Plus = _Utility->Maxpower;
+//            }
+            ResultStr = variantToString->PowerPlusToString
+                (presetElement.WeldSettings.QualitySetting.Power.Plus).Current;
+        }
         else if (valueType == "max")
-            ResultStr = variantToString->PowerPlusToString(presetElement.WeldSettings.QualitySetting.Power.Plus).Maximum;
+        {
+            ResultStr = variantToString->PowerPlusToString
+                (presetElement.WeldSettings.QualitySetting.Power.Plus).Maximum;
+        }
         else if (valueType == "min")
-            ResultStr = variantToString->PowerPlusToString(presetElement.WeldSettings.QualitySetting.Power.Plus).Minimum;
+        {
+            ResultStr = variantToString->PowerPlusToString
+                (presetElement.WeldSettings.QualitySetting.Power.Plus).Minimum;
+        }
     }
     else if (valueKey == "Pre-Height-") {
         if (valueType == "current")

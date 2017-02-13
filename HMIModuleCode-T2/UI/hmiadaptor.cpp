@@ -1218,6 +1218,7 @@ void HmiAdaptor::setOperateProcess(int spliceId, bool isText)
     operateProcess->CurrentNecessaryInfo.IsTestProcess = isText;
     operateProcess->CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderID = workOrderModel->getStructValue("WorkOrderId").toInt();
     operateProcess->CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderName = workOrderModel->getStructValue("WorkOrderName").toString();
+    DEBUG_PRINT(operateProcess->CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderName);
     operateProcess->CurrentNecessaryInfo.CurrentPart.PartID = partModel->getStruceValue("PartId").toInt();
     operateProcess->CurrentNecessaryInfo.CurrentPart.PartName = partModel->getStruceValue("PartName").toString();
 
@@ -1238,7 +1239,7 @@ int HmiAdaptor::controlLimitProcess(QString type, QList<int> list, int redMax, i
 {
     int upper;
     int lower;
-    int iResult;
+    int iResult = -1;
     if (type == "Time+") {
         operateProcess->ControlLimitProcess(QUALITYTIME,list,redMax,redMin,&upper,&lower);
         iResult = upper;
@@ -1271,6 +1272,9 @@ int HmiAdaptor::controlLimitProcess(QString type, QList<int> list, int redMax, i
     else if (type == "Post-Height-") {
         operateProcess->ControlLimitProcess(QUALITYPOSTHEIGHT,list,redMax,redMin,&upper,&lower);
         iResult = lower;
+    }else
+    {
+        iResult = -1;
     }
     return iResult;
 }

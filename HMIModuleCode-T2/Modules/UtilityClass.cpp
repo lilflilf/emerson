@@ -389,8 +389,9 @@ void UtilityClass::InitializeTextData()
     SetTextData(DINTimeMs, 0, MINTIME, MAXTIME, 2, 0.01, "%.2fs");
     SetTextData(DINActPower, 0, MINPOWER, Maxpower, 100, 1, "%dW");
     SetTextData(DINPowerPl, 0, MINPOWER, Maxpower, 100, 1, "%dW");
-    SetTextData(DINPowerMs, 0, MINPOWER,
-                _Interface->StatusData.Soft_Settings.SonicGenWatts, 100, 1, "%dW");
+//    SetTextData(DINPowerMs, 0, MINPOWER,
+//                _Interface->StatusData.Soft_Settings.SonicGenWatts, 100, 1, "%dW");
+    SetTextData(DINPowerMs, 0, MINPOWER, Maxpower, 100, 1, "%dW");
     SetTextData(DINActPreHgt, 0, MINHEIGHT, MAXHEIGHT, 2, 0.01, "%.2fmm");
     SetTextData(DINPre_HgtPl, 0, MINHEIGHT, MAXHEIGHT, 2, 0.01, "%.2fmm");
     SetTextData(DINPre_HgtMs, 0, MINHEIGHT, MAXHEIGHT, 2, 0.01, "%.2fmm");
