@@ -279,7 +279,7 @@ Item {
 //            }
 
 
-                listModelRight.append({"myLineLength":200,"mycolor":wireModel.getStructValue("WireColor"),"isCheck":false,"linetext":hmiAdaptor.getStringValue(wireModel.getStructValue2("Gauge","current")),
+                listModelRight.append({"myLineLength":200,"mycolor":wireModel.getStructValue("WireColor"),"isCheck":true,"linetext":hmiAdaptor.getStringValue(wireModel.getStructValue2("Gauge","current")),
                                           "wireName":wireModel.getStructValue("WireName"),"wireType":wireModel.getStructValue("WireType"),"gauge":wireModel.getStructValue("Gauge"),"gaugeawg":wireModel.getStructValue("AWG"),
                                           "stripeColor":wireModel.getStructValue2("StripeColor",""),"stripeType":wireModel.getStructValue3("StripeType",""),"wireId":-1}) //wireModel.getStructValue("WireId")
 
@@ -1013,7 +1013,7 @@ Item {
             Rectangle {
                 id: leftLine
                 width: leftItem.position == "leftList" ? index % 2 && index < (listModelLeft.count - 10) * 2 ? myLineLength + 150 : myLineLength : 200
-                height: 2
+                height: 6
                 anchors.right: parent.right
                 anchors.verticalCenter: leftRec.verticalCenter
             }
@@ -1141,7 +1141,7 @@ Item {
             Rectangle {
                 id: rightLine
                 width: 200 //rightItem.position == "rightList" ? index % 2 && index < (listModelRight.count - 10) * 2 ? myLineLength + 150 : myLineLength : 200
-                height: 2
+                height: 6
                 anchors.left: parent.left
                 anchors.verticalCenter: rightRec.verticalCenter
             }

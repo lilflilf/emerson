@@ -34,11 +34,55 @@ Item {
     signal titleTextChanged(var myTitleText)
     property var selectSpliceId: -1
 
+    property bool bIsSequence: false
+    property bool bIsHarness: false
+    property bool bIsEditQty: false
+    property var qtyIndex: -1
     width: Screen.width
     height: Screen.height
+    Component.onCompleted: {
+        if (mainRoot.initIndex == 1)
+            initSequence()
+        else if (mainRoot.initIndex == 0)
+            initHarness()
+    }
+
     Image {
         anchors.fill: parent
         source: "qrc:/images/images/bg.png"
+    }
+
+    Connections {
+        target: mainRoot
+        onSignalStackViewPop: {
+            if (content.selectSpliceId != -1)
+                content.selectSplice(content.selectSpliceId)
+
+        }
+    }
+
+    function initSequence()
+    {
+        bIsSequence = true
+        tabButton2.enabled = false
+        tabButton2.textVisable = false
+        tabButton1.tabbutton1text = qsTr("Sequence")
+        workname.text = qsTr("Qty")
+        edit6.defaultText = qsTr("Sequence Name")
+        save.text = qsTr("SAVE SEQUENCE")
+        upload.text = qsTr("EDIT EXISTING\nSEQUENCE")
+        spliceList.bIsSequence = true
+    }
+
+    function initHarness()
+    {
+        bIsHarness = true
+        tabButton1.tabbutton1text = qsTr("Splice")
+        workname.text = qsTr("Zone/Workstation")
+        edit6.defaultText = qsTr("Harness Name")
+        save.text = qsTr("SAVE HARNESS")
+        upload.text = qsTr("EDIT EXISTING\nHARNESS")
+        spliceList.bIsSequence = false
     }
 
     function initEdit()
@@ -75,9 +119,9 @@ Item {
         idList = partModel.getCurrentPartOfSpliceId()
         for (var i = 0; i < nameList.length; i++) {
             if (corlorlist[i] == -1 || zoneList[i] == -1) {
-                spliceList.listModel.append({"SpliceName":nameList[i],"stationColor":"white","station":"?","SpliceId":idList[i]})
+                spliceList.listModel.append({"SpliceName":nameList[i],"stationColor":"white","station":"?","SpliceId":idList[i],"qty":"0"})
             } else {
-                spliceList.listModel.append({"SpliceName":nameList[i],"stationColor":arrayColor[corlorlist[i]],"station":arrayzone[zoneList[i]],"SpliceId":idList[i]})
+                spliceList.listModel.append({"SpliceName":nameList[i],"stationColor":arrayColor[corlorlist[i]],"station":arrayzone[zoneList[i]],"SpliceId":idList[i],"qty":"0"})
             }
         }
         if (partModel.getPartOnlineOrOffLine())
@@ -97,7 +141,7 @@ Item {
                     }
                 }
             } else {
-                spliceList.listModel.append({"SpliceName":spliceModel.getStructValue("SpliceName","") ,"stationColor":"white","station":"?","SpliceId":spliceId})
+                spliceList.listModel.append({"SpliceName":spliceModel.getStructValue("SpliceName","") ,"stationColor":"white","station":"?","SpliceId":spliceId,"qty":"0"})
             }
             loader.source = ""
             titleTextChanged("Create New")
@@ -110,7 +154,6 @@ Item {
             selectPartUpdataPage(id,name)
         }
         onSignalMoveSplice: {
-            console.log("5555555555555555555555")
             bIsEditSplice = true
             spliceModel.editNew(id)
             loader.source = "qrc:/UI/CreatWire.qml"
@@ -194,6 +237,7 @@ Item {
         currentIndex: tabBar.currentIndex
         Page {
             id: splice
+            z: 10
             Rectangle {
                 anchors.fill: parent
                 color: "#052a40"
@@ -243,6 +287,8 @@ Item {
                 anchors.topMargin: 6
                 anchors.bottom: tipsRec2.top
                 bIsWorkShow: !bIsBasic
+                z: 10
+
                 onCurrentSelecte: {
                     if (index != -1) {
                         content.selectSpliceId = listModel.get(index).SpliceId
@@ -314,6 +360,7 @@ Item {
                     fileSelectLoader.source = "qrc:/UI/MySelectFileDialog.qml"
                 }
             }
+
             CButton {
                 id: save
                 anchors.bottom: parent.bottom
@@ -330,20 +377,20 @@ Item {
                         backGround.visible = true
                         backGround.opacity = 0.5
                     } else {
-                        if (partModel.getPartOnlineOrOffLine()) {
-                            for (var i = 0; i < listModel.count; i++) {
-                                if (listModel.get(i).station == "?") {
-                                    root.showDialog(true,false,qsTr("OK"),"","","",qsTr("Please Set WorkStation!"))
-                                    return
-                                }
-                            }
-                        }
-                        partModel.setPartSpliceListClear()
-                        for (var i = 0; i < listModel.count; i++) {
-                            partModel.setPartSpliceList(listModel.get(i).SpliceName,listModel.get(i).SpliceId,arrayColor.indexOf(listModel.get(i).stationColor),arrayzone.indexOf(listModel.get(i).station),i+1)
-                        }
-                        partModel.savePartInfo(content.bIsEdit, hmiAdaptor.getCurrentOperatorId())
-                        root.checkNeedPassWd(2)
+//                        if (partModel.getPartOnlineOrOffLine()) {
+//                            for (var i = 0; i < listModel.count; i++) {
+//                                if (listModel.get(i).station == "?") {
+//                                    mainRoot.showDialog(true,false,qsTr("OK"),"","","",qsTr("Please Set WorkStation!"))
+//                                    return
+//                                }
+//                            }
+//                        }
+//                        partModel.setPartSpliceListClear()
+//                        for (var i = 0; i < listModel.count; i++) {
+//                            partModel.setPartSpliceList(listModel.get(i).SpliceName,listModel.get(i).SpliceId,arrayColor.indexOf(listModel.get(i).stationColor),arrayzone.indexOf(listModel.get(i).station),i+1)
+//                        }
+//                        partModel.savePartInfo(content.bIsEdit, hmiAdaptor.getCurrentOperatorId())
+//                        mainRoot.checkNeedPassWd(2)
                     }
                 }
             }
@@ -351,6 +398,8 @@ Item {
 
         Page {
             id: settting
+            z: 9
+
             Rectangle {
                 anchors.fill: parent
                 color: "#052a40"
@@ -609,7 +658,7 @@ Item {
             }
         }
     }
-    TabBar {
+    TabBar {        
         width: Screen.width * 0.3
         id: tabBar
         currentIndex: swipeView.currentIndex
@@ -618,12 +667,15 @@ Item {
         height: Screen.height * 0.08
         spacing: 0
         TabButton {
+            id: tabButton1
+            property alias tabbutton1text: tabbutton1Text.text
             height: parent.height
             Rectangle {
                 anchors.fill: parent
                 color:  "#052a40"  //tabBar.currentIndex == 0 ? "black" : "#48484a"
             }
             Text {
+                id: tabbutton1Text
                 anchors.centerIn: parent
                 font.family: "arial"
                 font.pointSize: 17.5
@@ -641,12 +693,15 @@ Item {
             }
         }
         TabButton {
+            id: tabButton2
             height: parent.height
+            property alias textVisable: tabbutton2text.visible
             Rectangle {
                 anchors.fill: parent
                 color:  "#052a40"
             }
             Text {
+                id: tabbutton2text
                 anchors.centerIn: parent
                 font.family: "arial"
                 font.pointSize: 17.5
@@ -966,29 +1021,32 @@ Item {
             onClicked: {
                 if (content.selectSpliceId != -1)
                 {
-                    bIsEditSplice = true
+                    mainRoot.bIsEditSplice = true
                     spliceModel.editNew(content.selectSpliceId)
-                    loader.source = "qrc:/UI/CreatWire.qml"
-                    titleTextChanged(qsTr("Edit Existing"))
+                    mainRoot.checkNeedPassWd(-1)
+//                    loader.source = "qrc:/UI/CreatWire.qml"
+                    titleTextChanged(qsTr("Edit Splice"))
                 }
 
             }
 
         }
+
         CButton {
             id: testSplice
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 14
             anchors.right: boardlayout.right
-            text: qsTr("TEST SPLICE")
+            text: qsTr("DELETE SPLICE")
             textColor: "white"
             width: 250
             pointSize: 16
             onClicked: {
                 if (content.selectSpliceId != -1)
                 {
-                    hmiAdaptor.setTestSpliceId(selectSpliceId)
-                    root.checkNeedPassWd(3)
+                    spliceList.deleteSplice()
+//                    hmiAdaptor.setTestSpliceId(selectSpliceId)
+//                    mainRoot.checkNeedPassWd(3)
                 }
             }
         }
@@ -1062,7 +1120,7 @@ Item {
             font.family: "arial"
             font.pixelSize: 24
             color: "white"
-            text: qsTr("Please Input Part Name")
+            text: bIsSequence == true ? qsTr("Please Input Sequence Name") : qsTr("Please Input Harness Name")
         }
         CButton {
             anchors.bottom: parent.bottom
@@ -1211,7 +1269,7 @@ Item {
                     }
                 }
                 if (!bIsFind) {
-                    spliceList.listModel.append({"SpliceName":name,"stationColor":"white","station":"?","SpliceId":modelId})
+                    spliceList.listModel.append({"SpliceName":name,"stationColor":"white","station":"?","SpliceId":modelId,"qty":"0"})
                 }
             }
             backGround.visible = false
@@ -1518,7 +1576,11 @@ Item {
         onCurrentClickIndex: {
             if (index == 15) {
                 if (hmiAdaptor.comepareCurrentValue(keyNum.minvalue,keyNum.maxvalue,keyNum.inputText)) {
-                    if (edit1.inputFocus) {
+                    if (bIsEditQty) {
+                        console.log("zzzzzzzzzzzzzz",qtyIndex)
+                        spliceList.listModel.set(qtyIndex,{"qty":keyNum.inputText})
+                    }
+                    else if (edit1.inputFocus) {
                         edit1.inputText = keyNum.inputText
                         edit1.inputFocus = false
                     } else if (edit2.inputFocus) {
@@ -1560,6 +1622,7 @@ Item {
                 keyNum.inputText = ""
                 keyNum.tempValue = ""
             }
+            bIsEditQty = false
         }
         onInputTextChanged: {
             if (keyNum.inputText != "") {
@@ -1574,6 +1637,56 @@ Item {
                 } else if (edit5.inputFocus) {
                     edit5.inputText = keyNum.inputText
                 }
+            }
+        }
+    }
+
+    Connections {
+        target: spliceList
+        onChangeNumRecVisable: {
+            changeNumRec.visible = isVisable
+            changeNumRec.anchors.topMargin = y
+        }
+        onCurrentQty: {
+            qtyIndex = index
+            bIsEditQty = true
+            backGround.visible = true
+            backGround.opacity = 0.5
+            keyNum.visible = true
+            keyNum.titleText = name
+            keyNum.currentValue = count
+            keyNum.minvalue = "1"
+            keyNum.maxvalue = "20"
+        }
+    }
+
+    Rectangle {
+        id: changeNumRec
+        visible: false
+        width: 90
+        height: 90
+        anchors.left: swipeView.right
+        anchors.top: parent.top
+        color: "#052a40"
+        CButton {
+            id: upbutton
+            width: 90
+            height: 40
+            text: qsTr("Up")
+            onClicked: {
+                spliceList.changeUp()
+//                changeNumRec.visible = false
+            }
+        }
+        CButton {
+            width: 90
+            height: 40
+            anchors.top: upbutton.bottom
+            anchors.topMargin: 10
+            text: qsTr("Down")
+            onClicked: {
+                spliceList.changeDown()
+//                changeNumRec.visible = false
             }
         }
     }

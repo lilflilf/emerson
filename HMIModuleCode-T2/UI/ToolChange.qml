@@ -25,9 +25,9 @@ Item {
     Component.onCompleted: {
         hmiAdaptor.maintenanceStart(1);
     }
-//    Component.onDestruction: {
-//        hmiAdaptor.maintenanceStop(1);
-//    }
+    Component.onDestruction: {
+        hmiAdaptor.maintenanceStop(1);
+    }
     Image {
         anchors.fill: parent
         source: "qrc:/images/images/bg.png"

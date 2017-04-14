@@ -10,6 +10,11 @@ Item {
     property int setCheckIndex: -1
 
     property var testSpliceId: -1
+
+    Component.onDestruction: {
+        hmiAdaptor.operateProcessExec("Stop")
+    }
+
     function initPage()
     {
         if (testSpliceLibrary.testSpliceId != -1)
@@ -365,7 +370,7 @@ Item {
 
         onSignalAdvanceSettingStart: {
             testSpliceLibrary.setCheckIndex = checkIndex
-            if (root.checkAllInterface(20)) {
+            if (mainRoot.checkAllInterface(20)) {
                 passDialog.visible = true
                 passDialog.pageName = "Teach Mode"
             } else {

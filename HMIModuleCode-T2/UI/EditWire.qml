@@ -19,8 +19,8 @@ Item {
     signal signalSaveSplice()
     property int editWirdId: -1
     property bool detailIsChang: true
-    property variant colorArray: ["#ff6699","#ff0033","#33FFCC","#cc99ff","#cc0099","#930202","#99ccff","#f79428",
-        "#0000cc","Olive","#ffff33","#ffcc00","#cc9909","#66ff00","#009900","#00cc66","#3366ff","#cc33cc","#cc9966","#9400D3"]
+    property variant colorArray: ["#000000","#7f7f7f","#880015","#ED1C24","#FF7F27","#FFF200","#22B14C","#00A2E8",
+        "#3F48CC","#A349A4","#ffffff","#c3c3c3","#b97a57","#ffaec9","#ffc90e","#efe4b0","#b5e61d","#99d9ea","#7092be","#c8bfe7"]
 
 //    function wireChanged(selectColor,selectPosition,selectText)
 //    {
@@ -28,6 +28,11 @@ Item {
 //        spliceDetailsItem.selectText = selectText
 //        spliceDetailsItem.selectPosition = selectPosition
 //    }
+
+    Component.onCompleted: {
+        editWirdId = hmiAdaptor.getEditWireId()
+        initPage()
+    }
 
     function initPage()
     {
@@ -52,6 +57,26 @@ Item {
         itemSide.state = wireModel.getStructValue("WireDirection") == 0 ? "left" : "right";
         itemLocation.state = wireModel.getStructValue("WireBasic") == 0 ? "left" : "right";
         column1.positionIndex = wireModel.getStructValue("WirePosition")
+    }
+
+    SpliceDetails {
+        id: spliceDetailsItem
+//        width: Screen.width * 0.8
+        anchors.left: swipeView.right
+        anchors.leftMargin: 20
+        height: Screen.height *0.5
+        anchors.bottom: save.top
+        anchors.bottomMargin: 10
+        anchors.right: parent.right
+        anchors.rightMargin: 20
+        centerVisable: true
+        Component.onCompleted: {
+            spliceDetailsItem.safeChange(true)
+            spliceDetailsItem.addWireFromLibrary()
+            spliceDetailsItem.selectPosition = "rightList"
+            spliceDetailsItem.safeChange(false)
+        }
+
     }
 
     SwipeView {
@@ -242,7 +267,7 @@ Item {
                                 if (colorLoader.sourceComponent == colorPicker)
                                 {
                                     itemColor.color = pickColor
-//                                    spliceDetailsItem.selectColor = pickColor
+                                    spliceDetailsItem.selectColor = pickColor
                                     colorLoader.sourceComponent = null
                                 }
                                 else if (colorLoader.sourceComponent == stripePicker)
@@ -252,8 +277,8 @@ Item {
 
                                     itemStripe.color = pickColor
                                     itemStripe.stripeType = colorLoader.item.radioCheck
-//                                    spliceDetailsItem.selectWireStripeColor = pickColor
-//                                    spliceDetailsItem.selectWireStripeType = colorLoader.item.radioCheck
+                                    spliceDetailsItem.selectWireStripeColor = pickColor
+                                    spliceDetailsItem.selectWireStripeType = colorLoader.item.radioCheck
 
                                     colorLoader.sourceComponent = null
 
@@ -329,22 +354,30 @@ Item {
                         anchors.horizontalCenter: parent.horizontalCenter
                         visible: itemStripe.stripeType == 2 ? true : false
                     }
-                    Row {
-                        height: parent.height
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        spacing: 20
+                    Text {
+                        text: qsTr("None")
+                        font.family: "Arial"
+                        font.pointSize: 16
+                        color: "black"
                         visible: itemStripe.stripeType == 3 ? true : false
-                        Rectangle {
-                            color: "black"
-                            width: 5
-                            height: parent.height
-                        }
-                        Rectangle {
-                            color: "black"
-                            width: 5
-                            height: parent.height
-                        }
+                        anchors.centerIn: parent
                     }
+//                    Row {
+//                        height: parent.height
+//                        anchors.horizontalCenter: parent.horizontalCenter
+//                        spacing: 20
+//                        visible: itemStripe.stripeType == 3 ? true : false
+//                        Rectangle {
+//                            color: "black"
+//                            width: 5
+//                            height: parent.height
+//                        }
+//                        Rectangle {
+//                            color: "black"
+//                            width: 5
+//                            height: parent.height
+//                        }
+//                    }
                 }
             }
 
@@ -363,6 +396,60 @@ Item {
                         anchors.horizontalCenter: parent.horizontalCenter
                         anchors.top: parent.top
                         anchors.topMargin: 20
+
+                        Rectangle {
+                            width: 180
+                            height: 80
+                            border.width: 2
+                            border.color: "black"
+                            Text {
+                                text: qsTr("None")
+                                color: "black"
+                                anchors.centerIn: parent
+                                font.pointSize: 20
+                                font.family: "Arial"
+                            }
+//                            Row {
+//                                height: parent.height
+//                                anchors.horizontalCenter: parent.horizontalCenter
+//                                spacing: 20
+//                                Rectangle {
+//                                    color: "black"
+//                                    width: 5
+//                                    height: parent.height
+//                                }
+//                                Rectangle {
+//                                    color: "black"
+//                                    width: 5
+//                                    height: parent.height
+//                                }
+//                            }
+
+
+                            Rectangle {
+                                width: parent.width + 10
+                                height: parent.height + 10
+                                color: Qt.rgba(0,0,0,0)
+                                border.color: "white"
+                                border.width: 2
+                                anchors.centerIn: parent
+                                visible: radioButton3.checked ? true : false
+                            }
+                            RadioButton {
+                                id: radioButton3
+                                visible: false
+                                exclusiveGroup: stripePositionGroup
+                            }
+                            MouseArea {
+                                anchors.fill: parent
+                                onClicked: {
+                                    radioButton3.checked = !radioButton3.checked
+                                    if (radioButton3.checked)
+                                        radioCheck = 3
+                                }
+                            }
+                        }
+
                         Rectangle {
                             width: 180
                             height: 80
@@ -370,7 +457,7 @@ Item {
                             border.color: "black"
                             Rectangle {
                                 color: "black"
-                                height: 5
+                                height: 15
                                 width: parent.width
                                 anchors.verticalCenter: parent.verticalCenter
                             }
@@ -406,7 +493,7 @@ Item {
                             border.color: "black"
                             Rectangle {
                                 color: "black"
-                                height: 5
+                                height: 15
                                 width: parent.width
                                 anchors.centerIn: parent
                                 rotation: 17
@@ -450,7 +537,7 @@ Item {
                             }
                             Rectangle {
                                 color: "black"
-                                width: 5
+                                width: 15
                                 height: parent.height
                                 anchors.horizontalCenter: parent.horizontalCenter
                             }
@@ -468,51 +555,51 @@ Item {
                                 }
                             }
                         }
-                        Rectangle {
-                            width: 180
-                            height: 80
-                            border.width: 2
-                            border.color: "black"
-                            Row {
-                                height: parent.height
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                spacing: 20
-                                Rectangle {
-                                    color: "black"
-                                    width: 5
-                                    height: parent.height
-                                }
-                                Rectangle {
-                                    color: "black"
-                                    width: 5
-                                    height: parent.height
-                                }
-                            }
+//                        Rectangle {
+//                            width: 180
+//                            height: 80
+//                            border.width: 2
+//                            border.color: "black"
+//                            Row {
+//                                height: parent.height
+//                                anchors.horizontalCenter: parent.horizontalCenter
+//                                spacing: 20
+//                                Rectangle {
+//                                    color: "black"
+//                                    width: 5
+//                                    height: parent.height
+//                                }
+//                                Rectangle {
+//                                    color: "black"
+//                                    width: 5
+//                                    height: parent.height
+//                                }
+//                            }
 
 
-                            Rectangle {
-                                width: parent.width + 10
-                                height: parent.height + 10
-                                color: Qt.rgba(0,0,0,0)
-                                border.color: "white"
-                                border.width: 2
-                                anchors.centerIn: parent
-                                visible: radioButton3.checked ? true : false
-                            }
-                            RadioButton {
-                                id: radioButton3
-                                visible: false
-                                exclusiveGroup: stripePositionGroup
-                            }
-                            MouseArea {
-                                anchors.fill: parent
-                                onClicked: {
-                                    radioButton3.checked = !radioButton3.checked
-                                    if (radioButton3.checked)
-                                        radioCheck = 3
-                                }
-                            }
-                        }
+//                            Rectangle {
+//                                width: parent.width + 10
+//                                height: parent.height + 10
+//                                color: Qt.rgba(0,0,0,0)
+//                                border.color: "white"
+//                                border.width: 2
+//                                anchors.centerIn: parent
+//                                visible: radioButton3.checked ? true : false
+//                            }
+//                            RadioButton {
+//                                id: radioButton3
+//                                visible: false
+//                                exclusiveGroup: stripePositionGroup
+//                            }
+//                            MouseArea {
+//                                anchors.fill: parent
+//                                onClicked: {
+//                                    radioButton3.checked = !radioButton3.checked
+//                                    if (radioButton3.checked)
+//                                        radioCheck = 3
+//                                }
+//                            }
+//                        }
                     }
                     Loader {
                         anchors.bottom: parent.bottom
@@ -565,11 +652,11 @@ Item {
                     }
 
                     onInputTextChanged: {
-                        if(detailIsChang)
-                            return
-//                        spliceDetailsItem.selectText = hmiAdaptor.getStringValue(inputText) //inputText
-//                        spliceDetailsItem.selectWireGauge = wireModel.getStructValue3("Gauge",inputText);
-//                        spliceDetailsItem.selectWireAWG = wireModel.getStructValue3("awg",inputText);
+//                        if(detailIsChang)
+//                            return
+                        spliceDetailsItem.selectText = hmiAdaptor.getStringValue(inputText) //inputText
+                        spliceDetailsItem.selectWireGauge = wireModel.getStructValue3("Gauge",inputText);
+                        spliceDetailsItem.selectWireAWG = wireModel.getStructValue3("awg",inputText);
                     }
                 }
             }
@@ -625,6 +712,7 @@ Item {
                 opacity: 0.5
                 anchors.left: parent.left
                 anchors.leftMargin: 10
+                visible: false
             }
             Item {
                 id: itemSide
@@ -633,6 +721,7 @@ Item {
                 anchors.top: position.bottom
                 anchors.topMargin: 15
                 property alias state: wireDirection.state
+                visible: false
                 Label {
                     id: labelSide
                     color: "#8295a0"
@@ -668,6 +757,7 @@ Item {
                 anchors.top: itemSide.bottom
                 anchors.topMargin: 15
                 property alias state: basicSwitch.state
+                visible: false
                 Label {
                     id: labelLocation
                     color: "#8295a0"
@@ -833,34 +923,37 @@ Item {
                 color: "#375566"
                 height: 1
             }
-            CButton {
-                id: save
-                text: qsTr("UPDATE TO WIRE\nLIBRARY")
-                pointSize: 12
-                anchors.bottom: parent.bottom
-                width: parent.width * 0.5
-                anchors.right: parent.right
-                anchors.rightMargin: 10
-                onClicked: {
-//                    int WireModel::insertValueToTable(QString type,QString wireName,int wireId,int operatorId,QString color,QString stripeColor,int stripeType,int gauge, int awgGauge,int wireType,int side,int verside,int position)
-
-                    var wireType;
-                    var side;
-                    var location;
-                    var gauge;
-                    var awg;
-                    gauge = wireModel.getStructValue3("Gauge",itemGauge.text)
-                    awg = wireModel.getStructValue3("awg",itemGauge.text)
-
-                    wireType = itemType.state == "left" ? 0 : 1
-                    side = itemSide.state == "left" ? 0 : 1
-                    location = itemLocation.state == "left" ? 0 : 1
-                    wireModel.insertValueToTable("update",wireName.inputText,creatWire.editWirdId,hmiAdaptor.getCurrentOperatorId(),itemColor.color,
-                                                 itemStripe.color,itemStripe.stripeType,gauge,awg,wireType,side,location,column1.positionIndex)
-                }
-            }
         }
     }
+
+    CButton {
+        id: save
+        text: qsTr("SAVE")
+        pointSize: 12
+        anchors.bottom: parent.bottom
+        width: swipeView.width * 0.5
+        anchors.right: parent.right
+        anchors.rightMargin: 10
+        anchors.bottomMargin: 10
+        onClicked: {
+//          int WireModel::insertValueToTable(QString type,QString wireName,int wireId,int operatorId,QString color,QString stripeColor,int stripeType,int gauge, int awgGauge,int wireType,int side,int verside,int position)
+            var wireType;
+            var side;
+            var location;
+            var gauge;
+            var awg;
+            gauge = wireModel.getStructValue3("Gauge",itemGauge.text)
+            awg = wireModel.getStructValue3("awg",itemGauge.text)
+
+            wireType = itemType.state == "left" ? 0 : 1
+            side = itemSide.state == "left" ? 0 : 1
+            location = itemLocation.state == "left" ? 0 : 1
+            wireModel.insertValueToTable("update",wireName.inputText,creatWire.editWirdId,hmiAdaptor.getCurrentOperatorId(),itemColor.color,
+                                         itemStripe.color,itemStripe.stripeType,gauge,awg,wireType,side,location,column1.positionIndex)
+            mainRoot.popStackView()
+        }
+    }
+
 
 
     TabBar {
@@ -926,6 +1019,8 @@ Item {
             }
         }
     }
+
+
     KeyBoardNum {
         id: keyNum
         anchors.centerIn: parent

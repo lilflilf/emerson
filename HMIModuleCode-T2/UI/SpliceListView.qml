@@ -11,15 +11,52 @@ Item {
     height: Screen.height*0.53
     signal currentSelecte(int index)
     signal currentWorkStation(int index)
+    signal currentQty(int count, var name,int index)
+    signal changeNumRecVisable(int y, bool isVisable)
+    property var selectIndex: -1
+    property int tempY: 0
+    property bool bIschange: false
+    property bool bIsSequence: false
     ExclusiveGroup {
         id: checkGroup
     }
+
+    function deleteSplice()
+    {
+        listModel.remove(selectIndex)
+    }
+    function changeUp()
+    {
+        if (selectIndex <= 0 )
+            return
+        listModel.move(selectIndex,selectIndex-1,1)
+        splice.currentIndex = splice.currentIndex - 1
+        selectIndex = selectIndex-1
+        currentSelecte(selectIndex)
+        changeNumRecVisable(spliceList.y + tempY * 48, true)
+
+    }
+    function changeDown()
+    {
+        if (listModel.count <= selectIndex)
+            return
+        listModel.move(selectIndex,selectIndex+1,1)
+        splice.currentIndex = splice.currentIndex + 1
+        selectIndex = selectIndex+1
+        currentSelecte(selectIndex)
+        changeNumRecVisable(spliceList.y + tempY * 48, true)
+    }
+
     ListView {
         id: splice
         width: spliceList.width
         height: spliceList.height
         clip: true
         delegate: spliceDelegate
+        highlightRangeMode: ListView.StrictlyEnforceRange
+        onDragStarted: {
+            changeNumRecVisable(0, false)
+        }
     }
     Rectangle {
         id: scrollbar
@@ -79,10 +116,14 @@ Item {
                 anchors.fill: parent
                 onClicked: {
                     select.checked = !select.checked
-                    if (select.checked)
+                    if (select.checked) {
                         currentSelecte(index)
-                    else
+                        selectIndex = index
+                    }
+                    else {
                         currentSelecte(-1)
+                        changeNumRecVisable(spliceList.y + 48 * index, false)
+                    }
                 }
             }
             Text {
@@ -107,7 +148,7 @@ Item {
                 anchors.left: spliceName.right
                 anchors.leftMargin: 10
                 clip: true
-                visible: bIsWorkShow
+                visible: bIsWorkShow && !bIsSequence
                 width: 28
                 height: 28
                 backgroundComponent: Rectangle {
@@ -128,6 +169,28 @@ Item {
                 }
             }
             CButton {
+                id: qtyButton
+                anchors.top: parent.top
+                anchors.topMargin: 10
+                anchors.right: deleteButton.left
+                anchors.rightMargin: 10
+                clip: true
+                visible: bIsSequence
+                width: 28
+                height: 28
+                backgroundComponent: Rectangle {
+                    anchors.fill: parent
+                    color: stationColor
+                }
+                text: qty
+                textColor: "black"
+                pixelSize: 20
+                onClicked: {
+                    currentQty(text,spliceName.text,index)
+                }
+            }
+
+            CButton {
                 id: deleteButton
                 anchors.top: parent.top
                 anchors.topMargin: 10
@@ -138,9 +201,48 @@ Item {
                 height: 28
                 iconSource: "qrc:/images/images/close.png"
                 onClicked: {
-                    listModel.remove(index)
+                    var temp = splice.mapFromItem(deleteButton,mouseX,mouseY)
+                    tempY = temp.y / 48
+                    select.checked = !select.checked
+                    if (select.checked) {
+                        currentSelecte(index)
+                        selectIndex = index
+                        bIschange = true
+                        changeNumRecVisable(spliceList.y + tempY * 48, true)
+
+//                        changeNumRecVisable(spliceList.y + 48 * index, true)
+
+                    }
+                    else {
+                        bIschange = false
+                        currentSelecte(-1)
+                        changeNumRecVisable(spliceList.y + 48 * index, false)
+                    }
+                    //                    listModel.remove(index)
+
                 }
             }
+//            Rectangle {
+//                id: changeNumRec
+//                z: 13
+//                visible: true
+//                width: 90
+//                height: 90
+//                anchors.left: deleteButton.right
+//                anchors.top: deleteButton.top
+//                CButton {
+//                    id: upbutton
+//                    width: 90
+//                    height: 40
+//                }
+//                CButton {
+//                    width: 90
+//                    height: 40
+//                    anchors.top: upbutton.bottom
+//                    anchors.topMargin: 10
+//                }
+//            }
+
             Rectangle {
                 id: background
                 anchors.left: numIndex.right

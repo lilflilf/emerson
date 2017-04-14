@@ -23,9 +23,9 @@ Item {
     Component.onCompleted: {
         hmiAdaptor.maintenanceStart(3);
     }
-//    Component.onDestruction: {
-//        hmiAdaptor.maintenanceStop(3);
-//    }
+    Component.onDestruction: {
+        hmiAdaptor.maintenanceStop(3);
+    }
 
     function initPage()
     {

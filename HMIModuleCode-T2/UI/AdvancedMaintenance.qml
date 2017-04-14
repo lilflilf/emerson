@@ -23,9 +23,9 @@ Item {
     Component.onCompleted: {
         hmiAdaptor.maintenanceStart(2);
     }
-//    Component.onDestruction: {
-//        hmiAdaptor.maintenanceStop(2);
-//    }
+    Component.onDestruction: {
+        hmiAdaptor.maintenanceStop(2);
+    }
 
     Connections {
         target: hmiAdaptor

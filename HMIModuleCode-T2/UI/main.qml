@@ -15,20 +15,15 @@ import QtQuick.Window 2.2
 import ALPaintedItem 1.0
 
 Window {
-    id: root
+    id: mainRoot
     width: Screen.width // 1366
     height: Screen.height - 1 //767
     visible: true
     title: qsTr("NewWireSplice")
     flags: Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint | Qt.Window
-//    flags: Qt.FramelessWindowHint |Qt.Window //| Qt.WindowSystemMenuHint | 0x00800000 | Qt.WindowFullscreenButtonHint
     signal dialogReturn(bool reb)
-    Component.onCompleted: {
-//        root.showMaximized()
-        //w.setWindowFlags(w.windowFlags()& ~Qt::WindowMaximizeButtonHint&  ~Qt::WindowMinimizeButtonHint);
-//        w.showMaximized();
-//        root.showFullScreen()
-    }
+    signal signalStackViewPop()
+    property bool bIsEditSplice: false
 
     property var initIndex: 0
     /*0-- create
@@ -55,6 +50,20 @@ Window {
             checkNeedPassWd(index)
         }
     }
+    function popStackView()
+    {
+        var last = stackview.depth
+        stackview.pop()
+        signalStackViewPop()
+        if (last <= 1 )
+            stackview.clear()
+    }
+
+    function clearStackView()
+    {
+        stackview.pop(null)
+        stackview.clear();
+    }
 
     function checkNeedPassWd(index)
     {
@@ -65,11 +74,20 @@ Window {
 //          "Data/Communication", "Lock On Alarm")
         var source
         switch (index) {
+//        case 0:
+//            source = "Create New"
+//            break;
+//        case 1:
+//            source = "Edit Existing"
+//            break;
+        case -1:
+            source = "Splice"
+            break;
         case 0:
-            source = "Create New"
+            source = "Sequence"
             break;
         case 1:
-            source = "Edit Existing"
+            source = "Harness"
             break;
         case 2:
             source = "Operate"
@@ -137,107 +155,139 @@ Window {
     function menuInit(index)
     {
         initIndex = index
-        if (contentLoader.source == "qrc:/UI/Calibration.qml")
-            hmiAdaptor.maintenanceStop(0);
-        else if (contentLoader.source == "qrc:/UI/AdvancedMaintenance.qml")
-            hmiAdaptor.maintenanceStop(2);
-        else if (contentLoader.source == "qrc:/UI/ToolChange.qml")
-            hmiAdaptor.maintenanceStop(1);
-        else if (contentLoader.source == "qrc:/UI/MaintenanceCount.qml")
-            hmiAdaptor.maintenanceStop(3);
-        else if (contentLoader.source == "qrc:/UI/Operate.qml")
-            hmiAdaptor.operateProcessExec("Stop")
-        else if (contentLoader.source == "qrc:/UI/TestSpliceLibrary.qml")
-            hmiAdaptor.operateProcessExec("Stop")
-
         contentLoader.source = ""
         switch (index) {
+        case -1:
+//            contentLoader.source = "qrc:/UI/CreatWire.qml"
+            stackview.push("qrc:/UI/CreatWire.qml",{},StackView.Immediate)
+            headBar.titleText = qsTr("Create Splice")
+            break;
         case 0:
+            partModel.getPartInfo(false,0,"")
+            stackview.push("qrc:/UI/Content.qml")
+//            contentLoader.source = "qrc:/UI/Content.qml"
+            headBar.titleText = qsTr("Create Harness")
+            break;
         case 1:
             partModel.getPartInfo(false,0,"")
-            contentLoader.source = "qrc:/UI/Content.qml"
-            headBar.titleText = qsTr("Create New")
+            stackview.push("qrc:/UI/Content.qml")
+//            contentLoader.source = "qrc:/UI/Content.qml"
+            headBar.titleText = qsTr("Create Sequence")
             break;
         case 2:
             headBar.titleText = qsTr("Operate")
-            contentLoader.source = "qrc:/UI/Operate.qml"
+            stackview.push("qrc:/UI/Operate.qml")
+
+//            contentLoader.source = "qrc:/UI/Operate.qml"
             break;
         case 3:
             headBar.titleText = qsTr("Test")
-            contentLoader.source = "qrc:/UI/TestSpliceLibrary.qml"
+            stackview.push("qrc:/UI/TestSpliceLibrary.qml")
+
+//            contentLoader.source = "qrc:/UI/TestSpliceLibrary.qml"
             break;
         case 4:
             headBar.titleText = qsTr("Calibration")
-            contentLoader.source = "qrc:/UI/Calibration.qml"
+            stackview.push("qrc:/UI/Calibration.qml")
+
+//            contentLoader.source = "qrc:/UI/Calibration.qml"
             break;
         case 5:
             headBar.titleText = qsTr("Tool Change")
-            contentLoader.source = "qrc:/UI/ToolChange.qml"
+            stackview.push("qrc:/UI/ToolChange.qml")
+
+//            contentLoader.source = "qrc:/UI/ToolChange.qml"
             break;
         case 6:
             headBar.titleText = qsTr("Advanced Maintenance")
-            contentLoader.source = "qrc:/UI/AdvancedMaintenance.qml"
+            stackview.push("qrc:/UI/AdvancedMaintenance.qml")
+
+//            contentLoader.source = "qrc:/UI/AdvancedMaintenance.qml"
             break;
         case 7:
             headBar.titleText = qsTr("Maintenance Counter")
             hmiAdaptor.maintenanceCountExecute("_Recall")
-            contentLoader.source = "qrc:/UI/MaintenanceCount.qml"
+            stackview.push("qrc:/UI/MaintenanceCount.qml")
+//            contentLoader.source = "qrc:/UI/MaintenanceCount.qml"
             break;
         case 8:
             headBar.titleText = qsTr("Maintenance log")
-            contentLoader.source = "qrc:/UI/MaintenanceLog.qml"
+            stackview.push("qrc:/UI/MaintenanceLog.qml")
+
+//            contentLoader.source = "qrc:/UI/MaintenanceLog.qml"
             break;
         case 9:
             headBar.titleText = qsTr("Work Order History")
-            contentLoader.source = "qrc:/UI/ViewWorkOrder.qml"
+            stackview.push("qrc:/UI/ViewWorkOrder.qml")
+
+//            contentLoader.source = "qrc:/UI/ViewWorkOrder.qml"
             break;
         case 10:
             headBar.titleText = qsTr("Statistical Trend")
-            contentLoader.source = "qrc:/UI/ViewTrend.qml"
+            stackview.push("qrc:/UI/ViewTrend.qml")
+
+//            contentLoader.source = "qrc:/UI/ViewTrend.qml"
             break;
         case 11:
             headBar.titleText = qsTr("Error/Alarm Log")
-            contentLoader.source = "qrc:/UI/ViewError.qml"
+            stackview.push("qrc:/UI/ViewError.qml")
+
+//            contentLoader.source = "qrc:/UI/ViewError.qml"
             break;
         case 12:
             headBar.titleText = qsTr("Library")
-            hmiAdaptor.dataCommunicationExecute("_Recall");
-            contentLoader.source = "qrc:/UI/ViewLibrary.qml"
+            hmiAdaptor.dataCommunicationExecute("_Recall");            
+//            contentLoader.source = "qrc:/UI/ViewLibrary.qml"
+            stackview.push("qrc:/UI/ViewLibrary.qml")
+
             break;
         case 13:
-            headBar.titleText = qsTr("Version Information")
-            contentLoader.source = "qrc:/UI/ViewVersion.qml"
+            headBar.titleText = qsTr("Version Information")            
+//            contentLoader.source = "qrc:/UI/ViewVersion.qml"
+            stackview.push("qrc:/UI/ViewVersion.qml")
+
             break
         case 14:
             headBar.titleText = qsTr("Permission Setting")
             hmiAdaptor.permissionsettingExecute("_Recall");
-            contentLoader.source = "qrc:/UI/PermissionSetting.qml"
+//            contentLoader.source = "qrc:/UI/PermissionSetting.qml"
+            stackview.push("qrc:/UI/PermissionSetting.qml")
+
             break;
         case 15:
             headBar.titleText = qsTr("Weld Defaults")
             hmiAdaptor.weldDefaultsExecute("_Recall");
-            contentLoader.source = "qrc:/UI/WeldDefalut.qml"
+//            contentLoader.source = "qrc:/UI/WeldDefalut.qml"
+            stackview.push("qrc:/UI/WeldDefalut.qml")
+
             break;
         case 16:
             headBar.titleText = qsTr("Operator Library")
             hmiAdaptor.permissionsettingExecute("_Recall")
-            contentLoader.source = "qrc:/UI/UserLibrarySetting.qml"
+//            contentLoader.source = "qrc:/UI/UserLibrarySetting.qml"
+            stackview.push("qrc:/UI/UserLibrarySetting.qml")
+
             break;
         case 17:
             headBar.titleText = qsTr("Data Communication")
             hmiAdaptor.dataCommunicationExecute("_Recall");
-            contentLoader.source = "qrc:/UI/DataCommunication.qml"
+//            contentLoader.source = "qrc:/UI/DataCommunication.qml"
+            stackview.push("qrc:/UI/DataCommunication.qml")
+
             break;
 //        case 18:
 //            contentLoader.source = "qrc:/UI/BransonSetting.qml"
 //            break;
         case 19:
             headBar.titleText = qsTr("Edit Existing")
-            contentLoader.source = "qrc:/UI/EditWire.qml"
+//            contentLoader.source = "qrc:/UI/EditWire.qml"
+            stackview.push("qrc:/UI/EditWire.qml")
+
             break;
         default:
             break;
         }
+
     }
     function logoff()
     {
@@ -324,6 +374,14 @@ Window {
         anchors.top: statusBar.bottom
     }
 
+    StackView {
+        id: stackview
+        anchors.top: headBar.bottom
+        width: Screen.width
+        height: Screen.height - 104
+        z: 4
+    }
+
     Loader {
         id: contentLoader
         anchors.top: headBar.bottom
@@ -332,8 +390,10 @@ Window {
         z: 3
         onLoaded: {
             if (initIndex == 1) {
-                contentLoader.item.bIsEdit = true
-                contentLoader.item.bIsFirst = true
+//                contentLoader.item.bIsEdit = true
+//                contentLoader.item.bIsFirst = true
+                contentLoader.item.initSequence()
+
             }
             else if (initIndex == 3)
             {
@@ -345,6 +405,8 @@ Window {
                 contentLoader.item.partId = hmiAdaptor.getEditPartId()
                 contentLoader.item.spliceId = hmiAdaptor.getTestSpliceId()
                 contentLoader.item.initEdit()
+                contentLoader.item.initHarness()
+
             }
             else if (initIndex == 19)
             {
