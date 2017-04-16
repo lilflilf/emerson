@@ -2633,7 +2633,7 @@ void WireModel::removeValue(int id, QString name)
     setModelList();
 }
 
-int WireModel::insertValueToTable(QString type,QString wireName,int wireId,int operatorId,QString color,QString stripeColor,int stripeType,int gauge, int awgGauge,int wireType,int side,int verside,int position)
+int WireModel::insertValueToTable(QString type,QString wireName,int wireId,int operatorId,QString color,QString stripeColor,int stripeType,int gauge, int awgGauge,int wireType,int side,int verside,int position,QString moduleType)
 {
 
 //    QString WireName;
@@ -2665,6 +2665,18 @@ int WireModel::insertValueToTable(QString type,QString wireName,int wireId,int o
     insertWire.VerticalSide = (WireElement::VerticalLocation)verside;
     insertWire.Position = (WireElement::VerticalPosition)position;
     insertWire.SpliceID = -1;
+    if (moduleType == "NA")
+        insertWire.TypeOfModule = WireElement::ModuleType::NA;
+    else if (moduleType == "DIN")
+        insertWire.TypeOfModule = WireElement::ModuleType::DIN;
+    else if (moduleType == "ISO")
+        insertWire.TypeOfModule = WireElement::ModuleType::ISO;
+    else if (moduleType == "SAE")
+        insertWire.TypeOfModule = WireElement::ModuleType::SAE;
+    else if (moduleType == "JIS")
+        insertWire.TypeOfModule = WireElement::ModuleType::JIS;
+
+    qDebug() << "000000000000000000000000000000" << moduleType;
 
     if (type == "insert"){
         insertWireId = m_wireAdaptor->InsertRecordIntoTable(&insertWire);
@@ -2730,6 +2742,17 @@ QVariant WireModel::getStructValue(QString key)
     } else {
         metalType = 1;
     }
+    QString moduleString;
+    if (wireElement.TypeOfModule == WireElement::NA)
+        moduleString = "NA";
+    else if (wireElement.TypeOfModule == WireElement::DIN)
+        moduleString = "DIN";
+    else if (wireElement.TypeOfModule == WireElement::SAE)
+        moduleString = "SAE";
+    else if (wireElement.TypeOfModule == WireElement::ISO)
+        moduleString = "ISO";
+    else if (wireElement.TypeOfModule == WireElement::JIS)
+        moduleString = "JIS";
     WireModelHash.insert("WireType",metalType);
     WireModelHash.insert("WireColor",wireElement.Color);
     WireModelHash.insert("WireName",wireElement.WireName);
@@ -2737,7 +2760,7 @@ QVariant WireModel::getStructValue(QString key)
     WireModelHash.insert("WirePosition",(int)wireElement.Position);
     WireModelHash.insert("WireBasic",(int)wireElement.VerticalSide);
     WireModelHash.insert("WireId",wireElement.WireID);
-
+    WireModelHash.insert("ModuleType",moduleString);
 //    WireModelHash.insert("OperatorName",myWire.OperatorID);
 //    WireModelHash.insert("Color",myWire.Color);
 //    WireModelHash.insert("StripeType",(int)myWire.Stripe.TypeOfStripe);
