@@ -59,7 +59,7 @@ bool DataCommunication::_Set()
     InterfaceClass* _Interface = InterfaceClass::Instance();
     UtilityClass* _Utility = UtilityClass::Instance();
     DBWorkOrderTable* _WorkOrderTable = DBWorkOrderTable::Instance();
-    DBPartTable*      _PartTable      = DBPartTable::Instance();
+    DBHarnessTable*   _HarnessTable   = DBHarnessTable::Instance();
     DBPresetTable*    _SpliceTable    = DBPresetTable::Instance();
     DBWireTable*      _WireTable      = DBWireTable::Instance();
     qDebug()<<"_Set";
@@ -85,7 +85,7 @@ bool DataCommunication::_Set()
     {
         _Interface->StatusData.ModularProductionEnabled = CurrentDataCommunication.ModularProduction;
         _WorkOrderTable->SwitchDBObject(_Interface->StatusData.ModularProductionEnabled);
-        _PartTable->SwitchDBObject(_Interface->StatusData.ModularProductionEnabled);
+        _HarnessTable->SwitchDBObject(_Interface->StatusData.ModularProductionEnabled);
         _SpliceTable->SwitchDBObject(_Interface->StatusData.ModularProductionEnabled);
         _WireTable->SwitchDBObject(_Interface->StatusData.ModularProductionEnabled);
     }

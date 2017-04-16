@@ -9,7 +9,7 @@
 #include "stdlib.h"
 #include "DataBase/DBWorkOrderTable.h"
 #include "DataBase/DBPresetTable.h"
-#include "DataBase/DBPartTable.h"
+#include "DataBase/DBHarnessTable.h"
 #include "DataBase/DBOperatorTable.h"
 #include "DataBase/DBAlarmLogTable.h"
 #include "DataBase/DBWeldResultTable.h"
@@ -17,7 +17,7 @@
 //#include "Interface/Definition.h"
 #include "Interface/WireElement.h"
 #include "Interface/PresetElement.h"
-#include "Interface/PartElement.h"
+#include "Interface/HarnessElement.h"
 #include "Interface/WorkOrderElement.h"
 #include "Interface/AlarmElement.h"
 #include "Interface/WeldResultElement.h"
@@ -40,9 +40,9 @@ public:
 
     QStringList m_idList;
     DBWorkOrderTable *m_workOrderAdaptor;
-    DBPartTable *m_partAdaptor;
+    DBHarnessTable *m_harnessAdaptor;
     QMap<int, QString> *workOrders;
-    PartElement partElement;
+    HarnessElement harnessElement;
     WorkOrderElement workOrderElement;
 
 protected:
@@ -156,10 +156,10 @@ public:
     void setModelList();
 
     QStringList m_idList;
-    DBPartTable *m_partAdaptor;
+    DBHarnessTable *m_harnessAdaptor;
     DBOperatorTable *m_operatorAdaptor;
     QMap<int, QString> *parts;
-    PartElement *m_Part;
+    HarnessElement *m_Harness;
 
 protected:
     int rowCount(const QModelIndex &parent) const;

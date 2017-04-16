@@ -5,18 +5,25 @@
 class WorkOrderElement
 {
 public:
+    enum WORKORDERMODE
+    {
+        SPLICE = 0,
+        HARNESS,
+        SEQUENCE,
+    };
+public:
     int RevCode;
     int WorkOrderID;
     QString WorkOrderName;
     unsigned int CreatedDate;
     int OperatorID;
+    enum WORKORDERMODE WorkOrderMode;
     int NoOfPart;
-    QMap<int, QString> PartIndex;
-
     int Quantity;
     int CurrentPartCount;
-    QMap<int, QString> MissSpliceList;
-    struct SpliceIndex CurrentSplice;
+    QMap<int, QString> MissPartList;
+    QMap<int, QString> PartList;
+    struct PartIndex CurrentPartIndex;
     bool WorkOrderDone;
 public:
     WorkOrderElement operator=(const WorkOrderElement &WorkOrderObject);

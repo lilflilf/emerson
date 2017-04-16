@@ -145,7 +145,8 @@ Status_Data &Status_Data::operator= (const Status_Data &StatusDataObj)
         this->MaintenanceDateStarted[i] = StatusDataObj.MaintenanceDateStarted[i];
         this->Maintenance80PercentAlarm[i] = StatusDataObj.Maintenance80PercentAlarm[i];
     }
-    this->TubeShrinkerport = StatusDataObj.TubeShrinkerport;
+    this->ShrinkTubeComInfo.COMport = StatusDataObj.ShrinkTubeComInfo.COMport;
+    this->ShrinkTubeComInfo.BaudRate = StatusDataObj.ShrinkTubeComInfo.BaudRate;
     this->HistoryGraphData = StatusDataObj.HistoryGraphData;
     this->RemoteGraphData = StatusDataObj.RemoteGraphData;
     this->StartScreen = StatusDataObj.StartScreen;
@@ -210,7 +211,7 @@ bool Status_Data::ReadStatusDataFromQSetting()
     Soft_Settings.WeldFormula = (enum WeldSetFormula)i_tmp;
     Soft_Settings.RunCount = settings.value("RunCount").value<int>();
     i_tmp = settings.value("Teach_Mode").value<int>();
-    Soft_Settings.Teach_Mode = (enum TEACH_MODE_TYPE)i_tmp;
+    Soft_Settings.Teach_Mode = (TEACHMODESETTING::TEACH_MODE_TYPE)i_tmp;
     Soft_Settings.TunePoint = settings.value("TunePoint").value<int>();
     Soft_Settings.FrequencyOffset = settings.value("FrequencyOffset").value<int>();
     settings.endGroup();
@@ -334,7 +335,11 @@ bool Status_Data::ReadStatusDataFromQSetting()
         Maintenance80PercentAlarm[i] = settings.value(str).value<bool>();
     }
 
-    TubeShrinkerport = settings.value("TubeShrinkerport").value<int>();
+    settings.beginGroup("ShrinkTubeComInfo");
+    ShrinkTubeComInfo.BaudRate = settings.value("ShrinkTubeBaudRate").value<int>();
+    ShrinkTubeComInfo.COMport = settings.value("ShrinkTubeCOMPort").value<unsigned int>();
+    settings.endGroup();
+
     HistoryGraphData = settings.value("HistoryGraphData").value<bool>();
     RemoteGraphData = settings.value("RemoteGraphData").value<bool>();
     i_tmp = settings.value("StartScreen").value<int>();
@@ -350,7 +355,7 @@ bool Status_Data::ReadStatusDataFromQSetting()
     }
 
     i_tmp = settings.value("GraphSampleRatio").value<int>();
-    GraphSampleRatio = (enum SAMPLERATIO)i_tmp;
+    GraphSampleRatio = (WeldResultElement::SAMPLERATIO)i_tmp;
     GraphDataLen = settings.value("GraphDataLen").value<long>();
     CutoffMode = settings.value("CutoffMode").value<int>();
     LockKeyFlag = settings.value("LockKeyFlag").value<bool>();
@@ -515,7 +520,12 @@ void Status_Data::WriteStatusDataToQSetting()
         settings.setValue(str, Maintenance80PercentAlarm[i]);
     }
 
-    settings.setValue("TubeShrinkerport", TubeShrinkerport);
+
+    settings.beginGroup("ShrinkTubeComInfo");
+    settings.setValue("ShrinkTubeBaudRate", ShrinkTubeComInfo.BaudRate);
+    settings.setValue("ShrinkTubeCOMPort", ShrinkTubeComInfo.COMport);
+    settings.endGroup();
+
     settings.setValue("HistoryGraphData", HistoryGraphData);
     settings.setValue("RemoteGraphData", RemoteGraphData);
     settings.setValue("StartScreen", StartScreen);

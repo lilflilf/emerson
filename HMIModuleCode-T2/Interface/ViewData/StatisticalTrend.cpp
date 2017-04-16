@@ -59,7 +59,7 @@ bool StatisticalTrend::GetCurrentWeldResultOneByOne(QMap<int, QString>* ResultIn
                         CurrentWeldResultRecord.ActualResult.ActualPreheight);
             float postheight = _Utility->FormatedDataToFloat(DINActHgt,
                         CurrentWeldResultRecord.ActualResult.ActualPostheight);
-            if(CurrentPreset.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode == STEPDISABLE)
+            if(CurrentPreset.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode == STEPWELD::STEPDISABLE)
                 CurrentWeldActual.Amplitude = _Utility->FormatedDataToString(DINAmplitude,
                         CurrentWeldResultRecord.ActualResult.ActualAmplitude);
             else
@@ -73,7 +73,7 @@ bool StatisticalTrend::GetCurrentWeldResultOneByOne(QMap<int, QString>* ResultIn
             CurrentWeldActual.DateCreated  = TimeLabel.toString("MM/dd/yyyy hh:mm:ss");
             CurrentWeldActual.Energy = _Utility->FormatedDataToString(DINEnergy,
                         CurrentWeldResultRecord.ActualResult.ActualEnergy);
-            CurrentWeldActual.PartName = CurrentWeldResultRecord.CurrentPart.PartName;
+            CurrentWeldActual.PartName = CurrentWeldResultRecord.CurrentHarness.HarnessName;
             CurrentWeldActual.PeakPower = _Utility->FormatedDataToString(DINActPower,
                         CurrentWeldResultRecord.ActualResult.ActualPeakPower);
             CurrentWeldActual.PostHeight = _Utility->FormatedDataToString(DINActHgt,

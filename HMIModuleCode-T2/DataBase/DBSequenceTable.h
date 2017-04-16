@@ -1,16 +1,15 @@
-#ifndef DBWORKORDERTABLE_H
-#define DBWORKORDERTABLE_H
-
+#ifndef DBSEQUENCETABLE_H
+#define DBSEQUENCETABLE_H
 #include "Sqlit3Class.h"
-#include "DBHarnessTable.h"
-class DBWorkOrderTable: public SQLITCLASS
+
+class DBSequenceTable : public SQLITCLASS
 {
 private:
-    static QString WorkOrderFile;
+    static QString SequenceDBFile;
     static QString DatabaseDir;
     static QString ModularDatabaseDir;
 private:
-    QSqlDatabase WorkOrderDBObj;
+    QSqlDatabase SequenceDBObj;
     bool mIsModularProduction;
 private:
     bool OpenDBObject();
@@ -30,18 +29,19 @@ public:
                 unsigned int time_to, QMap<int, QString>* _obj);
     virtual void SwitchDBObject(bool IsModularProduction);
 
-    bool exportData(int workOrderId, QString fileUrl);
-    int importData(QString value,QMap<int, QString> partMap);
+//    bool exportData(int partId, QString fileUrl);
+//    int importData(QString value,QMap<int, QString> spliceIdMap);
+//    QString GetExportString(int partId);
 public:
-    static DBWorkOrderTable* Instance();
+    static DBSequenceTable* Instance();
 protected:
-    DBWorkOrderTable();
-    bool InsertTestDataIntoTable();
-    DBHarnessTable *harnessTable;
+    DBSequenceTable();
+    void InsertTestDataIntoTable();
+//    DBPresetTable *spliceTable;
 private:
-    static DBWorkOrderTable* _instance;
+    static DBSequenceTable* _instance;
 public:
-    ~DBWorkOrderTable();
+    ~DBSequenceTable();
 };
 
-#endif // DBWORKORDERTABLE_H
+#endif // DBSEQUENCETABLE_H

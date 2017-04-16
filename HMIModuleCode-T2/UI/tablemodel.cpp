@@ -7,7 +7,7 @@ WorkOrderModel::WorkOrderModel(QObject *parent) :
     QAbstractTableModel(parent)
 {
     m_workOrderAdaptor = DBWorkOrderTable::Instance();
-    m_partAdaptor = DBPartTable::Instance();
+    m_harnessAdaptor = DBHarnessTable::Instance();
     workOrders = new QMap<int, QString>();
 }
 
@@ -46,8 +46,8 @@ QVariant WorkOrderModel::data(const QModelIndex &index, int role) const
         else if (columnIdx == 3)
         {
             QString temp = "";
-            if (myWorkOrder.PartIndex.count() > 0)
-                temp = myWorkOrder.PartIndex.begin().value();
+            if (myWorkOrder.PartList.count() > 0)
+                temp = myWorkOrder.PartList.begin().value();
             value = QVariant::fromValue(temp);
         }
         else if (columnIdx == 4)
@@ -130,9 +130,9 @@ bool WorkOrderModel::updateRecordIntoTable(int workId,QString oldWorkName, QStri
     struct WorkOrderElement tempWorkOrder;
     m_workOrderAdaptor->QueryOneRecordFromTable(workId, oldWorkName,&tempWorkOrder);
     tempWorkOrder.WorkOrderName = workName;
-    if (partName != tempWorkOrder.PartIndex.begin().value()) {
-        tempWorkOrder.PartIndex.remove(tempWorkOrder.PartIndex.begin().key());
-        tempWorkOrder.PartIndex.insert(partId, partName);
+    if (partName != tempWorkOrder.PartList.begin().value()) {
+        tempWorkOrder.PartList.remove(tempWorkOrder.PartList.begin().key());
+        tempWorkOrder.PartList.insert(partId, partName);
     }
     tempWorkOrder.Quantity = count;
     m_workOrderAdaptor->UpdateRecordIntoTable(&tempWorkOrder);
@@ -145,8 +145,8 @@ bool WorkOrderModel::insertRecordIntoTable(QString workName, int partId, QString
     struct WorkOrderElement tempWorkOrder;
     tempWorkOrder.WorkOrderName = workName;
     tempWorkOrder.Quantity = count;
-    tempWorkOrder.PartIndex.insert(partId,partName);
-    qDebug() << "insertRecordIntoTable"<<tempWorkOrder.PartIndex.count();
+    tempWorkOrder.PartList.insert(partId,partName);
+    qDebug() << "insertRecordIntoTable"<<tempWorkOrder.PartList.count();
     m_workOrderAdaptor->InsertRecordIntoTable(&tempWorkOrder);
     setModelList();
     return true;
@@ -181,14 +181,14 @@ int WorkOrderModel::getPartId(int index)
     }
     WorkOrderElement myWorkOrder;
     m_workOrderAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myWorkOrder);
-    return myWorkOrder.PartIndex.begin().key();
+    return myWorkOrder.PartList.begin().key();
 }
 
 QList<int> WorkOrderModel::getSpliceList()
 {
-    QMap<int,struct PARTATTRIBUTE>::iterator it; //遍历map
+    QMap<int,struct HARNESSATTRIBUTE>::iterator it; //遍历map
     QList<int> list;
-    for ( it = partElement.SpliceList.begin(); it != partElement.SpliceList.end(); ++it ) {
+    for ( it = harnessElement.SpliceList.begin(); it != harnessElement.SpliceList.end(); ++it ) {
         list.append(it.value().SpliceID);
     }
     return list;
@@ -196,7 +196,7 @@ QList<int> WorkOrderModel::getSpliceList()
 
 void WorkOrderModel::editNew(int index,int workOrderId)
 {
-    m_partAdaptor->QueryOneRecordFromTable(index,&partElement);
+    m_harnessAdaptor->QueryOneRecordFromTable(index,&harnessElement);
     m_workOrderAdaptor->QueryOneRecordFromTable(workOrderId,&workOrderElement);
 }
 
@@ -235,8 +235,8 @@ QVariant WorkOrderModel::getValue(int index, QString key)
     WorkOrderModelHash.insert("WorkOrderName",myWorkOrder.WorkOrderName);
     WorkOrderModelHash.insert("DateCreated",QDateTime::fromTime_t(myWorkOrder.CreatedDate).toString("MM/dd/yyyy hh:mm"));
     QString temp = "";
-    if (myWorkOrder.PartIndex.count() > 0)
-        temp = myWorkOrder.PartIndex.begin().value();
+    if (myWorkOrder.PartList.count() > 0)
+        temp = myWorkOrder.PartList.begin().value();
     WorkOrderModelHash.insert("PART",temp);
     WorkOrderModelHash.insert("QUANTITY",myWorkOrder.Quantity);
     if (key == "") {
@@ -352,7 +352,7 @@ QVariant SplicesModel::data(const QModelIndex &index, int role) const
             temp = variantToString->Height_MinusToString(mySplice.WeldSettings.QualitySetting.Height.Minus);
             value = QVariant::fromValue(temp);
         } else if (columnIdx == 21) {
-            value = QVariant::fromValue(mySplice.TestSetting.Qutanty);
+            value = QVariant::fromValue(mySplice.TestSetting.BatchSize);
         }
     }
     return value;
@@ -598,44 +598,56 @@ QString SplicesModel::getStructValue(QString valueKey, QString valueType)
     }
     else if (valueKey == "ActualWidth") {
         if (valueType == "current")
-            ResultStr = variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.MeasuredWidth).Current;
+            ResultStr =
+                    variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.OffsetOption.MeasuredWidth).Current;
         else if (valueType == "max")
-            ResultStr = variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.MeasuredWidth).Maximum;
+            ResultStr =
+                    variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.OffsetOption.MeasuredWidth).Maximum;
         else if (valueType == "min")
-            ResultStr = variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.MeasuredWidth).Minimum;
+            ResultStr =
+                    variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.OffsetOption.MeasuredWidth).Minimum;
     }
     else if (valueKey == "ActualHeight") {
         if (valueType == "current")
-            ResultStr = variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.MeasuredHeight).Current;
+            ResultStr =
+                    variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.OffsetOption.MeasuredHeight).Current;
         else if (valueType == "max")
-            ResultStr = variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.MeasuredHeight).Maximum;
+            ResultStr =
+                    variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.OffsetOption.MeasuredHeight).Maximum;
         else if (valueType == "min")
-            ResultStr = variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.MeasuredHeight).Minimum;
+            ResultStr =
+                    variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.OffsetOption.MeasuredHeight).Minimum;
     }
     else if (valueKey == "Unload Time") {
         if (valueType == "current")
-            ResultStr = variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.AntiSideSpliceTime).Current;
+            ResultStr =
+                    variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.AntiSideOption.AntiSideSpliceTime).Current;
         else if (valueType == "max")
-            ResultStr = variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.AntiSideSpliceTime).Maximum;
+            ResultStr =
+                    variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.AntiSideOption.AntiSideSpliceTime).Maximum;
         else if (valueType == "min")
-            ResultStr = variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.AntiSideSpliceTime).Minimum;
+            ResultStr =
+                    variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.AntiSideOption.AntiSideSpliceTime).Minimum;
     }
     else if (valueKey == "Load Time") {
         if (valueType == "current")
-            ResultStr = variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.CutOffSpliceTime).Current;
+            ResultStr =
+                    variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.CutOffOption.CutOffSpliceTime).Current;
         else if (valueType == "max")
-            ResultStr = variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.CutOffSpliceTime).Maximum;
+            ResultStr =
+                    variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.CutOffOption.CutOffSpliceTime).Maximum;
         else if (valueType == "min")
-            ResultStr = variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.CutOffSpliceTime).Minimum;
+            ResultStr =
+                    variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.CutOffOption.CutOffSpliceTime).Minimum;
     }
     else if (valueKey == "Anti-Side") {
-        if (presetElement.WeldSettings.AdvanceSetting.AntiSide)
+        if (presetElement.WeldSettings.AdvanceSetting.AntiSideOption.AntiSideMode)
             ResultStr = "left";
         else
             ResultStr = "right";
     }
     else if (valueKey == "Cut Off") {
-        if (presetElement.WeldSettings.AdvanceSetting.CutOff)
+        if (presetElement.WeldSettings.AdvanceSetting.CutOffOption.CutOff)
             ResultStr = "left";
         else
             ResultStr = "right";
@@ -674,67 +686,67 @@ QString SplicesModel::getStructValue(QString valueKey, QString valueType)
     }
     else if (valueKey == "TestStandardTime+") {
         if (valueType == "current")
-            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_PLRG]).Current;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_PLRG_STD]).Current;
         else if (valueType == "max")
-            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_PLRG]).Maximum;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_PLRG_STD]).Maximum;
         else if (valueType == "min")
-            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_PLRG]).Minimum;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_PLRG_STD]).Minimum;
     }
     else if (valueKey == "TestStandardTime-") {
         if (valueType == "current")
-            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_MSRG]).Current;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_MSRG_STD]).Current;
         else if (valueType == "max")
-            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_MSRG]).Maximum;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_MSRG_STD]).Maximum;
         else if (valueType == "min")
-            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_MSRG]).Minimum;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_MSRG_STD]).Minimum;
     }
     else if (valueKey == "TestStandardPower+") {
         if (valueType == "current")
-            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_PLRG]).Current;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_PLRG_STD]).Current;
         else if (valueType == "max")
-            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_PLRG]).Maximum;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_PLRG_STD]).Maximum;
         else if (valueType == "min")
-            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_PLRG]).Minimum;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_PLRG_STD]).Minimum;
     }
     else if (valueKey == "TestStandardPower-") {
         if (valueType == "current")
-            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_MSRG]).Current;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_MSRG_STD]).Current;
         else if (valueType == "max")
-            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_MSRG]).Maximum;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_MSRG_STD]).Maximum;
         else if (valueType == "min")
-            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_MSRG]).Minimum;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_MSRG_STD]).Minimum;
     }
     else if (valueKey == "TestStandardPre+") {
         if (valueType == "current")
-            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_PLRG]).Current;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_PLRG_STD]).Current;
         else if (valueType == "max")
-            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_PLRG]).Maximum;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_PLRG_STD]).Maximum;
         else if (valueType == "min")
-            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_PLRG]).Minimum;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_PLRG_STD]).Minimum;
     }
     else if (valueKey == "TestStandardPre-") {
         if (valueType == "current")
-            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_MSRG]).Current;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_MSRG_STD]).Current;
         else if (valueType == "max")
-            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_MSRG]).Maximum;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_MSRG_STD]).Maximum;
         else if (valueType == "min")
-            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_MSRG]).Minimum;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_MSRG_STD]).Minimum;
     }
     else if (valueKey == "TestStandardPost+") {
         if (valueType == "current")
-            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_PLRG]).Current;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_PLRG_STD]).Current;
         else if (valueType == "max")
-            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_PLRG]).Maximum;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_PLRG_STD]).Maximum;
         else if (valueType == "min")
-            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_PLRG]).Minimum;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_PLRG_STD]).Minimum;
     }
     else if (valueKey == "TestStandardPost-") {
         if (valueType == "current")
-            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_MSRG]).Current;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_MSRG_STD]).Current;
         else if (valueType == "max")
-            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_MSRG]).Maximum;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_MSRG_STD]).Maximum;
         else if (valueType == "min")
-            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_MSRG]).Minimum;
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_MSRG_STD]).Minimum;
     }
     else if (valueKey == "TestSigmaTime+") {
         if (valueType == "current")
@@ -804,7 +816,7 @@ QString SplicesModel::getStructValue(QString valueKey, QString valueType)
         ResultStr = QString("%1").arg((int)presetElement.TestSetting.TestMode);
     }
     else if (valueKey == "TestCount") {
-        ResultStr = QString("%1").arg(presetElement.TestSetting.Qutanty);
+        ResultStr = QString("%1").arg(presetElement.TestSetting.BatchSize);
     }
     else if (valueKey == "TeachMode") {
         ResultStr = QString("%1").arg((int)presetElement.TestSetting.TeachModeSetting.TeachModeType);
@@ -893,10 +905,10 @@ void SplicesModel::setStructValue(QString valueKey, QVariant value)
         presetElement.WeldSettings.AdvanceSetting.StepWeld.Amplitude2 = stringToVariant->Amplitude2ToInt(value.toString());
     }
     else if (valueKey == "WeldModel") {
-        presetElement.WeldSettings.AdvanceSetting.WeldMode = (WELDMODE)value.toInt();
+        presetElement.WeldSettings.AdvanceSetting.WeldMode = (ADVANCESETTING::WELDMODE)value.toInt();
     }
     else if (valueKey == "StepModel") {
-        presetElement.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode = (STEPWELDMODE)value.toInt();
+        presetElement.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode = (STEPWELD::STEPWELDMODE)value.toInt();
     }
     else if (valueKey == "Pre Burst") {
         presetElement.WeldSettings.AdvanceSetting.PreBurst = stringToVariant->PreBurstTimeToInt(value.toString());
@@ -911,34 +923,44 @@ void SplicesModel::setStructValue(QString valueKey, QVariant value)
         presetElement.WeldSettings.AdvanceSetting.SqzTime = stringToVariant->SqueezeTimeToInt(value.toString());
     }
     else if (valueKey == "ActualWidth") {
-        presetElement.WeldSettings.AdvanceSetting.MeasuredWidth = stringToVariant->MeasureWidthToInt(value.toString());
+        presetElement.WeldSettings.AdvanceSetting.OffsetOption.MeasuredWidth =
+                stringToVariant->MeasureWidthToInt(value.toString());
     }
     else if (valueKey == "ActualHeight") {
-        presetElement.WeldSettings.AdvanceSetting.MeasuredHeight = stringToVariant->MeasureHeightToInt(value.toString());
+        presetElement.WeldSettings.AdvanceSetting.OffsetOption.MeasuredHeight
+                = stringToVariant->MeasureHeightToInt(value.toString());
     }
     else if (valueKey == "Unload Time") {
-        presetElement.WeldSettings.AdvanceSetting.AntiSideSpliceTime = stringToVariant->AntiSideSpliceTimeToInt(value.toString());
+        presetElement.WeldSettings.AdvanceSetting.AntiSideOption.AntiSideSpliceTime =
+                stringToVariant->AntiSideSpliceTimeToInt(value.toString());
     }
     else if (valueKey == "Load Time") {
-        presetElement.WeldSettings.AdvanceSetting.CutOffSpliceTime = stringToVariant->CutOffSpliceTimeToInt(value.toString());
+        presetElement.WeldSettings.AdvanceSetting.CutOffOption.CutOffSpliceTime =
+                stringToVariant->CutOffSpliceTimeToInt(value.toString());
     }
     else if (valueKey == "Anti-Side") {
-        presetElement.WeldSettings.AdvanceSetting.AntiSide = value.toBool();
+        presetElement.WeldSettings.AdvanceSetting.AntiSideOption.AntiSideMode =
+                value.toBool();
     }
     else if (valueKey == "Cut Off") {
-        presetElement.WeldSettings.AdvanceSetting.CutOff = value.toBool();
+        presetElement.WeldSettings.AdvanceSetting.CutOffOption.CutOff =
+                value.toBool();
     }
     else if (valueKey == "Insulation") {
-        presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkOption = value.toBool();
+        presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkOption =
+                value.toBool();
     }
     else if (valueKey == "ShrinkId") {
-        presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID = value.toString();
+        presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID =
+                value.toString();
     }
     else if (valueKey == "ShrinkTemp") {
-        presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTemperature = stringToVariant->ShrinkTemperatureToInt(value.toString());
+        presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTemperature =
+                stringToVariant->ShrinkTemperatureToInt(value.toString());
     }
     else if (valueKey == "ShrinkTime") {
-        presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime = stringToVariant->ShrinkTimeToInt(value.toString());
+        presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime =
+                stringToVariant->ShrinkTimeToInt(value.toString());
     }
     else if (valueKey == "SpliceName") {
         presetElement.SpliceName = value.toString();
@@ -947,7 +969,8 @@ void SplicesModel::setStructValue(QString valueKey, QVariant value)
         presetElement.OperatorID = value.toInt();
     }
     else if (valueKey == "Total Cross") {
-        presetElement.CrossSection = stringToVariant->CrossSectionToInt(value.toString());
+        presetElement.CrossSection =
+                stringToVariant->CrossSectionToInt(value.toString());
     }
     else if (valueKey == "WireMap") {
         QStringList list = value.toStringList();
@@ -968,28 +991,28 @@ void SplicesModel::setStructValue(QString valueKey, QVariant value)
         presetElement.PresetPicNamePath = value.toString();
     }
     else if (valueKey == "TestStandardTime+") {
-        presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_PLRG] = stringToVariant->PercentTeachModeToInt(value.toString());
+        presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_PLRG_STD] = stringToVariant->PercentTeachModeToInt(value.toString());
     }
     else if (valueKey == "TestStandardPower+") {
-        presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_PLRG] = stringToVariant->PercentTeachModeToInt(value.toString());
+        presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_PLRG_STD] = stringToVariant->PercentTeachModeToInt(value.toString());
     }
     else if (valueKey == "TestStandardPre+") {
-        presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_PLRG] = stringToVariant->PercentTeachModeToInt(value.toString());
+        presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_PLRG_STD] = stringToVariant->PercentTeachModeToInt(value.toString());
     }
     else if (valueKey == "TestStandardPost+") {
-        presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_PLRG] = stringToVariant->PercentTeachModeToInt(value.toString());
+        presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_PLRG_STD] = stringToVariant->PercentTeachModeToInt(value.toString());
     }
     else if (valueKey == "TestStandardTime-") {
-        presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_MSRG] = stringToVariant->PercentTeachModeToInt(value.toString());
+        presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_MSRG_STD] = stringToVariant->PercentTeachModeToInt(value.toString());
     }
     else if (valueKey == "TestStandardPower-") {
-        presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_MSRG] = stringToVariant->PercentTeachModeToInt(value.toString());
+        presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_MSRG_STD] = stringToVariant->PercentTeachModeToInt(value.toString());
     }
     else if (valueKey == "TestStandardPre-") {
-        presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_MSRG] = stringToVariant->PercentTeachModeToInt(value.toString());
+        presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_MSRG_STD] = stringToVariant->PercentTeachModeToInt(value.toString());
     }
     else if (valueKey == "TestStandardPost-") {
-        presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_MSRG] = stringToVariant->PercentTeachModeToInt(value.toString());
+        presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_MSRG_STD] = stringToVariant->PercentTeachModeToInt(value.toString());
     }
     else if (valueKey == "TestSigmaTime+") {
         presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_CONFRG_PL] = stringToVariant->SigmaTeachModeToInt(value.toString());
@@ -1016,13 +1039,13 @@ void SplicesModel::setStructValue(QString valueKey, QVariant value)
         presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_CONFRG_MS] = stringToVariant->SigmaTeachModeToInt(value.toString());
     }
     else if (valueKey == "TestModel") {
-        presetElement.TestSetting.TestMode = (TESTMODE)value.toInt();
+        presetElement.TestSetting.TestMode = (TESTSETTING::TESTMODE)value.toInt();
     }
     else if (valueKey == "TestCount") {
-        presetElement.TestSetting.Qutanty = value.toInt();
+        presetElement.TestSetting.BatchSize = value.toInt();
     }
     else if (valueKey == "TeachMode") {
-        presetElement.TestSetting.TeachModeSetting.TeachModeType = (TEACH_MODE_TYPE)value.toInt();
+        presetElement.TestSetting.TeachModeSetting.TeachModeType = (TEACHMODESETTING::TEACH_MODE_TYPE)value.toInt();
     }
 }
 
@@ -1251,7 +1274,7 @@ QVariant SplicesModel::getValue(int index, QString key)
     SpliceModelHash.insert("Pre-Height-",variantToString->PreHeight_MinusToString(mySplice.WeldSettings.QualitySetting.Preheight.Minus));
     SpliceModelHash.insert("Height+",variantToString->Height_PlusToString(mySplice.WeldSettings.QualitySetting.Height.Plus));
     SpliceModelHash.insert("Height-",variantToString->Height_MinusToString(mySplice.WeldSettings.QualitySetting.Height.Minus));
-    SpliceModelHash.insert("count",mySplice.TestSetting.Qutanty);
+    SpliceModelHash.insert("count",mySplice.TestSetting.BatchSize);
     if (key == "") {
         return SpliceModelHash;
     } else {
@@ -1262,10 +1285,10 @@ QVariant SplicesModel::getValue(int index, QString key)
 PartModel::PartModel(QObject *parent) :
     QAbstractTableModel(parent)
 {
-    m_partAdaptor = DBPartTable::Instance();
+    m_harnessAdaptor = DBHarnessTable::Instance();
     m_operatorAdaptor = DBOperatorTable::Instance();
     parts = new QMap<int, QString>();
-    m_Part = new PartElement();
+    m_Harness = new HarnessElement();
 }
 
 QVariant PartModel::data(const QModelIndex &index, int role) const
@@ -1294,38 +1317,38 @@ QVariant PartModel::data(const QModelIndex &index, int role) const
 
 //        list << "PartId" << "PartName" << "DateCreated" << "OperatorName" << "TotalSplices" << "ProcessMode" << "#ofWorkstation" << "#ofSplicesperWorkstation" << "Rows" << "Columns" << "MaxSplicesPerZone";
 
-        PartElement myPart;
+        HarnessElement myHarness;
         OperatorElement myOperator;
-        m_partAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myPart);
-        m_operatorAdaptor->QueryOneRecordFromTable(myPart.OperatorID,&myOperator);
+        m_harnessAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myHarness);
+        m_operatorAdaptor->QueryOneRecordFromTable(myHarness.OperatorID,&myOperator);
         if (columnIdx == 0)
-            value = QVariant::fromValue(myPart.PartID);
+            value = QVariant::fromValue(myHarness.HarnessID);
         else if (columnIdx == 1)
-            value = QVariant::fromValue(myPart.PartName);
+            value = QVariant::fromValue(myHarness.HarnessName);
         else if (columnIdx == 2)
-            value = QVariant::fromValue(QDateTime::fromTime_t(myPart.CreatedDate).toString("MM/dd/yyyy hh:mm"));
+            value = QVariant::fromValue(QDateTime::fromTime_t(myHarness.CreatedDate).toString("MM/dd/yyyy hh:mm"));
         else if (columnIdx == 3)
             value = QVariant::fromValue(myOperator.OperatorName);
         else if (columnIdx == 4)
-            value = QVariant::fromValue(myPart.NoOfSplice);
+            value = QVariant::fromValue(myHarness.NoOfSplice);
         else if (columnIdx == 5) {
             QString processModel;
-            if (myPart.PartTypeSetting.ProcessMode == BASIC)
+            if (myHarness.HarnessTypeSetting.ProcessMode == BASIC)
                 processModel = "BASIC";
-            else if (myPart.PartTypeSetting.ProcessMode == ADVANCE)
+            else if (myHarness.HarnessTypeSetting.ProcessMode == ADVANCE)
                 processModel = "ADVANCE";
             value = QVariant::fromValue(processModel);
         }
         else if (columnIdx == 6)
-            value = QVariant::fromValue(myPart.PartTypeSetting.WorkStations.TotalWorkstation);
+            value = QVariant::fromValue(myHarness.HarnessTypeSetting.WorkStations.TotalWorkstation);
         else if (columnIdx == 7)
-            value = QVariant::fromValue(myPart.NoOfSplice);
+            value = QVariant::fromValue(myHarness.NoOfSplice);
         else if (columnIdx == 8)
-            value = QVariant::fromValue(myPart.PartTypeSetting.BoardLayout.Rows);
+            value = QVariant::fromValue(myHarness.HarnessTypeSetting.BoardLayout.Rows);
         else if (columnIdx == 9)
-            value = QVariant::fromValue(myPart.PartTypeSetting.BoardLayout.Columns);
+            value = QVariant::fromValue(myHarness.HarnessTypeSetting.BoardLayout.Columns);
         else if (columnIdx == 10)
-            value = QVariant::fromValue(myPart.PartTypeSetting.WorkStations.MaxSplicesPerWorkstation);
+            value = QVariant::fromValue(myHarness.HarnessTypeSetting.WorkStations.MaxSplicesPerWorkstation);
     }
     return value;
 }
@@ -1336,7 +1359,7 @@ void PartModel::setModelList(unsigned int time_from, unsigned int time_to)
 {
     beginResetModel();
     parts->clear();
-    if (m_partAdaptor->QueryOnlyUseTime(time_from,time_to,parts))
+    if (m_harnessAdaptor->QueryOnlyUseTime(time_from,time_to,parts))
         qDebug( )<< "PartModel " << parts->count();
     endResetModel();
 }
@@ -1345,7 +1368,7 @@ void PartModel::setModelList()
 {
     beginResetModel();
     parts->clear();
-    if (m_partAdaptor->QueryEntireTable(parts))
+    if (m_harnessAdaptor->QueryEntireTable(parts))
         qDebug( )<< "PartModel" << parts->count();
     endResetModel();
 }
@@ -1367,31 +1390,31 @@ QVariant PartModel::getStruceValue(QString key)
 {
     QVariant varResult = -1;
     if (key == "PartId")
-        varResult = m_Part->PartID;
+        varResult = m_Harness->HarnessID;
     else if (key == "PartName")
-        varResult = m_Part->PartName;
+        varResult = m_Harness->HarnessName;
     return varResult;
 }
 
 bool PartModel::exportData(int partId, QString fileUrl)
 {
-    return m_partAdaptor->exportData(partId,fileUrl);
+    return m_harnessAdaptor->exportData(partId,fileUrl);
 }
 
 int PartModel::importData(QString filePath, QMap<int, QString> spliceMap)
 {
-    int ret = m_partAdaptor->importData(filePath,spliceMap);
+    int ret = m_harnessAdaptor->importData(filePath,spliceMap);
     setModelList();
     return ret;
 }
 
 QString PartModel::getPartName(int partId)
 {
-    PartElement myPart;
+    HarnessElement myHarness;
     bool reb;
     UNUSED(reb);
-    reb = m_partAdaptor->QueryOneRecordFromTable(partId,&myPart);
-    return myPart.PartName;
+    reb = m_harnessAdaptor->QueryOneRecordFromTable(partId,&myHarness);
+    return myHarness.HarnessName;
 }
 
 
@@ -1441,27 +1464,27 @@ QVariant PartModel::getValue(int index, QString key)
         }
     }
     //        list << "PartId" << "PartName" << "DateCreated" << "OperatorName" << "TotalSplices" << "ProcessMode" << "#ofWorkstation" << "#ofSplicesperWorkstation" << "Rows" << "Columns" << "MaxSplicesPerZone";
-    PartElement myPart;
+    HarnessElement myHarness;
     OperatorElement myOperator;
-    m_partAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myPart);
-    m_operatorAdaptor->QueryOneRecordFromTable(myPart.OperatorID,&myOperator);
+    m_harnessAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myHarness);
+    m_operatorAdaptor->QueryOneRecordFromTable(myHarness.OperatorID,&myOperator);
     QHash<QString, QVariant> PartModelHash;
     PartModelHash.insert("PartId",myPart.PartID);
     PartModelHash.insert("HarnessName",myPart.PartName);
     PartModelHash.insert("DateCreated",QDateTime::fromTime_t(myPart.CreatedDate).toString("MM/dd/yyyy hh:mm"));
     PartModelHash.insert("OperatorName",myOperator.OperatorName);
-    PartModelHash.insert("TotalSplices",myPart.NoOfSplice);
+    PartModelHash.insert("TotalSplices",myHarness.NoOfSplice);
     QString processModel;
-    if (myPart.PartTypeSetting.ProcessMode == BASIC)
+    if (myHarness.HarnessTypeSetting.ProcessMode == BASIC)
         processModel = "BASIC";
-    else if (myPart.PartTypeSetting.ProcessMode == ADVANCE)
+    else if (myHarness.HarnessTypeSetting.ProcessMode == ADVANCE)
         processModel = "ADVANCE";
     PartModelHash.insert("ProcessMode",processModel);
-    PartModelHash.insert("#ofWorkstation",myPart.PartTypeSetting.WorkStations.TotalWorkstation);
-    PartModelHash.insert("#ofSplicesperWorkstation",myPart.NoOfSplice);
-    PartModelHash.insert("Rows",myPart.PartTypeSetting.BoardLayout.Rows);
-    PartModelHash.insert("Columns",myPart.PartTypeSetting.BoardLayout.Columns);
-    PartModelHash.insert("MaxSplicesPerZone",myPart.PartTypeSetting.WorkStations.MaxSplicesPerWorkstation);
+    PartModelHash.insert("#ofWorkstation",myHarness.HarnessTypeSetting.WorkStations.TotalWorkstation);
+    PartModelHash.insert("#ofSplicesperWorkstation",myHarness.NoOfSplice);
+    PartModelHash.insert("Rows",myHarness.HarnessTypeSetting.BoardLayout.Rows);
+    PartModelHash.insert("Columns",myHarness.HarnessTypeSetting.BoardLayout.Columns);
+    PartModelHash.insert("MaxSplicesPerZone",myHarness.HarnessTypeSetting.WorkStations.MaxSplicesPerWorkstation);
     if (key == "") {
         return PartModelHash;
     } else {
@@ -1471,56 +1494,56 @@ QVariant PartModel::getValue(int index, QString key)
 
 void PartModel::removeValue(int id, QString name)
 {
-    m_partAdaptor->DeleteOneRecordFromTable(id, name);
+    m_harnessAdaptor->DeleteOneRecordFromTable(id, name);
     setModelList();
 }
 
 void PartModel::getPartInfo(bool bIsEdit, int id, QString name)
 {
     if (bIsEdit) {
-        m_partAdaptor->QueryOneRecordFromTable(id,name,m_Part);
+        m_harnessAdaptor->QueryOneRecordFromTable(id,name,m_Harness);
     } else {
-        delete m_Part;
-        m_Part = NULL;
-        m_Part = new PartElement();
+        delete m_Harness;
+        m_Harness = NULL;
+        m_Harness = new HarnessElement();
     }
 }
 
 int PartModel::getWorkStationRows()
 {
-    return m_Part->PartTypeSetting.BoardLayout.Rows;
+    return m_Harness->HarnessTypeSetting.BoardLayout.Rows;
 }
 
 int PartModel::getWorkStationColumns()
 {
-    return m_Part->PartTypeSetting.BoardLayout.Columns;
+    return m_Harness->HarnessTypeSetting.BoardLayout.Columns;
 }
 
 int PartModel::getWorkStationMaxSplicePerZone()
 {
-    return m_Part->PartTypeSetting.BoardLayout.MaxSplicesPerZone;
+    return m_Harness->HarnessTypeSetting.BoardLayout.MaxSplicesPerZone;
 }
 
 int PartModel::getWorkStationCount()
 {
-    return m_Part->PartTypeSetting.WorkStations.TotalWorkstation;
+    return m_Harness->HarnessTypeSetting.WorkStations.TotalWorkstation;
 }
 
 int PartModel::getWorkStationMaxSplicePerStation()
 {
-    return m_Part->PartTypeSetting.WorkStations.MaxSplicesPerWorkstation;
+    return m_Harness->HarnessTypeSetting.WorkStations.MaxSplicesPerWorkstation;
 }
 
 int PartModel::getCurrentPartSpliceCount()
 {
-    return m_Part->SpliceList.count();
+    return m_Harness->SpliceList.count();
 }
 
 QList<int> PartModel::getWorkStationCorlor()
 {
     QList<int> corlorList;
-    for (int i = 0; i < m_Part->SpliceList.count(); i++) {
-        corlorList.append( m_Part->SpliceList.value( m_Part->SpliceList.keys().at(i)).CurrentWorkstation);
+    for (int i = 0; i < m_Harness->SpliceList.count(); i++) {
+        corlorList.append( m_Harness->SpliceList.value( m_Harness->SpliceList.keys().at(i)).CurrentWorkstation);
     }
     return corlorList;
 }
@@ -1528,8 +1551,8 @@ QList<int> PartModel::getWorkStationCorlor()
 QList<int> PartModel::geteWorkStationZone()
 {
     QList<int> zoneList;
-    for (int i = 0; i < m_Part->SpliceList.count(); i++) {
-        zoneList.append(m_Part->SpliceList.value(m_Part->SpliceList.keys().at(i)).CurrentBoardLayoutZone);
+    for (int i = 0; i < m_Harness->SpliceList.count(); i++) {
+        zoneList.append(m_Harness->SpliceList.value(m_Harness->SpliceList.keys().at(i)).CurrentBoardLayoutZone);
     }
     return zoneList;
 }
@@ -1537,8 +1560,8 @@ QList<int> PartModel::geteWorkStationZone()
 QStringList PartModel::getCurrentPartOfSpliceName()
 {
     QStringList list;
-    for (int i = 0; i < m_Part->SpliceList.count(); i++) {
-        list.append(m_Part->SpliceList.value(m_Part->SpliceList.keys().at(i)).SpliceName);
+    for (int i = 0; i < m_Harness->SpliceList.count(); i++) {
+        list.append(m_Harness->SpliceList.value(m_Harness->SpliceList.keys().at(i)).SpliceName);
     }
     return list;
 }
@@ -1546,15 +1569,15 @@ QStringList PartModel::getCurrentPartOfSpliceName()
 QList<int> PartModel::getCurrentPartOfSpliceId()
 {
     QList<int> idList;
-    for (int i = 0; i < m_Part->SpliceList.count(); i++) {
-        idList.append(m_Part->SpliceList.value(m_Part->SpliceList.keys().at(i)).SpliceID);
+    for (int i = 0; i < m_Harness->SpliceList.count(); i++) {
+        idList.append(m_Harness->SpliceList.value(m_Harness->SpliceList.keys().at(i)).SpliceID);
     }
     return idList;
 }
 
 bool PartModel::getPartOnlineOrOffLine()
 {
-    if (m_Part->PartTypeSetting.ProcessMode == BASIC) {
+    if (m_Harness->HarnessTypeSetting.ProcessMode == BASIC) {
         return false;
     } else {
         return true;
@@ -1564,64 +1587,64 @@ bool PartModel::getPartOnlineOrOffLine()
 void PartModel::setPartOffLineOrOnLine(bool bIsLine)
 {
     if (bIsLine) {
-        m_Part->PartTypeSetting.ProcessMode = ADVANCE;
+        m_Harness->HarnessTypeSetting.ProcessMode = ADVANCE;
     } else {
-        m_Part->PartTypeSetting.ProcessMode = BASIC;
+        m_Harness->HarnessTypeSetting.ProcessMode = BASIC;
     }
 }
 
 void PartModel::setPartName(QString name)
 {
-   m_Part->PartName =  name;
+   m_Harness->HarnessName =  name;
 }
 
 void PartModel::setPartColumns(int columns)
 {
-    m_Part->PartTypeSetting.BoardLayout.Columns = columns;
+    m_Harness->HarnessTypeSetting.BoardLayout.Columns = columns;
 }
 
 void PartModel::setPartRows(int rows)
 {
-   m_Part->PartTypeSetting.BoardLayout.Rows = rows;
+   m_Harness->HarnessTypeSetting.BoardLayout.Rows = rows;
 }
 
 void PartModel::setPartMaxSplicePerZone(int maxNum)
 {
-    m_Part->PartTypeSetting.BoardLayout.MaxSplicesPerZone = maxNum;
+    m_Harness->HarnessTypeSetting.BoardLayout.MaxSplicesPerZone = maxNum;
 }
 
 void PartModel::setPartWorkStationNum(int num)
 {
-    m_Part->PartTypeSetting.WorkStations.TotalWorkstation = num;
+    m_Harness->HarnessTypeSetting.WorkStations.TotalWorkstation = num;
 }
 
 void PartModel::setPartMaxSplicePerWorkStation(int maxNum)
 {
-     m_Part->PartTypeSetting.WorkStations.MaxSplicesPerWorkstation = maxNum;
+     m_Harness->HarnessTypeSetting.WorkStations.MaxSplicesPerWorkstation = maxNum;
 }
 
 void PartModel::setPartSpliceListClear()
 {
-    m_Part->SpliceList.clear();
+    m_Harness->SpliceList.clear();
 }
 
 void PartModel::setPartSpliceList(QString name, int id, int station, int zone, int index)
 {
-    m_Part->SpliceList[index].SpliceID = id;
-    m_Part->SpliceList[index].SpliceName = name;
-    m_Part->SpliceList[index].CurrentWorkstation = station;
-    m_Part->SpliceList[index].CurrentBoardLayoutZone = zone;
+    m_Harness->SpliceList[index].SpliceID = id;
+    m_Harness->SpliceList[index].SpliceName = name;
+    m_Harness->SpliceList[index].CurrentWorkstation = station;
+    m_Harness->SpliceList[index].CurrentBoardLayoutZone = zone;
 }
 
 void PartModel::savePartInfo(bool bIsEdit, int operatorId)
 {
-    m_Part->OperatorID = operatorId;
-    m_Part->NoOfSplice = m_Part->SpliceList.count();
+    m_Harness->OperatorID = operatorId;
+    m_Harness->NoOfSplice = m_Harness->SpliceList.count();
     if (bIsEdit) {
-        m_partAdaptor->UpdateRecordIntoTable(m_Part);
+        m_harnessAdaptor->UpdateRecordIntoTable(m_Harness);
     } else {
-        int partId = m_partAdaptor->InsertRecordIntoTable(m_Part);
-        qDebug()<<"savePartInfo insert id: "<< partId;
+        int harnessId = m_harnessAdaptor->InsertRecordIntoTable(m_Harness);
+        qDebug()<<"savePartInfo insert id: "<< harnessId;
     }
     setModelList();
 }
@@ -2216,7 +2239,7 @@ QVariant WeldHistoryModel::data(const QModelIndex &index, int role) const
         qDebug() << "m_weldHistoryAdaptor" << QDateTime::currentDateTime().toTime_t();
         m_weldHistoryAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myHistory);
         PresetElement presetElement;
-        m_spliceTable->QueryOneRecordFromTable(myHistory.CurrentSplice.SpliceID,myHistory.CurrentSplice.SpliceName,&presetElement);
+        m_spliceTable->QueryOneRecordFromTable(myHistory.CurrentSplice.PartID,myHistory.CurrentSplice.PartName,&presetElement);
         qDebug() << "m_spliceTable" << QDateTime::currentDateTime().toTime_t();
 
         QString temp;
@@ -2225,9 +2248,9 @@ QVariant WeldHistoryModel::data(const QModelIndex &index, int role) const
         else if (columnIdx == 1)
             value = QVariant::fromValue(myHistory.CurrentWorkOrder.WorkOrderName);
         else if (columnIdx == 2)
-            value = QVariant::fromValue(myHistory.CurrentPart.PartName);
+            value = QVariant::fromValue(myHistory.CurrentHarness.HarnessName);
         else if (columnIdx == 3)
-            value = QVariant::fromValue(myHistory.CurrentSplice.SpliceName);
+            value = QVariant::fromValue(myHistory.CurrentSplice.PartName);
         else if (columnIdx == 4)
             value = QVariant::fromValue(myHistory.OperatorName);
         else if (columnIdx == 5)
@@ -2413,7 +2436,7 @@ QVariant WeldHistoryModel::getValue(int index, QString key)
         myHistory = historyList.value(index);
     }
     if (!presetList.contains(index)) {
-        m_spliceTable->QueryOneRecordFromTable(myHistory.CurrentSplice.SpliceID,myHistory.CurrentSplice.SpliceName,&presetElement);
+        m_spliceTable->QueryOneRecordFromTable(myHistory.CurrentSplice.PartID,myHistory.CurrentSplice.PartName,&presetElement);
         presetList.insert(index,presetElement);
     } else {
         presetElement = presetList.value(index);
@@ -2421,8 +2444,8 @@ QVariant WeldHistoryModel::getValue(int index, QString key)
     QHash<QString, QVariant> WeldHistoryModelHash;
     WeldHistoryModelHash.insert("WeldHistoryId",myHistory.WeldResultID);
     WeldHistoryModelHash.insert("WorkOrderName",myHistory.CurrentWorkOrder.WorkOrderName);
-    WeldHistoryModelHash.insert("PartName",myHistory.CurrentPart.PartName);
-    WeldHistoryModelHash.insert("SpliceName",myHistory.CurrentSplice.SpliceName);
+    WeldHistoryModelHash.insert("PartName",myHistory.CurrentHarness.HarnessName);
+    WeldHistoryModelHash.insert("SpliceName",myHistory.CurrentSplice.PartName);
     WeldHistoryModelHash.insert("OperatorName",myHistory.OperatorName);
     WeldHistoryModelHash.insert("DateCreated",QDateTime::fromTime_t(myHistory.CreatedDate).toString("MM/dd/yyyy hh:mm"));
     WeldHistoryModelHash.insert("CrossSection",variantToString->CrossSectionToString(presetElement.CrossSection)); //contain in splice
@@ -2634,13 +2657,13 @@ int WireModel::insertValueToTable(QString type,QString wireName,int wireId,int o
     insertWire.OperatorID = operatorId;
     insertWire.Color = color;
     insertWire.Stripe.Color = stripeColor;
-    insertWire.Stripe.TypeOfStripe = (StripeType)stripeType;
+    insertWire.Stripe.TypeOfStripe = (STRIPE::StripeType)stripeType;
     insertWire.GaugeAWG = awgGauge;
     insertWire.Gauge = gauge;
-    insertWire.TypeOfWire = (MetalType)wireType;
-    insertWire.Side = (HorizontalLocation)side;
-    insertWire.VerticalSide = (VerticalLocation)verside;
-    insertWire.Position = (VerticalPosition)position;
+    insertWire.TypeOfWire = (WireElement::MetalType)wireType;
+    insertWire.Side = (WireElement::HorizontalLocation)side;
+    insertWire.VerticalSide = (WireElement::VerticalLocation)verside;
+    insertWire.Position = (WireElement::VerticalPosition)position;
     insertWire.SpliceID = -1;
 
     if (type == "insert"){

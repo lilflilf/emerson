@@ -13,9 +13,7 @@
 #include <QDateTime>
 #include <QDebug>
 MakeWeldProcess* MakeWeldProcess::_instance = NULL;
-ThreadClass* MakeWeldProcess::m_Thread = NULL;
-QTimer* MakeWeldProcess::m_DaemonTmr = NULL;
-bool MakeWeldProcess::m_bTmrRunningFlag = false;
+ThreadClass* MakeWeldProcess::m_pThread = NULL;
 MakeWeldProcess* MakeWeldProcess::Instance()
 {
     if(_instance == NULL){
@@ -27,6 +25,7 @@ MakeWeldProcess* MakeWeldProcess::Instance()
 MakeWeldProcess::MakeWeldProcess(QObject *parent) : QObject(parent)
 {
     M102IA* _M102IA = M102IA::Instance();
+    m_pReadySM = ReadyStateMachine::Instance();
     WeldCycleStatus = true;
     PowerGraphReady = false;
     HeightGraphReady = false;
@@ -91,7 +90,7 @@ void MakeWeldProcess::UpdateWeldResult()
     CurrentWeldResult.ActualResult.ActualPressure = _M102IA->IAactual.Pressure;
     CurrentWeldResult.ActualResult.ActualTPressure = _M102IA->IAactual.TPressure;
     CurrentWeldResult.ActualResult.ActualAlarmflags = _M102IA->IAactual.Alarmflags;
-    if(CurrentSplice.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode == STEPDISABLE)
+    if(CurrentSplice.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode == STEPWELD::STEPDISABLE)
         CurrentWeldResult.ActualResult.ActualAmplitude2 = 0;
 
     CurrentWeldResult.OperatorName = _Interface->CurrentOperator.OperatorName;
@@ -99,11 +98,11 @@ void MakeWeldProcess::UpdateWeldResult()
             = CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderID;
     CurrentWeldResult.CurrentWorkOrder.WorkOrderName
             = CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderName;
-    CurrentWeldResult.CurrentPart.PartID = CurrentNecessaryInfo.CurrentPart.PartID;
-    CurrentWeldResult.CurrentPart.PartName = CurrentNecessaryInfo.CurrentPart.PartName;
-    CurrentWeldResult.CurrentSplice.SpliceID = CurrentSplice.SpliceID;
-    CurrentWeldResult.CurrentSplice.SpliceName = CurrentSplice.SpliceName;
-    CurrentWeldResult.CurrentSplice.SpliceHash = CurrentSplice.HashCode;
+    CurrentWeldResult.CurrentHarness.HarnessID = CurrentNecessaryInfo.CurrentHarness.HarnessID;
+    CurrentWeldResult.CurrentHarness.HarnessName = CurrentNecessaryInfo.CurrentHarness.HarnessName;
+    CurrentWeldResult.CurrentSplice.PartID = CurrentSplice.SpliceID;
+    CurrentWeldResult.CurrentSplice.PartName = CurrentSplice.SpliceName;
+    CurrentWeldResult.CurrentSplice.PartHash = CurrentSplice.HashCode;
 
     CurrentWeldResult.SampleRatio = _Interface->StatusData.GraphSampleRatio;
     CurrentWeldResult.PostHeightGraph.clear();
@@ -121,7 +120,7 @@ bool MakeWeldProcess::PowerGraphReceive()
     {
         _M2010->ReceiveFlags.PowerGraphData = false;
         _M102IA->SendIACommand(IAComSendPowerGraph, Index);
-        _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.PowerGraphData);
+        _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.PowerGraphData);
     }else
         bResult = true;
     return bResult;
@@ -138,7 +137,7 @@ bool MakeWeldProcess::HeightGraphReceive()
     {
         _M2010->ReceiveFlags.HeightGraphData = false;
         _M102IA->SendIACommand(IAComSendHeightGraph, Index);
-        _M102IA->WaitForResponseAfterSent(5000, &_M2010->ReceiveFlags.HeightGraphData);
+        _M102IA->WaitForResponseAfterSent(DELAY5SEC, &_M2010->ReceiveFlags.HeightGraphData);
         m_triedCount++;
     }else
         bResult = true;
@@ -168,7 +167,7 @@ void MakeWeldProcess::WeldCycleDaemonThread(void* _obj)
     case POWERFst:
         if(_ObjectPtr->PowerGraphReady == false)
         {
-            _M102IA->WaitForResponseAfterSent(3000, &_ObjectPtr->PowerGraphReady);
+            _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_ObjectPtr->PowerGraphReady);
             _ObjectPtr->m_triedCount++;
         }
         else
@@ -189,7 +188,7 @@ void MakeWeldProcess::WeldCycleDaemonThread(void* _obj)
     case HEIGHTSnd:
         if(_ObjectPtr->HeightGraphReady == false)
         {
-            _M102IA->WaitForResponseAfterSent(3000, &_ObjectPtr->HeightGraphReady);
+            _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_ObjectPtr->HeightGraphReady);
             _ObjectPtr->m_triedCount++;
         }
         else
@@ -205,42 +204,38 @@ void MakeWeldProcess::WeldCycleDaemonThread(void* _obj)
         _ObjectPtr->CurrentStep = STEPTrd;
         break;
     }
-    if((_ObjectPtr->m_triedCount > 1) || (_ObjectPtr->CurrentStep == STEPTrd))
+    if(_ObjectPtr->m_triedCount > 1)
     {
-        if(_ObjectPtr->m_triedCount > 1)
-        {
-            struct BransonMessageBox tmpMsgBox;
-            tmpMsgBox.MsgTitle = QObject::tr("ERROR");
-            tmpMsgBox.MsgPrompt = QObject::tr("Can't get full Power & Post Height Graph from controller!");
-            tmpMsgBox.TipsMode = Critical;
-            tmpMsgBox.func_ptr = NULL;
-            _Interface->cMsgBox(&tmpMsgBox);
-            _ObjectPtr->WeldCycleStatus = false;
-            _ObjectPtr->CurrentWeldResult.PowerGraph.clear();
-            _ObjectPtr->CurrentWeldResult.PostHeightGraph.clear();
-
-        }else
-        {
-            _ObjectPtr->WeldCycleStatus = true;
-        }
+        struct BransonMessageBox tmpMsgBox;
+        tmpMsgBox.MsgTitle = QObject::tr("ERROR");
+        tmpMsgBox.MsgPrompt = QObject::tr("Can't get full Power & Post Height Graph from controller!");
+        tmpMsgBox.TipsMode = Critical;
+        tmpMsgBox.func_ptr = NULL;
+        _Interface->cMsgBox(&tmpMsgBox);
+        _ObjectPtr->WeldCycleStatus = false;
+        _ObjectPtr->CurrentWeldResult.PowerGraph.clear();
+        _ObjectPtr->CurrentWeldResult.PostHeightGraph.clear();
+    }
+    else if(_ObjectPtr->CurrentStep == STEPTrd)
+    {
         //2. Save the Weld result into the Database
         int iResult =
             _WeldResultDB->InsertRecordIntoTable(&_ObjectPtr->CurrentWeldResult);
         qDebug()<<"Ordername"<<_ObjectPtr->CurrentWeldResult.CurrentWorkOrder.WorkOrderName;
         _ObjectPtr->CurrentWeldResult.WeldResultID = iResult;
-
+//        _ObjectPtr->WeldCycleStatus = true;
         //6. Shrink Tube
         //7. Remote Data sending
         _Statistics->HistoryEvent(_ObjectPtr->CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderName,
-                _ObjectPtr->CurrentNecessaryInfo.CurrentPart.PartName, &_ObjectPtr->CurrentWeldResult, &_ObjectPtr->CurrentSplice);
+                _ObjectPtr->CurrentNecessaryInfo.CurrentHarness.HarnessName, &_ObjectPtr->CurrentWeldResult, &_ObjectPtr->CurrentSplice);
 
-        if((_M102IA->IAactual.Alarmflags & 0x4000) == 0x4000)
+        if((_M102IA->IAactual.Alarmflags & BIT14) == BIT14)
             _ObjectPtr->WeldCycleStatus = true;
         else
             _ObjectPtr->WeldCycleStatus = false;
         emit _ObjectPtr->WeldCycleCompleted(&_ObjectPtr->WeldCycleStatus);
-        m_Thread->setStopEnabled(true);
-        m_Thread->setSuspendEnabled(true);
+        m_pThread->setStopEnabled(true);
+        m_pThread->setSuspendEnabled(true);
     }
 }
 
@@ -250,19 +245,19 @@ void MakeWeldProcess::WeldResultEventSlot(bool& bResult)
     M10runMode* _M10runMode = M10runMode::Instance();
     if(bResult == false)
         return;
+    m_pReadySM->ReadyState = ReadyStateMachine::READYOFF;
     UpdateWeldResult();
     m_triedCount = 0;
     CurrentStep = POWERFst;
     WeldCycleStatus = false;
-    //3. Alarm handle
+    //1. Alarm handle
     Invalidweld = _M10runMode->CheckWeldData(CurrentSplice.SpliceID);
-    //4. Update Maintenance Count
+    //2. Update Maintenance Count
     if(Invalidweld == false)
         _M10runMode->UpdateMaintenanceData(); //Increment Maintenance Counters here
-
-    m_Thread->setStopEnabled(false);
-    m_Thread->setSuspendEnabled(false);
-    m_Thread->start();
+    m_pThread->setStopEnabled(false);
+    m_pThread->setSuspendEnabled(false);
+    m_pThread->start();
 }
 
 void MakeWeldProcess::AnyAlarmEventSlot(bool &bResult)
@@ -284,21 +279,6 @@ void MakeWeldProcess::HeightGraphEventSlot(bool &bResult)
     HeightGraphReady = HeightGraphReceive();
 }
 
-void MakeWeldProcess::TimeoutEventSlot()
-{
-    M102IA *_M102IA = M102IA::Instance();
-    M2010  *_M2010  = M2010::Instance();
-    m_DaemonTmr->stop();
-    m_bTmrRunningFlag = true;
-
-    _M2010->ReceiveFlags.HostReadyData = false;
-    _M102IA->IACommand(IAComHostReady);
-    _M102IA->WaitForResponseAfterSent(5000,&_M2010->ReceiveFlags.HostReadyData);
-    DEBUG_PRINT(_M2010->ReceiveFlags.HostReadyData);
-    m_bTmrRunningFlag = false;
-    m_DaemonTmr->start(1000);//1000 ms
-}
-
 bool MakeWeldProcess::_start()
 {
     M102IA *_M102IA = M102IA::Instance();
@@ -308,7 +288,7 @@ bool MakeWeldProcess::_start()
     _Interface->FirstScreenComesUp = true;
     bool bResult = true;
     qDebug()<<"Make Weld Start";
-    if(_M102IA->SendCommandSetRunMode(1) == false)
+    if(_M102IA->SendCommandSetRunMode(ON) == false)
     {
         tmpMsgBox.MsgTitle = QObject::tr("ERROR");
         tmpMsgBox.MsgPrompt = QObject::tr("Can't get any Response from controller!");
@@ -317,28 +297,24 @@ bool MakeWeldProcess::_start()
         _Interface->cMsgBox(&tmpMsgBox);
         bResult = false;
     }else{
-        m_Thread = new ThreadClass(0, (void*)(MakeWeldProcess::WeldCycleDaemonThread), this);
-        m_Thread->setStopEnabled(false);
-        m_Thread->setSuspendEnabled(false);
+        m_pThread = new ThreadClass(0, (void*)(MakeWeldProcess::WeldCycleDaemonThread), this);
+        m_pThread->setStopEnabled(false);
+        m_pThread->setSuspendEnabled(false);
         if(CurrentNecessaryInfo.IsTestProcess == true)
         {
-            if(CurrentSplice.TestSetting.TeachModeSetting.TeachModeType != UNDEFINED)
+            if(CurrentSplice.TestSetting.TeachModeSetting.TeachModeType != TEACHMODESETTING::UNDEFINED)
                 _M10runMode->init_m20_data_events(&CurrentSplice);
         }
 
-//        m_DaemonTmr = NULL;
-//        m_DaemonTmr = new QTimer(this);
-//        connect(m_DaemonTmr, SIGNAL(timeout()),this, SLOT(TimeoutEventSlot()));
-//        m_DaemonTmr->setInterval(1000);//200mssecond
-//        m_DaemonTmr->start();
-//        m_bTmrRunningFlag = false;
+        m_pReadySM->_start();
+
         connect(_M102IA, SIGNAL(WeldCycleSignal(bool&)),
                 this,SLOT(WeldResultEventSlot(bool&)));
         connect(_M102IA, SIGNAL(PowerGraphSignal(bool&)),
                 this, SLOT(PowerGraphEventSlot(bool&)));
         connect(_M102IA, SIGNAL(HeightGraphSignal(bool&)),
                 this, SLOT(HeightGraphEventSlot(bool&)));
-
+        m_pReadySM->ReadyState = ReadyStateMachine::READYON;
     }
     return bResult;
 }
@@ -350,12 +326,8 @@ bool MakeWeldProcess::_stop()
     struct BransonMessageBox tmpMsgBox;
     bool bResult = true;
     disconnect(_M102IA, SIGNAL(WeldCycleSignal(bool&)),this, SLOT(WeldResultEventSlot(bool&)));
-    if(m_DaemonTmr != NULL)
-    {
-        if(m_DaemonTmr->isActive() == true)
-            m_DaemonTmr->stop();
-    }
-    if(_M102IA->SendCommandSetRunMode(0) == false)
+
+    if(_M102IA->SendCommandSetRunMode(OFF) == false)
     {
         tmpMsgBox.MsgTitle = QObject::tr("ERROR");
         tmpMsgBox.MsgPrompt = QObject::tr("Can't get any Response from controller!");
@@ -365,20 +337,16 @@ bool MakeWeldProcess::_stop()
         bResult = false;
     }
     //Delete Thread and release resource
-    if(m_Thread != NULL)
+    if(m_pThread != NULL)
     {
-        m_Thread->setSuspendEnabled(true);
-        m_Thread->setStopEnabled(true);
-        qDebug()<<"Thread stop"<<m_Thread->wait();
-        delete m_Thread;
-        m_Thread = NULL;
+        m_pThread->setSuspendEnabled(true);
+        m_pThread->setStopEnabled(true);
+        qDebug()<<"Thread stop"<<m_pThread->wait();
+        delete m_pThread;
+        m_pThread = NULL;
     }
     //Delect Thread and release resource
-    if(m_DaemonTmr != NULL)
-    {
-        delete m_DaemonTmr;
-        m_DaemonTmr = NULL;
-    }
+    m_pReadySM->_stop();
     connect(_M102IA, SIGNAL(AlarmStatusSignal(bool&)),
             this,SLOT(AnyAlarmEventSlot(bool&)));
     return bResult;
@@ -404,7 +372,7 @@ bool MakeWeldProcess::_execute()
         if(Retries < 2)
         {
             _M102IA->SendPresetToIA(0);
-            _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.SYSTEMid);
+            _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.SYSTEMid);
             Retries++;
         }else
             break;
@@ -426,6 +394,27 @@ bool MakeWeldProcess::_execute()
     _M102IA->SendIACommand(IAComSetAmplitude, CurrentSplice.WeldSettings.BasicSetting.Amplitude);
     _M102IA->SendIACommand(IAComSetPreburst, CurrentSplice.WeldSettings.AdvanceSetting.PreBurst);
 
+    _M2010->ReceiveFlags.ActuatorType = false;
+    if(CurrentSplice.WeldSettings.AdvanceSetting.AntiSideOption.AntiSideMode == true)
+    {
+        _M2010->TempActuatorInfo.CurrentActuatorMode = Status_Data::ANTISIDESPLICE;
+        _M2010->TempActuatorInfo.CurrentAntisideSpliceTime =
+                CurrentSplice.WeldSettings.AdvanceSetting.AntiSideOption.AntiSideSpliceTime;
+    }else{
+        _M2010->TempActuatorInfo.CurrentActuatorMode = Status_Data::ANTISIDESPLICEOFF;
+    }
+    _M2010->TempActuatorInfo.CurrentActuatorType =
+            _Interface->StatusData.MachineType;
+    _M102IA->SendIACommand(IAComSetActuator, 0);
+    _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.ActuatorType);
+
+    _M2010->ReceiveFlags.CutterResponseData = false;
+    if(CurrentSplice.WeldSettings.AdvanceSetting.CutOffOption.CutOff == true)
+        _M102IA->SendIACommand(IAComSetCutoff, ON);
+    else
+        _M102IA->SendIACommand(IAComSetCutoff, OFF);
+    _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.CutterResponseData);
+
     if(WeldCycleStatus == false)
     {
         bResult = false;
@@ -436,7 +425,7 @@ bool MakeWeldProcess::_execute()
     while(_M2010->ReceiveFlags.HostReadyData == false)
     {
         _M102IA->IACommand(IAComHostReady);
-        _M102IA->WaitForResponseAfterSent(5000,&_M2010->ReceiveFlags.HostReadyData);
+        _M102IA->WaitForResponseAfterSent(DELAY5SEC,&_M2010->ReceiveFlags.HostReadyData);
         Retries++;
         if(Retries > 3)
             break;
@@ -451,110 +440,6 @@ bool MakeWeldProcess::_execute()
         bResult = false;
     }
     return bResult;
-}
-
-//this functio is only for the UCL & LCL calculation.
-// the UCL & LCL is the middle point of the USL & LSL +/- 3 standard deviation
-void MakeWeldProcess::ControlLimitProcess(QUALITYTYPE Type, QList<int> &RawList,
-                                         int USL, int LSL,
-                                         int *UCL, int *LCL)
-{
-    UtilityClass *_Utility = UtilityClass::Instance();
-    QList<float> tmpList;
-    float tmpValue = 0;
-    float UpperSpecValue = 0;
-    float LowerSpecValue = 0;
-    float UpperControlValue = 0;
-    float LowerControlValue = 0;
-    float CentralValue;
-    float AverageValue;
-    float Sigam;
-    tmpList.clear();
-    *UCL = USL;
-    *LCL = LSL;
-    switch(Type)
-    {
-    case QUALITYTIME:
-        UpperSpecValue = _Utility->FormatedDataToFloat(DINTimePl,
-                    USL);
-        LowerSpecValue = _Utility->FormatedDataToFloat(DINTimeMs,
-                    LSL);
-        break;
-    case QUALITYPOWER:
-        UpperSpecValue = _Utility->FormatedDataToInteger(DINPowerPl,
-                    USL);
-        LowerSpecValue = _Utility->FormatedDataToInteger(DINPowerMs,
-                    LSL);
-        break;
-    case QUALITYPREHEIGHT:
-        UpperSpecValue = _Utility->FormatedDataToFloat(DINPre_HgtPl,
-                    USL);
-        LowerSpecValue = _Utility->FormatedDataToFloat(DINPre_HgtMs,
-                    LSL);
-        break;
-    case QUALITYPOSTHEIGHT:
-        UpperSpecValue = _Utility->FormatedDataToFloat(DINPre_HgtPl,
-                    USL);
-        LowerSpecValue = _Utility->FormatedDataToFloat(DINPre_HgtMs,
-                    LSL);
-        break;
-    }
-    CentralValue = (UpperSpecValue + LowerSpecValue)/ 2;
-    for(int i = 0; i< RawList.size(); i++)
-    {
-        switch(Type)
-        {
-        case QUALITYTIME:
-            tmpValue = _Utility->FormatedDataToFloat(DINActTime, RawList.at(i));
-            break;
-        case QUALITYPOWER:
-            tmpValue = _Utility->FormatedDataToInteger(DINActPower, RawList.at(i));
-            break;
-        case QUALITYPREHEIGHT:
-            tmpValue = _Utility->FormatedDataToFloat(DINActPreHgt, RawList.at(i));
-            break;
-        case QUALITYPOSTHEIGHT:
-            tmpValue = _Utility->FormatedDataToFloat(DINActHgt, RawList.at(i));
-            break;
-        }
-        tmpList.push_back(tmpValue);
-    }
-
-    AverageValue = StatisticalFunction::Mean(tmpList);
-    if(tmpList.size() < 2)
-        Sigam = 0;
-    else
-        Sigam = StatisticalFunction::StandardDeviation(tmpList,AverageValue);
-//    UpperControlValue = CentralValue + 3 * Sigam;
-//    LowerControlValue = CentralValue - 3 * Sigam;
-    if(UpperSpecValue > (3 * Sigam))
-        UpperControlValue = UpperSpecValue - 3 * Sigam;
-    else
-        UpperControlValue = UpperSpecValue;
-    if(UpperControlValue < CentralValue)
-        UpperControlValue = CentralValue;
-    LowerControlValue = LowerSpecValue + 3 * Sigam;
-    if(LowerControlValue > CentralValue)
-        LowerControlValue = CentralValue;
-    switch(Type)
-    {
-    case QUALITYTIME:
-        *UCL = (UpperControlValue) / _Utility->txtData[DINActTime].Factor;
-        *LCL = (LowerControlValue) / _Utility->txtData[DINActTime].Factor;
-        break;
-    case QUALITYPOWER:
-        *UCL = UpperControlValue / _Utility->txtData[DINActPower].Factor;
-        *LCL = LowerControlValue / _Utility->txtData[DINActPower].Factor;
-        break;
-    case QUALITYPREHEIGHT:
-        *UCL = UpperControlValue / _Utility->txtData[DINActPreHgt].Factor;
-        *LCL = LowerControlValue / _Utility->txtData[DINActPreHgt].Factor;
-        break;
-    case QUALITYPOSTHEIGHT:
-        *UCL = UpperControlValue / _Utility->txtData[DINActHgt].Factor;
-        *LCL = LowerControlValue / _Utility->txtData[DINActHgt].Factor;
-        break;
-    }
 }
 
 void MakeWeldProcess::StopTeachMode()

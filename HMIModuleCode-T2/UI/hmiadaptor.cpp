@@ -799,19 +799,19 @@ bool HmiAdaptor::weldDefaultsGetSwitch(QString index)
     else if (index == "Foot Pedal Abort")
         reb = weldDefaults->CurrentWeldSettings.FootPedalAbort;
     else if (index == "Cooling") {
-        if (weldDefaults->CurrentWeldSettings.CurrentCoolingMode == CoolingMode::ENERGYMODE)
+        if (weldDefaults->CurrentWeldSettings.CurrentCoolingMode == Status_Data::ENERGYMODE)
             reb = true;
-        else if (weldDefaults->CurrentWeldSettings.CurrentCoolingMode == CoolingMode::OFF)
+        else if (weldDefaults->CurrentWeldSettings.CurrentCoolingMode == Status_Data::OFF)
             reb = false;
-        else if (weldDefaults->CurrentWeldSettings.CurrentCoolingMode == CoolingMode::ON)
+        else if (weldDefaults->CurrentWeldSettings.CurrentCoolingMode == Status_Data::ON)
             reb = true;
     }
     else if (index == "cooling(1sec/100J)") {
-        if (weldDefaults->CurrentWeldSettings.CurrentCoolingMode == CoolingMode::ENERGYMODE)
+        if (weldDefaults->CurrentWeldSettings.CurrentCoolingMode == Status_Data::ENERGYMODE)
             reb = true;
-        else if (weldDefaults->CurrentWeldSettings.CurrentCoolingMode == CoolingMode::OFF)
+        else if (weldDefaults->CurrentWeldSettings.CurrentCoolingMode == Status_Data::OFF)
             reb = false;
-        else if (weldDefaults->CurrentWeldSettings.CurrentCoolingMode == CoolingMode::ON)
+        else if (weldDefaults->CurrentWeldSettings.CurrentCoolingMode == Status_Data::ON)
             reb = false;
     }
     else if (index == "Cooling Tooling")
@@ -819,13 +819,13 @@ bool HmiAdaptor::weldDefaultsGetSwitch(QString index)
     else if (index == "Unit Conversion")
         reb = weldDefaults->CurrentWeldSettings.Imperical2Metric;
     else if (index == "Graph Data Sampling 1ms")
-        reb = weldDefaults->CurrentWeldSettings.SampleRatio == SampleWith1ms ? true : false;
+        reb = weldDefaults->CurrentWeldSettings.SampleRatio == WeldResultElement::SampleWith1ms ? true : false;
     else if (index == "Graph Data Sampling 5ms")
-        reb = weldDefaults->CurrentWeldSettings.SampleRatio == SampleWith5ms ? true : false;
+        reb = weldDefaults->CurrentWeldSettings.SampleRatio == WeldResultElement::SampleWith5ms ? true : false;
     else if (index == "Graph Data Sampling 10ms")
-        reb = weldDefaults->CurrentWeldSettings.SampleRatio == SampleWith10ms ? true : false;
+        reb = weldDefaults->CurrentWeldSettings.SampleRatio == WeldResultElement::SampleWith10ms ? true : false;
     else if (index == "Graph Data Sampling 20ms")
-        reb = weldDefaults->CurrentWeldSettings.SampleRatio == SampleWith20ms ? true : false;
+        reb = weldDefaults->CurrentWeldSettings.SampleRatio == WeldResultElement::SampleWith20ms ? true : false;
     return reb;
 }
 
@@ -866,7 +866,7 @@ QString HmiAdaptor::weldDefaultsGetNum(QString index)
 
 bool HmiAdaptor::weldDefaultsSetValue(QList<bool> boolList, QStringList strList, int sampleIndex, QString coolingDur,QString coolingDel)
 {
-    weldDefaults->CurrentWeldSettings.SampleRatio = (SAMPLERATIO)sampleIndex;
+    weldDefaults->CurrentWeldSettings.SampleRatio = (WeldResultElement::SAMPLERATIO)sampleIndex;
     weldDefaults->CurrentWeldSettings.CurrentCoolingDur.Current = coolingDur;
     weldDefaults->CurrentWeldSettings.CurrentCoolingDel.Current = coolingDel;
 
@@ -875,11 +875,11 @@ bool HmiAdaptor::weldDefaultsSetValue(QList<bool> boolList, QStringList strList,
     weldDefaults->CurrentWeldSettings.FootPedalAbort = boolList[2];
     weldDefaults->CurrentWeldSettings.CoolingForTooling = boolList[5];
     if (boolList[3] && boolList[4])
-        weldDefaults->CurrentWeldSettings.CurrentCoolingMode = CoolingMode::ENERGYMODE;
+        weldDefaults->CurrentWeldSettings.CurrentCoolingMode = Status_Data::ENERGYMODE;
     else if (!boolList[3])
-        weldDefaults->CurrentWeldSettings.CurrentCoolingMode = CoolingMode::OFF;
+        weldDefaults->CurrentWeldSettings.CurrentCoolingMode = Status_Data::OFF;
     else if (boolList[3] && !boolList[4])
-        weldDefaults->CurrentWeldSettings.CurrentCoolingMode = CoolingMode::OFF;
+        weldDefaults->CurrentWeldSettings.CurrentCoolingMode = Status_Data::OFF;
     weldDefaults->CurrentWeldSettings.Imperical2Metric = boolList[6];
 
     weldDefaults->CurrentWeldSettings.WeldSettingFormula[EnergyR1].Range.Current = strList[0];
@@ -1221,8 +1221,8 @@ void HmiAdaptor::setOperateProcess(int spliceId, bool isText)
     operateProcess->CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderID = workOrderModel->getStructValue("WorkOrderId").toInt();
     operateProcess->CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderName = workOrderModel->getStructValue("WorkOrderName").toString();
     DEBUG_PRINT(operateProcess->CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderName);
-    operateProcess->CurrentNecessaryInfo.CurrentPart.PartID = partModel->getStruceValue("PartId").toInt();
-    operateProcess->CurrentNecessaryInfo.CurrentPart.PartName = partModel->getStruceValue("PartName").toString();
+    operateProcess->CurrentNecessaryInfo.CurrentHarness.HarnessID = partModel->getStruceValue("PartId").toInt();
+    operateProcess->CurrentNecessaryInfo.CurrentHarness.HarnessName = partModel->getStruceValue("PartName").toString();
 }
 
 void HmiAdaptor::operateProcessExec(QString type)
@@ -1242,36 +1242,36 @@ int HmiAdaptor::controlLimitProcess(QString type, QList<int> list, int redMax, i
     int lower;
     int iResult = -1;
     if (type == "Time+") {
-        operateProcess->ControlLimitProcess(QUALITYTIME,list,redMax,redMin,&upper,&lower);
+//        operateProcess->ControlLimitProcess(QUALITYTIME,list,redMax,redMin,&upper,&lower);
         iResult = upper;
     }
     else if (type == "Time-") {
-        operateProcess->ControlLimitProcess(QUALITYTIME,list,redMax,redMin,&upper,&lower);
+//        operateProcess->ControlLimitProcess(QUALITYTIME,list,redMax,redMin,&upper,&lower);
         iResult = lower;
     }
     else if (type == "Power+") {
-        operateProcess->ControlLimitProcess(QUALITYPOWER,list,redMax,redMin,&upper,&lower);
+//        operateProcess->ControlLimitProcess(QUALITYPOWER,list,redMax,redMin,&upper,&lower);
         qDebug() << "controlLimitProcess" << list << redMax << redMin << upper<< lower;
         iResult = upper;
     }
     else if (type == "Power-") {
-        operateProcess->ControlLimitProcess(QUALITYPOWER,list,redMax,redMin,&upper,&lower);
+//        operateProcess->ControlLimitProcess(QUALITYPOWER,list,redMax,redMin,&upper,&lower);
         iResult = lower;
     }
     else if (type == "Pre-Height+") {
-        operateProcess->ControlLimitProcess(QUALITYPREHEIGHT,list,redMax,redMin,&upper,&lower);
+//        operateProcess->ControlLimitProcess(QUALITYPREHEIGHT,list,redMax,redMin,&upper,&lower);
         iResult = upper;
     }
     else if (type == "Pre-Height-") {
-        operateProcess->ControlLimitProcess(QUALITYPREHEIGHT,list,redMax,redMin,&upper,&lower);
+//        operateProcess->ControlLimitProcess(QUALITYPREHEIGHT,list,redMax,redMin,&upper,&lower);
         iResult = lower;
     }
     else if (type == "Post-Height+") {
-        operateProcess->ControlLimitProcess(QUALITYPOSTHEIGHT,list,redMax,redMin,&upper,&lower);
+//        operateProcess->ControlLimitProcess(QUALITYPOSTHEIGHT,list,redMax,redMin,&upper,&lower);
         iResult = upper;
     }
     else if (type == "Post-Height-") {
-        operateProcess->ControlLimitProcess(QUALITYPOSTHEIGHT,list,redMax,redMin,&upper,&lower);
+//        operateProcess->ControlLimitProcess(QUALITYPOSTHEIGHT,list,redMax,redMin,&upper,&lower);
         iResult = lower;
     }else
     {

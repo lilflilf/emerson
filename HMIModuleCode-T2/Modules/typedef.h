@@ -57,4 +57,24 @@ enum{
     MAX_VALUE = 2,
 };
 
+typedef enum{
+    No = 0,
+    Yes = 1,
+    False = 0,
+    True = 1,
+    OFF = 0,
+    ON = 1,
+    TOGGLE,
+    Open = 0,
+    Close
+}Boolean;                /* System boolean definition */
+
+#define DELAY100MSEC 				100    /* 100 msec */
+#define DELAY200MSEC 				200	   /* 200 msec*/
+#define DELAY500MSEC 				500	   /* 0.5 sec */
+#define DELAY1SEC	 				1000   /* 1.0 sec */
+#define DELAY2SEC    				2000   /* 2.0 sec */
+#define DELAY3SEC	 				3000   /* 3.0 sec */
+#define DELAY5SEC    				5000   /* 5.0 sec */
+
 #endif // TYPEDEF_H

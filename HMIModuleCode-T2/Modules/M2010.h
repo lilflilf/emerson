@@ -23,39 +23,6 @@ struct ActuatorInfo{
     int CurrentAntisideSpliceTime;
 };
 
-
-
-#define MaintFirstDefMax  2000000000
-#define MaintFirstDefMin  0
-#define MaintSecDefMax    20000000
-#define MaintSecDefMin    0
-#define MaintDefaultDef   1000
-
-#define Shim1Min  0           //6 mm
-#define Shim2Min  0           //1 mm
-#define Shim1MAx  10          //10 mm
-
-//Constants for uFlags, dwReserved is 0
-#define EWX_LOGOFF      0x00                 //Logoff and restart as a new user
-#define EWX_SHUTDOWN    0x01                 //Shut down
-#define EWX_REBOOT      0x02                 //Reboot
-#define EWX_POWEROFF    0x08                 //Power Down
-
-#define EWX_FORCE       0x04                 //Allows apps to SAVE but not CANCEL (OR with 0, 1, 2, or 8)
-#define EWX_FORCEIFHUNG 0x10                 //2000/XP only (OR with 0, 1, 2, or 8)
-
-#define LB_SETCURSEL    0x186;
-#define LB_GETCURSEL    0x188;
-
-
-
-struct POINTAPI{
-    long X;
-    long Y;
-};
-
-#define MF_BYPOSITION  0x400
-
 struct M20_run{
     bool Sequence_Done;        // Current Sequence is complete
     bool Pre_Hght_Error;       // Preheight error mode in progress
@@ -104,27 +71,10 @@ struct M20Build{
 #define TIMESTEPMASK       0x4000
 #define POWERSTEPMASK      0x2000
 
-#define MAX_WIRE           20
-
 enum PRESET_TEACHSETTING{
     GLOBALS,
     SPECIAL,
 };
-
-enum FILE_MODE_TYPE{
-    no_file,
-    Splice_FILE,            // 1 Part file
-    Sequence_FILE,          // 2 sequence file
-    Invalid_FILE,
-};
-
-enum PICEXTRACTIONTYPE{
-    Image_type,
-    Picture_type,
-    None_type,
-};
-
-
 
 struct BitFlag{
     bool SETUPdata;
@@ -156,6 +106,8 @@ struct BitFlag{
     bool WireData;
     bool FootPadelDATA;
     bool ControllerVersionData;
+    bool ControllerSerialNumData;
+    bool ControllerPartNumData;
     bool CalibrationDone;
     bool HostReadyData;
     bool CalHeightMaxGaugeData;
@@ -163,6 +115,7 @@ struct BitFlag{
     bool ActuatorSerialNumData;
     bool ActuatorPartNumData;
     bool ActuatorType;
+    bool CutterResponseData;
 };
 
 enum Last_made{
@@ -170,90 +123,6 @@ enum Last_made{
     Splice_Made,
     Sequence_Made,
 };
-
-struct Run_File_Record{
-    QString Last_file;    //Edited 16 Mar 2001 to accomodate the HP file system
-    int LastMade;
-};
-
-//Color used for Copper on Wire Data Screen
-const long clrCopper = 0x80C0FF;
-const long clr11 = 0x80C0FF;
-const long clr12 = 0x8080FF;
-const long clr13 = 0x80FF80;
-const long clr14 = 0xE0E0E0;
-const long clr15 = 0xC0C0C0;
-const long clr16 = 0xFF80FF;
-const long clr17 = 0xFF8080;
-const long clr18 = 0xFFFF80;
-const long clr19 = 0xFFC0FF;
-const long clr20 = 0xFFC0C0;
-const long clr21 = 0xFFFF00;
-const long clr22 = 0xFFFFC0;
-const long clr23 = 0xFF00FF;
-const long clr24 = 0x808080;
-const long clr25 = 0xC0;
-const long clr26 = 0x40C0;
-const long clr27 = 0xC0C0;
-const long clr28 = 0xC000;
-const long clr29 = 0xC0C000;
-const long clr30 = 0xC00000;
-const long clr31 = 0xC0FFC0;
-const long clr32 = 0x404040;
-const long clr33 = 0x80;
-const long clr34 = 0xC0FFFF;
-const long clr35 = 0x8080;
-const long clr36 = 0x8000;
-const long clr37 = 0x808000;
-const long clr38 = 0x800000;
-const long clr39 = 0x800080;
-const long clr40 = 0xC0E0FF;
-const long clr41 = 0x40;
-const long clr42 = 0x404080;
-const long clr43 = 0x4040;
-const long clr44 = 0x4000;
-const long clr45 = 0xC0C0FF;
-const long clr46 = 0x400000;
-const long clr47 = 0x400040;
-
-struct WireElementRevThree{
-    string PartName;
-    int WireStrands;
-    int WireStrandSize;
-    int Area;
-    long Color[12];           //12 byte Array Size 0 - 11
-    //   The evolution of the wire colors has led to:
-    //   represented by 0 to 9 as the IEEE standared colors
-    //   Color(0) is the base color
-    //   Color(1) is the first stripe
-    //   Color(2) is the second stripe
-    //   Color(3) is the third stripe
-    //   A stripe value &HFF is the same as the base color
-
-    string side;
-};
-
-struct WireElementRevTwo{
-    string PartName;
-    //int WireStrands;
-    //int WireStrandSize;
-    unsigned char Dummy;
-    int Area;
-    long Color[11];           //12 byte Array Size 0 - 11
-    //   The evolution of the wire colors has led to:
-    //   represented by 0 to 9 as the IEEE standared colors
-    //   Color(0) is the base color
-    //   Color(1) is the first stripe
-    //   Color(2) is the second stripe
-    //   Color(3) is the third stripe
-    //   A stripe value &HFF is the same as the base color
-
-    string side;
-};
-
-
-
-const long iPartFlagQualified = 0x01;
 
 struct M10PartRevThree{
     int RevCode;              //Amtech Revision Code for possible future use
@@ -277,8 +146,7 @@ struct M10PartRevThree{
     Qual Preheight;               //Pre weld height limits in mm/100
     Qual Height;                  //Post weld height limits in mm/100
     Qual Force;                   //Force limits in Newtons
-    int NoOfWires;            //Number of wires in this splice
-    WireElementRevThree WireEl[MAX_WIRE_ELEMENTS];  //Store data for individual wires
+    int NoOfWires;            //Number of wires in this splice  
     RecommendedData RecData;       //Recommended Data
     int TrigPres;             //PSI * 10
     int SqzTime;              //Secs * 100
@@ -326,7 +194,6 @@ struct M10PartRevTwo{
     Qual Height;                  //Post weld height limits in mm/100
     Qual Force;                   //Force limits in Newtons
     int NoOfWires;            //Number of wires in this splice
-    WireElementRevTwo WireEl[MAX_WIRE_ELEMENTS];   //Store data for individual wires
     RecommendedData RecData;       //Recommended Data
     int TrigPres;             //PSI * 10
     int SqzTime;              //Secs * 100
@@ -392,10 +259,6 @@ struct ErrMsgStruct{
     string ErrItem;
 };
 
-
-
-const int iAFPartQualified = 0x01;
-
 class M2010
 {
 public:
@@ -410,11 +273,6 @@ public:
 
     M20_run M10Run;
     M20Build M10Build;
-
-    // The system should use the txt_data information as the only source for data
-    DataShownStructure txt_data[DIN_end - 1];
-    ScreenShowDataType DataSpot[SDNEndFlag - 1];
-    ScreenShowDataType ActualDataIndex[AINAmplitude2];
 
     long MaintenceCounter;
     long MaintenceDueCounter;
@@ -431,8 +289,6 @@ public:
     bool SaveAsFlag;
     bool UseTempStsFile;
 
-    FILE_MODE_TYPE file_mode;
-
     SCREEN_MODE Prog_Mode;
     SCREEN_MODE Child_Mode;
     // made for usage in Auto Teach mode
@@ -444,8 +300,6 @@ public:
 
     BitFlag ReceiveFlags;
     BitFlag SendFlags;
-
-    Run_File_Record RunFileRecord;
 
     string Run_Option;
 

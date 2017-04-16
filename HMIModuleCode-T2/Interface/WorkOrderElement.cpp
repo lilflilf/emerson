@@ -7,20 +7,21 @@ WorkOrderElement::WorkOrderElement()
     WorkOrderName.clear();
     CreatedDate = 0;
     OperatorID = -1;
-    PartIndex.clear();
-    NoOfPart = PartIndex.size();
+    PartList.clear();
+    NoOfPart = PartList.size();
     Quantity = -1;
     CurrentPartCount = -1;
-    MissSpliceList.clear();
-    CurrentSplice.SpliceID = -1;
-    CurrentSplice.SpliceName.clear();
+    MissPartList.clear();
+    CurrentPartIndex.PartID = -1;
+    CurrentPartIndex.PartName.clear();
     WorkOrderDone = true;
+    WorkOrderMode = WorkOrderElement::SPLICE;
 }
 
 WorkOrderElement::~WorkOrderElement()
 {
-    PartIndex.clear();
-    MissSpliceList.clear();
+    PartList.clear();
+    MissPartList.clear();
 }
 
 WorkOrderElement WorkOrderElement::operator=(const WorkOrderElement &WorkOrderObject)
@@ -32,23 +33,24 @@ WorkOrderElement WorkOrderElement::operator=(const WorkOrderElement &WorkOrderOb
     this->WorkOrderName = WorkOrderObject.WorkOrderName;
     this->CreatedDate = WorkOrderObject.CreatedDate;
     this->OperatorID = WorkOrderObject.OperatorID;
-    QMap<int, QString>::const_iterator i = WorkOrderObject.PartIndex.constBegin();
-    while(i != WorkOrderObject.PartIndex.constEnd())
+    QMap<int, QString>::const_iterator i = WorkOrderObject.PartList.constBegin();
+    while(i != WorkOrderObject.PartList.constEnd())
     {
-        this->PartIndex.insert(i.key(),i.value());
+        this->PartList.insert(i.key(),i.value());
         ++i;
     }
-    this->NoOfPart = this->PartIndex.size();
+    this->NoOfPart = this->PartList.size();
     this->Quantity = WorkOrderObject.Quantity;
     this->CurrentPartCount = WorkOrderObject.CurrentPartCount;
-    i = WorkOrderObject.MissSpliceList.constBegin();
-    while(i != WorkOrderObject.MissSpliceList.constEnd())
+    i = WorkOrderObject.MissPartList.constBegin();
+    while(i != WorkOrderObject.MissPartList.constEnd())
     {
-        this->MissSpliceList.insert(i.key(),i.value());
+        this->MissPartList.insert(i.key(),i.value());
         ++i;
     }
-    this->CurrentSplice.SpliceID = WorkOrderObject.CurrentSplice.SpliceID;
-    this->CurrentSplice.SpliceName = WorkOrderObject.CurrentSplice.SpliceName;
+    this->CurrentPartIndex.PartID = WorkOrderObject.CurrentPartIndex.PartID;
+    this->CurrentPartIndex.PartName = WorkOrderObject.CurrentPartIndex.PartName;
     this->WorkOrderDone = WorkOrderObject.WorkOrderDone;
+    this->WorkOrderMode = WorkOrderObject.WorkOrderMode;
     return *this;
 }

@@ -70,7 +70,7 @@ bool DBMaintenanceLogTable::CreateNewTable()
 {
     QSqlQuery query(MaintenanceLogDBObj);
     bool bResult = MaintenanceLogDBObj.open();
-    bResult = query.exec(SQLSentence[CREATE]);   //run SQL
+    bResult = query.exec(SQLSentence[SQLITCLASS::CREATE]);   //run SQL
     if(bResult == false)
         qDebug() << "Maintenance Table SQL ERROR:"<< query.lastError();
     MaintenanceLogDBObj.close();
@@ -120,7 +120,7 @@ bool DBMaintenanceLogTable::QueryEntireTable(QMap<int, QString> *_obj)
     if(bResult == false)
         return bResult;
 
-    bResult = query.exec(SQLSentence[QUERY_ENTIRE_TABLE]);
+    bResult = query.exec(SQLSentence[SQLITCLASS::QUERY_ENTIRE_TABLE]);
     if (bResult == true)
     {
         _obj->clear();
@@ -153,7 +153,7 @@ bool DBMaintenanceLogTable::QueryOneRecordFromTable(int ID, QString TypeDefine, 
         return bResult;
     }
 
-    query.prepare(SQLSentence[QUERY_ONE_RECORD]);
+    query.prepare(SQLSentence[SQLITCLASS::QUERY_ONE_RECORD]);
     query.addBindValue(ID);
     query.addBindValue(TypeDefine);
 
@@ -196,7 +196,7 @@ bool DBMaintenanceLogTable::QueryOneRecordFromTable(int ID, void *_obj)
         return bResult;
     }
 
-    query.prepare(SQLSentence[QUERY_ONE_RECORD_ONLY_ID]);
+    query.prepare(SQLSentence[SQLITCLASS::QUERY_ONE_RECORD_ONLY_ID]);
     query.addBindValue(ID);
 
     bResult = query.exec();
@@ -235,7 +235,7 @@ bool DBMaintenanceLogTable::DeleteEntireTable()
         return bResult;
     }
 
-    bResult = query.exec(SQLSentence[DELETE_ENTIRE_TABLE]);
+    bResult = query.exec(SQLSentence[SQLITCLASS::DELETE_ENTIRE_TABLE]);
     if(bResult == false)
     {
         qDebug() << "Maintenance Table SQL ERROR:"<< query.lastError();
@@ -255,7 +255,7 @@ bool DBMaintenanceLogTable::DeleteOneRecordFromTable(int ID, QString TypeDefine)
         return bResult;
     }
 
-    query.prepare(SQLSentence[DELETE_ONE_RECORD]);
+    query.prepare(SQLSentence[SQLITCLASS::DELETE_ONE_RECORD]);
     query.addBindValue(ID);
     query.addBindValue(TypeDefine);
 
@@ -281,7 +281,7 @@ bool DBMaintenanceLogTable::UpdateRecordIntoTable(void *_obj)
         return bResult;
     }
 
-    query.prepare(SQLSentence[UPDATE_ONE_RECORD]);
+    query.prepare(SQLSentence[SQLITCLASS::UPDATE_ONE_RECORD]);
     query.addBindValue(((MaintenanceLogElement*)_obj)->MaintenanceType);
     query.addBindValue(((MaintenanceLogElement*)_obj)->MaintenanceMsg);
     QDateTime TimeLabel = QDateTime::fromTime_t(((MaintenanceLogElement*)_obj)->CreatedDate);

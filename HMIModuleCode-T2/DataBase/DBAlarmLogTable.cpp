@@ -68,7 +68,7 @@ bool DBAlarmLogTable::CreateNewTable()
 {
     QSqlQuery query(AlarmLogDBObj);
     bool bResult = AlarmLogDBObj.open();
-    bResult = query.exec(SQLSentence[CREATE]);   //run SQL
+    bResult = query.exec(SQLSentence[SQLITCLASS::CREATE]);   //run SQL
     if(bResult == false)
         qDebug() << "Alarm Table SQL ERROR:"<< query.lastError();
     AlarmLogDBObj.close();
@@ -90,7 +90,7 @@ int DBAlarmLogTable::InsertRecordIntoTable(void *_obj)
         qDebug() << "SQL Open:"<< query.lastError();
         return bResult;
     }
-    query.prepare(SQLSentence[INSERT]);
+    query.prepare(SQLSentence[SQLITCLASS::INSERT]);
     query.addBindValue(((AlarmElement*)_obj)->AlarmMsg);
     QDateTime TimeLabel = QDateTime::currentDateTime();
     query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
@@ -120,7 +120,7 @@ bool DBAlarmLogTable::QueryEntireTable(QMap<int, QString> *_obj)
     if(bResult == false)
         return bResult;
 
-    bResult = query.exec(SQLSentence[QUERY_ENTIRE_TABLE]);
+    bResult = query.exec(SQLSentence[SQLITCLASS::QUERY_ENTIRE_TABLE]);
     if (bResult == true)
     {
         _obj->clear();
@@ -153,7 +153,7 @@ bool DBAlarmLogTable::QueryOneRecordFromTable(int ID, QString AlarmType, void *_
         return bResult;
     }
 
-    query.prepare(SQLSentence[QUERY_ONE_RECORD]);
+    query.prepare(SQLSentence[SQLITCLASS::QUERY_ONE_RECORD]);
     query.addBindValue(ID);
     query.addBindValue(AlarmType);
 
@@ -198,7 +198,7 @@ bool DBAlarmLogTable::QueryOneRecordFromTable(int ID, void* _obj)
         return bResult;
     }
 
-    query.prepare(SQLSentence[QUERY_ONE_RECORD_ONLY_ID]);
+    query.prepare(SQLSentence[SQLITCLASS::QUERY_ONE_RECORD_ONLY_ID]);
     query.addBindValue(ID);
 
     bResult = query.exec();
@@ -239,7 +239,7 @@ bool DBAlarmLogTable::DeleteEntireTable()
         return bResult;
     }
 
-    bResult = query.exec(SQLSentence[DELETE_ENTIRE_TABLE]);
+    bResult = query.exec(SQLSentence[SQLITCLASS::DELETE_ENTIRE_TABLE]);
     if(bResult == false)
     {
         qDebug() << "Alarm Table SQL ERROR:"<< query.lastError();
@@ -259,7 +259,7 @@ bool DBAlarmLogTable::DeleteOneRecordFromTable(int ID, QString AlarmType)
         return bResult;
     }
 
-    query.prepare(SQLSentence[DELETE_ONE_RECORD]);
+    query.prepare(SQLSentence[SQLITCLASS::DELETE_ONE_RECORD]);
     query.addBindValue(ID);
     query.addBindValue(AlarmType);
 
@@ -285,7 +285,7 @@ bool DBAlarmLogTable::UpdateRecordIntoTable(void *_obj)
         return bResult;
     }
 
-    query.prepare(SQLSentence[UPDATE_ONE_RECORD]);
+    query.prepare(SQLSentence[SQLITCLASS::UPDATE_ONE_RECORD]);
     query.addBindValue(((AlarmElement*)_obj)->AlarmMsg);
     QDateTime TimeLabel = QDateTime::fromTime_t(((AlarmElement*)_obj)->CreatedDate);
     query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));

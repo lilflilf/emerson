@@ -15,19 +15,20 @@ const QString SQLSentence[] = {
     "CREATE TABLE WeldResultHistory ( "        /*0 Create WeldResult Table*/
     "ID INTEGER PRIMARY KEY AUTOINCREMENT, "
     "OperatorName VARCHAR, CreatedDate VARCHAR, WorkOrderID INT, WorkOrderName VARCHAR, "
-    "PartID INT, PartName VARCHAR, SpliceID INT, SpliceName VARCHAR, SpliceHash INT, "
+    "HarnessID INT, HarnessName VARCHAR, SequenceID INT, SequenceName VARCHAR, "
+    "SpliceID INT, SpliceName VARCHAR, SpliceHash INT, "
     "WeldCount INT, PartCount INT, ActualEnergy INT, ActualTPressure INT, "
     "ActualPressure INT, ActualAmplitude INT, ActualAmplitude2 INT, ActualWidth INT, "
     "ActualTime INT, ActualPeakPower INT, ActualPreheight INT, ActualPostheight INT, "
     "ActualAlarmFlags INT, SampleRatio INT, NoOfSamples INT, CurrentGraphDirectory VARCHAR)",
 
     "INSERT INTO WeldResultHistory ( "         /*1 Insert record into WeldResult Table*/
-    "OperatorName, CreatedDate, WorkOrderID, WorkOrderName, PartID, "
-    "PartName, SpliceID, SpliceName, SpliceHash, WeldCount, "
+    "OperatorName, CreatedDate, WorkOrderID, WorkOrderName, HarnessID, "
+    "HarnessName, SequenceID, SequenceName, SpliceID, SpliceName, SpliceHash, WeldCount, "
     "PartCount, ActualEnergy, ActualTPressure, ActualPressure, ActualAmplitude, "
     "ActualAmplitude2, ActualWidth, ActualTime, ActualPeakPower, ActualPreheight, "
     "ActualPostheight, ActualAlarmFlags, SampleRatio, NoOfSamples, CurrentGraphDirectory) "
-    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
+    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
     "?, ?, ?, ?, ?)",
 
     "SELECT ID, OperatorName FROM WeldResultHistory",
@@ -44,8 +45,8 @@ const QString SQLSentence[] = {
                                                /*6 Delete One Record from WeldResult Table*/
 
     "UPDATE WeldResultHistory SET "
-    "OperatorName = ?, CreatedDate = ?, WorkOrderID = ?, WorkOrderName = ?, PartID = ?, "
-    "PartName = ?, SpliceID = ?, SpliceName = ?, SpliceHash = ?, "
+    "OperatorName = ?, CreatedDate = ?, WorkOrderID = ?, WorkOrderName = ?, HarnessID = ?, "
+    "HarnessName = ?, SequenceID = ?, SequenceName = ?, SpliceID = ?, SpliceName = ?, SpliceHash = ?, "
     "WeldCount = ?, PartCount, ActualEnergy = ?, ActualTPressure = ?, "
     "ActualPressure = ?, ActualAmplitude = ?, ActualAmplitude2 = ?, ActualWidth = ?, "
     "ActualTime = ?, ActualPeakPower = ?, ActualPreheight = ?, ActualPostheight = ?, "
@@ -89,7 +90,7 @@ void DBWeldResultTable::SwitchDBObject(bool IsModularProduction)
 bool DBWeldResultTable::CreateNewTable()
 {
     QSqlQuery query(WeldResultDBObj);
-    bool bResult = query.exec(SQLSentence[CREATE]);
+    bool bResult = query.exec(SQLSentence[SQLITCLASS::CREATE]);
     if(bResult == false)
         qDebug() << "Weld Result SQL ERROR:"<< query.lastError();
     return bResult;
@@ -160,16 +161,18 @@ int DBWeldResultTable::InsertRecordIntoTable(void *_obj)
         _Utility->ListJsonToString(&((WeldResultElement*)_obj)->PowerGraph,PowerJson);
         _Utility->ListJsonToString(&((WeldResultElement*)_obj)->PostHeightGraph, HeightJson);
         JsonStringToQSetting(sPathName, PowerJson, HeightJson);
-        query.prepare(SQLSentence[INSERT]);
+        query.prepare(SQLSentence[SQLITCLASS::INSERT]);
         query.addBindValue(((WeldResultElement*)_obj)->OperatorName);
         query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
         query.addBindValue(((WeldResultElement*)_obj)->CurrentWorkOrder.WorkOrderID);
         query.addBindValue(((WeldResultElement*)_obj)->CurrentWorkOrder.WorkOrderName);
-        query.addBindValue(((WeldResultElement*)_obj)->CurrentPart.PartID);
-        query.addBindValue(((WeldResultElement*)_obj)->CurrentPart.PartName);
-        query.addBindValue(((WeldResultElement*)_obj)->CurrentSplice.SpliceID);
-        query.addBindValue(((WeldResultElement*)_obj)->CurrentSplice.SpliceName);
-        query.addBindValue(((WeldResultElement*)_obj)->CurrentSplice.SpliceHash);
+        query.addBindValue(((WeldResultElement*)_obj)->CurrentHarness.HarnessID);
+        query.addBindValue(((WeldResultElement*)_obj)->CurrentHarness.HarnessName);
+        query.addBindValue(((WeldResultElement*)_obj)->CurrentSequence.SequenceID);
+        query.addBindValue(((WeldResultElement*)_obj)->CurrentSequence.SequenceName);
+        query.addBindValue(((WeldResultElement*)_obj)->CurrentSplice.PartID);
+        query.addBindValue(((WeldResultElement*)_obj)->CurrentSplice.PartName);
+        query.addBindValue(((WeldResultElement*)_obj)->CurrentSplice.PartHash);
         query.addBindValue(((WeldResultElement*)_obj)->WeldCount);
         query.addBindValue(((WeldResultElement*)_obj)->PartCount);
         query.addBindValue(((WeldResultElement*)_obj)->ActualResult.ActualEnergy);
@@ -208,7 +211,7 @@ bool DBWeldResultTable::QueryEntireTable(QMap<int, QString> *_obj)
     if(bResult == false)
         return bResult;
 
-    bResult = query.exec(SQLSentence[QUERY_ENTIRE_TABLE]);
+    bResult = query.exec(SQLSentence[SQLITCLASS::QUERY_ENTIRE_TABLE]);
     if (bResult == true)
     {
         _obj->clear();
@@ -241,7 +244,7 @@ bool DBWeldResultTable::QueryOneRecordFromTable(int ID, QString OperatorName, vo
         return bResult;
     }
 
-    query.prepare(SQLSentence[QUERY_ONE_RECORD]);
+    query.prepare(SQLSentence[SQLITCLASS::QUERY_ONE_RECORD]);
     query.addBindValue(ID);
     query.addBindValue(OperatorName);
 
@@ -269,15 +272,19 @@ bool DBWeldResultTable::QueryOneRecordFromTable(int ID, QString OperatorName, vo
             = query.value("WorkOrderID").toInt();
     ((WeldResultElement*)_obj)->CurrentWorkOrder.WorkOrderName
             = query.value("WorkOrderName").toString();
-    ((WeldResultElement*)_obj)->CurrentPart.PartID
-            = query.value("PartID").toInt();
-    ((WeldResultElement*)_obj)->CurrentPart.PartName
-            = query.value("PartName").toString();
-    ((WeldResultElement*)_obj)->CurrentSplice.SpliceID
+    ((WeldResultElement*)_obj)->CurrentHarness.HarnessID
+            = query.value("HarnessID").toInt();
+    ((WeldResultElement*)_obj)->CurrentHarness.HarnessName
+            = query.value("HarnessName").toString();
+    ((WeldResultElement*)_obj)->CurrentSequence.SequenceID
+            = query.value("SequenceID").toInt();
+    ((WeldResultElement*)_obj)->CurrentSequence.SequenceName
+            = query.value("SequenceName").toString();
+    ((WeldResultElement*)_obj)->CurrentSplice.PartID
             = query.value("SpliceID").toInt();
-    ((WeldResultElement*)_obj)->CurrentSplice.SpliceName
+    ((WeldResultElement*)_obj)->CurrentSplice.PartName
             = query.value("SpliceName").toString();
-    ((WeldResultElement*)_obj)->CurrentSplice.SpliceHash
+    ((WeldResultElement*)_obj)->CurrentSplice.PartHash
             = query.value("SpliceHash").toInt();
     ((WeldResultElement*)_obj)->WeldCount = query.value("WeldCount").toInt();
     ((WeldResultElement*)_obj)->PartCount = query.value("PartCount").toInt();
@@ -304,7 +311,7 @@ bool DBWeldResultTable::QueryOneRecordFromTable(int ID, QString OperatorName, vo
     ((WeldResultElement*)_obj)->ActualResult.ActualAlarmflags
             = query.value("ActualAlarmFlags").toInt();
     ((WeldResultElement*)_obj)->SampleRatio
-            = (enum SAMPLERATIO)query.value("SampleRatio").toInt();
+            = (WeldResultElement::SAMPLERATIO)query.value("SampleRatio").toInt();
     ((WeldResultElement*)_obj)->NoOfSamples
             = query.value("NoOfSamples").toInt();
     WeldResultDBObj.close();
@@ -323,7 +330,7 @@ bool DBWeldResultTable::QueryOneRecordFromTable(int ID, void *_obj)
         qDebug() << "Weld Result SQL ERROR:"<< query.lastError();
         return bResult;
     }
-    query.prepare(SQLSentence[QUERY_ONE_RECORD_ONLY_ID]);
+    query.prepare(SQLSentence[SQLITCLASS::QUERY_ONE_RECORD_ONLY_ID]);
     query.addBindValue(ID);
     bResult = query.exec();
     if(bResult == false)
@@ -349,15 +356,19 @@ bool DBWeldResultTable::QueryOneRecordFromTable(int ID, void *_obj)
             = query.value("WorkOrderID").toInt();
     ((WeldResultElement*)_obj)->CurrentWorkOrder.WorkOrderName
             = query.value("WorkOrderName").toString();
-    ((WeldResultElement*)_obj)->CurrentPart.PartID
-            = query.value("PartID").toInt();
-    ((WeldResultElement*)_obj)->CurrentPart.PartName
-            = query.value("PartName").toString();
-    ((WeldResultElement*)_obj)->CurrentSplice.SpliceID
+    ((WeldResultElement*)_obj)->CurrentHarness.HarnessID
+            = query.value("HarnessID").toInt();
+    ((WeldResultElement*)_obj)->CurrentHarness.HarnessName
+            = query.value("HarnessName").toString();
+    ((WeldResultElement*)_obj)->CurrentSequence.SequenceID
+            = query.value("SequenceID").toInt();
+    ((WeldResultElement*)_obj)->CurrentSequence.SequenceName
+            = query.value("SequenceName").toString();
+    ((WeldResultElement*)_obj)->CurrentSplice.PartID
             = query.value("SpliceID").toInt();
-    ((WeldResultElement*)_obj)->CurrentSplice.SpliceName
+    ((WeldResultElement*)_obj)->CurrentSplice.PartName
             = query.value("SpliceName").toString();
-    ((WeldResultElement*)_obj)->CurrentSplice.SpliceHash
+    ((WeldResultElement*)_obj)->CurrentSplice.PartHash
             = query.value("SpliceHash").toInt();
     ((WeldResultElement*)_obj)->WeldCount = query.value("WeldCount").toInt();
     ((WeldResultElement*)_obj)->PartCount = query.value("PartCount").toInt();
@@ -384,7 +395,7 @@ bool DBWeldResultTable::QueryOneRecordFromTable(int ID, void *_obj)
     ((WeldResultElement*)_obj)->ActualResult.ActualAlarmflags
             = query.value("ActualAlarmFlags").toInt();
     ((WeldResultElement*)_obj)->SampleRatio
-            = (enum SAMPLERATIO)query.value("SampleRatio").toInt();
+            = (WeldResultElement::SAMPLERATIO)query.value("SampleRatio").toInt();
     ((WeldResultElement*)_obj)->NoOfSamples
             = query.value("NoOfSamples").toInt();
     WeldResultDBObj.close();
@@ -401,7 +412,7 @@ bool DBWeldResultTable::DeleteEntireTable()
         return bResult;
     }
 
-    bResult = query.exec(SQLSentence[DELETE_ENTIRE_TABLE]);
+    bResult = query.exec(SQLSentence[SQLITCLASS::DELETE_ENTIRE_TABLE]);
     if(bResult == false)
     {
         qDebug() << "Weld Result Table SQL ERROR:"<< query.lastError();
@@ -421,7 +432,7 @@ bool DBWeldResultTable::DeleteOneRecordFromTable(int ID, QString OperatorName)
         return bResult;
     }
 
-    query.prepare(SQLSentence[DELETE_ONE_RECORD]);
+    query.prepare(SQLSentence[SQLITCLASS::DELETE_ONE_RECORD]);
     query.addBindValue(ID);
     query.addBindValue(OperatorName);
 
@@ -447,17 +458,19 @@ bool DBWeldResultTable::UpdateRecordIntoTable(void *_obj)
         return bResult;
     }
     QString tmpTableName = QDateTime::currentDateTime().toString("yyyyMMdd");
-    query.prepare(SQLSentence[UPDATE_ONE_RECORD]);
+    query.prepare(SQLSentence[SQLITCLASS::UPDATE_ONE_RECORD]);
     query.addBindValue(((WeldResultElement*)_obj)->OperatorName);
     QDateTime TimeLabel = QDateTime::fromTime_t(((WeldResultElement*)_obj)->CreatedDate);
     query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
     query.addBindValue(((WeldResultElement*)_obj)->CurrentWorkOrder.WorkOrderID);
     query.addBindValue(((WeldResultElement*)_obj)->CurrentWorkOrder.WorkOrderName);
-    query.addBindValue(((WeldResultElement*)_obj)->CurrentPart.PartID);
-    query.addBindValue(((WeldResultElement*)_obj)->CurrentPart.PartName);
-    query.addBindValue(((WeldResultElement*)_obj)->CurrentSplice.SpliceID);
-    query.addBindValue(((WeldResultElement*)_obj)->CurrentSplice.SpliceName);
-    query.addBindValue(((WeldResultElement*)_obj)->CurrentSplice.SpliceHash);
+    query.addBindValue(((WeldResultElement*)_obj)->CurrentHarness.HarnessID);
+    query.addBindValue(((WeldResultElement*)_obj)->CurrentHarness.HarnessName);
+    query.addBindValue(((WeldResultElement*)_obj)->CurrentSequence.SequenceID);
+    query.addBindValue(((WeldResultElement*)_obj)->CurrentSequence.SequenceName);
+    query.addBindValue(((WeldResultElement*)_obj)->CurrentSplice.PartID);
+    query.addBindValue(((WeldResultElement*)_obj)->CurrentSplice.PartName);
+    query.addBindValue(((WeldResultElement*)_obj)->CurrentSplice.PartHash);
     query.addBindValue(((WeldResultElement*)_obj)->WeldCount);
     query.addBindValue(((WeldResultElement*)_obj)->PartCount);
     query.addBindValue(((WeldResultElement*)_obj)->ActualResult.ActualEnergy);
@@ -625,7 +638,8 @@ bool DBWeldResultTable::QueryOnlyUseField(QString FieldName, QMap<int, QString> 
 
 }
 
-bool DBWeldResultTable::QueryBySomeFields(QMap<int, QString> *_obj, QString WorkOrderName, QString PartName, QString SpliceName,
+bool DBWeldResultTable::QueryBySomeFields(QMap<int, QString> *_obj,
+                        QString HarnessName, QString SequenceName, QString SpliceName,
                        unsigned int time_from, unsigned int time_to,
                        enum FieldType OrderField, bool Orderby)
 {
@@ -635,7 +649,8 @@ bool DBWeldResultTable::QueryBySomeFields(QMap<int, QString> *_obj, QString Work
     QSqlQuery query(WeldResultDBObj);
     bool bResult = WeldResultDBObj.open();
     if(bResult == true){
-        if((WorkOrderName.isEmpty() == true) && (PartName.isEmpty() == true) && (SpliceName.isEmpty() == true))
+        if((HarnessName.isEmpty() == true) && (SequenceName.isEmpty() == true)
+                && (SpliceName.isEmpty() == true))
         {
             if(Orderby == true)
                 query.prepare("SELECT ID, OperatorName FROM WeldResultHistory WHERE CreatedDate >= ?"
@@ -648,7 +663,7 @@ bool DBWeldResultTable::QueryBySomeFields(QMap<int, QString> *_obj, QString Work
             query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
             TimeLabel = QDateTime::fromTime_t(time_to);
             query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
-        }else if((WorkOrderName.isEmpty() == true) && (PartName.isEmpty() == true))
+        }else if((HarnessName.isEmpty() == true) && (SequenceName.isEmpty() == true))
         {
             QString FieldName;
             switch (OrderField) {
@@ -675,12 +690,12 @@ bool DBWeldResultTable::QueryBySomeFields(QMap<int, QString> *_obj, QString Work
             TimeLabel = QDateTime::fromTime_t(time_to);
             query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
             query.addBindValue(SpliceName);
-        }else if((WorkOrderName.isEmpty() == true) && (SpliceName.isEmpty() == true))
+        }else if((SpliceName.isEmpty() == true) && (SequenceName.isEmpty() == true))
         {
             QString FieldName;
             switch (OrderField) {
             case PartType:
-                FieldName = "PartName";
+                FieldName = "HarnessName";
                 break;
             case CreatedDateType:
                 FieldName = "CreatedDate";
@@ -692,22 +707,22 @@ bool DBWeldResultTable::QueryBySomeFields(QMap<int, QString> *_obj, QString Work
             QString QueryStr;
             if (Orderby == true)
                 QueryStr = QString("SELECT ID, OperatorName FROM WeldResultHistory WHERE CreatedDate >= ?"
-                " AND CreatedDate <= ? AND PartName == ? ORDER BY %1 ASC").arg(FieldName);
+                " AND CreatedDate <= ? AND HarnessName == ? ORDER BY %1 ASC").arg(FieldName);
             else
                 QueryStr = QString("SELECT ID, OperatorName FROM WeldResultHistory WHERE CreatedDate >= ?"
-                " AND CreatedDate <= ? AND PartName == ? ORDER BY %1 DESC").arg(FieldName);
+                " AND CreatedDate <= ? AND HarnessName == ? ORDER BY %1 DESC").arg(FieldName);
             query.prepare(QueryStr);
             QDateTime TimeLabel = QDateTime::fromTime_t(time_from);
             query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
             TimeLabel = QDateTime::fromTime_t(time_to);
             query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
-            query.addBindValue(PartName);
-        }else if((PartName.isEmpty() == true) && (SpliceName.isEmpty() == true))
+            query.addBindValue(HarnessName);
+        }else if((HarnessName.isEmpty() == true) && (SpliceName.isEmpty() == true))
         {
             QString FieldName;
             switch (OrderField) {
             case WorkOrderType:
-                FieldName = "WorkOrderName";
+                FieldName = "SequenceName";
                 break;
             case CreatedDateType:
                 FieldName = "CreatedDate";
@@ -719,17 +734,17 @@ bool DBWeldResultTable::QueryBySomeFields(QMap<int, QString> *_obj, QString Work
             QString QueryStr;
             if (Orderby == true)
                 QueryStr = QString("SELECT ID, OperatorName FROM WeldResultHistory WHERE CreatedDate >= ?"
-                " AND CreatedDate <= ? AND WorkOrderName == ? ORDER BY %1 ASC").arg(FieldName);
+                " AND CreatedDate <= ? AND SequenceName == ? ORDER BY %1 ASC").arg(FieldName);
             else
                 QueryStr = QString("SELECT ID, OperatorName FROM WeldResultHistory WHERE CreatedDate >= ?"
-                " AND CreatedDate <= ? AND WorkOrderName == ? ORDER BY %1 DESC").arg(FieldName);
+                " AND CreatedDate <= ? AND SequenceName == ? ORDER BY %1 DESC").arg(FieldName);
             query.prepare(QueryStr);
             QDateTime TimeLabel = QDateTime::fromTime_t(time_from);
             query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
             TimeLabel = QDateTime::fromTime_t(time_to);
             query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
-            query.addBindValue(WorkOrderName);
-        }else if(WorkOrderName.isEmpty() == true)
+            query.addBindValue(SequenceName);
+        }else if(SequenceName.isEmpty() == true)
         {
             QString FieldName;
             switch (OrderField) {
@@ -737,7 +752,7 @@ bool DBWeldResultTable::QueryBySomeFields(QMap<int, QString> *_obj, QString Work
                 FieldName = "SpliceName";
                 break;
             case PartType:
-                FieldName = "PartName";
+                FieldName = "HarnessName";
                 break;
             case CreatedDateType:
                 FieldName = "CreatedDate";
@@ -749,18 +764,18 @@ bool DBWeldResultTable::QueryBySomeFields(QMap<int, QString> *_obj, QString Work
             QString QueryStr;
             if (Orderby == true)
                 QueryStr = QString("SELECT ID, OperatorName FROM WeldResultHistory WHERE CreatedDate >= ?"
-                " AND CreatedDate <= ? AND SpliceName == ? AND PartName == ? ORDER BY %1 ASC").arg(FieldName);
+                " AND CreatedDate <= ? AND SpliceName == ? AND HarnessName == ? ORDER BY %1 ASC").arg(FieldName);
             else
                 QueryStr = QString("SELECT ID, OperatorName FROM WeldResultHistory WHERE CreatedDate >= ?"
-                " AND CreatedDate <= ? AND SpliceName == ? AND PartName == ? ORDER BY %1 DESC").arg(FieldName);
+                " AND CreatedDate <= ? AND SpliceName == ? AND HarnessName == ? ORDER BY %1 DESC").arg(FieldName);
             query.prepare(QueryStr);
             QDateTime TimeLabel = QDateTime::fromTime_t(time_from);
             query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
             TimeLabel = QDateTime::fromTime_t(time_to);
             query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
             query.addBindValue(SpliceName);
-            query.addBindValue(PartName);
-        }else if(PartName.isEmpty() == true)
+            query.addBindValue(HarnessName);
+        }else if(HarnessName.isEmpty() == true)
         {
             QString FieldName;
             switch (OrderField) {
@@ -768,7 +783,7 @@ bool DBWeldResultTable::QueryBySomeFields(QMap<int, QString> *_obj, QString Work
                 FieldName = "SpliceName";
                 break;
             case WorkOrderType:
-                FieldName = "WorkOrderName";
+                FieldName = "SequenceName";
                 break;
             case CreatedDateType:
                 FieldName = "CreatedDate";
@@ -780,26 +795,26 @@ bool DBWeldResultTable::QueryBySomeFields(QMap<int, QString> *_obj, QString Work
             QString QueryStr;
             if (Orderby == true)
                 QueryStr = QString("SELECT ID, OperatorName FROM WeldResultHistory WHERE CreatedDate >= ?"
-                " AND CreatedDate <= ? AND SpliceName == ? AND WorkOrderName == ? ORDER BY %1 ASC").arg(FieldName);
+                " AND CreatedDate <= ? AND SpliceName == ? AND SequenceName == ? ORDER BY %1 ASC").arg(FieldName);
             else
                 QueryStr = QString("SELECT ID, OperatorName FROM WeldResultHistory WHERE CreatedDate >= ?"
-                " AND CreatedDate <= ? AND SpliceName == ? AND WorkOrderName == ? ORDER BY %1 DESC").arg(FieldName);
+                " AND CreatedDate <= ? AND SpliceName == ? AND SequenceName == ? ORDER BY %1 DESC").arg(FieldName);
             query.prepare(QueryStr);
             QDateTime TimeLabel = QDateTime::fromTime_t(time_from);
             query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
             TimeLabel = QDateTime::fromTime_t(time_to);
             query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
             query.addBindValue(SpliceName);
-            query.addBindValue(WorkOrderName);
+            query.addBindValue(SequenceName);
         }else if(SpliceName.isEmpty() == true)
         {
             QString FieldName;
             switch (OrderField) {
             case WorkOrderType:
-                FieldName = "WorkOrderName";
+                FieldName = "SequenceName";
                 break;
             case PartType:
-                FieldName = "PartName";
+                FieldName = "HarnessName";
                 break;
             case CreatedDateType:
                 FieldName = "CreatedDate";
@@ -811,17 +826,17 @@ bool DBWeldResultTable::QueryBySomeFields(QMap<int, QString> *_obj, QString Work
             QString QueryStr;
             if (Orderby == true)
                 QueryStr = QString("SELECT ID, OperatorName FROM WeldResultHistory WHERE CreatedDate >= ?"
-                " AND CreatedDate <= ? AND WorkOrderName == ? AND PartName == ? ORDER BY %1 ASC").arg(FieldName);
+                " AND CreatedDate <= ? AND SequenceName == ? AND HarnessName == ? ORDER BY %1 ASC").arg(FieldName);
             else
                 QueryStr = QString("SELECT ID, OperatorName FROM WeldResultHistory WHERE CreatedDate >= ?"
-                " AND CreatedDate <= ? AND WorkOrderName == ? AND PartName == ? ORDER BY %1 DESC").arg(FieldName);
+                " AND CreatedDate <= ? AND SequenceName == ? AND HarnessName == ? ORDER BY %1 DESC").arg(FieldName);
             query.prepare(QueryStr);
             QDateTime TimeLabel = QDateTime::fromTime_t(time_from);
             query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
             TimeLabel = QDateTime::fromTime_t(time_to);
             query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
-            query.addBindValue(WorkOrderName);
-            query.addBindValue(PartName);
+            query.addBindValue(SequenceName);
+            query.addBindValue(HarnessName);
         }else{
             QString FieldName;
             switch (OrderField) {
@@ -829,10 +844,10 @@ bool DBWeldResultTable::QueryBySomeFields(QMap<int, QString> *_obj, QString Work
                 FieldName = "SpliceName";
                 break;
             case PartType:
-                FieldName = "PartName";
+                FieldName = "HarnessName";
                 break;
             case WorkOrderType:
-                FieldName = "WorkOrderName";
+                FieldName = "SequenceName";
                 break;
             case CreatedDateType:
                 FieldName = "CreatedDate";
@@ -845,19 +860,19 @@ bool DBWeldResultTable::QueryBySomeFields(QMap<int, QString> *_obj, QString Work
             if (Orderby == true)
                 QueryStr = QString("SELECT ID, OperatorName FROM WeldResultHistory WHERE (CreatedDate >= ? "
                 "AND CreatedDate <= ? AND SpliceName = ? "
-                "AND PartName = ? AND WorkOrderName = ?) ORDER BY %1 ASC").arg(FieldName);
+                "AND HarnessName = ? AND SequenceName = ?) ORDER BY %1 ASC").arg(FieldName);
             else
                 QueryStr = QString("SELECT ID, OperatorName FROM WeldResultHistory WHERE (CreatedDate >= ? "
                 "AND CreatedDate <= ? AND SpliceName = ? "
-                "AND PartName = ? AND WorkOrderName = ?) ORDER BY %1 DESC").arg(FieldName);
+                "AND HarnessName = ? AND SequenceName = ?) ORDER BY %1 DESC").arg(FieldName);
             query.prepare(QueryStr);
             QDateTime TimeLabel = QDateTime::fromTime_t(time_from);
             query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
             TimeLabel = QDateTime::fromTime_t(time_to);
             query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
             query.addBindValue(SpliceName);
-            query.addBindValue(PartName);
-            query.addBindValue(WorkOrderName);
+            query.addBindValue(HarnessName);
+            query.addBindValue(SequenceName);
         }
         bResult = query.exec();
         if(bResult == true)
@@ -925,7 +940,7 @@ bool DBWeldResultTable::QueryOneRecordWithGraph(int ID, QString OperatorName, vo
         return bResult;
     }
 
-    query.prepare(SQLSentence[QUERY_ONE_RECORD]);
+    query.prepare(SQLSentence[SQLITCLASS::QUERY_ONE_RECORD]);
     query.addBindValue(ID);
     query.addBindValue(OperatorName);
 
@@ -953,15 +968,19 @@ bool DBWeldResultTable::QueryOneRecordWithGraph(int ID, QString OperatorName, vo
             = query.value("WorkOrderID").toInt();
     ((WeldResultElement*)_obj)->CurrentWorkOrder.WorkOrderName
             = query.value("WorkOrderName").toString();
-    ((WeldResultElement*)_obj)->CurrentPart.PartID
-            = query.value("PartID").toInt();
-    ((WeldResultElement*)_obj)->CurrentPart.PartName
-            = query.value("PartName").toString();
-    ((WeldResultElement*)_obj)->CurrentSplice.SpliceID
+    ((WeldResultElement*)_obj)->CurrentHarness.HarnessID
+            = query.value("HarnessID").toInt();
+    ((WeldResultElement*)_obj)->CurrentHarness.HarnessName
+            = query.value("HarnessName").toString();
+    ((WeldResultElement*)_obj)->CurrentSequence.SequenceID
+            = query.value("SequenceID").toInt();
+    ((WeldResultElement*)_obj)->CurrentSequence.SequenceName
+            = query.value("SequenceName").toString();
+    ((WeldResultElement*)_obj)->CurrentSplice.PartID
             = query.value("SpliceID").toInt();
-    ((WeldResultElement*)_obj)->CurrentSplice.SpliceName
+    ((WeldResultElement*)_obj)->CurrentSplice.PartName
             = query.value("SpliceName").toString();
-    ((WeldResultElement*)_obj)->CurrentSplice.SpliceHash
+    ((WeldResultElement*)_obj)->CurrentSplice.PartHash
             = query.value("SpliceHash").toInt();
     ((WeldResultElement*)_obj)->WeldCount = query.value("WeldCount").toInt();
     ((WeldResultElement*)_obj)->PartCount = query.value("PartCount").toInt();
@@ -988,7 +1007,7 @@ bool DBWeldResultTable::QueryOneRecordWithGraph(int ID, QString OperatorName, vo
     ((WeldResultElement*)_obj)->ActualResult.ActualAlarmflags
             = query.value("ActualAlarmFlags").toInt();
     ((WeldResultElement*)_obj)->SampleRatio
-            = (enum SAMPLERATIO)query.value("SampleRatio").toInt();
+            = (WeldResultElement::SAMPLERATIO)query.value("SampleRatio").toInt();
     QString sPathName = query.value("CurrentGraphDirectory").toString();
     UtilityClass *_Utility = UtilityClass::Instance();
     QString PowerJson;
@@ -1015,7 +1034,7 @@ bool DBWeldResultTable::QueryOneRecordWithGraph(int ID, void *_obj)
         return bResult;
     }
 
-    query.prepare(SQLSentence[QUERY_ONE_RECORD_ONLY_ID]);
+    query.prepare(SQLSentence[SQLITCLASS::QUERY_ONE_RECORD_ONLY_ID]);
     query.addBindValue(ID);
 
     bResult = query.exec();
@@ -1042,15 +1061,19 @@ bool DBWeldResultTable::QueryOneRecordWithGraph(int ID, void *_obj)
             = query.value("WorkOrderID").toInt();
     ((WeldResultElement*)_obj)->CurrentWorkOrder.WorkOrderName
             = query.value("WorkOrderName").toString();
-    ((WeldResultElement*)_obj)->CurrentPart.PartID
-            = query.value("PartID").toInt();
-    ((WeldResultElement*)_obj)->CurrentPart.PartName
-            = query.value("PartName").toString();
-    ((WeldResultElement*)_obj)->CurrentSplice.SpliceID
+    ((WeldResultElement*)_obj)->CurrentHarness.HarnessID
+            = query.value("HarnessID").toInt();
+    ((WeldResultElement*)_obj)->CurrentHarness.HarnessName
+            = query.value("HarnessName").toString();
+    ((WeldResultElement*)_obj)->CurrentSequence.SequenceID
+            = query.value("SequenceID").toInt();
+    ((WeldResultElement*)_obj)->CurrentSequence.SequenceName
+            = query.value("SequenceName").toString();
+    ((WeldResultElement*)_obj)->CurrentSplice.PartID
             = query.value("SpliceID").toInt();
-    ((WeldResultElement*)_obj)->CurrentSplice.SpliceName
+    ((WeldResultElement*)_obj)->CurrentSplice.PartName
             = query.value("SpliceName").toString();
-    ((WeldResultElement*)_obj)->CurrentSplice.SpliceHash
+    ((WeldResultElement*)_obj)->CurrentSplice.PartHash
             = query.value("SpliceHash").toInt();
     ((WeldResultElement*)_obj)->WeldCount = query.value("WeldCount").toInt();
     ((WeldResultElement*)_obj)->PartCount = query.value("PartCount").toInt();
@@ -1077,7 +1100,7 @@ bool DBWeldResultTable::QueryOneRecordWithGraph(int ID, void *_obj)
     ((WeldResultElement*)_obj)->ActualResult.ActualAlarmflags
             = query.value("ActualAlarmFlags").toInt();
     ((WeldResultElement*)_obj)->SampleRatio
-            = (enum SAMPLERATIO)query.value("SampleRatio").toInt();
+            = (WeldResultElement::SAMPLERATIO)query.value("SampleRatio").toInt();
     QString sPathName = query.value("CurrentGraphDirectory").toString();
     UtilityClass *_Utility = UtilityClass::Instance();
     QString PowerJson;

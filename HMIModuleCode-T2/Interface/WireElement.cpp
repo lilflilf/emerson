@@ -8,10 +8,11 @@ WireElement::WireElement()
     OperatorID = -1;
     Color = "pink";
     Stripe.Color = "pink";
-    Stripe.TypeOfStripe = Horizontal;
+    Stripe.TypeOfStripe = STRIPE::Horizontal;
     Gauge = 10;
     GaugeAWG = 37;
     TypeOfWire = Copper;
+    TypeOfModule = NA;
     Side = Right;
     VerticalSide = Basic;
     Position = Middle;
@@ -31,6 +32,7 @@ WireElement WireElement::operator=(const WireElement &WireObject)
     this->Gauge = WireObject.Gauge;
     this->GaugeAWG = WireObject.GaugeAWG;
     this->TypeOfWire = WireObject.TypeOfWire;
+    this->TypeOfModule = WireObject.TypeOfModule;
     this->Side = WireObject.Side;
     this->VerticalSide = WireObject.VerticalSide;
     this->Position = WireObject.Position;
@@ -53,6 +55,8 @@ bool WireElement::operator==(const WireElement &WireObject)
     if(this->GaugeAWG != WireObject.GaugeAWG)
         return bResult;
     if(this->TypeOfWire != WireObject.TypeOfWire)
+        return bResult;
+    if(this->TypeOfModule != WireObject.TypeOfModule)
         return bResult;
     if(this->Side != WireObject.Side)
         return bResult;

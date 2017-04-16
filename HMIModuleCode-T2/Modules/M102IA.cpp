@@ -394,12 +394,12 @@ void M102IA::SendIACommand(IACommands CommandNumber, int CommandData)
             length = 6;
             switch (_M10INI->TempSysConfig.CoolingMode)
             {
-                case ENERGYMODE:
+                case Status_Data::ENERGYMODE:
                    Data[0] = -1;
                    Data[1] = _M10INI->TempSysConfig.CoolingDel;
                    Data[2] = _M10INI->TempSysConfig.CoolingTooling;
                 break;
-                case OFF:
+                case Status_Data::OFF:
                    Data[0] = 0;
                    Data[1] = _M10INI->TempSysConfig.CoolingDel;
                    Data[2] = _M10INI->TempSysConfig.CoolingTooling;
@@ -856,7 +856,7 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
     case IASigMaintCount:        //"13"
     case IASigActuator:
         _Interface->StatusData.MachineType = (enum ActuatorType)MakeHexWordNumber(HexString.mid(9, 4));
-        _Interface->StatusData.ActuatorMode = (enum ACTUATORMODE)MakeHexWordNumber(HexString.mid(13, 4));
+        _Interface->StatusData.ActuatorMode = (Status_Data::ACTUATORMODE)MakeHexWordNumber(HexString.mid(13, 4));
         _Interface->StatusData.AntisideSpliceTime = MakeHexWordNumber(HexString.mid(17, 4));
         switch (_Interface->StatusData.MachineType)
         {
@@ -952,6 +952,7 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         break;
     case IASigCutoff:
         _Interface->StatusData.CutoffMode = MakeHexWordNumber(HexString.mid(9, 4));
+        _M2010->ReceiveFlags.CutterResponseData = true;
         break;
     case IASigFrequencyOffset:
          _Interface->StatusData.Soft_Settings.FrequencyOffset = MakeHexWordNumber(HexString.mid(9, 4));

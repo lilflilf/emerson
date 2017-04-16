@@ -1,6 +1,6 @@
-#include "DBPartTable.h"
+#include "DBHarnessTable.h"
 #include "Modules/UtilityClass.h"
-#include "Interface/PartElement.h"
+#include "Interface/HarnessElement.h"
 #include "Interface/interface.h"
 #include <QDebug>
 #include <QJsonObject>
@@ -10,15 +10,15 @@
 #include <QFile>
 #include <QDir>
 
-DBPartTable* DBPartTable::_instance = NULL;
-QString DBPartTable::PartDBFile   = "Part.db";
-QString DBPartTable::DatabaseDir = "c:\\BransonData\\Library\\";
-QString DBPartTable::ModularDatabaseDir = "c:\\BransonData\\Modular Production\\";
+DBHarnessTable* DBHarnessTable::_instance = NULL;
+QString DBHarnessTable::HarnessDBFile   = "Harness.db";
+QString DBHarnessTable::DatabaseDir = "c:\\BransonData\\Library\\";
+QString DBHarnessTable::ModularDatabaseDir = "c:\\BransonData\\Modular Production\\";
 
 const QString SQLSentence[] = {
-    "CREATE TABLE Part ("                       /*0 Create Part Table*/
+    "CREATE TABLE Harness ("                       /*0 Create Harness Table*/
     "ID INTEGER PRIMARY KEY AUTOINCREMENT, "
-    "PartName VARCHAR UNIQUE, "
+    "HarnessName VARCHAR UNIQUE, "
     "CreatedDate VARCHAR, OperatorID INT, "
     /* PartTypeSetting */
     "ProcessMode ENUM,"
@@ -26,54 +26,54 @@ const QString SQLSentence[] = {
     "Rows INT, Columns INT, MaxSplicesPerZone INT, "
     "NoOfSplice INT, JSONSplice VARCHAR)",
 
-    "INSERT INTO Part ("                        /*1 Insert record into Part Table*/
-    "PartName, CreatedDate, OperatorID, "
+    "INSERT INTO Harness ("                        /*1 Insert record into Harness Table*/
+    "HarnessName, CreatedDate, OperatorID, "
     "ProcessMode, TotalWorkstation, MaxSplicesPerWorkstation, "
     "Rows, Columns, MaxSplicesPerZone, NoOfSplice, JSONSplice) "
     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 
-    "SELECT ID, PartName FROM Part",            /*2 Query Entire Part Table */
+    "SELECT ID, HarnessName FROM Harness",            /*2 Query Entire Harness Table */
 
-    "SELECT * FROM Part WHERE ID = ? AND PartName = ?",
-                                                /*3 Query One Record From Part Table */
-    "SELECT * FROM Part WHERE ID = ?",          /*4 Query One Record Only Use ID */
+    "SELECT * FROM Harness WHERE ID = ? AND HarnessName = ?",
+                                                   /*3 Query One Record From Harness Table */
+    "SELECT * FROM Harness WHERE ID = ?",          /*4 Query One Record Only Use ID */
 
-    "DELETE FROM Part",                         /*5 Delete Entire Part Table*/
+    "DELETE FROM Harness",                         /*5 Delete Entire Harness Table*/
 
-    "DELETE FROM Part WHERE ID = ? AND PartName = ?",
-                                                /*6 Delete One Record from Part Table*/
+    "DELETE FROM Harness WHERE ID = ? AND HarnessName = ?",
+                                                /*6 Delete One Record from Harness Table*/
 
-    "UPDATE Part SET PartName = ?, CreatedDate = ?, OperatorID = ?, "
+    "UPDATE Harness SET HarnessName = ?, CreatedDate = ?, OperatorID = ?, "
     "ProcessMode = ?, TotalWorkstation = ?, MaxSplicesPerWorkstation = ?, "
     "Rows = ?, Columns = ?, MaxSplicesPerZone = ?, NoOfSplice = ?, JSONSplice = ? "
-    "WHERE ID = ?",                             /*7 Update One Record to Part Table*/
+    "WHERE ID = ?",                             /*7 Update One Record to Harness Table*/
 
 };
 
-DBPartTable* DBPartTable::Instance()
+DBHarnessTable* DBHarnessTable::Instance()
 {
     if(_instance == 0){
-        _instance = new DBPartTable();
+        _instance = new DBHarnessTable();
     }
     return _instance;
 }
 
-DBPartTable::DBPartTable()
+DBHarnessTable::DBHarnessTable()
 {
     spliceTable = DBPresetTable::Instance();
-    PartDBObj = QSqlDatabase::addDatabase("QSQLITE", "PartDBObjConnect");
-    PartDBObj.setDatabaseName(DatabaseDir + PartDBFile);
-    if(PartDBObj.open())
+    HarnessDBObj = QSqlDatabase::addDatabase("QSQLITE", "HarnessDBObjConnect");
+    HarnessDBObj.setDatabaseName(DatabaseDir + HarnessDBFile);
+    if(HarnessDBObj.open())
     {
-        if(!PartDBObj.tables().contains("Part")) {
+        if(!HarnessDBObj.tables().contains("Harness")) {
             CreateNewTable();
 //            InsertTestDataIntoTable();
         }
     }
-    PartDBObj.close();
+    HarnessDBObj.close();
 }
 
-bool DBPartTable::OpenDBObject()
+bool DBHarnessTable::OpenDBObject()
 {
     bool bResult = false;
     struct BransonMessageBox tmpMsgBox;
@@ -82,7 +82,7 @@ bool DBPartTable::OpenDBObject()
     mIsModularProduction = _Interface->StatusData.EnableModularFlag;
     if(mIsModularProduction == true)
     {
-        if (DBDirectory.exists(ModularDatabaseDir + PartDBFile) == false)
+        if (DBDirectory.exists(ModularDatabaseDir + HarnessDBFile) == false)
         {
             tmpMsgBox.MsgTitle = QObject::tr("ERROR");
             tmpMsgBox.MsgPrompt = QObject::tr("Please make sure All the production files has been in the Modular Production!");
@@ -94,10 +94,9 @@ bool DBPartTable::OpenDBObject()
         }
     }
 
-    QSqlQuery query(PartDBObj);
-    if(PartDBObj.open() == false)
+    QSqlQuery query(HarnessDBObj);
+    if(HarnessDBObj.open() == false)
     {
-
         qDebug() << "SQL Open:"<< query.lastError();
         bResult = false;
     }else
@@ -105,99 +104,99 @@ bool DBPartTable::OpenDBObject()
     return bResult;
 }
 
-void DBPartTable::SwitchDBObject(bool IsModularProduction)
+void DBHarnessTable::SwitchDBObject(bool IsModularProduction)
 {
     mIsModularProduction = IsModularProduction;
-    {PartDBObj.close();}
+    {HarnessDBObj.close();}
     if(mIsModularProduction == true)
     {
-        PartDBObj.setDatabaseName(ModularDatabaseDir + PartDBFile);
+        HarnessDBObj.setDatabaseName(ModularDatabaseDir + HarnessDBFile);
     }
     else
     {
-        PartDBObj.setDatabaseName(DatabaseDir + PartDBFile);
+        HarnessDBObj.setDatabaseName(DatabaseDir + HarnessDBFile);
     }
 
     OpenDBObject();
-    PartDBObj.close();
+    HarnessDBObj.close();
 }
 
-void DBPartTable::InsertTestDataIntoTable()
+void DBHarnessTable::InsertTestDataIntoTable()
 {
-    struct PartElement tmpPart;
+    struct HarnessElement tmpHarness;
     for (int i = 0; i < 7; i++)
     {
         if ( i == 0)
-            tmpPart.PartName = "32117-SHA-0001-00(INSTHARNESSS)";
+            tmpHarness.HarnessName = "32117-SHA-0001-00(INSTHARNESSS)";
         if ( i == 1)
-            tmpPart.PartName = "32200-SGA-2000-01(CABINHARNESS)";
+            tmpHarness.HarnessName = "32200-SGA-2000-01(CABINHARNESS)";
         if ( i == 2)
-            tmpPart.PartName = "32751-TAA-A190-03(FRDOORHARNESS)";
+            tmpHarness.HarnessName = "32751-TAA-A190-03(FRDOORHARNESS)";
         if ( i == 3)
-            tmpPart.PartName = "P5VH006Y0";
+            tmpHarness.HarnessName = "P5VH006Y0";
         if ( i == 4)
-            tmpPart.PartName = "P5VH006P0";
+            tmpHarness.HarnessName = "P5VH006P0";
         if ( i == 5)
-            tmpPart.PartName = "P5VH006Z0";
+            tmpHarness.HarnessName = "P5VH006Z0";
         else
-            tmpPart.PartName = QString("P5VH006Z0 + %1").arg(i);
+            tmpHarness.HarnessName = QString("P5VH006Z0 + %1").arg(i);
 
-        tmpPart.CreatedDate = QDateTime::currentDateTime().toTime_t();
-        tmpPart.OperatorID = 2;
-        tmpPart.PartTypeSetting.ProcessMode = BASIC;
-        tmpPart.PartTypeSetting.WorkStations.TotalWorkstation = 20;
-        tmpPart.PartTypeSetting.WorkStations.MaxSplicesPerWorkstation = 30;
-        tmpPart.PartTypeSetting.BoardLayout.Rows = 4;
-        tmpPart.PartTypeSetting.BoardLayout.Columns = 4;
-        tmpPart.PartTypeSetting.BoardLayout.MaxSplicesPerZone = 10;
+        tmpHarness.CreatedDate = QDateTime::currentDateTime().toTime_t();
+        tmpHarness.OperatorID = 2;
+        tmpHarness.HarnessTypeSetting.ProcessMode = BASIC;
+        tmpHarness.HarnessTypeSetting.WorkStations.TotalWorkstation = 20;
+        tmpHarness.HarnessTypeSetting.WorkStations.MaxSplicesPerWorkstation = 30;
+        tmpHarness.HarnessTypeSetting.BoardLayout.Rows = 4;
+        tmpHarness.HarnessTypeSetting.BoardLayout.Columns = 4;
+        tmpHarness.HarnessTypeSetting.BoardLayout.MaxSplicesPerZone = 10;
 
-        struct PARTATTRIBUTE PartAttribute;
-        PartAttribute.SpliceName = "WangYIBIN";
-        PartAttribute.CurrentBoardLayoutZone = 1;
-        PartAttribute.CurrentWorkstation = 2;
-        tmpPart.SpliceList.insert(0,PartAttribute);
-        PartAttribute.SpliceName = "JWang";
-        PartAttribute.CurrentBoardLayoutZone = 2;
-        PartAttribute.CurrentWorkstation = 3;
-        tmpPart.SpliceList.insert(1,PartAttribute);
-        PartAttribute.SpliceName = "JW";
-        PartAttribute.CurrentBoardLayoutZone = 3;
-        PartAttribute.CurrentWorkstation = 4;
-        tmpPart.SpliceList.insert(2,PartAttribute);
-        tmpPart.NoOfSplice = tmpPart.SpliceList.size();
+        struct HARNESSATTRIBUTE HarnessAttribute;
+        HarnessAttribute.SpliceName = "WangYIBIN";
+        HarnessAttribute.CurrentBoardLayoutZone = 1;
+        HarnessAttribute.CurrentWorkstation = 2;
+        tmpHarness.SpliceList.insert(0,HarnessAttribute);
+        HarnessAttribute.SpliceName = "JWang";
+        HarnessAttribute.CurrentBoardLayoutZone = 2;
+        HarnessAttribute.CurrentWorkstation = 3;
+        tmpHarness.SpliceList.insert(1,HarnessAttribute);
+        HarnessAttribute.SpliceName = "JW";
+        HarnessAttribute.CurrentBoardLayoutZone = 3;
+        HarnessAttribute.CurrentWorkstation = 4;
+        tmpHarness.SpliceList.insert(2,HarnessAttribute);
+        tmpHarness.NoOfSplice = tmpHarness.SpliceList.size();
 
-        InsertRecordIntoTable(&tmpPart);
+        InsertRecordIntoTable(&tmpHarness);
     }
 }
 
-DBPartTable::~DBPartTable()
+DBHarnessTable::~DBHarnessTable()
 {
-    PartDBObj.close();
+    HarnessDBObj.close();
 }
 
-bool DBPartTable::CreateNewTable()
+bool DBHarnessTable::CreateNewTable()
 {
-    QSqlQuery query(PartDBObj);
-    bool bResult = PartDBObj.open();
+    QSqlQuery query(HarnessDBObj);
+    bool bResult = HarnessDBObj.open();
 
-    bResult = query.exec(SQLSentence[CREATE]);   //run SQL
+    bResult = query.exec(SQLSentence[SQLITCLASS::CREATE]);   //run SQL
 
     if(bResult == false)
-        qDebug() << "Part Table SQL ERROR:"<< query.lastError();
+        qDebug() << "Harness Table SQL ERROR:"<< query.lastError();
 
-    PartDBObj.close();
+    HarnessDBObj.close();
 
     return bResult;
 }
 
-int DBPartTable::InsertRecordIntoTable(void *_obj)
+int DBHarnessTable::InsertRecordIntoTable(void *_obj)
 {
     bool bResult = false;
     int iResult = -1;
     if(_obj == NULL)
         return false;
 
-    QSqlQuery query(PartDBObj);
+    QSqlQuery query(HarnessDBObj);
     bResult = OpenDBObject();
     if(bResult == false)
     {
@@ -207,234 +206,234 @@ int DBPartTable::InsertRecordIntoTable(void *_obj)
 
     UtilityClass *_Utility = UtilityClass::Instance();
 
-    query.prepare(SQLSentence[INSERT]);
+    query.prepare(SQLSentence[SQLITCLASS::INSERT]);
 
-    query.addBindValue(((PartElement*)_obj)->PartName);
+    query.addBindValue(((HarnessElement*)_obj)->HarnessName);
     QDateTime TimeLabel = QDateTime::currentDateTime();
     query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
-    query.addBindValue(((PartElement*)_obj)->OperatorID);
-    query.addBindValue(((PartElement*)_obj)->PartTypeSetting.ProcessMode);
-    query.addBindValue(((PartElement*)_obj)->PartTypeSetting.WorkStations.
+    query.addBindValue(((HarnessElement*)_obj)->OperatorID);
+    query.addBindValue(((HarnessElement*)_obj)->HarnessTypeSetting.ProcessMode);
+    query.addBindValue(((HarnessElement*)_obj)->HarnessTypeSetting.WorkStations.
                        TotalWorkstation);
-    query.addBindValue(((PartElement*)_obj)->PartTypeSetting.WorkStations.
+    query.addBindValue(((HarnessElement*)_obj)->HarnessTypeSetting.WorkStations.
                        MaxSplicesPerWorkstation);
-    query.addBindValue(((PartElement*)_obj)->PartTypeSetting.BoardLayout.Rows);
-    query.addBindValue(((PartElement*)_obj)->PartTypeSetting.BoardLayout.
+    query.addBindValue(((HarnessElement*)_obj)->HarnessTypeSetting.BoardLayout.Rows);
+    query.addBindValue(((HarnessElement*)_obj)->HarnessTypeSetting.BoardLayout.
                        Columns);
-    query.addBindValue(((PartElement*)_obj)->PartTypeSetting.BoardLayout.
+    query.addBindValue(((HarnessElement*)_obj)->HarnessTypeSetting.BoardLayout.
                        MaxSplicesPerZone);
-    query.addBindValue(((PartElement*)_obj)->NoOfSplice);
+    query.addBindValue(((HarnessElement*)_obj)->NoOfSplice);
 
 
     QString tmpJson;
-    _Utility->MapJsonToString(&((PartElement*)_obj)->SpliceList,tmpJson);
+    _Utility->MapJsonToString(&((HarnessElement*)_obj)->SpliceList,tmpJson);
     query.addBindValue(tmpJson);
 
     bResult = query.exec();
     if (bResult == false)   //run SQL
-        qDebug() << "Part Table SQL ERROR:"<< query.lastError();
+        qDebug() << "Harness Table SQL ERROR:"<< query.lastError();
     else
         iResult = query.lastInsertId().toInt(&bResult);
     if(bResult == false)
         iResult = -1;
-    PartDBObj.close();
+    HarnessDBObj.close();
     return iResult;
 }
 
-bool DBPartTable::QueryEntireTable(QMap<int, QString> *_obj)
+bool DBHarnessTable::QueryEntireTable(QMap<int, QString> *_obj)
 {
     if(_obj == NULL)
         return false;
 
-    QSqlQuery query(PartDBObj);
+    QSqlQuery query(HarnessDBObj);
     bool bResult = OpenDBObject();
     if(bResult == false)
         return bResult;
 
-    bResult = query.exec(SQLSentence[QUERY_ENTIRE_TABLE]);
+    bResult = query.exec(SQLSentence[SQLITCLASS::QUERY_ENTIRE_TABLE]);
     if (bResult == true)
     {
         _obj->clear();
         while(query.next())
         {
             _obj->insert(query.value("ID").toInt(),
-                           query.value("PartName").toString());
+                           query.value("HarnessName").toString());
         }
     }
     else
     {
-        qDebug() << "Part Table SQL ERROR:"<< query.lastError();
+        qDebug() << "Harness Table SQL ERROR:"<< query.lastError();
     }
 
-    PartDBObj.close();
+    HarnessDBObj.close();
 
     return bResult;
 }
 
-bool DBPartTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
+bool DBHarnessTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
 {
     if(_obj == NULL)
         return false;
 
     UtilityClass *_Utility = UtilityClass::Instance();
-    QSqlQuery query(PartDBObj);
+    QSqlQuery query(HarnessDBObj);
     bool bResult = OpenDBObject();
     if(bResult == false)
     {
-        qDebug() << "Part Table SQL ERROR:"<< query.lastError();
+        qDebug() << "Harness Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
-    query.prepare(SQLSentence[QUERY_ONE_RECORD]);
+    query.prepare(SQLSentence[SQLITCLASS::QUERY_ONE_RECORD]);
     query.addBindValue(ID);
     query.addBindValue(Name);
 
     bResult = query.exec();
     if(bResult == false)
     {
-        PartDBObj.close();
-        qDebug() << "Part Table SQL ERROR:"<< query.lastError();
+        HarnessDBObj.close();
+        qDebug() << "Harness Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
     bResult = query.next();
     if(bResult == false)
     {
-        PartDBObj.close();
+        HarnessDBObj.close();
         return bResult;
     }
 
-    ((PartElement*)_obj)->PartID = query.value("ID").toInt();
-    ((PartElement*)_obj)->PartName = query.value("PartName").toString();
+    ((HarnessElement*)_obj)->HarnessID = query.value("ID").toInt();
+    ((HarnessElement*)_obj)->HarnessName = query.value("HarnessName").toString();
     QDateTime TimeLabel = QDateTime::fromString(query.value("CreatedDate").toString(),
                                                 "yyyy/MM/dd hh:mm:ss");
-    ((PartElement*)_obj)->CreatedDate = TimeLabel.toTime_t();
-    ((PartElement*)_obj)->OperatorID = query.value("OperatorID").toInt();
-    ((PartElement*)_obj)->PartTypeSetting.ProcessMode =
+    ((HarnessElement*)_obj)->CreatedDate = TimeLabel.toTime_t();
+    ((HarnessElement*)_obj)->OperatorID = query.value("OperatorID").toInt();
+    ((HarnessElement*)_obj)->HarnessTypeSetting.ProcessMode =
             (enum PROCESSMODE)query.value("ProcessMode").toInt();
-    ((PartElement*)_obj)->PartTypeSetting.WorkStations.TotalWorkstation =
+    ((HarnessElement*)_obj)->HarnessTypeSetting.WorkStations.TotalWorkstation =
             query.value("TotalWorkstation").toInt();
-    ((PartElement*)_obj)->PartTypeSetting.WorkStations.MaxSplicesPerWorkstation =
+    ((HarnessElement*)_obj)->HarnessTypeSetting.WorkStations.MaxSplicesPerWorkstation =
             query.value("MaxSplicesPerWorkstation").toInt();
-    ((PartElement*)_obj)->PartTypeSetting.BoardLayout.Rows = query.value("Rows").toInt();
-    ((PartElement*)_obj)->PartTypeSetting.BoardLayout.Columns = query.value("Columns").toInt();
-    ((PartElement*)_obj)->PartTypeSetting.BoardLayout.MaxSplicesPerZone =
+    ((HarnessElement*)_obj)->HarnessTypeSetting.BoardLayout.Rows = query.value("Rows").toInt();
+    ((HarnessElement*)_obj)->HarnessTypeSetting.BoardLayout.Columns = query.value("Columns").toInt();
+    ((HarnessElement*)_obj)->HarnessTypeSetting.BoardLayout.MaxSplicesPerZone =
             query.value("MaxSplicesPerZone").toInt();
     QString tmpStr = query.value("JSONSplice").toString();
-    _Utility->StringJsonToMap(tmpStr, &((PartElement*)_obj)->SpliceList);
+    _Utility->StringJsonToMap(tmpStr, &((HarnessElement*)_obj)->SpliceList);
 
-    ((PartElement*)_obj)->NoOfSplice = ((PartElement*)_obj)->SpliceList.size();
+    ((HarnessElement*)_obj)->NoOfSplice = ((HarnessElement*)_obj)->SpliceList.size();
 
-    PartDBObj.close();
+    HarnessDBObj.close();
     return bResult;
 }
 
-bool DBPartTable::QueryOneRecordFromTable(int ID, void *_obj)
+bool DBHarnessTable::QueryOneRecordFromTable(int ID, void *_obj)
 {
     if(_obj == NULL)
         return false;
 
     UtilityClass *_Utility = UtilityClass::Instance();
-    QSqlQuery query(PartDBObj);
+    QSqlQuery query(HarnessDBObj);
     bool bResult = OpenDBObject();
     if(bResult == false)
     {
-        qDebug() << "Part Table SQL ERROR:"<< query.lastError();
+        qDebug() << "Harness Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
-    query.prepare(SQLSentence[QUERY_ONE_RECORD_ONLY_ID]);
+    query.prepare(SQLSentence[SQLITCLASS::QUERY_ONE_RECORD_ONLY_ID]);
     query.addBindValue(ID);
 
     bResult = query.exec();
     if(bResult == false)
     {
-        PartDBObj.close();
-        qDebug() << "Part Table SQL ERROR:"<< query.lastError();
+        HarnessDBObj.close();
+        qDebug() << "Harness Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
     bResult = query.next();
     if(bResult == false)
     {
-        PartDBObj.close();
+        HarnessDBObj.close();
         return bResult;
     }
 
-    ((PartElement*)_obj)->PartID = query.value("ID").toInt();
-    ((PartElement*)_obj)->PartName = query.value("PartName").toString();
+    ((HarnessElement*)_obj)->HarnessID = query.value("ID").toInt();
+    ((HarnessElement*)_obj)->HarnessName = query.value("HarnessName").toString();
     QDateTime TimeLabel = QDateTime::fromString(query.value("CreatedDate").toString(),
                                                 "yyyy/MM/dd hh:mm:ss");
-    ((PartElement*)_obj)->CreatedDate = TimeLabel.toTime_t();
-    ((PartElement*)_obj)->OperatorID = query.value("OperatorID").toInt();
-    ((PartElement*)_obj)->PartTypeSetting.ProcessMode =
+    ((HarnessElement*)_obj)->CreatedDate = TimeLabel.toTime_t();
+    ((HarnessElement*)_obj)->OperatorID = query.value("OperatorID").toInt();
+    ((HarnessElement*)_obj)->HarnessTypeSetting.ProcessMode =
             (enum PROCESSMODE)query.value("ProcessMode").toInt();
-    ((PartElement*)_obj)->PartTypeSetting.WorkStations.TotalWorkstation =
+    ((HarnessElement*)_obj)->HarnessTypeSetting.WorkStations.TotalWorkstation =
             query.value("TotalWorkstation").toInt();
-    ((PartElement*)_obj)->PartTypeSetting.WorkStations.MaxSplicesPerWorkstation =
+    ((HarnessElement*)_obj)->HarnessTypeSetting.WorkStations.MaxSplicesPerWorkstation =
             query.value("MaxSplicesPerWorkstation").toInt();
-    ((PartElement*)_obj)->PartTypeSetting.BoardLayout.Rows = query.value("Rows").toInt();
-    ((PartElement*)_obj)->PartTypeSetting.BoardLayout.Columns = query.value("Columns").toInt();
-    ((PartElement*)_obj)->PartTypeSetting.BoardLayout.MaxSplicesPerZone =
+    ((HarnessElement*)_obj)->HarnessTypeSetting.BoardLayout.Rows = query.value("Rows").toInt();
+    ((HarnessElement*)_obj)->HarnessTypeSetting.BoardLayout.Columns = query.value("Columns").toInt();
+    ((HarnessElement*)_obj)->HarnessTypeSetting.BoardLayout.MaxSplicesPerZone =
             query.value("MaxSplicesPerZone").toInt();
     QString tmpStr = query.value("JSONSplice").toString();
-    _Utility->StringJsonToMap(tmpStr, &((PartElement*)_obj)->SpliceList);
+    _Utility->StringJsonToMap(tmpStr, &((HarnessElement*)_obj)->SpliceList);
 
-    ((PartElement*)_obj)->NoOfSplice = ((PartElement*)_obj)->SpliceList.size();
+    ((HarnessElement*)_obj)->NoOfSplice = ((HarnessElement*)_obj)->SpliceList.size();
 
-    PartDBObj.close();
+    HarnessDBObj.close();
     return bResult;
 }
 
-bool DBPartTable::DeleteEntireTable()
+bool DBHarnessTable::DeleteEntireTable()
 {
-    QSqlQuery query(PartDBObj);
+    QSqlQuery query(HarnessDBObj);
     bool bResult = OpenDBObject();
     if(bResult == false)
     {
-        qDebug() << "Part Table SQL ERROR:"<< query.lastError();
+        qDebug() << "Harness Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
-    bResult = query.exec(SQLSentence[DELETE_ENTIRE_TABLE]);
+    bResult = query.exec(SQLSentence[SQLITCLASS::DELETE_ENTIRE_TABLE]);
     if(bResult == false)
     {
-        qDebug() << "Part Table SQL ERROR:"<< query.lastError();
+        qDebug() << "Harness Table SQL ERROR:"<< query.lastError();
     }
 
-    PartDBObj.close();
+    HarnessDBObj.close();
     return bResult;
 }
 
-bool DBPartTable::DeleteOneRecordFromTable(int ID, QString Name)
+bool DBHarnessTable::DeleteOneRecordFromTable(int ID, QString Name)
 {
-    QSqlQuery query(PartDBObj);
+    QSqlQuery query(HarnessDBObj);
     bool bResult = OpenDBObject();
     if(bResult == false)
     {
-        qDebug() << "Part Table SQL ERROR:"<< query.lastError();
+        qDebug() << "Harness Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
 
-    query.prepare(SQLSentence[DELETE_ONE_RECORD]);
+    query.prepare(SQLSentence[SQLITCLASS::DELETE_ONE_RECORD]);
     query.addBindValue(ID);
     query.addBindValue(Name);
 
     bResult = query.exec();
     if(bResult == false)
     {
-        qDebug() << "Part Table SQL ERROR:"<< query.lastError();
+        qDebug() << "Harness Table SQL ERROR:"<< query.lastError();
     }
-    PartDBObj.close();
+    HarnessDBObj.close();
     return bResult;
 }
 
-bool DBPartTable::UpdateRecordIntoTable(void *_obj)
+bool DBHarnessTable::UpdateRecordIntoTable(void *_obj)
 {
     if(_obj == NULL)
         return false;
     UtilityClass* _Utility = UtilityClass::Instance();
-    QSqlQuery query(PartDBObj);
+    QSqlQuery query(HarnessDBObj);
     bool bResult = OpenDBObject();
     if(bResult == false)
     {
@@ -443,43 +442,43 @@ bool DBPartTable::UpdateRecordIntoTable(void *_obj)
     }
 
     query.prepare(SQLSentence[UPDATE_ONE_RECORD]);
-    query.addBindValue(((PartElement*)_obj)->PartName);
-    QDateTime TimeLabel = QDateTime::fromTime_t(((PartElement*)_obj)->CreatedDate);
+    query.addBindValue(((HarnessElement*)_obj)->HarnessName);
+    QDateTime TimeLabel = QDateTime::fromTime_t(((HarnessElement*)_obj)->CreatedDate);
     query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
-    query.addBindValue(((PartElement*)_obj)->OperatorID);
-    query.addBindValue(((PartElement*)_obj)->PartTypeSetting.ProcessMode);
-    query.addBindValue(((PartElement*)_obj)->PartTypeSetting.WorkStations.TotalWorkstation);
-    query.addBindValue(((PartElement*)_obj)->PartTypeSetting.WorkStations.MaxSplicesPerWorkstation);
-    query.addBindValue(((PartElement*)_obj)->PartTypeSetting.BoardLayout.Rows);
-    query.addBindValue(((PartElement*)_obj)->PartTypeSetting.BoardLayout.Columns);
-    query.addBindValue(((PartElement*)_obj)->PartTypeSetting.BoardLayout.MaxSplicesPerZone);
-    query.addBindValue(((PartElement*)_obj)->SpliceList.size());
+    query.addBindValue(((HarnessElement*)_obj)->OperatorID);
+    query.addBindValue(((HarnessElement*)_obj)->HarnessTypeSetting.ProcessMode);
+    query.addBindValue(((HarnessElement*)_obj)->HarnessTypeSetting.WorkStations.TotalWorkstation);
+    query.addBindValue(((HarnessElement*)_obj)->HarnessTypeSetting.WorkStations.MaxSplicesPerWorkstation);
+    query.addBindValue(((HarnessElement*)_obj)->HarnessTypeSetting.BoardLayout.Rows);
+    query.addBindValue(((HarnessElement*)_obj)->HarnessTypeSetting.BoardLayout.Columns);
+    query.addBindValue(((HarnessElement*)_obj)->HarnessTypeSetting.BoardLayout.MaxSplicesPerZone);
+    query.addBindValue(((HarnessElement*)_obj)->SpliceList.size());
     QString tmpStr;
-    _Utility->MapJsonToString(&((PartElement*)_obj)->SpliceList, tmpStr);
+    _Utility->MapJsonToString(&((HarnessElement*)_obj)->SpliceList, tmpStr);
     query.addBindValue(tmpStr);
-    query.addBindValue(((PartElement*)_obj)->PartID);
+    query.addBindValue(((HarnessElement*)_obj)->HarnessID);
 
     bResult = query.exec();
     if(bResult == false)
     {
-        qDebug() << "Part Table SQL ERROR:"<< query.lastError();
+        qDebug() << "Harness Table SQL ERROR:"<< query.lastError();
     }
-    PartDBObj.close();
+    HarnessDBObj.close();
     return bResult;
 }
 
-bool DBPartTable::QueryOnlyUseName(QString Name, QMap<int, QString> *_obj)
+bool DBHarnessTable::QueryOnlyUseName(QString Name, QMap<int, QString> *_obj)
 {
     if(_obj == NULL)
         return false;
 
-    QSqlQuery query(PartDBObj);
+    QSqlQuery query(HarnessDBObj);
     bool bResult = OpenDBObject();
     if(bResult == false)
         return bResult;
 
 //    query.prepare(SQLSentence[QUERY_ONE_RECORD_WIRE_TABLE]);
-    query.prepare("SELECT ID, PartName FROM Part WHERE PartName = ?");
+    query.prepare("SELECT ID, HarnessName FROM Harness WHERE HarnessName = ?");
     query.addBindValue(Name);
 
     bResult = query.exec();
@@ -488,23 +487,23 @@ bool DBPartTable::QueryOnlyUseName(QString Name, QMap<int, QString> *_obj)
         _obj->clear();
         while(query.next())
             _obj->insert(query.value("ID").toInt(),
-                           query.value("PartName").toString());
+                           query.value("HarnessName").toString());
     }
     else
     {
-        qDebug() << "Part Table SQL ERROR:"<< query.lastError();
+        qDebug() << "Harness Table SQL ERROR:"<< query.lastError();
     }
 
-    PartDBObj.close();
+    HarnessDBObj.close();
     return bResult;
 }
 
-bool DBPartTable::QueryOnlyUseTime(unsigned int time_from, unsigned int time_to, QMap<int, QString> *_obj)
+bool DBHarnessTable::QueryOnlyUseTime(unsigned int time_from, unsigned int time_to, QMap<int, QString> *_obj)
 {
     if(_obj == NULL)
         return false;
 
-    QSqlQuery query(PartDBObj);
+    QSqlQuery query(HarnessDBObj);
     bool bResult = OpenDBObject();
     if(bResult == false)
         return bResult;
@@ -523,31 +522,31 @@ bool DBPartTable::QueryOnlyUseTime(unsigned int time_from, unsigned int time_to,
         _obj->clear();
         while(query.next())
             _obj->insert(query.value("ID").toInt(),
-                           query.value("PartName").toString());
+                           query.value("HarnessName").toString());
     }
     else
     {
-        qDebug() << "Part Table SQL ERROR:"<< query.lastError();
+        qDebug() << "Harness Table SQL ERROR:"<< query.lastError();
     }
 
-    PartDBObj.close();
+    HarnessDBObj.close();
     return bResult;
 }
 
-bool DBPartTable::QueryUseNameAndTime(QString Name, unsigned int time_from,
+bool DBHarnessTable::QueryUseNameAndTime(QString Name, unsigned int time_from,
                 unsigned int time_to, QMap<int, QString>* _obj)
 {
     if(_obj == NULL)
         return false;
 
-    QSqlQuery query(PartDBObj);
+    QSqlQuery query(HarnessDBObj);
     bool bResult = OpenDBObject();
     if(bResult == false)
         return bResult;
 
 //    query.prepare(SQLSentence[QUERY_ONE_RECORD_WIRE_TABLE]);
-    query.prepare("SELECT ID, PartName FROM Part "
-                  "WHERE PartName = ? AND CreatedDate >= ?"
+    query.prepare("SELECT ID, HarnessName FROM Harness "
+                  "WHERE HarnessName = ? AND CreatedDate >= ?"
                   " AND CreatedDate <= ?");
     query.addBindValue(Name);
     QDateTime TimeLabel = QDateTime::fromTime_t(time_from);
@@ -561,22 +560,22 @@ bool DBPartTable::QueryUseNameAndTime(QString Name, unsigned int time_from,
         _obj->clear();
         while(query.next())
             _obj->insert(query.value("ID").toInt(),
-                           query.value("PartName").toString());
+                           query.value("HarnessName").toString());
     }
     else
     {
-        qDebug() << "Part Table SQL ERROR:"<< query.lastError();
+        qDebug() << "Harness Table SQL ERROR:"<< query.lastError();
     }
 
-    PartDBObj.close();
+    HarnessDBObj.close();
     return bResult;
 }
 
-bool DBPartTable::exportData(int partId, QString fileUrl)
+bool DBHarnessTable::exportData(int partId, QString fileUrl)
 {
     QString queryStr;
     QString lineValue = "";
-    QSqlQuery query(PartDBObj);
+    QSqlQuery query(HarnessDBObj);
     QString spliceData;
     bool bResult = OpenDBObject();
 //    bool ok;
@@ -632,12 +631,12 @@ bool DBPartTable::exportData(int partId, QString fileUrl)
                 }
             }
         }
-        PartDBObj.close();
+        HarnessDBObj.close();
     }
     return bResult;
 }
 
-int DBPartTable::importData(QString value, QMap<int, QString> spliceIdMap)
+int DBHarnessTable::importData(QString value, QMap<int, QString> spliceIdMap)
 {
     QString lineData;
     QStringList lineList;
@@ -647,38 +646,38 @@ int DBPartTable::importData(QString value, QMap<int, QString> spliceIdMap)
     lineData = value;
     lineList = lineData.split(",");
     if (lineList.size() >= 11) {
-        PartElement myPart;
-        myPart.PartName = lineList[1];
-        myPart.CreatedDate = QDateTime::fromString(lineList[2],"yyyy/MM/dd hh:mm:ss").toTime_t();
-        myPart.OperatorID = QString(lineList[3]).toInt(&ok,10);
-        myPart.PartTypeSetting.ProcessMode = (PROCESSMODE)QString(lineList[4]).toInt(&ok,10);
-        myPart.PartTypeSetting.WorkStations.TotalWorkstation = QString(lineList[5]).toInt(&ok,10);
-        myPart.PartTypeSetting.WorkStations.MaxSplicesPerWorkstation = QString(lineList[6]).toInt(&ok,10);
-        myPart.PartTypeSetting.BoardLayout.Rows = QString(lineList[7]).toInt(&ok,10);
-        myPart.PartTypeSetting.BoardLayout.Columns = QString(lineList[8]).toInt(&ok,10);
-        myPart.PartTypeSetting.BoardLayout.MaxSplicesPerZone = QString(lineList[9]).toInt(&ok,10);
-        QMap<int ,struct PARTATTRIBUTE> tempMap;
+        HarnessElement myHarness;
+        myHarness.HarnessName = lineList[1];
+        myHarness.CreatedDate = QDateTime::fromString(lineList[2],"yyyy/MM/dd hh:mm:ss").toTime_t();
+        myHarness.OperatorID = QString(lineList[3]).toInt(&ok,10);
+        myHarness.HarnessTypeSetting.ProcessMode = (PROCESSMODE)QString(lineList[4]).toInt(&ok,10);
+        myHarness.HarnessTypeSetting.WorkStations.TotalWorkstation = QString(lineList[5]).toInt(&ok,10);
+        myHarness.HarnessTypeSetting.WorkStations.MaxSplicesPerWorkstation = QString(lineList[6]).toInt(&ok,10);
+        myHarness.HarnessTypeSetting.BoardLayout.Rows = QString(lineList[7]).toInt(&ok,10);
+        myHarness.HarnessTypeSetting.BoardLayout.Columns = QString(lineList[8]).toInt(&ok,10);
+        myHarness.HarnessTypeSetting.BoardLayout.MaxSplicesPerZone = QString(lineList[9]).toInt(&ok,10);
+        QMap<int ,struct HARNESSATTRIBUTE> tempMap;
 
         int i = 0;
         QMap<int,QString>::iterator it; //遍历map
         for ( it = spliceIdMap.begin(); it != spliceIdMap.end(); ++it ) {
-            struct PARTATTRIBUTE temp;
+            struct HARNESSATTRIBUTE temp;
             temp.SpliceID = it.key();
             temp.SpliceName = it.value();
             tempMap.insert(i,temp);
             i++;
         }
-        myPart.SpliceList = tempMap;
-        myPart.NoOfSplice = myPart.SpliceList.size();
+        myHarness.SpliceList = tempMap;
+        myHarness.NoOfSplice = myHarness.SpliceList.size();
 
-        ret = InsertRecordIntoTable(&myPart);
+        ret = InsertRecordIntoTable(&myHarness);
         while (ret == -1) {
-            qDebug() << "part";
+            qDebug() << "harness";
             QMap<int ,QString> tempMap;
-            QueryOnlyUseName(myPart.PartName, &tempMap);
+            QueryOnlyUseName(myHarness.HarnessName, &tempMap);
             if (tempMap.size() > 0) {
-                myPart.PartName = myPart.PartName + "(1)";
-                ret = InsertRecordIntoTable(&myPart);
+                myHarness.HarnessName = myHarness.HarnessName + "(1)";
+                ret = InsertRecordIntoTable(&myHarness);
             }
             else if (tempMap.size() == 0)
                 return -1;
@@ -687,13 +686,13 @@ int DBPartTable::importData(QString value, QMap<int, QString> spliceIdMap)
     return ret;
 }
 
-QString DBPartTable::GetExportString(int partId)
+QString DBHarnessTable::GetExportString(int partId)
 {
     QString tempSpliceData;
     QString spliceData;
     QString queryStr;
     QString lineValue = "";
-    QSqlQuery query(PartDBObj);
+    QSqlQuery query(HarnessDBObj);
     bool bResult = OpenDBObject();
     if(bResult == true)
     {
@@ -736,7 +735,7 @@ QString DBPartTable::GetExportString(int partId)
 
             }
         }
-        PartDBObj.close();
+        HarnessDBObj.close();
     }
     return lineValue;
 }

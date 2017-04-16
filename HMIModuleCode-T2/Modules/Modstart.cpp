@@ -13,7 +13,7 @@
 #include "UtilityClass.h"
 #include "TimerClass.h"
 #include "DataBase/DBWorkOrderTable.h"
-#include "DataBase/DBPartTable.h"
+#include "DataBase/DBHarnessTable.h"
 #include "DataBase/DBPresetTable.h"
 #include "DataBase/DBWireTable.h"
 #include "typedef.h"
@@ -46,7 +46,7 @@ MODstart::MODstart()
     InterfaceClass *_Interface = InterfaceClass::Instance();
     BransonServer* _Server = BransonServer::Instance();
     DBWorkOrderTable* _WorkOrderTable = DBWorkOrderTable::Instance();
-    DBPartTable*      _PartTable = DBPartTable::Instance();
+    DBHarnessTable*      _HarnessTable = DBHarnessTable::Instance();
     DBPresetTable*    _SpliceTable = DBPresetTable::Instance();
     DBWireTable*      _WireTable = DBWireTable::Instance();
 
@@ -64,7 +64,6 @@ MODstart::MODstart()
     CheckAWGAreaTable();
     _M10INI->Get_INI_File();
     GlobalInitM10();
-
     CheckIOStatus();
     if (_Interface->StatusData.ComInfo.COMport == -1)
         check_result = 1;
@@ -164,7 +163,6 @@ MODstart::MODstart()
 
         _ModRunSetup->InitialStartFlag = true;
         ApplicationFirstStartFlag = true;
-        _ModRunSetup->M10initiate();
         //Since Temporary Preset is lost at power up,this function deletes temporary Stat files if any
 //        ptr_ModRunSetup->DeleteStatTempFiles();
         _M2010->load_splice_file();
@@ -183,7 +181,7 @@ MODstart::MODstart()
         if (_Interface->StatusData.ModularProductionEnabled == true)
         {
             _WorkOrderTable->SwitchDBObject(_Interface->StatusData.ModularProductionEnabled);
-            _PartTable->SwitchDBObject(_Interface->StatusData.ModularProductionEnabled);
+            _HarnessTable->SwitchDBObject(_Interface->StatusData.ModularProductionEnabled);
             _SpliceTable->SwitchDBObject(_Interface->StatusData.ModularProductionEnabled);
             _WireTable->SwitchDBObject(_Interface->StatusData.ModularProductionEnabled);
         }
@@ -481,16 +479,12 @@ void MODstart::OfflineInitialization(void* ptr)
     InterfaceClass* _Interface = InterfaceClass::Instance();
     BransonServer* _Server = BransonServer::Instance();
     DBWorkOrderTable* _WorkOrderTable = DBWorkOrderTable::Instance();
-    DBPartTable* _PartTable = DBPartTable::Instance();
+    DBHarnessTable* _HarnessTable = DBHarnessTable::Instance();
     DBPresetTable* _SpliceTable = DBPresetTable::Instance();
     DBWireTable* _WireTable = DBWireTable::Instance();
     _ModRunSetup->OfflineModeEnabled = true;
     _ModRunSetup->GlobalOfflineModeEnabled = true;
 
-    bool bLoadFailed = false;
-    bLoadFailed = false;
-
-    _ModRunSetup->M10initiate(bLoadFailed);
     _M2010->load_splice_file(); // 2
 
     _Interface->StatusData.LockKeyFlag = false;
@@ -509,7 +503,7 @@ void MODstart::OfflineInitialization(void* ptr)
     if (_Interface->StatusData.ModularProductionEnabled == true)
     {
         _WorkOrderTable->SwitchDBObject(_Interface->StatusData.ModularProductionEnabled);
-        _PartTable->SwitchDBObject(_Interface->StatusData.ModularProductionEnabled);
+        _HarnessTable->SwitchDBObject(_Interface->StatusData.ModularProductionEnabled);
         _SpliceTable->SwitchDBObject(_Interface->StatusData.ModularProductionEnabled);
         _WireTable->SwitchDBObject(_Interface->StatusData.ModularProductionEnabled);
     }

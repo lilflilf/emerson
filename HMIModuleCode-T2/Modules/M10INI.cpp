@@ -314,8 +314,8 @@ void M10INI::SetShrinkTubeDefaults(Status_Data* _DataStruct)
     _DataStruct->ShrinkTubeDefaults[STIR11].Time = ShrinkTubeDefTime1;
 
     //Make Remote recall port disable by default for special
-    _DataStruct->TubeShrinkerport = PORT_DISABLE;
-    _DataStruct->RemoteRecallport = PORT_DISABLE;
+    _DataStruct->ShrinkTubeComInfo.COMport = 1;
+    _DataStruct->ShrinkTubeComInfo.BaudRate = 9600;
 }
 
 void M10INI::SetSoftLimitDefaults(Status_Data* _DataStruct, bool EnableSoftLimits)
@@ -373,7 +373,7 @@ void M10INI::Init_StatusData()
     _Interface->DefaultStatusData.Soft_Settings.MinPressure = MINWELDPRESSURE;
     _Interface->DefaultStatusData.Soft_Settings.WeldFormula = WeldFormulaAmtechStandard;
     _Interface->DefaultStatusData.Soft_Settings.RunCount = 10;
-    _Interface->DefaultStatusData.Soft_Settings.Teach_Mode = SIGMA;
+    _Interface->DefaultStatusData.Soft_Settings.Teach_Mode = TEACHMODESETTING::SIGMA;
     _Interface->DefaultStatusData.Soft_Settings.TunePoint = 40;
     _Interface->DefaultStatusData.Soft_Settings.FrequencyOffset = 50;
 
@@ -382,16 +382,26 @@ void M10INI::Init_StatusData()
     _Interface->DefaultStatusData.Cust_Data.mod10a_settings.AfterBurstDuration = 20;
     _Interface->DefaultStatusData.Cust_Data.mod10a_settings.EnergyWindowPL = 50;
     _Interface->DefaultStatusData.Cust_Data.mod10a_settings.PreBurstIndex = 0;
-    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[TIME_PLRG] = 40;
-    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[TIME_MSRG] = 40;
-    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[POWER_PLRG] = 25;
-    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[POWER_MSRG] = 25;
-    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[PRE_HGT_PLRG] = 15;
-    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[PRE_HGT_MSRG] = 15;
-    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[HEIGHT_PLRG] = 10;
-    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[HEIGHT_MSRG] = 10;
-    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[FORCE_PLRG] = 5;
-    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[FORCE_MSRG] = 10;
+    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[TIME_PLRG_STD] = 40;
+    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[TIME_MSRG_STD] = 40;
+    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[POWER_PLRG_STD] = 25;
+    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[POWER_MSRG_STD] = 25;
+    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[PRE_HGT_PLRG_STD] = 15;
+    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[PRE_HGT_MSRG_STD] = 15;
+    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[HEIGHT_PLRG_STD] = 10;
+    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[HEIGHT_MSRG_STD] = 10;
+    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[FORCE_PLRG_STD] = 5;
+    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[FORCE_MSRG_STD] = 10;
+    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[TIME_PLRG_AUTO] = 40;
+    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[TIME_MSRG_AUTO] = 40;
+    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[POWER_PLRG_AUTO] = 25;
+    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[POWER_MSRG_AUTO] = 25;
+    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[PRE_HGT_PLRG_AUTO] = 15;
+    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[PRE_HGT_MSRG_AUTO] = 15;
+    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[HEIGHT_PLRG_AUTO] = 10;
+    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[HEIGHT_MSRG_AUTO] = 10;
+    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[FORCE_PLRG_AUTO] = 5;
+    _Interface->DefaultStatusData.Cust_Data.cust_qual_range[FORCE_MSRG_AUTO] = 10;
     for(int i = TIME_CONFRG_PL; i <= HEIGHT_CONFRG_MS; i++)
     {
         _Interface->DefaultStatusData.Cust_Data.cust_qual_range[i] = 4;
@@ -410,13 +420,13 @@ void M10INI::Init_StatusData()
         _Interface->DefaultStatusData.HSDATA.SOFT_LIMIT[i].ValueHS = 30;
     }
     _Interface->DefaultStatusData.ComInfo.COMport = 2;
-    _Interface->DefaultStatusData.ComInfo.BaudRate = 1152;
+    _Interface->DefaultStatusData.ComInfo.BaudRate = 115200;
     _Interface->DefaultStatusData.MachineType = ACTNEWSPLICER; //Need To Fix
     _Interface->DefaultStatusData.MachineDate = "";
     _Interface->DefaultStatusData.Machineflags.Word[0] = 0;
     _Interface->DefaultStatusData.KeepDailyHistory = true;
     _Interface->DefaultStatusData.HistoryGraphData = true;
-    _Interface->DefaultStatusData.GraphSampleRatio = SampleWith1ms;
+    _Interface->DefaultStatusData.GraphSampleRatio = WeldResultElement::SampleWith1ms;
 
     _Interface->DefaultStatusData.LockonAlarm = 0;
     _Interface->DefaultStatusData.RunMode.Word = 0;
@@ -437,7 +447,7 @@ void M10INI::Init_StatusData()
     _Interface->DefaultStatusData.CentralComputerID = "";
     _Interface->DefaultStatusData.CurrentCoolingDel = 0;
     _Interface->DefaultStatusData.CurrentCoolingDur = 100;
-    _Interface->DefaultStatusData.CurrentCoolingMode = ENERGYMODE;
+    _Interface->DefaultStatusData.CurrentCoolingMode = Status_Data::ENERGYMODE;
     _Interface->DefaultStatusData.CurrentCoolingTooling = true;
     _Interface->DefaultStatusData.CycleCount = 0;
 

@@ -17,37 +17,15 @@ struct VersionList{
     QString ActuatorVersion;
 };
 
-//Wire Structure
-enum MetalType{
-    Copper,
-    Aluminum,
-};
-
-enum HorizontalLocation{
-    Left,
-    Right
-};
-
-enum VerticalLocation{
-    Basic,
-    Advance,
-};
-
-enum VerticalPosition{
-    Top,
-    Middle,
-    Bottom,
-};
-
-enum StripeType{
-    Horizontal,
-    Slash,
-    OneVertical,
-    TwoVertical,
-};
-
-struct STRIPE
+class STRIPE
 {
+public:
+    enum StripeType{
+        Horizontal,
+        Slash,
+        OneVertical,
+        TwoVertical,
+    };
     enum StripeType TypeOfStripe;
     QString Color;
 };
@@ -59,24 +37,16 @@ struct Qual
    int Minus;
 };
 
-enum WELDMODE
-{
-    ENERGY,
-    TIME,
-    HEIGHT,
-    ENERGYWITHHEIGHT,
-};
-
-enum STEPWELDMODE
-{
-    STEPENERGY,
-    STEPTIME,
-    STEPPOWER,
-    STEPDISABLE,
-};
-
 struct STEPWELD
 {
+public:
+    enum STEPWELDMODE
+    {
+        STEPENERGY,
+        STEPTIME,
+        STEPPOWER,
+        STEPDISABLE,
+    };
     enum STEPWELDMODE StepWeldMode;
     int EnergyToStep;         //
     int TimeToStep;           //
@@ -113,10 +83,43 @@ struct QUALITYWINDONSETTING
     Qual Force;               //Force limits in Newtons
 };
 
-struct ADVANCESETTING
+class Cutter
 {
-    enum WELDMODE WeldMode;   //Used for Weld Mode 0:energy,1:height,2:time
-    struct STEPWELD StepWeld;
+public:
+    bool CutOff;           //CutterOption
+    int CutOffSpliceTime;
+    bool Cutter4TimeAlarm;
+    bool Cutter4PowerAlarm;
+    bool Cutter4PreHeightAlarm;
+    bool Cutter4HeightAlarm;
+};
+
+struct AntiSide
+{
+    bool AntiSideMode;
+    int AntiSideSpliceTime;
+};
+
+struct Offset
+{
+    int DisplayWidth;
+    int MeasuredWidth;
+    int DisplayHeight;
+    int MeasuredHeight;
+};
+
+class ADVANCESETTING
+{
+public:
+    enum WELDMODE
+    {
+        ENERGY,
+        TIME,
+        HEIGHT,
+        ENERGYWITHHEIGHT,
+    };
+    WELDMODE WeldMode;   //Used for Weld Mode 0:energy,1:height,2:time
+    STEPWELD StepWeld;
 
     int PreBurst;             //Secs * 1000
     int HoldTime;             //Secs * 100
@@ -125,44 +128,39 @@ struct ADVANCESETTING
     int ABDelay;              //Secs * 100
     int ABDur;                //Secs * 100
 
-    bool CutOff;           //CutterOption
-    int CutOffSpliceTime;
-    bool AntiSide;
-    int AntiSideSpliceTime;
+    Cutter CutOffOption;
+    AntiSide AntiSideOption;
+    Offset OffsetOption;
 
-    int MeasuredWidth;
-    int MeasuredHeight;
-
-    struct SHRINKTUBE ShrinkTube;
+    SHRINKTUBE ShrinkTube;
 };
 
-enum TEACH_MODE_TYPE
-{
-    STANDARD,
-    AUTO,
-    SIGMA,
-    UNDEFINED,
-};
 
-enum TESTMODE
-{
-    UNCONSTRAINED,
-    CONSTRAINED,
-//    TEACHMODE,
-};
 
 // Quality Range Variables Created (set), defined under InitializeData
 enum QUAL_RANGE_MARKER{
-    TIME_PLRG = 0,
-    TIME_MSRG,
-    POWER_PLRG,
-    POWER_MSRG,
-    PRE_HGT_PLRG,
-    PRE_HGT_MSRG,
-    HEIGHT_PLRG,
-    HEIGHT_MSRG,
-    FORCE_PLRG,
-    FORCE_MSRG,
+    TIME_PLRG_STD = 0,
+    TIME_MSRG_STD,
+    POWER_PLRG_STD,
+    POWER_MSRG_STD,
+    PRE_HGT_PLRG_STD,
+    PRE_HGT_MSRG_STD,
+    HEIGHT_PLRG_STD,
+    HEIGHT_MSRG_STD,
+    FORCE_PLRG_STD,
+    FORCE_MSRG_STD,
+
+    TIME_PLRG_AUTO = 0,
+    TIME_MSRG_AUTO,
+    POWER_PLRG_AUTO,
+    POWER_MSRG_AUTO,
+    PRE_HGT_PLRG_AUTO,
+    PRE_HGT_MSRG_AUTO,
+    HEIGHT_PLRG_AUTO,
+    HEIGHT_MSRG_AUTO,
+    FORCE_PLRG_AUTO,
+    FORCE_MSRG_AUTO,
+
     TIME_CONFRG_PL,
     POWER_CONFRG_PL,
     PRE_HGT_CONFRG_PL,
@@ -178,19 +176,35 @@ enum QUAL_RANGE_MARKER{
     QUAL_RANGES
 };
 
-struct TEACHMODESETTING
+class TEACHMODESETTING
 {
+public:
+    enum TEACH_MODE_TYPE
+    {
+        STANDARD,
+        AUTO,
+        SIGMA,
+        UNDEFINED,
+    };
     enum TEACH_MODE_TYPE TeachModeType;
-    //TeachModeAdvanceSetting
     int TeachModequal_Window[ENERGY_ADJ];
+    int StandardRunQuantity;
+    int AutoRunQuantity;
+    int SigmaRunQuantity;
 };
 
-struct TESTSETTING
+class TESTSETTING
 {
-    int Qutanty;             //Accummulated total
+public:
+    enum TESTMODE
+    {
+        UNCONSTRAINED,
+        CONSTRAINED,
+    };
+    int BatchSize;             //Accummulated total
     int StopCount;
-    enum TESTMODE TestMode;
-    struct TEACHMODESETTING TeachModeSetting;
+    TESTMODE TestMode;
+    TEACHMODESETTING TeachModeSetting;
     bool TestingDone;
 };
 
@@ -221,14 +235,14 @@ struct BOARDLAYOUT
     int MaxSplicesPerZone;
 };
 
-struct PARTTYPE
+struct HARNESSTYPE
 {
     enum PROCESSMODE ProcessMode;
     struct WORKSTATIONS WorkStations;
     struct BOARDLAYOUT BoardLayout;
 };
 
-struct PARTATTRIBUTE
+struct HARNESSATTRIBUTE
 {
     int SpliceID;
     QString SpliceName;
@@ -237,12 +251,19 @@ struct PARTATTRIBUTE
 
 };
 
-//Work Order Structure
-struct SpliceIndex
+struct SEQUENCEATTRIBUTE
 {
     int SpliceID;
     QString SpliceName;
-    unsigned int SpliceHash;
+    int Quantity;
+};
+
+//Work Order Structure
+struct PartIndex
+{
+    int PartID;
+    QString PartName;
+    unsigned int PartHash;
 };
 
 enum PASSWORDCONTROL
@@ -280,10 +301,16 @@ struct WorkOrderIndex
     QString WorkOrderName;
 };
 
-struct PartIndex
+struct HarnessIndex
 {
-    int PartID;
-    QString PartName;
+    int HarnessID;
+    QString HarnessName;
+};
+
+struct SequenceIndex
+{
+    int SequenceID;
+    QString SequenceName;
 };
 
 struct WELDRESULT
@@ -299,14 +326,6 @@ struct WELDRESULT
     int ActualPreheight;
     int ActualPostheight;
     unsigned int ActualAlarmflags;
-};
-
-enum SAMPLERATIO
-{
-    SampleWith1ms,
-    SampleWith5ms,
-    SampleWith10ms,
-    SampleWith20ms,
 };
 
 enum QUALITYTYPE
