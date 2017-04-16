@@ -1217,12 +1217,13 @@ int HmiAdaptor::timeChangeToInt(QString time)
 void HmiAdaptor::setOperateProcess(int spliceId, bool isText)
 {
     m_spliceAdaptor->QueryOneRecordFromTable(spliceId,&operateProcess->CurrentSplice);
-    operateProcess->CurrentNecessaryInfo.IsTestProcess = isText;
-    operateProcess->CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderID = workOrderModel->getStructValue("WorkOrderId").toInt();
-    operateProcess->CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderName = workOrderModel->getStructValue("WorkOrderName").toString();
-    DEBUG_PRINT(operateProcess->CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderName);
-    operateProcess->CurrentNecessaryInfo.CurrentHarness.HarnessID = partModel->getStruceValue("PartId").toInt();
-    operateProcess->CurrentNecessaryInfo.CurrentHarness.HarnessName = partModel->getStruceValue("PartName").toString();
+//    operateProcess->CurrentNecessaryInfo.IsTestProcess = isText;
+//    operateProcess->CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderID = workOrderModel->getStructValue("WorkOrderId").toInt();
+//    operateProcess->CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderName = workOrderModel->getStructValue("WorkOrderName").toString();
+//    DEBUG_PRINT(operateProcess->CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderName);
+//    operateProcess->CurrentNecessaryInfo.CurrentHarness.HarnessID = partModel->getStruceValue("PartId").toInt();
+//    operateProcess->CurrentNecessaryInfo.CurrentHarness.HarnessName = partModel->getStruceValue("PartName").toString();
+
 }
 
 void HmiAdaptor::operateProcessExec(QString type)

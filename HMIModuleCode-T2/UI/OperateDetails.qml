@@ -94,9 +94,7 @@ Item {
             spliceDetailsItem.addWireFromSplice()
         }
         hmiAdaptor.setOperateProcess(spliceId, false)
-        console.log("selectSplice222222222222")
         hmiAdaptor.operateProcessExec("Execute")
-        console.log("selectSplice3333333333333")
     }
 
     Text {
