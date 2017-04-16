@@ -21,7 +21,7 @@ const QString SQLSentence[] = {
 
     "INSERT INTO Wire ("                    /*1 Insert record into Wire Table*/
     "WireName, CreatedDate, OperatorID, SpliceID, Color, "
-    "StripeType, StripeColor, Gauge, GaugeAWG, MetalType, ModuleType"
+    "StripeType, StripeColor, Gauge, GaugeAWG, MetalType, ModuleType, "
     "HorizontalLocation, VerticalLocation, VerticalPosition)"
     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 
