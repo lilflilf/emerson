@@ -6,7 +6,7 @@ Description:title bar component,contains help&waring&language info,
 menu is from listMainMenu&creatMenuList&maintenanceList&viewDataList&
 settingList,language is from listModel
 The function interface:
-    root.checkNeedPassWd()
+    mainRoot.checkNeedPassWd()
     hmiAdaptor.getCurrentOperatorId()
 *******************************************************************/
 import QtQuick 2.7
@@ -109,7 +109,9 @@ Item {
         ListModel {
             id: listMainMenu
             Component.onCompleted: {
-                listMainMenu.append({"menuName":qsTr("Create/Edit")})
+                listMainMenu.append({"menuName":qsTr("Create")})
+
+//                listMainMenu.append({"menuName":qsTr("Create/Edit")})
                 listMainMenu.append({"menuName":qsTr("Test")})
                 listMainMenu.append({"menuName":qsTr("Operate")})
                 listMainMenu.append({"menuName":qsTr("View Data")})
@@ -211,13 +213,13 @@ Item {
                                     btn.isCheck = false
                                     creatMenu.visible = false
                                     btnBack.visible = false
-                                    root.checkNeedPassWd(2)
+                                    mainRoot.checkNeedPassWd(2)
 //                                    title.text = qsTr("Operate")
                                 } else if (index == 1) {
                                     btn.isCheck = false
                                     creatMenu.visible = false
                                     btnBack.visible = false
-                                    root.checkNeedPassWd(3)
+                                    mainRoot.checkNeedPassWd(3)
 //                                    title.text = qsTr("Test")
                                 }
                             }
@@ -237,8 +239,12 @@ Item {
 
     ListModel {
         id: creatMenuList
-        ListElement {menuKey:qsTr("Create New")}
-        ListElement {menuKey:qsTr("Edit Existing")}
+//        ListElement {menuKey:qsTr("Create New")}
+//        ListElement {menuKey:qsTr("Edit Existing")}
+        ListElement {menuKey:qsTr("Splice")}
+        ListElement {menuKey:qsTr("Sequence")}
+        ListElement {menuKey:qsTr("Harness")}
+
     }
     ListModel {
         id: maintenanceList
@@ -326,72 +332,98 @@ Item {
                                 btn.isCheck = false
                                 creatMenu.visible = false
                                 btnBack.visible = false
-                                if (menuKey == qsTr("Create New")){
-                                    root.checkNeedPassWd(0)
-//                                    title.text = qsTr("Create New")
+//                                if (menuKey == qsTr("Create New")){
+//                                    mainRoot.checkNeedPassWd(0)
+////                                    title.text = qsTr("Create New")
+//                                }
+//                                else if (menuKey == qsTr("Edit Existing")){
+//                                    mainRoot.checkNeedPassWd(1)
+////                                    title.text = qsTr("Edit Existing")
+//                                }
+                                if (menuKey == qsTr("Splice")){
+                                    mainRoot.clearStackView()
+                                    mainRoot.checkNeedPassWd(-1)
                                 }
-                                else if (menuKey == qsTr("Edit Existing")){
-                                    root.checkNeedPassWd(1)
-//                                    title.text = qsTr("Edit Existing")
+                                else if (menuKey == qsTr("Harness")){
+                                    mainRoot.clearStackView()
+                                    mainRoot.checkNeedPassWd(0)
+                                }
+                                else if (menuKey == qsTr("Sequence")){
+                                    mainRoot.clearStackView()
+                                    mainRoot.checkNeedPassWd(1)
                                 }
                                 else if (menuKey == qsTr("Calibration")){
-                                    root.checkNeedPassWd(4)
+                                    mainRoot.clearStackView()
+                                    mainRoot.checkNeedPassWd(4)
 //                                    title.text = qsTr("Calibration")
                                 }
                                 else if (menuKey == qsTr("Tool Change")){
-                                    root.checkNeedPassWd(5)
+                                    mainRoot.clearStackView()
+                                    mainRoot.checkNeedPassWd(5)
 //                                    title.text = qsTr("Tool Change")
                                 }
                                 else if (menuKey == qsTr("Advanced Maintenance")){
-                                    root.checkNeedPassWd(6)
+                                    mainRoot.clearStackView()
+                                    mainRoot.checkNeedPassWd(6)
 //                                    title.text = qsTr("Advanced Maintenance")
                                 }
                                 else if (menuKey == qsTr("Maintenance Counter")){
-                                    root.checkNeedPassWd(7)
+                                    mainRoot.clearStackView()
+                                    mainRoot.checkNeedPassWd(7)
 //                                    title.text = qsTr("Maintenance Counter")
                                 }
                                 else if (menuKey == qsTr("Maintenance log")){
-                                    root.checkNeedPassWd(8)
+                                    mainRoot.clearStackView()
+                                    mainRoot.checkNeedPassWd(8)
 //                                    title.text = qsTr("Maintenance log")
                                 }
                                 else if (menuKey == qsTr("Library")) {
-                                    root.checkNeedPassWd(12)
+                                    mainRoot.clearStackView()
+                                    mainRoot.checkNeedPassWd(12)
 //                                    title.text = qsTr("Library")
                                 }
                                 else if (menuKey == qsTr("Version Information")) {
-                                    root.checkNeedPassWd(13)
+                                    mainRoot.clearStackView()
+                                    mainRoot.checkNeedPassWd(13)
 //                                    title.text = qsTr("Version Information")
                                 }
                                 else if (menuKey == qsTr("Work Order History")){
-                                    root.checkNeedPassWd(9)
+                                    mainRoot.clearStackView()
+                                    mainRoot.checkNeedPassWd(9)
 //                                    title.text = qsTr("Work Order History")
                                 }
                                 else if (menuKey == qsTr("Statistical Trend")){
-                                    root.checkNeedPassWd(10)
+                                    mainRoot.clearStackView()
+                                    mainRoot.checkNeedPassWd(10)
 //                                    title.text = qsTr("Statistical Trend")
                                 }
                                 else if (menuKey == qsTr("Error/Alarm Log")){
-                                    root.checkNeedPassWd(11)
+                                    mainRoot.clearStackView()
+                                    mainRoot.checkNeedPassWd(11)
 //                                    title.text = qsTr("Error/Alarm Log")
                                 }
                                 else if (menuKey == qsTr("Permission Setting")){
-                                    root.checkNeedPassWd(14)
+                                    mainRoot.clearStackView()
+                                    mainRoot.checkNeedPassWd(14)
 //                                    title.text = qsTr("Permission Setting")
                                 }
                                 else if (menuKey == qsTr("Weld Defaults")) {
-                                    root.checkNeedPassWd(15)
+                                    mainRoot.clearStackView()
+                                    mainRoot.checkNeedPassWd(15)
 //                                    title.text = qsTr("Weld Defaults")
                                 }
                                 else if (menuKey == qsTr("Operator Library")){
-                                    root.checkNeedPassWd(16)
+                                    mainRoot.clearStackView()
+                                    mainRoot.checkNeedPassWd(16)
 //                                    title.text = qsTr("Operator Library")
                                 }
                                 else if (menuKey == qsTr("Data/Communication")) {
-                                    root.checkNeedPassWd(17)
+                                    mainRoot.clearStackView()
+                                    mainRoot.checkNeedPassWd(17)
 //                                    title.text = qsTr("Data Communication")
                                 }
 //                                else if (menuKey == "Branson Setting") {
-//                                    root.checkNeedPassWd(18)
+//                                    mainRoot.checkNeedPassWd(18)
 //                                    title.text = qsTr("Branson Setting")
 //                                }
                             }
@@ -418,7 +450,7 @@ Item {
         font.family: "arial"
         font.pointSize: 36
         color: "white"
-        text: qsTr("Create New")
+        text: qsTr("Create")
         anchors.left: btn.right
         anchors.verticalCenter: parent.verticalCenter
     }
@@ -761,7 +793,7 @@ Item {
                 textColor: "white"
                 text: qsTr("Switch User")
                 onClicked: {
-                    root.logoff()
+                    mainRoot.logoff()
 
                     personColumn.visible = false
                     background.visible = false

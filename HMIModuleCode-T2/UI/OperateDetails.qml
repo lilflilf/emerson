@@ -520,7 +520,7 @@ Item {
         visible: false
         onCliceTo: {
             if (reb)
-                root.checkNeedPassWd(2)
+                mainRoot.checkNeedPassWd(2)
         }
     }
 }

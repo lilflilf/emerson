@@ -15,7 +15,7 @@ import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.0
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
-
+import QtQuick.Controls.Styles 1.4
 Item {
     id: creatWire
     width: Screen.width
@@ -33,8 +33,25 @@ Item {
     property string stepSetText: ""
     property var totalGauge: 0
     property bool bIsEditSplice: false
-    property variant colorArray: ["#ff6699","#ff0033","#33FFCC","#cc99ff","#cc0099","#930202","#99ccff","#f79428",
-        "#0000cc","Olive","#ffff33","#ffcc00","#cc9909","#66ff00","#009900","#00cc66","#3366ff","#cc33cc","#cc9966","#9400D3"]
+    property var selectModel: -1
+//    property variant colorArray: ["#ff6699","#ff0033","#33FFCC","#cc99ff","#cc0099","#930202","#99ccff","#f79428",
+//        "#0000cc","Olive","#ffff33","#ffcc00","#cc9909","#66ff00","#009900","#00cc66","#3366ff","#cc33cc","#cc9966","#9400D3"]
+
+    property variant colorArray: ["#000000","#7f7f7f","#880015","#ED1C24","#FF7F27","#FFF200","#22B14C","#00A2E8",
+        "#3F48CC","#A349A4","#ffffff","#c3c3c3","#b97a57","#ffaec9","#ffc90e","#efe4b0","#b5e61d","#99d9ea","#7092be","#c8bfe7"]
+
+    Component.onCompleted: {
+        if (mainRoot.bIsEditSplice)
+        {
+
+            bIsEditSplice = true
+            var list = spliceModel.getWireIdList()
+            editSplice(list)
+            mainRoot.bIsEditSplice = false
+
+            firstComeIn = false
+        }
+    }
 
     function editSplice(editWireList)
     {
@@ -57,11 +74,18 @@ Item {
     function initSettings()
     {
         settingsModel.clear();
-        settingsModel.append({"topText":qsTr("Energy"),"bottomText":spliceModel.getStructValue("Energy","current"),"maxText":spliceModel.getStructValue("Energy","max"),"minText":spliceModel.getStructValue("Energy","min")})
-        settingsModel.append({"topText":qsTr("Trigger Pressure"),"bottomText":spliceModel.getStructValue("Trigger Pressure","current"),"maxText":spliceModel.getStructValue("Trigger Pressure","max"),"minText":spliceModel.getStructValue("Trigger Pressure","min")})
-        settingsModel.append({"topText":qsTr("Amplitude"),"bottomText":spliceModel.getStructValue("Amplitude","current"),"maxText":spliceModel.getStructValue("Amplitude","max"),"minText":spliceModel.getStructValue("Amplitude","min")})
-        settingsModel.append({"topText":qsTr("Weld Pressure"),"bottomText":spliceModel.getStructValue("Weld Pressure","current"),"maxText":spliceModel.getStructValue("Weld Pressure","max"),"minText":spliceModel.getStructValue("Weld Pressure","min")})
-        settingsModel.append({"topText":qsTr("Width"),"bottomText":spliceModel.getStructValue("Width","current"),"maxText":spliceModel.getStructValue("Width","max"),"minText":spliceModel.getStructValue("Width","min")})
+//        settingsModel.append({"topText":qsTr("Energy"),"bottomText":spliceModel.getStructValue("Energy","current"),"maxText":spliceModel.getStructValue("Energy","max"),"minText":spliceModel.getStructValue("Energy","min")})
+//        settingsModel.append({"topText":qsTr("Trigger Pressure"),"bottomText":spliceModel.getStructValue("Trigger Pressure","current"),"maxText":spliceModel.getStructValue("Trigger Pressure","max"),"minText":spliceModel.getStructValue("Trigger Pressure","min")})
+//        settingsModel.append({"topText":qsTr("Amplitude"),"bottomText":spliceModel.getStructValue("Amplitude","current"),"maxText":spliceModel.getStructValue("Amplitude","max"),"minText":spliceModel.getStructValue("Amplitude","min")})
+//        settingsModel.append({"topText":qsTr("Weld Pressure"),"bottomText":spliceModel.getStructValue("Weld Pressure","current"),"maxText":spliceModel.getStructValue("Weld Pressure","max"),"minText":spliceModel.getStructValue("Weld Pressure","min")})
+//        settingsModel.append({"topText":qsTr("Width"),"bottomText":spliceModel.getStructValue("Width","current"),"maxText":spliceModel.getStructValue("Width","max"),"minText":spliceModel.getStructValue("Width","min")})
+
+
+        settingsModel.append({"tipText":qsTr("Energy"),"topText":qsTr(""),"bottomText":spliceModel.getStructValue("Energy","current"),"maxText":spliceModel.getStructValue("Energy","max"),"minText":spliceModel.getStructValue("Energy","min")})
+        settingsModel.append({"tipText":qsTr("T.Pressure"),"topText":qsTr(""),"bottomText":spliceModel.getStructValue("Trigger Pressure","current"),"maxText":spliceModel.getStructValue("Trigger Pressure","max"),"minText":spliceModel.getStructValue("Trigger Pressure","min")})
+        settingsModel.append({"tipText":qsTr("W.Pressure"),"topText":qsTr(""),"bottomText":spliceModel.getStructValue("Amplitude","current"),"maxText":spliceModel.getStructValue("Amplitude","max"),"minText":spliceModel.getStructValue("Amplitude","min")})
+        settingsModel.append({"tipText":qsTr("Amplitude"),"topText":qsTr(""),"bottomText":spliceModel.getStructValue("Weld Pressure","current"),"maxText":spliceModel.getStructValue("Weld Pressure","max"),"minText":spliceModel.getStructValue("Weld Pressure","min")})
+        settingsModel.append({"tipText":qsTr("Width"),"topText":qsTr(""),"bottomText":spliceModel.getStructValue("Width","current"),"maxText":spliceModel.getStructValue("Width","max"),"minText":spliceModel.getStructValue("Width","min")})
 
     }
 
@@ -127,7 +151,7 @@ Item {
                 anchors.top: parent.top
                 anchors.fill: parent
                 color: "#052a40"
-                z:10
+                z:11
                 Label {
                     id: nowire
                     color: "#8295a0"
@@ -164,13 +188,14 @@ Item {
             Label {
                 id: properties
                 color: "#8295a0"
-                text: qsTr("PROPERTIES")
+//                text: qsTr("PROPERTIES")
                 anchors.top: wireName.bottom
                 anchors.left: parent.left
                 anchors.leftMargin: 10
-                anchors.topMargin: 10
+//                anchors.topMargin: 10
                 font.family: "arial"
                 font.pointSize: 16
+                height: 1
             }
             Item {
                 id: itemColor
@@ -374,22 +399,30 @@ Item {
                         anchors.horizontalCenter: parent.horizontalCenter
                         visible: itemStripe.stripeType == 2 ? true : false
                     }
-                    Row {
-                        height: parent.height
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        spacing: 20
+                    Text {
+                        text: qsTr("None")
+                        font.family: "Arial"
+                        font.pointSize: 16
+                        color: "black"
                         visible: itemStripe.stripeType == 3 ? true : false
-                        Rectangle {
-                            color: "black"
-                            width: 5
-                            height: parent.height
-                        }
-                        Rectangle {
-                            color: "black"
-                            width: 5
-                            height: parent.height
-                        }
+                        anchors.centerIn: parent
                     }
+//                    Row {
+//                        height: parent.height
+//                        anchors.horizontalCenter: parent.horizontalCenter
+//                        spacing: 20
+//                        visible: itemStripe.stripeType == 3 ? true : false
+//                        Rectangle {
+//                            color: "black"
+//                            width: 5
+//                            height: parent.height
+//                        }
+//                        Rectangle {
+//                            color: "black"
+//                            width: 5
+//                            height: parent.height
+//                        }
+//                    }
                 }
             }
 
@@ -408,6 +441,63 @@ Item {
                         anchors.horizontalCenter: parent.horizontalCenter
                         anchors.top: parent.top
                         anchors.topMargin: 20
+
+
+                        Rectangle {
+                            width: 180
+                            height: 80
+                            border.width: 2
+                            border.color: "black"
+                            Text {
+                                text: qsTr("None")
+                                color: "black"
+                                anchors.centerIn: parent
+                                font.pointSize: 20
+                                font.family: "Arial"
+                            }
+//                            Row {
+//                                height: parent.height
+//                                anchors.horizontalCenter: parent.horizontalCenter
+//                                spacing: 20
+//                                Rectangle {
+//                                    color: "black"
+//                                    width: 5
+//                                    height: parent.height
+//                                }
+//                                Rectangle {
+//                                    color: "black"
+//                                    width: 5
+//                                    height: parent.height
+//                                }
+//                            }
+
+
+                            Rectangle {
+                                width: parent.width + 10
+                                height: parent.height + 10
+                                color: Qt.rgba(0,0,0,0)
+                                border.color: "white"
+                                border.width: 2
+                                anchors.centerIn: parent
+                                visible: radioButton3.checked ? true : false
+                            }
+                            RadioButton {
+                                id: radioButton3
+                                visible: false
+                                exclusiveGroup: stripePositionGroup
+                            }
+                            MouseArea {
+                                anchors.fill: parent
+                                onClicked: {
+                                    radioButton3.checked = !radioButton3.checked
+                                    if (radioButton3.checked)
+                                        radioCheck = 3
+                                }
+                            }
+                        }
+
+
+
                         Rectangle {
                             width: 180
                             height: 80
@@ -415,7 +505,7 @@ Item {
                             border.color: "black"
                             Rectangle {
                                 color: "black"
-                                height: 5
+                                height: 15
                                 width: parent.width
                                 anchors.verticalCenter: parent.verticalCenter
                             }
@@ -451,7 +541,7 @@ Item {
                             border.color: "black"
                             Rectangle {
                                 color: "black"
-                                height: 5
+                                height: 15
                                 width: parent.width
                                 anchors.centerIn: parent
                                 rotation: 17
@@ -495,7 +585,7 @@ Item {
                             }
                             Rectangle {
                                 color: "black"
-                                width: 5
+                                width: 15
                                 height: parent.height
                                 anchors.horizontalCenter: parent.horizontalCenter
                             }
@@ -513,51 +603,7 @@ Item {
                                 }
                             }
                         }
-                        Rectangle {
-                            width: 180
-                            height: 80
-                            border.width: 2
-                            border.color: "black"
-                            Row {
-                                height: parent.height
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                spacing: 20
-                                Rectangle {
-                                    color: "black"
-                                    width: 5
-                                    height: parent.height
-                                }
-                                Rectangle {
-                                    color: "black"
-                                    width: 5
-                                    height: parent.height
-                                }
-                            }
 
-
-                            Rectangle {
-                                width: parent.width + 10
-                                height: parent.height + 10
-                                color: Qt.rgba(0,0,0,0)
-                                border.color: "white"
-                                border.width: 2
-                                anchors.centerIn: parent
-                                visible: radioButton3.checked ? true : false
-                            }
-                            RadioButton {
-                                id: radioButton3
-                                visible: false
-                                exclusiveGroup: stripePositionGroup
-                            }
-                            MouseArea {
-                                anchors.fill: parent
-                                onClicked: {
-                                    radioButton3.checked = !radioButton3.checked
-                                    if (radioButton3.checked)
-                                        radioCheck = 3
-                                }
-                            }
-                        }
                     }
                     Loader {
                         anchors.bottom: parent.bottom
@@ -576,7 +622,7 @@ Item {
                 Label {
                     id: labelGauge
                     color: "#8295a0"
-                    text: qsTr("Gauge")
+                    text: qsTr("Size")
                     font.family: "arial"
                     font.pointSize: 14
                     anchors.right: parent.right
@@ -624,7 +670,7 @@ Item {
                 Label {
                     id: labelType
                     color: "#8295a0"
-                    text: qsTr("Type")
+                    text: qsTr("Conductor")
                     font.family: "arial"
                     font.pointSize: 14
                     anchors.right: parent.right
@@ -663,24 +709,27 @@ Item {
                 height: 1
             }
 
-            Label {
-                id: position
-                color: "#8295a0"
-                text: qsTr("POSITION")
-                anchors.top: line3.bottom
-                anchors.topMargin: 5
-                font.family: "arial"
-                font.pointSize: 14
-                opacity: 0.5
-                anchors.left: parent.left
-                anchors.leftMargin: 10
-            }
+//            Label {
+//                id: position
+//                color: "#8295a0"
+//                text: qsTr("POSITION")
+//                anchors.top: line3.bottom
+//                anchors.topMargin: 5
+//                font.family: "arial"
+//                font.pointSize: 14
+//                opacity: 0.5
+//                anchors.left: parent.left
+//                anchors.leftMargin: 10
+//            }
+
+
             Item {
                 id: itemSide
                 width: parent.width
                 height: 34
-                anchors.top: position.bottom
-                anchors.topMargin: 15
+                anchors.top: line3.bottom
+                anchors.topMargin: 64
+                z: 3
                 Label {
                     id: labelSide
                     color: "#8295a0"
@@ -783,14 +832,14 @@ Item {
                         property bool isDialog: false
                         onClicked: {
                             if (spliceDetailsItem.changeTop()) {
-                                root.showDialog(true,true,qsTr("OK"),qsTr("CANCEL"),"","",qsTr("Would you want to move the activated wire to the selected position?"))
+                                mainRoot.showDialog(true,true,qsTr("OK"),qsTr("CANCEL"),"","",qsTr("Would you want to move the activated wire to the selected position?"))
                                 isDialog = true
                                 return
                             }
                             topRadio.checked = !topRadio.checked
                         }
                         Connections {
-                            target: root
+                            target: mainRoot
                             onDialogReturn: {
                                 if (!mouse1.isDialog)
                                     return
@@ -874,14 +923,14 @@ Item {
                         property bool isDialog: false
                         onClicked: {
                             if (spliceDetailsItem.changeBottom()) {
-                                root.showDialog(true,true,qsTr("OK"),qsTr("CANCEL"),"","",qsTr("Would you want to move the activated wire to the selected position?"))
+                                mainRoot.showDialog(true,true,qsTr("OK"),qsTr("CANCEL"),"","",qsTr("Would you want to move the activated wire to the selected position?"))
                                 isDialog = true
                                 return
                             }
                             bottomRadio.checked = !bottomRadio.checked
                         }
                         Connections {
-                            target: root
+                            target: mainRoot
                             onDialogReturn: {
                                 if (!mouse2.isDialog)
                                     return
@@ -918,6 +967,60 @@ Item {
                 color: "#375566"
                 height: 1
             }
+
+            Item {
+                id: type
+                width: parent.width
+                height: 34
+                anchors.top: line3.bottom
+                anchors.topMargin: 15
+                z: 10
+
+                Label {
+                    id: typeText
+                    color: "#8295a0"
+                    text: qsTr("Type")
+                    font.family: "arial"
+                    font.pointSize: 14
+                    anchors.right: parent.right
+                    anchors.rightMargin: 290
+//                    anchors.verticalCenter: wireDirection.verticalCenter
+                }
+                MyCombox {
+                    id: typeDirection
+                    width: parent.width * 0.4
+                    height: 34
+                    anchors.left: parent.left
+                    anchors.leftMargin: width + 10
+                    items: [
+                    { lang: "n/a", img: "" },
+                    { lang: "DIN", img: "" },
+                    { lang: "ISO", img: "" },
+                    { lang: "SAE", img: "" },
+                    { lang: "JIS", img: "" }
+
+                    ]
+                    backGroundColor: "#052a40"
+                    dropDownColor: "#052a40"
+                }
+            }
+
+            CButton {
+                id: editExistingSplice
+                text: qsTr("EDIT EXISTING\nSPLICE")
+                pointSize: 12
+                anchors.bottom: parent.bottom
+                width: parent.width * 0.5
+                anchors.right: save.left
+                anchors.rightMargin: 10
+                onClicked: {
+                    backGround.visible = true
+                    backGround.opacity = 0.5
+                    addWireLibrary.visible = true
+                    addWireLibrary.listModel = spliceModel
+                }
+            }
+
             CButton {
                 id: save
                 text: qsTr("SAVE TO WIRE\nLIBRARY")
@@ -980,35 +1083,35 @@ Item {
             ListModel {
                 id: settingsModel2
                 Component.onCompleted: {
-                    settingsModel2.append({"topText":qsTr("Time"),
+                    settingsModel2.append({"topText":qsTr(""),
                         "bottomText":spliceModel.getStructValue("Time-","current"),
                         "maxText":spliceModel.getStructValue("Time-","max"),
                         "minText":spliceModel.getStructValue("Time-","min")})
-                    settingsModel2.append({"topText":qsTr("Time"),
+                    settingsModel2.append({"topText":qsTr(""),
                         "bottomText":spliceModel.getStructValue("Time+","current"),
                         "maxText":spliceModel.getStructValue("Time+","max"),
                         "minText":spliceModel.getStructValue("Time+","min")})
-                    settingsModel2.append({"topText":qsTr("Power"),
+                    settingsModel2.append({"topText":qsTr(""),
                         "bottomText":spliceModel.getStructValue("Power-","current"),
                         "maxText":spliceModel.getStructValue("Power-","max"),
                         "minText":spliceModel.getStructValue("Power-","min")})
-                    settingsModel2.append({"topText":qsTr("Power"),
+                    settingsModel2.append({"topText":qsTr(""),
                         "bottomText":spliceModel.getStructValue("Power+","current"),
                         "maxText":spliceModel.getStructValue("Power+","max"),
                         "minText":spliceModel.getStructValue("Power+","min")})
-                    settingsModel2.append({"topText":qsTr("Pre-Height"),
+                    settingsModel2.append({"topText":qsTr(""),
                         "bottomText":spliceModel.getStructValue("Pre-Height-","current"),
                         "maxText":spliceModel.getStructValue("Pre-Height-","max"),
                         "minText":spliceModel.getStructValue("Pre-Height-","min")})
-                    settingsModel2.append({"topText":qsTr("Pre-Height"),
+                    settingsModel2.append({"topText":qsTr(""),
                         "bottomText":spliceModel.getStructValue("Pre-Height+","current"),
                         "maxText":spliceModel.getStructValue("Pre-Height+","max"),
                         "minText":spliceModel.getStructValue("Pre-Height+","min")})
-                    settingsModel2.append({"topText":qsTr("Post-Height"),
+                    settingsModel2.append({"topText":qsTr(""),
                         "bottomText":spliceModel.getStructValue("Post-Height-","current"),
                         "maxText":spliceModel.getStructValue("Post-Height-","max"),
                         "minText":spliceModel.getStructValue("Post-Height-","min")})
-                    settingsModel2.append({"topText":qsTr("Post-Height"),
+                    settingsModel2.append({"topText":qsTr(""),
                         "bottomText":spliceModel.getStructValue("Post-Height+","current"),
                         "maxText":spliceModel.getStructValue("Post-Height+","max"),
                         "minText":spliceModel.getStructValue("Post-Height+","min")})
@@ -1020,103 +1123,209 @@ Item {
                 anchors.topMargin: tabBar.height + 5
                 spacing: 20
                 anchors.left: parent.left
-                anchors.leftMargin: 10
+                anchors.leftMargin: 100
                 width: parent.width-20
-                visible: false
+                visible: true
                 Text {
-                    text: qsTr("Lower Limit")
+                    text: qsTr("Setting")
                     font.pointSize: 14
                     font.family: "arial"
-                    color: "#8295a0"
-                    width: (parent.width-20)/2
+//                    color: "#8295a0"
+                    color: "white"
+
+                    width: (parent.width-100)/2
                     anchors.verticalCenter: parent.verticalCenter
                     horizontalAlignment: Qt.AlignHCenter
                 }
                 Text {
                     font.pointSize: 14
                     font.family: "arial"
-                    width: (parent.width-20)/2
-                    color: "#8295a0"
-                    text: qsTr("Upper Limit")
+                    width: (parent.width-100)/2
+//                    color: "#8295a0"
+                    color: "white"
+
+                    text: qsTr("Actual")
                     anchors.verticalCenter: parent.verticalCenter
                     horizontalAlignment: Qt.AlignHCenter
                 }
             }
 
-            Grid {
+            Column {
+                anchors.top: settingLayout.top
+                anchors.left: settingLayout.right
+                anchors.leftMargin: -130
+                width: parent.width-20
+                height: 250
+                Repeater {
+                    model: 5
+                    Recsetting {
+                        localbordercolor: "#ffffff" //"#48484a"
+//                        headTitle: topText
+//                        centervalue: bottomText
+                        width: (settingLayout.width-120)/2
+                        height: (settingLayout.height-60)/5
+                    }
+                }
+            }
+
+            Column {
                 id: settingLayout
                 anchors.top: parent.top
                 anchors.topMargin: tabBar.height + 30
                 anchors.left: parent.left
                 anchors.leftMargin: 10
                 width: parent.width-20
-                anchors.bottom: bottomButton.top
-                anchors.bottomMargin: 10
-                rows: 4
-                columns: 2
-                columnSpacing: 30
-                rowSpacing: 20
+                height: 250
+//                anchors.bottom: bottomButton.top
+//                anchors.bottomMargin: 10
+//                rows: 4
+//                columns: 2
+//                columnSpacing: 30
+//                rowSpacing: 20
                 Repeater {
                     id: repeater
                     model: settingsModel
+                    Row {
+                        width: (settingLayout.width-100)/2
+                        height: (settingLayout.height-60)/5
+                        property alias localbordercolor: tempRec.localbordercolor
+                        Text {
+                            id: lineTip
+                            text: tipText
+                            width: 100
+                            color: "white"
+                            font.pointSize: 16
+                            font.family: "arial"
+//                            verticalAlignment: Qt.AlignVCenter
+                            horizontalAlignment: Qt.AlignHCenter
+                        }
+                        Recsetting {
+                            id: tempRec
+                            headTitle: topText
+                            centervalue: bottomText
+                            width: (settingLayout.width-100)/2
+                            height: (settingLayout.height-60)/5
+//                            anchors.left: lineTip.right
+                            onMouseAreaClick: {
+                                creatWire.selectModel = 1
+                                creatWire.selectIndex = index
+                                backGround.visible = true
+                                backGround.opacity = 0.5
+                                if (repeater.model == settingsModel && index == 2 && bIsStep) {
+                                    stepTimeSet.visible = true
+                                } else {
+                                    localbordercolor = "#05f91c"
+                                    keyNum.visible = true
+                                    keyNum.titleText = topText
+                                    keyNum.currentValue = bottomText
+                                    keyNum.minvalue = minText
+                                    keyNum.maxvalue = maxText
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            ListModel {
+                id: qualityTitleModel
+                ListElement {title:qsTr("Time")}
+                ListElement {title:qsTr("Peak\nPower")}
+                ListElement {title:qsTr("Pre-\nHeight")}
+                ListElement {title:qsTr("Post-\nHeight")}
+
+            }
+
+            Column {
+                anchors.top: settingLayout2.top
+                anchors.bottom: settingLayout2.bottom
+                anchors.left: parent.left
+//                anchors.leftMargin: -230
+                width: 100
+//                height: 250
+                Repeater {
+                    model: qualityTitleModel
+                    Item {
+                        width: (settingLayout2.width-120)/2
+                        height: (settingLayout2.height)/4
+                        Text {
+                            color: "#ffffff"
+                            font.family: "Arial"
+                            font.pointSize: 16
+                            text: title
+                            anchors.centerIn: parent
+                        }
+                    }
+                }
+            }
+
+            Column {
+                anchors.top: settingLayout2.top
+                anchors.bottom: settingLayout2.bottom
+                anchors.left: settingLayout2.right
+                anchors.leftMargin: -230
+                width: parent.width-20
+//                height: 250
+                Repeater {
+                    model: 4
+                    Item {
+                        width: (settingLayout2.width-120)/2
+                        height: (settingLayout2.height)/4
+                        Recsetting {
+                            localbordercolor: "#ffffff" //"#48484a"
+                            //                        headTitle: topText
+                            //                        centervalue: bottomText
+                            width: (settingLayout2.width-120)/2
+                            height: (settingLayout2.height)/8
+                            anchors.centerIn: parent
+                        }
+                    }
+                }
+            }
+
+            Column {
+                id: settingLayout2
+                anchors.top: settingLayout.bottom
+//                anchors.topMargin: tabBar.height + 30
+                anchors.left: parent.left
+                anchors.leftMargin: 110
+                width: parent.width-20
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: 10
+//                rows: 4
+//                columns: 2
+//                columnSpacing: 30
+//                rowSpacing: 20
+                Repeater {
+                    id: repeater2
+                    model: settingsModel2
                     Recsetting {
                         headTitle: topText
                         centervalue: bottomText
-                        width: (settingLayout.width-30)/2
-                        height: (settingLayout.height-60)/4
+                        width: (settingLayout2.width-100)/2
+                        height: (settingLayout2.height)/8
                         onMouseAreaClick: {
+                            creatWire.selectModel = 2
                             creatWire.selectIndex = index
                             backGround.visible = true
                             backGround.opacity = 0.5
-                            if (repeater.model == settingsModel && index == 2 && bIsStep) {
-                                stepTimeSet.visible = true
-                            } else {
+//                            if (repeater.model == settingsModel && index == 2 && bIsStep) {
+//                                stepTimeSet.visible = true
+//                            } else {
                                 localbordercolor = "#05f91c"
                                 keyNum.visible = true
                                 keyNum.titleText = topText
                                 keyNum.currentValue = bottomText
                                 keyNum.minvalue = minText
                                 keyNum.maxvalue = maxText
-                            }
+//                            }
                         }
                     }
                 }
             }
-            Row {
-                id: bottomButton
-                anchors.bottom: parent.bottom
-                anchors.left: parent.left
-                anchors.leftMargin: 10
-                spacing: 10
-                height: 61
-                width: parent.width-20
 
-                CButton {
-                    pointSize: 14
-                    width: (parent.width-10)/2
-                    text: qsTr("QUALITY\nWINDOW")
-                    onClicked: {
-                        if (repeater.model == settingsModel){
-                            repeater.model = settingsModel2
-                            text = qsTr("WELD\nSETTINGS")
-                            upper.visible = true
-                        }
-                        else {
-                            text = qsTr("QUALITY\nWINDOW")
-                            repeater.model = settingsModel
-                            upper.visible = false
-                        }
-                    }
-                }
-                CButton {
-                    pointSize: 14
-                    width: (parent.width-10)/2
-                    text: qsTr("ADVANCED\nSETTING")
-                    onClicked: {
-                        settingRightArea.visible = true
-                    }
-                }
-            }
+
+
         }
     }
 
@@ -1128,6 +1337,24 @@ Item {
         anchors.top: parent.top
         height: Screen.height * 0.08
         spacing: 0
+        onCurrentIndexChanged: {
+            console.log("currentIndex = ",currentIndex)
+            if (currentIndex == 0)
+            {
+                wireLibrary.visible = true
+                wirelibrary.visible = true
+                addWire.visible = true
+                bottomButton.visible = false
+            }
+            else if (currentIndex == 1)
+            {
+                wireLibrary.visible = false
+                wirelibrary.visible = false
+                addWire.visible = false
+                bottomButton.visible = true
+            }
+        }
+
         TabButton {
             height: parent.height
             Rectangle {
@@ -1357,6 +1584,37 @@ Item {
             id: imageLoader
             anchors.fill: parent
         }
+
+        Row {
+            id: bottomButton
+//                anchors.bottom: parent.bottom
+//                anchors.left: parent.left
+//                anchors.leftMargin: 10
+            anchors.left: wireLibrary.left
+            anchors.top: wireLibrary.top
+            spacing: 10
+            height: 61
+            width: (spliceDetailsItem.width-72)/2
+            visible: false
+            CButton {
+                pointSize: 14
+                width: (spliceDetailsItem.width-72)/4
+                text: qsTr("ADVANCED\nSETTING")
+                onClicked: {
+                    settingRightArea.visible = true
+                }
+            }
+            CButton {
+                pointSize: 14
+                width: (spliceDetailsItem.width-72)/4
+                text: qsTr("Graph")
+                onClicked: {
+                    myCanvas.visible = !myCanvas.visible
+                }
+            }
+        }
+
+
         CButton {
             id: wireLibrary
             pointSize: 14
@@ -1369,6 +1627,8 @@ Item {
             onClicked: {
                 backGround.visible = true
                 backGround.opacity = 0.5
+                addWireLibrary.listModel = wireModel
+
                 addWireLibrary.visible = true
                 wireModel.setTemplateModelList()
             }
@@ -1456,6 +1716,8 @@ Item {
                     return
 //                if (spliceId != -1 && !creatWire.bIsEditSplice)
                     signalSaveSplice(spliceId,creatWire.bIsEditSplice)
+
+                mainRoot.popStackView()
             }
         }
     }
@@ -1617,31 +1879,32 @@ Item {
                 id: weldSettingModel
                 Component.onCompleted: {
                     weldSettingModel.append({"headText":qsTr("Pre Burst:"),"textValue":spliceModel.getStructValue("Pre Burst","current"),"maxText":spliceModel.getStructValue("Pre Burst","max"),"minText":spliceModel.getStructValue("Pre Burst","min")})
-                    weldSettingModel.append({"headText":qsTr("Hold Time:"),"textValue":spliceModel.getStructValue("Hold Time","current"),"maxText":spliceModel.getStructValue("Hold Time","max"),"minText":spliceModel.getStructValue("Hold Time","min")})
                     weldSettingModel.append({"headText":qsTr("After Burst:"),"textValue":spliceModel.getStructValue("After Burst","current"),"maxText":spliceModel.getStructValue("After Burst","max"),"minText":spliceModel.getStructValue("After Burst","min")})
-                    weldSettingModel.append({"headText":qsTr("Squeeze Time:"),"textValue":spliceModel.getStructValue("Squeeze Time","current"),"maxText":spliceModel.getStructValue("Squeeze Time","max"),"minText":spliceModel.getStructValue("Squeeze Time","min")})
+                    weldSettingModel.append({"headText":qsTr("Squeeze:"),"textValue":spliceModel.getStructValue("Squeeze Time","current"),"maxText":spliceModel.getStructValue("Squeeze Time","max"),"minText":spliceModel.getStructValue("Squeeze Time","min")})
+                    weldSettingModel.append({"headText":qsTr("Hold:"),"textValue":spliceModel.getStructValue("Hold Time","current"),"maxText":spliceModel.getStructValue("Hold Time","max"),"minText":spliceModel.getStructValue("Hold Time","min")})
                 }
             }
-            Grid {
+            Column {
                 id: weldSetting
                 property bool weldSetVisible: false
                 anchors.top: parent.top
                 anchors.left: parent.left
                 anchors.leftMargin: 20
-                width: parent.width-40
-                height: parent.height*0.23+6
+                width: (parent.width-20)/3
+                height: parent.height*0.46+30
                 clip: true
-                columns: 2
-                rows:2
-                columnSpacing: 20
-                rowSpacing: 6
+                spacing: 8
+//                columns: 2
+//                rows:2
+//                columnSpacing: 20
+//                rowSpacing: 6
                 Repeater {
                     id: weldRepeater
                     model: weldSettingModel
                     delegate: Item {
                         property alias myfocus: inputText.inputFocus
-                        width: parent.width/2-20
-                        height: (weldSetting.height-6)/2
+                        width: parent.width ///2-20
+                        height: (weldSetting.height-30)/4
                         Text {
                             id: headName
                             anchors.top: parent.top
@@ -1649,7 +1912,7 @@ Item {
                             verticalAlignment: Qt.AlignVCenter
                             anchors.left: parent.left
                             anchors.leftMargin: 10
-                            width: parent.width/3
+                            width: parent.width/3 + 10
                             font.pointSize: 16
                             font.family: "arial"
                             text: headText
@@ -1687,15 +1950,110 @@ Item {
                 }
             }
             Text {
+                id: cutterText
+                anchors.top: widthSettingText.top
+                anchors.left: widthSetting.right
+                verticalAlignment: Qt.AlignVCenter
+                text: qsTr("Cutter")
+                color: "white"
+                font.pointSize: 16
+                font.family: "arial"
+                height: parent.height * 0.1
+            }
+
+            Switch2 {
+                id: cutteronoroff
+                anchors.top: widthSetting.top
+                anchors.left: cutterText.left
+                width: loadValue.width - 20
+                height: loadValue.height
+                textLeft: qsTr("ON")
+                textRight: qsTr("OFF")
+                state: "left"
+                clip: true
+                onStateChanged: {
+                    if (cutteronoroff.state == "left"){
+                        cutterColumn.visible = true
+                        loadName2.visible = true
+                        loadValue2.visible = true
+                    }
+                    else {
+                        cutterColumn.visible = false
+                        loadName2.visible = false
+                        loadValue2.visible = false
+                    }
+                }
+            }
+
+
+            ListModel {
+                id: cutterModel
+                Component.onCompleted: {
+                    cutterModel.append({"headText":qsTr("Time"),"switchState":"left"})
+                    cutterModel.append({"headText":qsTr("Peak Power"),"switchState":"left"})
+                    cutterModel.append({"headText":qsTr("Pre-Height"),"switchState":"left"})
+                    cutterModel.append({"headText":qsTr("Post-Height"),"switchState":"left"})
+                }
+            }
+
+            Column {
+                id: cutterColumn
+                visible: false
+                anchors.top: loadValue2.bottom
+                anchors.topMargin: 8
+                anchors.left: cutteronoroff.left
+                width: (parent.width-40)/3
+                height: parent.height*0.46+30
+                clip: true
+                spacing: 8
+                Repeater {
+                    model: cutterModel
+                    delegate: Item {
+                        height: (cutterColumn.height-30)/4
+                        width: parent.width
+                        Text {
+                            id: cutterColumnName
+                            anchors.verticalCenter: parent.verticalCenter
+                            verticalAlignment: Qt.AlignVCenter
+                            anchors.left: parent.left
+                            anchors.leftMargin: 10
+                            width: parent.width/3
+                            font.pointSize: 16
+                            font.family: "arial"
+                            text: headText
+                            color: "white"
+                            clip: true
+                        }
+                        Switch2 {
+                            id: columnOnoroff
+                            anchors.verticalCenter: cutterColumnName.verticalCenter
+                            anchors.left: cutterColumnName.right
+                            anchors.leftMargin: 13
+                            width: loadValue.width - 20
+                            height: loadValue.height
+                            textLeft: qsTr("ON")
+                            textRight: qsTr("OFF")
+                            state: switchState
+                            clip: true
+                            onStateChanged: {
+                            }
+                        }
+                    }
+                }
+            }
+
+
+            Text {
                 id: widthSettingText
-                anchors.top: weldSetting.bottom
-                anchors.left: parent.left
-                anchors.leftMargin: 30
+                anchors.top: weldSetting.top
+                anchors.left: weldSetting.right
+                anchors.leftMargin: 10
                 verticalAlignment: Qt.AlignVCenter
                 text: qsTr("Width off-set:")
                 color: "white"
                 font.pointSize: 16
                 font.family: "arial"
+                height: parent.height * 0.1
             }
             ListModel {
                 id: widthModel
@@ -1704,31 +2062,33 @@ Item {
                     widthModel.append({"widthText":qsTr("Actual:"),"textValue":spliceModel.getStructValue("ActualWidth","current"),"maxText":spliceModel.getStructValue("ActualWidth","max"),"minText":spliceModel.getStructValue("ActualWidth","min")})
                 }
             }
-            Grid {
+            Column {
                 id: widthSetting
                 property bool widthSetVisible: false
                 anchors.top: widthSettingText.bottom
-                anchors.left: parent.left
-                anchors.leftMargin: 20
-                width: parent.width-40
-                height: parent.height*0.12
+                anchors.topMargin: 8
+                anchors.left: weldSetting.right
+                anchors.leftMargin: 10
+                width: (parent.width-40)/3
+                height: parent.height*0.24 + 8
                 clip: true
-                columns: 2
-                rows: 1
-                columnSpacing: 20
+                spacing: 8
+//                columns: 2
+//                rows: 1
+//                columnSpacing: 20
                 Repeater {
                     id: widthRepeater
                     model: widthModel
                     delegate: Item {
                         property alias myfocus: widthValue.inputFocus
-                        width: parent.width/2-20
-                        height: parent.height
+                        width: parent.width  ///2-20
+                        height: (parent.height-8)/2
                         Text {
                             id: widthName
                             anchors.verticalCenter: parent.verticalCenter
                             verticalAlignment: Qt.AlignVCenter
                             anchors.left: parent.left
-                            anchors.leftMargin: 10
+//                            anchors.leftMargin: 10
                             width: parent.width/3
                             font.pointSize: 16
                             font.family: "arial"
@@ -1770,13 +2130,14 @@ Item {
             Text {
                 id: heightSettingText
                 anchors.top: widthSetting.bottom
-                anchors.left: parent.left
-                anchors.leftMargin: 30
+                anchors.topMargin: 8
+                anchors.left: widthSettingText.left
                 verticalAlignment: Qt.AlignVCenter
                 text: qsTr("Height off-set:")
                 color: "white"
                 font.pointSize: 16
                 font.family: "arial"
+                height: parent.height * 0.12
             }
             ListModel {
                 id: heightModel
@@ -1785,31 +2146,32 @@ Item {
                     heightModel.append({"heightText":qsTr("Actual:"),"textValue":spliceModel.getStructValue("ActualHeight","current"),"maxText":spliceModel.getStructValue("ActualHeight","max"),"minText":spliceModel.getStructValue("ActualHeight","min")})
                 }
             }
-            Grid {
+            Column {
                 id: heightSetting
                 property bool heightSetVisible: false
                 anchors.top: heightSettingText.bottom
-                anchors.left: parent.left
-                anchors.leftMargin: 20
-                width: parent.width-40
-                height: parent.height*0.12
+                anchors.topMargin: 8
+                anchors.left: widthSettingText.left
+                width: (parent.width-40)/3
+                height: parent.height*0.24 + 8
                 clip: true
-                columns: 2
-                rows: 1
-                columnSpacing: 20
+                spacing: 8
+//                columns: 2
+//                rows: 1
+//                columnSpacing: 20
                 Repeater {
                     id: heightRepeater
                     model: heightModel
                     delegate: Item {
                         property alias myfocus: heightValue.inputFocus
-                        width: parent.width/2-20
-                        height: parent.height
+                        width: parent.width ///2-20
+                        height: (parent.height-8)/2
                         Text {
                             id: heightName
                             anchors.verticalCenter: parent.verticalCenter
                             verticalAlignment: Qt.AlignVCenter
                             anchors.left: parent.left
-                            anchors.leftMargin: 10
+//                            anchors.leftMargin: 10
                             width: parent.width/3
                             font.pointSize: 16
                             font.family: "arial"
@@ -1852,24 +2214,24 @@ Item {
                 id: thirdSwitchModel
                 Component.onCompleted: {
                     thirdSwitchModel.append({"thirdSwitchText":qsTr("Anti-Side:"),"switchState":spliceModel.getStructValue("Anti-Side","current")})
-                    thirdSwitchModel.append({"thirdSwitchText":qsTr("Cut Off:"),"switchState":spliceModel.getStructValue("Cut Off","current")})
+//                    thirdSwitchModel.append({"thirdSwitchText":qsTr("Cut Off:"),"switchState":spliceModel.getStructValue("Cut Off","current")})
                     thirdSwitchModel.append({"thirdSwitchText":qsTr("Insulation:"),"switchState":spliceModel.getStructValue("Insulation","current")})
                 }
             }
             Column {
                 id: thirdSwitch
-                anchors.top: heightSetting.bottom
-                anchors.topMargin: 6
+                anchors.top: loadValue.bottom
+                anchors.topMargin: 8
                 anchors.bottom: parent.bottom
-                anchors.left: parent.left
-                anchors.leftMargin: 20
-                width: parent.width/2-40
-                spacing: 6
+                anchors.left: weldSetting.left
+//                anchors.leftMargin: 20
+                width: (parent.width-40)/3
+                spacing: 8
                 clip: true
                 Repeater {
                     model: thirdSwitchModel
                     delegate: Item {
-                        height: (thirdSwitch.height-12)/3
+                        height: (thirdSwitch.height-12)/2
                         width: parent.width
                         Text {
                             id: thirdSwitchName
@@ -1888,8 +2250,9 @@ Item {
                             id: onoroff
                             anchors.verticalCenter: thirdSwitchName.verticalCenter
                             anchors.left: thirdSwitchName.right
-                            width: parent.width/2
-                            height: parent.height
+                            anchors.leftMargin: 13
+                            width: loadValue.width - 20
+                            height: loadValue.height
                             textLeft: qsTr("ON")
                             textRight: qsTr("OFF")
                             state: switchState
@@ -1914,15 +2277,16 @@ Item {
             }
             Text {
                 id: loadName
-                anchors.top: thirdSwitch.top
-                anchors.left: parent.left
-                anchors.leftMargin: parent.width/2+10
+                anchors.top: weldSetting.bottom
+                anchors.topMargin: 16
+                anchors.left: weldSetting.left
+                anchors.leftMargin: 10
                 width: (parent.width/2-40)/3
-                height: thirdSwitch.height/3-6
+                height: parent.height*0.06
                 verticalAlignment: Qt.AlignVCenter
                 font.pointSize: 16
                 font.family: "arial"
-                text: qsTr("Unload Time:")
+                text: qsTr("Unload:")
                 color: "white"
                 clip: true
             }
@@ -1930,10 +2294,11 @@ Item {
                 id: loadValue
                 anchors.verticalCenter: loadName.verticalCenter
                 anchors.left: loadName.right
-                width: parent.width/4
+                anchors.leftMargin: -30
+                width: parent.width/4 - 60
 //                horizontalAlignment: Qt.AlignHCenter
                 height: parent.height*0.12
-                inputWidth: parent.width/4-20
+                inputWidth: parent.width/4-80
 //                inputHeight: parent.height*0.12
 //                inputColor: "white"
                 clip: true
@@ -1952,15 +2317,16 @@ Item {
             }
             Text {
                 id: loadName2
-                anchors.top: loadName.bottom
-                anchors.topMargin: 6
-                anchors.left: loadName.left
-                width: (parent.width/2-40)/3
-                height: thirdSwitch.height/3-6
+                anchors.top: cutteronoroff.bottom
+                anchors.topMargin: 32
+                anchors.left: cutteronoroff.left
+                anchors.leftMargin: 10
+                width: loadName.width //(parent.width/2-40)/3
+                height: loadName.height //thirdSwitch.height/3-6
                 verticalAlignment: Qt.AlignVCenter
                 font.pointSize: 16
                 font.family: "arial"
-                text: qsTr("Load Time:")
+                text: qsTr("Load:")
                 color: "white"
                 clip: true
             }
@@ -1968,10 +2334,11 @@ Item {
                 id: loadValue2
                 anchors.verticalCenter: loadName2.verticalCenter
                 anchors.left: loadName2.right
-                width: parent.width/4-20
+                anchors.leftMargin: -15
+                width: parent.width/4-60
 //                horizontalAlignment: Qt.AlignHCenter
                 height: parent.height*0.12
-                inputWidth: parent.width/4-20
+                inputWidth: parent.width/4-80
 //                inputHeight: parent.height*0.12
 //                inputColor: "white"
                 clip: true
@@ -2001,11 +2368,15 @@ Item {
                 font.pointSize: 16
                 font.family: "arial"
             }
+
             CButton {
                 id: instulationButton
-                anchors.verticalCenter: instulationText.verticalCenter
-                anchors.verticalCenterOffset: 8
-                anchors.left: instulationText.right
+//                anchors.verticalCenter: instulationText.verticalCenter
+//                anchors.verticalCenterOffset: 8
+//                anchors.left: instulationText.right
+                anchors.left: heightSetting.left
+                anchors.top: heightSetting.bottom
+                anchors.topMargin: 15
                 width: parent.width/4-20
                 height: parent.height*0.12 + 10
                 text: qsTr("Insulation Setting")
@@ -2240,7 +2611,9 @@ Item {
         width: parent.width*0.9
         height: parent.width*0.4
         visible: false
-        listModel: wireModel
+//        listModel: wireModel
+        listModel: spliceModel
+
         titleName: qsTr("Wire Library")
         componentName: qsTr("WireName")
         componentData: qsTr("DateCreated")
@@ -2308,10 +2681,21 @@ Item {
                     keyNum.tempValue = ""
                     return
                 } else {
-                    if (repeater.model == settingsModel)
+//                    if (repeater.model == settingsModel)
+//                        crossSection = true
+                    if (creatWire.selectModel == 1)
                         crossSection = true
-                    repeater.model.set(creatWire.selectIndex,{"bottomText":keyNum.inputText})
-                    repeater.itemAt(creatWire.selectIndex).localbordercolor = "#0079c1"
+
+                    if (creatWire.selectModel == 1)
+                    {
+                        repeater.model.set(creatWire.selectIndex,{"bottomText":keyNum.inputText})
+                        repeater.itemAt(creatWire.selectIndex).localbordercolor = "#0079c1"
+                    }
+                    else if (creatWire.selectModel == 2)
+                    {
+                        repeater2.model.set(creatWire.selectIndex,{"bottomText":keyNum.inputText})
+                        repeater2.itemAt(creatWire.selectIndex).localbordercolor = "#0079c1"
+                    }
                 }
                 backGround.visible = false
                 backGround.opacity = 0
@@ -2341,7 +2725,17 @@ Item {
                     keyNum.tempValue = ""
                     return
                 } else {
-                    repeater.itemAt(creatWire.selectIndex).localbordercolor = "#0079c1"
+
+                    if (creatWire.selectModel == 1)
+                    {
+                        repeater.itemAt(creatWire.selectIndex).localbordercolor = "#0079c1"
+                    }
+                    else if (creatWire.selectModel == 2)
+                    {
+                        repeater2.itemAt(creatWire.selectIndex).localbordercolor = "#0079c1"
+                    }
+
+//                    repeater.itemAt(creatWire.selectIndex).localbordercolor = "#0079c1"
                 }
                 backGround.visible = false
                 backGround.opacity = 0
@@ -2367,9 +2761,56 @@ Item {
                 } else if (stepTimeSet.visible) {
                     stepRepeater.model.set(creatWire.selectIndex,{"centerText":keyNum.inputText})
                 } else {
-                    repeater.model.set(creatWire.selectIndex,{"bottomText":keyNum.inputText})
+                    if (creatWire.selectModel == 1)
+                    {
+                        repeater.model.set(creatWire.selectIndex,{"bottomText":keyNum.inputText})
+                    }
+                    else if (creatWire.selectModel == 2)
+                    {
+                        repeater2.model.set(creatWire.selectIndex,{"bottomText":keyNum.inputText})
+                    }
+//                    repeater.model.set(creatWire.selectIndex,{"bottomText":keyNum.inputText})
                 }
             }
         }
     }
+
+    Image {
+        anchors.centerIn: myCanvas
+        width: myCanvas.width + 50
+        height: myCanvas.height + 100
+        source: "qrc:/images/images/bg.png"
+        visible: myCanvas.visible
+        MouseArea {
+            anchors.fill: parent
+            onClicked: myCanvas.visible = false
+        }
+    }
+
+    MyCanvas {
+        id: myCanvas
+        visible: false
+        width: Screen.width * 0.43
+        height: Screen.height * 0.5
+        anchors.centerIn: parent
+    }
+
+//    Rectangle {
+//        width: Screen.width * 0.63
+//        height: Screen.height * 0.7
+//        anchors.centerIn: parent
+//        Image {
+//            anchors.fill: parent
+//            source: "qrc:/images/images/bg.png"
+//        }
+//        MyCanvas {
+//            id: myCanvas
+//            width: Screen.width * 0.43
+//            height: Screen.height * 0.5
+////            width: qualityParent.width
+////            height: Screen.height * 0.5
+////            anchors.top: qualityWindowTitle.bottom
+////            anchors.topMargin: 30
+//        }
+//    }
 }

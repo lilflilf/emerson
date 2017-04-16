@@ -9,6 +9,11 @@ Item {
     id: operate
     property int selectIndx: -1
     property int selectWorkId: -1
+
+    Component.onDestruction: {
+        hmiAdaptor.operateProcessExec("Stop")
+    }
+
     Image {
         anchors.fill: parent
         source: "qrc:/images/images/bg.png"

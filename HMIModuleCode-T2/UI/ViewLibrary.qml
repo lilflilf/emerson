@@ -9,6 +9,7 @@ Item {
     id: viewLib
     property int selectIndx: -1
     property int count: partTitleModel.count
+    property int tempY: 0
     function shrinkGetValue(index1,index2)
     {
         if (index2 == 0 )
@@ -34,6 +35,16 @@ Item {
         }
     }
 
+    Connections {
+        target: mainRoot
+        onSignalStackViewPop: {
+            if (spliceRadio.checked) {
+                listView.model = null
+                listView.model = spliceModel
+            }
+        }
+    }
+
     Rectangle {
         id: leftArea
         anchors.top: parent.top
@@ -53,6 +64,65 @@ Item {
             anchors.leftMargin: 2
             height: 50*5+4
             width: parent.width-4
+
+            CButton {
+                id: splice
+                width: column.width
+                textColor: "white"
+                RadioButton {
+                    id: spliceRadio
+                    visible: false
+                    exclusiveGroup: checkGroup
+                    onCheckedChanged: {
+                        if (spliceRadio.checked) {
+                            splice.backgroundItem.source = "qrc:/images/images/icon-bg.png"
+                            headRepeater.model = spliceTitleModel
+                            viewLib.count = spliceTitleModel.count
+                            button2.x = 0
+                            listView.model = spliceModel
+                        }
+                        else {
+                            splice.backgroundItem.source = ""
+
+                        }
+                    }
+                }
+                backgroundComponent: Image {
+                    anchors.fill: parent
+                    source: ""
+                }
+                onClicked: {
+                    if (!spliceRadio.checked)
+                        spliceRadio.checked = !spliceRadio.checked
+                }
+                Component.onCompleted: {
+                    spliceRadio.checked = true
+                }
+                Line {
+                    width: parent.width
+                    height: 1
+                    lineColor: "#1987ab"
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: 3
+
+                }
+                Image {
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                    anchors.rightMargin: 18
+                    source: "qrc:/images/images/right.png"
+                }
+                Text {
+                    text: qsTr("Splice")
+                    font.pointSize: 20
+                    font.family: "arial"
+                    color: "white"
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.left: parent.left
+                    anchors.leftMargin: 10
+                }
+            }
+
             CButton {
                 id: workOrder
                 width: column.width
@@ -82,9 +152,7 @@ Item {
                     if (!workOrderRadio.checked)
                         workOrderRadio.checked = !workOrderRadio.checked
                 }
-                Component.onCompleted: {
-                    workOrderRadio.checked = true
-                }
+
                 Line {
                     width: parent.width
                     height: 1
@@ -164,60 +232,7 @@ Item {
                     anchors.leftMargin: 10
                 }
             }
-            CButton {
-                id: splice
-                width: column.width
-                textColor: "white"
-                RadioButton {
-                    id: spliceRadio
-                    visible: false
-                    exclusiveGroup: checkGroup
-                    onCheckedChanged: {
-                        if (spliceRadio.checked) {
-                            splice.backgroundItem.source = "qrc:/images/images/icon-bg.png"
-                            headRepeater.model = spliceTitleModel
-                            viewLib.count = spliceTitleModel.count
-                            button2.x = 0
-                            listView.model = spliceModel
-                        }
-                        else {
-                            splice.backgroundItem.source = ""
 
-                        }
-                    }
-                }
-                backgroundComponent: Image {
-                    anchors.fill: parent
-                    source: ""
-                }
-                onClicked: {
-                    if (!spliceRadio.checked)
-                        spliceRadio.checked = !spliceRadio.checked
-                }
-                Line {
-                    width: parent.width
-                    height: 1
-                    lineColor: "#1987ab"
-                    anchors.bottom: parent.bottom
-                    anchors.bottomMargin: 3
-
-                }
-                Image {
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.right: parent.right
-                    anchors.rightMargin: 18
-                    source: "qrc:/images/images/right.png"
-                }
-                Text {
-                    text: qsTr("Splice")
-                    font.pointSize: 20
-                    font.family: "arial"
-                    color: "white"
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.left: parent.left
-                    anchors.leftMargin: 10
-                }
-            }
             CButton {
                 id: wire
                 width: column.width
@@ -510,8 +525,10 @@ Item {
         anchors.leftMargin: 20
         width: headTitle.width
         clip: true
-        model: partModel
+        model: spliceModel
         delegate: listDelegate
+        highlightRangeMode: ListView.StrictlyEnforceRange
+
     }
     Image {
         id: scrollLeft
@@ -666,8 +683,12 @@ Item {
 //                                if (tempText.width > 600)
 //                                    tempText.width = 600
 //                                console.log("xxxxxxxxx",tempText.x,tempText.y)
+
+                                var temp = listView.mapFromItem(tempText,mouseX,mouseY)
+                                tempY = temp.y / 50
+
                                 tempText.newObject.x = tempText.x
-                                tempText.newObject.y = tempText.y + listIndex * 50
+                                tempText.newObject.y = tempText.y + tempY * 50 //listIndex * 50
 //                                tempText.newObject.width = tempText.width
 //                                tempText.newObject.height = tempText.height
 
@@ -725,15 +746,21 @@ Item {
             onClicked: {
                 if (partRadio.checked) {
                     hmiAdaptor.setEditPartId(partModel.getValue(selectIndx,"PartId"))
-                    root.checkNeedPassWd(0)
+                    mainRoot.checkNeedPassWd(0)
 //                    hmiAdaptor.viewLibraryMovePart(partModel.getValue(selectIndx,"PartId"),partModel.getValue(selectIndx,"PartName"))
                 } else if (spliceRadio.checked) {
                     hmiAdaptor.setTestSpliceId(spliceModel.getValue(selectIndx,"SpliceId"))
-                    root.checkNeedPassWd(0)
+
+                    mainRoot.bIsEditSplice = true
+                    spliceModel.editNew(spliceModel.getValue(selectIndx,"SpliceId"))
+                    mainRoot.checkNeedPassWd(-1)
+                    titleTextChanged(qsTr("Edit Splice"))
+
 //                    hmiAdaptor.viewLibraryMoveSplice(spliceModel.getValue(selectIndx,"SpliceId"),spliceModel.getValue(selectIndx,"SpliceName"))
                 } else if (wireRadio.checked) {
                     hmiAdaptor.setEditWireId(wireModel.getValue(selectIndx,"WireId"));
-                    root.checkNeedPassWd(19)
+                    mainRoot.checkNeedPassWd(19)
+
                 }
                 else if (shrinkRadio.checked){
                     if (selectIndx < 0) {
@@ -742,11 +769,13 @@ Item {
                     backGround.visible = true
                     dialog.visible = true
                 } else if (workOrderRadio.checked) {
-                    if (selectIndx < 0) {
-                        return
-                    }
-                    backGround.visible = true
-                    dialog.visible = true
+                    mainRoot.checkNeedPassWd(1)
+
+//                    if (selectIndx < 0) {
+//                        return
+//                    }
+//                    backGround.visible = true
+//                    dialog.visible = true
                 }
             }
         }

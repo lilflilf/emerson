@@ -364,7 +364,7 @@ Item {
             text: qsTr("EDIT SPLICE")
             onClicked: {
                 hmiAdaptor.setTestSpliceId(spliceModel.getStructValue("SpliceId",""))
-                root.checkNeedPassWd(0)
+                mainRoot.checkNeedPassWd(0)
 //                hmiAdaptor.viewLibraryMoveSplice(spliceModel.getStructValue("SpliceId",""),spliceModel.getStructValue("SpliceName",""))
             }
         }
@@ -409,7 +409,7 @@ Item {
             {
                 hmiAdaptor.stopTeachMode()
             }
-            root.checkNeedPassWd(3)
+            mainRoot.checkNeedPassWd(3)
         }
 
     }

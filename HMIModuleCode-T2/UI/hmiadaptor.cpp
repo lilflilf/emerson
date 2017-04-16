@@ -32,6 +32,8 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
     list <<"WireId"<< "WireName" << "DateCreated" << "OperatorName" << "Color" << "StripeType" << "StripeColor" << "Gauge" << "MetalType" << "HorizontalLocation" << "VerticalLocation" << "VerticalPosition";
     wireModel->setRoles(list);
     wireModel->setModelList();
+    wireModel->setTemplateModelList();
+
 
     operatorModel = new OperatorModel(this);
     list.clear();;

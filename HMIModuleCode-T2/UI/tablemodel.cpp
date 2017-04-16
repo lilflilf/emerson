@@ -2681,7 +2681,7 @@ int WireModel::insertValueToTable(QString type,QString wireName,int wireId,int o
         {
             insertWire.SpliceID = wireTemp.SpliceID;
             if (m_wireAdaptor->UpdateRecordIntoTable(&insertWire)) {
-                setModelList();
+                setTemplateModelList();
                 return wireId;
             }
             return -1;

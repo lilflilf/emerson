@@ -5,7 +5,7 @@ Author:zhangjiyong&lilongfei
 Description: password dialog component,data is from listModel
 The function interface:
     hmiAdaptor.login()
-    root.menuInit()
+    mainRoot.menuInit()
 *******************************************************************/
 import QtQuick 2.4
 import QtQuick.Controls 1.3
@@ -79,7 +79,7 @@ Item {
                             mima.text = ""
                             passwdDialog.visible = false
                         } else {
-                            root.menuInit(passwdDialog.index)
+                            mainRoot.menuInit(passwdDialog.index)
                             mimaShow.text = ""
                             mima.text = ""
                             passwdDialog.visible = false
