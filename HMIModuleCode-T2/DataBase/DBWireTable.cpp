@@ -599,7 +599,8 @@ int DBWireTable::ImportData(QString value)
 
     lineData = value;
     lineList = lineData.split(",");
-    if (lineList.size() >= 14) {
+    if (lineList.size() >= 14)
+    {
         WireElement myWire;
         myWire.WireName = lineList[1];
         myWire.CreatedDate = QDateTime::fromString(lineList[2],"yyyy/MM/dd hh:mm:ss").toTime_t();
@@ -617,10 +618,12 @@ int DBWireTable::ImportData(QString value)
         myWire.Position = (WireElement::VerticalPosition)QString(lineList[14]).toInt(&ok,10);
 
         ret = InsertRecordIntoTable(&myWire);
-        while (ret == -1) {
+        while (ret == -1)
+        {
             QMap<int ,QString> tempMap;
             QueryOnlyUseName(myWire.WireName, &tempMap);
-            if (tempMap.size() > 0) {
+            if (tempMap.size() > 0)
+            {
                 myWire.WireName = myWire.WireName + "(1)";
                 ret = InsertRecordIntoTable(&myWire);
             }
