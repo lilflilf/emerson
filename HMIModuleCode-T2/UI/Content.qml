@@ -407,6 +407,10 @@ Item {
                             partModel.savePartInfo(content.bIsEdit, hmiAdaptor.getCurrentOperatorId())
                             mainRoot.popStackView()
                         }
+                        else if (bIsSequence)
+                        {
+
+                        }
                     }
                 }
             }

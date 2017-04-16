@@ -51,6 +51,14 @@ Item {
 
             firstComeIn = false
         }
+
+        hmiAdaptor.operateProcessExec("Execute")
+        hmiAdaptor.operateProcessExec("Start")
+
+    }
+    Component.onDestruction: {
+        hmiAdaptor.operateProcessExec("Stop")
+
     }
 
     function editSplice(editWireList)
