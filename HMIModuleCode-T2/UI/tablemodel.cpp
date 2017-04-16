@@ -1469,9 +1469,9 @@ QVariant PartModel::getValue(int index, QString key)
     m_harnessAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myHarness);
     m_operatorAdaptor->QueryOneRecordFromTable(myHarness.OperatorID,&myOperator);
     QHash<QString, QVariant> PartModelHash;
-    PartModelHash.insert("PartId",myPart.PartID);
-    PartModelHash.insert("HarnessName",myPart.PartName);
-    PartModelHash.insert("DateCreated",QDateTime::fromTime_t(myPart.CreatedDate).toString("MM/dd/yyyy hh:mm"));
+    PartModelHash.insert("PartId",myHarness.HarnessID);
+    PartModelHash.insert("HarnessName",myHarness.HarnessName);
+    PartModelHash.insert("DateCreated",QDateTime::fromTime_t(myHarness.CreatedDate).toString("MM/dd/yyyy hh:mm"));
     PartModelHash.insert("OperatorName",myOperator.OperatorName);
     PartModelHash.insert("TotalSplices",myHarness.NoOfSplice);
     QString processModel;
