@@ -1715,9 +1715,9 @@ Item {
                 if(creatWire.bIsFromLib)
                     return
 //                if (spliceId != -1 && !creatWire.bIsEditSplice)
-                    signalSaveSplice(spliceId,creatWire.bIsEditSplice)
+                 mainRoot.signalSaveSplice(spliceId,creatWire.bIsEditSplice)
 
-                mainRoot.popStackView()
+                 mainRoot.popStackView()
             }
         }
     }

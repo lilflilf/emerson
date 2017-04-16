@@ -23,8 +23,9 @@ Window {
     flags: Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint | Qt.Window
     signal dialogReturn(bool reb)
     signal signalStackViewPop()
+    signal signalSaveSplice(var spliceId,var bIsEdit)
     property bool bIsEditSplice: false
-
+    property bool bIsEditHarness : false
     property var initIndex: 0
     /*0-- create
       1-- edit
@@ -38,6 +39,11 @@ Window {
       17-- settings Data Communication
       18--settings Branson Setting
       */
+
+    function titleTextChanged(myTitleText)
+    {
+        headBar.titleText = myTitleText
+    }
     function checkAllInterface(index)
     {
         if (index == 20) {
@@ -291,6 +297,8 @@ Window {
     }
     function logoff()
     {
+        clearStackView()
+
         headBar.visible = false
         statusBar.visible = false
         contentLoader.source = ""
@@ -415,12 +423,12 @@ Window {
             }
         }
     }
-    Connections {
-        target: contentLoader.item
-        onTitleTextChanged: {
-            headBar.titleText = myTitleText
-        }
-    }
+//    Connections {
+//        target: contentLoader.item
+//        onTitleTextChanged: {
+//            headBar.titleText = myTitleText
+//        }
+//    }
     Connections {
         target: welcome.item
         onPassWordInputOk: {

@@ -23,7 +23,7 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
 
     partModel = new PartModel(this);
     list.clear();
-    list << "PartId" << "PartName" << "DateCreated" << "OperatorName" << "TotalSplices" << "ProcessMode" << "#ofWorkstation" << "#ofSplicesperWorkstation" << "Rows" << "Columns" << "MaxSplicesPerZone";
+    list << "PartId" << "HarnessName" << "DateCreated" << "OperatorName" << "TotalSplices" << "ProcessMode" << "#ofWorkstation" << "#ofSplicesperWorkstation" << "Rows" << "Columns" << "MaxSplicesPerZone";
     partModel->setRoles(list);
     partModel->setModelList();
 

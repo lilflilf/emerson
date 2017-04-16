@@ -45,6 +45,14 @@ Item {
             initSequence()
         else if (mainRoot.initIndex == 0)
             initHarness()
+
+        if (mainRoot.bIsEditHarness)
+        {
+            bIsEdit = true
+            var editHarnessId = hmiAdaptor.getEditPartId();
+            selectPartUpdataPage(editHarnessId,partModel.getPartName(editHarnessId))
+            mainRoot.bIsEditHarness = false
+        }
     }
 
     Image {
@@ -131,7 +139,7 @@ Item {
     }
 
     Connections {
-        target: loader.item
+        target: mainRoot
         onSignalSaveSplice: {
             if (bIsEdit) {
                 content.selectSplice(content.selectSpliceId)
@@ -144,7 +152,11 @@ Item {
                 spliceList.listModel.append({"SpliceName":spliceModel.getStructValue("SpliceName","") ,"stationColor":"white","station":"?","SpliceId":spliceId,"qty":"0"})
             }
             loader.source = ""
-            titleTextChanged("Create New")
+            if (bIsSequence)
+                mainRoot.titleTextChanged("Create Sequence")
+            else
+                mainRoot.titleTextChanged("Create Harness")
+
         }
     }
 
@@ -327,8 +339,9 @@ Item {
                 pointSize: 16
                 onClicked: {
                     spliceModel.createNew()
-                    loader.source = "qrc:/UI/CreatWire.qml"
-                    titleTextChanged("Create Splice")
+//                    loader.source = "qrc:/UI/CreatWire.qml"
+                    mainRoot.checkNeedPassWd(-1)
+//                    titleTextChanged("Create Splice")
                 }
             }
             CButton {
@@ -377,20 +390,23 @@ Item {
                         backGround.visible = true
                         backGround.opacity = 0.5
                     } else {
-//                        if (partModel.getPartOnlineOrOffLine()) {
-//                            for (var i = 0; i < listModel.count; i++) {
-//                                if (listModel.get(i).station == "?") {
-//                                    mainRoot.showDialog(true,false,qsTr("OK"),"","","",qsTr("Please Set WorkStation!"))
-//                                    return
-//                                }
-//                            }
-//                        }
-//                        partModel.setPartSpliceListClear()
-//                        for (var i = 0; i < listModel.count; i++) {
-//                            partModel.setPartSpliceList(listModel.get(i).SpliceName,listModel.get(i).SpliceId,arrayColor.indexOf(listModel.get(i).stationColor),arrayzone.indexOf(listModel.get(i).station),i+1)
-//                        }
-//                        partModel.savePartInfo(content.bIsEdit, hmiAdaptor.getCurrentOperatorId())
-//                        mainRoot.checkNeedPassWd(2)
+                        if (bIsHarness)
+                        {
+                            if (partModel.getPartOnlineOrOffLine()) {
+                                for (var i = 0; i < listModel.count; i++) {
+                                    if (listModel.get(i).station == "?") {
+                                        mainRoot.showDialog(true,false,qsTr("OK"),"","","",qsTr("Please Set WorkStation!"))
+                                        return
+                                    }
+                                }
+                            }
+                            partModel.setPartSpliceListClear()
+                            for (var i = 0; i < listModel.count; i++) {
+                                partModel.setPartSpliceList(listModel.get(i).SpliceName,listModel.get(i).SpliceId,arrayColor.indexOf(listModel.get(i).stationColor),arrayzone.indexOf(listModel.get(i).station),i+1)
+                            }
+                            partModel.savePartInfo(content.bIsEdit, hmiAdaptor.getCurrentOperatorId())
+                            mainRoot.popStackView()
+                        }
                     }
                 }
             }
@@ -1025,7 +1041,7 @@ Item {
                     spliceModel.editNew(content.selectSpliceId)
                     mainRoot.checkNeedPassWd(-1)
 //                    loader.source = "qrc:/UI/CreatWire.qml"
-                    titleTextChanged(qsTr("Edit Splice"))
+                    mainRoot.titleTextChanged(qsTr("Edit Splice"))
                 }
 
             }
@@ -1095,7 +1111,7 @@ Item {
         anchors.fill: parent
         color: "black"
         opacity: 0.7
-        visible: content.bIsEdit ? true : false
+        visible: false //content.bIsEdit ? true : false
         MouseArea {
             anchors.fill: parent
             onClicked: {
@@ -1122,6 +1138,7 @@ Item {
             color: "white"
             text: bIsSequence == true ? qsTr("Please Input Sequence Name") : qsTr("Please Input Harness Name")
         }
+
         CButton {
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 15

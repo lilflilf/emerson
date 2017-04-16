@@ -223,7 +223,7 @@ Item {
                     source: "qrc:/images/images/right.png"
                 }
                 Text {
-                    text: qsTr("Part")
+                    text: qsTr("Harness")
                     font.pointSize: 20
                     font.family: "arial"
                     color: "white"
@@ -385,7 +385,7 @@ Item {
             shrinkTitleModel.append({title:qsTr("Temp(℃)")})
             shrinkTitleModel.append({title:qsTr("Time(S)")})
 
-            partTitleModel.append({"title":qsTr("PartName")})
+            partTitleModel.append({"title":qsTr("HarnessName")})
             partTitleModel.append({"title":qsTr("DateCreated")})
             partTitleModel.append({"title":qsTr("OperatorName")})
             partTitleModel.append({"title":qsTr("TotalSplices")})
@@ -746,15 +746,16 @@ Item {
             onClicked: {
                 if (partRadio.checked) {
                     hmiAdaptor.setEditPartId(partModel.getValue(selectIndx,"PartId"))
+                    mainRoot.bIsEditHarness = true
                     mainRoot.checkNeedPassWd(0)
+                    mainRoot.titleTextChanged(qsTr("Edit Harness"))
 //                    hmiAdaptor.viewLibraryMovePart(partModel.getValue(selectIndx,"PartId"),partModel.getValue(selectIndx,"PartName"))
                 } else if (spliceRadio.checked) {
                     hmiAdaptor.setTestSpliceId(spliceModel.getValue(selectIndx,"SpliceId"))
-
                     mainRoot.bIsEditSplice = true
                     spliceModel.editNew(spliceModel.getValue(selectIndx,"SpliceId"))
                     mainRoot.checkNeedPassWd(-1)
-                    titleTextChanged(qsTr("Edit Splice"))
+                    mainRoot.titleTextChanged(qsTr("Edit Splice"))
 
 //                    hmiAdaptor.viewLibraryMoveSplice(spliceModel.getValue(selectIndx,"SpliceId"),spliceModel.getValue(selectIndx,"SpliceName"))
                 } else if (wireRadio.checked) {

@@ -1032,6 +1032,7 @@ int SplicesModel::saveSplice(bool bIsEdit)
     if (bIsEdit)
     {
         m_spliceAdaptor->UpdateRecordIntoTable(&presetElement);
+        setModelList();
         return presetElement.SpliceID;
     }
     else
@@ -1446,7 +1447,7 @@ QVariant PartModel::getValue(int index, QString key)
     m_operatorAdaptor->QueryOneRecordFromTable(myPart.OperatorID,&myOperator);
     QHash<QString, QVariant> PartModelHash;
     PartModelHash.insert("PartId",myPart.PartID);
-    PartModelHash.insert("PartName",myPart.PartName);
+    PartModelHash.insert("HarnessName",myPart.PartName);
     PartModelHash.insert("DateCreated",QDateTime::fromTime_t(myPart.CreatedDate).toString("MM/dd/yyyy hh:mm"));
     PartModelHash.insert("OperatorName",myOperator.OperatorName);
     PartModelHash.insert("TotalSplices",myPart.NoOfSplice);

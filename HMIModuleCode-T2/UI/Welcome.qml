@@ -119,21 +119,50 @@ Item {
     TextInput {
         id: mima
         anchors.left: title4.horizontalCenter
-        anchors.leftMargin: -50
-        anchors.right: parent.right
+        anchors.leftMargin: -120
+        height: 30
+//        anchors.right: parent.right
+        width: 250
         anchors.verticalCenter: title1.verticalCenter
         anchors.verticalCenterOffset: -100
-        visible: false
+        visible: true
+        echoMode: TextInput.Password
+        font.pointSize: 16
+        color: "white"
+        activeFocusOnPress: false
+        maximumLength: 12
+
         onTextChanged: {
-            if (mima.text.length == 4) {
-                if (hmiAdaptor.login(mima.text))
-                    passWordInputOk()
-            }
+//            if (mima.text.length == 4) {
+//                if (hmiAdaptor.login(mima.text))
+//                    passWordInputOk()
+//            }
+        }
+
+        Rectangle {
+            id: backGround
+            anchors.fill: parent
+            border.color: "#0079c1"
+            border.width: 2
+            color: Qt.rgba(0,0,0,0)
+        }
+        verticalAlignment: Qt.AlignVCenter
+    }
+
+    CButton {
+        width: 40
+        height: 33
+        anchors.top: mima.top
+        anchors.left: mima.right
+        onClicked: {
+            if (hmiAdaptor.login(mima.text))
+                passWordInputOk()
         }
     }
 
     Text {
         id: mimaShow
+        visible: false
         anchors.left: title4.horizontalCenter
         anchors.leftMargin: -50
         anchors.right: parent.right
@@ -153,7 +182,7 @@ Item {
                 mima.remove(mima.text.length-1,mima.text.length)
                 mimaShow.text = mimaShow.text.substring(0,mimaShow.text.length - 1)
             }
-            if (mimaShow.text.length >= 4 )
+            if (mimaShow.text.length >= 12 )
                 return
             if (event.key == Qt.Key_0) {
                 mimaShow.text = mimaShow.text + "●"
@@ -205,46 +234,46 @@ Item {
         }
 
     }
-    Row {
-        anchors.left: mima.left
-        anchors.leftMargin: 1.5
-        anchors.verticalCenter: mima.verticalCenter
-        anchors.verticalCenterOffset: 2
-        spacing: 3
-        Rectangle {
-            radius: 100
-            width: 18
-            height: 18
-            border.color: "white"
-            border.width: 1
-            color: Qt.rgba(0,0,0,0)
-        }
-        Rectangle {
-            radius: 100
-            width: 18
-            height: 18
-            border.color: "white"
-            border.width: 1
-            color: Qt.rgba(0,0,0,0)
-        }
-        Rectangle {
-            radius: 100
-            width: 18
-            height: 18
-            border.color: "white"
-            border.width: 1
-            color: Qt.rgba(0,0,0,0)
-        }
-        Rectangle {
-            radius: 100
-            width: 18
-            height: 18
-            border.color: "white"
-            border.width: 1
-            color: Qt.rgba(0,0,0,0)
-        }
+//    Row {
+//        anchors.left: mima.left
+//        anchors.leftMargin: 1.5
+//        anchors.verticalCenter: mima.verticalCenter
+//        anchors.verticalCenterOffset: 2
+//        spacing: 3
+//        Rectangle {
+//            radius: 100
+//            width: 18
+//            height: 18
+//            border.color: "white"
+//            border.width: 1
+//            color: Qt.rgba(0,0,0,0)
+//        }
+//        Rectangle {
+//            radius: 100
+//            width: 18
+//            height: 18
+//            border.color: "white"
+//            border.width: 1
+//            color: Qt.rgba(0,0,0,0)
+//        }
+//        Rectangle {
+//            radius: 100
+//            width: 18
+//            height: 18
+//            border.color: "white"
+//            border.width: 1
+//            color: Qt.rgba(0,0,0,0)
+//        }
+//        Rectangle {
+//            radius: 100
+//            width: 18
+//            height: 18
+//            border.color: "white"
+//            border.width: 1
+//            color: Qt.rgba(0,0,0,0)
+//        }
 
-    }
+//    }
 
     Grid {
         anchors.horizontalCenter: title4.horizontalCenter
@@ -274,12 +303,12 @@ Item {
                             mima.remove(mima.text.length-1,mima.text.length)
                             mimaShow.text = mimaShow.text.substring(0,mimaShow.text.length - 1)
                         } else {
-                            if (mimaShow.text.length >= 4)
+                            if (mimaShow.text.length >= 12)
                                 return
                             mima.text += listModel.get(index).value
                             mimaShow.text = mimaShow.text + "●"
 
-                            if (mima.text.length == 4) {
+                            if (mima.text.length == 12) {
 //                                if (hmiAdaptor.login(mima.text))
 //                                    passWordInputOk()
                             }

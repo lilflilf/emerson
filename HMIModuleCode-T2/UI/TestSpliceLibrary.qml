@@ -122,7 +122,7 @@ Item {
             font.family: "arial"
             clip: true
             elide: Text.ElideRight
-            text: qsTr("QUANTITY")
+            text: qsTr("CROSS SECTION")
         }
     }
     Rectangle {
@@ -266,7 +266,7 @@ Item {
                 anchors.leftMargin: 40
                 verticalAlignment: Qt.AlignVCenter
                 width: (parent.width-120)/4
-                text: count
+                text: CrossSection
                 elide: Text.ElideRight
                 color: "white"
                 clip: true
@@ -342,11 +342,13 @@ Item {
         onClicked: {
             if(selectIndx == -1)
                 return
-            backGround.visible = true
-            backGround.opacity = 0.5
-            testDialog.visible = true
+//            backGround.visible = true
+//            backGround.opacity = 0.5
+//            testDialog.visible = true
+            mainRoot.bIsEditSplice = true
             spliceModel.editNew(spliceModel.getValue(selectIndx,"SpliceId"))
-            testDialog.setData()
+            mainRoot.checkNeedPassWd(-1)
+//            testDialog.setData()
         }
     }
     Rectangle {
