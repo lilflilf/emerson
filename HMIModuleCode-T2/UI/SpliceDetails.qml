@@ -26,10 +26,11 @@ Item {
     property var selectWireStripeColor: ""
     property var selectWireStripeType: -1
     property var selectWireId: -1
+    property var selectModuleType: ""
 
     property bool isSafe: false
     property bool bIsLibrary: false
-    signal wireSelected(var selectColor,var selectDirection,var selectPosition,var selectText,var selectWireName, var selectWireType, var selectWireStripeColor, var selectWireStripeType)
+    signal wireSelected(var selectColor,var selectDirection,var selectPosition,var selectText,var selectWireName, var selectWireType, var selectWireStripeColor, var selectWireStripeType,var selectModuleType)
     signal changing(var bIsChang)
     signal gaugeChanged(var type, var value)
     signal wireDetailHide()
@@ -115,7 +116,7 @@ Item {
                 {
                     listModelLeft.append({"myLineLength":200,"mycolor":wireModel.getStructValue("WireColor"),"isCheck":false,"linetext":hmiAdaptor.getStringValue(wireModel.getStructValue2("Gauge","current")),
                                               "wireName":wireModel.getStructValue("WireName"),"wireType":wireModel.getStructValue("WireType"),"gauge":wireModel.getStructValue("Gauge"),"gaugeawg":wireModel.getStructValue("AWG"),
-                                              "stripeColor":wireModel.getStructValue2("StripeColor",""),"stripeType":wireModel.getStructValue3("StripeType",""),"wireId":wireModel.getStructValue("WireId")})
+                                              "stripeColor":wireModel.getStructValue2("StripeColor",""),"stripeType":wireModel.getStructValue3("StripeType",""),"wireId":wireModel.getStructValue("WireId"),"moduleType":wireModel.getStructValue("ModuleType")})
 
                 }
                 else if (wireModel.getStructValue("WirePosition") == 2)
@@ -159,7 +160,7 @@ Item {
                 {
                     listModelRight.append({"myLineLength":200,"mycolor":wireModel.getStructValue("WireColor"),"isCheck":false,"linetext":hmiAdaptor.getStringValue(wireModel.getStructValue2("Gauge","current")),
                                               "wireName":wireModel.getStructValue("WireName"),"wireType":wireModel.getStructValue("WireType"),"gauge":wireModel.getStructValue("Gauge"),"gaugeawg":wireModel.getStructValue("AWG"),
-                                              "stripeColor":wireModel.getStructValue2("StripeColor",""),"stripeType":wireModel.getStructValue3("StripeType",""),"wireId":wireModel.getStructValue("WireId")})
+                                              "stripeColor":wireModel.getStructValue2("StripeColor",""),"stripeType":wireModel.getStructValue3("StripeType",""),"wireId":wireModel.getStructValue("WireId"),"moduleType":wireModel.getStructValue("ModuleType")})
 
                 }
                 else if (wireModel.getStructValue("WirePosition") == 2)
@@ -281,7 +282,7 @@ Item {
 
                 listModelRight.append({"myLineLength":200,"mycolor":wireModel.getStructValue("WireColor"),"isCheck":true,"linetext":hmiAdaptor.getStringValue(wireModel.getStructValue2("Gauge","current")),
                                           "wireName":wireModel.getStructValue("WireName"),"wireType":wireModel.getStructValue("WireType"),"gauge":wireModel.getStructValue("Gauge"),"gaugeawg":wireModel.getStructValue("AWG"),
-                                          "stripeColor":wireModel.getStructValue2("StripeColor",""),"stripeType":wireModel.getStructValue3("StripeType",""),"wireId":-1}) //wireModel.getStructValue("WireId")
+                                          "stripeColor":wireModel.getStructValue2("StripeColor",""),"stripeType":wireModel.getStructValue3("StripeType",""),"wireId":-1,"moduleType":wireModel.getStructValue("ModuleType")}) //wireModel.getStructValue("WireId")
 
 
 
@@ -296,7 +297,7 @@ Item {
         if (wireCount < 19 && listModelRight.count < 10) {
             listModelRight.append({"myLineLength":200,"mycolor":wireModel.getStructValue("WireColor"),"isCheck":false,"linetext":hmiAdaptor.getStringValue(wireModel.getStructValue2("Gauge","current")),
                 "wireName":" ","wireType":wireModel.getStructValue("WireType"),"gauge":wireModel.getStructValue("Gauge"),"gaugeawg":wireModel.getStructValue("AWG"),
-                "stripeColor":wireModel.getStructValue2("StripeColor",""),"stripeType":wireModel.getStructValue3("StripeType",""),"wireId":-1})
+                "stripeColor":wireModel.getStructValue2("StripeColor",""),"stripeType":wireModel.getStructValue3("StripeType",""),"wireId":-1,"moduleType":wireModel.getStructValue("ModuleType")})
             wireCount++
             gaugeChanged("add",wireModel.getStructValue("Gauge"))
         }
@@ -371,7 +372,7 @@ Item {
             else
                 type ="update"
             wireId = wireModel.insertValueToTable(type,topLeft.item.myWireName,topLeft.item.myWireId,hmiAdaptor.getCurrentOperatorId(),topLeft.item.myColor,
-                                         topLeft.item.myStripeColor,topLeft.item.myStripeType,topLeft.item.myGauge,topLeft.item.myAwg,topLeft.item.myWireType,0,1,0)
+                                         topLeft.item.myStripeColor,topLeft.item.myStripeType,topLeft.item.myGauge,topLeft.item.myAwg,topLeft.item.myWireType,0,1,0,topLeft.item.myModuleType)
 
             if (wireId != -1)
                 wireIdList.push(wireId)
@@ -384,7 +385,7 @@ Item {
                 else
                     type ="update"
                 wireId = wireModel.insertValueToTable(type,listModelLeft.get(j).wireName,listModelLeft.get(j).wireId,hmiAdaptor.getCurrentOperatorId(),listModelLeft.get(j).mycolor,
-                                         listModelLeft.get(j).stripeColor,listModelLeft.get(j).stripeType,listModelLeft.get(j).gauge,listModelLeft.get(j).gaugeawg,listModelLeft.get(j).wireType,0,0,1)
+                                         listModelLeft.get(j).stripeColor,listModelLeft.get(j).stripeType,listModelLeft.get(j).gauge,listModelLeft.get(j).gaugeawg,listModelLeft.get(j).wireType,0,0,1,listModelLeft.get(j).moduleType)
                 if (wireId != -1)
                     wireIdList.push(wireId)
             }
@@ -396,7 +397,7 @@ Item {
             else
                 type ="update"
             wireId = wireModel.insertValueToTable(type,bottomLeft.item.myWireName,bottomLeft.item.myWireId,hmiAdaptor.getCurrentOperatorId(),bottomLeft.item.myColor,
-                                         bottomLeft.item.myStripeColor,bottomLeft.item.myStripeType,bottomLeft.item.myGauge,bottomLeft.item.myAwg,bottomLeft.item.myWireType,0,1,2)
+                                         bottomLeft.item.myStripeColor,bottomLeft.item.myStripeType,bottomLeft.item.myGauge,bottomLeft.item.myAwg,bottomLeft.item.myWireType,0,1,2,bottomLeft.item.myModuleType)
             if (wireId != -1)
                 wireIdList.push(wireId)
         }
@@ -408,7 +409,7 @@ Item {
             else
                 type ="update"
             wireId = wireModel.insertValueToTable(type,topRight.item.myWireName,topRight.item.myWireId,hmiAdaptor.getCurrentOperatorId(),topRight.item.myColor,
-                                         topRight.item.myStripeColor,topRight.item.myStripeType,topRight.item.myGauge,topRight.item.myAwg,topRight.item.myWireType,1,1,0)
+                                         topRight.item.myStripeColor,topRight.item.myStripeType,topRight.item.myGauge,topRight.item.myAwg,topRight.item.myWireType,1,1,0,topRight.item.myModuleType)
             if (wireId != -1)
                 wireIdList.push(wireId)
 
@@ -420,7 +421,7 @@ Item {
                     type = "insert"
                 else
                     type ="update"
-                wireId = wireModel.insertValueToTable(type,listModelRight.get(i).wireName,listModelRight.get(i).wireId,hmiAdaptor.getCurrentOperatorId(),listModelRight.get(i).mycolor,listModelRight.get(i).stripeColor,listModelRight.get(i).stripeType,listModelRight.get(i).gauge,listModelRight.get(i).gaugeawg,listModelRight.get(i).wireType,1,0,1)
+                wireId = wireModel.insertValueToTable(type,listModelRight.get(i).wireName,listModelRight.get(i).wireId,hmiAdaptor.getCurrentOperatorId(),listModelRight.get(i).mycolor,listModelRight.get(i).stripeColor,listModelRight.get(i).stripeType,listModelRight.get(i).gauge,listModelRight.get(i).gaugeawg,listModelRight.get(i).wireType,1,0,1,listModelRight.get(i).moduleType)
                 if (wireId != -1)
                     wireIdList.push(wireId)
             }
@@ -432,7 +433,7 @@ Item {
             else
                 type ="update"
             wireId = wireModel.insertValueToTable(type,bottomRight.item.myWireName,bottomRight.item.myWireId,hmiAdaptor.getCurrentOperatorId(),bottomRight.item.myColor,
-                                         bottomRight.item.myStripeColor,bottomRight.item.myStripeType,bottomRight.item.myGauge,bottomRight.item.myAwg,bottomRight.item.myWireType,1,1,2)
+                                         bottomRight.item.myStripeColor,bottomRight.item.myStripeType,bottomRight.item.myGauge,bottomRight.item.myAwg,bottomRight.item.myWireType,1,1,2,bottomRight.item.myModuleType)
             if (wireId != -1)
                 wireIdList.push(wireId)
         }
@@ -532,6 +533,28 @@ Item {
         }
     }
 
+    onSelectModuleTypeChanged: {
+        if (selectPosition == "topRight") {
+            topRight.item.myModuleType = selectModuleType
+        }
+        else if (selectPosition == "bottomRight") {
+            bottomRight.item.myModuleType = selectModuleType
+        }
+        else if (selectPosition == "topLeft") {
+            topLeft.item.myModuleType = selectModuleType
+        }
+        else if (selectPosition == "bottomLeft") {
+            bottomLeft.item.myModuleType = selectModuleType
+        }
+        else if (selectPosition == "rightList") {
+            listModelRight.set(selectIndex,{"moduleType":detail.selectModuleType})
+
+        }
+        else if (selectPosition == "leftList") {
+            listModelLeft.set(selectIndex,{"moduleType":detail.selectModuleType})
+        }
+    }
+
     onSelectWireTypeChanged:{
         if (selectPosition == "topRight") {
             topRight.item.myWireType = selectWireType
@@ -587,7 +610,7 @@ Item {
 
                 selectPosition = "leftList"
                 wirePositionGroup.current = null
-                listModelLeft.append({"myLineLength":200,"mycolor":selectColor.toString(),"isCheck":false,"linetext":selectText,"wireName":wireName,"wireType":selectWireType,"gauge":selectWireGauge,"gaugeawg":selectWireAWG,"stripeColor":selectWireStripeColor.toString(),"stripeType":selectWireStripeType,"wireId":selectWireId})
+                listModelLeft.append({"myLineLength":200,"mycolor":selectColor.toString(),"isCheck":false,"linetext":selectText,"wireName":wireName,"wireType":selectWireType,"gauge":selectWireGauge,"gaugeawg":selectWireAWG,"stripeColor":selectWireStripeColor.toString(),"stripeType":selectWireStripeType,"wireId":selectWireId,"moduleType":selectModuleType})
                 selectIndex = listModelLeft.count - 1
                 listModelLeft.set(selectIndex,{"isCheck":true})
             }
@@ -665,7 +688,7 @@ Item {
                     bottomRight.sourceComponent = null
                 selectPosition = "rightList"
                 wirePositionGroup.current = null
-                listModelRight.append({"myLineLength":200,"mycolor":detail.selectColor,"isCheck":false,"linetext":selectText,"wireName":wireName,"wireType":selectWireType,"gauge":selectWireGauge,"gaugeawg":selectWireAWG,"stripeColor":selectWireStripeColor.toString(),"stripeType":selectWireStripeType,"wireId":selectWireId})
+                listModelRight.append({"myLineLength":200,"mycolor":detail.selectColor,"isCheck":false,"linetext":selectText,"wireName":wireName,"wireType":selectWireType,"gauge":selectWireGauge,"gaugeawg":selectWireAWG,"stripeColor":selectWireStripeColor.toString(),"stripeType":selectWireStripeType,"wireId":selectWireId,"moduleType":selectModuleType})
                 selectIndex = listModelRight.count - 1
                 listModelRight.set(selectIndex,{"isCheck":true})
 
@@ -727,7 +750,7 @@ Item {
 
     onSelectDirectionChanged: {
         if (detail.selectPosition == "rightList" && selectDirection != "right"){
-            listModelLeft.append({"myLineLength":200,"mycolor":listModelRight.get(selectIndex).mycolor,"isCheck":false,"linetext":selectText,"wireName":wireName,"wireType":selectWireType,"gauge":selectWireGauge,"gaugeawg":selectWireAWG,"stripeColor":selectWireStripeColor.toString(),"stripeType":selectWireStripeType,"wireId":selectWireId})
+            listModelLeft.append({"myLineLength":200,"mycolor":listModelRight.get(selectIndex).mycolor,"isCheck":false,"linetext":selectText,"wireName":wireName,"wireType":selectWireType,"gauge":selectWireGauge,"gaugeawg":selectWireAWG,"stripeColor":selectWireStripeColor.toString(),"stripeType":selectWireStripeType,"wireId":selectWireId,"moduleType":selectModuleType})
             listModelRight.remove(detail.selectIndex, 1)
             wirePositionGroup.current = null
 
@@ -738,7 +761,7 @@ Item {
         }
         else if (detail.selectPosition == "leftList" && selectDirection != "left"){
 
-            listModelRight.append({"myLineLength":200,"mycolor":listModelLeft.get(selectIndex).mycolor,"isCheck":false,"linetext":selectText,"wireName":wireName,"wireType":selectWireType,"gauge":selectWireGauge,"gaugeawg":selectWireAWG,"stripeColor":selectWireStripeColor.toString(),"stripeType":selectWireStripeType,"wireId":selectWireId})
+            listModelRight.append({"myLineLength":200,"mycolor":listModelLeft.get(selectIndex).mycolor,"isCheck":false,"linetext":selectText,"wireName":wireName,"wireType":selectWireType,"gauge":selectWireGauge,"gaugeawg":selectWireAWG,"stripeColor":selectWireStripeColor.toString(),"stripeType":selectWireStripeType,"wireId":selectWireId,"moduleType":selectModuleType})
             listModelLeft.remove(detail.selectIndex, 1)
             wirePositionGroup.current = null
 
@@ -826,7 +849,7 @@ Item {
                 topLeft.item.myStripeColor = selectWireStripeColor
                 topLeft.item.myStripeType = selectWireStripeType
                 topLeft.item.myWireId = selectWireId
-
+                topLeft.item.myModuleType = selectModuleType
                 topRight.sourceComponent = null
             }
             anchors.verticalCenter: parent.verticalCenter
@@ -850,6 +873,7 @@ Item {
                 topRight.item.myStripeColor = selectWireStripeColor
                 topRight.item.myStripeType = selectWireStripeType
                 topRight.item.myWireId = selectWireId
+                topRight.item.myModuleType = selectModuleType
 
                 topLeft.sourceComponent = null
 
@@ -886,6 +910,7 @@ Item {
                 bottomLeft.item.myStripeColor = selectWireStripeColor
                 bottomLeft.item.myStripeType = selectWireStripeType
                 bottomLeft.item.myWireId = selectWireId
+                bottomLeft.item.myModuleType = selectModuleType
 
                 bottomRight.sourceComponent = null
             }
@@ -910,6 +935,7 @@ Item {
                 bottomRight.item.myStripeColor = selectWireStripeColor
                 bottomRight.item.myStripeType = selectWireStripeType
                 bottomRight.item.myWireId = selectWireId
+                bottomRight.item.myModuleType = selectModuleType
 
                 bottomLeft.sourceComponent = null
             }
@@ -927,17 +953,11 @@ Item {
         ListModel {
             id: listModelLeft
             Component.onCompleted: {
-//                listModelLeft.append({"myLineLength":200,"mycolor":"red","isCheck":false,"linetext":"0"})
-//                listModelLeft.append({"myLineLength":200,"mycolor":"black","isCheck":false,"linetext":"0"})
-//                listModelLeft.append({"myLineLength":200,"mycolor":"blue","isCheck":false,"linetext":"0"})
             }
         }
         ListModel {
             id: listModelRight
             Component.onCompleted: {
-//                listModelRight.append({"myLineLength":200,"mycolor":"red","isCheck":false,"linetext":"0"})
-//                listModelRight.append({"myLineLength":200,"mycolor":"black","isCheck":false,"linetext":"0"})
-//                listModelRight.append({"myLineLength":200,"mycolor":"blue","isCheck":false,"linetext":"0"})
             }
         }
         ListView {
@@ -1007,6 +1027,7 @@ Item {
             property var myStripeColor: ""
             property var myStripeType: -1
             property var myWireId: -1
+            property var myModuleType: ""
             width: middle.width / 2 + 40
             height: position == "leftList" ? listModelLeft.count <= 5 ? detail.height * 0.1 + 10 : (listModelLeft.count > 5 && listModelLeft.count <= 10) ? 30 : index < (listModelLeft.count - 10) * 2 ? 15 : 30 : 30
 
@@ -1043,7 +1064,7 @@ Item {
                             detail.selectWireStripeType = leftItem.myStripeType
                             detail.selectWireId = leftItem.myWireId
                             detail.wireName = leftItem.myWireName
-                            wireSelected(leftRec.color,"left",leftItem.position,wireModel.getStructValue4(leftItem.myGauge,leftItem.myAwg),myWireNameLeft.text,leftItem.myWireType,leftItem.myStripeColor.toString(),leftItem.myStripeType)
+                            wireSelected(leftRec.color,"left",leftItem.position,wireModel.getStructValue4(leftItem.myGauge,leftItem.myAwg),myWireNameLeft.text,leftItem.myWireType,leftItem.myStripeColor.toString(),leftItem.myStripeType,leftItem.myModuleType)
                             changing(false)
 
                         }
@@ -1063,7 +1084,7 @@ Item {
                             detail.wireName = listModelLeft.get(index).wireName
                             listModelLeft.set(index,{"isCheck":radioButtonLeft.checked})
                             detail.selectDirection = "left"
-                            wireSelected(leftRec.color,"left",leftItem.position,wireModel.getStructValue4(listModelLeft.get(index).gauge,listModelLeft.get(index).gaugeawg),myWireNameLeft.text,listModelLeft.get(index).wireType,listModelLeft.get(index).stripeColor,listModelLeft.get(index).stripeType)
+                            wireSelected(leftRec.color,"left",leftItem.position,wireModel.getStructValue4(listModelLeft.get(index).gauge,listModelLeft.get(index).gaugeawg),myWireNameLeft.text,listModelLeft.get(index).wireType,listModelLeft.get(index).stripeColor,listModelLeft.get(index).stripeType,listModelLeft.get(index).moduleType)
                             changing(false)
 
                         }
@@ -1134,6 +1155,7 @@ Item {
             property var myStripeColor:  "" // stripeColor.color
             property var myStripeType: -1
             property var myWireId: -1
+            property var myModuleType: ""
             id: rightItem
 
             width: 300
@@ -1169,7 +1191,7 @@ Item {
                             detail.selectWireStripeType = rightItem.myStripeType
                             detail.selectWireId = rightItem.myWireId
                             detail.wireName = rightItem.myWireName
-                            wireSelected(rightRec.color,"right",rightItem.position,wireModel.getStructValue4(rightItem.myGauge,rightItem.myAwg),myWireNameRight.text,rightItem.myWireType,rightItem.myStripeColor.toString(),rightItem.myStripeType)
+                            wireSelected(rightRec.color,"right",rightItem.position,wireModel.getStructValue4(rightItem.myGauge,rightItem.myAwg),myWireNameRight.text,rightItem.myWireType,rightItem.myStripeColor.toString(),rightItem.myStripeType,rightItem.myModuleType)
                             detail.selectDirection = "right"
                             safeChange(false)
 
@@ -1177,7 +1199,7 @@ Item {
                         else if (rightItem.position == "rightList" && radioButton.checked)
                         {
                             safeChange(true)
-                            wireSelected(rightRec.color,"right",rightItem.position,wireModel.getStructValue4(listModelRight.get(index).gauge,listModelRight.get(index).gaugeawg),myWireNameRight.text,listModelRight.get(index).wireType,listModelRight.get(index).stripeColor,listModelRight.get(index).stripeType)
+                            wireSelected(rightRec.color,"right",rightItem.position,wireModel.getStructValue4(listModelRight.get(index).gauge,listModelRight.get(index).gaugeawg),myWireNameRight.text,listModelRight.get(index).wireType,listModelRight.get(index).stripeColor,listModelRight.get(index).stripeType,listModelRight.get(index).moduleType)
                             detail.selectPosition = rightItem.position
                             detail.selectIndex = index
                             detail.selectWireType = listModelRight.get(index).wireType

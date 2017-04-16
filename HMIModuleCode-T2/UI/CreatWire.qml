@@ -124,6 +124,7 @@ Item {
 
                     itemStripe.color = selectWireStripeColor
                     itemStripe.stripeType = selectWireStripeType
+                    typeDirection.currentText = selectModuleType
 
                 }
                 onChanging: {
@@ -993,7 +994,7 @@ Item {
                     anchors.left: parent.left
                     anchors.leftMargin: width + 10
                     items: [
-                    { lang: "n/a", img: "" },
+                    { lang: "NA", img: "" },
                     { lang: "DIN", img: "" },
                     { lang: "ISO", img: "" },
                     { lang: "SAE", img: "" },
@@ -1002,6 +1003,9 @@ Item {
                     ]
                     backGroundColor: "#052a40"
                     dropDownColor: "#052a40"
+                    onCurrentTextChanged: {
+                        spliceDetailsItem.selectModuleType = currentText
+                    }
                 }
             }
 
@@ -1684,7 +1688,6 @@ Item {
                 spliceModel.setStructValue("OperatorId",hmiAdaptor.getCurrentOperatorId());
                 spliceModel.setStructValue("Total Cross",spliceDetailsTip2.text)
                 spliceModel.setStructValue("WireMap",list)
-
 
                 spliceModel.setStructValue("Energy",settingsModel.get(0).bottomText);
                 spliceModel.setStructValue("Trigger Pressure",settingsModel.get(1).bottomText);
