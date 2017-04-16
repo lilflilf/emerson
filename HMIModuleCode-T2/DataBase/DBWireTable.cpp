@@ -142,7 +142,6 @@ int DBWireTable::InsertRecordIntoTable(void *_obj)
         qDebug() << "Wire Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
-
     query.prepare(SQLSentence[SQLITCLASS::INSERT]);
     query.addBindValue(((WireElement*)_obj)->WireName);
     QDateTime TimeLabel = QDateTime::currentDateTime();
@@ -155,6 +154,7 @@ int DBWireTable::InsertRecordIntoTable(void *_obj)
     query.addBindValue(((WireElement*)_obj)->Gauge);
     query.addBindValue(((WireElement*)_obj)->GaugeAWG);
     query.addBindValue(((WireElement*)_obj)->TypeOfWire);
+    query.addBindValue(((WireElement*)_obj)->TypeOfModule);
     query.addBindValue(((WireElement*)_obj)->Side);
     query.addBindValue(((WireElement*)_obj)->VerticalSide);
     query.addBindValue(((WireElement*)_obj)->Position);
