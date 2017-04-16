@@ -10,6 +10,7 @@ struct NecessaryInfo
 {
     struct WorkOrderIndex CurrentWorkOrder;
     struct HarnessIndex CurrentHarness;
+    struct SequenceIndex CurrentSequence;
     bool IsTestProcess;
 };
 

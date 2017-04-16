@@ -300,11 +300,11 @@ bool MakeWeldProcess::_start()
         m_pThread = new ThreadClass(0, (void*)(MakeWeldProcess::WeldCycleDaemonThread), this);
         m_pThread->setStopEnabled(false);
         m_pThread->setSuspendEnabled(false);
-        if(CurrentNecessaryInfo.IsTestProcess == true)
-        {
-            if(CurrentSplice.TestSetting.TeachModeSetting.TeachModeType != TEACHMODESETTING::UNDEFINED)
-                _M10runMode->init_m20_data_events(&CurrentSplice);
-        }
+//        if(CurrentNecessaryInfo.IsTestProcess == true)
+//        {
+        if(CurrentSplice.TestSetting.TeachModeSetting.TeachModeType != TEACHMODESETTING::UNDEFINED)
+            _M10runMode->init_m20_data_events(&CurrentSplice);
+//        }
 
         m_pReadySM->_start();
 
