@@ -22,12 +22,12 @@ struct WeldSettingForScreen
     bool WidthEncoder;
     bool HeightEncoder;
     bool FootPedalAbort;
-    enum CoolingMode CurrentCoolingMode;
+    Status_Data::CoolingMode CurrentCoolingMode;
     bool CoolingForTooling;
     struct BRANSONDATA CurrentCoolingDur;
     struct BRANSONDATA CurrentCoolingDel;
     bool Imperical2Metric; // true is Imperical, false is Metric
-    enum SAMPLERATIO SampleRatio; //that for Post-Height & power graph data sampling
+    WeldResultElement::SAMPLERATIO SampleRatio; //that for Post-Height & power graph data sampling
     struct WeldSettingFormulaStruct WeldSettingFormula[FormulaRangSize];
 
 };

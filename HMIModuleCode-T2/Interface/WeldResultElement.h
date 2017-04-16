@@ -5,13 +5,21 @@
 class WeldResultElement
 {
 public:
+    enum SAMPLERATIO
+    {
+        SampleWith1ms,
+        SampleWith5ms,
+        SampleWith10ms,
+        SampleWith20ms,
+    };
     int RevCode;
     int WeldResultID;
     QString OperatorName;
     unsigned int CreatedDate;
     struct WorkOrderIndex CurrentWorkOrder;
-    struct PartIndex CurrentPart;
-    struct SpliceIndex CurrentSplice;
+    struct HarnessIndex CurrentHarness;
+    struct SequenceIndex CurrentSequence;
+    struct PartIndex CurrentSplice;
     int WeldCount;//just for the test mode
     int PartCount;//just for the operate mode
     struct WELDRESULT ActualResult;

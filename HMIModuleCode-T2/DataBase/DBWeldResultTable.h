@@ -40,7 +40,8 @@ public:
     virtual void SwitchDBObject(bool IsModularProduction);
 
     bool QueryOnlyUseField(QString FieldName, QMap<int, QString> *_obj, bool Orderby = true);
-    bool QueryBySomeFields(QMap<int, QString> *_obj, QString WorkOrderName, QString PartName, QString SpliceName,
+    bool QueryBySomeFields(QMap<int, QString> *_obj, QString HarnessName,
+                           QString SequenceName, QString SpliceName,
                            unsigned int time_from, unsigned int time_to,
                            enum FieldType OrderField = CreatedDateType, bool Orderby = true);
     bool QueryOneRecordWithGraph(int ID, QString Name, void* _obj);

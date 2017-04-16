@@ -1,51 +1,51 @@
-#include "PartElement.h"
+#include "HarnessElement.h"
 
-PartElement::PartElement()
+HarnessElement::HarnessElement()
 {
     RevCode = -1;
-    PartID = -1;
-    PartName.clear();
+    HarnessID = -1;
+    HarnessName.clear();
     CreatedDate = 0;
     OperatorID = -1;
-    PartTypeSetting.BoardLayout.Columns = 1;
-    PartTypeSetting.BoardLayout.Rows = 1;
-    PartTypeSetting.BoardLayout.MaxSplicesPerZone = -1;
-    PartTypeSetting.ProcessMode = BASIC;
-    PartTypeSetting.WorkStations.MaxSplicesPerWorkstation = -1;
-    PartTypeSetting.WorkStations.TotalWorkstation = -1;
+    HarnessTypeSetting.BoardLayout.Columns = 1;
+    HarnessTypeSetting.BoardLayout.Rows = 1;
+    HarnessTypeSetting.BoardLayout.MaxSplicesPerZone = -1;
+    HarnessTypeSetting.ProcessMode = BASIC;
+    HarnessTypeSetting.WorkStations.MaxSplicesPerWorkstation = -1;
+    HarnessTypeSetting.WorkStations.TotalWorkstation = -1;
     SpliceList.clear();
     NoOfSplice = SpliceList.size();
 }
 
-PartElement::~PartElement()
+HarnessElement::~HarnessElement()
 {
     SpliceList.clear();
 }
 
-PartElement PartElement::operator=(const PartElement &PartObject)
+HarnessElement HarnessElement::operator=(const HarnessElement &HarnessObject)
 {
-    if(this == &PartObject)
+    if(this == &HarnessObject)
         return *this;
-    this->RevCode = PartObject.RevCode;
-    this->PartID = PartObject.PartID;
-    this->PartName = PartObject.PartName;
-    this->CreatedDate = PartObject.CreatedDate;
-    this->OperatorID = PartObject.OperatorID;
-    this->PartTypeSetting.BoardLayout.Columns =
-            PartObject.PartTypeSetting.BoardLayout.Columns;
-    this->PartTypeSetting.BoardLayout.Rows =
-            PartObject.PartTypeSetting.BoardLayout.Rows;
-    this->PartTypeSetting.BoardLayout.MaxSplicesPerZone
-            = PartObject.PartTypeSetting.BoardLayout.MaxSplicesPerZone;
-    this->PartTypeSetting.ProcessMode = PartObject.PartTypeSetting.ProcessMode;
-    this->PartTypeSetting.WorkStations.MaxSplicesPerWorkstation
-            = PartObject.PartTypeSetting.WorkStations.MaxSplicesPerWorkstation;
-    this->PartTypeSetting.WorkStations.TotalWorkstation
-            = PartObject.PartTypeSetting.WorkStations.TotalWorkstation;
-    QMap<int, struct PARTATTRIBUTE>::const_iterator i
-            = PartObject.SpliceList.constBegin();
-    struct PARTATTRIBUTE tmpSplice;
-    while(i != PartObject.SpliceList.constEnd())
+    this->RevCode = HarnessObject.RevCode;
+    this->HarnessID = HarnessObject.HarnessID;
+    this->HarnessName = HarnessObject.HarnessName;
+    this->CreatedDate = HarnessObject.CreatedDate;
+    this->OperatorID = HarnessObject.OperatorID;
+    this->HarnessTypeSetting.BoardLayout.Columns =
+            HarnessObject.HarnessTypeSetting.BoardLayout.Columns;
+    this->HarnessTypeSetting.BoardLayout.Rows =
+            HarnessObject.HarnessTypeSetting.BoardLayout.Rows;
+    this->HarnessTypeSetting.BoardLayout.MaxSplicesPerZone
+            = HarnessObject.HarnessTypeSetting.BoardLayout.MaxSplicesPerZone;
+    this->HarnessTypeSetting.ProcessMode = HarnessObject.HarnessTypeSetting.ProcessMode;
+    this->HarnessTypeSetting.WorkStations.MaxSplicesPerWorkstation
+            = HarnessObject.HarnessTypeSetting.WorkStations.MaxSplicesPerWorkstation;
+    this->HarnessTypeSetting.WorkStations.TotalWorkstation
+            = HarnessObject.HarnessTypeSetting.WorkStations.TotalWorkstation;
+    QMap<int, struct HARNESSATTRIBUTE>::const_iterator i
+            = HarnessObject.SpliceList.constBegin();
+    struct HARNESSATTRIBUTE tmpSplice;
+    while(i != HarnessObject.SpliceList.constEnd())
     {
         tmpSplice.SpliceID = i.value().SpliceID;
         tmpSplice.SpliceName = i.value().SpliceName;

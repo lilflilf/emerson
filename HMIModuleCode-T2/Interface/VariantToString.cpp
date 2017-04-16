@@ -453,21 +453,22 @@ struct BRANSONDATA VariantToString::SequenceQuantity(int parameter)
 }
 
 //Weld History
-QString VariantToString::WeldModeToString(enum WELDMODE weldmode, enum STEPWELDMODE stepmode)
+QString VariantToString::WeldModeToString(ADVANCESETTING::WELDMODE weldmode,
+                                          STEPWELD::STEPWELDMODE stepmode)
 {
     QString str;
     switch(weldmode)
     {
-    case ENERGY:
+    case ADVANCESETTING::ENERGY:
         str = QObject::tr("Energy");
         break;
-    case TIME:
+    case ADVANCESETTING::TIME:
         str = QObject::tr("Time");
         break;
-    case HEIGHT:
+    case ADVANCESETTING::HEIGHT:
         str = QObject::tr("Height");
         break;
-    case ENERGYWITHHEIGHT:
+    case ADVANCESETTING::ENERGYWITHHEIGHT:
         str = QObject::tr("Energy/Height");
         break;
     default:
@@ -476,13 +477,13 @@ QString VariantToString::WeldModeToString(enum WELDMODE weldmode, enum STEPWELDM
     }
     switch(stepmode)
     {
-    case STEPENERGY:
+    case STEPWELD::STEPENERGY:
         str = QObject::tr("Step-Energy");
         break;
-    case STEPPOWER:
+    case STEPWELD::STEPPOWER:
         str = QObject::tr("Step-Power");
         break;
-    case STEPTIME:
+    case STEPWELD::STEPTIME:
         str = QObject::tr("Step-Time");
         break;
     default:
@@ -541,21 +542,21 @@ QString VariantToString::AlarmToString(unsigned int Alarm)
     return str;
 }
 
-QString VariantToString::SampleRatioToString(enum SAMPLERATIO ratio)
+QString VariantToString::SampleRatioToString(WeldResultElement::SAMPLERATIO ratio)
 {
     QString str;
     switch(ratio)
     {
-    case SampleWith1ms:
+    case WeldResultElement::SampleWith1ms:
         str = QObject::tr("1ms");
         break;
-    case SampleWith5ms:
+    case WeldResultElement::SampleWith5ms:
         str = QObject::tr("5ms");
         break;
-    case SampleWith10ms:
+    case WeldResultElement::SampleWith10ms:
         str = QObject::tr("10ms");
         break;
-    case SampleWith20ms:
+    case WeldResultElement::SampleWith20ms:
         str = QObject::tr("20ms");
         break;
     default:

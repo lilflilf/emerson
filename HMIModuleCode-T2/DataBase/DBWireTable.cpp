@@ -16,14 +16,14 @@ const QString SQLSentence[] = {
     "WireName VARCHAR, "
     "CreatedDate VARCHAR, OperatorID INT, SpliceID INT, Color VARCHAR, "
     "StripeType INT, StripeColor VARCHAR, Gauge INT, GaugeAWG INT, "
-    "MetalType INT, HorizontalLocation INT, VerticalLocation INT, "
+    "MetalType INT, ModuleType INT, HorizontalLocation INT, VerticalLocation INT, "
     "VerticalPosition INT)",
 
     "INSERT INTO Wire ("                    /*1 Insert record into Wire Table*/
     "WireName, CreatedDate, OperatorID, SpliceID, Color, "
-    "StripeType, StripeColor, Gauge, GaugeAWG, MetalType, "
+    "StripeType, StripeColor, Gauge, GaugeAWG, MetalType, ModuleType"
     "HorizontalLocation, VerticalLocation, VerticalPosition)"
-    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 
     "SELECT ID, WireName FROM Wire",        /*2 Query Entire Wire Table */
 
@@ -35,7 +35,7 @@ const QString SQLSentence[] = {
                                             /*6 Delete One Record from Wire Table*/
     "UPDATE Wire Set WireName = ?, CreatedDate = ?, OperatorID = ?, SpliceID = ?, "
     "Color = ?, StripeType = ?, StripeColor = ?, Gauge = ?, GaugeAWG = ?, MetalType = ?, "
-    "HorizontalLocation = ?, VerticalLocation = ?, VerticalPosition = ? "
+    "ModuleType = ?, HorizontalLocation = ?, VerticalLocation = ?, VerticalPosition = ? "
     "WHERE ID = ?",                         /*7 Update One Record to Wire Table*/
 };
 
@@ -118,7 +118,7 @@ bool DBWireTable::CreateNewTable()
     QSqlQuery query(WireDBObj);
     bool bResult = WireDBObj.open();
 
-    bResult = query.exec(SQLSentence[CREATE]);   //run SQL
+    bResult = query.exec(SQLSentence[SQLITCLASS::CREATE]);   //run SQL
 
     if(bResult == false)
         qDebug() << "Wire Table SQL ERROR:"<< query.lastError();
@@ -143,7 +143,7 @@ int DBWireTable::InsertRecordIntoTable(void *_obj)
         return bResult;
     }
 
-    query.prepare(SQLSentence[INSERT]);
+    query.prepare(SQLSentence[SQLITCLASS::INSERT]);
     query.addBindValue(((WireElement*)_obj)->WireName);
     QDateTime TimeLabel = QDateTime::currentDateTime();
     query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
@@ -180,7 +180,7 @@ bool DBWireTable::QueryEntireTable(QMap<int, QString> *_obj)
     if(bResult == false)
         return bResult;
 
-    bResult = query.exec(SQLSentence[QUERY_ENTIRE_TABLE]);
+    bResult = query.exec(SQLSentence[SQLITCLASS::QUERY_ENTIRE_TABLE]);
     if(bResult == true)
     {
         _obj->clear();
@@ -209,7 +209,7 @@ bool DBWireTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
         return bResult;
     }
 
-    query.prepare(SQLSentence[QUERY_ONE_RECORD]);
+    query.prepare(SQLSentence[SQLITCLASS::QUERY_ONE_RECORD]);
     query.addBindValue(ID);
     query.addBindValue(Name);
 
@@ -237,13 +237,14 @@ bool DBWireTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
     ((WireElement*)_obj)->SpliceID = query.value("SpliceID").toInt();
     ((WireElement*)_obj)->Color = query.value("Color").toString();
     ((WireElement*)_obj)->Stripe.Color = query.value("StripeColor").toString();
-    ((WireElement*)_obj)->Stripe.TypeOfStripe = (enum StripeType)query.value("StripeType").toInt();
+    ((WireElement*)_obj)->Stripe.TypeOfStripe = (STRIPE::StripeType)query.value("StripeType").toInt();
     ((WireElement*)_obj)->Gauge = query.value("Gauge").toInt();
     ((WireElement*)_obj)->GaugeAWG = query.value("GaugeAWG").toInt();
-    ((WireElement*)_obj)->TypeOfWire = (enum MetalType)query.value("MetalType").toInt();
-    ((WireElement*)_obj)->Side = (enum HorizontalLocation)query.value("HorizontalLocation").toInt();
-    ((WireElement*)_obj)->VerticalSide = (enum VerticalLocation)query.value("VerticalLocation").toInt();
-    ((WireElement*)_obj)->Position = (enum VerticalPosition)query.value("VerticalPosition").toInt();
+    ((WireElement*)_obj)->TypeOfWire = (WireElement::MetalType)query.value("MetalType").toInt();
+    ((WireElement*)_obj)->TypeOfModule = (WireElement::ModuleType)query.value("ModuleType").toInt();
+    ((WireElement*)_obj)->Side = (WireElement::HorizontalLocation)query.value("HorizontalLocation").toInt();
+    ((WireElement*)_obj)->VerticalSide = (WireElement::VerticalLocation)query.value("VerticalLocation").toInt();
+    ((WireElement*)_obj)->Position = (WireElement::VerticalPosition)query.value("VerticalPosition").toInt();
 
     bResult = true;
     WireDBObj.close();
@@ -263,7 +264,7 @@ bool DBWireTable::QueryOneRecordFromTable(int ID, void *_obj)
         return bResult;
     }
 
-    query.prepare(SQLSentence[QUERY_ONE_RECORD_ONLY_ID]);
+    query.prepare(SQLSentence[SQLITCLASS::QUERY_ONE_RECORD_ONLY_ID]);
     query.addBindValue(ID);
 
     bResult = query.exec();
@@ -290,13 +291,14 @@ bool DBWireTable::QueryOneRecordFromTable(int ID, void *_obj)
     ((WireElement*)_obj)->SpliceID = query.value("SpliceID").toInt();
     ((WireElement*)_obj)->Color = query.value("Color").toString();
     ((WireElement*)_obj)->Stripe.Color = query.value("StripeColor").toString();
-    ((WireElement*)_obj)->Stripe.TypeOfStripe = (enum StripeType)query.value("StripeType").toInt();
+    ((WireElement*)_obj)->Stripe.TypeOfStripe = (STRIPE::StripeType)query.value("StripeType").toInt();
     ((WireElement*)_obj)->Gauge = query.value("Gauge").toInt();
     ((WireElement*)_obj)->GaugeAWG = query.value("GaugeAWG").toInt();
-    ((WireElement*)_obj)->TypeOfWire = (enum MetalType)query.value("MetalType").toInt();
-    ((WireElement*)_obj)->Side = (enum HorizontalLocation)query.value("HorizontalLocation").toInt();
-    ((WireElement*)_obj)->VerticalSide = (enum VerticalLocation)query.value("VerticalLocation").toInt();
-    ((WireElement*)_obj)->Position = (enum VerticalPosition)query.value("VerticalPosition").toInt();
+    ((WireElement*)_obj)->TypeOfWire = (WireElement::MetalType)query.value("MetalType").toInt();
+    ((WireElement*)_obj)->TypeOfModule = (WireElement::ModuleType)query.value("ModuleType").toInt();
+    ((WireElement*)_obj)->Side = (WireElement::HorizontalLocation)query.value("HorizontalLocation").toInt();
+    ((WireElement*)_obj)->VerticalSide = (WireElement::VerticalLocation)query.value("VerticalLocation").toInt();
+    ((WireElement*)_obj)->Position = (WireElement::VerticalPosition)query.value("VerticalPosition").toInt();
 
     bResult = true;
     WireDBObj.close();
@@ -313,7 +315,7 @@ bool DBWireTable::DeleteEntireTable()
         qDebug() << "Wire Table SQL ERROR:"<< query.lastError();
         return bResult;
     }
-    bResult = query.exec(SQLSentence[DELETE_ENTIRE_TABLE]);
+    bResult = query.exec(SQLSentence[SQLITCLASS::DELETE_ENTIRE_TABLE]);
     if(bResult == false)
     {
         qDebug() << "Wire Table SQL ERROR:"<< query.lastError();
@@ -332,7 +334,7 @@ bool DBWireTable::DeleteOneRecordFromTable(int ID, QString Name)
         return bResult;
     }
 
-    query.prepare(SQLSentence[DELETE_ONE_RECORD]);
+    query.prepare(SQLSentence[SQLITCLASS::DELETE_ONE_RECORD]);
     query.addBindValue(ID);
     query.addBindValue(Name);
 
@@ -357,7 +359,7 @@ bool DBWireTable::UpdateRecordIntoTable(void *_obj)
         return bResult;
     }
 
-    query.prepare(SQLSentence[UPDATE_ONE_RECORD]);
+    query.prepare(SQLSentence[SQLITCLASS::UPDATE_ONE_RECORD]);
     query.addBindValue(((WireElement*)_obj)->WireName);
     QDateTime TimeLabel = QDateTime::fromTime_t(((WireElement*)_obj)->CreatedDate);
     query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
@@ -369,6 +371,7 @@ bool DBWireTable::UpdateRecordIntoTable(void *_obj)
     query.addBindValue(((WireElement*)_obj)->Gauge);
     query.addBindValue(((WireElement*)_obj)->GaugeAWG);
     query.addBindValue(((WireElement*)_obj)->TypeOfWire);
+    query.addBindValue(((WireElement*)_obj)->TypeOfModule);
     query.addBindValue(((WireElement*)_obj)->Side);
     query.addBindValue(((WireElement*)_obj)->VerticalSide);
     query.addBindValue(((WireElement*)_obj)->Position);
@@ -603,14 +606,15 @@ int DBWireTable::ImportData(QString value)
         myWire.OperatorID = QString(lineList[3]).toInt(&ok,10);
         myWire.SpliceID = QString(lineList[4]).toInt(&ok,10);
         myWire.Color = lineList[5];
-        myWire.Stripe.TypeOfStripe = (StripeType)QString(lineList[6]).toInt(&ok,10);
+        myWire.Stripe.TypeOfStripe = (STRIPE::StripeType)QString(lineList[6]).toInt(&ok,10);
         myWire.Stripe.Color = lineList[7];
         myWire.Gauge = QString(lineList[8]).toInt(&ok,10);
         myWire.GaugeAWG = QString(lineList[9]).toInt(&ok,10);
-        myWire.TypeOfWire = (MetalType)QString(lineList[10]).toInt(&ok,10);
-        myWire.Side = (HorizontalLocation)QString(lineList[11]).toInt(&ok,10);
-        myWire.VerticalSide = (VerticalLocation)QString(lineList[12]).toInt(&ok,10);
-        myWire.Position = (VerticalPosition)QString(lineList[13]).toInt(&ok,10);
+        myWire.TypeOfWire = (WireElement::MetalType)QString(lineList[10]).toInt(&ok,10);
+        myWire.TypeOfModule = (WireElement::ModuleType)QString(lineList[11]).toInt(&ok, 10);
+        myWire.Side = (WireElement::HorizontalLocation)QString(lineList[12]).toInt(&ok,10);
+        myWire.VerticalSide = (WireElement::VerticalLocation)QString(lineList[13]).toInt(&ok,10);
+        myWire.Position = (WireElement::VerticalPosition)QString(lineList[14]).toInt(&ok,10);
 
         ret = InsertRecordIntoTable(&myWire);
         while (ret == -1) {

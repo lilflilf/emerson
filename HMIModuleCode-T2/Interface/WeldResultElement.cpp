@@ -8,10 +8,12 @@ WeldResultElement::WeldResultElement()
     CreatedDate = 0;
     CurrentWorkOrder.WorkOrderID = -1;
     CurrentWorkOrder.WorkOrderName.clear();
-    CurrentPart.PartID = -1;
-    CurrentPart.PartName.clear();
-    CurrentSplice.SpliceID = -1;
-    CurrentSplice.SpliceName.clear();
+    CurrentHarness.HarnessID = -1;
+    CurrentHarness.HarnessName.clear();
+    CurrentSequence.SequenceID = -1;
+    CurrentSequence.SequenceName.clear();
+    CurrentSplice.PartID = -1;
+    CurrentSplice.PartName.clear();
     WeldCount = -1;
     PartCount = -1;
     ActualResult.ActualAlarmflags = -1;
@@ -48,10 +50,12 @@ WeldResultElement WeldResultElement::operator=(const WeldResultElement &WeldResu
     this->CurrentWorkOrder.WorkOrderID = WeldResultObject.CurrentWorkOrder.WorkOrderID;
     this->CurrentWorkOrder.WorkOrderName
             = WeldResultObject.CurrentWorkOrder.WorkOrderName;
-    this->CurrentPart.PartID = WeldResultObject.CurrentPart.PartID;
-    this->CurrentPart.PartName = WeldResultObject.CurrentPart.PartName;
-    this->CurrentSplice.SpliceID = WeldResultObject.CurrentSplice.SpliceID;
-    this->CurrentSplice.SpliceName = WeldResultObject.CurrentSplice.SpliceName;
+    this->CurrentHarness.HarnessID = WeldResultObject.CurrentHarness.HarnessID;
+    this->CurrentHarness.HarnessName = WeldResultObject.CurrentHarness.HarnessName;
+    this->CurrentSequence.SequenceID = WeldResultObject.CurrentSequence.SequenceID;
+    this->CurrentSequence.SequenceName = WeldResultObject.CurrentSequence.SequenceName;
+    this->CurrentSplice.PartID = WeldResultObject.CurrentSplice.PartID;
+    this->CurrentSplice.PartName = WeldResultObject.CurrentSplice.PartName;
     this->WeldCount = WeldResultObject.WeldCount;
     this->PartCount = WeldResultObject.PartCount;
     this->ActualResult.ActualAlarmflags

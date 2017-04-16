@@ -42,7 +42,7 @@ public:
     bool Failed_To_Find_Seq_File; //flag indicates whether seq file could be found on load of Operator
                                   // or Setup screen
 
-    TEACH_MODE_TYPE Teach_Mode;
+    TEACHMODESETTING::TEACH_MODE_TYPE Teach_Mode;
     string AuxName[AuxEND];
     FILE_MANAGER_SELECT_SIDE FM_SelectSide;
 //    Public ProjectBitmaps As ImageList

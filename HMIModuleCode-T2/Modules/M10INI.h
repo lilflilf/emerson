@@ -156,6 +156,23 @@ struct System_Configuration{
 class M10INI
 {
 public:
+    enum ShrinkTubeIndex
+    {
+        STIunder = -2, //Marker
+        STInone,
+        STIR1,
+        STIR2,
+        STIR3,
+        STIR4,
+        STIR5,
+        STIR6,
+        STIR7,
+        STIR8,
+        STIR9,
+        STIR10,
+        STIover
+    };
+
     // Variables used to Calculate Max Power in the IA and for Plotting the Weld Graph
     int Pwr_Prefix_Data[7];
     // Variables to check if Weld Data came into the comm port!

@@ -34,15 +34,17 @@ PresetElement::PresetElement()
     WeldSettings.QualitySetting.Height.Plus = MAXHEIGHT;
     WeldSettings.AdvanceSetting.ABDelay = 0;
     WeldSettings.AdvanceSetting.ABDur = 0;
-    WeldSettings.AdvanceSetting.AntiSide = false;
-    WeldSettings.AdvanceSetting.CutOff = false;
+    WeldSettings.AdvanceSetting.AntiSideOption.AntiSideMode = false;
+    WeldSettings.AdvanceSetting.CutOffOption.CutOff = false;
     WeldSettings.AdvanceSetting.HoldTime = 0;
-    WeldSettings.AdvanceSetting.MeasuredHeight = 0;
-    WeldSettings.AdvanceSetting.MeasuredWidth = 0;
+    WeldSettings.AdvanceSetting.OffsetOption.MeasuredHeight = 0;
+    WeldSettings.AdvanceSetting.OffsetOption.MeasuredWidth = 0;
+    WeldSettings.AdvanceSetting.OffsetOption.DisplayHeight = 0;
+    WeldSettings.AdvanceSetting.OffsetOption.DisplayWidth = 0;
     WeldSettings.AdvanceSetting.PreBurst = 0;
     WeldSettings.AdvanceSetting.SqzTime = 0;
-    WeldSettings.AdvanceSetting.WeldMode = ENERGY;
-    WeldSettings.AdvanceSetting.StepWeld.StepWeldMode = STEPDISABLE;
+    WeldSettings.AdvanceSetting.WeldMode = ADVANCESETTING::ENERGY;
+    WeldSettings.AdvanceSetting.StepWeld.StepWeldMode = STEPWELD::STEPDISABLE;
     WeldSettings.AdvanceSetting.StepWeld.Amplitude2 = 0;
     WeldSettings.AdvanceSetting.StepWeld.EnergyToStep = 0;
     WeldSettings.AdvanceSetting.StepWeld.PowerToStep = 0;
@@ -56,24 +58,37 @@ PresetElement::PresetElement()
     HashCode = qHashBits(&WeldSettings, sizeof(WeldSettings), 0);
     WireIndex.clear();
     NoOfWires = WireIndex.size();
-    TestSetting.Qutanty = -1;
+    TestSetting.BatchSize = -1;
     TestSetting.StopCount = -1;
-    TestSetting.TestMode = UNCONSTRAINED;
-    TestSetting.TeachModeSetting.TeachModeType = STANDARD;
-    TestSetting.TeachModeSetting.TeachModequal_Window[TIME_PLRG] = 40;
-    TestSetting.TeachModeSetting.TeachModequal_Window[TIME_MSRG] = 40;
-    TestSetting.TeachModeSetting.TeachModequal_Window[POWER_PLRG] = 25;
-    TestSetting.TeachModeSetting.TeachModequal_Window[POWER_MSRG] = 25;
-    TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_PLRG] = 15;
-    TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_MSRG] = 15;
-    TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_PLRG] = 10;
-    TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_MSRG] = 10;
-    TestSetting.TeachModeSetting.TeachModequal_Window[FORCE_PLRG] = 5;
-    TestSetting.TeachModeSetting.TeachModequal_Window[FORCE_MSRG] = 10;
+    TestSetting.TestMode = TESTSETTING::UNCONSTRAINED;
+    TestSetting.TeachModeSetting.TeachModeType = TEACHMODESETTING::STANDARD;
+    TestSetting.TeachModeSetting.TeachModequal_Window[TIME_PLRG_STD] = 40;
+    TestSetting.TeachModeSetting.TeachModequal_Window[TIME_MSRG_STD] = 40;
+    TestSetting.TeachModeSetting.TeachModequal_Window[POWER_PLRG_STD] = 25;
+    TestSetting.TeachModeSetting.TeachModequal_Window[POWER_MSRG_STD] = 25;
+    TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_PLRG_STD] = 15;
+    TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_MSRG_STD] = 15;
+    TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_PLRG_STD] = 10;
+    TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_MSRG_STD] = 10;
+    TestSetting.TeachModeSetting.TeachModequal_Window[FORCE_PLRG_STD] = 5;
+    TestSetting.TeachModeSetting.TeachModequal_Window[FORCE_MSRG_STD] = 10;
+    TestSetting.TeachModeSetting.TeachModequal_Window[TIME_PLRG_AUTO] = 40;
+    TestSetting.TeachModeSetting.TeachModequal_Window[TIME_MSRG_AUTO] = 40;
+    TestSetting.TeachModeSetting.TeachModequal_Window[POWER_PLRG_AUTO] = 25;
+    TestSetting.TeachModeSetting.TeachModequal_Window[POWER_MSRG_AUTO] = 25;
+    TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_PLRG_AUTO] = 15;
+    TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_MSRG_AUTO] = 15;
+    TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_PLRG_AUTO] = 10;
+    TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_MSRG_AUTO] = 10;
+    TestSetting.TeachModeSetting.TeachModequal_Window[FORCE_PLRG_AUTO] = 5;
+    TestSetting.TeachModeSetting.TeachModequal_Window[FORCE_MSRG_AUTO] = 10;
     for (int i = TIME_CONFRG_PL; i<= HEIGHT_CONFRG_MS; i++)
     {
         TestSetting.TeachModeSetting.TeachModequal_Window[i] = 4;
     }
+    TestSetting.TeachModeSetting.StandardRunQuantity = 10;
+    TestSetting.TeachModeSetting.AutoRunQuantity = 5;
+    TestSetting.TeachModeSetting.SigmaRunQuantity = 128;
     TestSetting.TestingDone = false;
 }
 
@@ -123,16 +138,20 @@ PresetElement PresetElement::operator=(const PresetElement &PresetObject)
             PresetObject.WeldSettings.AdvanceSetting.ABDelay;
     this->WeldSettings.AdvanceSetting.ABDur =
             PresetObject.WeldSettings.AdvanceSetting.ABDur;
-    this->WeldSettings.AdvanceSetting.AntiSide =
-            PresetObject.WeldSettings.AdvanceSetting.AntiSide;
-    this->WeldSettings.AdvanceSetting.CutOff =
-            PresetObject.WeldSettings.AdvanceSetting.CutOff;
+    this->WeldSettings.AdvanceSetting.AntiSideOption.AntiSideMode =
+            PresetObject.WeldSettings.AdvanceSetting.AntiSideOption.AntiSideMode;
+    this->WeldSettings.AdvanceSetting.CutOffOption.CutOff =
+            PresetObject.WeldSettings.AdvanceSetting.CutOffOption.CutOff;
     this->WeldSettings.AdvanceSetting.HoldTime =
             PresetObject.WeldSettings.AdvanceSetting.HoldTime;
-    this->WeldSettings.AdvanceSetting.MeasuredHeight =
-            PresetObject.WeldSettings.AdvanceSetting.MeasuredHeight;
-    this->WeldSettings.AdvanceSetting.MeasuredWidth =
-            PresetObject.WeldSettings.AdvanceSetting.MeasuredWidth;
+    this->WeldSettings.AdvanceSetting.OffsetOption.MeasuredHeight =
+            PresetObject.WeldSettings.AdvanceSetting.OffsetOption.MeasuredHeight;
+    this->WeldSettings.AdvanceSetting.OffsetOption.MeasuredWidth =
+            PresetObject.WeldSettings.AdvanceSetting.OffsetOption.MeasuredWidth;
+    this->WeldSettings.AdvanceSetting.OffsetOption.DisplayHeight =
+            PresetObject.WeldSettings.AdvanceSetting.OffsetOption.DisplayHeight;
+    this->WeldSettings.AdvanceSetting.OffsetOption.DisplayWidth =
+            PresetObject.WeldSettings.AdvanceSetting.OffsetOption.DisplayWidth;
     this->WeldSettings.AdvanceSetting.PreBurst =
             PresetObject.WeldSettings.AdvanceSetting.PreBurst;
     this->WeldSettings.AdvanceSetting.SqzTime =
@@ -166,16 +185,22 @@ PresetElement PresetElement::operator=(const PresetElement &PresetObject)
         ++i;
     }
     this->NoOfWires = this->WireIndex.size();
-    this->TestSetting.Qutanty = PresetObject.TestSetting.Qutanty;
+    this->TestSetting.BatchSize = PresetObject.TestSetting.BatchSize;
     this->TestSetting.StopCount = PresetObject.TestSetting.StopCount;
     this->TestSetting.TestMode = PresetObject.TestSetting.TestMode;
     this->TestSetting.TeachModeSetting.TeachModeType
             = PresetObject.TestSetting.TeachModeSetting.TeachModeType;
-    for (int i = TIME_PLRG; i<= HEIGHT_CONFRG_MS; i++)
+    for (int i = TIME_PLRG_STD; i<= HEIGHT_CONFRG_MS; i++)
     {
         this->TestSetting.TeachModeSetting.TeachModequal_Window[i]
                 = PresetObject.TestSetting.TeachModeSetting.TeachModequal_Window[i];
     }
+    this->TestSetting.TeachModeSetting.StandardRunQuantity =
+            PresetObject.TestSetting.TeachModeSetting.StandardRunQuantity;
+    this->TestSetting.TeachModeSetting.AutoRunQuantity =
+            PresetObject.TestSetting.TeachModeSetting.AutoRunQuantity;
+    this->TestSetting.TeachModeSetting.SigmaRunQuantity =
+            PresetObject.TestSetting.TeachModeSetting.SigmaRunQuantity;
     this->TestSetting.TestingDone = PresetObject.TestSetting.TestingDone;
     return *this;
 }

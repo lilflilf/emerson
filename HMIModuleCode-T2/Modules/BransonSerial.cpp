@@ -35,7 +35,7 @@ BransonSerial::~BransonSerial()
 void BransonSerial::FindIAport()
 {
     InterfaceClass *_Interface = InterfaceClass::Instance();
-    CheckIAportSet((100 * _Interface->StatusData.ComInfo.BaudRate),
+    CheckIAportSet(_Interface->StatusData.ComInfo.BaudRate,
                              _Interface->StatusData.ComInfo.COMport);
 }
 

@@ -33,8 +33,11 @@ public:
     bool ListJsonToString(QList<int>* _SourceList, QString &DestString);
     bool StringJsonToList(QString SourceString, QList<int>* _DestList);
 
-    bool MapJsonToString(QMap<int, struct PARTATTRIBUTE> *_SourceMap, QString &DestString);
-    bool StringJsonToMap(QString SourceString, QMap<int, struct PARTATTRIBUTE> *_DestMap);
+    bool MapJsonToString(QMap<int, struct HARNESSATTRIBUTE> *_SourceMap, QString &DestString);
+    bool StringJsonToMap(QString SourceString, QMap<int, struct HARNESSATTRIBUTE> *_DestMap);
+
+    bool MapJsonToString(QMap<int, struct SEQUENCEATTRIBUTE> *_SourceMap, QString &DestString);
+    bool StringJsonToMap(QString SourceString, QMap<int, struct SEQUENCEATTRIBUTE> *_DestMap);
 
     bool MapJsonToString(QMap<int, int>* _SourceMap, QString &DestString);
     bool StringJsonToMap(QString SourceString, QMap<int, int>* _DestMap);

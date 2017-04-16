@@ -4,44 +4,43 @@
 #include "Interface/PresetElement.h"
 #include "Interface/WeldResultElement.h"
 #include "Modules/ThreadClass.h"
-#include <QTimer>
+#include "ReadyStateMachine.h"
+
 struct NecessaryInfo
 {
     struct WorkOrderIndex CurrentWorkOrder;
-    struct PartIndex CurrentPart;
+    struct HarnessIndex CurrentHarness;
     bool IsTestProcess;
-};
-enum GRAPHSTEP
-{
-    POWERFst,
-    HEIGHTSnd,
-    STEPTrd,
 };
 
 class MakeWeldProcess : public QObject
 {
     Q_OBJECT
 public:
+    enum GRAPHSTEP
+    {
+        POWERFst,
+        HEIGHTSnd,
+        STEPTrd,
+    };
     PresetElement CurrentSplice;
-    struct NecessaryInfo CurrentNecessaryInfo;
+    NecessaryInfo CurrentNecessaryInfo;
     WeldResultElement CurrentWeldResult;
-
 private:
-    static ThreadClass* m_Thread;
-    static QTimer *m_DaemonTmr;
-    static bool m_bTmrRunningFlag;
+    static ThreadClass* m_pThread;
+    ReadyStateMachine *m_pReadySM;
     int m_triedCount;
     GRAPHSTEP CurrentStep;
     bool WeldCycleStatus;
     bool PowerGraphReady;
     bool HeightGraphReady;
+
 private:
     void UpdateIAFields();
     void UpdateWeldResult();
     bool HeightGraphReceive();
     bool PowerGraphReceive();
     static void WeldCycleDaemonThread(void*);
-//    static void AcceptWeldResult(void*);
 signals:
     void WeldCycleCompleted(const bool &_status);
 public slots:
@@ -49,14 +48,10 @@ public slots:
     void AnyAlarmEventSlot(bool &bResult);
     void HeightGraphEventSlot(bool &bResult);
     void PowerGraphEventSlot(bool &bResult);
-    void TimeoutEventSlot();
 public:
     bool _start();
     bool _stop();
     bool _execute();
-
-    void ControlLimitProcess(enum QUALITYTYPE Type, QList<int> &RawList, int USL, int LSL,
-                             int* UCL, int* LCL);
     void StopTeachMode();
     void TeachModeProcess();
 public:

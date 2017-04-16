@@ -21,7 +21,7 @@ public:
     /*WireEl(1 To MAX_WIRE_ELEMENTS) As WireElement*/
     QMap<int,QString> WireIndex;   //Store data for individual wires
 
-    struct TESTSETTING TestSetting;
+    TESTSETTING TestSetting;
 public:
     PresetElement operator=(const PresetElement &PresetObject);
     bool CalculateSpliceData();

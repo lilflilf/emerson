@@ -136,7 +136,7 @@ void AdvancedMaintenance::AnvilArm_Click()
     M102IA* _M102IA = M102IA::Instance();
     InterfaceClass* _Interface = InterfaceClass::Instance();
     if ((_M2010->M10Run.Gather_Close == false) &&
-            (_Interface->StatusData.ActuatorMode == DOUBLEHITMODE))
+            (_Interface->StatusData.ActuatorMode == Status_Data::DOUBLEHITMODE))
     {
         BransonMessageBox tmpMsgBox;
         tmpMsgBox.MsgPrompt = QObject::tr("Mask Must be down");

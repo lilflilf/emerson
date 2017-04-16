@@ -31,62 +31,95 @@ const QString SQLSentence[] = {
     "PreheightPlus INT, PreheightMinus INT, HeightPlus INT, HeightMinus INT, "
     "ForcePlus INT, ForceMinus INT, "                           /* 10 items */
 
-    /*AdvanceSetting*/                                          /* 15 items */
+    /*AdvanceSetting*/                                          /* 23 items */
     "WeldMode INT, StepWeldMode INT, EnergyToStep INT, TimeToStep INT, "
     "PowerToStep INT, Amplitude2 INT, PreBurst INT, HoldTime INT, "
     "SqueezeTime INT, AfterBurstDelay INT, AfterBurstDuring INT, "
-    "CutOff BOOLEAN, CutOffSpliceTime INT, AntiSide BOOLEAN, AntiSideSpliceTime INT, "
-    "MeasuredWidth INT, MeasuredHeight INT, "
+    "CutOff BOOLEAN, CutOffSpliceTime INT, "
+    "CutOffHeightAlarm BOOLEAN, CutOffPowerAlarm BOOLEAN, "
+    "CutOffPreHeightAlarm BOOLEAN, CutOffTimeAlarm BOOLEAN, "
 
-    "HashCode INT, "
+    "AntiSide BOOLEAN, AntiSideSpliceTime INT, "
+
+    "MeasuredWidth INT, MeasuredHeight INT, "
+    "DisplayWidth INT, DisplayHeight INT, "
 
     /*Shrink Tube Setting*/
     "ShrinkOption BOOLEAN, ShrinkTubeID INT, ShrinkTime INT, "
     "ShrinkTemperature INT, "                                   /*4 items */
 
+    "HashCode INT, "                                            /*1 items */
+
     /*Testing*/
-    "Qutanty INT, StopCount INT, TestMode INT, TEACHMODETYPE ENUM, "
-    "TimePLRG INT, TimeMSRG INT, PowerPLRG INT, PowerMSRG INT, "
-    "PreHeightPLRG INT, PreHeightMSRG INT, HeightPLRG INT, HeightMSRG INT, "
-    "ForcePLRG INT, ForceMSRG INT, TimeConfigPL INT, TimeConfigMS INT, "
+    "BatchSize INT, StopCount INT, TestMode INT, TEACHMODETYPE ENUM, "
+    "TimePLRG_STD INT, TimeMSRG_STD INT, PowerPLRG_STD INT, PowerMSRG_STD INT, "
+    "PreHeightPLRG_STD INT, PreHeightMSRG_STD INT, HeightPLRG_STD INT, HeightMSRG_STD INT, "
+    "ForcePLRG_STD INT, ForceMSRG_STD INT, "
+
+    "TimePLRG_AUTO INT, TimeMSRG_AUTO INT, PowerPLRG_AUTO INT, PowerMSRG_AUTO INT, "
+    "PreHeightPLRG_AUTO INT, PreHeightMSRG_AUTO INT, HeightPLRG_AUTO INT, HeightMSRG_AUTO INT, "
+    "ForcePLRG_AUTO INT, ForceMSRG_AUTO INT, "
+
+    "TimeConfigPL INT, TimeConfigMS INT, "
     "PowerConfigPL INT, PowerConfigMS INT, PreHeightConfigPL INT, PreHeightConfigMS INT, "
-    "HeightConfigPL INT, HeightCOnfigMS INT, TestingDone BOOLEAN, "                /* 23 items */
+    "HeightConfigPL INT, HeightConfigMS INT, "
+    "StandardQuantity INT, AutoQuantity INT, SigmaQuantity INT, "
+    "TestingDone BOOLEAN, "                /* 36 items */
 
     "NoOfWires INT, "
     /*JSON Structure WireID, WireName*/
     "JSONWire VARCHAR)",                 /*2 items */
 
     "INSERT INTO Preset ("                      /*1 Insert record into Preset Table*/
+                                                /* 6 items */
     "SpliceName, CreatedDate, OperatorID, CrossSection, PresetPicPath, Verified, "
 
-    /*WeldSetting*/
+    /*WeldSetting*/                             /* 5 items */
     "Energy, Amplitude, Width, Pressure, TrigPres, "
 
-    /*QualityWindowSetting*/
+    /*QualityWindowSetting*/                    /* 10 items */
     "TimePlus, TimeMinus, PowerPlus, PowerMinus, PreheightPlus, PreheightMinus, "
     "HeightPlus, HeightMinus, ForcePlus, ForceMinus, "
 
-    /*AdvanceSetting*/
+    /*AdvanceSetting*/                          /* 23 items */
     "WeldMode, StepWeldMode, EnergyToStep, TimeToStep, PowerToStep, Amplitude2, "
-    "PreBurst, HoldTime, SqueezeTime, AfterBurstDelay, AfterBurstDuring, CutOff, "
-    "CutOffSpliceTime, AntiSide, AntiSideSpliceTime, MeasuredWidth, MeasuredHeight, "
+    "PreBurst, HoldTime, SqueezeTime, AfterBurstDelay, AfterBurstDuring, "
+    "CutOff, CutOffSpliceTime, "
+    "CutOffHeightAlarm, CutOffPowerAlarm, CutOffPreHeightAlarm, CutOffTimeAlarm, "
+    "AntiSide, AntiSideSpliceTime, "
+    "MeasuredWidth, MeasuredHeight, DisplayWidth, DisplayHeight, "
 
-    /*Shrink Tube Setting*/
+    /*Shrink Tube Setting*/                     /* 4 items */
     "ShrinkOption, ShrinkTubeID, ShrinkTime, ShrinkTemperature, "
 
-    "HashCode, "
+    "HashCode, "                                /* 1 item */
 
-    /*Testing*/
-    "Qutanty, StopCount, TestMode, TEACHMODETYPE, TimePLRG, TimeMSRG, "
-    "PowerPLRG, PowerMSRG, PreHeightPLRG, PreHeightMSRG, HeightPLRG, HeightMSRG, "
-    "ForcePLRG, ForceMSRG, TimeConfigPL, TimeConfigMS, PowerConfigPL, PowerConfigMS, "
-    "PreHeightConfigPL, PreHeightConfigMS, HeightConfigPL, HeightCOnfigMS, TestingDone, "
+    /*Testing*/                                 /* 36 items */
+    "BatchSize, StopCount, TestMode, TEACHMODETYPE, "
+    "TimePLRG_STD, TimeMSRG_STD, PowerPLRG_STD, PowerMSRG_STD, "
+    "PreHeightPLRG_STD, PreHeightMSRG_STD, HeightPLRG_STD, HeightMSRG_STD, "
+    "ForcePLRG_STD, ForceMSRG_STD, "
+
+    "TimePLRG_AUTO, TimeMSRG_AUTO, PowerPLRG_AUTO, PowerMSRG_AUTO, "
+    "PreHeightPLRG_AUTO, PreHeightMSRG_AUTO, HeightPLRG_AUTO, HeightMSRG_AUTO, "
+    "ForcePLRG_AUTO, ForceMSRG_AUTO, "
+
+    "TimeConfigPL, TimeConfigMS, PowerConfigPL, PowerConfigMS, "
+    "PreHeightConfigPL, PreHeightConfigMS, HeightConfigPL, HeightConfigMS, "
+    "StandardQuantity, AutoQuantity, SigmaQuantity, "
+    "TestingDone, "
 
     /*JSON Structure WireID, WireName*/
-    "NoOfWires, JSONWire) "
-    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
-    "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
-    "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    "NoOfWires, JSONWire) "                     /* 2 items */
+    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
+    "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
+    "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
+    "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
+    "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
+    "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
+    "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
+    "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
+    "?, ?, ?, ?, ?, ?, ?)",
 
     "SELECT ID, SpliceName FROM Preset",        /*2 Query Entire Preset Table */
 
@@ -101,30 +134,39 @@ const QString SQLSentence[] = {
                                                 /*5 Delete One Record from Splice Table*/
 
     "UPDATE Preset Set SpliceName = ?, CreatedDate = ?, OperatorID = ?, "
-    "CrossSection = ?, PresetPicPath = ?, Verified = ?, " /* item 6 */
+    "CrossSection = ?, PresetPicPath = ?, Verified = ?, "               /* item 6 */
     "Energy = ?, Amplitude = ?, Width = ?, Pressure = ?, TrigPres= ?, " /* item 5 */
 
-    "TimePlus = ?, TimeMinus = ?, PowerPlus = ?, PowerMinus = ?, "    /* item 10 */
+    "TimePlus = ?, TimeMinus = ?, PowerPlus = ?, PowerMinus = ?, "      /* item 10 */
     "PreheightPlus = ?, PreheightMinus= ?, HeightPlus = ?, HeightMinus = ?, "
     "ForcePlus = ?, ForceMinus = ?, "
 
     "WeldMode = ?, StepWeldMode = ?, EnergyToStep = ?, TimeToStep = ?, PowerToStep = ?, "
     "Amplitude2 = ?, PreBurst = ?, HoldTime = ?, SqueezeTime = ?, AfterBurstDelay = ?, "
-    "AfterBurstDuring = ?, CutOff = ?, CutOffSpliceTime = ?, "
-    "AntiSide = ?, AntiSideSpliceTime = ?, MeasuredWidth = ?, MeasuredHeight = ?, "  /* item 17 */
+    "AfterBurstDuring = ?, "
+    "CutOff = ?, CutOffSpliceTime = ?, CutOffHeightAlarm = ?, CutOffPowerAlarm = ?, "
+    "CutOffPreHeightAlarm = ?, CutOffTimeAlarm = ?, "
+    "AntiSide = ?, AntiSideSpliceTime = ?, "
+    "MeasuredWidth = ?, MeasuredHeight = ?, DisplayWidth = ?, DisplayHeight = ?, "  /* item 23 */
 
-    "ShrinkOption = ?, ShrinkTubeID = ?, ShrinkTime = ?, ShrinkTemperature = ?, "
+    "ShrinkOption = ?, ShrinkTubeID = ?, ShrinkTime = ?, ShrinkTemperature = ?, "   /* items 4 */
 
-    "HashCode = ?, "
+    "HashCode = ?, "                                                                /* item 1 */
 
-    "Qutanty = ?, StopCount = ?, TestMode = ?, TEACHMODETYPE = ?, "
-    "TimePLRG = ?, TimeMSRG = ?, PowerPLRG = ?, PowerMSRG = ?, "
-    "PreHeightPLRG = ?, PreHeightMSRG = ?, HeightPLRG = ?, HeightMSRG = ?, "
-    "ForcePLRG = ?, ForceMSRG = ?, TimeConfigPL = ?, TimeConfigMS = ?, "
+    "BatchSize = ?, StopCount = ?, TestMode = ?, TEACHMODETYPE = ?, "               /* items 36 */
+    "TimePLRG_STD = ?, TimeMSRG_STD = ?, PowerPLRG_STD = ?, PowerMSRG_STD = ?, "
+    "PreHeightPLRG_STD = ?, PreHeightMSRG_STD = ?, HeightPLRG_STD = ?, HeightMSRG_STD = ?, "
+    "ForcePLRG_STD = ?, ForceMSRG_STD = ?, "
+    "TimePLRG_AUTO = ?, TimeMSRG_AUTO = ?, PowerPLRG_AUTO = ?, PowerMSRG_AUTO = ?, "
+    "PreHeightPLRG_AUTO = ?, PreHeightMSRG_AUTO = ?, HeightPLRG_AUTO = ?, HeightMSRG_AUTO = ?, "
+    "ForcePLRG_AUTO = ?, ForceMSRG_AUTO = ?, "
+    "TimeConfigPL = ?, TimeConfigMS = ?, "
     "PowerConfigPL = ?, PowerConfigMS = ?, PreHeightConfigPL = ?, PreHeightConfigMS = ?, "
-    "HeightConfigPL = ?, HeightCOnfigMS = ?, TestingDone = ?, "
+    "HeightConfigPL = ?, HeightCOnfigMS = ?, "
+    "StandardQuantity = ?, AutoQuantity = ?, SigmaQuantity = ?, "
+    "TestingDone = ?, "
 
-    "NoOfWires = ?, JSONWire = ? "
+    "NoOfWires = ?, JSONWire = ? "                                                     /* items 2 */
     "WHERE ID = ?",                                 /*6 Update One Record to Splice Table*/
 
 };
@@ -238,8 +280,8 @@ void DBPresetTable::InsertTestDataIntoTable()
         tmpSplice.WeldSettings.QualitySetting.Height.Minus = 0;
         tmpSplice.WeldSettings.QualitySetting.Force.Plus = 55;
         tmpSplice.WeldSettings.QualitySetting.Force.Minus = 0;
-        tmpSplice.WeldSettings.AdvanceSetting.WeldMode = ENERGY;
-        tmpSplice.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode = STEPDISABLE;
+        tmpSplice.WeldSettings.AdvanceSetting.WeldMode = ADVANCESETTING::ENERGY;
+        tmpSplice.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode = STEPWELD::STEPDISABLE;
         tmpSplice.WeldSettings.AdvanceSetting.StepWeld.EnergyToStep = 55;
         tmpSplice.WeldSettings.AdvanceSetting.StepWeld.TimeToStep = 1;
         tmpSplice.WeldSettings.AdvanceSetting.StepWeld.PowerToStep = 500;
@@ -249,23 +291,32 @@ void DBPresetTable::InsertTestDataIntoTable()
         tmpSplice.WeldSettings.AdvanceSetting.SqzTime = 200;
         tmpSplice.WeldSettings.AdvanceSetting.ABDelay = 300;
         tmpSplice.WeldSettings.AdvanceSetting.ABDur = 400;
-        tmpSplice.WeldSettings.AdvanceSetting.CutOff = false;
-        tmpSplice.WeldSettings.AdvanceSetting.CutOffSpliceTime = -1;
-        tmpSplice.WeldSettings.AdvanceSetting.AntiSide = true;
-        tmpSplice.WeldSettings.AdvanceSetting.AntiSideSpliceTime = -1;
-        tmpSplice.WeldSettings.AdvanceSetting.MeasuredWidth = 100;
-        tmpSplice.WeldSettings.AdvanceSetting.MeasuredHeight = 100;
+        tmpSplice.WeldSettings.AdvanceSetting.CutOffOption.CutOff = false;
+        tmpSplice.WeldSettings.AdvanceSetting.CutOffOption.CutOffSpliceTime = -1;
+        tmpSplice.WeldSettings.AdvanceSetting.CutOffOption.Cutter4HeightAlarm = false;
+        tmpSplice.WeldSettings.AdvanceSetting.CutOffOption.Cutter4PowerAlarm = false;
+        tmpSplice.WeldSettings.AdvanceSetting.CutOffOption.Cutter4PreHeightAlarm = false;
+        tmpSplice.WeldSettings.AdvanceSetting.CutOffOption.Cutter4TimeAlarm = false;
+        tmpSplice.WeldSettings.AdvanceSetting.AntiSideOption.AntiSideMode = true;
+        tmpSplice.WeldSettings.AdvanceSetting.AntiSideOption.AntiSideSpliceTime = -1;
+        tmpSplice.WeldSettings.AdvanceSetting.OffsetOption.MeasuredWidth = 100;
+        tmpSplice.WeldSettings.AdvanceSetting.OffsetOption.MeasuredHeight = 100;
+        tmpSplice.WeldSettings.AdvanceSetting.OffsetOption.DisplayWidth = 100;
+        tmpSplice.WeldSettings.AdvanceSetting.OffsetOption.DisplayHeight = 100;
         tmpSplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkOption = false;
         tmpSplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID = "0";
         tmpSplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime = 10;
         tmpSplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTemperature = 260;
         tmpSplice.HashCode = qHashBits(&tmpSplice.WeldSettings, sizeof(tmpSplice.WeldSettings), 0);
-        tmpSplice.TestSetting.Qutanty = 10;
+        tmpSplice.TestSetting.BatchSize = 10;
         tmpSplice.TestSetting.StopCount = 20;
-        tmpSplice.TestSetting.TestMode = UNCONSTRAINED;
-        tmpSplice.TestSetting.TeachModeSetting.TeachModeType = UNDEFINED;
-        for(int i=0;i< 18;i++)
+        tmpSplice.TestSetting.TestMode = TESTSETTING::UNCONSTRAINED;
+        tmpSplice.TestSetting.TeachModeSetting.TeachModeType = TEACHMODESETTING::UNDEFINED;
+        for(int i = 0;i < ENERGY_ADJ;i++)
             tmpSplice.TestSetting.TeachModeSetting.TeachModequal_Window[i] = 40;
+        tmpSplice.TestSetting.TeachModeSetting.StandardRunQuantity = 5;
+        tmpSplice.TestSetting.TeachModeSetting.AutoRunQuantity = 20;
+        tmpSplice.TestSetting.TeachModeSetting.SigmaRunQuantity = 128;
         tmpSplice.TestSetting.TestingDone = true;
         QMap<int, QString>::const_iterator it = TestMap.constBegin();
         while (it != TestMap.constEnd()) {
@@ -288,7 +339,7 @@ bool DBPresetTable::CreateNewTable()
     QSqlQuery query(SpliceDBObj);
     bool bResult = SpliceDBObj.open();
 
-    bResult = query.exec(SQLSentence[CREATE]);   //run SQL
+    bResult = query.exec(SQLSentence[SQLITCLASS::CREATE]);   //run SQL
 
     if(bResult == false)
         qDebug() << "Preset Table SQL ERROR:"<< query.lastError();
@@ -315,7 +366,7 @@ int DBPresetTable::InsertRecordIntoTable(void *_obj)
 
     UtilityClass *_Utility = UtilityClass::Instance();
 
-    query.prepare(SQLSentence[INSERT]);
+    query.prepare(SQLSentence[SQLITCLASS::INSERT]);
     query.addBindValue(((PresetElement*)_obj)->SpliceName);
     QDateTime TimeLabel = QDateTime::currentDateTime();
     query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
@@ -353,12 +404,18 @@ int DBPresetTable::InsertRecordIntoTable(void *_obj)
     query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.SqzTime);
     query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ABDelay);
     query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ABDur);
-    query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.CutOff);
-    query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.CutOffSpliceTime);
-    query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.AntiSide);
-    query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.AntiSideSpliceTime);
-    query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.MeasuredWidth);
-    query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.MeasuredHeight);
+    query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.CutOffOption.CutOff);
+    query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.CutOffOption.CutOffSpliceTime);
+    query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.CutOffOption.Cutter4HeightAlarm);
+    query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.CutOffOption.Cutter4PowerAlarm);
+    query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.CutOffOption.Cutter4PreHeightAlarm);
+    query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.CutOffOption.Cutter4TimeAlarm);
+    query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.AntiSideOption.AntiSideMode);
+    query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.AntiSideOption.AntiSideSpliceTime);
+    query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.OffsetOption.MeasuredWidth);
+    query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.OffsetOption.MeasuredHeight);
+    query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.OffsetOption.DisplayWidth);
+    query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.OffsetOption.DisplayHeight);
     query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkOption);
     query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID);
     query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime);
@@ -367,15 +424,21 @@ int DBPresetTable::InsertRecordIntoTable(void *_obj)
     unsigned int HashCode = qHashBits(&(((PresetElement*)_obj)->WeldSettings), sizeof(((PresetElement*)_obj)->WeldSettings), 0);
     query.addBindValue(HashCode);
 
-    query.addBindValue(((PresetElement*)_obj)->TestSetting.Qutanty);
+    query.addBindValue(((PresetElement*)_obj)->TestSetting.BatchSize);
     query.addBindValue(((PresetElement*)_obj)->TestSetting.StopCount);
     query.addBindValue(((PresetElement*)_obj)->TestSetting.TestMode);
     query.addBindValue(((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModeType);
-    for(int i = 0; i< 18; i++)
+    for(int i = 0; i< ENERGY_ADJ; i++)
     {
         query.addBindValue(((PresetElement*)_obj)->TestSetting.
                             TeachModeSetting.TeachModequal_Window[i]);
     }
+    query.addBindValue(((PresetElement*)_obj)->TestSetting.
+                       TeachModeSetting.StandardRunQuantity);
+    query.addBindValue(((PresetElement*)_obj)->TestSetting.
+                       TeachModeSetting.AutoRunQuantity);
+    query.addBindValue(((PresetElement*)_obj)->TestSetting.
+                       TeachModeSetting.SigmaRunQuantity);
     query.addBindValue(((PresetElement*)_obj)->TestSetting.TestingDone);
 
     query.addBindValue(((PresetElement*)_obj)->NoOfWires);
@@ -406,7 +469,7 @@ bool DBPresetTable::QueryEntireTable(QMap<int, QString> *_obj)
     if(bResult == false)
         return bResult;
 
-    bResult = query.exec(SQLSentence[QUERY_ENTIRE_TABLE]);
+    bResult = query.exec(SQLSentence[SQLITCLASS::QUERY_ENTIRE_TABLE]);
     if (bResult == true)
     {
         _obj->clear();
@@ -439,7 +502,7 @@ bool DBPresetTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
         return bResult;
     }
 
-    query.prepare(SQLSentence[QUERY_ONE_RECORD]);
+    query.prepare(SQLSentence[SQLITCLASS::QUERY_ONE_RECORD]);
     query.addBindValue(ID);
     query.addBindValue(Name);
 
@@ -498,9 +561,9 @@ bool DBPresetTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
     ((PresetElement*)_obj)->WeldSettings.QualitySetting.Force.Minus =
             query.value("ForceMinus").toInt();
     ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.WeldMode =
-            (enum WELDMODE)query.value("WeldMode").toInt();
+            (ADVANCESETTING::WELDMODE)query.value("WeldMode").toInt();
     ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.StepWeld.StepWeldMode =
-            (enum STEPWELDMODE)query.value("StepWeldMode").toInt();
+            (STEPWELD::STEPWELDMODE)query.value("StepWeldMode").toInt();
     ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.StepWeld.EnergyToStep =
             query.value("EnergyToStep").toInt();
     ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.StepWeld.TimeToStep =
@@ -514,70 +577,116 @@ bool DBPresetTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
     ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.SqzTime = query.value("SqueezeTime").toInt();
     ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ABDelay = query.value("AfterBurstDelay").toInt();
     ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ABDur = query.value("AfterBurstDuring").toInt();
-    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.CutOff = query.value("CutOff").toInt();
-    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.CutOffSpliceTime =
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.CutOffOption.CutOff =
+            query.value("CutOff").toInt();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.CutOffOption.CutOffSpliceTime =
             query.value("CutOffSpliceTime").toInt();
-    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.AntiSide = query.value("AntiSide").toInt();
-    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.AntiSideSpliceTime =
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.CutOffOption.Cutter4HeightAlarm =
+            query.value("CutOffHeightAlarm").toBool();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.CutOffOption.Cutter4PowerAlarm =
+            query.value("CutOffPowerAlarm").toBool();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.CutOffOption.Cutter4PreHeightAlarm =
+            query.value("CutOffPreHeightAlarm").toBool();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.CutOffOption.Cutter4TimeAlarm =
+            query.value("CutOffTimeAlarm").toBool();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.AntiSideOption.AntiSideMode =
+            query.value("AntiSide").toBool();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.AntiSideOption.AntiSideSpliceTime =
             query.value("AntiSideSpliceTime").toInt();
-    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.MeasuredWidth = query.value("MeasuredWidth").toInt();
-    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.MeasuredHeight = query.value("MeasuredHeight").toInt();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.OffsetOption.MeasuredWidth =
+            query.value("MeasuredWidth").toInt();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.OffsetOption.MeasuredHeight =
+            query.value("MeasuredHeight").toInt();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.OffsetOption.DisplayWidth =
+            query.value("DisplayWidth").toInt();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.OffsetOption.DisplayHeight =
+            query.value("DisplayHeight").toInt();
     ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkOption =
             query.value("ShrinkOption").toBool();
-    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID = query.value("ShrinkTubeID").toString();
-    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime = query.value("ShrinkTime").toInt();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID =
+            query.value("ShrinkTubeID").toString();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime =
+            query.value("ShrinkTime").toInt();
     ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTemperature =
             query.value("ShrinkTemperature").toInt();
     ((PresetElement*)_obj)->HashCode = query.value("HashCode").toInt();
 
+    ((PresetElement*)_obj)->TestSetting.BatchSize = query.value("BatchSize").toInt();
+    ((PresetElement*)_obj)->TestSetting.StopCount = query.value("StopCount").toInt();
+    ((PresetElement*)_obj)->TestSetting.TestMode =
+            (TESTSETTING::TESTMODE)query.value("TestMode").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModeType =
+            (TEACHMODESETTING::TEACH_MODE_TYPE)query.value("TeachModeType").toInt();
+
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[0] =
+            query.value("TimePLRG_STD").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[1] =
+            query.value("TimeMSRG_STD").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[2] =
+            query.value("PowerPLRG_STD").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[3] =
+            query.value("PowerMSRG_STD").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[4] =
+            query.value("PreHeightPLRG_STD").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[5] =
+            query.value("PreHeightMSRG_STD").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[6] =
+            query.value("HeightPLRG_STD").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[7] =
+            query.value("HeightMSRG_STD").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[8] =
+            query.value("ForcePLRG_STD").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[9] =
+            query.value("ForceMSRG_STD").toInt();
+
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[10] =
+            query.value("TimePLRG_AUTO").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[11] =
+            query.value("TimeMSRG_AUTO").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[12] =
+            query.value("PowerPLRG_AUTO").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[13] =
+            query.value("PowerMSRG_AUTO").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[14] =
+            query.value("PreHeightPLRG_AUTO").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[15] =
+            query.value("PreHeightMSRG_AUTO").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[16] =
+            query.value("HeightPLRG_AUTO").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[17] =
+            query.value("HeightMSRG_AUTO").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[18] =
+            query.value("ForcePLRG_AUTO").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[19] =
+            query.value("ForceMSRG_AUTO").toInt();
+
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[20] =
+            query.value("TimeConfigPL").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[21] =
+            query.value("TimeConfigMS").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[22] =
+            query.value("PowerConfigPL").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[23] =
+            query.value("PowerConfigMS").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[24] =
+            query.value("PreHeightConfigPL").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[25] =
+            query.value("PreHeightConfigMS").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[26] =
+            query.value("HeightConfigPL").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[27] =
+            query.value("HeightCOnfigMS").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.StandardRunQuantity =
+            query.value("StandardQuantity").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.AutoRunQuantity =
+            query.value("AutoQuantity").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.SigmaRunQuantity =
+            query.value("SigmaQuantity").toInt();
+    ((PresetElement*)_obj)->TestSetting.TestingDone = query.value("TestingDone").toBool();
+
     QString tmpStr = query.value("JSONWire").toString();
     _Utility->StringJsonToMap(tmpStr, &((PresetElement*)_obj)->WireIndex);
     ((PresetElement*)_obj)->NoOfWires = ((PresetElement*)_obj)->WireIndex.size();
-
-    ((PresetElement*)_obj)->TestSetting.Qutanty = query.value("Qutanty").toInt();
-    ((PresetElement*)_obj)->TestSetting.StopCount = query.value("StopCount").toInt();
-    ((PresetElement*)_obj)->TestSetting.TestMode =
-            (enum TESTMODE)query.value("TestMode").toInt();
-    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModeType =
-            (enum TEACH_MODE_TYPE)query.value("TeachModeType").toInt();
-
-    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[0] =
-            query.value("TimePLRG").toInt();
-    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[1] =
-            query.value("TimeMSRG").toInt();
-    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[2] =
-            query.value("PowerPLRG").toInt();
-    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[3] =
-            query.value("PowerMSRG").toInt();
-    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[4] =
-            query.value("PreHeightPLRG").toInt();
-    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[5] =
-            query.value("PreHeightMSRG").toInt();
-    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[6] =
-            query.value("HeightPLRG").toInt();
-    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[7] =
-            query.value("HeightMSRG").toInt();
-    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[8] =
-            query.value("ForcePLRG").toInt();
-    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[9] =
-            query.value("ForceMSRG").toInt();
-    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[10] =
-            query.value("TimeConfigPL").toInt();
-    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[11] =
-            query.value("TimeConfigMS").toInt();
-    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[12] =
-            query.value("PowerConfigPL").toInt();
-    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[13] =
-            query.value("PowerConfigMS").toInt();
-    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[14] =
-            query.value("PreHeightConfigPL").toInt();
-    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[15] =
-            query.value("PreHeightConfigMS").toInt();
-    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[16] =
-            query.value("HeightConfigPL").toInt();
-    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[17] =
-            query.value("HeightCOnfigMS").toInt();
-    ((PresetElement*)_obj)->TestSetting.TestingDone = query.value("TestingDone").toBool();
 
     SpliceDBObj.close();
     return bResult;
@@ -596,7 +705,7 @@ bool DBPresetTable::QueryOneRecordFromTable(int ID, void *_obj)
         return bResult;
     }
 
-    query.prepare(SQLSentence[QUERY_ONE_RECORD_ONLY_ID]);
+    query.prepare(SQLSentence[SQLITCLASS::QUERY_ONE_RECORD_ONLY_ID]);
     query.addBindValue(ID);
 
     bResult = query.exec();
@@ -654,9 +763,9 @@ bool DBPresetTable::QueryOneRecordFromTable(int ID, void *_obj)
     ((PresetElement*)_obj)->WeldSettings.QualitySetting.Force.Minus =
             query.value("ForceMinus").toInt();
     ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.WeldMode =
-            (enum WELDMODE)query.value("WeldMode").toInt();
+            (ADVANCESETTING::WELDMODE)query.value("WeldMode").toInt();
     ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.StepWeld.StepWeldMode =
-            (enum STEPWELDMODE)query.value("StepWeldMode").toInt();
+            (STEPWELD::STEPWELDMODE)query.value("StepWeldMode").toInt();
     ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.StepWeld.EnergyToStep =
             query.value("EnergyToStep").toInt();
     ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.StepWeld.TimeToStep =
@@ -670,14 +779,30 @@ bool DBPresetTable::QueryOneRecordFromTable(int ID, void *_obj)
     ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.SqzTime = query.value("SqueezeTime").toInt();
     ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ABDelay = query.value("AfterBurstDelay").toInt();
     ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ABDur = query.value("AfterBurstDuring").toInt();
-    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.CutOff = query.value("CutOff").toInt();
-    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.CutOffSpliceTime =
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.CutOffOption.CutOff =
+            query.value("CutOff").toBool();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.CutOffOption.CutOffSpliceTime =
             query.value("CutOffSpliceTime").toInt();
-    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.AntiSide = query.value("AntiSide").toInt();
-    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.AntiSideSpliceTime =
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.CutOffOption.Cutter4HeightAlarm =
+            query.value("CutOffHeightAlarm").toBool();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.CutOffOption.Cutter4PowerAlarm =
+            query.value("CutOffPowerAlarm").toBool();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.CutOffOption.Cutter4PreHeightAlarm =
+            query.value("CutOffPreHeightAlarm").toBool();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.CutOffOption.Cutter4TimeAlarm =
+            query.value("CutOffTimeAlarm").toBool();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.AntiSideOption.AntiSideMode =
+            query.value("AntiSide").toBool();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.AntiSideOption.AntiSideSpliceTime =
             query.value("AntiSideSpliceTime").toInt();
-    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.MeasuredWidth = query.value("MeasuredWidth").toInt();
-    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.MeasuredHeight = query.value("MeasuredHeight").toInt();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.OffsetOption.MeasuredWidth =
+            query.value("MeasuredWidth").toInt();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.OffsetOption.MeasuredHeight =
+            query.value("MeasuredHeight").toInt();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.OffsetOption.DisplayWidth =
+            query.value("DisplayWidth").toInt();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.OffsetOption.DisplayHeight =
+            query.value("DisplayHeight").toInt();
     ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkOption =
             query.value("ShrinkOption").toBool();
     ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID = query.value("ShrinkTubeID").toString();
@@ -686,54 +811,82 @@ bool DBPresetTable::QueryOneRecordFromTable(int ID, void *_obj)
             query.value("ShrinkTemperature").toInt();
     ((PresetElement*)_obj)->HashCode = query.value("HashCode").toInt();
 
+    ((PresetElement*)_obj)->TestSetting.BatchSize = query.value("BatchSize").toInt();
+    ((PresetElement*)_obj)->TestSetting.StopCount = query.value("StopCount").toInt();
+    ((PresetElement*)_obj)->TestSetting.TestMode =
+            (TESTSETTING::TESTMODE)query.value("TestMode").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModeType =
+            (TEACHMODESETTING::TEACH_MODE_TYPE)query.value("TeachModeType").toInt();
+
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[0] =
+            query.value("TimePLRG_STD").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[1] =
+            query.value("TimeMSRG_STD").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[2] =
+            query.value("PowerPLRG_STD").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[3] =
+            query.value("PowerMSRG_STD").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[4] =
+            query.value("PreHeightPLRG_STD").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[5] =
+            query.value("PreHeightMSRG_STD").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[6] =
+            query.value("HeightPLRG_STD").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[7] =
+            query.value("HeightMSRG_STD").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[8] =
+            query.value("ForcePLRG_STD").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[9] =
+            query.value("ForceMSRG_STD").toInt();
+
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[10] =
+            query.value("TimePLRG_AUTO").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[11] =
+            query.value("TimeMSRG_AUTO").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[12] =
+            query.value("PowerPLRG_AUTO").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[13] =
+            query.value("PowerMSRG_AUTO").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[14] =
+            query.value("PreHeightPLRG_AUTO").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[15] =
+            query.value("PreHeightMSRG_AUTO").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[16] =
+            query.value("HeightPLRG_AUTO").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[17] =
+            query.value("HeightMSRG_AUTO").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[18] =
+            query.value("ForcePLRG_AUTO").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[19] =
+            query.value("ForceMSRG_AUTO").toInt();
+
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[20] =
+            query.value("TimeConfigPL").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[21] =
+            query.value("TimeConfigMS").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[22] =
+            query.value("PowerConfigPL").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[23] =
+            query.value("PowerConfigMS").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[24] =
+            query.value("PreHeightConfigPL").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[25] =
+            query.value("PreHeightConfigMS").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[26] =
+            query.value("HeightConfigPL").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[27] =
+            query.value("HeightCOnfigMS").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.StandardRunQuantity =
+            query.value("StandardQuantity").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.AutoRunQuantity =
+            query.value("AutoQuantity").toInt();
+    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.SigmaRunQuantity =
+            query.value("SigmaQuantity").toInt();
+    ((PresetElement*)_obj)->TestSetting.TestingDone = query.value("TestingDone").toBool();
+
     QString tmpStr = query.value("JSONWire").toString();
     _Utility->StringJsonToMap(tmpStr, &((PresetElement*)_obj)->WireIndex);
     ((PresetElement*)_obj)->NoOfWires = ((PresetElement*)_obj)->WireIndex.size();
-
-    ((PresetElement*)_obj)->TestSetting.Qutanty = query.value("Qutanty").toInt();
-    ((PresetElement*)_obj)->TestSetting.StopCount = query.value("StopCount").toInt();
-    ((PresetElement*)_obj)->TestSetting.TestMode =
-            (enum TESTMODE)query.value("TestMode").toInt();
-    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModeType =
-            (enum TEACH_MODE_TYPE)query.value("TeachModeType").toInt();
-
-    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[0] =
-            query.value("TimePLRG").toInt();
-    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[1] =
-            query.value("TimeMSRG").toInt();
-    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[2] =
-            query.value("PowerPLRG").toInt();
-    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[3] =
-            query.value("PowerMSRG").toInt();
-    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[4] =
-            query.value("PreHeightPLRG").toInt();
-    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[5] =
-            query.value("PreHeightMSRG").toInt();
-    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[6] =
-            query.value("HeightPLRG").toInt();
-    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[7] =
-            query.value("HeightMSRG").toInt();
-    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[8] =
-            query.value("ForcePLRG").toInt();
-    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[9] =
-            query.value("ForceMSRG").toInt();
-    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[10] =
-            query.value("TimeConfigPL").toInt();
-    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[11] =
-            query.value("TimeConfigMS").toInt();
-    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[12] =
-            query.value("PowerConfigPL").toInt();
-    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[13] =
-            query.value("PowerConfigMS").toInt();
-    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[14] =
-            query.value("PreHeightConfigPL").toInt();
-    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[15] =
-            query.value("PreHeightConfigMS").toInt();
-    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[16] =
-            query.value("HeightConfigPL").toInt();
-    ((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[17] =
-            query.value("HeightCOnfigMS").toInt();
-    ((PresetElement*)_obj)->TestSetting.TestingDone = query.value("TestingDone").toBool();
 
     SpliceDBObj.close();
     return bResult;
@@ -749,7 +902,7 @@ bool DBPresetTable::DeleteEntireTable()
         return bResult;
     }
 
-    bResult = query.exec(SQLSentence[DELETE_ENTIRE_TABLE]);
+    bResult = query.exec(SQLSentence[SQLITCLASS::DELETE_ENTIRE_TABLE]);
     if(bResult == false)
     {
         qDebug() << "Preset Table SQL ERROR:"<< query.lastError();
@@ -769,7 +922,7 @@ bool DBPresetTable::DeleteOneRecordFromTable(int ID, QString Name)
         return bResult;
     }
 
-    query.prepare(SQLSentence[DELETE_ONE_RECORD]);
+    query.prepare(SQLSentence[SQLITCLASS::DELETE_ONE_RECORD]);
     query.addBindValue(ID);
     query.addBindValue(Name);
 
@@ -795,7 +948,7 @@ bool DBPresetTable::UpdateRecordIntoTable(void *_obj)
         return bResult;
     }
 
-    query.prepare(SQLSentence[UPDATE_ONE_RECORD]);
+    query.prepare(SQLSentence[SQLITCLASS::UPDATE_ONE_RECORD]);
     query.addBindValue(((PresetElement*)_obj)->SpliceName);
     QDateTime TimeLabel = QDateTime::fromTime_t(((PresetElement*)_obj)->CreatedDate);
     query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
@@ -831,25 +984,33 @@ bool DBPresetTable::UpdateRecordIntoTable(void *_obj)
     query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.SqzTime);
     query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ABDelay);
     query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ABDur);
-    query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.CutOff);
-    query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.CutOffSpliceTime);
-    query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.AntiSide);
-    query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.AntiSideSpliceTime);
-    query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.MeasuredWidth);
-    query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.MeasuredHeight);
-
+    query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.CutOffOption.CutOff);
+    query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.CutOffOption.CutOffSpliceTime);
+    query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.CutOffOption.Cutter4HeightAlarm);
+    query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.CutOffOption.Cutter4PowerAlarm);
+    query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.CutOffOption.Cutter4PreHeightAlarm);
+    query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.CutOffOption.Cutter4TimeAlarm);
+    query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.AntiSideOption.AntiSideMode);
+    query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.AntiSideOption.AntiSideSpliceTime);
+    query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.OffsetOption.MeasuredWidth);
+    query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.OffsetOption.MeasuredHeight);
+    query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.OffsetOption.DisplayWidth);
+    query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.OffsetOption.DisplayHeight);
     query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkOption);
     query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID);
     query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime);
     query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTemperature);
     query.addBindValue(((PresetElement*)_obj)->HashCode);
 
-    query.addBindValue(((PresetElement*)_obj)->TestSetting.Qutanty);
+    query.addBindValue(((PresetElement*)_obj)->TestSetting.BatchSize);
     query.addBindValue(((PresetElement*)_obj)->TestSetting.StopCount);
     query.addBindValue(((PresetElement*)_obj)->TestSetting.TestMode);
     query.addBindValue(((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModeType);
-    for(int i = 0; i < 18; i++)
+    for(int i = 0; i < ENERGY_ADJ; i++)
         query.addBindValue(((PresetElement*)_obj)->TestSetting.TeachModeSetting.TeachModequal_Window[i]);
+    query.addBindValue(((PresetElement*)_obj)->TestSetting.TeachModeSetting.StandardRunQuantity);
+    query.addBindValue(((PresetElement*)_obj)->TestSetting.TeachModeSetting.AutoRunQuantity);
+    query.addBindValue(((PresetElement*)_obj)->TestSetting.TeachModeSetting.SigmaRunQuantity);
     query.addBindValue(((PresetElement*)_obj)->TestSetting.TestingDone);
 
     QString tmpStr;
@@ -1070,8 +1231,8 @@ int DBPresetTable::importData(QString value, QMap<int, QString> wireIdMap)
         mySplice.WeldSettings.QualitySetting.Force.Plus = QString(spliceList[20]).toInt(&ok,10);
         mySplice.WeldSettings.QualitySetting.Force.Minus = QString(spliceList[21]).toInt(&ok,10);
 
-        mySplice.WeldSettings.AdvanceSetting.WeldMode = (WELDMODE)QString(spliceList[22]).toInt(&ok,10);
-        mySplice.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode = (STEPWELDMODE)QString(spliceList[23]).toInt(&ok,10);
+        mySplice.WeldSettings.AdvanceSetting.WeldMode = (ADVANCESETTING::WELDMODE)QString(spliceList[22]).toInt(&ok,10);
+        mySplice.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode = (STEPWELD::STEPWELDMODE)QString(spliceList[23]).toInt(&ok,10);
         mySplice.WeldSettings.AdvanceSetting.StepWeld.EnergyToStep = QString(spliceList[24]).toInt(&ok,10);
         mySplice.WeldSettings.AdvanceSetting.StepWeld.TimeToStep = QString(spliceList[25]).toInt(&ok,10);
         mySplice.WeldSettings.AdvanceSetting.StepWeld.PowerToStep = QString(spliceList[26]).toInt(&ok,10);
@@ -1081,26 +1242,43 @@ int DBPresetTable::importData(QString value, QMap<int, QString> wireIdMap)
         mySplice.WeldSettings.AdvanceSetting.SqzTime = QString(spliceList[30]).toInt(&ok,10);
         mySplice.WeldSettings.AdvanceSetting.ABDelay = QString(spliceList[31]).toInt(&ok,10);
         mySplice.WeldSettings.AdvanceSetting.ABDur = QString(spliceList[32]).toInt(&ok,10);
-        mySplice.WeldSettings.AdvanceSetting.CutOff = QString(spliceList[33]).toInt(&ok,10);
-        mySplice.WeldSettings.AdvanceSetting.CutOffSpliceTime = QString(spliceList[34]).toInt(&ok,10);
-        mySplice.WeldSettings.AdvanceSetting.AntiSide = QString(spliceList[35]).toInt(&ok,10);
-        mySplice.WeldSettings.AdvanceSetting.AntiSideSpliceTime = QString(spliceList[36]).toInt(&ok,10);
-        mySplice.WeldSettings.AdvanceSetting.MeasuredWidth = QString(spliceList[37]).toInt(&ok,10);
-        mySplice.WeldSettings.AdvanceSetting.MeasuredHeight = QString(spliceList[38]).toInt(&ok,10);
+        mySplice.WeldSettings.AdvanceSetting.CutOffOption.CutOff =
+                QString(spliceList[33]).toInt(&ok,10);
+        mySplice.WeldSettings.AdvanceSetting.CutOffOption.CutOffSpliceTime =
+                QString(spliceList[34]).toInt(&ok,10);
+        mySplice.WeldSettings.AdvanceSetting.CutOffOption.Cutter4HeightAlarm =
+                QString(spliceList[35]).toInt(&ok, 10);
+        mySplice.WeldSettings.AdvanceSetting.CutOffOption.Cutter4PowerAlarm =
+                QString(spliceList[36]).toInt(&ok, 10);
+        mySplice.WeldSettings.AdvanceSetting.CutOffOption.Cutter4PreHeightAlarm =
+                QString(spliceList[37]).toInt(&ok, 10);
+        mySplice.WeldSettings.AdvanceSetting.CutOffOption.Cutter4TimeAlarm =
+                QString(spliceList[38]).toInt(&ok, 10);
+        mySplice.WeldSettings.AdvanceSetting.AntiSideOption.AntiSideMode =
+                QString(spliceList[39]).toInt(&ok, 10);
+        mySplice.WeldSettings.AdvanceSetting.AntiSideOption.AntiSideSpliceTime =
+                QString(spliceList[40]).toInt(&ok, 10);
+        mySplice.WeldSettings.AdvanceSetting.OffsetOption.MeasuredWidth =
+                QString(spliceList[41]).toInt(&ok, 10);
+        mySplice.WeldSettings.AdvanceSetting.OffsetOption.MeasuredHeight =
+                QString(spliceList[42]).toInt(&ok, 10);
+        mySplice.WeldSettings.AdvanceSetting.OffsetOption.DisplayWidth =
+                QString(spliceList[43]).toInt(&ok, 10);
+        mySplice.WeldSettings.AdvanceSetting.OffsetOption.DisplayHeight =
+                QString(spliceList[44]).toInt(&ok, 10);
+        mySplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkOption = spliceList[45] == "0" ? false : true;
+        mySplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID = spliceList[46];
+        mySplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime = QString(spliceList[47]).toInt(&ok,10);
+        mySplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTemperature = QString(spliceList[48]).toInt(&ok,10);
+        mySplice.HashCode = QString(spliceList[49]).toUInt(&ok,10);
 
-        mySplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkOption = spliceList[39] == "0" ? false : true;
-        mySplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID = spliceList[40];
-        mySplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime = QString(spliceList[41]).toInt(&ok,10);
-        mySplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTemperature = QString(spliceList[42]).toInt(&ok,10);
-        mySplice.HashCode = QString(spliceList[43]).toUInt(&ok,10);
-
-        mySplice.TestSetting.Qutanty = QString(spliceList[44]).toInt(&ok,10);
-        mySplice.TestSetting.StopCount = QString(spliceList[45]).toInt(&ok,10);
-        mySplice.TestSetting.TestMode = (TESTMODE)QString(spliceList[46]).toInt(&ok,10);
-        mySplice.TestSetting.TeachModeSetting.TeachModeType = (TEACH_MODE_TYPE)QString(spliceList[47]).toInt(&ok,10);
+        mySplice.TestSetting.BatchSize = QString(spliceList[50]).toInt(&ok,10);
+        mySplice.TestSetting.StopCount = QString(spliceList[51]).toInt(&ok,10);
+        mySplice.TestSetting.TestMode = (TESTSETTING::TESTMODE)QString(spliceList[52]).toInt(&ok,10);
+        mySplice.TestSetting.TeachModeSetting.TeachModeType = (TEACHMODESETTING::TEACH_MODE_TYPE)QString(spliceList[53]).toInt(&ok,10);
         for(int i = 0; i < 18; i++)
-            mySplice.TestSetting.TeachModeSetting.TeachModequal_Window[i] = QString(spliceList[i + 48]).toInt(&ok,10);
-        mySplice.TestSetting.TestingDone = spliceList[66] == "0" ? false : true;
+            mySplice.TestSetting.TeachModeSetting.TeachModequal_Window[i] = QString(spliceList[i + 54]).toInt(&ok,10);
+        mySplice.TestSetting.TestingDone = spliceList[72] == "0" ? false : true;
 
         QString tmpStr;
         mySplice.WireIndex = wireIdMap;

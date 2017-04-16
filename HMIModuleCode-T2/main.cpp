@@ -14,6 +14,7 @@
 #include <QHash>
 #include <QDateTime>
 #include <QDesktopWidget>
+#include "Modules/ShrinkTubeSerial.h"
 int main(int argc, char *argv[])
 {
 
@@ -21,8 +22,8 @@ int main(int argc, char *argv[])
     SystemParametersInfo(SPI_GETWORKAREA,0,&rt,0);
     int y = GetSystemMetrics(SM_CYSCREEN)-rt.bottom;
 
-    int width=GetSystemMetrics(SM_CXSCREEN);
-    int height=GetSystemMetrics(SM_CYSCREEN);
+    int width = GetSystemMetrics(SM_CXSCREEN);
+    int height = GetSystemMetrics(SM_CYSCREEN);
     RECT rc = {0,0,width,height};
     SystemParametersInfo(SPI_SETWORKAREA,
                          0,
@@ -65,8 +66,6 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("alarmModel",hmiAdaptor->alarmModel);
     engine.rootContext()->setContextProperty("maintenanceLogModel",hmiAdaptor->maintenanceLogModel);
     engine.load(QUrl(QStringLiteral("qrc:/UI/main.qml")));
-//    MODstart* _ModStart = MODstart::Instance();
     MODstart::Instance();
-
     return app.exec();
 }

@@ -51,6 +51,8 @@ M2010::M2010()
     ReceiveFlags.WireData = false;
     ReceiveFlags.FootPadelDATA = false;
     ReceiveFlags.ControllerVersionData = false;
+    ReceiveFlags.ControllerSerialNumData = false;
+    ReceiveFlags.ControllerPartNumData = false;
     ReceiveFlags.CalibrationDone = false;
     ReceiveFlags.HostReadyData = false;
     ReceiveFlags.CalHeightMaxGaugeData = false;
@@ -59,6 +61,7 @@ M2010::M2010()
     ReceiveFlags.ActuatorSerialNumData = false;
     ReceiveFlags.ActuatorPartNumData= false;
     ReceiveFlags.HeightGraphData = false;
+    ReceiveFlags.CutterResponseData = false;
 
     M10Run.Sequence_Done = false;
     M10Run.Pre_Hght_Error = false;
@@ -92,54 +95,6 @@ M2010::M2010()
 //{
 
 //}
-/******************************FIXED************************************/
-void M2010::GetLastRunRecord()
-{
-    //This function reads the file mode(Preset/sequence) from run_dat file.
-    QString sFilePath;
-    QDir dir;
-    M10INI  *ptr_M10INI  = M10INI::Instance();
-    UtilityClass *ptr_Utility = UtilityClass::Instance();
-
-    sFilePath = ptr_M10INI->ConfigFilesPath + Run_File_Name;
-
-    if(ptr_Utility->ReadFromBinaryFile(sFilePath, &RunFileRecord) == false)
-       RunFileRecord.LastMade = None_Made;
-}
-
-/*********************************Fixed*************************/
-void M2010::PutLastRunRecord(int TypeMade, QString PartName)
-{
-    //This function writes the file mode(Preset/sequence) from run_dat file.
-    QString sFilePath;
-    M10INI  *ptr_M10INI  = M10INI::Instance();
-    UtilityClass *ptr_Utility = UtilityClass::Instance();
-    RunFileRecord.Last_file = PartName;
-    RunFileRecord.LastMade = TypeMade;
-    sFilePath = ptr_M10INI->ConfigFilesPath + Run_File_Name;
-    ptr_Utility->WriteToBinaryFile(&RunFileRecord, sFilePath);
-}
-
-//void M2010::MakeNormalSplice(M10Part ThisSplice)
-//{
-
-//}
-
-int M2010::DecPtrCircular(int ptr, int ptrMAX)
-{
-    /*These functions are designed for manipulating pointers with values 0 to ptrMAX*/
-    int tmpPtr = 0;
-    if(ptr > 0)
-        tmpPtr = (ptr - 1);
-    else
-        tmpPtr = ptrMAX;
-    return tmpPtr;
-}
-
-int M2010::IncPtrCircular(int ptr, int ptrMAX)
-{
-    return ((ptr + 1) % (ptrMAX + 1));
-}
 
 void M2010::ConvertPowerGraphData(QStringList SourceGraphDataList, QList<int> *DestList)
 {
@@ -258,7 +213,7 @@ void M2010::load_splice_file()
         M10Run.Run_Splice = Splice.PartNo;
     }
     InterfaceClass* _Interface = InterfaceClass::Instance();
-    if (_Interface->StatusData.Soft_Settings.Teach_Mode != AUTO)
+    if (_Interface->StatusData.Soft_Settings.Teach_Mode != TEACHMODESETTING::AUTO)
     {
         if (M10Run.Auto_Set_Mode == true)          //In all teach mode screens
         {

@@ -234,17 +234,17 @@ struct M10Part{
     bool Unqualitied;
 };
 
-#define HWND_TOPMOST   -1
-#define HWND_NOTOPMOST -2
+//#define HWND_TOPMOST   -1
+//#define HWND_NOTOPMOST -2
 
-#define SWP_NOACTIVATE 0x10
-#define SWP_SHOWWINDOW 0x40
+//#define SWP_NOACTIVATE 0x10
+//#define SWP_SHOWWINDOW 0x40
 
-#define SWP_NOMOVE 0x02
-#define SWP_NOSIZE 0x01
-#define FLAGS  (SWP_NOMOVE | SWP_NOSIZE)
+//#define SWP_NOMOVE 0x02
+//#define SWP_NOSIZE 0x01
+//#define FLAGS  (SWP_NOMOVE | SWP_NOSIZE)
 
-#define Run_File_Name  "run_file.dat"
+//#define Run_File_Name  "run_file.dat"
 
 //The IA receive interrupt parses these characters out of the data
 #define IAcomfunctionENQ  0x05         //IA returns "U" when it receives ENQ

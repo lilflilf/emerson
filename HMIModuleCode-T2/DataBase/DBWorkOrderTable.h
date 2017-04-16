@@ -2,7 +2,7 @@
 #define DBWORKORDERTABLE_H
 
 #include "Sqlit3Class.h"
-#include "DBPartTable.h"
+#include "DBHarnessTable.h"
 class DBWorkOrderTable: public SQLITCLASS
 {
 private:
@@ -37,7 +37,7 @@ public:
 protected:
     DBWorkOrderTable();
     bool InsertTestDataIntoTable();
-    DBPartTable *partTable;
+    DBHarnessTable *harnessTable;
 private:
     static DBWorkOrderTable* _instance;
 public:

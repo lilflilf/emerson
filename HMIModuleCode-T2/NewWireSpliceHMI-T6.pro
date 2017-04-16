@@ -35,7 +35,6 @@ SOURCES += main.cpp \
     UI/alpainteditem.cpp \
     DataBase/DBWireTable.cpp \
     DataBase/DBPresetTable.cpp \
-    DataBase/DBPartTable.cpp \
     DataBase/DBWorkOrderTable.cpp \
     UI/tablemodel.cpp \
     DataBase/DBOperatorTable.cpp \
@@ -56,7 +55,6 @@ SOURCES += main.cpp \
     Interface/StringToVariant.cpp \
     Interface/WireElement.cpp \
     Interface/PresetElement.cpp \
-    Interface/PartElement.cpp \
     Interface/WorkOrderElement.cpp \
     Interface/WeldResultElement.cpp \
     Interface/AlarmElement.cpp \
@@ -68,7 +66,13 @@ SOURCES += main.cpp \
     Interface/SysConfiguration.cpp \
     Modules/BransonServer.cpp \
     Modules/BransonSocket.cpp \
-    Interface/UpperRightIcon/AlarmIcon.cpp
+    Interface/UpperRightIcon/AlarmIcon.cpp \
+    DataBase/DBHarnessTable.cpp \
+    Interface/HarnessElement.cpp \
+    Interface/SequenceElement.cpp \
+    DataBase/DBSequenceTable.cpp \
+    Interface/MakeWeld/ReadyStateMachine.cpp \
+    Modules/ShrinkTubeSerial.cpp
 
 
 
@@ -102,7 +106,6 @@ HEADERS += \
     UI/alpainteditem.h \
     DataBase/DBWireTable.h \
     DataBase/DBPresetTable.h \
-    DataBase/DBPartTable.h \
     DataBase/DBWorkOrderTable.h \
     UI/tablemodel.h \
     DataBase/DBOperatorTable.h \
@@ -126,7 +129,6 @@ HEADERS += \
     Interface/StringToVariant.h \
     Interface/WireElement.h \
     Interface/PresetElement.h \
-    Interface/PartElement.h \
     Interface/WorkOrderElement.h \
     Interface/WeldResultElement.h \
     Interface/AlarmElement.h \
@@ -140,7 +142,13 @@ HEADERS += \
     Modules/BransonServer.h \
     Modules/BransonSocket.h \
     Interface/UpperRightIcon/AlarmIcon.h \
-    Modules/typedef.h
+    Modules/typedef.h \
+    DataBase/DBHarnessTable.h \
+    Interface/HarnessElement.h \
+    Interface/SequenceElement.h \
+    DataBase/DBSequenceTable.h \
+    Interface/MakeWeld/ReadyStateMachine.h \
+    Modules/ShrinkTubeSerial.h
 
 DISTFILES += \
 #    UI/displayChinese_zh_CN.qm \

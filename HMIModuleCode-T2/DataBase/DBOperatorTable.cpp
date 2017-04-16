@@ -66,7 +66,7 @@ bool DBOperatorTable::CreateNewTable()
     QSqlQuery query(OperatorDBObj);
     bool bResult = OperatorDBObj.open();
 
-    bResult = query.exec(SQLSentence[CREATE]);   //run SQL
+    bResult = query.exec(SQLSentence[SQLITCLASS::CREATE]);   //run SQL
 
     if(bResult == false)
         qDebug() << "Operator Table SQL ERROR:"<< query.lastError();
@@ -91,7 +91,7 @@ int DBOperatorTable::InsertRecordIntoTable(void *_obj)
         return bResult;
     }
     qDebug()<<"InsertRecordIntoTable"<<((OperatorElement*)_obj)->WhoCreatedNewID;
-    query.prepare(SQLSentence[INSERT]);
+    query.prepare(SQLSentence[SQLITCLASS::INSERT]);
     query.addBindValue(((OperatorElement*)_obj)->OperatorName);
     QDateTime TimeLabel = QDateTime::currentDateTime();
     query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
@@ -120,7 +120,7 @@ bool DBOperatorTable::QueryEntireTable(QMap<int, QString> *_obj)
     if(bResult == false)
         return bResult;
 
-    bResult = query.exec(SQLSentence[QUERY_ENTIRE_TABLE]);
+    bResult = query.exec(SQLSentence[SQLITCLASS::QUERY_ENTIRE_TABLE]);
     if (bResult == true)
     {
         _obj->clear();
@@ -153,7 +153,7 @@ bool DBOperatorTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
         return bResult;
     }
 
-    query.prepare(SQLSentence[QUERY_ONE_RECORD]);
+    query.prepare(SQLSentence[SQLITCLASS::QUERY_ONE_RECORD]);
     query.addBindValue(ID);
     query.addBindValue(Name);
 
@@ -197,7 +197,7 @@ bool DBOperatorTable::QueryOneRecordFromTable(int ID, void *_obj)
         return bResult;
     }
 
-    query.prepare(SQLSentence[QUERY_ONE_RECORD_ONLY_ID]);
+    query.prepare(SQLSentence[SQLITCLASS::QUERY_ONE_RECORD_ONLY_ID]);
     query.addBindValue(ID);
 
     bResult = query.exec();
@@ -237,7 +237,7 @@ bool DBOperatorTable::DeleteEntireTable()
         return bResult;
     }
 
-    bResult = query.exec(SQLSentence[DELETE_ENTIRE_TABLE]);
+    bResult = query.exec(SQLSentence[SQLITCLASS::DELETE_ENTIRE_TABLE]);
     if(bResult == false)
     {
         qDebug() << "Operator Table SQL ERROR:"<< query.lastError();
@@ -257,7 +257,7 @@ bool DBOperatorTable::DeleteOneRecordFromTable(int ID, QString Name)
         return bResult;
     }
 
-    query.prepare(SQLSentence[DELETE_ONE_RECORD]);
+    query.prepare(SQLSentence[SQLITCLASS::DELETE_ONE_RECORD]);
     query.addBindValue(ID);
     query.addBindValue(Name);
 
@@ -283,7 +283,7 @@ bool DBOperatorTable::UpdateRecordIntoTable(void *_obj)
         return bResult;
     }
 
-    query.prepare(SQLSentence[UPDATE_ONE_RECORD]);
+    query.prepare(SQLSentence[SQLITCLASS::UPDATE_ONE_RECORD]);
     query.addBindValue(((OperatorElement*)_obj)->OperatorName);
     QDateTime TimeLabel = QDateTime::fromTime_t(((OperatorElement*)_obj)->CreatedDate);
     query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));

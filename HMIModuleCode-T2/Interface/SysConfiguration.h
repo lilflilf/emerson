@@ -3,6 +3,7 @@
 #include <QString>
 #include <QObject>
 #include "Interface/Definition.h"
+#include "Interface/WeldResultElement.h"
 
 #define MaxWireEntries 20
 
@@ -183,7 +184,7 @@ struct BRANSON_INI_STRUCT
 //    int NoToolCover4SU;
     enum WeldSetFormula WeldFormula;
     int RunCount;              //  Number to Run to Qualify the Splice
-    enum TEACH_MODE_TYPE Teach_Mode;
+    TEACHMODESETTING::TEACH_MODE_TYPE Teach_Mode;
     int TunePoint;
     int FrequencyOffset;
 };
@@ -346,24 +347,9 @@ enum SoftLimitsIndex
     SLI_Size = 4,
 };
 
-enum CoolingMode{
-    ENERGYMODE = -1,
-    OFF = 0,
-    ON = 1,
-};
-
 enum PWSDefinitions{
     PWSNotDefined,           //Button will not show in menu (CNTRL+Y shows button)
     PWSAdministrator,        //Administrator at least is required.
-};
-
-enum ACTUATORMODE{
-    ANTISIDESPLICEOFF = -1,
-    ANTISIDESPLICE = 0,
-    WIDTHPLUS2,
-    WIDTHPLUS25PERCENT,
-    DOUBLEHITMODE,
-    USESTARTHANDLE,
 };
 
 union MACHINEFLAGS	{	/* union MACHINEFLAGS MachineFlags */
@@ -409,6 +395,19 @@ union RUNMODE	{
 class Status_Data
 {
 public:
+    enum ACTUATORMODE{
+        ANTISIDESPLICEOFF = -1,
+        ANTISIDESPLICE = 0,
+        WIDTHPLUS2,
+        WIDTHPLUS25PERCENT,
+        DOUBLEHITMODE,
+        USESTARTHANDLE,
+    };
+    enum CoolingMode{
+        ENERGYMODE = -1,
+        OFF = 0,
+        ON = 1,
+    };
     int RevCode;
     QString CreatedDate;
     QString OperatorName;
@@ -436,7 +435,7 @@ public:
     BRANSON_INI_STRUCT Soft_Settings;
     bool KeepDailyHistory;
     bool HistoryGraphData;
-    enum SAMPLERATIO GraphSampleRatio;
+    WeldResultElement::SAMPLERATIO GraphSampleRatio;
 
     CalcWeldSettings4BuildStruct WeldSettings4Build[FormulaRangSize];
 //    int WeldSettingsDefault4Build[WDSI_SIZE];  //100's of Secs
@@ -447,7 +446,7 @@ public:
 /*Data Communication*/
     bool ShrinkTubeMode;       //Tube shrinker not on all machines
     QList<ShrinkTubeData> ShrinkTubeDefaults;
-    int TubeShrinkerport;
+    IAComElement ShrinkTubeComInfo;
 
     bool NetworkingEnabled;
     bool RemoteDataLogging;
@@ -457,7 +456,6 @@ public:
     bool ModularProductionEnabled;
 
     int RemoteRecallport;
-
 
     unsigned int SoftLimitsModeFlags;
     int SoftLimitSampleSize;
@@ -481,8 +479,6 @@ public:
     int CurrentMaintenanceLimits[8];
     unsigned int MaintenanceDateStarted[8];
     bool Maintenance80PercentAlarm[8];
-
-
 
 //    enum SCREEN_MODE StartScreen;
     bool EnableModularFlag;

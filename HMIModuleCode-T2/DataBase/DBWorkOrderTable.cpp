@@ -59,7 +59,7 @@ DBWorkOrderTable* DBWorkOrderTable::Instance()
 
 DBWorkOrderTable::DBWorkOrderTable()
 {
-    partTable = DBPartTable::Instance();
+    harnessTable = DBHarnessTable::Instance();
     WorkOrderDBObj = QSqlDatabase::addDatabase("QSQLITE", "WorkOrderDBObjConnect");
     WorkOrderDBObj.setDatabaseName(DatabaseDir + WorkOrderFile);
     if(WorkOrderDBObj.open())
@@ -132,18 +132,18 @@ bool DBWorkOrderTable::InsertTestDataIntoTable()
             tmpWorkOrder.WorkOrderName = "VOLVO SPA V526 TT";
         tmpWorkOrder.CreatedDate = QDateTime::currentDateTime().toTime_t();
         tmpWorkOrder.OperatorID = 2;
-        tmpWorkOrder.PartIndex.insert(1,"PartName");
-        tmpWorkOrder.NoOfPart = tmpWorkOrder.PartIndex.size();
+        tmpWorkOrder.PartList.insert(1,"PartName");
+        tmpWorkOrder.NoOfPart = tmpWorkOrder.PartList.size();
 
         tmpWorkOrder.Quantity = 10;
         tmpWorkOrder.CurrentPartCount = 30;
 
-        tmpWorkOrder.MissSpliceList.insert(0, "MissSplice1");
-        tmpWorkOrder.MissSpliceList.insert(1, "MissSplice2");
-        tmpWorkOrder.MissSpliceList.insert(2, "MissSplice3");
+        tmpWorkOrder.MissPartList.insert(0, "MissSplice1");
+        tmpWorkOrder.MissPartList.insert(1, "MissSplice2");
+        tmpWorkOrder.MissPartList.insert(2, "MissSplice3");
 
-        tmpWorkOrder.CurrentSplice.SpliceID = 5;
-        tmpWorkOrder.CurrentSplice.SpliceName = "TestSplice";
+        tmpWorkOrder.CurrentPartIndex.PartID = 5;
+        tmpWorkOrder.CurrentPartIndex.PartName = "TestSplice";
 
         tmpWorkOrder.WorkOrderDone = false;
         InsertRecordIntoTable(&tmpWorkOrder);
@@ -161,7 +161,7 @@ bool DBWorkOrderTable::CreateNewTable()
     QSqlQuery query(WorkOrderDBObj);
     bool bResult = WorkOrderDBObj.open();
     if(bResult == true)
-        bResult = query.exec(SQLSentence[CREATE]);   //run SQL
+        bResult = query.exec(SQLSentence[SQLITCLASS::CREATE]);   //run SQL
 
     if(bResult == false)
         qDebug() << "Work Order SQL ERROR:"<< query.lastError();
@@ -188,7 +188,7 @@ int DBWorkOrderTable::InsertRecordIntoTable(void *_obj)
 
     UtilityClass *_Utility = UtilityClass::Instance();
 
-    query.prepare(SQLSentence[INSERT]);
+    query.prepare(SQLSentence[SQLITCLASS::INSERT]);
 
     query.addBindValue(((WorkOrderElement*)_obj)->WorkOrderName);
     QDateTime TimeLabel = QDateTime::currentDateTime();
@@ -197,15 +197,15 @@ int DBWorkOrderTable::InsertRecordIntoTable(void *_obj)
     query.addBindValue(((WorkOrderElement*)_obj)->NoOfPart);
     query.addBindValue(((WorkOrderElement*)_obj)->Quantity);
     query.addBindValue(((WorkOrderElement*)_obj)->CurrentPartCount);
-    query.addBindValue(((WorkOrderElement*)_obj)->CurrentSplice.SpliceID);
-    query.addBindValue(((WorkOrderElement*)_obj)->CurrentSplice.SpliceName);
+    query.addBindValue(((WorkOrderElement*)_obj)->CurrentPartIndex.PartID);
+    query.addBindValue(((WorkOrderElement*)_obj)->CurrentPartIndex.PartName);
     query.addBindValue(((WorkOrderElement*)_obj)->WorkOrderDone);
 
     QString tmpJson;
-    _Utility->MapJsonToString(&((WorkOrderElement*)_obj)->PartIndex, tmpJson);
+    _Utility->MapJsonToString(&((WorkOrderElement*)_obj)->PartList, tmpJson);
     query.addBindValue(tmpJson);
 
-    _Utility->MapJsonToString(&((WorkOrderElement*)_obj)->MissSpliceList, tmpJson);
+    _Utility->MapJsonToString(&((WorkOrderElement*)_obj)->MissPartList, tmpJson);
     query.addBindValue(tmpJson);
 
     bResult = query.exec();   //run SQL
@@ -229,7 +229,7 @@ bool DBWorkOrderTable::QueryEntireTable(QMap<int, QString> *_obj)
     if(bResult == false)
         return bResult;
 
-    bResult = query.exec(SQLSentence[QUERY_ENTIRE_TABLE]);
+    bResult = query.exec(SQLSentence[SQLITCLASS::QUERY_ENTIRE_TABLE]);
     if (bResult == true)
     {
         _obj->clear();
@@ -261,7 +261,7 @@ bool DBWorkOrderTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
         return bResult;
     }
 
-    query.prepare(SQLSentence[QUERY_ONE_RECORD]);
+    query.prepare(SQLSentence[SQLITCLASS::QUERY_ONE_RECORD]);
     query.addBindValue(ID);
     query.addBindValue(Name);
 
@@ -287,14 +287,14 @@ bool DBWorkOrderTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
     ((WorkOrderElement*)_obj)->CreatedDate = TimeLabel.toTime_t();
     ((WorkOrderElement*)_obj)->OperatorID = query.value("OperatorID").toInt();
     QString tmpStr = query.value("JSONPartIndex").toString();
-    _Utility->StringJsonToMap(tmpStr, &((WorkOrderElement*)_obj)->PartIndex);
-    ((WorkOrderElement*)_obj)->NoOfPart = ((WorkOrderElement*)_obj)->PartIndex.size();
+    _Utility->StringJsonToMap(tmpStr, &((WorkOrderElement*)_obj)->PartList);
+    ((WorkOrderElement*)_obj)->NoOfPart = ((WorkOrderElement*)_obj)->PartList.size();
     ((WorkOrderElement*)_obj)->Quantity = query.value("Quantity").toInt();
     ((WorkOrderElement*)_obj)->CurrentPartCount = query.value("CurrentPartCount").toInt();
     tmpStr = query.value("JSONMissSpliceList").toString();
-    _Utility->StringJsonToMap(tmpStr, &((WorkOrderElement*)_obj)->MissSpliceList);
-    ((WorkOrderElement*)_obj)->CurrentSplice.SpliceID = query.value("CurrentSpliceID").toInt();
-    ((WorkOrderElement*)_obj)->CurrentSplice.SpliceName = query.value("CurrentSpliceName").toString();
+    _Utility->StringJsonToMap(tmpStr, &((WorkOrderElement*)_obj)->MissPartList);
+    ((WorkOrderElement*)_obj)->CurrentPartIndex.PartID = query.value("CurrentSpliceID").toInt();
+    ((WorkOrderElement*)_obj)->CurrentPartIndex.PartName = query.value("CurrentSpliceName").toString();
     ((WorkOrderElement*)_obj)->WorkOrderDone = query.value("WorkOrderDone").toBool();
 
     WorkOrderDBObj.close();
@@ -315,7 +315,7 @@ bool DBWorkOrderTable::QueryOneRecordFromTable(int ID, void *_obj)
         return bResult;
     }
 
-    query.prepare(SQLSentence[QUERY_ONE_RECORD_ONLY_ID]);
+    query.prepare(SQLSentence[SQLITCLASS::QUERY_ONE_RECORD_ONLY_ID]);
     query.addBindValue(ID);
 
     bResult = query.exec();
@@ -340,14 +340,14 @@ bool DBWorkOrderTable::QueryOneRecordFromTable(int ID, void *_obj)
     ((WorkOrderElement*)_obj)->CreatedDate = TimeLabel.toTime_t();
     ((WorkOrderElement*)_obj)->OperatorID = query.value("OperatorID").toInt();
     QString tmpStr = query.value("JSONPartIndex").toString();
-    _Utility->StringJsonToMap(tmpStr, &((WorkOrderElement*)_obj)->PartIndex);
-    ((WorkOrderElement*)_obj)->NoOfPart = ((WorkOrderElement*)_obj)->PartIndex.size();
+    _Utility->StringJsonToMap(tmpStr, &((WorkOrderElement*)_obj)->PartList);
+    ((WorkOrderElement*)_obj)->NoOfPart = ((WorkOrderElement*)_obj)->PartList.size();
     ((WorkOrderElement*)_obj)->Quantity = query.value("Quantity").toInt();
     ((WorkOrderElement*)_obj)->CurrentPartCount = query.value("CurrentPartCount").toInt();
     tmpStr = query.value("JSONMissSpliceList").toString();
-    _Utility->StringJsonToMap(tmpStr, &((WorkOrderElement*)_obj)->MissSpliceList);
-    ((WorkOrderElement*)_obj)->CurrentSplice.SpliceID = query.value("CurrentSpliceID").toInt();
-    ((WorkOrderElement*)_obj)->CurrentSplice.SpliceName = query.value("CurrentSpliceName").toString();
+    _Utility->StringJsonToMap(tmpStr, &((WorkOrderElement*)_obj)->MissPartList);
+    ((WorkOrderElement*)_obj)->CurrentPartIndex.PartID = query.value("CurrentSpliceID").toInt();
+    ((WorkOrderElement*)_obj)->CurrentPartIndex.PartName = query.value("CurrentSpliceName").toString();
     ((WorkOrderElement*)_obj)->WorkOrderDone = query.value("WorkOrderDone").toBool();
 
     WorkOrderDBObj.close();
@@ -365,7 +365,7 @@ bool DBWorkOrderTable::DeleteEntireTable()
         return bResult;
     }
 
-    bResult = query.exec(SQLSentence[DELETE_ENTIRE_TABLE]);
+    bResult = query.exec(SQLSentence[SQLITCLASS::DELETE_ENTIRE_TABLE]);
     if(bResult == false)
     {
         qDebug() << "Work Order SQL ERROR:"<< query.lastError();
@@ -384,7 +384,7 @@ bool DBWorkOrderTable::DeleteOneRecordFromTable(int ID, QString Name)
         return bResult;
     }
 
-    query.prepare(SQLSentence[DELETE_ONE_RECORD]);
+    query.prepare(SQLSentence[SQLITCLASS::DELETE_ONE_RECORD]);
     query.addBindValue(ID);
     query.addBindValue(Name);
 
@@ -410,21 +410,21 @@ bool DBWorkOrderTable::UpdateRecordIntoTable(void *_obj)
         return bResult;
     }
 
-    query.prepare(SQLSentence[UPDATE_ONE_RECORD]);
+    query.prepare(SQLSentence[SQLITCLASS::UPDATE_ONE_RECORD]);
     query.addBindValue(((WorkOrderElement*)_obj)->WorkOrderName);
     QDateTime TimeLabel = QDateTime::fromTime_t(((WorkOrderElement*)_obj)->CreatedDate);
     query.addBindValue(TimeLabel.toString("yyyy/MM/dd hh:mm:ss"));
     query.addBindValue(((WorkOrderElement*)_obj)->OperatorID);
-    query.addBindValue(((WorkOrderElement*)_obj)->PartIndex.size());
+    query.addBindValue(((WorkOrderElement*)_obj)->PartList.size());
     query.addBindValue(((WorkOrderElement*)_obj)->Quantity);
     query.addBindValue(((WorkOrderElement*)_obj)->CurrentPartCount);
-    query.addBindValue(((WorkOrderElement*)_obj)->CurrentSplice.SpliceID);
-    query.addBindValue(((WorkOrderElement*)_obj)->CurrentSplice.SpliceName);
+    query.addBindValue(((WorkOrderElement*)_obj)->CurrentPartIndex.PartID);
+    query.addBindValue(((WorkOrderElement*)_obj)->CurrentPartIndex.PartName);
     query.addBindValue(((WorkOrderElement*)_obj)->WorkOrderDone);
     QString tmpStr;
-    _Utility->MapJsonToString(&((WorkOrderElement*)_obj)->PartIndex, tmpStr);
+    _Utility->MapJsonToString(&((WorkOrderElement*)_obj)->PartList, tmpStr);
     query.addBindValue(tmpStr);
-    _Utility->MapJsonToString(&((WorkOrderElement*)_obj)->MissSpliceList, tmpStr);
+    _Utility->MapJsonToString(&((WorkOrderElement*)_obj)->MissPartList, tmpStr);
     query.addBindValue(tmpStr);
     query.addBindValue(((WorkOrderElement*)_obj)->WorkOrderID);
 
@@ -547,9 +547,9 @@ bool DBWorkOrderTable::exportData(int workOrderId, QString fileUrl)
     QString queryStr;
     QString lineValue = "";
     QSqlQuery query(WorkOrderDBObj);
-    QString partData;
+    QString harnessData;
     bool bResult = OpenDBObject();
-    QString tempPartData;
+    QString tempHarnessData;
     QString fileSource;
     if(bResult == true)
     {
@@ -578,13 +578,13 @@ bool DBWorkOrderTable::exportData(int workOrderId, QString fileUrl)
                                     {
                                         QString value = iterator.value().toString();
                                         QStringList strList = value.split(";");
-                                        tempPartData = partTable->GetExportString(((QString)strList.at(0)).toInt());
-                                        partData.append(tempPartData + "$");
+                                        tempHarnessData = harnessTable->GetExportString(((QString)strList.at(0)).toInt());
+                                        harnessData.append(tempHarnessData + "$");
                                     }
                                 }
                             }
                         }
-                        lineValue.append(partData + ",");
+                        lineValue.append(harnessData + ",");
                     }
                     else
                         lineValue.append(query.value(i).toString() + ",");
@@ -621,7 +621,7 @@ int DBWorkOrderTable::importData(QString value, QMap<int, QString> partMap)
         myWorkOrder.OperatorID = QString(lineList[3]).toInt(&ok,10);
         myWorkOrder.NoOfPart = partMap.size();
         myWorkOrder.Quantity = QString(lineList[5]).toInt(&ok,10);
-        myWorkOrder.PartIndex = partMap;
+        myWorkOrder.PartList = partMap;
     }
     ret = InsertRecordIntoTable(&myWorkOrder);
     while (ret == -1) {

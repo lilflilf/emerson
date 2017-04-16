@@ -3,14 +3,14 @@
 
 #include "Sqlit3Class.h"
 #include "DBPresetTable.h"
-class DBPartTable : public SQLITCLASS
+class DBHarnessTable : public SQLITCLASS
 {
 private:
-    static QString PartDBFile;
+    static QString HarnessDBFile;
     static QString DatabaseDir;
     static QString ModularDatabaseDir;
 private:
-    QSqlDatabase PartDBObj;
+    QSqlDatabase HarnessDBObj;
     bool mIsModularProduction;
 private:
     bool OpenDBObject();
@@ -34,15 +34,15 @@ public:
     int importData(QString value,QMap<int, QString> spliceIdMap);
     QString GetExportString(int partId);
 public:
-    static DBPartTable* Instance();
+    static DBHarnessTable* Instance();
 protected:
-    DBPartTable();
+    DBHarnessTable();
     void InsertTestDataIntoTable();
     DBPresetTable *spliceTable;
 private:
-    static DBPartTable* _instance;
+    static DBHarnessTable* _instance;
 public:
-    ~DBPartTable();
+    ~DBHarnessTable();
 };
 
 #endif // DBPARTTABLE_H

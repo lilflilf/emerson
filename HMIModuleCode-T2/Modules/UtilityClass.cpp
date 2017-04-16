@@ -111,27 +111,27 @@ bool UtilityClass::StringJsonToMap(QString SourceString, QMap<int, QString>* _De
     return bResult;
 }
 
-bool UtilityClass::MapJsonToString(QMap<int, struct PARTATTRIBUTE> *_SourceMap, QString &DestString)
+bool UtilityClass::MapJsonToString(QMap<int, struct HARNESSATTRIBUTE> *_SourceMap, QString &DestString)
 {
     QJsonObject json;
     int i = 0;
     if(_SourceMap == NULL)
         return false;
-    QMap<int, struct PARTATTRIBUTE>::const_iterator iterator = _SourceMap->constBegin();
+    QMap<int, struct HARNESSATTRIBUTE>::const_iterator iterator = _SourceMap->constBegin();
     while (iterator != _SourceMap->constEnd()) {
         QString key = QString::number(i, 10);
 
         QString str = QString::number(iterator.key(), 10) + ";";
         QString value = str;
-        int tmp = ((struct PARTATTRIBUTE)iterator.value()).SpliceID;
+        int tmp = ((struct HARNESSATTRIBUTE)iterator.value()).SpliceID;
         str = QString::number(tmp, 10) + ";";
         value += str;
-        str = ((struct PARTATTRIBUTE)iterator.value()).SpliceName + ";";
+        str = ((struct HARNESSATTRIBUTE)iterator.value()).SpliceName + ";";
         value += str;
-        tmp = ((struct PARTATTRIBUTE)iterator.value()).CurrentWorkstation;
+        tmp = ((struct HARNESSATTRIBUTE)iterator.value()).CurrentWorkstation;
         str = QString::number(tmp, 10) + ";";
         value += str;
-        tmp = ((struct PARTATTRIBUTE)iterator.value()).CurrentBoardLayoutZone;
+        tmp = ((struct HARNESSATTRIBUTE)iterator.value()).CurrentBoardLayoutZone;
         str = QString::number(tmp, 10) + ";";
         value += str;
         json.insert(key,value);
@@ -145,7 +145,7 @@ bool UtilityClass::MapJsonToString(QMap<int, struct PARTATTRIBUTE> *_SourceMap, 
     return true;
 }
 
-bool UtilityClass::StringJsonToMap(QString SourceString, QMap<int, struct PARTATTRIBUTE> *_DestMap)
+bool UtilityClass::StringJsonToMap(QString SourceString, QMap<int, struct HARNESSATTRIBUTE> *_DestMap)
 {
     bool bResult = false;
     if(_DestMap == NULL)
@@ -166,14 +166,82 @@ bool UtilityClass::StringJsonToMap(QString SourceString, QMap<int, struct PARTAT
                 if(iterator != obj.constEnd())
                 {
                     QString value = iterator.value().toString();
-                    struct PARTATTRIBUTE PartAttribute;
+                    struct HARNESSATTRIBUTE HarnessAttribute;
                     QStringList strList = value.split(";");
                     int key = ((QString)strList.at(0)).toInt();
-                    PartAttribute.SpliceID = ((QString)strList.at(1)).toInt();
-                    PartAttribute.SpliceName = strList.at(2);
-                    PartAttribute.CurrentWorkstation = ((QString)strList.at(3)).toInt();
-                    PartAttribute.CurrentBoardLayoutZone = ((QString)strList.at(4)).toInt();
-                    _DestMap->insert(key, PartAttribute);
+                    HarnessAttribute.SpliceID = ((QString)strList.at(1)).toInt();
+                    HarnessAttribute.SpliceName = strList.at(2);
+                    HarnessAttribute.CurrentWorkstation = ((QString)strList.at(3)).toInt();
+                    HarnessAttribute.CurrentBoardLayoutZone = ((QString)strList.at(4)).toInt();
+                    _DestMap->insert(key, HarnessAttribute);
+                }
+            }
+            bResult = true;
+
+        }
+    }
+    return bResult;
+}
+
+bool UtilityClass::MapJsonToString(QMap<int, struct SEQUENCEATTRIBUTE> *_SourceMap, QString &DestString)
+{
+    QJsonObject json;
+    int i = 0;
+    if(_SourceMap == NULL)
+        return false;
+    QMap<int, struct SEQUENCEATTRIBUTE>::const_iterator iterator = _SourceMap->constBegin();
+    while (iterator != _SourceMap->constEnd()) {
+        QString key = QString::number(i, 10);
+
+        QString str = QString::number(iterator.key(), 10) + ";";
+        QString value = str;
+        int tmp = ((struct SEQUENCEATTRIBUTE)iterator.value()).SpliceID;
+        str = QString::number(tmp, 10) + ";";
+        value += str;
+        str = ((struct SEQUENCEATTRIBUTE)iterator.value()).SpliceName + ";";
+        value += str;
+        tmp = ((struct SEQUENCEATTRIBUTE)iterator.value()).Quantity;
+        str = QString::number(tmp, 10) + ";";
+        value += str;
+        json.insert(key,value);
+        ++iterator;
+        ++i;
+    }
+    QJsonDocument document;
+    document.setObject(json);
+    QByteArray byte_array = document.toJson(QJsonDocument::Compact);
+    DestString = byte_array.data();
+    return true;
+}
+
+bool UtilityClass::StringJsonToMap(QString SourceString, QMap<int, struct SEQUENCEATTRIBUTE> *_DestMap)
+{
+    bool bResult = false;
+    if(_DestMap == NULL)
+        return false;
+    QByteArray byte_array = SourceString.toLatin1();
+    QJsonParseError json_error;
+    QJsonDocument parse_document = QJsonDocument::fromJson(byte_array, &json_error);
+    if(json_error.error == QJsonParseError::NoError)
+    {
+        if(parse_document.isObject())
+        {
+            QJsonObject obj = parse_document.object();
+            if (_DestMap->isEmpty() == false)
+                _DestMap->clear();
+            QJsonObject::const_iterator iterator = obj.constBegin();
+            for(int i = 0; i< obj.count(); i++){
+                iterator = obj.constFind(QString::number(i, 10));
+                if(iterator != obj.constEnd())
+                {
+                    QString value = iterator.value().toString();
+                    struct SEQUENCEATTRIBUTE SequenceAttribute;
+                    QStringList strList = value.split(";");
+                    int key = ((QString)strList.at(0)).toInt();
+                    SequenceAttribute.SpliceID = ((QString)strList.at(1)).toInt();
+                    SequenceAttribute.SpliceName = strList.at(2);
+                    SequenceAttribute.Quantity = ((QString)strList.at(3)).toInt();
+                    _DestMap->insert(key, SequenceAttribute);
                 }
             }
             bResult = true;
@@ -444,7 +512,7 @@ void UtilityClass::InitializeTextData()
     SetTextData(DINFormulaAmplitudeMult, 0, Minmm2AmplitudeMult, Maxmm2AmplitudeMult, 1, 1, "%.2f");
 
     SetTextData(DINShrinkTubeTemperature, 0, ShrinkTubeMinTemp, ShrinkTubeMaxTemp, 1, 1, "%d℃");
-    SetTextData(DINShrinkTubeTime, 0, ShrinkTubeMinTime, ShrinkTubeMaxTime, 1, 1, "%.1fs");
+    SetTextData(DINShrinkTubeTime, 0, ShrinkTubeMinTime, ShrinkTubeMaxTime, 1, 0.1, "%.1fs");
     SetTextData(DINServerPortNumber, 0, MINSERVER_PORT_NUMBER, MAXSERVER_PORT_NUMBER, 1, 1, "%d");
     SetTextData(DINHornLimit, 0, MINHORNLIMIT, MAXHORNLIMIT, 1, 1, "%d");
     SetTextData(DINAnvilTipLimit, 0, MINANVILTIPLIMIT, MAXANVILTIPLIMIT, 1, 1, "%d");

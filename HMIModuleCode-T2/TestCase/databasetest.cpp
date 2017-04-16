@@ -2,7 +2,7 @@
 #include "Modules/UtilityClass.h"
 #include "DataBase/DBWireTable.h"
 #include "DataBase/DBPresetTable.h"
-#include "DataBase/DBPartTable.h"
+#include "DataBase/DBHarnessTable.h"
 #include "DataBase/DBWorkOrderTable.h"
 #include "DataBase/DBOperatorTable.h"
 #include "DataBase/DBWeldResultTable.h"
@@ -12,7 +12,7 @@
 //#include "Interface/definition.h"
 #include "Interface/WireElement.h"
 #include "Interface/PresetElement.h"
-#include "Interface/PartElement.h"
+#include "Interface/HarnessElement.h"
 #include "Interface/WorkOrderElement.h"
 #include "Interface/WeldResultElement.h"
 #include "Interface/Settings/OperatorLibrary.h"
@@ -31,13 +31,13 @@ void DataBaseTest::TestInsertOneRecordIntoWireTable()
     tmpWire.CreatedDate = tmp.toTime_t();
     tmpWire.OperatorID = 2;
     tmpWire.Color = "GREEN";
-    tmpWire.Stripe.TypeOfStripe = Slash;
+    tmpWire.Stripe.TypeOfStripe = STRIPE::Slash;
     tmpWire.Stripe.Color = "RED";
     tmpWire.Gauge = 100;
-    tmpWire.TypeOfWire = Copper;
-    tmpWire.Side = Right;
-    tmpWire.VerticalSide = Basic;
-    tmpWire.Position = Middle;
+    tmpWire.TypeOfWire = WireElement::Copper;
+    tmpWire.Side = WireElement::Right;
+    tmpWire.VerticalSide = WireElement::Basic;
+    tmpWire.Position = WireElement::Middle;
     int i  = _SQLITCLASS->InsertRecordIntoTable(&tmpWire);
     qDebug()<< "Insert ID: "<<i;
 }
@@ -72,8 +72,8 @@ void DataBaseTest::TestInsertOneRecordIntoPresetTable()
     tmpSplice.WeldSettings.QualitySetting.Height.Minus = 0;
     tmpSplice.WeldSettings.QualitySetting.Force.Plus = 55;
     tmpSplice.WeldSettings.QualitySetting.Force.Minus = 0;
-    tmpSplice.WeldSettings.AdvanceSetting.WeldMode = ENERGY;
-    tmpSplice.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode = STEPDISABLE;
+    tmpSplice.WeldSettings.AdvanceSetting.WeldMode = ADVANCESETTING::ENERGY;
+    tmpSplice.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode = STEPWELD::STEPDISABLE;
     tmpSplice.WeldSettings.AdvanceSetting.StepWeld.EnergyToStep = 55;
     tmpSplice.WeldSettings.AdvanceSetting.StepWeld.TimeToStep = 1;
     tmpSplice.WeldSettings.AdvanceSetting.StepWeld.PowerToStep = 500;
@@ -83,20 +83,26 @@ void DataBaseTest::TestInsertOneRecordIntoPresetTable()
     tmpSplice.WeldSettings.AdvanceSetting.SqzTime = 200;
     tmpSplice.WeldSettings.AdvanceSetting.ABDelay = 300;
     tmpSplice.WeldSettings.AdvanceSetting.ABDur = 400;
-    tmpSplice.WeldSettings.AdvanceSetting.CutOff = false;
-    tmpSplice.WeldSettings.AdvanceSetting.CutOffSpliceTime = -1;
-    tmpSplice.WeldSettings.AdvanceSetting.AntiSide = true;
-    tmpSplice.WeldSettings.AdvanceSetting.AntiSideSpliceTime = -1;
-    tmpSplice.WeldSettings.AdvanceSetting.MeasuredWidth = 100;
-    tmpSplice.WeldSettings.AdvanceSetting.MeasuredHeight = 100;
+    tmpSplice.WeldSettings.AdvanceSetting.CutOffOption.CutOff = false;
+    tmpSplice.WeldSettings.AdvanceSetting.CutOffOption.CutOffSpliceTime = -1;
+    tmpSplice.WeldSettings.AdvanceSetting.CutOffOption.Cutter4HeightAlarm = false;
+    tmpSplice.WeldSettings.AdvanceSetting.CutOffOption.Cutter4PowerAlarm = false;
+    tmpSplice.WeldSettings.AdvanceSetting.CutOffOption.Cutter4PreHeightAlarm = false;
+    tmpSplice.WeldSettings.AdvanceSetting.CutOffOption.Cutter4TimeAlarm = false;
+    tmpSplice.WeldSettings.AdvanceSetting.AntiSideOption.AntiSideMode = true;
+    tmpSplice.WeldSettings.AdvanceSetting.AntiSideOption.AntiSideSpliceTime = -1;
+    tmpSplice.WeldSettings.AdvanceSetting.OffsetOption.MeasuredWidth = 100;
+    tmpSplice.WeldSettings.AdvanceSetting.OffsetOption.MeasuredHeight = 100;
+    tmpSplice.WeldSettings.AdvanceSetting.OffsetOption.DisplayWidth = 100;
+    tmpSplice.WeldSettings.AdvanceSetting.OffsetOption.DisplayHeight = 100;
     tmpSplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkOption = false;
     tmpSplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID = "0";
     tmpSplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime = 10;
     tmpSplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTemperature = 260;
-    tmpSplice.TestSetting.Qutanty = 10;
+    tmpSplice.TestSetting.BatchSize = 10;
     tmpSplice.TestSetting.StopCount = 20;
-    tmpSplice.TestSetting.TestMode = UNCONSTRAINED;
-    tmpSplice.TestSetting.TeachModeSetting.TeachModeType = UNDEFINED;
+    tmpSplice.TestSetting.TestMode = TESTSETTING::UNCONSTRAINED;
+    tmpSplice.TestSetting.TeachModeSetting.TeachModeType = TEACHMODESETTING::UNDEFINED;
     for(int i=0;i< 18;i++)
         tmpSplice.TestSetting.TeachModeSetting.TeachModequal_Window[i] = 40;
     tmpSplice.TestSetting.TestingDone = true;
@@ -112,36 +118,36 @@ void DataBaseTest::TestInsertOneRecordIntoPresetTable()
 
 void DataBaseTest::TestInsertOneRecordIntoPartTable()
 {
-    SQLITCLASS *_SQLITCLASS = DBPartTable::Instance();
+    SQLITCLASS *_SQLITCLASS = DBHarnessTable::Instance();
 
-    struct PartElement tmpPart;
-    tmpPart.PartName = "TESTPart";
+    struct HarnessElement tmpHarness;
+    tmpHarness.HarnessName = "TESTPart";
     QDateTime tmp = QDateTime::fromString("2016/10/20 00:00:00", "yyyy/MM/dd hh:mm:ss");
-    tmpPart.CreatedDate = tmp.toTime_t();
-    tmpPart.OperatorID = 2;
-    tmpPart.PartTypeSetting.ProcessMode = BASIC;
-    tmpPart.PartTypeSetting.WorkStations.TotalWorkstation = 20;
-    tmpPart.PartTypeSetting.WorkStations.MaxSplicesPerWorkstation = 30;
-    tmpPart.PartTypeSetting.BoardLayout.Rows = 4;
-    tmpPart.PartTypeSetting.BoardLayout.Columns = 4;
-    tmpPart.PartTypeSetting.BoardLayout.MaxSplicesPerZone = 10;
+    tmpHarness.CreatedDate = tmp.toTime_t();
+    tmpHarness.OperatorID = 2;
+    tmpHarness.HarnessTypeSetting.ProcessMode = BASIC;
+    tmpHarness.HarnessTypeSetting.WorkStations.TotalWorkstation = 20;
+    tmpHarness.HarnessTypeSetting.WorkStations.MaxSplicesPerWorkstation = 30;
+    tmpHarness.HarnessTypeSetting.BoardLayout.Rows = 4;
+    tmpHarness.HarnessTypeSetting.BoardLayout.Columns = 4;
+    tmpHarness.HarnessTypeSetting.BoardLayout.MaxSplicesPerZone = 10;
 
-    struct PARTATTRIBUTE PartAttribute;
-    PartAttribute.SpliceName = "WangYIBIN";
-    PartAttribute.CurrentBoardLayoutZone = 1;
-    PartAttribute.CurrentWorkstation = 2;
-    tmpPart.SpliceList.insert(0,PartAttribute);
-    PartAttribute.SpliceName = "JWang";
-    PartAttribute.CurrentBoardLayoutZone = 2;
-    PartAttribute.CurrentWorkstation = 3;
-    tmpPart.SpliceList.insert(1,PartAttribute);
-    PartAttribute.SpliceName = "JW";
-    PartAttribute.CurrentBoardLayoutZone = 3;
-    PartAttribute.CurrentWorkstation = 4;
-    tmpPart.SpliceList.insert(2,PartAttribute);
-    tmpPart.NoOfSplice = tmpPart.SpliceList.size();
+    struct HARNESSATTRIBUTE HarnessAttribute;
+    HarnessAttribute.SpliceName = "WangYIBIN";
+    HarnessAttribute.CurrentBoardLayoutZone = 1;
+    HarnessAttribute.CurrentWorkstation = 2;
+    tmpHarness.SpliceList.insert(0,HarnessAttribute);
+    HarnessAttribute.SpliceName = "JWang";
+    HarnessAttribute.CurrentBoardLayoutZone = 2;
+    HarnessAttribute.CurrentWorkstation = 3;
+    tmpHarness.SpliceList.insert(1,HarnessAttribute);
+    HarnessAttribute.SpliceName = "JW";
+    HarnessAttribute.CurrentBoardLayoutZone = 3;
+    HarnessAttribute.CurrentWorkstation = 4;
+    tmpHarness.SpliceList.insert(2,HarnessAttribute);
+    tmpHarness.NoOfSplice = tmpHarness.SpliceList.size();
 
-    _SQLITCLASS->InsertRecordIntoTable(&tmpPart);
+    _SQLITCLASS->InsertRecordIntoTable(&tmpHarness);
 }
 
 void DataBaseTest::TestInsertOneRecordIntoWorkOrderTable()
@@ -153,18 +159,18 @@ void DataBaseTest::TestInsertOneRecordIntoWorkOrderTable()
     QDateTime tmp = QDateTime::fromString("2016/10/20 00:00:00", "yyyy/MM/dd hh:mm:ss");
     tmpWorkOrder.CreatedDate = tmp.toTime_t();
     tmpWorkOrder.OperatorID = 2;
-    tmpWorkOrder.PartIndex.insert(1,"PartName");
-    tmpWorkOrder.NoOfPart = tmpWorkOrder.PartIndex.size();
+    tmpWorkOrder.PartList.insert(1,"PartName");
+    tmpWorkOrder.NoOfPart = tmpWorkOrder.PartList.size();
 
     tmpWorkOrder.Quantity = 10;
     tmpWorkOrder.CurrentPartCount = 30;
 
-    tmpWorkOrder.MissSpliceList.insert(0, "MissSplice1");
-    tmpWorkOrder.MissSpliceList.insert(1, "MissSplice2");
-    tmpWorkOrder.MissSpliceList.insert(2, "MissSplice3");
+    tmpWorkOrder.MissPartList.insert(0, "MissSplice1");
+    tmpWorkOrder.MissPartList.insert(1, "MissSplice2");
+    tmpWorkOrder.MissPartList.insert(2, "MissSplice3");
 
-    tmpWorkOrder.CurrentSplice.SpliceID = 5;
-    tmpWorkOrder.CurrentSplice.SpliceName = "TestSplice";
+    tmpWorkOrder.CurrentPartIndex.PartID = 5;
+    tmpWorkOrder.CurrentPartIndex.PartName = "TestSplice";
 
     tmpWorkOrder.WorkOrderDone = false;
 
@@ -194,10 +200,12 @@ void DataBaseTest::TestInsertOneRecordIntoWeldResultTable()
     tmpWeldResult.CreatedDate = tmp.toTime_t();
     tmpWeldResult.CurrentWorkOrder.WorkOrderID = 1;
     tmpWeldResult.CurrentWorkOrder.WorkOrderName = "WorkOrderID";
-    tmpWeldResult.CurrentPart.PartID = 1;
-    tmpWeldResult.CurrentPart.PartName = "PartName";
-    tmpWeldResult.CurrentSplice.SpliceID = 1;
-    tmpWeldResult.CurrentSplice.SpliceName = "SpliceName";
+    tmpWeldResult.CurrentHarness.HarnessID = 1;
+    tmpWeldResult.CurrentHarness.HarnessName = "HarnessName";
+    tmpWeldResult.CurrentSequence.SequenceID = 2;
+    tmpWeldResult.CurrentSequence.SequenceName = "SequenceName";
+    tmpWeldResult.CurrentSplice.PartID = 1;
+    tmpWeldResult.CurrentSplice.PartName = "SpliceName";
     tmpWeldResult.WeldCount = 0;
     tmpWeldResult.PartCount = 0;
     tmpWeldResult.ActualResult.ActualAlarmflags = 0x55;
@@ -211,7 +219,7 @@ void DataBaseTest::TestInsertOneRecordIntoWeldResultTable()
     tmpWeldResult.ActualResult.ActualTime = 8;
     tmpWeldResult.ActualResult.ActualTPressure = 9;
     tmpWeldResult.ActualResult.ActualWidth = 10;
-    tmpWeldResult.SampleRatio = SampleWith1ms;
+    tmpWeldResult.SampleRatio = WeldResultElement::SampleWith1ms;
     tmpWeldResult.NoOfSamples = 2;
     tmpWeldResult.PowerGraph.insert(1, 500);
     tmpWeldResult.PowerGraph.insert(2, 1000);
@@ -223,20 +231,20 @@ void DataBaseTest::TestInsertOneRecordIntoWeldResultTable()
 void DataBaseTest::TestMapJsonToString()
 {
     UtilityClass *_Utility = UtilityClass::Instance();
-    struct PARTATTRIBUTE tmpPart;
-    tmpPart.SpliceName = "WangYIBIN";
-    tmpPart.CurrentBoardLayoutZone = 1;
-    tmpPart.CurrentWorkstation = 2;
-    QMap<int, struct PARTATTRIBUTE> tmpMap;
-    tmpMap.insert(0, tmpPart);
-    tmpPart.SpliceName = "JWANG";
-    tmpPart.CurrentBoardLayoutZone = 2;
-    tmpPart.CurrentWorkstation = 3;
-    tmpMap.insert(1, tmpPart);
-    tmpPart.SpliceName = "JW";
-    tmpPart.CurrentBoardLayoutZone = 3;
-    tmpPart.CurrentWorkstation = 4;
-    tmpMap.insert(2, tmpPart);
+    struct HARNESSATTRIBUTE tmpHarness;
+    tmpHarness.SpliceName = "WangYIBIN";
+    tmpHarness.CurrentBoardLayoutZone = 1;
+    tmpHarness.CurrentWorkstation = 2;
+    QMap<int, struct HARNESSATTRIBUTE> tmpMap;
+    tmpMap.insert(0, tmpHarness);
+    tmpHarness.SpliceName = "JWANG";
+    tmpHarness.CurrentBoardLayoutZone = 2;
+    tmpHarness.CurrentWorkstation = 3;
+    tmpMap.insert(1, tmpHarness);
+    tmpHarness.SpliceName = "JW";
+    tmpHarness.CurrentBoardLayoutZone = 3;
+    tmpHarness.CurrentWorkstation = 4;
+    tmpMap.insert(2, tmpHarness);
     _Utility->MapJsonToString(&tmpMap,TestStr);
     qDebug()<<"TestMapJsonToString: " << TestStr;
 }
@@ -244,9 +252,9 @@ void DataBaseTest::TestMapJsonToString()
 void DataBaseTest::TestStringJsonToMap()
 {
     UtilityClass *_Utility = UtilityClass::Instance();
-    QMap<int, struct PARTATTRIBUTE> tmpMap;
+    QMap<int, struct HARNESSATTRIBUTE> tmpMap;
     _Utility->StringJsonToMap(TestStr,&tmpMap);
-    QMap<int, struct PARTATTRIBUTE>::const_iterator i = tmpMap.constBegin();
+    QMap<int, struct HARNESSATTRIBUTE>::const_iterator i = tmpMap.constBegin();
     while(i != tmpMap.constEnd())
     {
         qDebug()<<"Key: "<<i.key();
@@ -287,7 +295,7 @@ void DataBaseTest::TestQueryEntireSpliceTable()
 
 void DataBaseTest::TestQueryEntirePartTable()
 {
-    SQLITCLASS *_SQLITCLASS = DBPartTable::Instance();
+    SQLITCLASS *_SQLITCLASS = DBHarnessTable::Instance();
     QMap<int, QString> tmpMap;
     _SQLITCLASS->QueryEntireTable(&tmpMap);
     QMap<int, QString>::ConstIterator i = tmpMap.constBegin();
@@ -401,7 +409,7 @@ void DataBaseTest::TestDeleteEntirePresetTable()
 
 void DataBaseTest::TestDeleteEntirePartTable()
 {
-    SQLITCLASS *_SQLITCLASS = DBPartTable::Instance();
+    SQLITCLASS *_SQLITCLASS = DBHarnessTable::Instance();
     if(_SQLITCLASS->DeleteEntireTable())
         qDebug()<<"Delete Part Table Sucessful.";
     else
@@ -446,7 +454,7 @@ void DataBaseTest::TestDeleteOnePresetTable()
 
 void DataBaseTest::TestDeleteOnePartTable()
 {
-    SQLITCLASS *_SQLITCLASS = DBPartTable::Instance();
+    SQLITCLASS *_SQLITCLASS = DBHarnessTable::Instance();
     if(_SQLITCLASS->DeleteOneRecordFromTable(2, "TESTPart"))
         qDebug()<<"Delete Part Table Sucessful.";
     else
@@ -481,13 +489,13 @@ void DataBaseTest::TestUpdateOneRecordIntoWireTable()
     tmpWire.CreatedDate = tmp.toTime_t();
     tmpWire.OperatorID = 2;
     tmpWire.Color = "GREEN";
-    tmpWire.Stripe.TypeOfStripe = Slash;
+    tmpWire.Stripe.TypeOfStripe = STRIPE::Slash;
     tmpWire.Stripe.Color = "RED";
     tmpWire.Gauge = 100;
-    tmpWire.TypeOfWire = Copper;
-    tmpWire.Side = Right;
-    tmpWire.VerticalSide = Basic;
-    tmpWire.Position = Middle;
+    tmpWire.TypeOfWire = WireElement::Copper;
+    tmpWire.Side = WireElement::Right;
+    tmpWire.VerticalSide = WireElement::Basic;
+    tmpWire.Position = WireElement::Middle;
     _SQLITCLASS->UpdateRecordIntoTable(&tmpWire);
 }
 
@@ -522,8 +530,8 @@ void DataBaseTest::TestUpdateOneRecordIntoPresetTable()
     tmpSplice.WeldSettings.QualitySetting.Height.Minus = 0;
     tmpSplice.WeldSettings.QualitySetting.Force.Plus = 55;
     tmpSplice.WeldSettings.QualitySetting.Force.Minus = 0;
-    tmpSplice.WeldSettings.AdvanceSetting.WeldMode = ENERGY;
-    tmpSplice.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode = STEPDISABLE;
+    tmpSplice.WeldSettings.AdvanceSetting.WeldMode = ADVANCESETTING::ENERGY;
+    tmpSplice.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode = STEPWELD::STEPDISABLE;
     tmpSplice.WeldSettings.AdvanceSetting.StepWeld.EnergyToStep = 55;
     tmpSplice.WeldSettings.AdvanceSetting.StepWeld.TimeToStep = 1;
     tmpSplice.WeldSettings.AdvanceSetting.StepWeld.PowerToStep = 500;
@@ -533,20 +541,22 @@ void DataBaseTest::TestUpdateOneRecordIntoPresetTable()
     tmpSplice.WeldSettings.AdvanceSetting.SqzTime = 200;
     tmpSplice.WeldSettings.AdvanceSetting.ABDelay = 300;
     tmpSplice.WeldSettings.AdvanceSetting.ABDur = 400;
-    tmpSplice.WeldSettings.AdvanceSetting.CutOff = false;
-    tmpSplice.WeldSettings.AdvanceSetting.CutOffSpliceTime = -1;
-    tmpSplice.WeldSettings.AdvanceSetting.AntiSide = true;
-    tmpSplice.WeldSettings.AdvanceSetting.AntiSideSpliceTime = -1;
-    tmpSplice.WeldSettings.AdvanceSetting.MeasuredWidth = 100;
-    tmpSplice.WeldSettings.AdvanceSetting.MeasuredHeight = 100;
+    tmpSplice.WeldSettings.AdvanceSetting.CutOffOption.CutOff = false;
+    tmpSplice.WeldSettings.AdvanceSetting.CutOffOption.CutOffSpliceTime = -1;
+    tmpSplice.WeldSettings.AdvanceSetting.AntiSideOption.AntiSideMode = true;
+    tmpSplice.WeldSettings.AdvanceSetting.AntiSideOption.AntiSideSpliceTime = -1;
+    tmpSplice.WeldSettings.AdvanceSetting.OffsetOption.MeasuredWidth = 100;
+    tmpSplice.WeldSettings.AdvanceSetting.OffsetOption.MeasuredHeight = 100;
+    tmpSplice.WeldSettings.AdvanceSetting.OffsetOption.DisplayWidth = 100;
+    tmpSplice.WeldSettings.AdvanceSetting.OffsetOption.DisplayHeight = 100;
     tmpSplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkOption = false;
     tmpSplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID = "0";
     tmpSplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime = 10;
     tmpSplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTemperature = 260;
-    tmpSplice.TestSetting.Qutanty = 55;
+    tmpSplice.TestSetting.BatchSize = 55;
     tmpSplice.TestSetting.StopCount = 20;
-    tmpSplice.TestSetting.TestMode = UNCONSTRAINED;
-    tmpSplice.TestSetting.TeachModeSetting.TeachModeType = UNDEFINED;
+    tmpSplice.TestSetting.TestMode = TESTSETTING::UNCONSTRAINED;
+    tmpSplice.TestSetting.TeachModeSetting.TeachModeType = TEACHMODESETTING::UNDEFINED;
     for(int i=0;i< 18;i++)
         tmpSplice.TestSetting.TeachModeSetting.TeachModequal_Window[i] = 40;
     tmpSplice.TestSetting.TestingDone = true;
@@ -562,36 +572,36 @@ void DataBaseTest::TestUpdateOneRecordIntoPresetTable()
 
 void DataBaseTest::TestUpdateOneRecordIntoPartTable()
 {
-    SQLITCLASS *_SQLITCLASS = DBPartTable::Instance();
-    struct PartElement tmpPart;
-    tmpPart.PartID = 3;
-    tmpPart.PartName = "TESTPART";
+    SQLITCLASS *_SQLITCLASS = DBHarnessTable::Instance();
+    struct HarnessElement tmpHarness;
+    tmpHarness.HarnessID = 3;
+    tmpHarness.HarnessName = "TESTPART";
     QDateTime tmp = QDateTime::fromString("2016/10/20 00:00:00", "yyyy/MM/dd hh:mm:ss");
-    tmpPart.CreatedDate = tmp.toTime_t();
-    tmpPart.OperatorID = 2;
-    tmpPart.PartTypeSetting.ProcessMode = BASIC;
-    tmpPart.PartTypeSetting.WorkStations.TotalWorkstation = 20;
-    tmpPart.PartTypeSetting.WorkStations.MaxSplicesPerWorkstation = 30;
-    tmpPart.PartTypeSetting.BoardLayout.Rows = 4;
-    tmpPart.PartTypeSetting.BoardLayout.Columns = 4;
-    tmpPart.PartTypeSetting.BoardLayout.MaxSplicesPerZone = 10;
+    tmpHarness.CreatedDate = tmp.toTime_t();
+    tmpHarness.OperatorID = 2;
+    tmpHarness.HarnessTypeSetting.ProcessMode = BASIC;
+    tmpHarness.HarnessTypeSetting.WorkStations.TotalWorkstation = 20;
+    tmpHarness.HarnessTypeSetting.WorkStations.MaxSplicesPerWorkstation = 30;
+    tmpHarness.HarnessTypeSetting.BoardLayout.Rows = 4;
+    tmpHarness.HarnessTypeSetting.BoardLayout.Columns = 4;
+    tmpHarness.HarnessTypeSetting.BoardLayout.MaxSplicesPerZone = 10;
 
-    struct PARTATTRIBUTE PartAttribute;
-    PartAttribute.SpliceName = "WangYIBIN";
-    PartAttribute.CurrentBoardLayoutZone = 1;
-    PartAttribute.CurrentWorkstation = 2;
-    tmpPart.SpliceList.insert(0,PartAttribute);
-    PartAttribute.SpliceName = "JWang";
-    PartAttribute.CurrentBoardLayoutZone = 2;
-    PartAttribute.CurrentWorkstation = 3;
-    tmpPart.SpliceList.insert(1,PartAttribute);
-    PartAttribute.SpliceName = "JW";
-    PartAttribute.CurrentBoardLayoutZone = 3;
-    PartAttribute.CurrentWorkstation = 4;
-    tmpPart.SpliceList.insert(2,PartAttribute);
-    tmpPart.NoOfSplice = tmpPart.SpliceList.size();
+    struct HARNESSATTRIBUTE HarnessAttribute;
+    HarnessAttribute.SpliceName = "WangYIBIN";
+    HarnessAttribute.CurrentBoardLayoutZone = 1;
+    HarnessAttribute.CurrentWorkstation = 2;
+    tmpHarness.SpliceList.insert(0,HarnessAttribute);
+    HarnessAttribute.SpliceName = "JWang";
+    HarnessAttribute.CurrentBoardLayoutZone = 2;
+    HarnessAttribute.CurrentWorkstation = 3;
+    tmpHarness.SpliceList.insert(1,HarnessAttribute);
+    HarnessAttribute.SpliceName = "JW";
+    HarnessAttribute.CurrentBoardLayoutZone = 3;
+    HarnessAttribute.CurrentWorkstation = 4;
+    tmpHarness.SpliceList.insert(2,HarnessAttribute);
+    tmpHarness.NoOfSplice = tmpHarness.SpliceList.size();
 
-    _SQLITCLASS->UpdateRecordIntoTable(&tmpPart);
+    _SQLITCLASS->UpdateRecordIntoTable(&tmpHarness);
 }
 
 void DataBaseTest::TestUpdateOneRecordIntoWorkOrderTable()
@@ -604,18 +614,18 @@ void DataBaseTest::TestUpdateOneRecordIntoWorkOrderTable()
     QDateTime tmp = QDateTime::fromString("2016/10/20 00:00:00", "yyyy/MM/dd hh:mm:ss");
     tmpWorkOrder.CreatedDate = tmp.toTime_t();
     tmpWorkOrder.OperatorID = 2;
-    tmpWorkOrder.PartIndex.insert(1,"PartName");
-    tmpWorkOrder.NoOfPart = tmpWorkOrder.PartIndex.size();
+    tmpWorkOrder.PartList.insert(1,"PartName");
+    tmpWorkOrder.NoOfPart = tmpWorkOrder.PartList.size();
 
     tmpWorkOrder.Quantity = 50;
     tmpWorkOrder.CurrentPartCount = 30;
 
-    tmpWorkOrder.MissSpliceList.insert(0, "MissSplice1");
-    tmpWorkOrder.MissSpliceList.insert(1, "MissSplice2");
-    tmpWorkOrder.MissSpliceList.insert(2, "MissSplice3");
+    tmpWorkOrder.MissPartList.insert(0, "MissSplice1");
+    tmpWorkOrder.MissPartList.insert(1, "MissSplice2");
+    tmpWorkOrder.MissPartList.insert(2, "MissSplice3");
 
-    tmpWorkOrder.CurrentSplice.SpliceID = 5;
-    tmpWorkOrder.CurrentSplice.SpliceName = "TESTSPLICE";
+    tmpWorkOrder.CurrentPartIndex.PartID = 5;
+    tmpWorkOrder.CurrentPartIndex.PartName = "TESTSPLICE";
 
     tmpWorkOrder.WorkOrderDone = false;
 

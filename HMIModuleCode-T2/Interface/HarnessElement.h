@@ -1,24 +1,24 @@
 #ifndef PARTELEMENT_H
 #define PARTELEMENT_H
 #include "Definition.h"
-class PartElement
+class HarnessElement
 {
 public:
     int RevCode;
-    int PartID;
-    QString PartName;
+    int HarnessID;
+    QString HarnessName;
     unsigned int CreatedDate;
     int OperatorID;
-    struct PARTTYPE PartTypeSetting;
+    struct HARNESSTYPE HarnessTypeSetting;
 
     int NoOfSplice;
     //#define SEQ_MAX_SPLICES  250
-    QMap<int, struct PARTATTRIBUTE> SpliceList;
+    QMap<int, struct HARNESSATTRIBUTE> SpliceList;
 public:
-    PartElement operator=(const PartElement &PartObject);
+    HarnessElement operator=(const HarnessElement &HarnessObject);
 public:
-    PartElement();
-    ~PartElement();
+    HarnessElement();
+    ~HarnessElement();
 };
 
 #endif // PARTELEMENT_H

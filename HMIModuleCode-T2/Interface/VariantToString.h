@@ -60,10 +60,10 @@ public:
     QString GraphPowerToString(int ActualPower);
     QString GraphHeightToString(int ActualHeight);
     //Weld History
-    QString WeldModeToString(enum WELDMODE, enum STEPWELDMODE);
+    QString WeldModeToString(ADVANCESETTING::WELDMODE, STEPWELD::STEPWELDMODE);
     QString HistoryAmplitudeToString(int Amplitude1, int Amplitude2);
     QString AlarmToString(unsigned int Alarm);
-    QString SampleRatioToString(enum SAMPLERATIO);
+    QString SampleRatioToString(WeldResultElement::SAMPLERATIO);
     QString ActualTimeToString(int ActualTime);
     QString ActualPowerToString(int ActualPower);
     QString ActualPreHeightToString(int ActualPreHeight);

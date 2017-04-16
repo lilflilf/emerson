@@ -107,9 +107,9 @@ bool M10runMode::CheckWeldData(int weldresult)
     _M10INI->ValidWeldData = false;
     WidthError = false;
     //If width encoder is checked
-    if((_Interface->StatusData.Machineflags.Word[0] & 0x4000) != 0x4000)
+    if((_Interface->StatusData.Machineflags.Word[0] & BIT14) != BIT14)
     {
-        if((_M102IA->IAactual.Alarmflags & 0x800) == 0x800)
+        if((_M102IA->IAactual.Alarmflags & BIT11) == BIT11)
         {
             _M2010->M10Run.Alarm_found = true;
             if(_Interface->FirstScreenComesUp == true)
@@ -119,7 +119,7 @@ bool M10runMode::CheckWeldData(int weldresult)
         }
     }
 
-    if((_M102IA->IAactual.Alarmflags & 0x02) == 0x02)
+    if((_M102IA->IAactual.Alarmflags & BIT1) == BIT1)
     {
         if(_Interface->FirstScreenComesUp == true)
         {
@@ -134,7 +134,7 @@ bool M10runMode::CheckWeldData(int weldresult)
     if (CheckForOverLoad(true) == true) return true;
 
     //Safety Alarm Check
-    if((_M102IA->IAactual.Alarmflags & 0x400) == 0x400)
+    if((_M102IA->IAactual.Alarmflags & BIT10) == BIT10)
     {
         if(_Interface->FirstScreenComesUp == true)
         {
@@ -145,16 +145,16 @@ bool M10runMode::CheckWeldData(int weldresult)
     }
 
     //Weld Abort
-    if((_M102IA->IAactual.Alarmflags & 0x10) == 0x10) return true;
+    if((_M102IA->IAactual.Alarmflags & BIT4) == BIT4) return true;
 
     //Foot Paddle Abort
-    if((_M102IA->IAactual.Alarmflags & 0x200) == 0x200) return true;
+    if((_M102IA->IAactual.Alarmflags & BIT9) == BIT9) return true;
 
     /***************** PREHEIGHT **************************/
     //Check for pre-height alarm indicated by bit 2
-    if((_Interface->StatusData.Machineflags.Word[0] & 0x8000) == 0x8000)
+    if((_Interface->StatusData.Machineflags.Word[0] & BIT15) == BIT15)
     {
-        if((_M102IA->IAactual.Alarmflags & 0x04) == 0x04) //IF FLAG SET
+        if((_M102IA->IAactual.Alarmflags & BIT2) == BIT2) //IF FLAG SET
         {
             Invalidweld = true; //Do not increment Maintenance counters
             _M2010->M10Run.Pre_Hght_Error = true;
@@ -167,27 +167,27 @@ bool M10runMode::CheckWeldData(int weldresult)
     }
 
     //Sense 24V
-    if((_M102IA->IAactual.Alarmflags & 0x10000) == 0x10000)
+    if((_M102IA->IAactual.Alarmflags & BIT16) == BIT16)
         _M2010->M10Run.Alarm_found = true;
 
     //Cutter alarm for new splicer
-    if((_M102IA->IAactual.Alarmflags & 0x20000) == 0x20000)
+    if((_M102IA->IAactual.Alarmflags & BIT17) == BIT17)
         _M2010->M10Run.Alarm_found = true;
 
     //Lock Key alarm for new splicer
-    if((_M102IA->IAactual.Alarmflags & 0x40000) == 0x40000)
+    if((_M102IA->IAactual.Alarmflags & BIT18) == BIT18)
         _M2010->M10Run.Alarm_found = true;
 
     //ID Chip alarm for new splicer
-    if((_M102IA->IAactual.Alarmflags & 0x80000) == 0x80000)
+    if((_M102IA->IAactual.Alarmflags & BIT19) == BIT19)
         _M2010->M10Run.Alarm_found = true;
 
     // BBR & RAM alarm for new splicer
-    if((_M102IA->IAactual.Alarmflags & 0x100000) == 0x100000)
+    if((_M102IA->IAactual.Alarmflags & BIT20) == BIT20)
         _M2010->M10Run.Alarm_found = true;
 
     //Check if this is the current weld data. (WeldDone Flag)
-    if((_M102IA->IAactual.Alarmflags & 0x4000) != 0x4000)
+    if((_M102IA->IAactual.Alarmflags & BIT14) != BIT14)
     {
         if(_M2010->M10Run.Alarm_found == true)
             _AlarmMsg->Initialization(WeldResultID);
@@ -199,7 +199,7 @@ bool M10runMode::CheckWeldData(int weldresult)
     //TIME CHECK BEGINS
     //Watch for time error: Special condition because of units change
     //Bit 5 is the time error flag
-    if((_M102IA->IAactual.Alarmflags & 0x20) == 0x20)
+    if((_M102IA->IAactual.Alarmflags & BIT5) == BIT5)
     {
         //if time is too low system will handle is properly, if time is too high
         //the system clips the data
@@ -208,15 +208,15 @@ bool M10runMode::CheckWeldData(int weldresult)
         _M2010->M10Run.Alarm_found = true;
     }
     //POWER CHECK START
-    if((_M102IA->IAactual.Alarmflags & 0x40) == 0x40)
+    if((_M102IA->IAactual.Alarmflags & BIT6) == BIT6)
     {
         _M2010->M10Run.Alarm_found = true;
     }
     // POWER CHECK FINISH
     // HEIGHT
-    if((_Interface->StatusData.Machineflags.Word[0] & 0x8000) == 0x8000)
+    if((_Interface->StatusData.Machineflags.Word[0] & BIT15) == BIT15)
     {
-        if ((_M102IA->IAactual.Alarmflags & 0x80) == 0x80)
+        if ((_M102IA->IAactual.Alarmflags & BIT7) == BIT7)
             _M2010->M10Run.Alarm_found = true;
     }
     // HEIGHT CHECK FINISH
@@ -252,7 +252,7 @@ void M10runMode::CalculateTeachMode(PresetElement *_Splice)
 void M10runMode::TeachModeFinished(PresetElement *_Splice)
 {
     Statistics* _Statistics = Statistics::Instance();
-    if(_Splice->WeldSettings.AdvanceSetting.WeldMode != TIME)
+    if(_Splice->WeldSettings.AdvanceSetting.WeldMode != ADVANCESETTING::TIME)
     {
         _Splice->WeldSettings.QualitySetting.Time.Minus =
                 (int)_Statistics->time_lower_limit;
@@ -267,8 +267,8 @@ void M10runMode::TeachModeFinished(PresetElement *_Splice)
             (int)_Statistics->pre_hght_lower_limit;
     _Splice->WeldSettings.QualitySetting.Preheight.Plus =
             (int)_Statistics->pre_hght_upper_limit;
-    if((_Splice->WeldSettings.AdvanceSetting.WeldMode !=  HEIGHT) &&
-            (_Splice->WeldSettings.AdvanceSetting.WeldMode != ENERGYWITHHEIGHT))
+    if((_Splice->WeldSettings.AdvanceSetting.WeldMode !=  ADVANCESETTING::HEIGHT) &&
+            (_Splice->WeldSettings.AdvanceSetting.WeldMode != ADVANCESETTING::ENERGYWITHHEIGHT))
     {
         _Splice->WeldSettings.QualitySetting.Height.Minus =
                 (int)_Statistics->height_lower_limit;
