@@ -58,6 +58,35 @@ Item {
         hmiAdaptor.operateProcessExec("Stop")
     }
 
+    Connections {
+        target: hmiAdaptor
+        onSignalWeldCycleCompleted: {
+            qualityTitleModel.set(0,{"bottomText":alarmModel.getAxes2("Time")})
+            qualityTitleModel.set(1,{"bottomText":alarmModel.getAxes2("Power")})
+            qualityTitleModel.set(2,{"bottomText":alarmModel.getAxes2("Pre-Height")})
+            qualityTitleModel.set(3,{"bottomText":alarmModel.getAxes2("Post-Height")})
+
+            resultModel.set(0,{"bottomText":alarmModel.getAxes2("Energy")})
+            resultModel.set(1,{"bottomText":alarmModel.getAxes2("T.Pressure")})
+            resultModel.set(2,{"bottomText":alarmModel.getAxes2("W.Pressure")})
+            resultModel.set(3,{"bottomText":alarmModel.getAxes2("Amplitude")})
+            resultModel.set(4,{"bottomText":alarmModel.getAxes2("Width")})
+        }
+    }
+
+    ListModel {
+        id: resultModel
+        Component.onCompleted: {
+            resultModel.append({"bottomText":""})
+            resultModel.append({"bottomText":""})
+            resultModel.append({"bottomText":""})
+            resultModel.append({"bottomText":""})
+            resultModel.append({"bottomText":""})
+        }
+    }
+
+
+
     function editSplice(editWireList)
     {
         var list = new Array
@@ -1232,7 +1261,7 @@ Item {
                 width: parent.width-20
                 height: 250
                 Repeater {
-                    model: 5
+                    model: resultModel
                     Recsetting {
                         localbordercolor: "#ffffff" //"#48484a"
 //                        headTitle: topText
@@ -1304,10 +1333,19 @@ Item {
 
             ListModel {
                 id: qualityTitleModel
-                ListElement {title:qsTr("Time")}
-                ListElement {title:qsTr("Peak\nPower")}
-                ListElement {title:qsTr("Pre-\nHeight")}
-                ListElement {title:qsTr("Post-\nHeight")}
+                Component.onCompleted: {
+                    qualityTitleModel.append({"title":"Time","bottomText":""})
+                    qualityTitleModel.append({"title":"Peak\nPower","bottomText":""})
+                    qualityTitleModel.append({"title":"Pre-\nHeight","bottomText":""})
+                    qualityTitleModel.append({"title":"Post-\nHeight","bottomText":""})
+
+                }
+
+
+//                ListElement {title:qsTr("Time")}
+//                ListElement {title:qsTr("Peak\nPower")}
+//                ListElement {title:qsTr("Pre-\nHeight")}
+//                ListElement {title:qsTr("Post-\nHeight")}
 
             }
 
@@ -1342,7 +1380,7 @@ Item {
                 width: parent.width-20
 //                height: 250
                 Repeater {
-                    model: 4
+                    model: qualityTitleModel
                     Item {
                         width: (settingLayout2.width-120)/2
                         height: (settingLayout2.height)/4
@@ -1353,6 +1391,7 @@ Item {
                             width: (settingLayout2.width-120)/2
                             height: (settingLayout2.height)/8
                             anchors.centerIn: parent
+                            centervalue: bottomText
                         }
                     }
                 }
@@ -2393,6 +2432,8 @@ Item {
                                 }
                                 else if(thirdSwitchText == "Anti-Side:")
                                 {
+                                    freshProcess()
+
                                     if (onoroff.state == "left"){
                                         loadValue.visible = true
                                         loadName.visible = true

@@ -299,6 +299,8 @@ public slots:
     Q_INVOKABLE QList<int> getPoint2();
     Q_INVOKABLE QList<int> getPointList(QString key, QString spliceName, uint hashCode);
     Q_INVOKABLE int getAxes(QString key);
+    Q_INVOKABLE QString getAxes2(QString key);
+
     Q_INVOKABLE void setStartTime();
     Q_INVOKABLE void updateAlarmLog(int id);
     Q_INVOKABLE void getAlarmbIsShowFlag();

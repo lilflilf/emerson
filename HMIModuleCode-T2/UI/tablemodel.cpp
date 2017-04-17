@@ -1069,7 +1069,6 @@ void SplicesModel::setStructValue(QString valueKey, QVariant value)
 
 void SplicesModel::setProcessValue(QString valueKey, QVariant value)
 {
-    qDebug() << "uuuuuuuuuuuuuuuuuu" << value;
     if (valueKey == "Energy") {
         processPresetElement.WeldSettings.BasicSetting.Energy = stringToVariant->EnergyToInt(value.toString());
     }
@@ -2222,6 +2221,32 @@ int AlarmModel::getAxes(QString key)
         iResult = weldResultElement.ActualResult.ActualPreheight;
     else if (key == "Post-Height")
         iResult = weldResultElement.ActualResult.ActualPostheight;
+    return iResult;
+}
+
+QString AlarmModel::getAxes2(QString key)
+{
+    QString iResult = "";
+    if (key == "Time")
+        iResult = variantToString->ActualTimeToString(weldResultElement.ActualResult.ActualTime);
+    else if (key == "Power")
+        iResult = variantToString->ActualPowerToString(weldResultElement.ActualResult.ActualPeakPower);
+    else if (key == "Pre-Height")
+        iResult = variantToString->ActualPreHeightToString(weldResultElement.ActualResult.ActualPreheight);
+    else if (key == "Post-Height")
+        iResult = variantToString->ActualHeightToString(weldResultElement.ActualResult.ActualPostheight);
+
+    else if (key == "Energy")
+        iResult = variantToString->EnergyToString(weldResultElement.ActualResult.ActualEnergy).Current;
+    else if (key == "T.Pressure")
+        iResult = variantToString->TriggerPressureToString(weldResultElement.ActualResult.ActualTPressure).Current;
+    else if (key == "W.Pressure")
+        iResult = variantToString->WeldPressureToString(weldResultElement.ActualResult.ActualPressure).Current;
+    else if (key == "Amplitude")
+        iResult = variantToString->AmplitudeToString(weldResultElement.ActualResult.ActualAmplitude).Current;
+    else if (key == "Width")
+        iResult = variantToString->WidthToString(weldResultElement.ActualResult.ActualWidth).Current;
+
     return iResult;
 }
 
