@@ -13,6 +13,7 @@
 #include "Interface/MakeWeld//MakeWeldProcess.h"
 #include <QCoreApplication>
 #include <QDebug>
+#include "typedef.h"
 
 M102IA* M102IA::_instance = NULL;
 M102IA* M102IA::Instance()
@@ -797,6 +798,7 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
 //        LastIOstatus.IO = CLng(LastIOSwitchData.WordData)
         _M2010->ReceiveFlags.IOSWITCHdata = true;
         CheckIAControl();
+        DEBUG_PRINT(IOstatus.IO);
         break;
     case IASigAbortEnable:
         temp = MakeHexWordNumber(HexString.mid(9, 4));

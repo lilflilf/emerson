@@ -54,7 +54,7 @@ MODstart::MODstart()
 
     App.Major    = "26";
     App.Minor    = "73";
-    App.Revision = "814-HMI-T8";
+    App.Revision = "814-L2-T1";
 
     _Interface->FirstScreenComesUp = false;
     _MDefine->ModeChangeFlag = false;

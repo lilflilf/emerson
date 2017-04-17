@@ -419,7 +419,7 @@ void M10INI::Init_StatusData()
         _Interface->DefaultStatusData.HSDATA.SOFT_LIMIT[i].TypeHS = Percent;
         _Interface->DefaultStatusData.HSDATA.SOFT_LIMIT[i].ValueHS = 30;
     }
-    _Interface->DefaultStatusData.ComInfo.COMport = 2;
+    _Interface->DefaultStatusData.ComInfo.COMport = 1;
     _Interface->DefaultStatusData.ComInfo.BaudRate = 115200;
     _Interface->DefaultStatusData.MachineType = ACTNEWSPLICER; //Need To Fix
     _Interface->DefaultStatusData.MachineDate = "";
