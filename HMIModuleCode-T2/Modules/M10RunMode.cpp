@@ -154,7 +154,8 @@ bool M10runMode::CheckWeldData(int weldresult)
     //Check for pre-height alarm indicated by bit 2
     if((_Interface->StatusData.Machineflags.Word[0] & BIT15) == BIT15)
     {
-        if((_M102IA->IAactual.Alarmflags & BIT2) == BIT2) //IF FLAG SET
+        if(((_M102IA->IAactual.Alarmflags & BIT2) == BIT2) ||
+                ((_M102IA->IAactual.Alarmflags & BIT21) == BIT21)) //IF FLAG SET
         {
             Invalidweld = true; //Do not increment Maintenance counters
             _M2010->M10Run.Pre_Hght_Error = true;
@@ -199,7 +200,8 @@ bool M10runMode::CheckWeldData(int weldresult)
     //TIME CHECK BEGINS
     //Watch for time error: Special condition because of units change
     //Bit 5 is the time error flag
-    if((_M102IA->IAactual.Alarmflags & BIT5) == BIT5)
+    if(((_M102IA->IAactual.Alarmflags & BIT5) == BIT5) ||
+        ((_M102IA->IAactual.Alarmflags & BIT22) == BIT22))
     {
         //if time is too low system will handle is properly, if time is too high
         //the system clips the data
@@ -208,7 +210,8 @@ bool M10runMode::CheckWeldData(int weldresult)
         _M2010->M10Run.Alarm_found = true;
     }
     //POWER CHECK START
-    if((_M102IA->IAactual.Alarmflags & BIT6) == BIT6)
+    if(((_M102IA->IAactual.Alarmflags & BIT6) == BIT6) ||
+            ((_M102IA->IAactual.Alarmflags & BIT23) == BIT23))
     {
         _M2010->M10Run.Alarm_found = true;
     }
@@ -216,7 +219,8 @@ bool M10runMode::CheckWeldData(int weldresult)
     // HEIGHT
     if((_Interface->StatusData.Machineflags.Word[0] & BIT15) == BIT15)
     {
-        if ((_M102IA->IAactual.Alarmflags & BIT7) == BIT7)
+        if (((_M102IA->IAactual.Alarmflags & BIT7) == BIT7) ||
+            ((_M102IA->IAactual.Alarmflags & BIT24) == BIT24))
             _M2010->M10Run.Alarm_found = true;
     }
     // HEIGHT CHECK FINISH
