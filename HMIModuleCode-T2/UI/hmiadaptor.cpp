@@ -1,5 +1,6 @@
 #include "hmiadaptor.h"
 #include "Modules/typedef.h"
+#include "Modules/M10INI.h"
 #include <qdebug.h>
 #include <QSqlQuery>
 #include <QSqlError>
@@ -14,7 +15,8 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
 {
 
     interfaceClass = InterfaceClass::Instance();
-    operateProcess = MakeWeldProcess::Instance();
+    M10INI *_M10INI = M10INI::Instance();
+    _M10INI->Get_INI_File();
     workOrderModel = new WorkOrderModel(this);
     QStringList list;
     list << "WorkOrderId" << "WorkOrderName" << "DateCreated" << "PART" << "QUANTITY";
@@ -96,6 +98,8 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
     m_spliceAdaptor = DBPresetTable::Instance();
     testSpliceId = -1;
     editPartId = -1;
+    operateProcess = MakeWeldProcess::Instance();
+
 }
 
 HmiAdaptor::~HmiAdaptor()

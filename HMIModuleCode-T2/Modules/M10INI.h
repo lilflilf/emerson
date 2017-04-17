@@ -209,7 +209,6 @@ public:
     QString ConfigFilesPath;
 private:
     void InitNoNetworkStorage(StoragePathsType PathStruct);
-    void Init_StatusData();
     void SetSoftLimitDefaults(Status_Data* _DataStruct, bool EnableSoftLimits = false);
     void SetShrinkTubeDefaults(Status_Data* _DataStruct);
     void SetDefaultPassword(Status_Data* _DataStruct);
@@ -226,6 +225,7 @@ public:
     void GenerateSLFlagGroup(long Flaggroup, int Index);
     void Save_LastWeldGraph();
     void Get_INI_File();
+    void Init_StatusData();
     void Save_StatusData(bool WithUpdate = true);
     void HelpFileLoader();
     void Init_AWGToMMTable();

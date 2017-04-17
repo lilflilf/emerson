@@ -37,15 +37,15 @@ void MakeWeldProcess::UpdateIAFields()
 {
     M102IA *_M102IA = M102IA::Instance();
     _M102IA->IAsetup.Energy = CurrentSplice.WeldSettings.BasicSetting.Energy;
-    DEBUG_PRINT(_M102IA->IAsetup.Energy);
+//    DEBUG_PRINT(_M102IA->IAsetup.Energy);
     _M102IA->IAsetup.Width = CurrentSplice.WeldSettings.BasicSetting.Width;
-    DEBUG_PRINT(_M102IA->IAsetup.Width);
+//    DEBUG_PRINT(_M102IA->IAsetup.Width);
     _M102IA->IAsetup.WeldPressure = CurrentSplice.WeldSettings.BasicSetting.Pressure;
-    DEBUG_PRINT(_M102IA->IAsetup.WeldPressure);
+//    DEBUG_PRINT(_M102IA->IAsetup.WeldPressure);
     _M102IA->IAsetup.TriggerPressure = CurrentSplice.WeldSettings.BasicSetting.TrigPres;
-    DEBUG_PRINT(_M102IA->IAsetup.TriggerPressure);
+//    DEBUG_PRINT(_M102IA->IAsetup.TriggerPressure);
     _M102IA->IAsetup.Amplitude = CurrentSplice.WeldSettings.BasicSetting.Amplitude;
-    DEBUG_PRINT(_M102IA->IAsetup.Amplitude);
+//    DEBUG_PRINT(_M102IA->IAsetup.Amplitude);
     _M102IA->IAsetup.Amplitude2 = CurrentSplice.WeldSettings.AdvanceSetting.StepWeld.Amplitude2;
     _M102IA->IAsetup.SqueezeTime = CurrentSplice.WeldSettings.AdvanceSetting.SqzTime;
     _M102IA->IAsetup.HoldTime = CurrentSplice.WeldSettings.AdvanceSetting.HoldTime;
@@ -60,11 +60,11 @@ void MakeWeldProcess::UpdateIAFields()
     //11B = Egy/Hgt
 
     _M102IA->IAsetup.ModeFlags = CurrentSplice.WeldSettings.AdvanceSetting.WeldMode;
+    DEBUG_PRINT(_M102IA->IAsetup.ModeFlags);
     _M102IA->IAsetup.Time.max = CurrentSplice.WeldSettings.QualitySetting.Time.Plus;
-    qDebug()<<"Time.Max: "<< _M102IA->IAsetup.Time.max;
     _M102IA->IAsetup.Time.min = CurrentSplice.WeldSettings.QualitySetting.Time.Minus;
-    qDebug()<<"Time.Min: "<< _M102IA->IAsetup.Time.min;
     _M102IA->IAsetup.Power.max = CurrentSplice.WeldSettings.QualitySetting.Power.Plus;
+    DEBUG_PRINT(_M102IA->IAsetup.Power.max);
     _M102IA->IAsetup.Power.min = CurrentSplice.WeldSettings.QualitySetting.Power.Minus;
     _M102IA->IAsetup.Preheight.max = CurrentSplice.WeldSettings.QualitySetting.Preheight.Plus;
     _M102IA->IAsetup.Preheight.min = CurrentSplice.WeldSettings.QualitySetting.Preheight.Minus;
