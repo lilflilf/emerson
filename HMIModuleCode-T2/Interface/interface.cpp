@@ -1,6 +1,8 @@
 #include "Interface.h"
 
 #include "Modules/M10INI.h"
+#include "Modules/M2010.h"
+#include "Modules/UtilityClass.h"
 #include <QtConcurrent/QtConcurrent>
 #include "windows.h"
 InterfaceClass* InterfaceClass::_instance = 0;
@@ -16,7 +18,9 @@ InterfaceClass* InterfaceClass::Instance()
 InterfaceClass::InterfaceClass(QObject *parent)
     :QObject(parent)
 {
+    M10INI* _M10INI = M10INI::Instance();
     CheckBransonFolder();
+    _M10INI->Init_AWGToMMTable();
 }
 
 InterfaceClass::~InterfaceClass()
@@ -99,7 +103,6 @@ void InterfaceClass::CheckBransonFolder()
         }
     }
 }
-
 
 void InterfaceClass::cMsgBox(struct BransonMessageBox* MsgBox)
 {
