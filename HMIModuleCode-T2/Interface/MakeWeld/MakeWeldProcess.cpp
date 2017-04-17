@@ -37,13 +37,17 @@ void MakeWeldProcess::UpdateIAFields()
 {
     M102IA *_M102IA = M102IA::Instance();
     _M102IA->IAsetup.Energy = CurrentSplice.WeldSettings.BasicSetting.Energy;
+    DEBUG_PRINT(_M102IA->IAsetup.Energy);
     _M102IA->IAsetup.Width = CurrentSplice.WeldSettings.BasicSetting.Width;
+    DEBUG_PRINT(_M102IA->IAsetup.Width);
     _M102IA->IAsetup.WeldPressure = CurrentSplice.WeldSettings.BasicSetting.Pressure;
+    DEBUG_PRINT(_M102IA->IAsetup.WeldPressure);
     _M102IA->IAsetup.TriggerPressure = CurrentSplice.WeldSettings.BasicSetting.TrigPres;
+    DEBUG_PRINT(_M102IA->IAsetup.TriggerPressure);
     _M102IA->IAsetup.Amplitude = CurrentSplice.WeldSettings.BasicSetting.Amplitude;
+    DEBUG_PRINT(_M102IA->IAsetup.Amplitude);
     _M102IA->IAsetup.Amplitude2 = CurrentSplice.WeldSettings.AdvanceSetting.StepWeld.Amplitude2;
     _M102IA->IAsetup.SqueezeTime = CurrentSplice.WeldSettings.AdvanceSetting.SqzTime;
-//    _M102IA->IAsetup.PartCounter = CurrentSplice.
     _M102IA->IAsetup.HoldTime = CurrentSplice.WeldSettings.AdvanceSetting.HoldTime;
     _M102IA->IAsetup.ABDelay = CurrentSplice.WeldSettings.AdvanceSetting.ABDelay;
     _M102IA->IAsetup.ABDuration = CurrentSplice.WeldSettings.AdvanceSetting.ABDur;
