@@ -94,6 +94,7 @@ public:
     DBWireTable * m_wireAdaptor;
     DBOperatorTable *m_operatorAdaptor;
     QMap<int, QString> *splices;
+    PresetElement processPresetElement;
 
  protected:
     int rowCount(const QModelIndex &parent) const;
@@ -103,6 +104,7 @@ public:
     QHash<int, QByteArray> roleNames() const;
 
     PresetElement presetElement;
+
     VariantToString *variantToString;
     StringToVariant *stringToVariant;
 signals:
@@ -118,6 +120,8 @@ public slots:
     Q_INVOKABLE QString getStructValue(QString valueKey, QString valueType); // create wire
     Q_INVOKABLE int getRawData(QString key);
     Q_INVOKABLE void setStructValue(QString valueKey, QVariant value);
+    Q_INVOKABLE void setProcessValue(QString valueKey, QVariant value);
+
     Q_INVOKABLE int saveSplice(bool bIsEdit);
     Q_INVOKABLE uint getHashCode();
 

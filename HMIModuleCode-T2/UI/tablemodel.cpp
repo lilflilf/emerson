@@ -1047,6 +1047,238 @@ void SplicesModel::setStructValue(QString valueKey, QVariant value)
     else if (valueKey == "TeachMode") {
         presetElement.TestSetting.TeachModeSetting.TeachModeType = (TEACHMODESETTING::TEACH_MODE_TYPE)value.toInt();
     }
+    else if (valueKey == "CutterTime") {
+        presetElement.WeldSettings.AdvanceSetting.CutOffOption.Cutter4TimeAlarm = value.toBool();
+    }
+    else if (valueKey == "CutterPeakPower") {
+        presetElement.WeldSettings.AdvanceSetting.CutOffOption.Cutter4PowerAlarm = value.toBool();
+    }
+    else if (valueKey == "CutterPreHeight") {
+        presetElement.WeldSettings.AdvanceSetting.CutOffOption.Cutter4PreHeightAlarm = value.toBool();
+    }
+    else if (valueKey == "CutterPostHeight") {
+        presetElement.WeldSettings.AdvanceSetting.CutOffOption.Cutter4HeightAlarm = value.toBool();
+    }
+}
+
+void SplicesModel::setProcessValue(QString valueKey, QVariant value)
+{
+    qDebug() << "yyyyyyyyyyyyyyyyy" << valueKey << value;
+    if (valueKey == "Energy") {
+        processPresetElement.WeldSettings.BasicSetting.Energy = stringToVariant->EnergyToInt(value.toString());
+    }
+    else if (valueKey == "Trigger Pressure") {
+        processPresetElement.WeldSettings.BasicSetting.TrigPres = stringToVariant->TriggerPressureToInt(value.toString());
+    }
+    else if (valueKey == "Amplitude") {
+        processPresetElement.WeldSettings.BasicSetting.Amplitude = stringToVariant->AmplitudeToInt(value.toString());
+    }
+    else if (valueKey == "Weld Pressure") {
+        processPresetElement.WeldSettings.BasicSetting.Pressure = stringToVariant->WeldPressureToInt(value.toString());
+    }
+    else if (valueKey == "Width") {
+        processPresetElement.WeldSettings.BasicSetting.Width = stringToVariant->WidthToInt(value.toString());
+    }
+    else if (valueKey == "Time-") {
+        processPresetElement.WeldSettings.QualitySetting.Time.Minus = stringToVariant->TimeMinusToInt(value.toString());
+    }
+    else if (valueKey == "Time+") {
+        processPresetElement.WeldSettings.QualitySetting.Time.Plus = stringToVariant->TimePlusToInt(value.toString());
+    }
+    else if (valueKey == "Power-") {
+        processPresetElement.WeldSettings.QualitySetting.Power.Minus = stringToVariant->PowerMinusToInt(value.toString());
+    }
+    else if (valueKey == "Power+") {
+        processPresetElement.WeldSettings.QualitySetting.Power.Plus = stringToVariant->PowerPlusToInt(value.toString());
+    }
+    else if (valueKey == "Pre-Height-") {
+        processPresetElement.WeldSettings.QualitySetting.Preheight.Minus = stringToVariant->PreHeightMinusToInt(value.toString());
+    }
+    else if (valueKey == "Pre-Height+") {
+        processPresetElement.WeldSettings.QualitySetting.Preheight.Plus = stringToVariant->PreHeightPlusToInt(value.toString());
+    }
+    else if (valueKey == "Post-Height-") {
+        processPresetElement.WeldSettings.QualitySetting.Height.Minus = stringToVariant->HeightMinusToInt(value.toString());
+    }
+    else if (valueKey == "Post-Height+") {
+        processPresetElement.WeldSettings.QualitySetting.Height.Plus = stringToVariant->HeightPlusToInt(value.toString());
+    }
+    else if (valueKey == "Step-Energy") {
+        processPresetElement.WeldSettings.AdvanceSetting.StepWeld.EnergyToStep = stringToVariant->StepEnergyToInt(value.toString());
+    }
+    else if (valueKey == "Step-Time") {
+        processPresetElement.WeldSettings.AdvanceSetting.StepWeld.TimeToStep = stringToVariant->StepTimeToInt(value.toString());
+    }
+    else if (valueKey == "Step-Power") {
+        processPresetElement.WeldSettings.AdvanceSetting.StepWeld.PowerToStep = stringToVariant->StepPowerToInt(value.toString());
+    }
+    else if (valueKey == "Amplitude B") {
+        processPresetElement.WeldSettings.AdvanceSetting.StepWeld.Amplitude2 = stringToVariant->Amplitude2ToInt(value.toString());
+    }
+    else if (valueKey == "WeldModel") {
+        processPresetElement.WeldSettings.AdvanceSetting.WeldMode = (ADVANCESETTING::WELDMODE)value.toInt();
+    }
+    else if (valueKey == "StepModel") {
+        processPresetElement.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode = (STEPWELD::STEPWELDMODE)value.toInt();
+    }
+    else if (valueKey == "Pre Burst") {
+        processPresetElement.WeldSettings.AdvanceSetting.PreBurst = stringToVariant->PreBurstTimeToInt(value.toString());
+    }
+    else if (valueKey == "Hold Time") {
+        processPresetElement.WeldSettings.AdvanceSetting.HoldTime = stringToVariant->HoldTimeToInt(value.toString());
+    }
+    else if (valueKey == "After Burst") {
+        processPresetElement.WeldSettings.AdvanceSetting.ABDur = stringToVariant->AfterBurstDuringToInt(value.toString());
+    }
+    else if (valueKey == "Squeeze Time") {
+        processPresetElement.WeldSettings.AdvanceSetting.SqzTime = stringToVariant->SqueezeTimeToInt(value.toString());
+    }
+    else if (valueKey == "ActualWidth") {
+        processPresetElement.WeldSettings.AdvanceSetting.OffsetOption.MeasuredWidth =
+                stringToVariant->MeasureWidthToInt(value.toString());
+    }
+    else if (valueKey == "ActualHeight") {
+        processPresetElement.WeldSettings.AdvanceSetting.OffsetOption.MeasuredHeight
+                = stringToVariant->MeasureHeightToInt(value.toString());
+    }
+    else if (valueKey == "Unload Time") {
+        processPresetElement.WeldSettings.AdvanceSetting.AntiSideOption.AntiSideSpliceTime =
+                stringToVariant->AntiSideSpliceTimeToInt(value.toString());
+    }
+    else if (valueKey == "Load Time") {
+        processPresetElement.WeldSettings.AdvanceSetting.CutOffOption.CutOffSpliceTime =
+                stringToVariant->CutOffSpliceTimeToInt(value.toString());
+    }
+    else if (valueKey == "Anti-Side") {
+        processPresetElement.WeldSettings.AdvanceSetting.AntiSideOption.AntiSideMode =
+                value.toBool();
+    }
+    else if (valueKey == "Cut Off") {
+        processPresetElement.WeldSettings.AdvanceSetting.CutOffOption.CutOff =
+                value.toBool();
+    }
+    else if (valueKey == "Insulation") {
+        processPresetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkOption =
+                value.toBool();
+    }
+    else if (valueKey == "ShrinkId") {
+        processPresetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID =
+                value.toString();
+    }
+    else if (valueKey == "ShrinkTemp") {
+        processPresetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTemperature =
+                stringToVariant->ShrinkTemperatureToInt(value.toString());
+    }
+    else if (valueKey == "ShrinkTime") {
+        processPresetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime =
+                stringToVariant->ShrinkTimeToInt(value.toString());
+    }
+    else if (valueKey == "SpliceName") {
+        processPresetElement.SpliceName = value.toString();
+    }
+    else if (valueKey == "OperatorId") {
+        processPresetElement.OperatorID = value.toInt();
+    }
+    else if (valueKey == "Total Cross") {
+        processPresetElement.CrossSection =
+                stringToVariant->CrossSectionToInt(value.toString());
+    }
+    else if (valueKey == "WireMap") {
+        QStringList list = value.toStringList();
+        processPresetElement.WireIndex.clear();
+        int wireId;
+        QString temp;
+        bool ok;
+        WireElement tempWire;
+        for (int i = 0; i < list.count(); i++) {
+            temp = list[i];
+            wireId = temp.toInt(&ok,10);
+            if (m_wireAdaptor->QueryOneRecordFromTable(wireId,&tempWire))
+                presetElement.WireIndex.insert(wireId,tempWire.WireName);
+        }
+        processPresetElement.NoOfWires = list.count();
+    }
+    else if (valueKey == "PicPath") {
+        processPresetElement.PresetPicNamePath = value.toString();
+    }
+    else if (valueKey == "TestStandardTime+") {
+        processPresetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_PLRG_STD] = stringToVariant->PercentTeachModeToInt(value.toString());
+    }
+    else if (valueKey == "TestStandardPower+") {
+        processPresetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_PLRG_STD] = stringToVariant->PercentTeachModeToInt(value.toString());
+    }
+    else if (valueKey == "TestStandardPre+") {
+        processPresetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_PLRG_STD] = stringToVariant->PercentTeachModeToInt(value.toString());
+    }
+    else if (valueKey == "TestStandardPost+") {
+        processPresetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_PLRG_STD] = stringToVariant->PercentTeachModeToInt(value.toString());
+    }
+    else if (valueKey == "TestStandardTime-") {
+        processPresetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_MSRG_STD] = stringToVariant->PercentTeachModeToInt(value.toString());
+    }
+    else if (valueKey == "TestStandardPower-") {
+        processPresetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_MSRG_STD] = stringToVariant->PercentTeachModeToInt(value.toString());
+    }
+    else if (valueKey == "TestStandardPre-") {
+        processPresetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_MSRG_STD] = stringToVariant->PercentTeachModeToInt(value.toString());
+    }
+    else if (valueKey == "TestStandardPost-") {
+        processPresetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_MSRG_STD] = stringToVariant->PercentTeachModeToInt(value.toString());
+    }
+    else if (valueKey == "TestSigmaTime+") {
+        processPresetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_CONFRG_PL] = stringToVariant->SigmaTeachModeToInt(value.toString());
+    }
+    else if (valueKey == "TestSigmaPower+") {
+        processPresetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_CONFRG_PL] = stringToVariant->SigmaTeachModeToInt(value.toString());
+    }
+    else if (valueKey == "TestSigmaPre+") {
+        processPresetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_CONFRG_PL] = stringToVariant->SigmaTeachModeToInt(value.toString());
+    }
+    else if (valueKey == "TestSigmaPost+") {
+        processPresetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_CONFRG_PL] = stringToVariant->SigmaTeachModeToInt(value.toString());
+    }
+    else if (valueKey == "TestSigmaTime-") {
+        processPresetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_CONFRG_MS] = stringToVariant->SigmaTeachModeToInt(value.toString());
+    }
+    else if (valueKey == "TestSigmaPower-") {
+        processPresetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_CONFRG_MS] = stringToVariant->SigmaTeachModeToInt(value.toString());
+    }
+    else if (valueKey == "TestSigmaPre-") {
+        processPresetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_CONFRG_MS] = stringToVariant->SigmaTeachModeToInt(value.toString());
+    }
+    else if (valueKey == "TestSigmaPost-") {
+        processPresetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_CONFRG_MS] = stringToVariant->SigmaTeachModeToInt(value.toString());
+    }
+    else if (valueKey == "TestModel") {
+        processPresetElement.TestSetting.TestMode = (TESTSETTING::TESTMODE)value.toInt();
+    }
+    else if (valueKey == "TestCount") {
+        processPresetElement.TestSetting.BatchSize = value.toInt();
+    }
+    else if (valueKey == "TeachMode") {
+        processPresetElement.TestSetting.TeachModeSetting.TeachModeType = (TEACHMODESETTING::TEACH_MODE_TYPE)value.toInt();
+    }
+    else if (valueKey == "CutterTime") {
+        processPresetElement.WeldSettings.AdvanceSetting.CutOffOption.Cutter4TimeAlarm = value.toBool();
+    }
+    else if (valueKey == "CutterPeakPower") {
+        processPresetElement.WeldSettings.AdvanceSetting.CutOffOption.Cutter4PowerAlarm = value.toBool();
+    }
+    else if (valueKey == "CutterPreHeight") {
+        processPresetElement.WeldSettings.AdvanceSetting.CutOffOption.Cutter4PreHeightAlarm = value.toBool();
+    }
+    else if (valueKey == "CutterPostHeight") {
+        processPresetElement.WeldSettings.AdvanceSetting.CutOffOption.Cutter4HeightAlarm = value.toBool();
+    }
+
+
+
+
+
+//    spliceModel.setProcessValue("CutterTime",cutterModel.get(0).switchState == "left" ? true : false)
+//    spliceModel.setProcessValue("CutterPeakPower",cutterModel.get(1).switchState == "left" ? true : false)
+//    spliceModel.setProcessValue("CutterPreHeight",cutterModel.get(2).switchState == "left" ? true : false)
+//    spliceModel.setProcessValue("CutterPostHeight",cutterModel.get(3).switchState == "left" ? true : false)
 }
 
 int SplicesModel::saveSplice(bool bIsEdit)

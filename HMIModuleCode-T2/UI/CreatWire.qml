@@ -34,6 +34,8 @@ Item {
     property var totalGauge: 0
     property bool bIsEditSplice: false
     property var selectModel: -1
+    property var currentSpliceId: -1
+
 //    property variant colorArray: ["#ff6699","#ff0033","#33FFCC","#cc99ff","#cc0099","#930202","#99ccff","#f79428",
 //        "#0000cc","Olive","#ffff33","#ffcc00","#cc9909","#66ff00","#009900","#00cc66","#3366ff","#cc33cc","#cc9966","#9400D3"]
 
@@ -51,14 +53,9 @@ Item {
 
             firstComeIn = false
         }
-
-        hmiAdaptor.operateProcessExec("Execute")
-        hmiAdaptor.operateProcessExec("Start")
-
     }
     Component.onDestruction: {
         hmiAdaptor.operateProcessExec("Stop")
-
     }
 
     function editSplice(editWireList)
@@ -94,6 +91,72 @@ Item {
         settingsModel.append({"tipText":qsTr("W.Pressure"),"topText":qsTr(""),"bottomText":spliceModel.getStructValue("Amplitude","current"),"maxText":spliceModel.getStructValue("Amplitude","max"),"minText":spliceModel.getStructValue("Amplitude","min")})
         settingsModel.append({"tipText":qsTr("Amplitude"),"topText":qsTr(""),"bottomText":spliceModel.getStructValue("Weld Pressure","current"),"maxText":spliceModel.getStructValue("Weld Pressure","max"),"minText":spliceModel.getStructValue("Weld Pressure","min")})
         settingsModel.append({"tipText":qsTr("Width"),"topText":qsTr(""),"bottomText":spliceModel.getStructValue("Width","current"),"maxText":spliceModel.getStructValue("Width","max"),"minText":spliceModel.getStructValue("Width","min")})
+
+    }
+    function freshProcess()
+    {
+        setProcessData()
+        hmiAdaptor.setProcess()
+        hmiAdaptor.operateProcessExec("Execute")
+        hmiAdaptor.operateProcessExec("Start")
+    }
+
+    function setProcessData()
+    {
+        spliceModel.setProcessValue("SpliceName",edit1.inputText);
+        spliceModel.setProcessValue("OperatorId",hmiAdaptor.getCurrentOperatorId());
+        spliceModel.setProcessValue("Total Cross",spliceDetailsTip2.text)
+//        spliceModel.setProcessValue("WireMap",list)
+
+        spliceModel.setProcessValue("Energy",settingsModel.get(0).bottomText);
+        spliceModel.setProcessValue("Trigger Pressure",settingsModel.get(1).bottomText);
+        spliceModel.setProcessValue("Amplitude",settingsModel.get(2).bottomText);
+        spliceModel.setProcessValue("Weld Pressure",settingsModel.get(3).bottomText);
+        spliceModel.setProcessValue("Width",settingsModel.get(4).bottomText);
+
+        spliceModel.setProcessValue("Time-",settingsModel2.get(0).bottomText);
+        spliceModel.setProcessValue("Time+",settingsModel2.get(1).bottomText);
+        spliceModel.setProcessValue("Power-",settingsModel2.get(2).bottomText);
+        spliceModel.setProcessValue("Power+",settingsModel2.get(3).bottomText);
+        spliceModel.setProcessValue("Pre-Height-",settingsModel2.get(4).bottomText);
+        spliceModel.setProcessValue("Pre-Height+",settingsModel2.get(5).bottomText);
+        spliceModel.setProcessValue("Post-Height-",settingsModel2.get(6).bottomText);
+        spliceModel.setProcessValue("Post-Height+",settingsModel2.get(7).bottomText);
+
+        spliceModel.setProcessValue("Step-Energy",stepSetModel.get(0).centerText);
+        spliceModel.setProcessValue("Step-Time",stepSetModel.get(1).centerText);
+        spliceModel.setProcessValue("Step-Power",stepSetModel.get(2).centerText);
+        spliceModel.setProcessValue("Amplitude B",stepSetModel.get(4).centerText);
+
+        spliceModel.setProcessValue("ShrinkId",shrinkSet.shrinkId );
+        spliceModel.setProcessValue("ShrinkTemp",shrinkSet.shrinkTemp);
+        spliceModel.setProcessValue("ShrinkTime",shrinkSet.shrinkTime);
+
+
+        spliceModel.setProcessValue("WeldModel",weldListModel.model1)
+        spliceModel.setProcessValue("StepModel",weldListModel.model2)
+        spliceModel.setProcessValue("Pre Burst",weldSettingModel.get(0).textValue)
+        spliceModel.setProcessValue("After Burst",weldSettingModel.get(1).textValue)
+        spliceModel.setProcessValue("Squeeze Time",weldSettingModel.get(2).textValue)
+        spliceModel.setProcessValue("Hold Time",weldSettingModel.get(3).textValue)
+
+        spliceModel.setProcessValue("ActualWidth",widthModel.get(1).textValue)
+        spliceModel.setProcessValue("ActualHeight",heightModel.get(1).textValue)
+        spliceModel.setProcessValue("DisplayWidth",widthModel.get(0).textValue)
+        spliceModel.setProcessValue("DisplayHeight",heightModel.get(0).textValue)
+
+        spliceModel.setProcessValue("Unload Time",loadValue.inputText)
+        spliceModel.setProcessValue("Load Time",loadValue2.inputText)
+
+        spliceModel.setProcessValue("Anti-Side",thirdSwitchModel.get(0).switchState == "left" ? true : false)
+        spliceModel.setProcessValue("Insulation",thirdSwitchModel.get(1).switchState == "left" ? true : false)
+
+        spliceModel.setProcessValue("Cut Off",cutteronoroff.state == "left" ? true : false)
+
+        spliceModel.setProcessValue("CutterTime",cutterModel.get(0).switchState == "left" ? true : false)
+        spliceModel.setProcessValue("CutterPeakPower",cutterModel.get(1).switchState == "left" ? true : false)
+        spliceModel.setProcessValue("CutterPreHeight",cutterModel.get(2).switchState == "left" ? true : false)
+        spliceModel.setProcessValue("CutterPostHeight",cutterModel.get(3).switchState == "left" ? true : false)
 
     }
 
@@ -1223,7 +1286,7 @@ Item {
                                 creatWire.selectIndex = index
                                 backGround.visible = true
                                 backGround.opacity = 0.5
-                                if (repeater.model == settingsModel && index == 2 && bIsStep) {
+                                if (repeater.model == settingsModel && index == 3 && bIsStep) {
                                     stepTimeSet.visible = true
                                 } else {
                                     localbordercolor = "#05f91c"
@@ -1357,6 +1420,7 @@ Item {
                 wirelibrary.visible = true
                 addWire.visible = true
                 bottomButton.visible = false
+                hmiAdaptor.operateProcessExec("Stop")
             }
             else if (currentIndex == 1)
             {
@@ -1364,6 +1428,10 @@ Item {
                 wirelibrary.visible = false
                 addWire.visible = false
                 bottomButton.visible = true
+                setProcessData()
+                hmiAdaptor.setProcess()
+                hmiAdaptor.operateProcessExec("Execute")
+                hmiAdaptor.operateProcessExec("Start")
             }
         }
 
@@ -1721,6 +1789,32 @@ Item {
                 spliceModel.setStructValue("ShrinkTemp",shrinkSet.shrinkTemp);
                 spliceModel.setStructValue("ShrinkTime",shrinkSet.shrinkTime);
 
+
+
+                spliceModel.setStructValue("WeldModel",weldListModel.model1)
+                spliceModel.setStructValue("StepModel",weldListModel.model2)
+                spliceModel.setStructValue("Pre Burst",weldSettingModel.get(0).textValue)
+                spliceModel.setStructValue("After Burst",weldSettingModel.get(1).textValue)
+                spliceModel.setStructValue("Squeeze Time",weldSettingModel.get(2).textValue)
+                spliceModel.setStructValue("Hold Time",weldSettingModel.get(3).textValue)
+
+                spliceModel.setStructValue("ActualWidth",widthModel.get(1).textValue)
+                spliceModel.setStructValue("ActualHeight",heightModel.get(1).textValue)
+
+                spliceModel.setStructValue("Unload Time",loadValue.inputText)
+                spliceModel.setStructValue("Load Time",loadValue2.inputText)
+
+                spliceModel.setStructValue("Anti-Side",thirdSwitchModel.get(0).switchState == "left" ? true : false)
+                spliceModel.setStructValue("Cut Off",cutteronoroff.state == "left" ? true : false)
+                spliceModel.setStructValue("Insulation",thirdSwitchModel.get(1).switchState == "left" ? true : false)
+
+                spliceModel.setStructValue("CutterTime",cutterModel.get(0).switchState == "left" ? true : false)
+                spliceModel.setStructValue("CutterPeakPower",cutterModel.get(1).switchState == "left" ? true : false)
+                spliceModel.setStructValue("CutterPreHeight",cutterModel.get(2).switchState == "left" ? true : false)
+                spliceModel.setStructValue("CutterPostHeight",cutterModel.get(3).switchState == "left" ? true : false)
+
+
+
                 var spliceId = spliceModel.saveSplice(creatWire.bIsEditSplice)
                 wireModel.updateSpliceIdToWire(list, spliceId)
                 if(creatWire.bIsFromLib)
@@ -1820,6 +1914,12 @@ Item {
                     weldListModel.append({"buttonName":qsTr("Step-Time")})
                     weldListModel.append({"buttonName":qsTr("Step-Power")})
 
+                }
+                onModel1Changed: {
+                    freshProcess()
+                }
+                onModel2Changed: {
+                    freshProcess()
                 }
             }
 
@@ -1983,6 +2083,8 @@ Item {
                 state: "left"
                 clip: true
                 onStateChanged: {
+                    freshProcess()
+
                     if (cutteronoroff.state == "left"){
                         cutterColumn.visible = true
                         loadName2.visible = true
@@ -2009,7 +2111,6 @@ Item {
 
             Column {
                 id: cutterColumn
-                visible: false
                 anchors.top: loadValue2.bottom
                 anchors.topMargin: 8
                 anchors.left: cutteronoroff.left
@@ -2017,6 +2118,7 @@ Item {
                 height: parent.height*0.46+30
                 clip: true
                 spacing: 8
+                visible: cutteronoroff.state == "left" ? true : false
                 Repeater {
                     model: cutterModel
                     delegate: Item {
@@ -2047,6 +2149,7 @@ Item {
                             state: switchState
                             clip: true
                             onStateChanged: {
+                                freshProcess()
                             }
                         }
                     }
@@ -2231,13 +2334,13 @@ Item {
             }
             Column {
                 id: thirdSwitch
-                anchors.top: loadValue.bottom
-                anchors.topMargin: 8
+                anchors.top: weldSetting.bottom
+                anchors.topMargin: -24
                 anchors.bottom: parent.bottom
                 anchors.left: weldSetting.left
 //                anchors.leftMargin: 20
                 width: (parent.width-40)/3
-                spacing: 8
+                spacing: 24
                 clip: true
                 Repeater {
                     model: thirdSwitchModel
@@ -2272,6 +2375,8 @@ Item {
                                 thirdSwitchModel.set(index,{"switchState":onoroff.state})
                                 if (thirdSwitchText == "Insulation:")
                                 {
+                                    freshProcess()
+
                                     if (onoroff.state == "left"){
                                         instulationButton.visible = true
                                         insulation.visible = true
@@ -2281,6 +2386,17 @@ Item {
                                         insulation.visible = false
                                     }
                                 }
+                                else if(thirdSwitchText == "Anti-Side:")
+                                {
+                                    if (onoroff.state == "left"){
+                                        loadValue.visible = true
+                                        loadName.visible = true
+                                    }
+                                    else {
+                                        loadValue.visible = false
+                                        loadName.visible = false
+                                    }
+                                }
                             }
                         }
                     }
@@ -2288,8 +2404,8 @@ Item {
             }
             Text {
                 id: loadName
-                anchors.top: weldSetting.bottom
-                anchors.topMargin: 16
+                anchors.top: thirdSwitch.top
+                anchors.topMargin: 100
                 anchors.left: weldSetting.left
                 anchors.leftMargin: 10
                 width: (parent.width/2-40)/3
@@ -2340,9 +2456,11 @@ Item {
                 text: qsTr("Load:")
                 color: "white"
                 clip: true
+                visible: cutteronoroff.state == "left" ? true : false
             }
             MiniKeyNumInput {
                 id: loadValue2
+                visible: loadName2.visible
                 anchors.verticalCenter: loadName2.verticalCenter
                 anchors.left: loadName2.right
                 anchors.leftMargin: -15
@@ -2423,17 +2541,19 @@ Item {
                     settingRightArea.visible = false
                 }
             }
+
             CButton {
                 width: 200
                 text: qsTr("Save")
                 textColor: "white"
+                visible: false
                 onClicked: {
                     spliceModel.setStructValue("WeldModel",weldListModel.model1)
                     spliceModel.setStructValue("StepModel",weldListModel.model2)
                     spliceModel.setStructValue("Pre Burst",weldSettingModel.get(0).textValue)
-                    spliceModel.setStructValue("Hold Time",weldSettingModel.get(1).textValue)
-                    spliceModel.setStructValue("After Burst",weldSettingModel.get(2).textValue)
-                    spliceModel.setStructValue("Squeeze Time",weldSettingModel.get(3).textValue)
+                    spliceModel.setStructValue("After Burst",weldSettingModel.get(1).textValue)
+                    spliceModel.setStructValue("Squeeze Time",weldSettingModel.get(2).textValue)
+                    spliceModel.setStructValue("Hold Time",weldSettingModel.get(3).textValue)
 
                     spliceModel.setStructValue("ActualWidth",widthModel.get(1).textValue)
                     spliceModel.setStructValue("ActualHeight",heightModel.get(1).textValue)
@@ -2442,8 +2562,8 @@ Item {
                     spliceModel.setStructValue("Load Time",loadValue2.inputText)
 
                     spliceModel.setStructValue("Anti-Side",thirdSwitchModel.get(0).switchState == "left" ? true : false)
-                    spliceModel.setStructValue("Cut Off",thirdSwitchModel.get(1).switchState == "left" ? true : false)
-                    spliceModel.setStructValue("Insulation",thirdSwitchModel.get(2).switchState == "left" ? true : false)
+                    spliceModel.setStructValue("Cut Off",cutteronoroff.state == "left" ? true : false)
+                    spliceModel.setStructValue("Insulation",thirdSwitchModel.get(1).switchState == "left" ? true : false)
 
 
                     settingRightArea.visible = false
@@ -2514,6 +2634,7 @@ Item {
             backGround.visible = false
             insulation.text = qsTr("  Insulation: ") + shrinkSet.shrinkId + qsTr(" Temp:") + shrinkSet.shrinkTemp + qsTr(" Time:") + shrinkSet.shrinkTime
             hmiAdaptor.addInsulation(shrinkSet.shrinkId,shrinkSet.shrinkTemp,shrinkSet.shrinkTime)
+            freshProcess()
         }
         onCancelClick: {
             shrinkSet.visible = false
@@ -2641,6 +2762,7 @@ Item {
             backGround.opacity = 0
             addWireLibrary.visible = false
             //modelId
+            currentSpliceId = modelId
             wireModel.addFromLibrary(modelId)
             spliceDetailsItem.addWireFromLibrary()
 
@@ -2663,6 +2785,7 @@ Item {
         currentValue: "4"
         onCurrentClickIndex: {
             if (index == 15) {
+                freshProcess()
                 if (edit2.inputFocus) {
                     edit2.inputText = keyNum.inputText
                     edit2.inputFocus = false

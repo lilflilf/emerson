@@ -1214,6 +1214,11 @@ int HmiAdaptor::timeChangeToInt(QString time)
     return temptime.toTime_t();
 }
 
+void HmiAdaptor::setProcess()
+{
+    operateProcess->CurrentSplice = spliceModel->processPresetElement;
+}
+
 void HmiAdaptor::setOperateProcess(int spliceId, bool isText)
 {
     m_spliceAdaptor->QueryOneRecordFromTable(spliceId,&operateProcess->CurrentSplice);
