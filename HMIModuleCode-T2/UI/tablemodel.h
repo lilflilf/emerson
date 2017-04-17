@@ -28,6 +28,8 @@
 #include "Interface/StringToVariant.h"
 #include "Interface/Settings/PermissionSetting.h"
 #include "Interface/UpperRightIcon/AlarmIcon.h"
+#include "Interface/SequenceElement.h"
+#include "DataBase/DBSequenceTable.h"
 
 class WorkOrderModel : public QAbstractTableModel
 {
@@ -116,6 +118,8 @@ public slots:
     Q_INVOKABLE void removeValue(int id, QString name);
     Q_INVOKABLE int count();
     Q_INVOKABLE void calculateSpliceData();
+
+    Q_INVOKABLE QString getValueString(QString valueKey, QString value);
 
     Q_INVOKABLE QString getStructValue(QString valueKey, QString valueType); // create wire
     Q_INVOKABLE int getRawData(QString key);
@@ -434,6 +438,50 @@ public slots:
 private:
     QHash<int, QByteArray> m_roleNames;
 };
+
+//class SequenceModel : public QAbstractTableModel
+//{
+//    Q_OBJECT
+//public:
+//    explicit SequenceModel(QObject *parent = 0);
+//    void setModelList(unsigned int time_from, unsigned int time_to);
+//    void setModelList();
+
+//    QStringList m_idList;
+//    DBSequenceTable *m_sequenceAdaptor;
+//    QMap<int, QString> *sequences;
+//    SequenceElement sequenceElement;
+
+//protected:
+//    int rowCount(const QModelIndex &parent) const;
+//    int columnCount(const QModelIndex &parent) const;
+//    QVariant data(const QModelIndex &index, int role) const;
+//    QVariant headerData(int section, Qt::Orientation orientation, int role) const;
+//    QHash<int, QByteArray> roleNames() const;
+
+//signals:
+
+
+//public slots:
+//    void setRoles(const QStringList &names);
+//    Q_INVOKABLE QVariant getValue(int index, QString key);
+//    Q_INVOKABLE void removeValue(int id, QString name);
+//    Q_INVOKABLE int getSequenceId(int index);
+
+//    Q_INVOKABLE void editNew(int index, int sequenceId);
+//    Q_INVOKABLE QVariant getStructValue(QString key);
+
+//    Q_INVOKABLE int count();
+
+//    Q_INVOKABLE bool updateRecordIntoTable(int sequenceId, QString oldWorkName, QString workName, int partId, QString partName, int count);
+//    Q_INVOKABLE bool insertRecordIntoTable(QString sequenceName, int sequenceId, QString sequenceName, int count);
+
+////    Q_INVOKABLE bool exportData(int workOrderId, QString fileUrl);
+////    Q_INVOKABLE int importData(QString value, QMap<int,QString> partMap);
+
+//private:
+//    QHash<int, QByteArray> m_roleNames;
+//};
 
 
 #endif // TABLEMODEL_H

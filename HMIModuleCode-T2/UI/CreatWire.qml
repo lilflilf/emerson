@@ -88,8 +88,8 @@ Item {
 
         settingsModel.append({"tipText":qsTr("Energy"),"topText":qsTr(""),"bottomText":spliceModel.getStructValue("Energy","current"),"maxText":spliceModel.getStructValue("Energy","max"),"minText":spliceModel.getStructValue("Energy","min")})
         settingsModel.append({"tipText":qsTr("T.Pressure"),"topText":qsTr(""),"bottomText":spliceModel.getStructValue("Trigger Pressure","current"),"maxText":spliceModel.getStructValue("Trigger Pressure","max"),"minText":spliceModel.getStructValue("Trigger Pressure","min")})
-        settingsModel.append({"tipText":qsTr("W.Pressure"),"topText":qsTr(""),"bottomText":spliceModel.getStructValue("Amplitude","current"),"maxText":spliceModel.getStructValue("Amplitude","max"),"minText":spliceModel.getStructValue("Amplitude","min")})
-        settingsModel.append({"tipText":qsTr("Amplitude"),"topText":qsTr(""),"bottomText":spliceModel.getStructValue("Weld Pressure","current"),"maxText":spliceModel.getStructValue("Weld Pressure","max"),"minText":spliceModel.getStructValue("Weld Pressure","min")})
+        settingsModel.append({"tipText":qsTr("W.Pressure"),"topText":qsTr(""),"bottomText":spliceModel.getStructValue("Weld Pressure","current"),"maxText":spliceModel.getStructValue("Weld Pressure","max"),"minText":spliceModel.getStructValue("Weld Pressure","min")})
+        settingsModel.append({"tipText":qsTr("Amplitude"),"topText":qsTr(""),"bottomText":spliceModel.getStructValue("Amplitude","current"),"maxText":spliceModel.getStructValue("Amplitude","max"),"minText":spliceModel.getStructValue("Amplitude","min")})
         settingsModel.append({"tipText":qsTr("Width"),"topText":qsTr(""),"bottomText":spliceModel.getStructValue("Width","current"),"maxText":spliceModel.getStructValue("Width","max"),"minText":spliceModel.getStructValue("Width","min")})
 
     }
@@ -110,8 +110,8 @@ Item {
 
         spliceModel.setProcessValue("Energy",settingsModel.get(0).bottomText);
         spliceModel.setProcessValue("Trigger Pressure",settingsModel.get(1).bottomText);
-        spliceModel.setProcessValue("Amplitude",settingsModel.get(2).bottomText);
-        spliceModel.setProcessValue("Weld Pressure",settingsModel.get(3).bottomText);
+        spliceModel.setProcessValue("Weld Pressure",settingsModel.get(2).bottomText);
+        spliceModel.setProcessValue("Amplitude",settingsModel.get(3).bottomText);
         spliceModel.setProcessValue("Width",settingsModel.get(4).bottomText);
 
         spliceModel.setProcessValue("Time-",settingsModel2.get(0).bottomText);
@@ -1767,8 +1767,8 @@ Item {
 
                 spliceModel.setStructValue("Energy",settingsModel.get(0).bottomText);
                 spliceModel.setStructValue("Trigger Pressure",settingsModel.get(1).bottomText);
-                spliceModel.setStructValue("Amplitude",settingsModel.get(2).bottomText);
-                spliceModel.setStructValue("Weld Pressure",settingsModel.get(3).bottomText);
+                spliceModel.setStructValue("Weld Pressure",settingsModel.get(2).bottomText);
+                spliceModel.setStructValue("Amplitude",settingsModel.get(3).bottomText);
                 spliceModel.setStructValue("Width",settingsModel.get(4).bottomText);
 
                 spliceModel.setStructValue("Time-",settingsModel2.get(0).bottomText);
@@ -2080,8 +2080,8 @@ Item {
                 height: loadValue.height
                 textLeft: qsTr("ON")
                 textRight: qsTr("OFF")
-                state: "left"
                 clip: true
+                state: spliceModel.getStructValue("Cut Off","current")
                 onStateChanged: {
                     freshProcess()
 
@@ -2822,11 +2822,15 @@ Item {
 
                     if (creatWire.selectModel == 1)
                     {
+//                        var tempString;
+//                        if (creatWire.selectIndex == 0)
+//                            tempString = spliceModel.getValueString("Time",hmiAdaptor.getStringValue(keyNum.inputText))
                         repeater.model.set(creatWire.selectIndex,{"bottomText":keyNum.inputText})
                         repeater.itemAt(creatWire.selectIndex).localbordercolor = "#0079c1"
                     }
                     else if (creatWire.selectModel == 2)
                     {
+
                         repeater2.model.set(creatWire.selectIndex,{"bottomText":keyNum.inputText})
                         repeater2.itemAt(creatWire.selectIndex).localbordercolor = "#0079c1"
                     }

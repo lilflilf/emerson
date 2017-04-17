@@ -55,6 +55,7 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
 
     HmiAdaptor *hmiAdaptor = new HmiAdaptor();
+    MODstart::Instance();
     hmiAdaptor->taskBarHeight = y;
     engine.rootContext()->setContextProperty("hmiAdaptor",hmiAdaptor);
     engine.rootContext()->setContextProperty("workOrderModel",hmiAdaptor->workOrderModel);
@@ -66,6 +67,5 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("alarmModel",hmiAdaptor->alarmModel);
     engine.rootContext()->setContextProperty("maintenanceLogModel",hmiAdaptor->maintenanceLogModel);
     engine.load(QUrl(QStringLiteral("qrc:/UI/main.qml")));
-    MODstart::Instance();
     return app.exec();
 }
