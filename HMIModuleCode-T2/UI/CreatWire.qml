@@ -1903,7 +1903,7 @@ Item {
             }
             ListModel {
                 id: weldListModel
-                property var model1: -1
+                property var model1: 1
                 property var model2: -1
                 Component.onCompleted: {
                     weldListModel.append({"buttonName":qsTr("Energy")})
@@ -1950,8 +1950,13 @@ Item {
                             visible: false
                             checked: index < 4 ? spliceModel.getWeldMode("weld",index) : spliceModel.getWeldMode("step",index - 4)  //index == 0 ? true : false
                             onCheckedChanged: {
-                                if (weldModelCheck.checked)
+                                if (weldModelCheck.checked) {
                                     weldModelButton.backgroundComponent = buttonBackBlue
+                                    if (index < 4)
+                                        weldListModel.model1 = index
+                                    else if (index >=4 )
+                                        weldListModel.model2 = index - 4
+                                }
                                 else
                                     weldModelButton.backgroundComponent = buttonBackWhite
                             }

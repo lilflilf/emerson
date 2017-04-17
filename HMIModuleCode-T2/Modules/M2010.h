@@ -322,10 +322,10 @@ public:
     bool BandThreeFlag;
 
     int SpliceFileCount, SequenceFileCount;
-    string sPARTFILES[];
-    string sPARTNAMES[];
-    string sSEQFILES[];
-    string sSEQNAMES[];
+    string *sPARTFILES;
+    string *sPARTNAMES;
+    string *sSEQFILES;
+    string *sSEQNAMES;
 
     M10Part Splice;
 
