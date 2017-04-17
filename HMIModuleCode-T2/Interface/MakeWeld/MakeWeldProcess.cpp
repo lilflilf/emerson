@@ -60,11 +60,9 @@ void MakeWeldProcess::UpdateIAFields()
     //11B = Egy/Hgt
 
     _M102IA->IAsetup.ModeFlags = CurrentSplice.WeldSettings.AdvanceSetting.WeldMode;
-    DEBUG_PRINT(_M102IA->IAsetup.ModeFlags);
     _M102IA->IAsetup.Time.max = CurrentSplice.WeldSettings.QualitySetting.Time.Plus;
     _M102IA->IAsetup.Time.min = CurrentSplice.WeldSettings.QualitySetting.Time.Minus;
     _M102IA->IAsetup.Power.max = CurrentSplice.WeldSettings.QualitySetting.Power.Plus;
-    DEBUG_PRINT(_M102IA->IAsetup.Power.max);
     _M102IA->IAsetup.Power.min = CurrentSplice.WeldSettings.QualitySetting.Power.Minus;
     _M102IA->IAsetup.Preheight.max = CurrentSplice.WeldSettings.QualitySetting.Preheight.Plus;
     _M102IA->IAsetup.Preheight.min = CurrentSplice.WeldSettings.QualitySetting.Preheight.Minus;
@@ -85,7 +83,6 @@ void MakeWeldProcess::UpdateWeldResult()
     CurrentWeldResult.ActualResult.ActualEnergy = _M102IA->IAactual.Energy;
     CurrentWeldResult.ActualResult.ActualWidth = _M102IA->IAactual.Width;
     CurrentWeldResult.ActualResult.ActualTime = _M102IA->IAactual.Time;
-    qDebug()<<"Current Time"<< _M102IA->IAactual.Time;
     CurrentWeldResult.ActualResult.ActualPeakPower = _M102IA->IAactual.Power;
     CurrentWeldResult.ActualResult.ActualPreheight = _M102IA->IAactual.Preheight;
     CurrentWeldResult.ActualResult.ActualAmplitude = _M102IA->IAactual.Amplitude;
@@ -165,6 +162,7 @@ void MakeWeldProcess::WeldCycleDaemonThread(void* _obj)
     MakeWeldProcess* _ObjectPtr = (MakeWeldProcess*)_obj;
     Statistics* _Statistics = Statistics::Instance();
     DBWeldResultTable* _WeldResultDB = DBWeldResultTable::Instance();
+    bool StopThreadFlag = false;
     //1. Receive Power and Height Graph Data
     switch(_ObjectPtr->CurrentStep)
     {
@@ -177,7 +175,6 @@ void MakeWeldProcess::WeldCycleDaemonThread(void* _obj)
         else
         {
             _ObjectPtr->CurrentWeldResult.PowerGraph.clear();
-            qDebug()<<"GraphDataList.size"<<_M102IA->RawPowerDataGraph.GraphDataList.size();
             _M2010->ConvertPowerGraphData(_M102IA->RawPowerDataGraph.GraphDataList,
                                      &_ObjectPtr->CurrentWeldResult.PowerGraph);
             for(int i = 0; i < _ObjectPtr->CurrentWeldResult.PowerGraph.size(); i++)
@@ -219,6 +216,7 @@ void MakeWeldProcess::WeldCycleDaemonThread(void* _obj)
         _ObjectPtr->WeldCycleStatus = false;
         _ObjectPtr->CurrentWeldResult.PowerGraph.clear();
         _ObjectPtr->CurrentWeldResult.PostHeightGraph.clear();
+        StopThreadFlag = true;
     }
     else if(_ObjectPtr->CurrentStep == STEPTrd)
     {
@@ -237,9 +235,14 @@ void MakeWeldProcess::WeldCycleDaemonThread(void* _obj)
             _ObjectPtr->WeldCycleStatus = true;
         else
             _ObjectPtr->WeldCycleStatus = false;
+        StopThreadFlag = true;
+    }
+    if(StopThreadFlag == true)
+    {
         emit _ObjectPtr->WeldCycleCompleted(&_ObjectPtr->WeldCycleStatus);
         m_pThread->setStopEnabled(true);
         m_pThread->setSuspendEnabled(true);
+        _ObjectPtr->m_pReadySM->ReadyState = ReadyStateMachine::READYON;
     }
 }
 
@@ -330,16 +333,6 @@ bool MakeWeldProcess::_stop()
     struct BransonMessageBox tmpMsgBox;
     bool bResult = true;
     disconnect(_M102IA, SIGNAL(WeldCycleSignal(bool&)),this, SLOT(WeldResultEventSlot(bool&)));
-
-    if(_M102IA->SendCommandSetRunMode(OFF) == false)
-    {
-        tmpMsgBox.MsgTitle = QObject::tr("ERROR");
-        tmpMsgBox.MsgPrompt = QObject::tr("Can't get any Response from controller!");
-        tmpMsgBox.TipsMode = Critical;
-        tmpMsgBox.func_ptr = NULL;
-        _Interface->cMsgBox(&tmpMsgBox);
-        bResult = false;
-    }
     //Delete Thread and release resource
     if(m_pThread != NULL)
     {
@@ -353,6 +346,15 @@ bool MakeWeldProcess::_stop()
     m_pReadySM->_stop();
     connect(_M102IA, SIGNAL(AlarmStatusSignal(bool&)),
             this,SLOT(AnyAlarmEventSlot(bool&)));
+    if(_M102IA->SendCommandSetRunMode(OFF) == false)
+    {
+        tmpMsgBox.MsgTitle = QObject::tr("ERROR");
+        tmpMsgBox.MsgPrompt = QObject::tr("Can't get any Response from controller!");
+        tmpMsgBox.TipsMode = Critical;
+        tmpMsgBox.func_ptr = NULL;
+        _Interface->cMsgBox(&tmpMsgBox);
+        bResult = false;
+    }
     return bResult;
 }
 
@@ -411,6 +413,7 @@ bool MakeWeldProcess::_execute()
             _Interface->StatusData.MachineType;
     _M102IA->SendIACommand(IAComSetActuator, 0);
     _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.ActuatorType);
+//    DEBUG_PRINT(_M2010->TempActuatorInfo.CurrentActuatorMode);
 
     _M2010->ReceiveFlags.CutterResponseData = false;
     if(CurrentSplice.WeldSettings.AdvanceSetting.CutOffOption.CutOff == true)

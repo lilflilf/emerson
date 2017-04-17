@@ -229,6 +229,7 @@ public:
     void Save_StatusData(bool WithUpdate = true);
     void HelpFileLoader();
     void Init_AWGToMMTable();
+    void CheckBransonFolder();
 public:
     static M10INI* Instance();
 protected:

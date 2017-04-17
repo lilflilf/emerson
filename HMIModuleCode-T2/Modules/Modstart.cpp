@@ -61,7 +61,6 @@ MODstart::MODstart()
     _MDefine->WriteHistoryFlag = false;
     _MDefine->MessageFlag.DataGraphComplete = true;
     _MDefine->MessageFlag.EmergencyStopMessage = false;
-//    _M10INI->Get_INI_File();
     GlobalInitM10();
     CheckIOStatus();
     if (_Interface->StatusData.ComInfo.COMport == -1)
@@ -265,7 +264,6 @@ void MODstart::GlobalInitM10()
     ptr_M2010->M10Run.Alarm_found = false;
     ptr_M10INI->Power_to_Watts = _Interface->StatusData.Soft_Settings.SonicGenWatts / 200;
     _Utility->Maxpower = (float)(1.2 * _Interface->StatusData.Soft_Settings.SonicGenWatts);
-    DEBUG_PRINT(_Utility->Maxpower);
     for (i = 0; i <= 6; i++)
         ptr_M10INI->Pwr_Prefix_Data[i] = i * float(0.2 * _Interface->StatusData.Soft_Settings.SonicGenWatts);
 

@@ -1,6 +1,5 @@
 #include "hmiadaptor.h"
 #include "Modules/typedef.h"
-#include "Modules/M10INI.h"
 #include <qdebug.h>
 #include <QSqlQuery>
 #include <QSqlError>
@@ -15,9 +14,9 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
 {
 
     interfaceClass = InterfaceClass::Instance();
-    M10INI *_M10INI = M10INI::Instance();
-    _M10INI->Get_INI_File();
     workOrderModel = new WorkOrderModel(this);
+    operateProcess = MakeWeldProcess::Instance();
+
     QStringList list;
     list << "WorkOrderId" << "WorkOrderName" << "DateCreated" << "PART" << "QUANTITY";
     workOrderModel->setRoles(list);
@@ -98,7 +97,6 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
     m_spliceAdaptor = DBPresetTable::Instance();
     testSpliceId = -1;
     editPartId = -1;
-    operateProcess = MakeWeldProcess::Instance();
 
 }
 
@@ -1013,6 +1011,7 @@ bool HmiAdaptor::dataCommunicationSetValue(QList<bool> boolList, QStringList str
 
 void HmiAdaptor::slotWeldCycleCompleted(bool result)
 {
+    qDebug() << "slotWeldCycleCompleted in hmiadaptor" << result;
     if (result) {
         alarmModel->weldResultElement = operateProcess->CurrentWeldResult;
         emit signalWeldCycleCompleted(result);

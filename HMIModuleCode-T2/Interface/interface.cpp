@@ -18,9 +18,7 @@ InterfaceClass* InterfaceClass::Instance()
 InterfaceClass::InterfaceClass(QObject *parent)
     :QObject(parent)
 {
-    M10INI* _M10INI = M10INI::Instance();
-    CheckBransonFolder();
-    _M10INI->Init_AWGToMMTable();
+
 }
 
 InterfaceClass::~InterfaceClass()

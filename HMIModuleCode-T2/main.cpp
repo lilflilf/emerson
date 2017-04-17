@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <QFile>
 #include "Modules/Modstart.h"
+#include "Modules/M10INI.h"
 #include <QQuickView>
 #include <QQmlEngine>
 #include "TestCase/databasetest.h"
@@ -14,7 +15,7 @@
 #include <QHash>
 #include <QDateTime>
 #include <QDesktopWidget>
-#include "Modules/ShrinkTubeSerial.h"
+
 int main(int argc, char *argv[])
 {
 
@@ -54,8 +55,12 @@ int main(int argc, char *argv[])
     app.installTranslator(&translator);
     QQmlApplicationEngine engine;
 
+    M10INI *pM10INI = M10INI::Instance();
+    pM10INI->CheckBransonFolder();
+    pM10INI->Init_AWGToMMTable();
+    pM10INI->Get_INI_File();
+
     HmiAdaptor *hmiAdaptor = new HmiAdaptor();
-    MODstart::Instance();
     hmiAdaptor->taskBarHeight = y;
     engine.rootContext()->setContextProperty("hmiAdaptor",hmiAdaptor);
     engine.rootContext()->setContextProperty("workOrderModel",hmiAdaptor->workOrderModel);
@@ -67,5 +72,6 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("alarmModel",hmiAdaptor->alarmModel);
     engine.rootContext()->setContextProperty("maintenanceLogModel",hmiAdaptor->maintenanceLogModel);
     engine.load(QUrl(QStringLiteral("qrc:/UI/main.qml")));
+    MODstart::Instance();
     return app.exec();
 }

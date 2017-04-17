@@ -798,7 +798,7 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
 //        LastIOstatus.IO = CLng(LastIOSwitchData.WordData)
         _M2010->ReceiveFlags.IOSWITCHdata = true;
         CheckIAControl();
-        DEBUG_PRINT(IOstatus.IO);
+//        DEBUG_PRINT(IOstatus.IO);
         break;
     case IASigAbortEnable:
         temp = MakeHexWordNumber(HexString.mid(9, 4));
