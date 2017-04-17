@@ -397,6 +397,7 @@ void SplicesModel::calculateSpliceData()
 QString SplicesModel::getValueString(QString valueKey, QString value)
 {
 
+
 }
 
 QString SplicesModel::getStructValue(QString valueKey, QString valueType)
