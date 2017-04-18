@@ -18,7 +18,6 @@ bool AdvancedMaintenance::ConverterCoolingTest = false;
 bool AdvancedMaintenance::ToolingCoolingTest = false;
 unsigned long AdvancedMaintenance::PreviousIO = 0;
 QTimer* AdvancedMaintenance::Timer = NULL;
-bool AdvancedMaintenance::IsTimerRunning = false;
 AdvancedMaintenance::AdvancedMaintenance()
 {
 //    m_Thread = NULL;
@@ -27,27 +26,16 @@ AdvancedMaintenance::AdvancedMaintenance()
 
 bool AdvancedMaintenance::_start()
 {
-//    m_Thread = new ThreadClass(0, (void*)(AdvancedMaintenance::AdvancedMaintenanceHandle), this);
-//    m_Thread->setStopEnabled(false);
-//    m_Thread->setSuspendEnabled(false);
-//    m_Thread->start();
     Timer = NULL;
     Timer = new QTimer(this);
     connect(Timer, SIGNAL(timeout()),this, SLOT(TimeoutEventSlot()));
-    Timer->setInterval(1000);//1second
+    Timer->setInterval(500);//500msecond
     Timer->start();
-    IsTimerRunning = false;
     return true;
 }
 
 bool AdvancedMaintenance::_stop()
 {
-//    m_Thread->setSuspendEnabled(true);
-//    m_Thread->setStopEnabled(true);
-//    qDebug()<<"Thread stop"<<m_Thread->wait();
-//    delete m_Thread;
-//    m_Thread = NULL;
-
     if(Timer->isActive() == true)
         Timer->stop();
     if(Timer != NULL)
@@ -60,9 +48,6 @@ bool AdvancedMaintenance::_stop()
 
 bool AdvancedMaintenance::_execute(int funCode)
 {
-    if(IsTimerRunning == true)
-        Timer->stop();
-    Timer->stop();
     bool bResult = true;
     DBMaintenanceLogTable* _MaintenanceLog =
             DBMaintenanceLogTable::Instance();
@@ -114,7 +99,6 @@ bool AdvancedMaintenance::_execute(int funCode)
         bResult = false;
         break;
     }
-    Timer->start(1000);
     return bResult;
 }
 
@@ -265,8 +249,6 @@ void AdvancedMaintenance::Safety_Click()
 
 void AdvancedMaintenance::ConverterCooling_Click()
 {
-    if(IsTimerRunning == true)
-        return;
     M2010* _M2010 = M2010::Instance();
     M102IA* _M102IA = M102IA::Instance();
     if((ConverterCoolingTest == false) || (_M2010->M10Run.CoolingOn == false))
@@ -302,77 +284,23 @@ void AdvancedMaintenance::ToolingCooling_click()
 void AdvancedMaintenance::TimeoutEventSlot()
 {
     Timer->stop();
-    IsTimerRunning = true;
     M102IA* _M102IA = M102IA::Instance();
-    M2010* _M2010 = M2010::Instance();
-    InterfaceClass* _Interface = InterfaceClass::Instance();
-    _M2010->ReceiveFlags.IOdata = false;
-    _M102IA->IACommand(IAComSendIOdata);
-    _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.IOdata);
-    if(_M2010->ReceiveFlags.IOdata == true)
+    if(_M102IA->IOstatus.IO != PreviousIO)
     {
-        if(_M102IA->IOstatus.IO != PreviousIO)
-        {
-            PreviousIO = _M102IA->IOstatus.IO;
-            UpdateAnvilArm();
-            UpdateAnvil();
-            UpdateGather();
-            UpdateSafety();
-            UpdateConverterCooling();
-            UpdateIN2();
-            UpdateCrash();
-            UpdateCutter();
-            UpdateToolingCooling();
-            emit IOstatusFeedback(PreviousIO);
-        }
-        _M2010->ReceiveFlags.IOdata = false;
-    }else{
-        struct BransonMessageBox tmpMsgBox;
-        tmpMsgBox.MsgTitle = QObject::tr("Warning");
-        tmpMsgBox.MsgPrompt = QObject::tr("Can't get any Response from controller!");
-        tmpMsgBox.TipsMode = Exclamation;
-        tmpMsgBox.func_ptr = NULL;
-        _Interface->cMsgBox(&tmpMsgBox);
+        PreviousIO = _M102IA->IOstatus.IO;
+        UpdateAnvilArm();
+        UpdateAnvil();
+        UpdateGather();
+        UpdateSafety();
+        UpdateConverterCooling();
+        UpdateIN2();
+        UpdateCrash();
+        UpdateCutter();
+        UpdateToolingCooling();
+        emit IOstatusFeedback(PreviousIO);
     }
-    IsTimerRunning = false;
-//    qDebug()<<"Timer running";
-    Timer->start(1000);//1 second
+    Timer->start(500);//500 msecond
 }
-
-//void AdvancedMaintenance::AdvancedMaintenanceHandle(void* _obj)
-//{
-//    M102IA* _M102IA = M102IA::Instance();
-//    M2010* _M2010 = M2010::Instance();
-//    InterfaceClass* _Interface = InterfaceClass::Instance();
-//    _M2010->ReceiveFlags.IOdata = false;
-//    _M102IA->IACommand(IAComSendIOdata);
-//    _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.IOdata);
-//    if(_M2010->ReceiveFlags.IOdata == true)
-//    {
-//        if(_M102IA->IOstatus.IO != PreviousIO)
-//        {
-//            PreviousIO = _M102IA->IOstatus.IO;
-//            UpdateAnvilArm();
-//            UpdateAnvil();
-//            UpdateGather();
-//            UpdateSafety();
-//            UpdateConverterCooling();
-//            UpdateIN2();
-//            UpdateCrash();
-//            UpdateCutter();
-//            UpdateToolingCooling();
-//            emit ((AdvancedMaintenance*)_obj)->IOstatusFeedback(PreviousIO);
-//        }
-//       _M2010->ReceiveFlags.IOdata = false;
-//    }else{
-//        struct BransonMessageBox tmpMsgBox;
-//        tmpMsgBox.MsgTitle = QObject::tr("Warning");
-//        tmpMsgBox.MsgPrompt = QObject::tr("Can't get any Response from controller!");
-//        tmpMsgBox.TipsMode = Exclamation;
-//        tmpMsgBox.func_ptr = NULL;
-//        _Interface->cMsgBox(&tmpMsgBox);
-//    }
-//}
 
 void AdvancedMaintenance::UpdateAnvil()
 {

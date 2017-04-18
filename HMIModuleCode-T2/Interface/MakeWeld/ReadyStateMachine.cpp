@@ -55,7 +55,7 @@ void ReadyStateMachine::TimeoutEventSlot()
             _M2010->ReceiveFlags.HostReadyData = false;
             _M102IA->IACommand(IAComHostReady);
             _M102IA->WaitForResponseAfterSent(DELAY1SEC,&_M2010->ReceiveFlags.HostReadyData);
-            DEBUG_PRINT(_M2010->ReceiveFlags.HostReadyData);
+//            DEBUG_PRINT(_M2010->ReceiveFlags.HostReadyData);
         }
         break;
     case READYOFF:
