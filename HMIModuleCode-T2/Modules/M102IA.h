@@ -187,8 +187,10 @@ enum IASig{
     IASigActuatorVer,       //0x29
     IASigActuatorPartNum,   //0x2A
     IASigActuatorSerialNum, //0x2B
-    IASigResetReady,       //0x2C
-    IASigHeightGraph,      //0x2D
+    IASigResetReady,        //0x2C
+    IASigHeightGraph,       //0x2D
+    IASigReliablityMode,    //0x2E
+    IASigPhysicalKeyMode,   //0x2F
     IASigEnd,               //Identifies end of Enum
     IASigMax = IASigEnd - 1,     //Used by functions to test for limit
 };
@@ -410,6 +412,7 @@ signals:
     void AlarmStatusSignal(bool &_status);
     void HeightGraphSignal(bool &_status);
     void PowerGraphSignal(bool &_status);
+    void PhysicalKeySignal(bool & _status);
 public:
     static M102IA* Instance();
 protected:

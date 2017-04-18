@@ -1021,6 +1021,18 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         _M2010->ReceiveFlags.HeightGraphData = true;
         emit HeightGraphSignal(_M2010->ReceiveFlags.HeightGraphData);
         break;
+    case IASigReliablityMode:
+        _Interface->StatusData.ReliablityMode =
+                MakeHexWordNumber(HexString.mid(9, 4));
+        _M2010->ReceiveFlags.ReliabilityModeData = true;
+        break;
+    case IASigPhysicalKeyMode:
+        _Interface->StatusData.PhysicalKeyMode =
+                MakeHexWordNumber(HexString.mid(9, 4));
+        DEBUG_PRINT(_Interface->StatusData.PhysicalKeyMode);
+        emit PhysicalKeySignal(_Interface->StatusData.PhysicalKeyMode);
+       break;
+        break;
     default:
         break;
     }

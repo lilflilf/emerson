@@ -175,6 +175,8 @@ Status_Data &Status_Data::operator= (const Status_Data &StatusDataObj)
     {
         this->carTemplate.insert(it.key(),it.value());
     }
+    this->ReliablityMode = StatusDataObj.ReliablityMode;
+    this->PhysicalKeyMode = StatusDataObj.PhysicalKeyMode;
     return *this;
 }
 
