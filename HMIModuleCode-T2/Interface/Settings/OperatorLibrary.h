@@ -8,11 +8,11 @@ class OperatorElement
 public:
     enum PASSWORDCONTROL
     {
+        PHYKEY,
         LEVEL1,
         LEVEL2,
         LEVEL3,
-        LEVEL4,
-        PHYKEY,
+        LEVEL4
     };
     int RevCode;
     int OperatorID;

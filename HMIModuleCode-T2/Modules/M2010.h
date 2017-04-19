@@ -117,6 +117,9 @@ struct BitFlag{
     bool ActuatorType;
     bool CutterResponseData;
     bool ReliabilityModeData;
+    bool CoolingTypeData;
+    bool LockOnAlarmData;
+    bool MachineFlagsData;
 };
 
 enum Last_made{
