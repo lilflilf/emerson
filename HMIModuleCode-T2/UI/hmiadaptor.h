@@ -199,7 +199,7 @@ signals:
 
     void signalPhysicalKeySignal(bool status);
 public slots:
-    void slotPhysicalKeySignal(bool status);
+    void slotPhysicalKeySignal(bool &status);
     void slotWeldCycleCompleted(bool result);
     void slotEnableDialog(struct BransonMessageBox &MsgBox);
     void slotDisableDialog(struct BransonMessageBox &MsgBox);

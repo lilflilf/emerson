@@ -104,7 +104,7 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
     editPartId = -1;
     bIsPhysicalKey = false;
     m102ia = M102IA::Instance();
-    connect(m102ia,SIGNAL(PhysicalKeySignal(bool&)),this,SLOT(slotPhysicalKeySignal(bool)));
+    connect(m102ia,SIGNAL(PhysicalKeySignal(bool&)),this,SLOT(slotPhysicalKeySignal(bool&)));
 
 }
 
@@ -1632,8 +1632,9 @@ void HmiAdaptor::removeShrink(int selectIndex)
     }
 }
 
-void HmiAdaptor::slotPhysicalKeySignal(bool status)
+void HmiAdaptor::slotPhysicalKeySignal(bool &status)
 {
+    qDebug() << "slotPhysicalKeySignal" << status;
     bIsPhysicalKey = status;
     emit signalPhysicalKeySignal(status);
 }
