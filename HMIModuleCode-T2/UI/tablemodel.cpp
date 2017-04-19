@@ -2019,13 +2019,15 @@ void OperatorModel::insertValue(QString name, QString passwd,int level)
     myOperator.OperatorName = name;
     myOperator.Password = passwd;
     if (level == 1)
-        myOperator.PermissionLevel = PASSWORDCONTROL::ADMINISTRATOR;
+        myOperator.PermissionLevel = OperatorElement::LEVEL1;
     else if (level == 2)
-        myOperator.PermissionLevel = PASSWORDCONTROL::TECHNICIAN;
+        myOperator.PermissionLevel = OperatorElement::LEVEL2;
     else if (level == 3)
-        myOperator.PermissionLevel = PASSWORDCONTROL::QUALITYCONTROL;
+        myOperator.PermissionLevel = OperatorElement::LEVEL3;
     else if (level == 4)
-        myOperator.PermissionLevel = PASSWORDCONTROL::OPEN;
+        myOperator.PermissionLevel = OperatorElement::LEVEL4;
+    else if (level == 5)
+        myOperator.PermissionLevel = OperatorElement::PHYKEY;
     myOperator.CreatedDate = QDateTime::currentDateTime().toTime_t();
     m_operatorAdaptor->InsertRecordIntoTable(&myOperator);
     setModelList();
@@ -2063,13 +2065,15 @@ void OperatorModel::updateOperator(int id, QString name, QString passwd, int lev
     myOperator.OperatorName = name;
     myOperator.Password = passwd;
     if (level == 1)
-        myOperator.PermissionLevel = PASSWORDCONTROL::ADMINISTRATOR;
+        myOperator.PermissionLevel = OperatorElement::LEVEL1;
     else if (level == 2)
-        myOperator.PermissionLevel = PASSWORDCONTROL::TECHNICIAN;
+        myOperator.PermissionLevel = OperatorElement::LEVEL2;
     else if (level == 3)
-        myOperator.PermissionLevel = PASSWORDCONTROL::QUALITYCONTROL;
+        myOperator.PermissionLevel = OperatorElement::LEVEL3;
     else if (level == 4)
-        myOperator.PermissionLevel = PASSWORDCONTROL::OPEN;
+        myOperator.PermissionLevel = OperatorElement::LEVEL4;
+    else if (level == 5)
+        myOperator.PermissionLevel = OperatorElement::PHYKEY;
     m_operatorAdaptor->UpdateRecordIntoTable(&myOperator);
     setModelList();
 }

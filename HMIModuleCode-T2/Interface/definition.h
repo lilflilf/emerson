@@ -266,17 +266,6 @@ struct PartIndex
     unsigned int PartHash;
 };
 
-enum PASSWORDCONTROL
-{
-    SUPERUSER,
-    ADMINISTRATOR,
-    TECHNICIAN,
-    QUALITYCONTROL,
-    OPEN,
-};
-
-
-
 enum ALARMTYPE
 {
     NONEALARM = -1,

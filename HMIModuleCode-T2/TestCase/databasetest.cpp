@@ -180,13 +180,13 @@ void DataBaseTest::TestInsertOneRecordIntoWorkOrderTable()
 void DataBaseTest::TestInsertOneRecordIntoOperatorTable()
 {
     SQLITCLASS *_SQLITCLASS = DBOperatorTable::Instance();
-    struct OperatorElement tmpOperator;
+    OperatorElement tmpOperator;
     tmpOperator.OperatorName = "TESTOperator";
     QDateTime tmp = QDateTime::fromString("2016/10/20 00:00:00", "yyyy/MM/dd hh:mm:ss");
     tmpOperator.CreatedDate = tmp.toTime_t();
     tmpOperator.WhoCreatedNewID = 2;
     tmpOperator.Password = "4567";
-    tmpOperator.PermissionLevel = OPEN;
+    tmpOperator.PermissionLevel = OperatorElement::LEVEL1;
 
     _SQLITCLASS->InsertRecordIntoTable(&tmpOperator);
 }
@@ -636,14 +636,14 @@ void DataBaseTest::TestUpdateOneRecordIntoOperatorTable()
 {
     SQLITCLASS *_SQLITCLASS = DBOperatorTable::Instance();
 
-    struct OperatorElement tmpOperator;
+    OperatorElement tmpOperator;
     tmpOperator.OperatorID = 3;
     tmpOperator.OperatorName = "TESTJW";
     QDateTime tmp = QDateTime::fromString("2016/10/26 00:00:00", "yyyy/MM/dd hh:mm:ss");
     tmpOperator.CreatedDate = tmp.toTime_t();
     tmpOperator.Password = "1234";
     tmpOperator.WhoCreatedNewID = 1;
-    tmpOperator.PermissionLevel = ADMINISTRATOR;
+    tmpOperator.PermissionLevel = OperatorElement::LEVEL1;
 
     _SQLITCLASS->UpdateRecordIntoTable(&tmpOperator);
 }

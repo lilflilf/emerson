@@ -1,11 +1,19 @@
 #ifndef OPERATORLIBRARY_H
 #define OPERATORLIBRARY_H
 #include <QString>
-#include "Interface/Definition.h"
+//#include "Interface/Definition.h"
 //default has two records in user log.
 class OperatorElement
 {
 public:
+    enum PASSWORDCONTROL
+    {
+        LEVEL1,
+        LEVEL2,
+        LEVEL3,
+        LEVEL4,
+        PHYKEY,
+    };
     int RevCode;
     int OperatorID;
     QString OperatorName;
@@ -22,7 +30,7 @@ public:
         WhoCreatedNewID = -1;
         CreatedDate = 0;
         Password.clear();
-        PermissionLevel = OPEN;
+        PermissionLevel = LEVEL1;
     }
     OperatorElement operator=(const OperatorElement &OperatorObject)
     {

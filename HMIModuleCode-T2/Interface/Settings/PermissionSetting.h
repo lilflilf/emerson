@@ -28,13 +28,6 @@ enum PWPMasks
     PWPLockOnAlarmMask      = 0x080000,  //Bit 19
 };
 
-enum PermissionLevel
-{
-    Level1 = 1,
-    Level2 = 2,
-    Level3 = 3,
-    Level4 = 4,
-};
 struct PermissionSettingForScreen
 {
     QString Identifier;
@@ -42,6 +35,7 @@ struct PermissionSettingForScreen
     bool Level2;
     bool Level3;
     bool Level4;
+    bool Key;
 };
 
 class PermissionSetting : public QObject

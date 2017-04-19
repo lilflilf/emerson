@@ -179,7 +179,7 @@ bool DBOperatorTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
     ((OperatorElement*)_obj)->CreatedDate = TimeLabel.toTime_t();
     ((OperatorElement*)_obj)->WhoCreatedNewID = query.value("WhoCreatedNewID").toInt();
     ((OperatorElement*)_obj)->Password = query.value("Password").toString();
-    ((OperatorElement*)_obj)->PermissionLevel = (enum PASSWORDCONTROL)query.value("PermissionLevel").toInt();
+    ((OperatorElement*)_obj)->PermissionLevel = (OperatorElement::PASSWORDCONTROL)query.value("PermissionLevel").toInt();
     OperatorDBObj.close();
     return bResult;
 }
@@ -222,7 +222,7 @@ bool DBOperatorTable::QueryOneRecordFromTable(int ID, void *_obj)
     ((OperatorElement*)_obj)->CreatedDate = TimeLabel.toTime_t();
     ((OperatorElement*)_obj)->WhoCreatedNewID = query.value("WhoCreatedNewID").toInt();
     ((OperatorElement*)_obj)->Password = query.value("Password").toString();
-    ((OperatorElement*)_obj)->PermissionLevel = (enum PASSWORDCONTROL)query.value("PermissionLevel").toInt();
+    ((OperatorElement*)_obj)->PermissionLevel = (OperatorElement::PASSWORDCONTROL)query.value("PermissionLevel").toInt();
     OperatorDBObj.close();
     return bResult;
 }
