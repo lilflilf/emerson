@@ -900,6 +900,7 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         _Interface->StatusData.Machineflags.Word[1] = MakeHexWordNumber(HexString.mid(13, 4));
         _Interface->StatusData.Machineflags.Word[2] = MakeHexWordNumber(HexString.mid(17, 4));
         _Interface->StatusData.Machineflags.Word[3] = MakeHexWordNumber(HexString.mid(21, 4));
+        DEBUG_PRINT(_Interface->StatusData.Machineflags.Word[0]);
         _M2010->ReceiveFlags.MachineFlagsData = true;
         break;
     case IASigDataMaintCntr:
@@ -954,6 +955,7 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         break;
     case IASigTunePoint:
         _Interface->StatusData.Soft_Settings.TunePoint = MakeHexWordNumber(HexString.mid(9, 4));
+        _M2010->ReceiveFlags.TunePointData = true;
         break;
     case IASigCutoff:
         _Interface->StatusData.CutoffMode = MakeHexWordNumber(HexString.mid(9, 4));

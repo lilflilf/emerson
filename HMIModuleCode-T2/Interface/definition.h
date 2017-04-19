@@ -61,6 +61,7 @@ struct SHRINKTUBE
     QString ShrinkTubeID;     //Raychem tube index (0 for None,1,2,3,3A,Other)
     int ShrinkTime;           //Secs * 10
     int ShrinkTemperature;    //In Centigrade degrees
+    bool ShrinkMutex;         // Insulution Mutex lock
 
 };
 

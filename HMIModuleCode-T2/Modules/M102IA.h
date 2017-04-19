@@ -164,7 +164,7 @@ enum IASig{
     IASigSystemID,          //0x12
     IASigMaintCount,        //0x13   Maintence counter
     IASigPresetData,        //0x14   IA98 added signature, Data for a single preset
-    IASigMachineFlags,
+    IASigMachineFlags,      //0x15
     IASigRunMode,           //0x16
     IASigActuator,          //0x17
     IASigWidthZero,         //0x18
