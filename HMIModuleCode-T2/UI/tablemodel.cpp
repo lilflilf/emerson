@@ -710,7 +710,7 @@ QString SplicesModel::getStructValue(QString valueKey, QString valueType)
         if (presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkMutex)
             ResultStr = "left";
         else
-            ResultStr = "right"
+            ResultStr = "right";
     }
     else if (valueKey == "Cross Section") {
         ResultStr = variantToString->CrossSectionToString(presetElement.CrossSection);
