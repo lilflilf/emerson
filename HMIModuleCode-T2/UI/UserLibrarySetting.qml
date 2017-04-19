@@ -337,15 +337,26 @@ Item {
                 operatorNameInput.inputText = operatorModel.getOperatorValue(selectIndx,"name")
                 passwordInput.inputText = operatorModel.getOperatorValue(selectIndx,"middle")
                 var level = operatorModel.getOperatorValue(selectIndx,"count")
-                if (level == administratorRadio.buttontext) {
+                if (level == 0) {
                     administratorRadio.bIsCheck = true
-                } else if (level == technicianRadio.buttontext) {
+                } else if (level == 1) {
                     technicianRadio.bIsCheck = true
-                } else if (level == qualityRadio.buttontext) {
+                } else if (level == 2) {
                     qualityRadio.bIsCheck = true
-                } else if (level == openRadio.buttontext) {
+                } else if (level == 3) {
                     openRadio.bIsCheck = true
+                } else if (level == 4) {
+                    keyRadio.bIsCheck = true
                 }
+//                if (level == administratorRadio.buttontext) {
+//                    administratorRadio.bIsCheck = true
+//                } else if (level == technicianRadio.buttontext) {
+//                    technicianRadio.bIsCheck = true
+//                } else if (level == qualityRadio.buttontext) {
+//                    qualityRadio.bIsCheck = true
+//                } else if (level == openRadio.buttontext) {
+//                    openRadio.bIsCheck = true
+//                }
             }
         }
         onVisibleChanged: {
@@ -485,7 +496,7 @@ Item {
         CButton {
             id: cancelButton
             anchors.top: openRadio.bottom
-            anchors.topMargin: 24
+            anchors.topMargin: 48
             anchors.left: parent.left
             anchors.leftMargin: 20
             width: (parent.width-60)/2
@@ -502,7 +513,7 @@ Item {
         CButton {
             id: okButton
             anchors.top: openRadio.bottom
-            anchors.topMargin: 24
+            anchors.topMargin: 48
             anchors.left: cancelButton.right
             anchors.leftMargin: 20
             width: (parent.width-60)/2

@@ -2132,7 +2132,9 @@ QVariant OperatorModel::getOperatorValue(int index, QString key)
     OperatorModelHash.insert("middle",myOperator.Password);
     int level = myOperator.PermissionLevel;
     permissionSetting->_Recall();
-    OperatorModelHash.insert("count",permissionSetting->FourLevelIdentifier.at(level-1));//myOperator.PermissionLevel;
+    OperatorModelHash.insert("count",(int)myOperator.PermissionLevel);
+
+//    OperatorModelHash.insert("count",permissionSetting->FourLevelIdentifier.at(level-1));//myOperator.PermissionLevel;
     //list << "name" << "date" << "middle" << "count";
     if (key == "") {
         return OperatorModelHash;
