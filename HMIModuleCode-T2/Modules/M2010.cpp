@@ -63,6 +63,9 @@ M2010::M2010()
     ReceiveFlags.HeightGraphData = false;
     ReceiveFlags.CutterResponseData = false;
     ReceiveFlags.ReliabilityModeData = false;
+    ReceiveFlags.CoolingTypeData = false;
+    ReceiveFlags.LockOnAlarmData = false;
+    ReceiveFlags.MachineFlagsData = false;
 
     M10Run.Sequence_Done = false;
     M10Run.Pre_Hght_Error = false;

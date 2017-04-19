@@ -387,7 +387,7 @@ void M102IA::SendIACommand(IACommands CommandNumber, int CommandData)
              Data[1] = _M2010->TempActuatorInfo.CurrentActuatorMode;
              Data[2] = _M2010->TempActuatorInfo.CurrentAntisideSpliceTime;
         break;
-        case IAComgetActuator:         /* 0x65 */
+        case IAComGetActuator:         /* 0x65 */
              length = 0;
              Data[0] = 0;
         break;
@@ -882,12 +882,14 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         _Interface->StatusData.CurrentCoolingDur = MakeHexWordNumber(HexString.mid(9, 4));
         _Interface->StatusData.CurrentCoolingDel = MakeHexWordNumber(HexString.mid(13, 4));
         _Interface->StatusData.CurrentCoolingTooling = MakeHexWordNumber(HexString.mid(17,4));
+        _M2010->ReceiveFlags.CoolingTypeData = true;
         break;
     case IASigHeightZero:
         _ModRunSetup->tempHeightOffsetval = MakeHexWordNumber(HexString.mid(9, 4));
         break;
     case IASigDataLockOnAlarm:
          _Interface->StatusData.LockonAlarm = MakeHexWordNumber(HexString.mid(9, 4));
+        _M2010->ReceiveFlags.LockOnAlarmData = true;
         break;
     case IASigRunMode:
         _Interface->StatusData.RunMode.Word = MakeHexWordNumber(HexString.mid(9, 4));
@@ -898,6 +900,7 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         _Interface->StatusData.Machineflags.Word[1] = MakeHexWordNumber(HexString.mid(13, 4));
         _Interface->StatusData.Machineflags.Word[2] = MakeHexWordNumber(HexString.mid(17, 4));
         _Interface->StatusData.Machineflags.Word[3] = MakeHexWordNumber(HexString.mid(21, 4));
+        _M2010->ReceiveFlags.MachineFlagsData = true;
         break;
     case IASigDataMaintCntr:
         _Interface->StatusData.CurrentMaintenanceLimits[0] = GetLongValue(HexString, 10);

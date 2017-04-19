@@ -85,7 +85,7 @@ MODstart::MODstart()
 //            dlgSelectMode.Show vbModal
 //        }
         _M2010->ReceiveFlags.ActuatorType = false;
-        _M102IA->SendIACommand(IAComgetActuator, 0);
+        _M102IA->SendIACommand(IAComGetActuator, 0);
         _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.ActuatorType);
 
         //Send command to get Controller Version string.
@@ -130,6 +130,26 @@ MODstart::MODstart()
         _M102IA->IACommand(IAComSendWeldData);
         _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.WELDdata);
 
+        _M2010->ReceiveFlags.CoolingTypeData = false;
+        _M102IA->IACommand(IAComGetCooling);
+        _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.CoolingTypeData);
+
+        _M2010->ReceiveFlags.LockOnAlarmData = false;
+        _M102IA->IACommand(IAComGetLockonAlarm);
+        _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.LockOnAlarmData);
+
+        _M2010->ReceiveFlags.FootPadelDATA = false;
+        _M102IA->IACommand(IAComGetRunModeNew);
+        _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.FootPadelDATA);
+        _Interface->StatusData.RunMode.Word &= 0xF800;
+
+        _M2010->ReceiveFlags.MachineFlagsData = false;
+        _M102IA->IACommand(IAComGetMachineFlags);
+        _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.MachineFlagsData);
+
+
+
+
         //Prepare Current VersaGraphics Version String.
         _Interface->CurrentVersions.SoftwareVersion = App.Major + "." + App.Minor + "." + App.Revision;
 
@@ -146,6 +166,7 @@ MODstart::MODstart()
         _ModRunSetup->OfflineModeEnabled = false;
 
 //        Update_from_StatusData_for_commands();
+
         switch(_Interface->StatusData.MachineType)
         {
         case ACTULTRA20:
@@ -220,7 +241,7 @@ void MODstart::Update_from_StatusData_for_commands()
     for (i = 0; i <= 3; i++)
         _M10INI->TempSysConfig.Machineflags[i] = _Interface->StatusData.Machineflags.Word[i];
 
-    _M102IA->SendIACommand(IAComSetActuator, 0);
+//    _M102IA->SendIACommand(IAComSetActuator, 0);
     _M102IA->SendIACommand(IAComSetCooling, 0);
     _M102IA->SendIACommand(IAComSetLockonAlarm, _M10INI->TempSysConfig.LockAlarm);
     _M102IA->SendIACommand(IAComSetCutoff, _M10INI->TempSysConfig.CutoffMode);

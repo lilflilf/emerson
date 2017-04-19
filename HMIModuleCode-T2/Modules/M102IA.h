@@ -260,7 +260,7 @@ enum IACommands{
     IAComSetRunModeNew         = 98,  //0x62
     IAComGetRunModeNew         = 99,  //0x63
     IAComSetActuator           = 100, //0x64
-    IAComgetActuator           = 101, //0x65
+    IAComGetActuator           = 101, //0x65
     IAComSetWidthZero          = 102, //0x66
     IAComGetWidthZero          = 103, //0x67
     IAComSetHeightZero         = 104, //0x68
