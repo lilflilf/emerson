@@ -53,6 +53,13 @@ Item {
             selectPartUpdataPage(editHarnessId,partModel.getPartName(editHarnessId))
             mainRoot.bIsEditHarness = false
         }
+        else if (mainRoot.bIsEditSequence)
+        {
+            bIsEdit = true
+            var editSequenceId = hmiAdaptor.getEditPartId();
+            selectSequenceUpdataPage(editSequenceId,sequenceModel.getSequenceName(editHarnessId))
+            mainRoot.bIsEditSequence = false
+        }
     }
 
     Image {
@@ -107,6 +114,12 @@ Item {
             selectPartUpdataPage(content.partId,partName)
         }
     }
+
+    function selectSequenceUpdataPage(id,name)
+    {
+
+    }
+
 
     function selectPartUpdataPage(id,name)
     {
@@ -370,7 +383,8 @@ Item {
                 width: (parent.width-20) / 2 - 12
                 pointSize: 16
                 onClicked: {
-                    fileSelectLoader.source = "qrc:/UI/MySelectFileDialog.qml"
+
+//                    fileSelectLoader.source = "qrc:/UI/MySelectFileDialog.qml"
                 }
             }
 
@@ -409,7 +423,12 @@ Item {
                         }
                         else if (bIsSequence)
                         {
-
+                            sequenceModel.sequenceSpliceListClear()
+                            for (var i = 0; i < listModel.count; i++) {
+                                sequenceModel.setSpliceData(i,listModel.get(i).SpliceId,listModel.get(i).SpliceName,listModel.get(i).qty)
+                            }
+                            sequenceModel.insertRecordIntoTable(edit6.inputText, hmiAdaptor.getCurrentOperatorId())
+                            mainRoot.popStackView()
                         }
                     }
                 }

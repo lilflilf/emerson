@@ -50,7 +50,7 @@ Item {
         spacing: 10
         CButton {
             anchors.verticalCenter: parent.verticalCenter
-            width: (parent.width-40)/5
+            width: (parent.width-40)/6
             clip: true
             pointSize: 20
             text: qsTr("Function Name")
@@ -64,8 +64,8 @@ Item {
             id: levelText1
             anchors.verticalCenter: parent.verticalCenter
             horizontalAlignment: Qt.AlignHCenter
-            width: (parent.width-40)/5
-            inputWidth: (parent.width-40)/5
+            width: (parent.width-40)/6
+            inputWidth: (parent.width-40)/6
             inputHeight: Screen.height * 0.08
             height: Screen.height * 0.08
             clip: true
@@ -77,8 +77,8 @@ Item {
             id: levelText2
             anchors.verticalCenter: parent.verticalCenter
             horizontalAlignment: Qt.AlignHCenter
-            width: (parent.width-40)/5
-            inputWidth: (parent.width-40)/5
+            width: (parent.width-40)/6
+            inputWidth: (parent.width-40)/6
             inputHeight: Screen.height * 0.08
             height: Screen.height * 0.08
             clip: true
@@ -90,8 +90,8 @@ Item {
             id: levelText3
             anchors.verticalCenter: parent.verticalCenter
             horizontalAlignment: Qt.AlignHCenter
-            width: (parent.width-40)/5
-            inputWidth: (parent.width-40)/5
+            width: (parent.width-40)/6
+            inputWidth: (parent.width-40)/6
             inputHeight: Screen.height * 0.08
             height: Screen.height * 0.08
             clip: true
@@ -103,14 +103,29 @@ Item {
             id: levelText4
             anchors.verticalCenter: parent.verticalCenter
             horizontalAlignment: Qt.AlignHCenter
-            width: (parent.width-40)/5
-            inputWidth: (parent.width-40)/5
+            width: (parent.width-40)/6
+            inputWidth: (parent.width-40)/6
             inputHeight: Screen.height * 0.08
             height: Screen.height * 0.08
             clip: true
             inputSize: 20
             inputColor: "white"
             inputText: fourLevelIdentifier[3]
+        }
+
+        MyLineEdit {
+            id: key
+            anchors.verticalCenter: parent.verticalCenter
+            horizontalAlignment: Qt.AlignHCenter
+            width: (parent.width-40)/6
+            inputWidth: (parent.width-40)/6
+            inputHeight: Screen.height * 0.08
+            height: Screen.height * 0.08
+            clip: true
+            inputSize: 20
+            inputColor: "white"
+            inputText: "Physical Key"
+            enabled: false
         }
     }
     Rectangle {
@@ -179,7 +194,7 @@ Item {
                     listModel.clear()
                     for (var i = 0; i < menuModel.count; i++) {
                         if (menuModel.get(i).opacityValue == 0.5) {
-                            listModel.append({name:menuModel.get(i).name,level1:hmiAdaptor.permissionsettingGetChecked(menuModel.get(i).name,1),level2:hmiAdaptor.permissionsettingGetChecked(menuModel.get(i).name,2),level3:hmiAdaptor.permissionsettingGetChecked(menuModel.get(i).name,3),level4:hmiAdaptor.permissionsettingGetChecked(menuModel.get(i).name,4)})
+                            listModel.append({name:menuModel.get(i).name,level1:hmiAdaptor.permissionsettingGetChecked(menuModel.get(i).name,1),level2:hmiAdaptor.permissionsettingGetChecked(menuModel.get(i).name,2),level3:hmiAdaptor.permissionsettingGetChecked(menuModel.get(i).name,3),level4:hmiAdaptor.permissionsettingGetChecked(menuModel.get(i).name,4),level5:false})
                         }
                     }
                 }
@@ -254,7 +269,7 @@ Item {
                 anchors.left: parent.left
                 anchors.leftMargin: 35
                 horizontalAlignment: Qt.AlignLeft
-                width: (parent.width-100)/5
+                width: (parent.width-100)/6
                 font.family: "arial"
                 font.pixelSize: 20
                 color: "white"
@@ -266,7 +281,7 @@ Item {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: titleName.right
                 anchors.leftMargin: 10
-                width: (parent.width-100)/5
+                width: (parent.width-100)/6
                 height: parent.height
 //                exclusiveGroup: listviewPositionGroup
                 checked: level1
@@ -280,7 +295,7 @@ Item {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: check1.right
                 anchors.leftMargin: 10
-                width: (parent.width-100)/5
+                width: (parent.width-100)/6
                 height: parent.height
 //                exclusiveGroup: listviewPositionGroup
                 checked: level2
@@ -294,7 +309,7 @@ Item {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: check2.right
                 anchors.leftMargin: 10
-                width: (parent.width-100)/5
+                width: (parent.width-100)/6
                 height: parent.height
 //                exclusiveGroup: listviewPositionGroup
                 checked: level3
@@ -308,13 +323,27 @@ Item {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: check3.right
                 anchors.leftMargin: 10
-                width: (parent.width-100)/5
+                width: (parent.width-100)/6
                 height: parent.height
 //                exclusiveGroup: listviewPositionGroup
                 checked: level4
                 onCheckedChanged: {
                     if (listModel.get(index).level4 != checked)
                         listModel.set(index,{level4:checked})
+                }
+            }
+            MyCheckBox {
+                id: chec5
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: chec4.right
+                anchors.leftMargin: 10
+                width: (parent.width-100)/6
+                height: parent.height
+//                exclusiveGroup: listviewPositionGroup
+                checked: level5
+                onCheckedChanged: {
+                    if (listModel.get(index).level5 != checked)
+                        listModel.set(index,{level5:checked})
                 }
             }
         }

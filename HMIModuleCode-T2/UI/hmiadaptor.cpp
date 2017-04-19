@@ -71,6 +71,11 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
     spliceModel->setRoles(listSplice);
     spliceModel->setModelList();
 
+    sequenceModel = new SequenceModel(this);
+    QStringList sequenceList;
+    sequenceList << "SequenceId" << "SequenceName" << "DateCreated" << "OperatorName" << "TotalSplice";
+    sequenceModel->setRoles(sequenceList);
+    sequenceModel->setModelList();
 
     advanceMaintenance = new AdvancedMaintenance;
     calibration = new Calibration;

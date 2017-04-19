@@ -210,12 +210,14 @@ Item {
                             }
                             onClicked: {
                                 if (index == 2) {
+                                    mainRoot.clearStackView()
                                     btn.isCheck = false
                                     creatMenu.visible = false
                                     btnBack.visible = false
                                     mainRoot.checkNeedPassWd(2)
 //                                    title.text = qsTr("Operate")
                                 } else if (index == 1) {
+                                    mainRoot.clearStackView()
                                     btn.isCheck = false
                                     creatMenu.visible = false
                                     btnBack.visible = false

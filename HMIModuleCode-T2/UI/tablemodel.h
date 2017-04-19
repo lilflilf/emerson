@@ -441,49 +441,51 @@ private:
     QHash<int, QByteArray> m_roleNames;
 };
 
-//class SequenceModel : public QAbstractTableModel
-//{
-//    Q_OBJECT
-//public:
-//    explicit SequenceModel(QObject *parent = 0);
-//    void setModelList(unsigned int time_from, unsigned int time_to);
-//    void setModelList();
+class SequenceModel : public QAbstractTableModel
+{
+    Q_OBJECT
+public:
+    explicit SequenceModel(QObject *parent = 0);
+    void setModelList(unsigned int time_from, unsigned int time_to);
+    void setModelList();
 
-//    QStringList m_idList;
-//    DBSequenceTable *m_sequenceAdaptor;
-//    QMap<int, QString> *sequences;
-//    SequenceElement sequenceElement;
+    QStringList m_idList;
+    DBSequenceTable *m_sequenceAdaptor;
+    QMap<int, QString> *sequences;
+    SequenceElement sequenceElement;
+    DBOperatorTable *m_operatorAdaptor;
 
-//protected:
-//    int rowCount(const QModelIndex &parent) const;
-//    int columnCount(const QModelIndex &parent) const;
-//    QVariant data(const QModelIndex &index, int role) const;
-//    QVariant headerData(int section, Qt::Orientation orientation, int role) const;
-//    QHash<int, QByteArray> roleNames() const;
+protected:
+    int rowCount(const QModelIndex &parent) const;
+    int columnCount(const QModelIndex &parent) const;
+    QVariant data(const QModelIndex &index, int role) const;
+    QVariant headerData(int section, Qt::Orientation orientation, int role) const;
+    QHash<int, QByteArray> roleNames() const;
 
-//signals:
+signals:
 
 
-//public slots:
-//    void setRoles(const QStringList &names);
-//    Q_INVOKABLE QVariant getValue(int index, QString key);
+public slots:
+    void setRoles(const QStringList &names);
+    Q_INVOKABLE QVariant getValue(int index, QString key);
 //    Q_INVOKABLE void removeValue(int id, QString name);
 //    Q_INVOKABLE int getSequenceId(int index);
 
 //    Q_INVOKABLE void editNew(int index, int sequenceId);
 //    Q_INVOKABLE QVariant getStructValue(QString key);
 
-//    Q_INVOKABLE int count();
-
+    Q_INVOKABLE int count();
+    Q_INVOKABLE void sequenceSpliceListClear();
+    Q_INVOKABLE void setSpliceData(int index,int spliceId,QString spliceName,int quantity);
 //    Q_INVOKABLE bool updateRecordIntoTable(int sequenceId, QString oldWorkName, QString workName, int partId, QString partName, int count);
-//    Q_INVOKABLE bool insertRecordIntoTable(QString sequenceName, int sequenceId, QString sequenceName, int count);
+    Q_INVOKABLE bool insertRecordIntoTable(QString sequenceName, int operatorId);
 
-////    Q_INVOKABLE bool exportData(int workOrderId, QString fileUrl);
-////    Q_INVOKABLE int importData(QString value, QMap<int,QString> partMap);
+//    Q_INVOKABLE bool exportData(int workOrderId, QString fileUrl);
+//    Q_INVOKABLE int importData(QString value, QMap<int,QString> partMap);
 
-//private:
-//    QHash<int, QByteArray> m_roleNames;
-//};
+private:
+    QHash<int, QByteArray> m_roleNames;
+};
 
 
 #endif // TABLEMODEL_H

@@ -161,6 +161,7 @@ public:
     WeldHistoryModel *weldHistoryModel;
     AlarmModel *alarmModel;
     MaintenanceLogModel *maintenanceLogModel;
+    SequenceModel *sequenceModel;
 
     /********Maintenance**************/
     AdvancedMaintenance * advanceMaintenance;

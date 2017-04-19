@@ -124,23 +124,23 @@ Item {
             }
 
             CButton {
-                id: workOrder
+                id: sequence
                 width: column.width
                 textColor: "white"
                 RadioButton {
-                    id: workOrderRadio
+                    id: sequenceRadio
                     visible: false
                     exclusiveGroup: checkGroup
                     onCheckedChanged: {
-                        if (workOrderRadio.checked) {
-                            workOrder.backgroundItem.source = "qrc:/images/images/icon-bg.png"
-                            headRepeater.model = wordkOrderTitle
-                            viewLib.count = wordkOrderTitle.count
+                        if (sequenceRadio.checked) {
+                            sequence.backgroundItem.source = "qrc:/images/images/icon-bg.png"
+                            headRepeater.model = sequenceTitle
+                            viewLib.count = sequenceTitle.count
                             button2.x = 0
-                            listView.model = workOrderModel
+                            listView.model = sequenceModel
                         }
                         else {
-                            workOrder.backgroundItem.source = ""
+                            sequence.backgroundItem.source = ""
                         }
                     }
                 }
@@ -149,8 +149,8 @@ Item {
                     source: ""
                 }
                 onClicked: {
-                    if (!workOrderRadio.checked)
-                        workOrderRadio.checked = !workOrderRadio.checked
+                    if (!sequenceRadio.checked)
+                        sequenceRadio.checked = !sequenceRadio.checked
                 }
 
                 Line {
@@ -167,7 +167,7 @@ Item {
                     source: "qrc:/images/images/right.png"
                 }
                 Text {
-                    text: qsTr("WorkOrder")
+                    text: qsTr("Sequence")
                     font.pointSize: 20
                     font.family: "arial"
                     color: "white"
@@ -358,17 +358,17 @@ Item {
         id: spliceTitleModel
     }
     ListModel {
-        id: wordkOrderTitle
+        id: sequenceTitle
     }
     ListModel {
         id: wireTitleModel
 //        list << "partId" << "name" << "date" << "totalSplices" << "type" << "operatorName" << "processMode" << "ofWorkstation" << "ofSplicesperWorkstation" << "rows" << "columns" << "maxSplicesPerZone";
         Component.onCompleted: {
             initPage()
-            wordkOrderTitle.append({"title":qsTr("WorkOrderName")})
-            wordkOrderTitle.append({"title":qsTr("DateCreated")})
-            wordkOrderTitle.append({"title":qsTr("PART#")})
-            wordkOrderTitle.append({"title":qsTr("QUANTITY")})
+            sequenceTitle.append({"title":qsTr("SequenceName")})
+            sequenceTitle.append({"title":qsTr("DateCreated")})
+            sequenceTitle.append({"title":qsTr("OperatorName")})
+            sequenceTitle.append({"title":qsTr("QUANTITY")})
             partKeyModel.append({"title":qsTr("name")})
             partKeyModel.append({"title":qsTr("date")})
             partKeyModel.append({"title":qsTr("totalSplices")})
@@ -762,15 +762,20 @@ Item {
                     hmiAdaptor.setEditWireId(wireModel.getValue(selectIndx,"WireId"));
                     mainRoot.checkNeedPassWd(19)
 
-                }
-                else if (shrinkRadio.checked){
+                } else if (shrinkRadio.checked){
                     if (selectIndx < 0) {
                         return
                     }
                     backGround.visible = true
                     dialog.visible = true
-                } else if (workOrderRadio.checked) {
+                } else if (sequenceRadio.checked) {
+//                    mainRoot.checkNeedPassWd(1)
+
+                    hmiAdaptor.setEditPartId(sequenceModel.getValue(selectIndx,"SequenceId"))
+                    mainRoot.bIsEditSequence = true
                     mainRoot.checkNeedPassWd(1)
+                    mainRoot.titleTextChanged(qsTr("Edit Sequence"))
+
 
 //                    if (selectIndx < 0) {
 //                        return
@@ -795,8 +800,8 @@ Item {
                     spliceModel.removeValue(spliceModel.getValue(selectIndx,"SpliceId"),spliceModel.getValue(selectIndx,"SpliceName"))
                 else if (wireRadio.checked)
                     wireModel.removeValue(wireModel.getValue(selectIndx,"WireId"),wireModel.getValue(selectIndx,"WireName"))
-                else if (workOrderRadio.checked)
-                    workOrderModel.removeValue(workOrderModel.getValue(selectIndx,"WorkOrderId"),workOrderModel.getValue(selectIndx,"WorkOrderName"))
+                else if (sequenceRadio.checked)
+                    sequenceModel.removeValue(sequenceModel.getValue(selectIndx,"SequenceId"),workOrderModel.getValue(selectIndx,"SequenceName"))
                 else if (shrinkRadio.checked){
                     shrinkModel.remove(selectIndx)
                     hmiAdaptor.removeShrink(selectIndx)
@@ -838,8 +843,8 @@ Item {
                 partModel.exportData(partModel.getValue(selectIndx,"PartId"),fileName)
             else if (shrinkRadio.checked && selectIndx != -1)
                 hmiAdaptor.exportShrink(shrinkModel.get(selectIndx).shrinkid,shrinkModel.get(selectIndx).temperature,shrinkModel.get(selectIndx).times,fileName)
-            else if (workOrderRadio.checked && selectIndx != -1)
-                workOrderModel.exportData(workOrderModel.getValue(selectIndx,"WorkOrderId"),fileName)
+            else if (sequenceRadio.checked && selectIndx != -1)
+                sequenceModel.exportData(sequenceModel.getValue(selectIndx,"SequenceId"),fileName)
         }
     }
     Connections {
@@ -893,13 +898,14 @@ Item {
                     inputshrinkId.inputText = shrinkModel.get(selectIndx).shrinkid
                     inputTemperature.inputText = shrinkModel.get(selectIndx).temperature
                     inputtimeText.inputText = shrinkModel.get(selectIndx).times
-                } else if (workOrderRadio.checked) {
-                    dialog.oldWorkName = workOrderModel.getValue(selectIndx,"WorkOrderName")
-                    dialog.selectPartName = workOrderModel.getValue(selectIndx,"PART")
-                    inputshrinkId.inputText = dialog.oldWorkName
-                    selectPart.text = dialog.selectPartName
-                    inputtimeText.inputText = workOrderModel.getValue(selectIndx,"QUANTITY")
                 }
+//                else if (sequencederRadio.checked) {
+//                    dialog.oldWorkName = workOrderModel.getValue(selectIndx,"WorkOrderName")
+//                    dialog.selectPartName = workOrderModel.getValue(selectIndx,"PART")
+//                    inputshrinkId.inputText = dialog.oldWorkName
+//                    selectPart.text = dialog.selectPartName
+//                    inputtimeText.inputText = workOrderModel.getValue(selectIndx,"QUANTITY")
+//                }
             }
         }
         onSelectPartNameChanged: {
@@ -915,7 +921,7 @@ Item {
             height: 60
             font.pointSize: 18
             font.family: "arial"
-            text: workOrderRadio.checked ? qsTr("Work Order Name") : qsTr("Shrink Tube Name")
+            text: qsTr("Shrink Tube Name") //sequenceRadio.checked ? qsTr("Work Order Name") : qsTr("Shrink Tube Name")
             verticalAlignment: Qt.AlignVCenter
             horizontalAlignment: Qt.AlignRight
             color: "white"
@@ -944,7 +950,7 @@ Item {
             height: 60
             font.pointSize: 18
             font.family: "arial"
-            text: workOrderRadio.checked ? qsTr("Select Part") : qsTr("Temp")
+            text: qsTr("Temp") // sequenceRadio.checked ? qsTr("Select Part") : qsTr("Temp")
             verticalAlignment: Qt.AlignVCenter
             horizontalAlignment: Qt.AlignRight
             color: "white"
@@ -957,7 +963,7 @@ Item {
             anchors.rightMargin: 72
             width: 375
             height: 60
-            visible: workOrderRadio.checked
+            visible: sequenceRadio.checked
             clip: true
             text: ""
             onClicked: {
@@ -997,7 +1003,7 @@ Item {
             height: 60
             font.pointSize: 18
             font.family: "arial"
-            text: workOrderRadio.checked ? qsTr("Qliantity") : qsTr("Time")
+            text: qsTr("Time") //sequenceRadio.checked ? qsTr("Qliantity") : qsTr("Time")
             verticalAlignment: Qt.AlignVCenter
             horizontalAlignment: Qt.AlignRight
             color: "white"
@@ -1020,7 +1026,7 @@ Item {
                         keyNum.currentValue = shrinkModel.get(selectIndx).times
                         keyNum.minvalue = hmiAdaptor.getShrinkTimeToString(keyNum.currentValue,false)
                         keyNum.maxvalue = hmiAdaptor.getShrinkTimeToString(keyNum.currentValue,true)
-                    } else if (workOrderRadio.checked) {
+                    } else if (sequenceRadio.checked) {
                         keyNum.currentValue = workOrderModel.getValue(selectIndx,"QUANTITY")
                         keyNum.minvalue = hmiAdaptor.getTestQuantity(keyNum.currentValue,false)
                         keyNum.maxvalue = hmiAdaptor.getTestQuantity(keyNum.currentValue,true)
@@ -1058,8 +1064,8 @@ Item {
                 if (shrinkRadio.checked) {
                     shrinkModel.remove(selectIndx)
                     shrinkModel.insert(selectIndx,{shrinkid:inputshrinkId.inputText,temperature:inputTemperature.inputText,times:inputtimeText.inputText})
-                } else if (workOrderRadio.checked) {
-                    workOrderModel.updateRecordIntoTable(workOrderModel.getValue(selectIndx,"WorkOrderId"),dialog.oldWorkName,inputshrinkId.inputText,dialog.selectPartId,dialog.selectPartName,inputtimeText.inputText)
+                } else if (sequenceRadio.checked) {
+//                    sequenceModel.updateRecordIntoTable(sequenceModel.getValue(selectIndx,"WorkOrderId"),dialog.oldWorkName,inputshrinkId.inputText,dialog.selectPartId,dialog.selectPartName,inputtimeText.inputText)
                 }
                 backGround.visible = false
                 dialog.visible = false

@@ -26,6 +26,8 @@ Window {
     signal signalSaveSplice(var spliceId,var bIsEdit)
     property bool bIsEditSplice: false
     property bool bIsEditHarness : false
+    property bool bIsEditSequence : false
+    property bool bIsTest: false
     property var initIndex: 0
     /*0-- create
       1-- edit

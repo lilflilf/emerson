@@ -47,15 +47,32 @@ Item {
         {
 
             bIsEditSplice = true
+            currentSpliceId = hmiAdaptor.getTestSpliceId()
             var list = spliceModel.getWireIdList()
             editSplice(list)
             mainRoot.bIsEditSplice = false
 
             firstComeIn = false
         }
+        if (mainRoot.bIsTest)
+        {
+            countDown.start()
+        }
     }
+
     Component.onDestruction: {
         hmiAdaptor.operateProcessExec("Stop")
+    }
+
+    Timer{
+        id:countDown;
+        interval: 1000;
+        repeat: false;
+        triggeredOnStart: false;
+        onTriggered: {
+            tabBar.currentIndex = 1
+            mainRoot.bIsTest = false
+        }
     }
 
     Connections {
@@ -132,6 +149,7 @@ Item {
 
     function setProcessData()
     {
+        spliceModel.setProcessValue("SpliceId",currentSpliceId);
         spliceModel.setProcessValue("SpliceName",edit1.inputText);
         spliceModel.setProcessValue("OperatorId",hmiAdaptor.getCurrentOperatorId());
         spliceModel.setProcessValue("Total Cross",spliceDetailsTip2.text)

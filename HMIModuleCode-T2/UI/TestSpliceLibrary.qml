@@ -345,9 +345,15 @@ Item {
 //            backGround.visible = true
 //            backGround.opacity = 0.5
 //            testDialog.visible = true
+//            mainRoot.bIsEditSplice = true
+//            spliceModel.editNew(spliceModel.getValue(selectIndx,"SpliceId"))
+//            mainRoot.checkNeedPassWd(-1)
+            mainRoot.bIsTest = true
+            hmiAdaptor.setTestSpliceId(spliceModel.getValue(selectIndx,"SpliceId"))
             mainRoot.bIsEditSplice = true
             spliceModel.editNew(spliceModel.getValue(selectIndx,"SpliceId"))
             mainRoot.checkNeedPassWd(-1)
+
 //            testDialog.setData()
         }
     }
