@@ -471,6 +471,17 @@ Item {
             exclusiveGroup: mos
             buttontext: fourLevelIdentifier[3]//qsTr("Open")
         }
+        MyRadioButton {
+            id: keyRadio
+            anchors.left: permission.right
+            anchors.leftMargin: 10
+            anchors.top: openRadio.bottom
+            anchors.topMargin: 4
+            width: 300
+            height: 40
+            exclusiveGroup: mos
+            buttontext: ""
+        }
         CButton {
             id: cancelButton
             anchors.top: openRadio.bottom
@@ -511,7 +522,10 @@ Item {
                     level = 3
                 } else if (openRadio.bIsCheck) {
                     level = 4
+                } else if (keyRadio.bIsCheck) {
+                    level = 5
                 }
+
                 if (operatorDialog.bIsEdit) {
                     operatorModel.updateOperator(operatorModel.getOperatorValue(selectIndx,"operatorId"),operatorNameInput.inputText,passwordInput.inputText,level)
                     operatorDialog.bIsEdit = false

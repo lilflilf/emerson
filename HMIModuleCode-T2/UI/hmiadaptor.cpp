@@ -559,7 +559,9 @@ bool HmiAdaptor::login(QString passwd)
     bool isLog = operatorModel->login(passwd, &myOperator);
     if (isLog)
     {
-        interfaceClass->CurrentOperator = myOperator;
+        isLog = isLog & bIsPhysicalKey;
+        if (isLog)
+            interfaceClass->CurrentOperator = myOperator;
     }
     else
     {
@@ -603,6 +605,10 @@ bool HmiAdaptor::borrowLogin(QString passwd, QString pageName)
             reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level3;
         else if (levelIndex == 4)
             reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level4;
+        else if (levelIndex == 5) {
+            reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level4;
+            reb = reb & bIsPhysicalKey;
+        }
 
         return reb;
     }
