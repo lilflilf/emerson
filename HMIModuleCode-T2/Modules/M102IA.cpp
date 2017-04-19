@@ -39,6 +39,13 @@ M102IA::M102IA(QObject *parent)
     ErrorFound = false;
     IACommandError = -1;
 
+    ContollerVersion.clear();            //To store controller's software version no.
+    SerialNoData.clear();
+    PartNoData.clear();
+    ActuatorVersion.clear();
+    ActuatorPartNum.clear();
+    ActuatorSerialNum.clear();
+
     IAsetup.ModeFlags = 0;
     IAsetup.Energy = 100;
     IAsetup.Width = 100;
@@ -738,7 +745,7 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         emit PowerGraphSignal(_M2010->ReceiveFlags.PowerGraphData);
         break;
     case IASigSerialNumber:
-        SerialNoData = _M2010->ParseSerialNumber(HexString.mid(9, 32));
+        SerialNoData = _M2010->ParseSerialNumber(HexString.mid(9, 64));
         _M2010->ReceiveFlags.SNdata = true;
         break;
     case IASigHeightCal:
@@ -1036,7 +1043,10 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
                 MakeHexWordNumber(HexString.mid(9, 4));
         DEBUG_PRINT(_Interface->StatusData.PhysicalKeyMode);
         emit PhysicalKeySignal(_Interface->StatusData.PhysicalKeyMode);
-       break;
+        break;
+    case IASigPartNumber:
+        PartNoData = _M2010->ParseSerialNumber(HexString.mid(9, 32));
+        _M2010->ReceiveFlags.PNData = true;
         break;
     default:
         break;

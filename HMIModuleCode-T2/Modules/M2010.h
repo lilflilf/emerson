@@ -122,6 +122,7 @@ struct BitFlag{
     bool MachineFlagsData;
     bool TunePointData;
     bool FreqOffsetData;
+    bool PNData;
 };
 
 enum Last_made{

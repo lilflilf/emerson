@@ -89,7 +89,7 @@ void AlarmMessage::ShowText(int SpliceID)
     }
     //Time Error
     if(((_M102IA->IAactual.Alarmflags & BIT5) == BIT5) ||
-            ((_M102IA->IAactual.Alarmflags & BIT22) == BIT22))
+            ((_M102IA->IAactual.Alarmflags & BIT21) == BIT21))
     {
         if(Index != 0)
             AlarmMsg += "\n";
@@ -108,7 +108,7 @@ void AlarmMessage::ShowText(int SpliceID)
     }
     //Power Error
     if(((_M102IA->IAactual.Alarmflags & BIT6) == BIT6) ||
-            ((_M102IA->IAactual.Alarmflags & BIT23) == BIT23))
+            ((_M102IA->IAactual.Alarmflags & BIT22) == BIT22))
     {
         if(Index != 0)
             AlarmMsg += "\n";
@@ -126,7 +126,7 @@ void AlarmMessage::ShowText(int SpliceID)
     }
     //PostHeight Error
     if(((_M102IA->IAactual.Alarmflags & BIT7) == BIT7) ||
-        ((_M102IA->IAactual.Alarmflags & BIT24) == BIT24))
+        ((_M102IA->IAactual.Alarmflags & BIT23) == BIT23))
     {
         if(Index != 0)
             AlarmMsg += "\n";
@@ -144,7 +144,7 @@ void AlarmMessage::ShowText(int SpliceID)
     }
     //PerHeight Error
     if(((_M102IA->IAactual.Alarmflags & BIT2) == BIT2) ||
-        ((_M102IA->IAactual.Alarmflags & BIT21) == BIT21))
+        ((_M102IA->IAactual.Alarmflags & BIT20) == BIT20))
     {
         if(Index != 0)
             AlarmMsg += "\n";
@@ -179,16 +179,8 @@ void AlarmMessage::ShowText(int SpliceID)
         UpdateAlarmLog(AlarmMsg, AlarmType, SpliceID);
         Index++;
     }
-    //Lock Key Alarm for New Wire Splicer
-    if((_M102IA->IAactual.Alarmflags & BIT18) == BIT18)
-    {
-        if(Index != 0)
-            AlarmMsg += "\n";
-        AlarmMsg += QString::number(Index + 1, 10) + ". " + QObject::tr("Lock Open Alert");
-        Index++;
-    }
     //ID chip alarm for the New Wire Splicer
-    if((_M102IA->IAactual.Alarmflags & BIT19) == BIT19)
+    if((_M102IA->IAactual.Alarmflags & BIT18) == BIT18)
     {
         if(Index != 0)
             AlarmMsg += "\n";
@@ -198,7 +190,7 @@ void AlarmMessage::ShowText(int SpliceID)
         Index++;
     }
     //FRAM, RAM error
-    if((_M102IA->IAactual.Alarmflags & BIT20) == BIT20)
+    if((_M102IA->IAactual.Alarmflags & BIT19) == BIT19)
     {
         if(Index != 0)
             AlarmMsg += "\n";
