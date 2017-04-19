@@ -116,6 +116,7 @@ struct BitFlag{
     bool ActuatorPartNumData;
     bool ActuatorType;
     bool CutterResponseData;
+    bool ReliabilityModeData;
 };
 
 enum Last_made{

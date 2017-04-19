@@ -717,8 +717,8 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         {
             Total = MakeHexWordNumber(HexString.mid((tmpIndex + 9), 4));
             num = MakeHexWordNumber(HexString.mid(tmpIndex + 13, 4));
+//            qDebug()<<"Total: "<<Total << " Index: "<<num<<" ListSize: "<<RawPowerDataGraph.GraphDataList.size();
             RawPowerDataGraph.GraphDataList.insert(num,HexString.mid(tmpIndex, 51));
-//            qDebug()<<"Total: "<<Total << " Index: "<<num<<" str: "<<HexString.mid(tmpIndex, 51);
             tmpIndex = tmpIndex + 51;
         }
         if (LastString > 0)
@@ -727,7 +727,7 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
             Total = MakeHexWordNumber(HexString.mid((tmpIndex + 9), 4));
             num = MakeHexWordNumber(HexString.mid(tmpIndex + 13, 4));
             Datalen = MakeHexWordNumber(HexString.mid(tmpIndex + 1, 4));
-//            qDebug()<<"Total: "<<Total << " Index: "<<num<<" str: "<<HexString.mid(tmpIndex, LastString);
+//            qDebug()<<"Total: "<<Total << " Index: "<<num<<" ListSize: "<<RawPowerDataGraph.GraphDataList.size();
             if ((Datalen - 4) != ((LastString - 19) / 2))
                 num = num - 1;
             else
@@ -1020,6 +1020,18 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         RawHeightDataGraph.CurrentIndex = num;
         _M2010->ReceiveFlags.HeightGraphData = true;
         emit HeightGraphSignal(_M2010->ReceiveFlags.HeightGraphData);
+        break;
+    case IASigReliablityMode:
+        _Interface->StatusData.ReliablityMode =
+                MakeHexWordNumber(HexString.mid(9, 4));
+        _M2010->ReceiveFlags.ReliabilityModeData = true;
+        break;
+    case IASigPhysicalKeyMode:
+        _Interface->StatusData.PhysicalKeyMode =
+                MakeHexWordNumber(HexString.mid(9, 4));
+        DEBUG_PRINT(_Interface->StatusData.PhysicalKeyMode);
+        emit PhysicalKeySignal(_Interface->StatusData.PhysicalKeyMode);
+       break;
         break;
     default:
         break;

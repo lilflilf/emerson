@@ -232,7 +232,10 @@ void MakeWeldProcess::WeldCycleDaemonThread(void* _obj)
                 _ObjectPtr->CurrentNecessaryInfo.CurrentHarness.HarnessName, &_ObjectPtr->CurrentWeldResult, &_ObjectPtr->CurrentSplice);
 
         if((_M102IA->IAactual.Alarmflags & BIT14) == BIT14)
+        {
             _ObjectPtr->WeldCycleStatus = true;
+            _ObjectPtr->m_pReadySM->ReadyState = ReadyStateMachine::READYON;
+        }
         else
             _ObjectPtr->WeldCycleStatus = false;
         StopThreadFlag = true;
@@ -242,7 +245,10 @@ void MakeWeldProcess::WeldCycleDaemonThread(void* _obj)
         emit _ObjectPtr->WeldCycleCompleted(&_ObjectPtr->WeldCycleStatus);
         m_pThread->setStopEnabled(true);
         m_pThread->setSuspendEnabled(true);
-        _ObjectPtr->m_pReadySM->ReadyState = ReadyStateMachine::READYON;
+        _M102IA->RawPowerDataGraph.GraphDataList.clear();
+        _M102IA->RawHeightDataGraph.GraphDataList.clear();
+        _ObjectPtr->PowerGraphReady = false;
+        _ObjectPtr->HeightGraphReady = false;
     }
 }
 
@@ -258,6 +264,8 @@ void MakeWeldProcess::WeldResultEventSlot(bool& bResult)
     CurrentStep = POWERFst;
     WeldCycleStatus = false;
     //1. Alarm handle
+    if(CurrentSplice.SpliceID == -1)
+        CurrentSplice.SpliceID = 0x0FFFFFFF;
     Invalidweld = _M10runMode->CheckWeldData(CurrentSplice.SpliceID);
     //2. Update Maintenance Count
     if(Invalidweld == false)

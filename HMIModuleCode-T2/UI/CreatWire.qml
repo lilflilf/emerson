@@ -1286,6 +1286,7 @@ Item {
 //                        centervalue: bottomText
                         width: (settingLayout.width-120)/2
                         height: (settingLayout.height-60)/5
+                        centervalue: bottomText
                     }
                 }
             }

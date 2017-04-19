@@ -5,6 +5,7 @@
 #include "Interface/AlarmElement.h"
 #include "DataBase/DBAlarmLogTable.h"
 #include "Interface/VariantToString.h"
+#include "Modules/typedef.h"
 AlarmMessage* AlarmMessage::_instance = NULL;
 
 AlarmMessage* AlarmMessage::Instance()
@@ -49,7 +50,7 @@ void AlarmMessage::ShowText(int SpliceID)
     AlarmMsg.clear();
     mAlarmIDList.clear();
     //Width Error
-    if((_M102IA->IAactual.Alarmflags & 0x800) == 0x800)
+    if((_M102IA->IAactual.Alarmflags & BIT11) == BIT11)
     {
         AlarmMsg += QString::number(Index + 1, 10) + ". " + QObject::tr("WIDTH ERROR");
         QString AlarmType = _Var2Str->AlarmTypeToString(MOTORERROR);
@@ -57,7 +58,7 @@ void AlarmMessage::ShowText(int SpliceID)
         Index++;
     }
     //Overload
-    if((_M102IA->IAactual.Alarmflags & 0x01) == 0x01)
+    if((_M102IA->IAactual.Alarmflags & BIT0) == BIT0)
     {
         if(Index != 0)
             AlarmMsg += "\n";
@@ -67,7 +68,7 @@ void AlarmMessage::ShowText(int SpliceID)
         Index++;
     }
     //Safety
-    if((_M102IA->IAactual.Alarmflags & 0x400) == 0x400)
+    if((_M102IA->IAactual.Alarmflags & BIT10) == BIT10)
     {
         if(Index != 0)
             AlarmMsg += "\n";
@@ -77,7 +78,7 @@ void AlarmMessage::ShowText(int SpliceID)
         Index++;
     }
     //Height Error
-    if((_M102IA->IAactual.Alarmflags & 0x02) == 0x02)
+    if((_M102IA->IAactual.Alarmflags & BIT1) == BIT1)
     {
         if(Index != 0)
             AlarmMsg += "\n";
@@ -87,7 +88,8 @@ void AlarmMessage::ShowText(int SpliceID)
         Index++;
     }
     //Time Error
-    if((_M102IA->IAactual.Alarmflags & 0x20) == 0x20)
+    if(((_M102IA->IAactual.Alarmflags & BIT5) == BIT5) ||
+            ((_M102IA->IAactual.Alarmflags & BIT22) == BIT22))
     {
         if(Index != 0)
             AlarmMsg += "\n";
@@ -105,7 +107,8 @@ void AlarmMessage::ShowText(int SpliceID)
         UpdateAlarmLog(AlarmMsg, AlarmType, SpliceID);
     }
     //Power Error
-    if((_M102IA->IAactual.Alarmflags & 0x40) == 0x40)
+    if(((_M102IA->IAactual.Alarmflags & BIT6) == BIT6) ||
+            ((_M102IA->IAactual.Alarmflags & BIT23) == BIT23))
     {
         if(Index != 0)
             AlarmMsg += "\n";
@@ -122,7 +125,8 @@ void AlarmMessage::ShowText(int SpliceID)
         UpdateAlarmLog(AlarmMsg, AlarmType, SpliceID);
     }
     //PostHeight Error
-    if((_M102IA->IAactual.Alarmflags & 0x80) == 0x80)
+    if(((_M102IA->IAactual.Alarmflags & BIT7) == BIT7) ||
+        ((_M102IA->IAactual.Alarmflags & BIT24) == BIT24))
     {
         if(Index != 0)
             AlarmMsg += "\n";
@@ -139,7 +143,8 @@ void AlarmMessage::ShowText(int SpliceID)
         UpdateAlarmLog(AlarmMsg, AlarmType, SpliceID);
     }
     //PerHeight Error
-    if((_M102IA->IAactual.Alarmflags & 0x04) == 0x04)
+    if(((_M102IA->IAactual.Alarmflags & BIT2) == BIT2) ||
+        ((_M102IA->IAactual.Alarmflags & BIT21) == BIT21))
     {
         if(Index != 0)
             AlarmMsg += "\n";
@@ -155,7 +160,7 @@ void AlarmMessage::ShowText(int SpliceID)
         UpdateAlarmLog(AlarmMsg, AlarmType, SpliceID);
     }
     //Sense 24V
-    if((_M102IA->IAactual.Alarmflags & 0x10000) == 0x10000)
+    if((_M102IA->IAactual.Alarmflags & BIT16) == BIT16)
     {
         if(Index != 0)
             AlarmMsg += "\n";
@@ -165,7 +170,7 @@ void AlarmMessage::ShowText(int SpliceID)
         Index++;
     }
     //Cutter Alarm for the New Wire Splicer
-    if((_M102IA->IAactual.Alarmflags & 0x20000) == 0x20000)
+    if((_M102IA->IAactual.Alarmflags & BIT17) == BIT17)
     {
         if(Index != 0)
             AlarmMsg += "\n";
@@ -175,7 +180,7 @@ void AlarmMessage::ShowText(int SpliceID)
         Index++;
     }
     //Lock Key Alarm for New Wire Splicer
-    if((_M102IA->IAactual.Alarmflags & 0x40000) == 0x40000)
+    if((_M102IA->IAactual.Alarmflags & BIT18) == BIT18)
     {
         if(Index != 0)
             AlarmMsg += "\n";
@@ -183,7 +188,7 @@ void AlarmMessage::ShowText(int SpliceID)
         Index++;
     }
     //ID chip alarm for the New Wire Splicer
-    if((_M102IA->IAactual.Alarmflags & 0x80000) == 0x80000)
+    if((_M102IA->IAactual.Alarmflags & BIT19) == BIT19)
     {
         if(Index != 0)
             AlarmMsg += "\n";
@@ -193,7 +198,7 @@ void AlarmMessage::ShowText(int SpliceID)
         Index++;
     }
     //FRAM, RAM error
-    if((_M102IA->IAactual.Alarmflags & 0x100000) == 0x100000)
+    if((_M102IA->IAactual.Alarmflags & BIT20) == BIT20)
     {
         if(Index != 0)
             AlarmMsg += "\n";

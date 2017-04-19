@@ -71,9 +71,7 @@ private:
     static bool ConverterCoolingTest;
     static bool ToolingCoolingTest;
     static unsigned long PreviousIO;
-//    ThreadClass* m_Thread;
     static QTimer *Timer;
-    static bool IsTimerRunning;
 public:
     static bool HornTest;
 private:
