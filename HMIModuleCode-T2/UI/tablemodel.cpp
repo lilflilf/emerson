@@ -1934,7 +1934,10 @@ QVariant OperatorModel::data(const QModelIndex &index, int role) const
             value = QVariant::fromValue(myOperator.Password);
         else if (columnIdx == 4) {
             permissionSetting->_Recall();
+            qDebug() << "(int)myOperator.PermissionLevel" << (int)myOperator.PermissionLevel;
             value = QVariant::fromValue(permissionSetting->FourLevelIdentifier.at(myOperator.PermissionLevel-1));
+            if ((int)myOperator.PermissionLevel == 0)
+                value = "Key";
         }
     }
     return value;

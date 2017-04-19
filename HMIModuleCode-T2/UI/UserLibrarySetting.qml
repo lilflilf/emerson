@@ -439,10 +439,21 @@ Item {
         }
 
         MyRadioButton {
-            id: administratorRadio
+            id: keyRadio
             anchors.left: permission.right
             anchors.leftMargin: 10
             anchors.verticalCenter: permission.verticalCenter
+            width: 300
+            height: 40
+            exclusiveGroup: mos
+            buttontext: ""
+        }
+        MyRadioButton {
+            id: administratorRadio
+            anchors.left: permission.right
+            anchors.leftMargin: 10
+            anchors.top: keyRadio.bottom
+            anchors.topMargin: 4
             width: 300
             height: 40
             bIsCheck: true
@@ -482,21 +493,10 @@ Item {
             exclusiveGroup: mos
             buttontext: fourLevelIdentifier[3]//qsTr("Open")
         }
-        MyRadioButton {
-            id: keyRadio
-            anchors.left: permission.right
-            anchors.leftMargin: 10
-            anchors.top: openRadio.bottom
-            anchors.topMargin: 4
-            width: 300
-            height: 40
-            exclusiveGroup: mos
-            buttontext: ""
-        }
         CButton {
             id: cancelButton
             anchors.top: openRadio.bottom
-            anchors.topMargin: 48
+            anchors.topMargin: 24
             anchors.left: parent.left
             anchors.leftMargin: 20
             width: (parent.width-60)/2
@@ -513,7 +513,7 @@ Item {
         CButton {
             id: okButton
             anchors.top: openRadio.bottom
-            anchors.topMargin: 48
+            anchors.topMargin: 24
             anchors.left: cancelButton.right
             anchors.leftMargin: 20
             width: (parent.width-60)/2
@@ -524,7 +524,7 @@ Item {
                 backGround.visible = false
                 backGround.opacity = 0
                 operatorDialog.visible = false
-                var level = 0
+                var level = -1
                 if (administratorRadio.bIsCheck) {
                     level = 1
                 } else if (technicianRadio.bIsCheck) {
@@ -534,7 +534,7 @@ Item {
                 } else if (openRadio.bIsCheck) {
                     level = 4
                 } else if (keyRadio.bIsCheck) {
-                    level = 5
+                    level = 0
                 }
 
                 if (operatorDialog.bIsEdit) {

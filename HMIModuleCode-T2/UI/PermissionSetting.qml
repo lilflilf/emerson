@@ -21,7 +21,7 @@ Item {
         currentIdentifier = list;
         for (i = 0;i < list.length; i++)
         {
-            listModel.append({name:list[i],level1:hmiAdaptor.permissionsettingGetChecked(list[i],1),level2:hmiAdaptor.permissionsettingGetChecked(list[i],2),level3:hmiAdaptor.permissionsettingGetChecked(list[i],3),level4:hmiAdaptor.permissionsettingGetChecked(list[i],4)})
+            listModel.append({name:list[i],level1:hmiAdaptor.permissionsettingGetChecked(list[i],1),level2:hmiAdaptor.permissionsettingGetChecked(list[i],2),level3:hmiAdaptor.permissionsettingGetChecked(list[i],3),level4:hmiAdaptor.permissionsettingGetChecked(list[i],4),level5:false})
         }
 
         list = hmiAdaptor.permissionsettingGetValue("AllFunctionNameList")
@@ -58,6 +58,21 @@ Item {
                 menuBackGround.visible = true
                 menuSelect.visible = true
             }
+        }
+
+        MyLineEdit {
+            id: key
+            anchors.verticalCenter: parent.verticalCenter
+            horizontalAlignment: Qt.AlignHCenter
+            width: (parent.width-40)/6
+            inputWidth: (parent.width-40)/6
+            inputHeight: Screen.height * 0.08
+            height: Screen.height * 0.08
+            clip: true
+            inputSize: 20
+            inputColor: "white"
+            inputText: "Physical Key"
+            enabled: false
         }
 
         MyLineEdit {
@@ -111,21 +126,6 @@ Item {
             inputSize: 20
             inputColor: "white"
             inputText: fourLevelIdentifier[3]
-        }
-
-        MyLineEdit {
-            id: key
-            anchors.verticalCenter: parent.verticalCenter
-            horizontalAlignment: Qt.AlignHCenter
-            width: (parent.width-40)/6
-            inputWidth: (parent.width-40)/6
-            inputHeight: Screen.height * 0.08
-            height: Screen.height * 0.08
-            clip: true
-            inputSize: 20
-            inputColor: "white"
-            inputText: "Physical Key"
-            enabled: false
         }
     }
     Rectangle {
@@ -277,9 +277,24 @@ Item {
             }
 
             MyCheckBox {
-                id: check1
+                id: chec5
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: titleName.right
+                anchors.leftMargin: 10
+                width: (parent.width-100)/6
+                height: parent.height
+//                exclusiveGroup: listviewPositionGroup
+                checked: level5
+                onCheckedChanged: {
+                    if (listModel.get(index).level5 != checked)
+                        listModel.set(index,{level5:checked})
+                }
+            }
+
+            MyCheckBox {
+                id: check1
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: chec5.right
                 anchors.leftMargin: 10
                 width: (parent.width-100)/6
                 height: parent.height
@@ -332,20 +347,7 @@ Item {
                         listModel.set(index,{level4:checked})
                 }
             }
-            MyCheckBox {
-                id: chec5
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: chec4.right
-                anchors.leftMargin: 10
-                width: (parent.width-100)/6
-                height: parent.height
-//                exclusiveGroup: listviewPositionGroup
-                checked: level5
-                onCheckedChanged: {
-                    if (listModel.get(index).level5 != checked)
-                        listModel.set(index,{level5:checked})
-                }
-            }
+
         }
     }
 
