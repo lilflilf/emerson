@@ -22,6 +22,7 @@ Item {
     property var selectIndex: 0
     width: Screen.width
     height: 97//Screen.height * 0.07
+    property alias backColor: headBack.color
     Rectangle {
         id: headBack
         anchors.fill: parent

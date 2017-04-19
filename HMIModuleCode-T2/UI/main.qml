@@ -28,6 +28,7 @@ Window {
     property bool bIsEditHarness : false
     property bool bIsEditSequence : false
     property bool bIsTest: false
+    property bool bIsPhysicalKey: false
     property var initIndex: 0
     /*0-- create
       1-- edit
@@ -355,6 +356,7 @@ Window {
             }
         }
     }
+
     CPassWordDialog {
         id: passwdLog
         anchors.centerIn: parent
@@ -382,6 +384,23 @@ Window {
         height: 79
         z: 10
         anchors.top: statusBar.bottom
+    }
+
+    Connections {
+        target: hmiAdaptor
+        onSignalPhysicalKeySignal: {
+            if (status){
+                bIsPhysicalKey = true
+                headBar.backColor = "#f79428"
+                statusBar.backColor = "#f79428"
+            }
+            else
+            {
+                bIsPhysicalKey = false
+                headBar.backColor = "#0079c1"
+                statusBar.backColor = "#004b8d"
+            }
+        }
     }
 
     StackView {

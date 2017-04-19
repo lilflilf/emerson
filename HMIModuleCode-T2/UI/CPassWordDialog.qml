@@ -29,6 +29,7 @@ Item {
             }
         }
     }
+
     ListModel {
         id: listModel
         Component.onCompleted: {

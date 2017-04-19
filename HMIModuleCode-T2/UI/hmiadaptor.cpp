@@ -102,6 +102,9 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
     m_spliceAdaptor = DBPresetTable::Instance();
     testSpliceId = -1;
     editPartId = -1;
+    bIsPhysicalKey = false;
+    m102ia = M102IA::Instance();
+    connect(m102ia,SIGNAL(PhysicalKeySignal(bool&)),this,SLOT(slotPhysicalKeySignal(bool)));
 
 }
 
@@ -1627,6 +1630,12 @@ void HmiAdaptor::removeShrink(int selectIndex)
         interfaceClass->StatusData.ShrinkTubeDefaults.removeAt(selectIndex);
         interfaceClass->StatusData.WriteStatusDataToQSetting();
     }
+}
+
+void HmiAdaptor::slotPhysicalKeySignal(bool status)
+{
+    bIsPhysicalKey = status;
+    emit signalPhysicalKeySignal(status);
 }
 void HmiAdaptor::setAlarmModelList(bool bIsNeedReset)
 {

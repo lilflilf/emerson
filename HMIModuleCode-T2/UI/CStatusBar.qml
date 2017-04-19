@@ -14,6 +14,7 @@ import QtQuick.Window 2.2
 Item {
     width: Screen.width
     height: Screen.height * 0.03
+    property alias backColor: back.color
     Rectangle {
         id: back
         anchors.fill: parent

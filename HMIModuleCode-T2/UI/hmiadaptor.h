@@ -20,6 +20,8 @@
 #include "Interface/MakeWeld/MakeWeldProcess.h"
 #include <QMutex>
 #include "Interface/ViewData/StatisticalTrend.h"
+#include "Modules/M102IA.h"
+
 #define TOPATH "C:/BransonData/Library/SpliceImage/"
 
 //#define HMI_PRINT (qDebug() <<"HMI adapter:" << __FILE__ << __FUNCTION__ << __LINE__ << ": ")
@@ -148,6 +150,7 @@ public:
 
     BransonMessageBox bransonMessageBox;
     InterfaceClass *interfaceClass;
+    M102IA *m102ia;
     MakeWeldProcess *operateProcess;
     DBPresetTable *m_spliceAdaptor;
     VariantToString *m_variantToString;
@@ -182,6 +185,7 @@ public:
     int testSpliceId;
     int editWireId;
     int editPartId;
+    bool bIsPhysicalKey;
 signals:
     void widthCalibrationFinish(const bool &_Result);
     void heightCalibrationFinish(const bool &_Result);
@@ -192,7 +196,10 @@ signals:
     void signalMantenaneceCount(int count);
     void signalMovePart(int id, QString name);
     void signalMoveSplice(int id, QString name);
+
+    void signalPhysicalKeySignal(bool status);
 public slots:
+    void slotPhysicalKeySignal(bool status);
     void slotWeldCycleCompleted(bool result);
     void slotEnableDialog(struct BransonMessageBox &MsgBox);
     void slotDisableDialog(struct BransonMessageBox &MsgBox);
