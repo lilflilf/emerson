@@ -624,6 +624,28 @@ QString SplicesModel::getStructValue(QString valueKey, QString valueType)
             ResultStr =
                     variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.OffsetOption.MeasuredHeight).Minimum;
     }
+    else if (valueKey == "DisplayedWidth") {
+        if (valueType == "current")
+            ResultStr =
+                    variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.OffsetOption.DisplayWidth).Current;
+        else if (valueType == "max")
+            ResultStr =
+                    variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.OffsetOption.DisplayWidth).Maximum;
+        else if (valueType == "min")
+            ResultStr =
+                    variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.OffsetOption.DisplayWidth).Minimum;
+    }
+    else if (valueKey == "DisplayedHeight") {
+        if (valueType == "current")
+            ResultStr =
+                    variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.OffsetOption.DisplayHeight).Current;
+        else if (valueType == "max")
+            ResultStr =
+                    variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.OffsetOption.DisplayHeight).Maximum;
+        else if (valueType == "min")
+            ResultStr =
+                    variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.OffsetOption.DisplayHeight).Minimum;
+    }
     else if (valueKey == "Unload Time") {
         if (valueType == "current")
             ResultStr =
@@ -682,6 +704,9 @@ QString SplicesModel::getStructValue(QString valueKey, QString valueType)
         ResultStr = variantToString->ShrinkTemperatureToString(presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTemperature).Current;
     }
     else if (valueKey == "ShrinkTime") {
+        ResultStr = variantToString->ShrinkTimeToString(presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime).Current;
+    }
+    else if (valueKey == "ShrinkLock") {
         ResultStr = variantToString->ShrinkTimeToString(presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime).Current;
     }
     else if (valueKey == "Cross Section") {
@@ -936,6 +961,14 @@ void SplicesModel::setStructValue(QString valueKey, QVariant value)
         presetElement.WeldSettings.AdvanceSetting.OffsetOption.MeasuredHeight
                 = stringToVariant->MeasureHeightToInt(value.toString());
     }
+    else if (valueKey == "DisplayWidth") {
+        processPresetElement.WeldSettings.AdvanceSetting.OffsetOption.DisplayWidth
+                = stringToVariant->MeasureHeightToInt(value.toString());
+    }
+    else if (valueKey == "DisplayHeight") {
+        processPresetElement.WeldSettings.AdvanceSetting.OffsetOption.DisplayHeight
+                = stringToVariant->MeasureHeightToInt(value.toString());
+    }
     else if (valueKey == "Unload Time") {
         presetElement.WeldSettings.AdvanceSetting.AntiSideOption.AntiSideSpliceTime =
                 stringToVariant->AntiSideSpliceTimeToInt(value.toString());
@@ -965,6 +998,10 @@ void SplicesModel::setStructValue(QString valueKey, QVariant value)
                 stringToVariant->ShrinkTemperatureToInt(value.toString());
     }
     else if (valueKey == "ShrinkTime") {
+        presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime =
+                stringToVariant->ShrinkTimeToInt(value.toString());
+    }
+    else if (valueKey == "ShrinkLock") {
         presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime =
                 stringToVariant->ShrinkTimeToInt(value.toString());
     }
@@ -1147,6 +1184,14 @@ void SplicesModel::setProcessValue(QString valueKey, QVariant value)
         processPresetElement.WeldSettings.AdvanceSetting.OffsetOption.MeasuredHeight
                 = stringToVariant->MeasureHeightToInt(value.toString());
     }
+    else if (valueKey == "DisplayWidth") {
+        processPresetElement.WeldSettings.AdvanceSetting.OffsetOption.DisplayWidth
+                = stringToVariant->MeasureHeightToInt(value.toString());
+    }
+    else if (valueKey == "DisplayHeight") {
+        processPresetElement.WeldSettings.AdvanceSetting.OffsetOption.DisplayHeight
+                = stringToVariant->MeasureHeightToInt(value.toString());
+    }
     else if (valueKey == "Unload Time") {
         processPresetElement.WeldSettings.AdvanceSetting.AntiSideOption.AntiSideSpliceTime =
                 stringToVariant->AntiSideSpliceTimeToInt(value.toString());
@@ -1176,6 +1221,10 @@ void SplicesModel::setProcessValue(QString valueKey, QVariant value)
                 stringToVariant->ShrinkTemperatureToInt(value.toString());
     }
     else if (valueKey == "ShrinkTime") {
+        processPresetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime =
+                stringToVariant->ShrinkTimeToInt(value.toString());
+    }
+    else if (valueKey == "ShrinkLock") {
         processPresetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime =
                 stringToVariant->ShrinkTimeToInt(value.toString());
     }
@@ -1935,9 +1984,11 @@ QVariant OperatorModel::data(const QModelIndex &index, int role) const
         else if (columnIdx == 4) {
             permissionSetting->_Recall();
             qDebug() << "(int)myOperator.PermissionLevel" << (int)myOperator.PermissionLevel;
-            value = QVariant::fromValue(permissionSetting->FourLevelIdentifier.at(myOperator.PermissionLevel-1));
             if ((int)myOperator.PermissionLevel == 0)
                 value = "Key";
+            else
+                value = QVariant::fromValue(permissionSetting->FourLevelIdentifier.at(myOperator.PermissionLevel-1));
+
         }
     }
     return value;
@@ -2029,7 +2080,7 @@ void OperatorModel::insertValue(QString name, QString passwd,int level)
         myOperator.PermissionLevel = OperatorElement::LEVEL3;
     else if (level == 4)
         myOperator.PermissionLevel = OperatorElement::LEVEL4;
-    else if (level == 5)
+    else if (level == 0)
         myOperator.PermissionLevel = OperatorElement::PHYKEY;
     myOperator.CreatedDate = QDateTime::currentDateTime().toTime_t();
     m_operatorAdaptor->InsertRecordIntoTable(&myOperator);
@@ -2075,7 +2126,7 @@ void OperatorModel::updateOperator(int id, QString name, QString passwd, int lev
         myOperator.PermissionLevel = OperatorElement::LEVEL3;
     else if (level == 4)
         myOperator.PermissionLevel = OperatorElement::LEVEL4;
-    else if (level == 5)
+    else if (level == 0)
         myOperator.PermissionLevel = OperatorElement::PHYKEY;
     m_operatorAdaptor->UpdateRecordIntoTable(&myOperator);
     setModelList();

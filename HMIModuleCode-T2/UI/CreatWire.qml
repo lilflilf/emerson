@@ -178,32 +178,32 @@ Item {
         spliceModel.setProcessValue("ShrinkId",shrinkSet.shrinkId );
         spliceModel.setProcessValue("ShrinkTemp",shrinkSet.shrinkTemp);
         spliceModel.setProcessValue("ShrinkTime",shrinkSet.shrinkTime);
+        spliceModel.setProcessValue("ShrinkLock",shrinkSet.shrinkLock);
 
 
-        spliceModel.setProcessValue("WeldModel",weldListModel.model1)
-        spliceModel.setProcessValue("StepModel",weldListModel.model2)
-        spliceModel.setProcessValue("Pre Burst",weldSettingModel.get(0).textValue)
-        spliceModel.setProcessValue("After Burst",weldSettingModel.get(1).textValue)
-        spliceModel.setProcessValue("Squeeze Time",weldSettingModel.get(2).textValue)
-        spliceModel.setProcessValue("Hold Time",weldSettingModel.get(3).textValue)
+//        spliceModel.setProcessValue("WeldModel",weldListModel.model1)
+//        spliceModel.setProcessValue("StepModel",weldListModel.model2)
+//        spliceModel.setProcessValue("Pre Burst",weldSettingModel.get(0).textValue)
+//        spliceModel.setProcessValue("After Burst",weldSettingModel.get(1).textValue)
+//        spliceModel.setProcessValue("Squeeze Time",weldSettingModel.get(2).textValue)
+//        spliceModel.setProcessValue("Hold Time",weldSettingModel.get(3).textValue)
 
-        spliceModel.setProcessValue("ActualWidth",widthModel.get(1).textValue)
-        spliceModel.setProcessValue("ActualHeight",heightModel.get(1).textValue)
-        spliceModel.setProcessValue("DisplayWidth",widthModel.get(0).textValue)
-        spliceModel.setProcessValue("DisplayHeight",heightModel.get(0).textValue)
+//        spliceModel.setProcessValue("ActualWidth",widthModel.get(1).textValue)
+//        spliceModel.setProcessValue("ActualHeight",heightModel.get(1).textValue)
+//        spliceModel.setProcessValue("DisplayWidth",widthModel.get(0).textValue)
+//        spliceModel.setProcessValue("DisplayHeight",heightModel.get(0).textValue)
 
-        spliceModel.setProcessValue("Unload Time",loadValue.inputText)
-        spliceModel.setProcessValue("Load Time",loadValue2.inputText)
+//        spliceModel.setProcessValue("Unload Time",loadValue.inputText)
+//        spliceModel.setProcessValue("Load Time",loadValue2.inputText)
 
-        spliceModel.setProcessValue("Anti-Side",thirdSwitchModel.get(0).switchState == "left" ? true : false)
-        spliceModel.setProcessValue("Insulation",thirdSwitchModel.get(1).switchState == "left" ? true : false)
+//        spliceModel.setProcessValue("Anti-Side",thirdSwitchModel.get(0).switchState == "left" ? true : false)
+//        spliceModel.setProcessValue("Insulation",thirdSwitchModel.get(1).switchState == "left" ? true : false)
+//        spliceModel.setProcessValue("Cut Off",cutteronoroff.state == "left" ? true : false)
 
-        spliceModel.setProcessValue("Cut Off",cutteronoroff.state == "left" ? true : false)
-
-        spliceModel.setProcessValue("CutterTime",cutterModel.get(0).switchState == "left" ? true : false)
-        spliceModel.setProcessValue("CutterPeakPower",cutterModel.get(1).switchState == "left" ? true : false)
-        spliceModel.setProcessValue("CutterPreHeight",cutterModel.get(2).switchState == "left" ? true : false)
-        spliceModel.setProcessValue("CutterPostHeight",cutterModel.get(3).switchState == "left" ? true : false)
+//        spliceModel.setProcessValue("CutterTime",cutterModel.get(0).switchState == "left" ? true : false)
+//        spliceModel.setProcessValue("CutterPeakPower",cutterModel.get(1).switchState == "left" ? true : false)
+//        spliceModel.setProcessValue("CutterPreHeight",cutterModel.get(2).switchState == "left" ? true : false)
+//        spliceModel.setProcessValue("CutterPostHeight",cutterModel.get(3).switchState == "left" ? true : false)
 
     }
 
@@ -1846,6 +1846,7 @@ Item {
                 spliceModel.setStructValue("ShrinkId",shrinkSet.shrinkId );
                 spliceModel.setStructValue("ShrinkTemp",shrinkSet.shrinkTemp);
                 spliceModel.setStructValue("ShrinkTime",shrinkSet.shrinkTime);
+                spliceModel.setProcessValue("ShrinkLock",shrinkSet.shrinkLock);
 
 
 
@@ -1858,6 +1859,8 @@ Item {
 
                 spliceModel.setStructValue("ActualWidth",widthModel.get(1).textValue)
                 spliceModel.setStructValue("ActualHeight",heightModel.get(1).textValue)
+                spliceModel.setStructValue("DisplayWidth",widthModel.get(0).textValue)
+                spliceModel.setStructValue("DisplayHeight",heightModel.get(0).textValue)
 
                 spliceModel.setStructValue("Unload Time",loadValue.inputText)
                 spliceModel.setStructValue("Load Time",loadValue2.inputText)
@@ -1971,13 +1974,6 @@ Item {
                     weldListModel.append({"buttonName":qsTr("Step-Energy")})
                     weldListModel.append({"buttonName":qsTr("Step-Time")})
                     weldListModel.append({"buttonName":qsTr("Step-Power")})
-
-                }
-                onModel1Changed: {
-                    freshProcess()
-                }
-                onModel2Changed: {
-                    freshProcess()
                 }
             }
 
@@ -2146,8 +2142,6 @@ Item {
                 clip: true
                 state: spliceModel.getStructValue("Cut Off","current")
                 onStateChanged: {
-                    freshProcess()
-
                     if (cutteronoroff.state == "left"){
                         cutterColumn.visible = true
                         loadName2.visible = true
@@ -2212,7 +2206,6 @@ Item {
                             state: switchState
                             clip: true
                             onStateChanged: {
-                                freshProcess()
                             }
                         }
                     }
@@ -2235,7 +2228,7 @@ Item {
             ListModel {
                 id: widthModel
                 Component.onCompleted: {
-                    widthModel.append({"widthText":qsTr("Displayed:"),"textValue":"0.00mm","maxText":"","minText":""})
+                    widthModel.append({"widthText":qsTr("Displayed:"),"textValue":spliceModel.getStructValue("DisplayedWidth","current"),"maxText":spliceModel.getStructValue("DisplayedWidth","max"),"minText":spliceModel.getStructValue("DisplayedWidth","min")})
                     widthModel.append({"widthText":qsTr("Actual:"),"textValue":spliceModel.getStructValue("ActualWidth","current"),"maxText":spliceModel.getStructValue("ActualWidth","max"),"minText":spliceModel.getStructValue("ActualWidth","min")})
                 }
             }
@@ -2319,7 +2312,7 @@ Item {
             ListModel {
                 id: heightModel
                 Component.onCompleted: {
-                    heightModel.append({"heightText":qsTr("Displayed:"),"textValue":"0.00mm","maxText":"","minText":""})
+                    heightModel.append({"heightText":qsTr("Displayed:"),"textValue":spliceModel.getStructValue("DisplayedHeight","current"),"maxText":spliceModel.getStructValue("DisplayedHeight","max"),"minText":spliceModel.getStructValue("DisplayedHeight","min")})
                     heightModel.append({"heightText":qsTr("Actual:"),"textValue":spliceModel.getStructValue("ActualHeight","current"),"maxText":spliceModel.getStructValue("ActualHeight","max"),"minText":spliceModel.getStructValue("ActualHeight","min")})
                 }
             }
@@ -2438,8 +2431,6 @@ Item {
                                 thirdSwitchModel.set(index,{"switchState":onoroff.state})
                                 if (thirdSwitchText == "Insulation:")
                                 {
-                                    freshProcess()
-
                                     if (onoroff.state == "left"){
                                         instulationButton.visible = true
                                         insulation.visible = true
@@ -2451,8 +2442,6 @@ Item {
                                 }
                                 else if(thirdSwitchText == "Anti-Side:")
                                 {
-                                    freshProcess()
-
                                     if (onoroff.state == "left"){
                                         loadValue.visible = true
                                         loadName.visible = true
@@ -2611,25 +2600,31 @@ Item {
                 width: 200
                 text: qsTr("Save")
                 textColor: "white"
-                visible: false
+                visible: true
                 onClicked: {
-                    spliceModel.setStructValue("WeldModel",weldListModel.model1)
-                    spliceModel.setStructValue("StepModel",weldListModel.model2)
-                    spliceModel.setStructValue("Pre Burst",weldSettingModel.get(0).textValue)
-                    spliceModel.setStructValue("After Burst",weldSettingModel.get(1).textValue)
-                    spliceModel.setStructValue("Squeeze Time",weldSettingModel.get(2).textValue)
-                    spliceModel.setStructValue("Hold Time",weldSettingModel.get(3).textValue)
+                    spliceModel.setProcessValue("WeldModel",weldListModel.model1)
+                    spliceModel.setProcessValue("StepModel",weldListModel.model2)
+                    spliceModel.setProcessValue("Pre Burst",weldSettingModel.get(0).textValue)
+                    spliceModel.setProcessValue("After Burst",weldSettingModel.get(1).textValue)
+                    spliceModel.setProcessValue("Squeeze Time",weldSettingModel.get(2).textValue)
+                    spliceModel.setProcessValue("Hold Time",weldSettingModel.get(3).textValue)
 
-                    spliceModel.setStructValue("ActualWidth",widthModel.get(1).textValue)
-                    spliceModel.setStructValue("ActualHeight",heightModel.get(1).textValue)
+                    spliceModel.setProcessValue("ActualWidth",widthModel.get(1).textValue)
+                    spliceModel.setProcessValue("ActualHeight",heightModel.get(1).textValue)
+                    spliceModel.setProcessValue("DisplayWidth",widthModel.get(0).textValue)
+                    spliceModel.setProcessValue("DisplayHeight",heightModel.get(0).textValue)
 
-                    spliceModel.setStructValue("Unload Time",loadValue.inputText)
-                    spliceModel.setStructValue("Load Time",loadValue2.inputText)
+                    spliceModel.setProcessValue("Unload Time",loadValue.inputText)
+                    spliceModel.setProcessValue("Load Time",loadValue2.inputText)
 
-                    spliceModel.setStructValue("Anti-Side",thirdSwitchModel.get(0).switchState == "left" ? true : false)
-                    spliceModel.setStructValue("Cut Off",cutteronoroff.state == "left" ? true : false)
-                    spliceModel.setStructValue("Insulation",thirdSwitchModel.get(1).switchState == "left" ? true : false)
+                    spliceModel.setProcessValue("Anti-Side",thirdSwitchModel.get(0).switchState == "left" ? true : false)
+                    spliceModel.setProcessValue("Cut Off",cutteronoroff.state == "left" ? true : false)
+                    spliceModel.setProcessValue("Insulation",thirdSwitchModel.get(1).switchState == "left" ? true : false)
 
+                    spliceModel.setProcessValue("CutterTime",cutterModel.get(0).switchState == "left" ? true : false)
+                    spliceModel.setProcessValue("CutterPeakPower",cutterModel.get(1).switchState == "left" ? true : false)
+                    spliceModel.setProcessValue("CutterPreHeight",cutterModel.get(2).switchState == "left" ? true : false)
+                    spliceModel.setProcessValue("CutterPostHeight",cutterModel.get(3).switchState == "left" ? true : false)
 
                     settingRightArea.visible = false
 
@@ -2690,6 +2685,7 @@ Item {
             shrinkSet.shrinkId = spliceModel.getStructValue("ShrinkId","");
             shrinkSet.shrinkTemp = spliceModel.getStructValue("ShrinkTemp","")
             shrinkSet.shrinkTime = spliceModel.getStructValue("ShrinkTime","")
+            shrinkSet.shrinkLock = spliceModel.getStructValue("shrinkLock","")
             insulation.text = qsTr("  Insulation: ") + shrinkSet.shrinkId + qsTr(" Temp:") + shrinkSet.shrinkTemp + qsTr(" Time:") + shrinkSet.shrinkTime
         }
 
@@ -2699,7 +2695,6 @@ Item {
             backGround.visible = false
             insulation.text = qsTr("  Insulation: ") + shrinkSet.shrinkId + qsTr(" Temp:") + shrinkSet.shrinkTemp + qsTr(" Time:") + shrinkSet.shrinkTime
             hmiAdaptor.addInsulation(shrinkSet.shrinkId,shrinkSet.shrinkTemp,shrinkSet.shrinkTime)
-            freshProcess()
         }
         onCancelClick: {
             shrinkSet.visible = false

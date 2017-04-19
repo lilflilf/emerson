@@ -606,7 +606,7 @@ bool HmiAdaptor::borrowLogin(QString passwd, QString pageName)
             reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level3;
         else if (levelIndex == 4)
             reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level4;
-        else if (levelIndex == 5) {
+        else if (levelIndex == 0) {
             reb = permissionSetting->CurrentPermissionList.at(funcIndex).Key;
             reb = reb & bIsPhysicalKey;
         }

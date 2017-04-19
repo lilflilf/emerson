@@ -13,7 +13,7 @@ Item {
     property alias shrinkId: inputshrinkId.inputText
     property alias shrinkTemp: inputTemperature.inputText
     property alias shrinkTime: inputtimeText.inputText
-
+    property alias shrinkLock: lockSwitch.state
     ListModel {
         id: shrinkModel
         Component.onCompleted: {
@@ -37,7 +37,7 @@ Item {
         Text {
             id: title
             anchors.top: parent.top
-            anchors.topMargin: 60
+            anchors.topMargin: 20
             anchors.right: inputshrinkId.left
             anchors.rightMargin: 20
             width: 150
@@ -54,7 +54,7 @@ Item {
         MyLineEdit {
             id: inputshrinkId
             anchors.top: parent.top
-            anchors.topMargin: 60
+            anchors.topMargin: 20
             anchors.right: parent.right
             anchors.rightMargin: 72
             horizontalAlignment: Qt.AlignHCenter
@@ -154,11 +154,40 @@ Item {
                 }
             }
         }
+
+        Text {
+            id: lockText
+            anchors.top: timeText.bottom
+            anchors.topMargin: 20
+            anchors.right: inputtimeText.left
+            anchors.rightMargin: 20
+            width: 150
+            height: 60
+            font.pointSize: 18
+            font.family: "arial"
+            text: qsTr("Mutex Lock")
+            verticalAlignment: Qt.AlignVCenter
+            horizontalAlignment: Qt.AlignRight
+            color: "white"
+        }
+        Switch2 {
+            id: lockSwitch
+            anchors.top: timeText.bottom
+            anchors.topMargin: 20
+            anchors.right: parent.right
+            anchors.rightMargin: 72
+            width: Screen.width * 0.12
+            height: 60
+            textLeft: qsTr("ON")
+            textRight: qsTr("OFF")
+
+        }
+
         CButton {
             anchors.right: sure.left
             anchors.rightMargin: 15
-            anchors.top: timeText.bottom
-            anchors.topMargin: 16
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 16
             width: 180
             text: qsTr("CANCEL")
             textColor: "white"
@@ -171,8 +200,8 @@ Item {
             id: sure
             anchors.right: parent.right
             anchors.rightMargin: 72
-            anchors.top: timeText.bottom
-            anchors.topMargin: 16
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 16
             width: 180
             text: qsTr("OK")
             textColor: "white"
