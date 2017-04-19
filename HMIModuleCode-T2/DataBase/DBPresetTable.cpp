@@ -46,7 +46,7 @@ const QString SQLSentence[] = {
 
     /*Shrink Tube Setting*/
     "ShrinkOption BOOLEAN, ShrinkTubeID INT, ShrinkTime INT, "
-    "ShrinkTemperature INT, "                                   /*4 items */
+    "ShrinkTemperature INT, ShrinkMutex BOOLEAN, "              /*5 items */
 
     "HashCode INT, "                                            /*1 items */
 
@@ -89,8 +89,8 @@ const QString SQLSentence[] = {
     "AntiSide, AntiSideSpliceTime, "
     "MeasuredWidth, MeasuredHeight, DisplayWidth, DisplayHeight, "
 
-    /*Shrink Tube Setting*/                     /* 4 items */
-    "ShrinkOption, ShrinkTubeID, ShrinkTime, ShrinkTemperature, "
+    /*Shrink Tube Setting*/                     /* 5 items */
+    "ShrinkOption, ShrinkTubeID, ShrinkTime, ShrinkTemperature, ShrinkMutex, "
 
     "HashCode, "                                /* 1 item */
 
@@ -119,7 +119,7 @@ const QString SQLSentence[] = {
     "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
     "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
     "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
-    "?, ?, ?, ?, ?, ?, ?)",
+    "?, ?, ?, ?, ?, ?, ?, ?)",
 
     "SELECT ID, SpliceName FROM Preset",        /*2 Query Entire Preset Table */
 
@@ -149,7 +149,8 @@ const QString SQLSentence[] = {
     "AntiSide = ?, AntiSideSpliceTime = ?, "
     "MeasuredWidth = ?, MeasuredHeight = ?, DisplayWidth = ?, DisplayHeight = ?, "  /* item 23 */
 
-    "ShrinkOption = ?, ShrinkTubeID = ?, ShrinkTime = ?, ShrinkTemperature = ?, "   /* items 4 */
+    "ShrinkOption = ?, ShrinkTubeID = ?, ShrinkTime = ?, ShrinkTemperature = ?, "   /* items 5 */
+    "ShrinkMutex = ?, "
 
     "HashCode = ?, "                                                                /* item 1 */
 
@@ -420,6 +421,7 @@ int DBPresetTable::InsertRecordIntoTable(void *_obj)
     query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID);
     query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime);
     query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTemperature);
+    query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkMutex);
 
     unsigned int HashCode = qHashBits(&(((PresetElement*)_obj)->WeldSettings), sizeof(((PresetElement*)_obj)->WeldSettings), 0);
     query.addBindValue(HashCode);
@@ -609,6 +611,8 @@ bool DBPresetTable::QueryOneRecordFromTable(int ID, QString Name, void *_obj)
             query.value("ShrinkTime").toInt();
     ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTemperature =
             query.value("ShrinkTemperature").toInt();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkMutex =
+            query.value("ShrinkMutex").toBool();
     ((PresetElement*)_obj)->HashCode = query.value("HashCode").toInt();
 
     ((PresetElement*)_obj)->TestSetting.BatchSize = query.value("BatchSize").toInt();
@@ -809,6 +813,8 @@ bool DBPresetTable::QueryOneRecordFromTable(int ID, void *_obj)
     ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime = query.value("ShrinkTime").toInt();
     ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTemperature =
             query.value("ShrinkTemperature").toInt();
+    ((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkMutex =
+            query.value("ShrinkMutex").toBool();
     ((PresetElement*)_obj)->HashCode = query.value("HashCode").toInt();
 
     ((PresetElement*)_obj)->TestSetting.BatchSize = query.value("BatchSize").toInt();
@@ -1000,6 +1006,7 @@ bool DBPresetTable::UpdateRecordIntoTable(void *_obj)
     query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID);
     query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime);
     query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTemperature);
+    query.addBindValue(((PresetElement*)_obj)->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkMutex);
     query.addBindValue(((PresetElement*)_obj)->HashCode);
 
     query.addBindValue(((PresetElement*)_obj)->TestSetting.BatchSize);

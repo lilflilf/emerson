@@ -120,6 +120,8 @@ struct BitFlag{
     bool CoolingTypeData;
     bool LockOnAlarmData;
     bool MachineFlagsData;
+    bool TunePointData;
+    bool FreqOffsetData;
 };
 
 enum Last_made{

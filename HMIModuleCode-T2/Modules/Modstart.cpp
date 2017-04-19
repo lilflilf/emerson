@@ -86,28 +86,28 @@ MODstart::MODstart()
 //        }
         _M2010->ReceiveFlags.ActuatorType = false;
         _M102IA->SendIACommand(IAComGetActuator, 0);
-        _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.ActuatorType);
+        _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.ActuatorType);
 
         //Send command to get Controller Version string.
         _M2010->ReceiveFlags.ControllerVersionData = false;
         _M102IA->SendIACommand(IAComGetControllerVer, 0);
-        _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.ControllerVersionData);
+        _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.ControllerVersionData);
 
         _M2010->ReceiveFlags.ActuatorVersionData = false;
         _M102IA->SendIACommand(IAComGetActuatorVer, 0);
-        _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.ActuatorVersionData);
+        _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.ActuatorVersionData);
 
         _M2010->ReceiveFlags.ActuatorPartNumData = false;
         _M102IA->SendIACommand(IAComGetActuatorPartNum, 0);
-        _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.ActuatorPartNumData);
+        _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.ActuatorPartNumData);
 
         _M2010->ReceiveFlags.ActuatorSerialNumData = false;
         _M102IA->SendIACommand(IAComGetActuatorSerialNum, 0);
-        _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.ActuatorSerialNumData);
+        _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.ActuatorSerialNumData);
 
         _M2010->ReceiveFlags.POWERrating = false;
         _M102IA->IACommand(IAComSendPWRrating);
-        _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.POWERrating);
+        _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.POWERrating);
         if (_M2010->ReceiveFlags.POWERrating == true)
         {
             _M2010->ReceiveFlags.POWERrating = false;
@@ -120,34 +120,40 @@ MODstart::MODstart()
         }
         _M2010->ReceiveFlags.HORNamplitude = false;
         _M102IA->IACommand(IAComSendHornAmplitude);
-        _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.HORNamplitude);
+        _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.HORNamplitude);
 
         _M2010->ReceiveFlags.SonicHitsData = false;
         _M102IA->IACommand(IAComSendSonicHits);    //Always make this last, it terminates the watch loop
-        _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.SonicHitsData);
+        _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.SonicHitsData);
 
         _M2010->ReceiveFlags.WELDdata = false;
         _M102IA->IACommand(IAComSendWeldData);
-        _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.WELDdata);
+        _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.WELDdata);
 
         _M2010->ReceiveFlags.CoolingTypeData = false;
         _M102IA->IACommand(IAComGetCooling);
-        _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.CoolingTypeData);
+        _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.CoolingTypeData);
 
         _M2010->ReceiveFlags.LockOnAlarmData = false;
         _M102IA->IACommand(IAComGetLockonAlarm);
-        _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.LockOnAlarmData);
+        _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.LockOnAlarmData);
 
         _M2010->ReceiveFlags.FootPadelDATA = false;
         _M102IA->IACommand(IAComGetRunModeNew);
-        _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.FootPadelDATA);
+        _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.FootPadelDATA);
         _Interface->StatusData.RunMode.Word &= 0xF800;
 
         _M2010->ReceiveFlags.MachineFlagsData = false;
         _M102IA->IACommand(IAComGetMachineFlags);
-        _M102IA->WaitForResponseAfterSent(3000, &_M2010->ReceiveFlags.MachineFlagsData);
+        _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.MachineFlagsData);
 
+        _M2010->ReceiveFlags.TunePointData = false;
+        _M102IA->IACommand(IAComGetTunePoint);
+        _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.TunePointData);
 
+        _M2010->ReceiveFlags.FreqOffsetData = false;
+        _M102IA->IACommand(IAComGetFrequencyOffset);
+        _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.FreqOffsetData);
 
 
         //Prepare Current VersaGraphics Version String.
@@ -340,7 +346,7 @@ int MODstart::CheckIOStatus()
     //--Get back the current I/O data!
     _M2010->ReceiveFlags.IOdata = false;
     _M102IA->IACommand(IAComSendIOdata);
-    _Timer->SetCommandTimer(3000);
+    _Timer->SetCommandTimer(DELAY3SEC);
     while (_Timer->IsCommandTimeout() == false)
     {
         QCoreApplication::processEvents(); // Wait for response
@@ -365,39 +371,12 @@ int MODstart::CheckIOStatus()
     return FeedbackResult;
 }
 
-void MODstart::GetAuxillaryNamesToAuxNameArray()
-{
-//    Checks for AuxName.txt file if not present create one and writes default name strings  in it
-//    string sFilePath, sTestPath, sTmpLine;
-//    int iFileNumber, newFileNumber;
-//    int Aux_Name_Index = Aux1;
-//    sFilePath = ConfigFilesPath + "AuxName.txt";
-//    QDir dir(QString::fromStdString(sFilePath));
-//    if (dir.exists() == false)
-//        GetDefaultNamesInAuxNameFile();
-
-
-}
-
-void MODstart::GetDefaultNamesInAuxNameFile()
-{
-
-}
-
 void MODstart::ViewIPConfiguration()
 {
 
 }
 
-void MODstart::SetDefaultIndicatorsForOperatorScreen()
-{
 
-}
-
-void MODstart::StoreTopCoordinateCreateEditSpliceScreen()
-{
-
-}
 
 //This function checks and retrieves the previous stored Versions of Controller
 //and Versagraphix.It then compares the previous values to current ones,shows a

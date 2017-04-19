@@ -66,6 +66,8 @@ M2010::M2010()
     ReceiveFlags.CoolingTypeData = false;
     ReceiveFlags.LockOnAlarmData = false;
     ReceiveFlags.MachineFlagsData = false;
+    ReceiveFlags.TunePointData = false;
+    ReceiveFlags.FreqOffsetData = false;
 
     M10Run.Sequence_Done = false;
     M10Run.Pre_Hght_Error = false;
