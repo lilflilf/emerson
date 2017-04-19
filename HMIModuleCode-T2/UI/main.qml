@@ -170,6 +170,9 @@ Window {
 //            contentLoader.source = "qrc:/UI/CreatWire.qml"
             stackview.push("qrc:/UI/CreatWire.qml",{},StackView.Immediate)
             headBar.titleText = qsTr("Create Splice")
+            if (bIsTest)
+                headBar.titleText = qsTr("Test Splice")
+
             break;
         case 0:
             partModel.getPartInfo(false,0,"")
@@ -392,7 +395,7 @@ Window {
             if (status){
                 bIsPhysicalKey = true
                 headBar.backColor = "#f79428"
-                statusBar.backColor = "#f79428"
+                statusBar.backColor = "#fac834"
             }
             else
             {
