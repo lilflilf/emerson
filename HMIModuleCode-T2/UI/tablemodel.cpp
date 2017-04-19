@@ -707,7 +707,10 @@ QString SplicesModel::getStructValue(QString valueKey, QString valueType)
         ResultStr = variantToString->ShrinkTimeToString(presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime).Current;
     }
     else if (valueKey == "ShrinkLock") {
-        ResultStr = variantToString->ShrinkTimeToString(presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime).Current;
+        if (presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkMutex)
+            ResultStr = "left";
+        else
+            ResultStr = "right"
     }
     else if (valueKey == "Cross Section") {
         ResultStr = variantToString->CrossSectionToString(presetElement.CrossSection);
@@ -1002,8 +1005,10 @@ void SplicesModel::setStructValue(QString valueKey, QVariant value)
                 stringToVariant->ShrinkTimeToInt(value.toString());
     }
     else if (valueKey == "ShrinkLock") {
-        presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime =
-                stringToVariant->ShrinkTimeToInt(value.toString());
+        if (value.toString() == "left")
+            presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkMutex = true;
+        else
+            presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkMutex = false;
     }
     else if (valueKey == "SpliceName") {
         presetElement.SpliceName = value.toString();
@@ -1225,8 +1230,10 @@ void SplicesModel::setProcessValue(QString valueKey, QVariant value)
                 stringToVariant->ShrinkTimeToInt(value.toString());
     }
     else if (valueKey == "ShrinkLock") {
-        processPresetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime =
-                stringToVariant->ShrinkTimeToInt(value.toString());
+        if (value.toString() == "left")
+            presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkMutex = true;
+        else
+            presetElement.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkMutex = false;
     }
     else if (valueKey == "SpliceName") {
         processPresetElement.SpliceName = value.toString();
