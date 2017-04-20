@@ -596,8 +596,12 @@ bool HmiAdaptor::borrowLogin(QString passwd, QString pageName)
                 break;
             }
         }
-        if (funcIndex == -1)
-            return false;
+        if (funcIndex == -1) {
+            if (myOperator.PermissionLevel != OperatorElement::PHYKEY)
+                return true;
+            else if (myOperator.PermissionLevel == OperatorElement::PHYKEY)
+                return bIsPhysicalKey;
+        }
         levelIndex = (int)myOperator.PermissionLevel;
         if (levelIndex == 1)
             reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level1;
@@ -609,9 +613,9 @@ bool HmiAdaptor::borrowLogin(QString passwd, QString pageName)
             reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level4;
         else if (levelIndex == 0) {
             reb = permissionSetting->CurrentPermissionList.at(funcIndex).PhyKey;
-            if (reb && !bIsPhysicalKey)
+            if (!bIsPhysicalKey)
                 emit signalPhysicalKeyMessage();
-            reb = reb & bIsPhysicalKey;
+            reb = bIsPhysicalKey;
         }
 
         return reb;
@@ -715,7 +719,6 @@ bool HmiAdaptor::needPassWord(QString pageName)
     if (funcIndex == -1)
         return false;
     levelIndex = (int)interfaceClass->CurrentOperator.PermissionLevel;
-    qDebug() << "needPassWord" << pageName << funcIndex << levelIndex;
 
     if (levelIndex == 0)
         reb = permissionSetting->CurrentPermissionList.at(funcIndex).PhyKey;
@@ -728,6 +731,7 @@ bool HmiAdaptor::needPassWord(QString pageName)
     else if (levelIndex == 4)
         reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level4;
 
+    qDebug() << "needPassWord" << pageName << funcIndex << levelIndex << reb;
     return !reb;
 }
 

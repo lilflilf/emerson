@@ -191,7 +191,7 @@ void M10INI::SetDefaultWeldFormula(Status_Data* _DataStruct)
 void M10INI::SetDefaultPassword(Status_Data* _DataStruct)
 {
     _DataStruct->EnableModularFlag = false;
-    _DataStruct->PasswordData[0].Identifier = QObject::tr("Switch Key");
+    _DataStruct->PasswordData[0].Identifier = QObject::tr("Physical Key");
     _DataStruct->PasswordData[0].Password.clear();
     _DataStruct->PasswordData[0].PWPermissions = 0xFFFFFFFF;
     _DataStruct->PasswordData[1].Identifier = QObject::tr("Level 1");
