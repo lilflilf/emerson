@@ -21,7 +21,7 @@ Item {
         currentIdentifier = list;
         for (i = 0;i < list.length; i++)
         {
-            listModel.append({name:list[i],level1:hmiAdaptor.permissionsettingGetChecked(list[i],1),level2:hmiAdaptor.permissionsettingGetChecked(list[i],2),level3:hmiAdaptor.permissionsettingGetChecked(list[i],3),level4:hmiAdaptor.permissionsettingGetChecked(list[i],4),level5:false})
+            listModel.append({name:list[i],level1:hmiAdaptor.permissionsettingGetChecked(list[i],1),level2:hmiAdaptor.permissionsettingGetChecked(list[i],2),level3:hmiAdaptor.permissionsettingGetChecked(list[i],3),level4:hmiAdaptor.permissionsettingGetChecked(list[i],4),level5:hmiAdaptor.permissionsettingGetChecked(list[i],0)})
         }
 
         list = hmiAdaptor.permissionsettingGetValue("AllFunctionNameList")
@@ -194,7 +194,7 @@ Item {
                     listModel.clear()
                     for (var i = 0; i < menuModel.count; i++) {
                         if (menuModel.get(i).opacityValue == 0.5) {
-                            listModel.append({name:menuModel.get(i).name,level1:hmiAdaptor.permissionsettingGetChecked(menuModel.get(i).name,1),level2:hmiAdaptor.permissionsettingGetChecked(menuModel.get(i).name,2),level3:hmiAdaptor.permissionsettingGetChecked(menuModel.get(i).name,3),level4:hmiAdaptor.permissionsettingGetChecked(menuModel.get(i).name,4),level5:false})
+                            listModel.append({name:menuModel.get(i).name,level1:hmiAdaptor.permissionsettingGetChecked(menuModel.get(i).name,1),level2:hmiAdaptor.permissionsettingGetChecked(menuModel.get(i).name,2),level3:hmiAdaptor.permissionsettingGetChecked(menuModel.get(i).name,3),level4:hmiAdaptor.permissionsettingGetChecked(menuModel.get(i).name,4),level5:hmiAdaptor.permissionsettingGetChecked(list[i],0)})
                         }
                     }
                 }
@@ -454,7 +454,7 @@ Item {
             hmiAdaptor.permissionsettingExecute("_Clear")
             for (var i = 0; i < listModel.count; i ++)
             {
-                hmiAdaptor.permissionsettingSetValue(listModel.get(i).name,listModel.get(i).level1,listModel.get(i).level2,listModel.get(i).level3,listModel.get(i).level4)
+                hmiAdaptor.permissionsettingSetValue(listModel.get(i).name,listModel.get(i).level1,listModel.get(i).level2,listModel.get(i).level3,listModel.get(i).level4,listModel.get(i).level5)
             }
             fourLevelIdentifier[0] = levelText1.inputText
             fourLevelIdentifier[1] = levelText2.inputText

@@ -18,6 +18,32 @@ Item {
     height: Screen.height
     property int index: -1
     property var pageName: ""
+    Connections {
+        target: hmiAdaptor
+        onSignalPhysicalKeyMessage: {
+            title.text = qsTr("Scan or Enter ID(Please insert physicalkey)")
+            itemChange.start()
+        }
+    }
+    Timer {
+        id: itemChange
+        interval: 5000
+        repeat: false
+        triggeredOnStart: false;
+        onTriggered: {
+            title.text = qsTr("Scan or Enter ID")
+        }
+    }
+
+//    NumberAnimation {
+//        id: itemChange
+//        target: itemTip
+//        to: 0
+//        property: "opacity"
+//        duration: 5000
+//        easing.type: Easing.InOutQuad
+//    }
+
     Rectangle {
         id: backGround
         anchors.fill: parent
@@ -56,6 +82,7 @@ Item {
         width: 800
         height: 600
         source: "qrc:/images/images/dialogbg.png"
+
         Text {
             id: title
             anchors.top: parent.top
@@ -71,20 +98,55 @@ Item {
             anchors.top: title.bottom
             anchors.topMargin: 10
             anchors.horizontalCenter: title.horizontalCenter
-            visible: false
+            visible: true
+            height: 40
+            width: 250
+            echoMode: TextInput.Password
+            font.pointSize: 16
+            color: "white"
+            verticalAlignment: Qt.AlignVCenter
+            maximumLength: 12
+            Rectangle {
+                anchors.fill: parent
+                color: Qt.rgba(0,0,0,0)
+                border.color: "#0079c1"
+                border.width: 2
+            }
+
             onTextChanged: {
-                if (mima.text.length == 4) {
-                    if (hmiAdaptor.borrowLogin(mima.text,pageName)) {
-                        if (pageName == "Teach Mode") {
-                            mimaShow.text = ""
-                            mima.text = ""
-                            passwdDialog.visible = false
-                        } else {
-                            mainRoot.menuInit(passwdDialog.index)
-                            mimaShow.text = ""
-                            mima.text = ""
-                            passwdDialog.visible = false
-                        }
+//                if (mima.text.length == 4) {
+//                    if (hmiAdaptor.borrowLogin(mima.text,pageName)) {
+//                        if (pageName == "Teach Mode") {
+//                            mimaShow.text = ""
+//                            mima.text = ""
+//                            passwdDialog.visible = false
+//                        } else {
+//                            mainRoot.menuInit(passwdDialog.index)
+//                            mimaShow.text = ""
+//                            mima.text = ""
+//                            passwdDialog.visible = false
+//                        }
+//                    }
+//                }
+            }
+        }
+
+        CButton {
+            width: 40
+            height: 42
+            anchors.top: mima.top
+            anchors.left: mima.right
+            onClicked: {
+                if (hmiAdaptor.borrowLogin(mima.text,pageName)) {
+                    if (pageName == "Teach Mode") {
+                        mimaShow.text = ""
+                        mima.text = ""
+                        passwdDialog.visible = false
+                    } else {
+                        mainRoot.menuInit(passwdDialog.index)
+                        mimaShow.text = ""
+                        mima.text = ""
+                        passwdDialog.visible = false
                     }
                 }
             }
@@ -100,6 +162,7 @@ Item {
             font.family: "arial"
             color: "white"
             text: ""
+            visible: false
             Keys.enabled: true
             Keys.onReturnPressed: {
             }
@@ -109,7 +172,7 @@ Item {
                     mima.remove(mima.text.length-1,mima.text.length)
                     mimaShow.text = mimaShow.text.substring(0,mimaShow.text.length - 1)
                 }
-                if (mimaShow.text.length >= 4 )
+                if (mimaShow.text.length >= 12 )
                     return
                 if (event.key == Qt.Key_0) {
                     mimaShow.text = mimaShow.text + "●"
@@ -165,6 +228,7 @@ Item {
             anchors.verticalCenter: mimaShow.verticalCenter
             anchors.verticalCenterOffset: 2
             spacing: 3
+            visible: false
             Rectangle {
                 radius: 100
                 width: 18
@@ -200,7 +264,7 @@ Item {
         }
         Grid {
             anchors.horizontalCenter: title.horizontalCenter
-            anchors.top: mimaShow2.bottom
+            anchors.top: mima.bottom
             anchors.topMargin: 10
             columnSpacing: 30
             rowSpacing: 8
@@ -226,7 +290,7 @@ Item {
                                 mima.remove(mima.text.length-1,mima.text.length)
                                 mimaShow.text = mimaShow.text.substring(0,mimaShow.text.length - 1)
                             } else {
-                                if (mimaShow.text.length >= 4)
+                                if (mimaShow.text.length >= 12)
                                     return
                                 mimaShow.text = mimaShow.text + "●"
                                 mima.text += listModel.get(index).value

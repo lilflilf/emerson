@@ -608,6 +608,8 @@ bool HmiAdaptor::borrowLogin(QString passwd, QString pageName)
             reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level4;
         else if (levelIndex == 0) {
             reb = permissionSetting->CurrentPermissionList.at(funcIndex).Key;
+            if (reb && !bIsPhysicalKey)
+                emit signalPhysicalKeyMessage();
             reb = reb & bIsPhysicalKey;
         }
 
@@ -714,7 +716,9 @@ bool HmiAdaptor::needPassWord(QString pageName)
     levelIndex = (int)interfaceClass->CurrentOperator.PermissionLevel;
     qDebug() << "needPassWord" << pageName << funcIndex << levelIndex;
 
-    if (levelIndex == 1)
+    if (levelIndex == 0)
+        reb = permissionSetting->CurrentPermissionList.at(funcIndex).Key;
+    else if (levelIndex == 1)
         reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level1;
     else if (levelIndex == 2)
         reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level2;
@@ -758,6 +762,9 @@ bool HmiAdaptor::permissionsettingGetChecked(QString stringIndex, int level)
     if (index == -1)
         return reb;
     switch (level) {
+    case 0:
+        reb = permissionSetting->CurrentPermissionList.at(index).Key;
+        break;
     case 1:
         reb = permissionSetting->CurrentPermissionList.at(index).Level1;
         break;
@@ -776,7 +783,7 @@ bool HmiAdaptor::permissionsettingGetChecked(QString stringIndex, int level)
     return reb;
 }
 
-bool HmiAdaptor::permissionsettingSetValue(QString name, bool level1, bool level2, bool level3, bool level4)
+bool HmiAdaptor::permissionsettingSetValue(QString name, bool level1, bool level2, bool level3, bool level4,bool level5)
 {
     PermissionSettingForScreen temp;
     temp.Identifier = name;
@@ -784,6 +791,7 @@ bool HmiAdaptor::permissionsettingSetValue(QString name, bool level1, bool level
     temp.Level2 = level2;
     temp.Level3 = level3;
     temp.Level4 = level4;
+    temp.Key = level5;
     permissionSetting->CurrentPermissionList.append(temp);
     return true;
 }

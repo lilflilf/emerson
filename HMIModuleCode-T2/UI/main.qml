@@ -90,13 +90,13 @@ Window {
 //            source = "Edit Existing"
 //            break;
         case -1:
-            source = "Splice"
+            source = "Create Splice"
             break;
         case 0:
-            source = "Sequence"
+            source = "Create Sequence"
             break;
         case 1:
-            source = "Harness"
+            source = "Create Harness"
             break;
         case 2:
             source = "Operate"

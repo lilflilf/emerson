@@ -101,7 +101,7 @@ public:
     Q_INVOKABLE QStringList permissionsettingGetValue(QString code);
     Q_INVOKABLE bool needPassWord(QString pageName);
     Q_INVOKABLE bool permissionsettingGetChecked(QString stringIndex, int level);
-    Q_INVOKABLE bool permissionsettingSetValue(QString name,bool level1,bool level2,bool level3,bool level4);
+    Q_INVOKABLE bool permissionsettingSetValue(QString name, bool level1, bool level2, bool level3, bool level4, bool level5);
     Q_INVOKABLE bool permissionsettingSetFourValue(QStringList fourName);
     Q_INVOKABLE bool stringRegexMatch(QString exp, QString value);
     Q_INVOKABLE bool keyNumStringMatch(QString minValue, QString maxValue, QString value);
@@ -198,6 +198,7 @@ signals:
     void signalMoveSplice(int id, QString name);
 
     void signalPhysicalKeySignal(bool status);
+    void signalPhysicalKeyMessage();
 public slots:
     void slotPhysicalKeySignal(bool &status);
     void slotWeldCycleCompleted(bool result);

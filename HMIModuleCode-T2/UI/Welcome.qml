@@ -120,7 +120,7 @@ Item {
         id: mima
         anchors.left: title4.horizontalCenter
         anchors.leftMargin: -120
-        height: 30
+        height: 40
 //        anchors.right: parent.right
         width: 250
         anchors.verticalCenter: title1.verticalCenter
@@ -151,7 +151,7 @@ Item {
 
     CButton {
         width: 40
-        height: 33
+        height: 42
         anchors.top: mima.top
         anchors.left: mima.right
         onClicked: {
