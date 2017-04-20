@@ -102,7 +102,7 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
     m_spliceAdaptor = DBPresetTable::Instance();
     testSpliceId = -1;
     editPartId = -1;
-    bIsPhysicalKey = false;
+    bIsPhysicalKey = interfaceClass->StatusData.PhysicalKeyMode;
     m102ia = M102IA::Instance();
     connect(m102ia,SIGNAL(PhysicalKeySignal(bool&)),this,SLOT(slotPhysicalKeySignal(bool&)));
 
@@ -560,8 +560,11 @@ bool HmiAdaptor::login(QString passwd)
     qDebug() << isLog << (int)myOperator.PermissionLevel;
     if (isLog)
     {
-        if (myOperator.PermissionLevel == OperatorElement::PHYKEY)
+        if (myOperator.PermissionLevel == OperatorElement::PHYKEY) {
+            if (isLog && !bIsPhysicalKey)
+                emit signalPhysicalKeyMessage();
             isLog = isLog & bIsPhysicalKey;
+        }
         if (isLog)
             interfaceClass->CurrentOperator = myOperator;
     }
@@ -617,7 +620,8 @@ bool HmiAdaptor::borrowLogin(QString passwd, QString pageName)
                 emit signalPhysicalKeyMessage();
             reb = bIsPhysicalKey;
         }
-
+        if (reb)
+            interfaceClass->CurrentOperator = myOperator;
         return reb;
     }
     else
@@ -1660,8 +1664,7 @@ int HmiAdaptor::stringToInt(QString temp)
 
 void HmiAdaptor::slotPhysicalKeySignal(bool &status)
 {
-    qDebug() << "slotPhysicalKeySignal" << status;
-    bIsPhysicalKey = status;
+    bIsPhysicalKey = interfaceClass->StatusData.PhysicalKeyMode;
     emit signalPhysicalKeySignal(status);
 }
 void HmiAdaptor::setAlarmModelList(bool bIsNeedReset)

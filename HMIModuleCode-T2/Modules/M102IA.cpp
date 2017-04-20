@@ -489,9 +489,8 @@ void M102IA::SendIACommand(IACommands CommandNumber, int CommandData)
         if (_ModRunSetup->OfflineModeEnabled == false)
         {
             QByteArray Buffer = OutStr.toLatin1();
-            BransonSerial::IAportSend(Buffer);
             char Command = 0x11;
-            Buffer = QByteArray(&Command, 1);
+            Buffer.append(Command);
             BransonSerial::IAportSend(Buffer);
         }
     #endif
@@ -966,6 +965,7 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         break;
     case IASigFrequencyOffset:
          _Interface->StatusData.Soft_Settings.FrequencyOffset = MakeHexWordNumber(HexString.mid(9, 4));
+        _M2010->ReceiveFlags.FreqOffsetData = true;
         break;
     case IASigActuatorVer:
         ActuatorVersion = _M2010->ParseSerialNumber(HexString.mid(9, 32));
@@ -1038,6 +1038,7 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         _Interface->StatusData.PhysicalKeyMode =
                 MakeHexWordNumber(HexString.mid(9, 4));
 //        DEBUG_PRINT(_Interface->StatusData.PhysicalKeyMode);
+        _M2010->ReceiveFlags.PhysicalKeyData = true;
         emit PhysicalKeySignal(_Interface->StatusData.PhysicalKeyMode);
         break;
     case IASigPartNumber:

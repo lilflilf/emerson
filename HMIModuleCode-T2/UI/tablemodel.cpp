@@ -2100,6 +2100,7 @@ bool OperatorModel::login(QString passwd, OperatorElement *operatot)
     OperatorElement myOperator;
     for ( it = operators->begin(); it != operators->end(); ++it ) {
         m_operatorAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myOperator);
+        qDebug() << it.key() << it.value() << myOperator.Password;
         if (myOperator.Password == passwd) {
             operatot->RevCode = myOperator.RevCode;
             operatot->OperatorID = myOperator.OperatorID;

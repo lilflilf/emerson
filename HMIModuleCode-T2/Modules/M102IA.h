@@ -301,6 +301,7 @@ enum IACommands{
     IAComGetReliabilityMode    = 139, //0x8B
     IAComGetPartNumber         = 140, //0x8C
     IAComGetAlarmData          = 141, //0x8D
+    IAComGetPhysicalKey        = 142, //0x8E
     IAComLim,
     IAComEnd                   = IAComLim - 1,
 };
