@@ -468,16 +468,22 @@ signals:
 public slots:
     void setRoles(const QStringList &names);
     Q_INVOKABLE QVariant getValue(int index, QString key);
-//    Q_INVOKABLE void removeValue(int id, QString name);
+    Q_INVOKABLE void removeValue(int id, QString name);
 //    Q_INVOKABLE int getSequenceId(int index);
 
 //    Q_INVOKABLE void editNew(int index, int sequenceId);
 //    Q_INVOKABLE QVariant getStructValue(QString key);
 
+    Q_INVOKABLE QString getSequenceName(int sequenceId);
+    Q_INVOKABLE void getSequenceInfo(bool bIsEdit, int sequenceId, QString sequenceName);
+    Q_INVOKABLE QStringList getCurrentSequenceOfSpliceName();
+    Q_INVOKABLE QList<int> getCurrentSequenceOfSpliceId();
+    Q_INVOKABLE QList<int> getCurrentSequenceOfSpliceQty();
+
     Q_INVOKABLE int count();
     Q_INVOKABLE void sequenceSpliceListClear();
     Q_INVOKABLE void setSpliceData(int index,int spliceId,QString spliceName,int quantity);
-//    Q_INVOKABLE bool updateRecordIntoTable(int sequenceId, QString oldWorkName, QString workName, int partId, QString partName, int count);
+    Q_INVOKABLE bool updateRecordIntoTable(int sequenceId, QString sequenceName, int operatorId);
     Q_INVOKABLE bool insertRecordIntoTable(QString sequenceName, int operatorId);
 
 //    Q_INVOKABLE bool exportData(int workOrderId, QString fileUrl);

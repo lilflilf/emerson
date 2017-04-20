@@ -744,6 +744,9 @@ Item {
             textColor: "white"
             text: qsTr("Edit")
             onClicked: {
+                if (selectIndx < 0) {
+                    return
+                }
                 if (partRadio.checked) {
                     hmiAdaptor.setEditPartId(partModel.getValue(selectIndx,"PartId"))
                     mainRoot.bIsEditHarness = true
@@ -759,6 +762,9 @@ Item {
 
 //                    hmiAdaptor.viewLibraryMoveSplice(spliceModel.getValue(selectIndx,"SpliceId"),spliceModel.getValue(selectIndx,"SpliceName"))
                 } else if (wireRadio.checked) {
+                    if (selectIndx < 0) {
+                        return
+                    }
                     hmiAdaptor.setEditWireId(wireModel.getValue(selectIndx,"WireId"));
                     mainRoot.checkNeedPassWd(19)
 
@@ -801,7 +807,7 @@ Item {
                 else if (wireRadio.checked)
                     wireModel.removeValue(wireModel.getValue(selectIndx,"WireId"),wireModel.getValue(selectIndx,"WireName"))
                 else if (sequenceRadio.checked)
-                    sequenceModel.removeValue(sequenceModel.getValue(selectIndx,"SequenceId"),workOrderModel.getValue(selectIndx,"SequenceName"))
+                    sequenceModel.removeValue(sequenceModel.getValue(selectIndx,"SequenceId"),sequenceModel.getValue(selectIndx,"SequenceName"))
                 else if (shrinkRadio.checked){
                     shrinkModel.remove(selectIndx)
                     hmiAdaptor.removeShrink(selectIndx)

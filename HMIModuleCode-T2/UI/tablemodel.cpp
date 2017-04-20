@@ -3578,6 +3578,57 @@ QVariant SequenceModel::getValue(int index, QString key)
     }
 }
 
+void SequenceModel::removeValue(int id, QString name)
+{
+    m_sequenceAdaptor->DeleteOneRecordFromTable(id,name);
+    setModelList();
+}
+
+QString SequenceModel::getSequenceName(int sequenceId)
+{
+    SequenceElement mySequence;
+    bool reb;
+    reb = m_sequenceAdaptor->QueryOneRecordFromTable(sequenceId,&mySequence);
+    return mySequence.SequenceName;
+}
+
+void SequenceModel::getSequenceInfo(bool bIsEdit, int sequenceId, QString sequenceName)
+{
+    if (bIsEdit) {
+        m_sequenceAdaptor->QueryOneRecordFromTable(sequenceId,sequenceName,&sequenceElement);
+    } else {
+        SequenceElement temp;
+        sequenceElement = temp;
+    }
+}
+
+QList<int> SequenceModel::getCurrentSequenceOfSpliceId()
+{
+    QList<int> idList;
+    for (int i = 0; i < sequenceElement.SpliceList.count(); i++) {
+        idList.append(sequenceElement.SpliceList.value(sequenceElement.SpliceList.keys().at(i)).SpliceID);
+    }
+    return idList;
+}
+
+QList<int> SequenceModel::getCurrentSequenceOfSpliceQty()
+{
+    QList<int> idList;
+    for (int i = 0; i < sequenceElement.SpliceList.count(); i++) {
+        idList.append(sequenceElement.SpliceList.value(sequenceElement.SpliceList.keys().at(i)).Quantity);
+    }
+    return idList;
+}
+
+QStringList SequenceModel::getCurrentSequenceOfSpliceName()
+{
+    QStringList list;
+    for (int i = 0; i < sequenceElement.SpliceList.count(); i++) {
+        list.append(sequenceElement.SpliceList.value(sequenceElement.SpliceList.keys().at(i)).SpliceName);
+    }
+    return list;
+}
+
 int SequenceModel::count()
 {
     return sequences->count();
@@ -3593,6 +3644,19 @@ void SequenceModel::setSpliceData(int index,int spliceId,QString spliceName,int 
     sequenceElement.SpliceList[index].SpliceID = spliceId;
     sequenceElement.SpliceList[index].SpliceName = spliceName;
     sequenceElement.SpliceList[index].Quantity = quantity;
+}
+
+bool SequenceModel::updateRecordIntoTable(int sequenceId, QString sequenceName,int operatorId)
+{
+    SequenceElement mySequence;
+    m_sequenceAdaptor->QueryOneRecordFromTable(sequenceId,&mySequence);
+    mySequence.SequenceName = sequenceName;
+    mySequence.OperatorID = operatorId;
+    mySequence.NoOfSplice = sequenceElement.SpliceList.count();
+    mySequence.SpliceList = sequenceElement.SpliceList;
+    bool reb =m_sequenceAdaptor->UpdateRecordIntoTable(&mySequence);
+    setModelList();
+    return reb;
 }
 
 bool SequenceModel::insertRecordIntoTable(QString sequenceName,int operatorId)

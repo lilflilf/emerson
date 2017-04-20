@@ -147,7 +147,7 @@ public:
     Q_INVOKABLE void addInsulation(QString insualtionId, QString temp, QString time);
     Q_INVOKABLE void exportShrink(QString insualtionId, QString temp, QString time, QString fileUrl);
     Q_INVOKABLE void removeShrink(int selectIndex);
-
+    Q_INVOKABLE int stringToInt(QString temp);
     BransonMessageBox bransonMessageBox;
     InterfaceClass *interfaceClass;
     M102IA *m102ia;

@@ -1652,6 +1652,12 @@ void HmiAdaptor::removeShrink(int selectIndex)
     }
 }
 
+int HmiAdaptor::stringToInt(QString temp)
+{
+    bool ok;
+    return temp.toInt(&ok,10);
+}
+
 void HmiAdaptor::slotPhysicalKeySignal(bool &status)
 {
     qDebug() << "slotPhysicalKeySignal" << status;

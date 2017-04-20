@@ -57,7 +57,7 @@ Item {
         {
             bIsEdit = true
             var editSequenceId = hmiAdaptor.getEditPartId();
-            selectSequenceUpdataPage(editSequenceId,sequenceModel.getSequenceName(editHarnessId))
+            selectSequenceUpdataPage(editSequenceId,sequenceModel.getSequenceName(editSequenceId))
             mainRoot.bIsEditSequence = false
         }
     }
@@ -117,7 +117,18 @@ Item {
 
     function selectSequenceUpdataPage(id,name)
     {
+        sequenceModel.getSequenceInfo(true,id,name)
+        edit6.inputText = name
+        var nameList = new Array()
+        nameList = sequenceModel.getCurrentSequenceOfSpliceName()
+        var idList = new Array()
+        idList = sequenceModel.getCurrentSequenceOfSpliceId()
+        var qtyList = new Array()
+        qtyList = sequenceModel.getCurrentSequenceOfSpliceQty()
 
+        for (var i = 0; i < nameList.length; i++) {
+            spliceList.listModel.append({"SpliceName":nameList[i],"stationColor":"white","station":"?","SpliceId":idList[i],"qty":qtyList[i]})
+        }
     }
 
 
@@ -140,9 +151,9 @@ Item {
         idList = partModel.getCurrentPartOfSpliceId()
         for (var i = 0; i < nameList.length; i++) {
             if (corlorlist[i] == -1 || zoneList[i] == -1) {
-                spliceList.listModel.append({"SpliceName":nameList[i],"stationColor":"white","station":"?","SpliceId":idList[i],"qty":"0"})
+                spliceList.listModel.append({"SpliceName":nameList[i],"stationColor":"white","station":"?","SpliceId":idList[i],"qty":0})
             } else {
-                spliceList.listModel.append({"SpliceName":nameList[i],"stationColor":arrayColor[corlorlist[i]],"station":arrayzone[zoneList[i]],"SpliceId":idList[i],"qty":"0"})
+                spliceList.listModel.append({"SpliceName":nameList[i],"stationColor":arrayColor[corlorlist[i]],"station":arrayzone[zoneList[i]],"SpliceId":idList[i],"qty":0})
             }
         }
         if (partModel.getPartOnlineOrOffLine())
@@ -162,7 +173,7 @@ Item {
                     }
                 }
             } else {
-                spliceList.listModel.append({"SpliceName":spliceModel.getStructValue("SpliceName","") ,"stationColor":"white","station":"?","SpliceId":spliceId,"qty":"0"})
+                spliceList.listModel.append({"SpliceName":spliceModel.getStructValue("SpliceName","") ,"stationColor":"white","station":"?","SpliceId":spliceId,"qty":0})
             }
             loader.source = ""
             if (bIsSequence)
@@ -427,7 +438,11 @@ Item {
                             for (var i = 0; i < listModel.count; i++) {
                                 sequenceModel.setSpliceData(i,listModel.get(i).SpliceId,listModel.get(i).SpliceName,listModel.get(i).qty)
                             }
-                            sequenceModel.insertRecordIntoTable(edit6.inputText, hmiAdaptor.getCurrentOperatorId())
+                            if (bIsEdit)
+                                sequenceModel.updateRecordIntoTable(hmiAdaptor.getEditPartId(),edit6.inputText, hmiAdaptor.getCurrentOperatorId())
+                            else
+                                sequenceModel.insertRecordIntoTable(edit6.inputText, hmiAdaptor.getCurrentOperatorId())
+
                             mainRoot.popStackView()
                         }
                     }
@@ -1309,7 +1324,7 @@ Item {
                     }
                 }
                 if (!bIsFind) {
-                    spliceList.listModel.append({"SpliceName":name,"stationColor":"white","station":"?","SpliceId":modelId,"qty":"0"})
+                    spliceList.listModel.append({"SpliceName":name,"stationColor":"white","station":"?","SpliceId":modelId,"qty":0})
                 }
             }
             backGround.visible = false
@@ -1617,8 +1632,7 @@ Item {
             if (index == 15) {
                 if (hmiAdaptor.comepareCurrentValue(keyNum.minvalue,keyNum.maxvalue,keyNum.inputText)) {
                     if (bIsEditQty) {
-                        console.log("zzzzzzzzzzzzzz",qtyIndex)
-                        spliceList.listModel.set(qtyIndex,{"qty":keyNum.inputText})
+                        spliceList.listModel.set(qtyIndex,{"qty":hmiAdaptor.stringToInt(keyNum.inputText)})
                     }
                     else if (edit1.inputFocus) {
                         edit1.inputText = keyNum.inputText
