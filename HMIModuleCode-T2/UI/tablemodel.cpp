@@ -1994,7 +1994,7 @@ QVariant OperatorModel::data(const QModelIndex &index, int role) const
             if ((int)myOperator.PermissionLevel == 0)
                 value = "Key";
             else
-                value = QVariant::fromValue(permissionSetting->FourLevelIdentifier.at(myOperator.PermissionLevel-1));
+                value = QVariant::fromValue(permissionSetting->FiveLevelIdentifier.at(myOperator.PermissionLevel-1));
 
         }
     }

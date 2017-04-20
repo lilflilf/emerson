@@ -472,6 +472,8 @@ public:
     QString ActuatorPartNumber;
     QString ActuatorSerialNumber;
     QString ActuatorModuleNumber;
+    QString PSPartNumber;
+    QString PSSerialNumber;
     int AntisideSpliceTime;
     int LockonAlarm;
     int CycleCount;

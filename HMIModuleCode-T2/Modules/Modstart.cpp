@@ -85,25 +85,33 @@ MODstart::MODstart()
 //            dlgSelectMode.Show vbModal
 //        }
         _M2010->ReceiveFlags.ActuatorType = false;
-        _M102IA->SendIACommand(IAComGetActuator, 0);
+        _M102IA->IACommand(IAComGetActuator);
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.ActuatorType);
 
         //Send command to get Controller Version string.
         _M2010->ReceiveFlags.ControllerVersionData = false;
-        _M102IA->SendIACommand(IAComGetControllerVer, 0);
+        _M102IA->IACommand(IAComGetControllerVer);
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.ControllerVersionData);
 
         _M2010->ReceiveFlags.ActuatorVersionData = false;
-        _M102IA->SendIACommand(IAComGetActuatorVer, 0);
+        _M102IA->IACommand(IAComGetActuatorVer);
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.ActuatorVersionData);
 
         _M2010->ReceiveFlags.ActuatorPartNumData = false;
-        _M102IA->SendIACommand(IAComGetActuatorPartNum, 0);
+        _M102IA->IACommand(IAComGetActuatorPartNum);
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.ActuatorPartNumData);
 
         _M2010->ReceiveFlags.ActuatorSerialNumData = false;
-        _M102IA->SendIACommand(IAComGetActuatorSerialNum, 0);
+        _M102IA->IACommand(IAComGetActuatorSerialNum);
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.ActuatorSerialNumData);
+
+        _M2010->ReceiveFlags.SNdata = false;
+        _M102IA->IACommand(IAComGetSerialNumber);
+        _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.SNdata);
+
+        _M2010->ReceiveFlags.PNData = false;
+        _M102IA->IACommand(IAComGetPartNumber);
+        _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.PNData);
 
         _M2010->ReceiveFlags.POWERrating = false;
         _M102IA->IACommand(IAComSendPWRrating);
@@ -162,6 +170,9 @@ MODstart::MODstart()
         //Current Version string of Controller code.
         _Interface->CurrentVersions.ControllerVersion = _M102IA->ContollerVersion;
         _Interface->CurrentVersions.ActuatorVersion = _M102IA->ActuatorVersion;
+
+        _Interface->StatusData.PSPartNumber = _M102IA->PartNoData;
+        _Interface->StatusData.PSSerialNumber = _M102IA->SerialNoData;
 
         _Interface->StatusData.ActuatorVersion = _M102IA->ActuatorVersion;
         _Interface->StatusData.ActuatorPartNumber = _M102IA->ActuatorPartNum;

@@ -191,6 +191,8 @@ enum IASig{
     IASigHeightGraph,       //0x2D
     IASigReliablityMode,    //0x2E
     IASigPhysicalKeyMode,   //0x2F
+    IASigPartNumber,        //0x30
+    IASigAlarm,             //0x31
     IASigEnd,               //Identifies end of Enum
     IASigMax = IASigEnd - 1,     //Used by functions to test for limit
 };
@@ -208,7 +210,7 @@ enum IACommands{
 #endif
 
     IAComSetM10Mode            = 2,
-    IAComSendSerialNumber      = 4,
+    IAComGetSerialNumber       = 4,
     IAComSendSetup             = 6,
     IAComSendPresetTable       = 8,    //Sends names and numbers in IA98
     IAComSendWeldData          = 10,
@@ -295,6 +297,10 @@ enum IACommands{
     IAComGetActuatorPartNum    = 135, //0x87
     IAComGetActuatorSerialNum  = 136, //0x88
     IAComSendHeightGraph       = 137, //0x89
+    IAComSetReliabilityMode    = 138, //0x8A
+    IAComGetReliabilityMode    = 139, //0x8B
+    IAComGetPartNumber         = 140, //0x8C
+    IAComGetAlarmData          = 141, //0x8D
     IAComLim,
     IAComEnd                   = IAComLim - 1,
 };
@@ -339,12 +345,13 @@ public:
     int PWRpoints;
 
     //String Variable to hold IA Serial #
-    QString SerialNoData;                //not used now
+    QString SerialNoData;
     int HeightCalResult;
     QString ContollerVersion;            //To store controller's software version no.
     QString ActuatorVersion;
     QString ActuatorPartNum;
     QString ActuatorSerialNum;
+    QString PartNoData;
 
     IOinfo IOstatus;
     IOinfo LastIOstatus;

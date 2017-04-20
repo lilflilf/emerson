@@ -737,7 +737,7 @@ QStringList HmiAdaptor::permissionsettingGetValue(QString code)
     if (code == "AllFunctionNameList")
         currentIdentifier = permissionSetting->AllFunctionNameList;
     else if (code == "FourLevelIdentifier")
-        currentIdentifier = permissionSetting->FourLevelIdentifier;
+        currentIdentifier = permissionSetting->FiveLevelIdentifier;
     else if (code == "CurrentIdentifier"){
         for (int i = 0; i < permissionSetting->CurrentPermissionList.count(); i++)
         {
@@ -798,7 +798,7 @@ bool HmiAdaptor::permissionsettingSetValue(QString name, bool level1, bool level
 
 bool HmiAdaptor::permissionsettingSetFourValue(QStringList fourName)
 {
-    permissionSetting->FourLevelIdentifier = fourName;
+    permissionSetting->FiveLevelIdentifier = fourName;
     return true;
 }
 

@@ -35,7 +35,7 @@ struct PermissionSettingForScreen
     bool Level2;
     bool Level3;
     bool Level4;
-    bool Key;
+    bool PhyKey;
 };
 
 class PermissionSetting : public QObject
@@ -44,7 +44,7 @@ class PermissionSetting : public QObject
 public:
     QList<struct PermissionSettingForScreen> CurrentPermissionList;
     static QStringList AllFunctionNameList;
-    static QStringList FourLevelIdentifier;
+    static QStringList FiveLevelIdentifier;
 public:
     void InitializeFRAM();
     void LockOnAlarm();
