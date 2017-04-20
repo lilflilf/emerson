@@ -3,23 +3,23 @@
 #include <QDebug>
 #include <QtMath>
 QStringList PermissionSetting::AllFunctionNameList;
-QStringList PermissionSetting::FourLevelIdentifier;
+QStringList PermissionSetting::FiveLevelIdentifier;
 PermissionSetting::PermissionSetting(QObject *parent) : QObject(parent)
 {
     AllFunctionNameList.clear();
-    FourLevelIdentifier.clear();
+    FiveLevelIdentifier.clear();
     int i = 0;
     AllFunctionNameList.insert(i++, QObject::tr("Create New"));          //Bit 0
     AllFunctionNameList.insert(i++, QObject::tr("Edit Existing"));       //Bit 1
     AllFunctionNameList.insert(i++, QObject::tr("Operate"));             //Bit 2
     AllFunctionNameList.insert(i++, QObject::tr("Test"));                //Bit 3
-    AllFunctionNameList.insert(i++, QObject::tr("Teach Mode"));           //Bit 4
+    AllFunctionNameList.insert(i++, QObject::tr("Teach Mode"));          //Bit 4
     AllFunctionNameList.insert(i++, QObject::tr("Calibration"));         //Bit 5
     AllFunctionNameList.insert(i++, QObject::tr("Tool Change"));         //Bit 6
     AllFunctionNameList.insert(i++, QObject::tr("Advanced Maintenance"));//Bit 7
     AllFunctionNameList.insert(i++, QObject::tr("Maintenance Counter")); //Bit 8
     AllFunctionNameList.insert(i++, QObject::tr("Maintenance Log"));     //Bit 9
-    AllFunctionNameList.insert(i++, QObject::tr("Work Order History"));  //Bit 10
+    AllFunctionNameList.insert(i++, QObject::tr("Weld History"));        //Bit 10
     AllFunctionNameList.insert(i++, QObject::tr("Statistical Trend"));   //Bit 11
     AllFunctionNameList.insert(i++, QObject::tr("Error/Alarm Log"));     //Bit 12
     AllFunctionNameList.insert(i++, QObject::tr("Library"));             //Bit 13
@@ -50,16 +50,20 @@ bool PermissionSetting::_Recall()
 {
     InterfaceClass* _interface = InterfaceClass::Instance();
     CurrentPermissionList.clear();
-    FourLevelIdentifier.clear();
-    for(int i = 1; i < 5; i++)
-        FourLevelIdentifier.insert(i-1,
-                _interface->StatusData.PasswordData[i].Identifier);
+    FiveLevelIdentifier.clear();
+    for(int i = 0; i < 5; i++)
+        FiveLevelIdentifier.insert(i,_interface->StatusData.PasswordData[i].Identifier);
     struct PermissionSettingForScreen tmpStruct;
     for(int i = 0; i < _interface->StatusData.CurrentFunIndex.size();i++)
     {
         unsigned int FunIndex = _interface->StatusData.CurrentFunIndex.at(i);
         tmpStruct.Identifier = AllFunctionNameList.at(FunIndex);
         unsigned long Comparison = (0x01 << FunIndex);
+        if((_interface->StatusData.PasswordData[0].PWPermissions & Comparison) ==
+                Comparison)
+            tmpStruct.PhyKey = true;
+        else
+            tmpStruct.PhyKey = false;
         if((_interface->StatusData.PasswordData[1].PWPermissions & Comparison) ==
                 Comparison)
             tmpStruct.Level1 = true;
@@ -95,10 +99,10 @@ bool PermissionSetting::_Set()
 //    if(CurrentPermissionList.empty() == true)
 //        return false;
     _interface->StatusData.CurrentFunIndex.clear();
-    for(int i = 1; i < 5; i++)
+    for(int i = 0; i < 5; i++)
     {
         _interface->StatusData.PasswordData[i].Identifier
-                = FourLevelIdentifier.at(i-1);
+                = FiveLevelIdentifier.at(i);
     }
     for(int i = 0; i< CurrentPermissionList.size();i++)
     {
@@ -106,6 +110,12 @@ bool PermissionSetting::_Set()
         int FunIndex = AllFunctionNameList.indexOf(str);
         _interface->StatusData.CurrentFunIndex.insert(i, FunIndex);
         unsigned long Comparison = (0x01 << FunIndex);
+        if(CurrentPermissionList.at(i).PhyKey == true)
+            _interface->StatusData.PasswordData[0].PWPermissions
+                    |= Comparison;
+        else
+            _interface->StatusData.PasswordData[0].PWPermissions
+                    &= ~Comparison;
         if(CurrentPermissionList.at(i).Level1 == true)
             _interface->StatusData.PasswordData[1].PWPermissions
                     |= Comparison;

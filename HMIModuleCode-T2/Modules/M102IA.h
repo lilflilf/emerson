@@ -192,6 +192,7 @@ enum IASig{
     IASigReliablityMode,    //0x2E
     IASigPhysicalKeyMode,   //0x2F
     IASigPartNumber,        //0x30
+    IASigAlarm,             //0x31
     IASigEnd,               //Identifies end of Enum
     IASigMax = IASigEnd - 1,     //Used by functions to test for limit
 };
@@ -299,6 +300,7 @@ enum IACommands{
     IAComSetReliabilityMode    = 138, //0x8A
     IAComGetReliabilityMode    = 139, //0x8B
     IAComGetPartNumber         = 140, //0x8C
+    IAComGetAlarmData          = 141, //0x8D
     IAComLim,
     IAComEnd                   = IAComLim - 1,
 };

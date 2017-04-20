@@ -1048,6 +1048,10 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         PartNoData = _M2010->ParseSerialNumber(HexString.mid(9, 32));
         _M2010->ReceiveFlags.PNData = true;
         break;
+    case IASigAlarm:
+        IAactual.Alarmflags = MakeHexWordNumberLong(HexString.mid(9, 8));
+        _M2010->ReceiveFlags.AlarmData = true;
+        break;
     default:
         break;
     }

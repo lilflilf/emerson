@@ -123,6 +123,7 @@ struct BitFlag{
     bool TunePointData;
     bool FreqOffsetData;
     bool PNData;
+    bool AlarmData;
 };
 
 enum Last_made{

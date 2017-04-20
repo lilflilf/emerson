@@ -69,6 +69,7 @@ M2010::M2010()
     ReceiveFlags.TunePointData = false;
     ReceiveFlags.FreqOffsetData = false;
     ReceiveFlags.PNData = false;
+    ReceiveFlags.AlarmData = false;
 
     M10Run.Sequence_Done = false;
     M10Run.Pre_Hght_Error = false;
