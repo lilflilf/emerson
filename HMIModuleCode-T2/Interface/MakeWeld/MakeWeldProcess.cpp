@@ -29,8 +29,13 @@ MakeWeldProcess::MakeWeldProcess(QObject *parent) : QObject(parent)
     WeldCycleStatus = true;
     PowerGraphReady = false;
     HeightGraphReady = false;
-    connect(_M102IA, SIGNAL(AlarmStatusSignal(bool&)),
-            this,SLOT(AnyAlarmEventSlot(bool&)));
+
+    connect(_M102IA, SIGNAL(WeldCycleSignal(bool&)),
+            this,SLOT(WeldResultEventSlot(bool&)));
+    connect(_M102IA, SIGNAL(PowerGraphSignal(bool&)),
+            this, SLOT(PowerGraphEventSlot(bool&)));
+    connect(_M102IA, SIGNAL(HeightGraphSignal(bool&)),
+            this, SLOT(HeightGraphEventSlot(bool&)));
 }
 
 void MakeWeldProcess::UpdateIAFields()
@@ -264,8 +269,6 @@ void MakeWeldProcess::WeldResultEventSlot(bool& bResult)
     CurrentStep = POWERFst;
     WeldCycleStatus = false;
     //1. Alarm handle
-    if(CurrentSplice.SpliceID == -1)
-        CurrentSplice.SpliceID = 0x0FFFFFFF;
     Invalidweld = _M10runMode->CheckWeldData(CurrentSplice.SpliceID);
     //2. Update Maintenance Count
     if(Invalidweld == false)
@@ -273,13 +276,6 @@ void MakeWeldProcess::WeldResultEventSlot(bool& bResult)
     m_pThread->setStopEnabled(false);
     m_pThread->setSuspendEnabled(false);
     m_pThread->start();
-}
-
-void MakeWeldProcess::AnyAlarmEventSlot(bool &bResult)
-{
-    UNUSED(bResult);
-    M10runMode* _M10runMode = M10runMode::Instance();
-    _M10runMode->CheckWeldData(-1);
 }
 
 void MakeWeldProcess::PowerGraphEventSlot(bool &bResult)
@@ -323,12 +319,6 @@ bool MakeWeldProcess::_start()
 
         m_pReadySM->_start();
 
-        connect(_M102IA, SIGNAL(WeldCycleSignal(bool&)),
-                this,SLOT(WeldResultEventSlot(bool&)));
-        connect(_M102IA, SIGNAL(PowerGraphSignal(bool&)),
-                this, SLOT(PowerGraphEventSlot(bool&)));
-        connect(_M102IA, SIGNAL(HeightGraphSignal(bool&)),
-                this, SLOT(HeightGraphEventSlot(bool&)));
         m_pReadySM->ReadyState = ReadyStateMachine::READYON;
     }
     return bResult;
@@ -340,7 +330,6 @@ bool MakeWeldProcess::_stop()
     InterfaceClass *_Interface = InterfaceClass::Instance();
     struct BransonMessageBox tmpMsgBox;
     bool bResult = true;
-    disconnect(_M102IA, SIGNAL(WeldCycleSignal(bool&)),this, SLOT(WeldResultEventSlot(bool&)));
     //Delete Thread and release resource
     if(m_pThread != NULL)
     {
@@ -352,8 +341,6 @@ bool MakeWeldProcess::_stop()
     }
     //Delect Thread and release resource
     m_pReadySM->_stop();
-    connect(_M102IA, SIGNAL(AlarmStatusSignal(bool&)),
-            this,SLOT(AnyAlarmEventSlot(bool&)));
     if(_M102IA->SendCommandSetRunMode(OFF) == false)
     {
         tmpMsgBox.MsgTitle = QObject::tr("ERROR");

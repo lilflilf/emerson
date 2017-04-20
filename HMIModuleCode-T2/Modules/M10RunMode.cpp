@@ -176,11 +176,11 @@ bool M10runMode::CheckWeldData(int weldresult)
         _M2010->M10Run.Alarm_found = true;
 
     //ID Chip alarm for new splicer
-    if((_M102IA->IAactual.Alarmflags & BIT19) == BIT18)
+    if((_M102IA->IAactual.Alarmflags & BIT18) == BIT18)
         _M2010->M10Run.Alarm_found = true;
 
     // BBR & RAM alarm for new splicer
-    if((_M102IA->IAactual.Alarmflags & BIT20) == BIT19)
+    if((_M102IA->IAactual.Alarmflags & BIT19) == BIT19)
         _M2010->M10Run.Alarm_found = true;
 
     //Check if this is the current weld data. (WeldDone Flag)
@@ -190,7 +190,7 @@ bool M10runMode::CheckWeldData(int weldresult)
             _AlarmMsg->Initialization(WeldResultID);
         return true;
     }
-    if(WeldResultID == -1) return true;
+//    if(WeldResultID == -1) return true;
         // PREHEIGHT CHECK FINISH
 
     //TIME CHECK BEGINS

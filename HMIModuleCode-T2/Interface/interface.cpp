@@ -2,7 +2,10 @@
 
 #include "Modules/M10INI.h"
 #include "Modules/M2010.h"
+#include "Modules/M102IA.h"
 #include "Modules/UtilityClass.h"
+#include "Modules/M10runMode.h"
+#include "Modules/typedef.h"
 #include <QtConcurrent/QtConcurrent>
 #include "windows.h"
 InterfaceClass* InterfaceClass::_instance = 0;
@@ -18,7 +21,9 @@ InterfaceClass* InterfaceClass::Instance()
 InterfaceClass::InterfaceClass(QObject *parent)
     :QObject(parent)
 {
-
+    M102IA* _M102IA = M102IA::Instance();
+    connect(_M102IA, SIGNAL(AlarmStatusSignal(bool&)),
+            this,SLOT(AnyAlarmEventSlot(bool&)));
 }
 
 InterfaceClass::~InterfaceClass()
@@ -154,3 +159,10 @@ void InterfaceClass::ShownAlarmSign()
 //    _M10INI->Save_StatusData();
 //}
 
+void InterfaceClass::AnyAlarmEventSlot(bool &bResult)
+{
+    UNUSED(bResult);
+    M10runMode* _M10runMode = M10runMode::Instance();
+    _M10runMode->CheckWeldData(-1);
+//    DEBUG_PRINT("AnyAlarmEventSlot");
+}

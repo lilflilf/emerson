@@ -696,10 +696,7 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
 //            IACommand(IAComHostReady, 1);
         //--Set Correct Flag
         _M2010->ReceiveFlags.WELDdata = true;
-        if((IAactual.Alarmflags & 0x4000) == 0x4000)
-            emit WeldCycleSignal(_M2010->ReceiveFlags.WELDdata);
-        else
-            emit AlarmStatusSignal(_M2010->ReceiveFlags.WELDdata);
+        emit WeldCycleSignal(_M2010->ReceiveFlags.WELDdata);
         break;
     case IASigPower:           //Data Signature = "04"
         // Frame head 3 bytes + ":" 7 characters
@@ -907,7 +904,6 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         _Interface->StatusData.Machineflags.Word[1] = MakeHexWordNumber(HexString.mid(13, 4));
         _Interface->StatusData.Machineflags.Word[2] = MakeHexWordNumber(HexString.mid(17, 4));
         _Interface->StatusData.Machineflags.Word[3] = MakeHexWordNumber(HexString.mid(21, 4));
-        DEBUG_PRINT(_Interface->StatusData.Machineflags.Word[0]);
         _M2010->ReceiveFlags.MachineFlagsData = true;
         break;
     case IASigDataMaintCntr:
@@ -1041,7 +1037,7 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
     case IASigPhysicalKeyMode:
         _Interface->StatusData.PhysicalKeyMode =
                 MakeHexWordNumber(HexString.mid(9, 4));
-        DEBUG_PRINT(_Interface->StatusData.PhysicalKeyMode);
+//        DEBUG_PRINT(_Interface->StatusData.PhysicalKeyMode);
         emit PhysicalKeySignal(_Interface->StatusData.PhysicalKeyMode);
         break;
     case IASigPartNumber:
@@ -1051,6 +1047,8 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
     case IASigAlarm:
         IAactual.Alarmflags = MakeHexWordNumberLong(HexString.mid(9, 8));
         _M2010->ReceiveFlags.AlarmData = true;
+//        DEBUG_PRINT(IAactual.Alarmflags);
+        emit AlarmStatusSignal(_M2010->ReceiveFlags.AlarmData);
         break;
     default:
         break;
