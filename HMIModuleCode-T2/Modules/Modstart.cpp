@@ -134,9 +134,9 @@ MODstart::MODstart()
         _M102IA->IACommand(IAComSendSonicHits);    //Always make this last, it terminates the watch loop
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.SonicHitsData);
 
-        _M2010->ReceiveFlags.WELDdata = false;
-        _M102IA->IACommand(IAComSendWeldData);
-        _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.WELDdata);
+        _M2010->ReceiveFlags.AlarmData = false;
+        _M102IA->IACommand(IAComGetAlarmData);
+        _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.AlarmData);
 
         _M2010->ReceiveFlags.CoolingTypeData = false;
         _M102IA->IACommand(IAComGetCooling);

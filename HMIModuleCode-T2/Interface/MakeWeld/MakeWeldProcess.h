@@ -46,7 +46,6 @@ signals:
     void WeldCycleCompleted(const bool &_status);
 public slots:
     void WeldResultEventSlot(bool &bResult);
-    void AnyAlarmEventSlot(bool &bResult);
     void HeightGraphEventSlot(bool &bResult);
     void PowerGraphEventSlot(bool &bResult);
 public:
