@@ -9,26 +9,32 @@ PermissionSetting::PermissionSetting(QObject *parent) : QObject(parent)
     AllFunctionNameList.clear();
     FiveLevelIdentifier.clear();
     int i = 0;
-    AllFunctionNameList.insert(i++, QObject::tr("Create New"));          //Bit 0
-    AllFunctionNameList.insert(i++, QObject::tr("Edit Existing"));       //Bit 1
-    AllFunctionNameList.insert(i++, QObject::tr("Operate"));             //Bit 2
-    AllFunctionNameList.insert(i++, QObject::tr("Test"));                //Bit 3
-    AllFunctionNameList.insert(i++, QObject::tr("Teach Mode"));          //Bit 4
-    AllFunctionNameList.insert(i++, QObject::tr("Calibration"));         //Bit 5
-    AllFunctionNameList.insert(i++, QObject::tr("Tool Change"));         //Bit 6
-    AllFunctionNameList.insert(i++, QObject::tr("Advanced Maintenance"));//Bit 7
-    AllFunctionNameList.insert(i++, QObject::tr("Maintenance Counter")); //Bit 8
-    AllFunctionNameList.insert(i++, QObject::tr("Maintenance Log"));     //Bit 9
-    AllFunctionNameList.insert(i++, QObject::tr("Weld History"));        //Bit 10
-    AllFunctionNameList.insert(i++, QObject::tr("Statistical Trend"));   //Bit 11
-    AllFunctionNameList.insert(i++, QObject::tr("Error/Alarm Log"));     //Bit 12
-    AllFunctionNameList.insert(i++, QObject::tr("Library"));             //Bit 13
-    AllFunctionNameList.insert(i++, QObject::tr("Version Information")); //Bit 14
-    AllFunctionNameList.insert(i++, QObject::tr("Permission Setting"));  //Bit 15
-    AllFunctionNameList.insert(i++, QObject::tr("Weld Defaults"));       //Bit 16
-    AllFunctionNameList.insert(i++, QObject::tr("Operator Library"));    //Bit 17
-    AllFunctionNameList.insert(i++, QObject::tr("Data/Communication"));  //Bit 18
-    AllFunctionNameList.insert(i++, QObject::tr("Lock On Alarm"));       //Bit 19
+    AllFunctionNameList.insert(i++, QObject::tr("Create Splice"));       //Bit 0
+    AllFunctionNameList.insert(i++, QObject::tr("Create Sequence"));     //Bit 1
+    AllFunctionNameList.insert(i++, QObject::tr("Create Harness"));      //Bit 2
+    AllFunctionNameList.insert(i++, QObject::tr("Edit Splice"));         //Bit 3
+    AllFunctionNameList.insert(i++, QObject::tr("Edit Sequence"));       //Bit 4
+    AllFunctionNameList.insert(i++, QObject::tr("Edit Harness"));        //Bit 5
+    AllFunctionNameList.insert(i++, QObject::tr("Operate Splice"));      //Bit 6
+    AllFunctionNameList.insert(i++, QObject::tr("Operate Sequence"));    //Bit 7
+    AllFunctionNameList.insert(i++, QObject::tr("Operate Harness"));     //Bit 8
+    AllFunctionNameList.insert(i++, QObject::tr("Test"));                //Bit 9
+    AllFunctionNameList.insert(i++, QObject::tr("Teach Mode"));          //Bit 10
+    AllFunctionNameList.insert(i++, QObject::tr("Calibration"));         //Bit 11
+    AllFunctionNameList.insert(i++, QObject::tr("Tool Change"));         //Bit 12
+    AllFunctionNameList.insert(i++, QObject::tr("Advanced Maintenance"));//Bit 13
+    AllFunctionNameList.insert(i++, QObject::tr("Maintenance Counter")); //Bit 14
+    AllFunctionNameList.insert(i++, QObject::tr("Maintenance Log"));     //Bit 15
+    AllFunctionNameList.insert(i++, QObject::tr("Weld History"));        //Bit 16
+    AllFunctionNameList.insert(i++, QObject::tr("Statistical Trend"));   //Bit 17
+    AllFunctionNameList.insert(i++, QObject::tr("Error/Alarm Log"));     //Bit 18
+    AllFunctionNameList.insert(i++, QObject::tr("Library"));             //Bit 19
+    AllFunctionNameList.insert(i++, QObject::tr("Version Information")); //Bit 20
+    AllFunctionNameList.insert(i++, QObject::tr("Permission Setting"));  //Bit 21
+    AllFunctionNameList.insert(i++, QObject::tr("Weld Defaults"));       //Bit 22
+    AllFunctionNameList.insert(i++, QObject::tr("Operator Library"));    //Bit 23
+    AllFunctionNameList.insert(i++, QObject::tr("Data/Communication"));  //Bit 24
+    AllFunctionNameList.insert(i++, QObject::tr("Lock On Alarm"));       //Bit 25
 }
 
 void PermissionSetting::InitializeFRAM()
