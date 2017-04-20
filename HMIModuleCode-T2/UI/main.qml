@@ -93,10 +93,10 @@ Window {
             source = "Create Splice"
             break;
         case 0:
-            source = "Create Sequence"
+            source = "Create Harness"
             break;
         case 1:
-            source = "Create Harness"
+            source = "Create Sequence"
             break;
         case 2:
             source = "Operate"

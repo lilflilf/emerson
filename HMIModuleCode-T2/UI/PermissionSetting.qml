@@ -71,7 +71,7 @@ Item {
             clip: true
             inputSize: 20
             inputColor: "white"
-            inputText: "Physical Key"
+            inputText: fourLevelIdentifier[0]
             enabled: false
         }
 
@@ -86,7 +86,7 @@ Item {
             clip: true
             inputSize: 20
             inputColor: "white"
-            inputText: fourLevelIdentifier[0]
+            inputText: fourLevelIdentifier[1]
         }
         MyLineEdit {
             id: levelText2
@@ -99,7 +99,7 @@ Item {
             clip: true
             inputSize: 20
             inputColor: "white"
-            inputText: fourLevelIdentifier[1]
+            inputText: fourLevelIdentifier[2]
         }
         MyLineEdit {
             id: levelText3
@@ -112,7 +112,7 @@ Item {
             clip: true
             inputSize: 20
             inputColor: "white"
-            inputText: fourLevelIdentifier[2]
+            inputText: fourLevelIdentifier[3]
         }
         MyLineEdit {
             id: levelText4
@@ -125,7 +125,7 @@ Item {
             clip: true
             inputSize: 20
             inputColor: "white"
-            inputText: fourLevelIdentifier[3]
+            inputText: fourLevelIdentifier[4]
         }
     }
     Rectangle {
@@ -194,7 +194,7 @@ Item {
                     listModel.clear()
                     for (var i = 0; i < menuModel.count; i++) {
                         if (menuModel.get(i).opacityValue == 0.5) {
-                            listModel.append({name:menuModel.get(i).name,level1:hmiAdaptor.permissionsettingGetChecked(menuModel.get(i).name,1),level2:hmiAdaptor.permissionsettingGetChecked(menuModel.get(i).name,2),level3:hmiAdaptor.permissionsettingGetChecked(menuModel.get(i).name,3),level4:hmiAdaptor.permissionsettingGetChecked(menuModel.get(i).name,4),level5:hmiAdaptor.permissionsettingGetChecked(list[i],0)})
+                            listModel.append({name:menuModel.get(i).name,level1:hmiAdaptor.permissionsettingGetChecked(menuModel.get(i).name,1),level2:hmiAdaptor.permissionsettingGetChecked(menuModel.get(i).name,2),level3:hmiAdaptor.permissionsettingGetChecked(menuModel.get(i).name,3),level4:hmiAdaptor.permissionsettingGetChecked(menuModel.get(i).name,4),level5:hmiAdaptor.permissionsettingGetChecked(menuModel.get(i).name,0)})
                         }
                     }
                 }
@@ -456,10 +456,10 @@ Item {
             {
                 hmiAdaptor.permissionsettingSetValue(listModel.get(i).name,listModel.get(i).level1,listModel.get(i).level2,listModel.get(i).level3,listModel.get(i).level4,listModel.get(i).level5)
             }
-            fourLevelIdentifier[0] = levelText1.inputText
-            fourLevelIdentifier[1] = levelText2.inputText
-            fourLevelIdentifier[2] = levelText3.inputText
-            fourLevelIdentifier[3] = levelText4.inputText
+            fourLevelIdentifier[1] = levelText1.inputText
+            fourLevelIdentifier[2] = levelText2.inputText
+            fourLevelIdentifier[3] = levelText3.inputText
+            fourLevelIdentifier[4] = levelText4.inputText
 
             hmiAdaptor.permissionsettingSetFourValue(fourLevelIdentifier)
             hmiAdaptor.permissionsettingExecute("_Set")

@@ -557,6 +557,7 @@ bool HmiAdaptor::login(QString passwd)
 {
     OperatorElement myOperator;
     bool isLog = operatorModel->login(passwd, &myOperator);
+    qDebug() << isLog << (int)myOperator.PermissionLevel;
     if (isLog)
     {
         if (myOperator.PermissionLevel == OperatorElement::PHYKEY)
@@ -607,7 +608,7 @@ bool HmiAdaptor::borrowLogin(QString passwd, QString pageName)
         else if (levelIndex == 4)
             reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level4;
         else if (levelIndex == 0) {
-            reb = permissionSetting->CurrentPermissionList.at(funcIndex).Key;
+            reb = permissionSetting->CurrentPermissionList.at(funcIndex).PhyKey;
             if (reb && !bIsPhysicalKey)
                 emit signalPhysicalKeyMessage();
             reb = reb & bIsPhysicalKey;
@@ -712,12 +713,12 @@ bool HmiAdaptor::needPassWord(QString pageName)
         }
     }
     if (funcIndex == -1)
-        return reb;
+        return false;
     levelIndex = (int)interfaceClass->CurrentOperator.PermissionLevel;
     qDebug() << "needPassWord" << pageName << funcIndex << levelIndex;
 
     if (levelIndex == 0)
-        reb = permissionSetting->CurrentPermissionList.at(funcIndex).Key;
+        reb = permissionSetting->CurrentPermissionList.at(funcIndex).PhyKey;
     else if (levelIndex == 1)
         reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level1;
     else if (levelIndex == 2)
@@ -763,7 +764,7 @@ bool HmiAdaptor::permissionsettingGetChecked(QString stringIndex, int level)
         return reb;
     switch (level) {
     case 0:
-        reb = permissionSetting->CurrentPermissionList.at(index).Key;
+        reb = permissionSetting->CurrentPermissionList.at(index).PhyKey;
         break;
     case 1:
         reb = permissionSetting->CurrentPermissionList.at(index).Level1;
@@ -791,7 +792,7 @@ bool HmiAdaptor::permissionsettingSetValue(QString name, bool level1, bool level
     temp.Level2 = level2;
     temp.Level3 = level3;
     temp.Level4 = level4;
-    temp.Key = level5;
+    temp.PhyKey = level5;
     permissionSetting->CurrentPermissionList.append(temp);
     return true;
 }
