@@ -76,7 +76,7 @@ Item {
             font.pixelSize: 25
             clip: true
             font.family: "arial"
-            text: qsTr("WORK ORDER NAME")
+            text: qsTr("SPLICE NAME")
         }
         Text {
             anchors.verticalCenter: parent.verticalCenter
@@ -94,7 +94,7 @@ Item {
             font.pixelSize: 25
             clip: true
             font.family: "arial"
-            text: qsTr("PART#")
+            text: qsTr("#OF WIRES")
         }
         Text {
             anchors.verticalCenter: parent.verticalCenter
@@ -136,7 +136,7 @@ Item {
         anchors.bottom: bottomTip.top
         width: parent.width - 104
         clip: true
-        model: workOrderModel
+        model: spliceModel
         delegate: listDelegate
     }
     Image {
@@ -204,7 +204,7 @@ Item {
                 anchors.left: parent.left
                 width: (parent.width-120)/4
                 elide: Text.ElideRight
-                text: WorkOrderName
+                text: SpliceName
                 clip: true
                 color: "white"
                 font.pixelSize: 20
@@ -228,7 +228,7 @@ Item {
                 anchors.left: headData.right
                 anchors.leftMargin: 40
                 width: (parent.width-120)/4
-                text: PART
+                text: TotalWires
                 elide: Text.ElideRight
                 clip: true
                 color: "white"
@@ -241,7 +241,7 @@ Item {
                 anchors.left: headMiddle.right
                 anchors.leftMargin: 40
                 width: (parent.width-120)/4
-                text: QUANTITY
+                text: count
                 elide: Text.ElideRight
                 color: "white"
                 clip: true
@@ -252,7 +252,7 @@ Item {
                 anchors.fill: parent
                 onClicked: {
                     operate.selectIndx = index
-                    operate.selectWorkId = WorkOrderId
+                    operate.selectWorkId = SpliceId
                     selectCheck.checked = !selectCheck.checked
                 }
             }
@@ -287,7 +287,7 @@ Item {
     }
     Rectangle {
         id: bottomTip2
-        anchors.bottom: addnewOrder.top
+        anchors.bottom: selectOk.top
         anchors.bottomMargin: 24
         anchors.left: parent.left
         anchors.leftMargin: 20
@@ -296,6 +296,7 @@ Item {
         height: 1
         color: "#0d0f11"
     }
+    /*
     CButton {
         id: addnewOrder
         anchors.bottom: parent.bottom
@@ -353,7 +354,7 @@ Item {
         onClicked: {
             if (selectIndx < 0)
                 return
-            workOrderModel.removeValue(workOrderModel.getValue(selectIndx,"WorkOrderId"),workOrderModel.getValue(selectIndx,"WorkOrderName"))
+            spliceModel.removeValue(spliceModel.getValue(selectIndx,"SpliceId"),spliceModel.getValue(selectIndx,"SpliceName"))
         }
     }
     CButton {
@@ -372,9 +373,11 @@ Item {
             loader.source = "qrc:/UI/MySelectFileDialog.qml"
         }
     }
+    */
     CButton {
         id: selectOk
-        anchors.bottom: addnewOrder.bottom
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 10
         anchors.right: parent.right
         anchors.rightMargin: 20
         width: (parent.width-100)/5
@@ -385,12 +388,19 @@ Item {
         clip: true
         textColor: "white"
         onClicked: {
-            if (operate.selectIndx != -1) {
-                workOrderModel.editNew(workOrderModel.getPartId(operate.selectIndx),operate.selectWorkId)
-                partModel.getPartInfo(true,workOrderModel.getPartId(selectIndx),workOrderModel.getValue(selectIndx,"PART"))
-                hmiAdaptor.maintenanceCountExecute("_Recall")
-                loader.source = "qrc:/UI/OperateDetails.qml"
-            }
+//            if (operate.selectIndx != -1) {
+//                workOrderModel.editNew(workOrderModel.getPartId(operate.selectIndx),operate.selectWorkId)
+//                partModel.getPartInfo(true,workOrderModel.getPartId(selectIndx),workOrderModel.getValue(selectIndx,"PART"))
+//                hmiAdaptor.maintenanceCountExecute("_Recall")
+//                loader.source = "qrc:/UI/OperateDetails.qml"
+//            }
+            backGround.visible = true
+            backGround.opacity = 0.5
+            testDialog.visible = true
+            mainRoot.bIsEditSplice = true
+            spliceModel.editNew(spliceModel.getValue(selectIndx,"SpliceId"))
+//            mainRoot.checkNeedPassWd(-1)
+            testDialog.setData()
         }
     }
     Rectangle {
@@ -406,6 +416,7 @@ Item {
         }
     }
 
+    /*
     Image {
         id: dialog
         visible: false
@@ -551,6 +562,8 @@ Item {
             }
         }
 
+
+
         CButton {
             id: sure
             anchors.right: parent.right
@@ -604,6 +617,48 @@ Item {
             }
         }
     }
+
+    */
+
+    TestSetingDialog {
+        id: testDialog
+        visible: false
+        anchors.centerIn: parent
+        width: 435
+        height: 540
+        onVisibleChanged: {
+        }
+
+        onSignalAdvanceSettingStart: {
+            testSpliceLibrary.setCheckIndex = checkIndex
+            if (mainRoot.checkAllInterface(20)) {
+                passDialog.visible = true
+                passDialog.pageName = "Teach Mode"
+            } else {
+                loader.source = "qrc:/UI/AdvanceSetting.qml"
+            }
+        }
+        onSignalTestStart: {
+            testDialog.visible = false
+            backGround.visible = false
+            loader.source = "qrc:/UI/TestDetail.qml"
+
+        }
+        onSignalInputNum: {
+            keyNum.visible = true
+            keyNum.titleText = qsTr("#of Splices")
+            if (text == qsTr("#of Splices")) {
+                keyNum.currentValue = "0"
+                keyNum.maxvalue = hmiAdaptor.getTestQuantity(0,true)
+                keyNum.minvalue = hmiAdaptor.getTestQuantity(0,false)
+            } else {
+                keyNum.currentValue = text
+                keyNum.maxvalue = hmiAdaptor.getTestQuantity(text,true)
+                keyNum.minvalue = hmiAdaptor.getTestQuantity(text,false)
+            }
+        }
+    }
+
     KeyBoardNum {
         id: keyNum
         anchors.centerIn: parent

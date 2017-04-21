@@ -381,6 +381,15 @@ Item {
                     backGround.visible = true
                     backGround.opacity = 0.7
                     addExit.visible = true
+                    addExit.listModel = spliceModel
+
+                    addExit.titleName = qsTr("Add Existing Splice")
+                    addExit.componentName = qsTr("SPLICE NAME")
+                    addExit.componentData = qsTr("DATE CREATED")
+                    addExit.componentMiddle = qsTr("OperatorName")
+                    addExit.componenttype = qsTr("CROSS SECTION")
+                    addExit.bIsOnlyOne = false
+                    addExit.componentCount = qsTr("# OF WIRES")
                 }
             }
             CButton {
@@ -394,6 +403,31 @@ Item {
                 width: (parent.width-20) / 2 - 12
                 pointSize: 16
                 onClicked: {
+                    backGround.visible = true
+                    backGround.opacity = 0.7
+                    addExit.visible = true
+                    if (upload.text == qsTr("EDIT EXISTING\nHARNESS"))
+                    {
+                        addExit.listModel = partModel
+                        addExit.titleName = qsTr("Add Harness")
+                        addExit.componentName = qsTr("Harness Name")
+                        addExit.componentData = qsTr("DATE CREATED")
+                        addExit.componentMiddle = qsTr("# OF SPLICE")
+                        addExit.componenttype = qsTr("CROSS SECTION")
+                        addExit.bIsOnlyOne = true
+                        addExit.componentCount = "MaxSplicesPerZone"
+                    }
+                    else if (upload.text == qsTr("EDIT EXISTING\nSEQUENCE"))
+                    {
+                        addExit.listModel = sequenceModel
+                        addExit.titleName = qsTr("Add Sequence")
+                        addExit.componentName = qsTr("Sequence Name")
+                        addExit.componentData = qsTr("DATE CREATED")
+                        addExit.componentMiddle = qsTr("OperatorName")
+                        addExit.componenttype = qsTr("# OF SPLICE")
+                        addExit.bIsOnlyOne = true
+                        addExit.componentCount = "QUANTITY"
+                    }
 
 //                    fileSelectLoader.source = "qrc:/UI/MySelectFileDialog.qml"
                 }
@@ -1297,7 +1331,7 @@ Item {
         height: parent.width*0.4
         visible: content.bIsFirst ? true : false
         listModel: content.bIsFirst ? partModel : spliceModel
-        titleName: content.bIsFirst ? qsTr("Add Part") : qsTr("Add Existing Splice")
+        titleName: content.bIsFirst ? qsTr("Add Harness") : qsTr("Add Existing Splice")
         componentName: content.bIsFirst ? qsTr("Part Name") : qsTr("SPLICE NAME")
         componentData: qsTr("DATE CREATED")
         componentMiddle: content.bIsFirst ? qsTr("# OF SPLICE") : qsTr("OperatorName")
@@ -1327,6 +1361,10 @@ Item {
                     spliceList.listModel.append({"SpliceName":name,"stationColor":"white","station":"?","SpliceId":modelId,"qty":0})
                 }
             }
+            else if (addExit.listModel == sequenceModel) {
+                selectSequenceUpdataPage(modelId,name)
+            }
+
             backGround.visible = false
             backGround.opacity = 0
             addExit.visible = false

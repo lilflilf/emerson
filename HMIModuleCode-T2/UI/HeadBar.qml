@@ -158,6 +158,12 @@ Item {
                                             creatMenu.childModel = creatMenuList
                                             creatMenu.height = creatMenuList.count * 50
                                         }
+                                        else if (index == 2) {
+                                            creatMenu.visible = true
+                                            creatMenu.childModel = null
+                                            creatMenu.childModel = operateMenuList
+                                            creatMenu.height = operateMenuList.count * 50
+                                        }
                                         else if (index == 4) {
                                             creatMenu.visible = true
                                             creatMenu.childModel = null
@@ -205,25 +211,23 @@ Item {
                                 rec.opacity = 1
                             }
                             onReleased: {
-                                if (index == 1 || index == 2 ) {
+                                if (index == 1) {
                                     rec.opacity = 0
                                 }
                             }
                             onClicked: {
                                 if (index == 2) {
-                                    mainRoot.clearStackView()
-                                    btn.isCheck = false
-                                    creatMenu.visible = false
-                                    btnBack.visible = false
-                                    mainRoot.checkNeedPassWd(2)
-//                                    title.text = qsTr("Operate")
+//                                    mainRoot.clearStackView()
+//                                    btn.isCheck = false
+//                                    creatMenu.visible = false
+//                                    btnBack.visible = false
+//                                    mainRoot.checkNeedPassWd(2)
                                 } else if (index == 1) {
                                     mainRoot.clearStackView()
                                     btn.isCheck = false
                                     creatMenu.visible = false
                                     btnBack.visible = false
                                     mainRoot.checkNeedPassWd(3)
-//                                    title.text = qsTr("Test")
                                 }
                             }
                         }
@@ -233,7 +237,7 @@ Item {
                         anchors.right: parent.right
                         anchors.rightMargin: 20
                         anchors.verticalCenter: parent.verticalCenter
-                        visible: index == 1 || index == 2 ? false : true
+                        visible: index == 1 ? false : true
                     }
                 }
             }
@@ -244,6 +248,13 @@ Item {
         id: creatMenuList
 //        ListElement {menuKey:qsTr("Create New")}
 //        ListElement {menuKey:qsTr("Edit Existing")}
+        ListElement {menuKey:qsTr("Splice")}
+        ListElement {menuKey:qsTr("Sequence")}
+        ListElement {menuKey:qsTr("Harness")}
+
+    }
+    ListModel {
+        id: operateMenuList
         ListElement {menuKey:qsTr("Splice")}
         ListElement {menuKey:qsTr("Sequence")}
         ListElement {menuKey:qsTr("Harness")}
@@ -345,15 +356,36 @@ Item {
 //                                }
                                 if (menuKey == qsTr("Splice")){
                                     mainRoot.clearStackView()
-                                    mainRoot.checkNeedPassWd(-1)
+                                    if (childMenu.model == creatMenuList)
+                                    {
+                                        mainRoot.checkNeedPassWd(-1)
+                                    }
+                                    else if (childMenu.model == operateMenuList)
+                                    {
+                                        mainRoot.checkNeedPassWd(2)
+                                    }
                                 }
                                 else if (menuKey == qsTr("Harness")){
                                     mainRoot.clearStackView()
-                                    mainRoot.checkNeedPassWd(0)
+                                    if (childMenu.model == creatMenuList)
+                                    {
+                                        mainRoot.checkNeedPassWd(0)
+                                    }
+                                    else if (childMenu.model == operateMenuList)
+                                    {
+
+                                    }
                                 }
                                 else if (menuKey == qsTr("Sequence")){
                                     mainRoot.clearStackView()
-                                    mainRoot.checkNeedPassWd(1)
+                                    if (childMenu.model == creatMenuList)
+                                    {
+                                        mainRoot.checkNeedPassWd(1)
+                                    }
+                                    else if (childMenu.model == operateMenuList)
+                                    {
+
+                                    }
                                 }
                                 else if (menuKey == qsTr("Calibration")){
                                     mainRoot.clearStackView()

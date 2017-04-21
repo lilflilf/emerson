@@ -3513,6 +3513,15 @@ QVariant SequenceModel::data(const QModelIndex &index, int role) const
             value = QVariant::fromValue(myOperator.OperatorName);
         else if (columnIdx == 4)
             value = QVariant::fromValue(mySequence.NoOfSplice);
+        else if (columnIdx == 5) {
+            int count;
+            count = 0;
+            for (int i = 0; i< mySequence.SpliceList.count(); i++)
+            {
+                count = count + mySequence.SpliceList[i].Quantity;
+            }
+            value = QVariant::fromValue(count);
+        }
     }
     return value;
 }
@@ -3563,6 +3572,8 @@ QVariant SequenceModel::getValue(int index, QString key)
     SequenceModelHash.insert("SequenceName",mySequence.SequenceName);
     SequenceModelHash.insert("DateCreated",QDateTime::fromTime_t(mySequence.CreatedDate).toString("MM/dd/yyyy hh:mm"));
     SequenceModelHash.insert("OperatorName",mySequence.OperatorID);
+    SequenceModelHash.insert("TotalSplices",mySequence.SpliceList.count());
+
     int quantity;
     quantity = 0;
     for (int i = 0;i < mySequence.SpliceList.count();i++)

@@ -166,7 +166,7 @@ Item {
                     anchors.left: parent.left
                     width: (parent.width-40)/5
                     elide: Text.ElideRight
-                    text: (listModel == spliceModel) ? SpliceName : (listModel == wireModel) ? WireName : PartName
+                    text: (listModel == spliceModel) ? SpliceName : (listModel == wireModel) ? WireName : (listModel == partModel) ? HarnessName : SequenceName
                     clip: true
                     color: "white"
                     font.pixelSize: 14
@@ -194,7 +194,7 @@ Item {
                     anchors.leftMargin: 10
                     width: (parent.width-40)/5
                     elide: Text.ElideRight
-                    text: (listModel == spliceModel) ? OperatorName : (listModel == wireModel) ? OperatorName : TotalSplices
+                    text: (listModel == spliceModel) ? OperatorName : (listModel == wireModel) ? OperatorName : (listModel == sequenceModel) ? OperatorName : TotalSplices
                     clip: true
                     color: "white"
                     font.pixelSize: 14
@@ -208,7 +208,7 @@ Item {
                     anchors.leftMargin: 10
                     elide: Text.ElideRight
                     width: (parent.width-40)/5
-                    text: (listModel == spliceModel) ? CrossSection : (listModel == wireModel) ? Color : ProcessMode
+                    text: (listModel == spliceModel) ? CrossSection : (listModel == wireModel) ? Color : (listModel == sequenceModel) ? TotalSplices : ProcessMode
                     color: "white"
                     clip: true
                     font.pixelSize: 14
@@ -222,7 +222,7 @@ Item {
                     anchors.leftMargin: 10
                     width: (parent.width-40)/5
                     elide: Text.ElideRight
-                    text: (listModel == spliceModel) ? TotalWires : (listModel == wireModel) ? Gauge : MaxSplicesPerZone
+                    text: (listModel == spliceModel) ? TotalWires : (listModel == wireModel) ? Gauge : (listModel == partModel) ? MaxSplicesPerZone : QUANTITY
                     color: "white"
                     clip: true
                     font.pixelSize: 14
@@ -375,6 +375,10 @@ Item {
                             signalAddExistSelectClick(listModel.getValue(num,"WireId"),listModel.getValue(num,"WireName"))
                         }
                     }
+                    else if (listModel == sequenceModel) {
+                        signalAddExistSelectClick(listModel.getValue(selectIndex,"SequenceId"),listModel.getValue(selectIndex,"SequenceName"))
+                    }
+
                     listView.delegate =null
                 }
              }

@@ -73,7 +73,7 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
 
     sequenceModel = new SequenceModel(this);
     QStringList sequenceList;
-    sequenceList << "SequenceId" << "SequenceName" << "DateCreated" << "OperatorName" << "TotalSplice";
+    sequenceList << "SequenceId" << "SequenceName" << "DateCreated" << "OperatorName" << "TotalSplices" << "QUANTITY";
     sequenceModel->setRoles(sequenceList);
     sequenceModel->setModelList();
 
