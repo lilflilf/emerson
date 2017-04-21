@@ -290,7 +290,7 @@ Item {
             backGround.opacity = 0.5
             operatorDialog.visible = true
             setDialogLevel()
-//            operatorModel.editNew(selectIndx)
+            operatorModel.editNew(selectIndx)
         }
     }
     CButton {
@@ -338,15 +338,15 @@ Item {
                 passwordInput.inputText = operatorModel.getOperatorValue(selectIndx,"middle")
                 var level = operatorModel.getOperatorValue(selectIndx,"count")
                 if (level == 0) {
-                    administratorRadio.bIsCheck = true
-                } else if (level == 1) {
-                    technicianRadio.bIsCheck = true
-                } else if (level == 2) {
-                    qualityRadio.bIsCheck = true
-                } else if (level == 3) {
-                    openRadio.bIsCheck = true
-                } else if (level == 4) {
                     keyRadio.bIsCheck = true
+                } else if (level == 1) {
+                    administratorRadio.bIsCheck = true
+                } else if (level == 2) {
+                    technicianRadio.bIsCheck = true
+                } else if (level == 3) {
+                    qualityRadio.bIsCheck = true
+                } else if (level == 4) {
+                    openRadio.bIsCheck = true
                 }
 //                if (level == administratorRadio.buttontext) {
 //                    administratorRadio.bIsCheck = true
@@ -446,7 +446,7 @@ Item {
             width: 300
             height: 40
             exclusiveGroup: mos
-            buttontext: ""
+            buttontext: fourLevelIdentifier[0]
         }
         MyRadioButton {
             id: administratorRadio
@@ -458,7 +458,7 @@ Item {
             height: 40
             bIsCheck: true
             exclusiveGroup: mos
-            buttontext: fourLevelIdentifier[0]//qsTr("Administrator")
+            buttontext: fourLevelIdentifier[1]//qsTr("Administrator")
         }
         MyRadioButton {
             id: technicianRadio
@@ -469,7 +469,7 @@ Item {
             width: 300
             height: 40
             exclusiveGroup: mos
-            buttontext: fourLevelIdentifier[1]//qsTr("Technician")
+            buttontext: fourLevelIdentifier[2]//qsTr("Technician")
         }
         MyRadioButton {
             id: qualityRadio
@@ -480,7 +480,7 @@ Item {
             width: 300
             height: 40
             exclusiveGroup: mos
-            buttontext: fourLevelIdentifier[2]//qsTr("Quality Control")
+            buttontext: fourLevelIdentifier[3]//qsTr("Quality Control")
         }
         MyRadioButton {
             id: openRadio
@@ -491,7 +491,7 @@ Item {
             width: 300
             height: 40
             exclusiveGroup: mos
-            buttontext: fourLevelIdentifier[3]//qsTr("Open")
+            buttontext: fourLevelIdentifier[4]//qsTr("Open")
         }
         CButton {
             id: cancelButton

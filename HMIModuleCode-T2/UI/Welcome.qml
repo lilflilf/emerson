@@ -6,6 +6,24 @@ import QtQuick.Window 2.2
 
 Item {
     signal passWordInputOk()
+
+    Connections {
+        target: hmiAdaptor
+        onSignalPhysicalKeyMessage: {
+            title4.text = qsTr("Scan or Enter ID(Please insert physicalkey)")
+            itemChange.start()
+        }
+    }
+    Timer {
+        id: itemChange
+        interval: 5000
+        repeat: false
+        triggeredOnStart: false;
+        onTriggered: {
+            title4.text = qsTr("Scan or Enter ID")
+        }
+    }
+
     ListModel {
         id: listModel
         Component.onCompleted: {

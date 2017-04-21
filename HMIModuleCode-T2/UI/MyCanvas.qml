@@ -83,7 +83,7 @@ Item {
             anchors.topMargin: 5
             color: "white"
             font.pointSize: 12
-            text: qsTr("TIME(sec)")
+            text: qsTr("TIME(mm)")
             font.family: "arial"
 
         }
