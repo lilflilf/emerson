@@ -641,7 +641,8 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
     const QString Colon = ":";
 
     int i;
-    int Index, temp, Div;
+    int Index, temp;
+    float Div = 0.0;
     QString TempString = "";
     QString PowerString;
 //    unsigned int ResetType;
@@ -673,24 +674,28 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         // So, this time value is able to reduced 10 times.
         IAactual.Time = IAactual.Time / 2;
         //--Need to piece a together to parts here because of Jim's string
-        TempString = HexString.mid(39, 2) + HexString.mid(52, 2);
+        TempString = HexString.mid(41, 2) + HexString.mid(54, 2);
         IAactual.Power = MakeHexWordNumber(TempString);
+//        DEBUG_PRINT(IAactual.Power);
         //--Need to use the raw peakpower to do calculation
-        Div = (_Interface->StatusData.Soft_Settings.SonicGenWatts / 200);
-        IAactual.Power = MakeHexByteNumber(HexString.mid(37, 2));
-        if (_Interface->StatusData.Soft_Settings.SonicGenWatts > 200)
-           IAactual.Power = IAactual.Power * Div;
+        Div = ((float)_Interface->StatusData.Soft_Settings.SonicGenWatts / POWERFACTOR);
+//        DEBUG_PRINT(Div);
+        IAactual.Power = MakeHexWordNumber(HexString.mid(37, 4));
+//        DEBUG_PRINT(IAactual.Power);
+        if (_Interface->StatusData.Soft_Settings.SonicGenWatts > POWERFACTOR)
+           IAactual.Power *= Div;
         else
-           IAactual.Power = IAactual.Power * (_Interface->StatusData.Soft_Settings.SonicGenWatts / 200);
+           IAactual.Power *= ((float)_Interface->StatusData.Soft_Settings.SonicGenWatts / POWERFACTOR);
+//        DEBUG_PRINT(IAactual.Power);
         //--Second data record
-        IAactual.Preheight = MakeHexWordNumber(HexString.mid(54, 4));
-        IAactual.Amplitude = MakeHexWordNumber(HexString.mid(58, 4));
-        IAactual.Height = MakeHexWordNumber(HexString.mid(62, 4)); //+ Splice.HeightCorr
-        IAactual.Amplitude2 = MakeHexWordNumber(HexString.mid(66, 4));
-        IAactual.PPHeight = MakeHexWordNumber(HexString.mid(70, 4));
-        IAactual.Pressure = MakeHexWordNumber(HexString.mid(74, 4));
-        IAactual.TPressure = MakeHexWordNumber(HexString.mid(78, 4));
-        IAactual.Alarmflags = MakeHexWordNumberLong(HexString.mid(82, 8));
+        IAactual.Preheight = MakeHexWordNumber(HexString.mid(56, 4));
+        IAactual.Amplitude = MakeHexWordNumber(HexString.mid(60, 4));
+        IAactual.Height = MakeHexWordNumber(HexString.mid(64, 4)); //+ Splice.HeightCorr
+        IAactual.Amplitude2 = MakeHexWordNumber(HexString.mid(68, 4));
+        IAactual.PPHeight = MakeHexWordNumber(HexString.mid(72, 4));
+        IAactual.Pressure = MakeHexWordNumber(HexString.mid(76, 4));
+        IAactual.TPressure = MakeHexWordNumber(HexString.mid(80, 4));
+        IAactual.Alarmflags = MakeHexWordNumberLong(HexString.mid(84, 8));
 //        if ((IAactual.Alarmflags & 0x4000) == 0x4000)
 //            IACommand(IAComHostReady, 1);
         //--Set Correct Flag
@@ -702,16 +707,16 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         // Total 2 bytes            4 characters
         // Index 2 bytes            4 characters
         // One empty byte           2 characters
-        // Data is in an unknown number of strings, all but last is 16 Bytes of data
-        // Data                     32 characters
+        // Data is in an unknown number of strings, all but last is 32 Bytes of data
+        // Data                     64 characters
         // Check sum 1 byte         2 characters
-        //  (length = 51 Characters)
+        //  (length = 83 Characters)
         int StringLen, StringCount, LastString;
         int num, Total, tmpIndex, Datalen;
         num = 0;
         StringLen = HexString.length();
-        StringCount = int(StringLen / 51);
-        LastString = StringLen % 51;
+        StringCount = int(StringLen / 83);
+        LastString = StringLen % 83;
         PowerString = "";
         tmpIndex = 0;
         Total = MakeHexWordNumber(HexString.mid((tmpIndex + 9), 4));
@@ -721,8 +726,8 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
             Total = MakeHexWordNumber(HexString.mid((tmpIndex + 9), 4));
             num = MakeHexWordNumber(HexString.mid(tmpIndex + 13, 4));
 //            qDebug()<<"Total: "<<Total << " Index: "<<num<<" ListSize: "<<RawPowerDataGraph.GraphDataList.size();
-            RawPowerDataGraph.GraphDataList.insert(num,HexString.mid(tmpIndex, 51));
-            tmpIndex = tmpIndex + 51;
+            RawPowerDataGraph.GraphDataList.insert(num,HexString.mid(tmpIndex, 83));
+            tmpIndex = tmpIndex + 83;
         }
         if (LastString > 0)
         {

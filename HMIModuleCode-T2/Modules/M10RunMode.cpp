@@ -87,7 +87,6 @@ void M10runMode::Update_Counter()
     //Enter the Data and update the counters if no errors are found during weld
     //This section must be editted, note that the part counter is updated AFTER the data is saved
     Statistics *_Statistics = Statistics::Instance();
-//    InterfaceClass *_Interface = InterfaceClass::Instance();
     _Statistics->EnterM20DataEvent();
     Save_Data_Events();
 }
@@ -102,7 +101,7 @@ bool M10runMode::CheckWeldData(int weldresult)
     InterfaceClass *_Interface = InterfaceClass::Instance();
     M102IA* _M102IA = M102IA::Instance();
     AlarmMessage* _AlarmMsg = AlarmMessage::Instance();
-    Statistics* _Statistics = Statistics::Instance();
+//    Statistics* _Statistics = Statistics::Instance();
     _M2010->M10Run.Pre_Hght_Error = false;
     _M10INI->ValidWeldData = false;
     WidthError = false;
@@ -220,7 +219,8 @@ bool M10runMode::CheckWeldData(int weldresult)
             _M2010->M10Run.Alarm_found = true;
     }
     // HEIGHT CHECK FINISH
-    //check: is there some error due to parameters going out of bound
+
+    //check: is there some error due to parameters going out of bound?
     if(_M2010->M10Run.Alarm_found == false)
     {
         PreviousWeldValid = true;
@@ -228,7 +228,6 @@ bool M10runMode::CheckWeldData(int weldresult)
         {
             Update_Counter();
             _M10INI->ValidWeldData = true;
-            _Statistics->UpdateSoftLimitData();
         }
     }else
     {
@@ -237,16 +236,6 @@ bool M10runMode::CheckWeldData(int weldresult)
     }
 
     return Invalidweld;
-}
-
-void M10runMode::CalculateTeachMode(PresetElement *_Splice)
-{
-    M2010 *_M2010 = M2010::Instance();
-    Statistics* _Statistics = Statistics::Instance();
-    if(_M2010->M10Run.Alarm_found == false)
-    {
-        _Statistics->CalcConfLimits(_Splice);
-    }
 }
 
 void M10runMode::TeachModeFinished(PresetElement *_Splice)

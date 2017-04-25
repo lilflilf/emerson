@@ -377,11 +377,6 @@ void M10INI::Init_StatusData()
     _Interface->DefaultStatusData.Soft_Settings.TunePoint = 40;
     _Interface->DefaultStatusData.Soft_Settings.FrequencyOffset = 50;
 
-    _Interface->DefaultStatusData.Cust_Data.mod10a_settings.UnsignedWeldData = 4097;
-    _Interface->DefaultStatusData.Cust_Data.mod10a_settings.AfterBurstDelay = 10;
-    _Interface->DefaultStatusData.Cust_Data.mod10a_settings.AfterBurstDuration = 20;
-    _Interface->DefaultStatusData.Cust_Data.mod10a_settings.EnergyWindowPL = 50;
-    _Interface->DefaultStatusData.Cust_Data.mod10a_settings.PreBurstIndex = 0;
     _Interface->DefaultStatusData.Cust_Data.cust_qual_range[TIME_PLRG_STD] = 40;
     _Interface->DefaultStatusData.Cust_Data.cust_qual_range[TIME_MSRG_STD] = 40;
     _Interface->DefaultStatusData.Cust_Data.cust_qual_range[POWER_PLRG_STD] = 25;
@@ -410,15 +405,12 @@ void M10INI::Init_StatusData()
     _Interface->DefaultStatusData.Cust_Data.cust_qual_range[PRESSURE_ADJ] = 30;
     _Interface->DefaultStatusData.Cust_Data.cust_qual_range[AMPLITUDE_ADJ] = 26;
     _Interface->DefaultStatusData.Cust_Data.cust_qual_range[WIDTH_ADJ] = 625;
+    _Interface->DefaultStatusData.Cust_Data.PresetTeachModeSetting = QUALITY_DATA_FILE::GLOBALS;
+    _Interface->DefaultStatusData.Cust_Data.StandardRunQuantity = 15;
+    _Interface->DefaultStatusData.Cust_Data.AutoRunQuantity = 15;
+    _Interface->DefaultStatusData.Cust_Data.SigmaRunQuantity = 15;
     //Now store the new file data
 
-    for(int i = TIME_USL; i<= HEIGHT_LSL; i++)
-    {
-        _Interface->DefaultStatusData.HSDATA.HARD_LIMIT[i].TypeHS = Sigam;
-        _Interface->DefaultStatusData.HSDATA.HARD_LIMIT[i].ValueHS = 4;
-        _Interface->DefaultStatusData.HSDATA.SOFT_LIMIT[i].TypeHS = Percent;
-        _Interface->DefaultStatusData.HSDATA.SOFT_LIMIT[i].ValueHS = 30;
-    }
     _Interface->DefaultStatusData.ComInfo.COMport = 1;
     _Interface->DefaultStatusData.ComInfo.BaudRate = 115200;
     _Interface->DefaultStatusData.MachineType = ACTNEWSPLICER; //Need To Fix

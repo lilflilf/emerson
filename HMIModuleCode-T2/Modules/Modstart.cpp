@@ -41,7 +41,6 @@ MODstart::MODstart()
     M2010   *_M2010   = M2010::Instance();
     M102IA  *_M102IA  = M102IA::Instance();
     M10runMode *_M10runMode = M10runMode::Instance();
-    Statistics *_Statistics = Statistics::Instance();
     ModRunSetup *_ModRunSetup = ModRunSetup::Instance();
     InterfaceClass *_Interface = InterfaceClass::Instance();
     BransonServer* _Server = BransonServer::Instance();
@@ -127,7 +126,7 @@ MODstart::MODstart()
         if (_M2010->ReceiveFlags.POWERrating == true)
         {
             _M2010->ReceiveFlags.POWERrating = false;
-            _M10INI->Power_to_Watts = _Interface->StatusData.Soft_Settings.SonicGenWatts / 200;
+            _M10INI->Power_to_Watts = (float)_Interface->StatusData.Soft_Settings.SonicGenWatts / POWERFACTOR;
             for(int i = 0; i <= 6; i++)
             {
                 _M10INI->Pwr_Prefix_Data[i] = i * (int)(0.2 *
@@ -148,6 +147,10 @@ MODstart::MODstart()
         _M102IA->IACommand(IAComGetAlarmData);
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.AlarmData);
 //        DEBUG_PRINT(_M2010->ReceiveFlags.AlarmData);
+
+//        _M2010->ReceiveFlags.WELDdata = false;
+//        _M102IA->IACommand(IAComSendWeldData);
+//        _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.WELDdata);
 
         _M2010->ReceiveFlags.CoolingTypeData = false;
         _M102IA->IACommand(IAComGetCooling);
@@ -229,7 +232,6 @@ MODstart::MODstart()
             _M10runMode->UpdateMaintenanceData();
             Checkmaintenancelimit_EaWeld = false;
         }
-        _Statistics->UpdateSoftLimitData(false);
         //Open Ethernet serer
         if (_Interface->StatusData.NetworkingEnabled == true)
         {
@@ -321,7 +323,7 @@ void MODstart::GlobalInitM10()
     ptr_M2010->M10Run.Select_Part_file = false;
     ptr_M2010->M10Run.Select_Seq_file = false;
     ptr_M2010->M10Run.Alarm_found = false;
-    ptr_M10INI->Power_to_Watts = _Interface->StatusData.Soft_Settings.SonicGenWatts / 200;
+    ptr_M10INI->Power_to_Watts = (float)_Interface->StatusData.Soft_Settings.SonicGenWatts / POWERFACTOR;
     _Utility->Maxpower = (float)(1.2 * _Interface->StatusData.Soft_Settings.SonicGenWatts);
     for (i = 0; i <= 6; i++)
         ptr_M10INI->Pwr_Prefix_Data[i] = i * float(0.2 * _Interface->StatusData.Soft_Settings.SonicGenWatts);
@@ -504,7 +506,6 @@ void MODstart::OfflineInitialization(void* ptr)
     ModRunSetup *_ModRunSetup = ModRunSetup::Instance();
 //    M10INI *_M10INI = M10INI::Instance();
     M2010 *_M2010 = M2010::Instance();
-    Statistics *_Statistics = Statistics::Instance();
     InterfaceClass* _Interface = InterfaceClass::Instance();
     BransonServer* _Server = BransonServer::Instance();
     DBWorkOrderTable* _WorkOrderTable = DBWorkOrderTable::Instance();
@@ -523,7 +524,6 @@ void MODstart::OfflineInitialization(void* ptr)
             + _MODstart->App.Minor + "."
             + _MODstart->App.Revision;
 
-    _Statistics->UpdateSoftLimitData(false);
     //Open Ethernet serer
     if (_Interface->StatusData.NetworkingEnabled == true)
     {

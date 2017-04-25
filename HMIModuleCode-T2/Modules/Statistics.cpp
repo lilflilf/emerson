@@ -23,141 +23,141 @@ Statistics::Statistics()
 
 }
 
-void Statistics::UpdateSoftLimitData(bool ShowResults)
-{
-    int SampleSize, PartCount, DataCount;
-    int DataIndex;
-    long SLindexer;
-    WeldEventData DataBase;
-    long FlagMask;
-    long StartIndex;
-    long FlagBit;
-    double WELDdata, Sum, SumSquared, Average;
-    double Sigma, SLLrange, SLHrange, Intermediate;
-    double MinLimit, MaxLimit;
-    int i;
-    M2010 *ptr_M2010 = M2010::Instance();
-//    M10INI *ptr_M10INI = M10INI::Instance();
-    M102IA *ptr_M102IA = M102IA::Instance();
-    InterfaceClass* _Interface = InterfaceClass::Instance();
+//void Statistics::UpdateSoftLimitData(bool ShowResults)
+//{
+//    int SampleSize, PartCount, DataCount;
+//    int DataIndex;
+//    long SLindexer;
+//    QList<int> DataBase;
+//    long FlagMask;
+//    long StartIndex;
+//    long FlagBit;
+//    double WELDdata, Sum, SumSquared, Average;
+//    double Sigma, SLLrange, SLHrange, Intermediate;
+//    double MinLimit, MaxLimit;
+//    int i;
+//    M2010 *ptr_M2010 = M2010::Instance();
+////    M10INI *ptr_M10INI = M10INI::Instance();
+//    M102IA *ptr_M102IA = M102IA::Instance();
+//    InterfaceClass* _Interface = InterfaceClass::Instance();
 
-    for(i = SLITime; i <= SLIHeight; i++)
-        SoftLimitData[i].SoftLimitStatus = SLSTSoftLimitOFF;
+//    for(i = SLITime; i <= SLIHeight; i++)
+//        SoftLimitData[i].SoftLimitStatus = SLSTSoftLimitOFF;
 
-    //Is the soft limit device off or invalid?
-    if (ptr_M2010->M10Run.Auto_Set_Mode == true)
-        return;
-    if ((_Interface->StatusData.SoftLimitsModeFlags & SoftLimitEnabledFlag) == 0)
-        return;
-    SampleSize = _Interface->StatusData.SoftLimitSampleSize;
-    PartCount = Splice_Stat.prts_count;
-    if (PartCount < SampleSize)
-        return;
+//    //Is the soft limit device off or invalid?
+//    if (ptr_M2010->M10Run.Auto_Set_Mode == true)
+//        return;
+//    if ((_Interface->StatusData.SoftLimitsModeFlags & SoftLimitEnabledFlag) == 0)
+//        return;
+//    SampleSize = _Interface->StatusData.SoftLimitSampleSize;
+//    PartCount = Splice_Stat.prts_count;
+//    if (PartCount < SampleSize)
+//        return;
 
-    //Global requirements met, check individual items and calculate the limits
-    for (SLindexer = SLITime; SLindexer <= SLIHeight; SLindexer++)
-    {
-        switch(SLindexer)
-        {
-        case SLITime:
-            DataBase = Splice_Stat.TimeData;
-            FlagMask = SoftLimitTimeFlags;
-            MinLimit = ptr_M102IA->IAsetup.Time.min;
-            MaxLimit = ptr_M102IA->IAsetup.Time.max;
-            break;
-        case SLIPower:
-            DataBase = Splice_Stat.PowerData;
-            FlagMask = SoftLimitPowerFlags;
-            MinLimit = ptr_M102IA->IAsetup.Power.min;
-            MaxLimit = ptr_M102IA->IAsetup.Power.max;
-            break;
-        case SLIPreHeight:
-            DataBase = Splice_Stat.PreHghtData;
-            FlagMask = SoftLimitPreHeightFlags;
-            MinLimit = ptr_M102IA->IAsetup.Preheight.min;
-            MaxLimit = ptr_M102IA->IAsetup.Preheight.max;
-            break;
-        case SLIHeight:
-            DataBase = Splice_Stat.HeightData;
-            FlagMask = SoftLimitHeightFlags;
-            MinLimit = ptr_M102IA->IAsetup.Height.min;
-            MaxLimit = ptr_M102IA->IAsetup.Height.max;
-            break;
-        }
-        FlagBit = _Interface->StatusData.SoftLimitsModeFlags & FlagMask;
-        if (FlagBit != 0)
-        {
-            SoftLimitData[SLindexer].SoftLimitStatus = SLSTSoftLimitON;
-            if (PartCount < M20_Data_Points)
-            {
-                DataCount = Splice_Stat.prts_count;
-                StartIndex = 0;
-            }
-            else{
-                DataCount = M20_Data_Points;         //Database is full
-                StartIndex = Splice_Stat.data_ptr;   //Points to next item
-            }
-            //Record last data for comparisons:
-            DataIndex = (DataCount - 1 + StartIndex) % M20_Data_Points;
-            SoftLimitData[SLindexer].LastData = DataBase.Data[DataIndex];
-            //Initialize the calculations with the last piece of data
-            Sum = SoftLimitData[SLindexer].LastData;
-            SumSquared = SoftLimitData[SLindexer].LastData *
-                    SoftLimitData[SLindexer].LastData;
-            //Add the previous elements to the data
-            for(i = (DataCount - 2); i >= (DataCount - SampleSize); i--)
-            {
-                DataIndex = (i + StartIndex) % M20_Data_Points;
-                WELDdata = DataBase.Data[DataIndex];
-                Sum = Sum + WELDdata;
-                SumSquared = SumSquared + WELDdata * WELDdata;
-            }
-            Average = Sum / SampleSize;
-            if ((FlagBit % 3) == 2)   //High flag = Percent mode
-            {
-                //Calculate the upper soft limit
-                //Convert a percentage to a decimal by half for the upper range
-                SLHrange = _Interface->StatusData.SoftLimit[SLIUpperControlLimit][SLindexer] / 200;
-                SLHrange = SLHrange * (MaxLimit - MinLimit);
-                //Calculate the lower soft limit
-                SLLrange = _Interface->StatusData.SoftLimit[SLILowerControlLimit][SLindexer] / 200;
-                SLLrange = SLLrange * (MaxLimit - MinLimit);
-            }
-            else{
-                //Sigma mode
-                Intermediate = (SampleSize * SumSquared - Sum * Sum) / SampleSize;
-                if ((_Interface->StatusData.SoftLimitsModeFlags & SoftLimitWeightFlag) == 0)
-                    //Bias = N-1
-                    Sigma = sqrt(Intermediate / (SampleSize - 1));
-                else
-                    //Bias = N
-                    Sigma = sqrt(Intermediate / SampleSize);
+//    //Global requirements met, check individual items and calculate the limits
+//    for (SLindexer = SLITime; SLindexer <= SLIHeight; SLindexer++)
+//    {
+//        switch(SLindexer)
+//        {
+//        case SLITime:
+//            DataBase = Splice_Stat.TimeData;
+//            FlagMask = SoftLimitTimeFlags;
+//            MinLimit = ptr_M102IA->IAsetup.Time.min;
+//            MaxLimit = ptr_M102IA->IAsetup.Time.max;
+//            break;
+//        case SLIPower:
+//            DataBase = Splice_Stat.PowerData;
+//            FlagMask = SoftLimitPowerFlags;
+//            MinLimit = ptr_M102IA->IAsetup.Power.min;
+//            MaxLimit = ptr_M102IA->IAsetup.Power.max;
+//            break;
+//        case SLIPreHeight:
+//            DataBase = Splice_Stat.PreHghtData;
+//            FlagMask = SoftLimitPreHeightFlags;
+//            MinLimit = ptr_M102IA->IAsetup.Preheight.min;
+//            MaxLimit = ptr_M102IA->IAsetup.Preheight.max;
+//            break;
+//        case SLIHeight:
+//            DataBase = Splice_Stat.HeightData;
+//            FlagMask = SoftLimitHeightFlags;
+//            MinLimit = ptr_M102IA->IAsetup.Height.min;
+//            MaxLimit = ptr_M102IA->IAsetup.Height.max;
+//            break;
+//        }
+//        FlagBit = _Interface->StatusData.SoftLimitsModeFlags & FlagMask;
+//        if (FlagBit != 0)
+//        {
+//            SoftLimitData[SLindexer].SoftLimitStatus = SLSTSoftLimitON;
+//            if (PartCount < M20_Data_Points)
+//            {
+//                DataCount = Splice_Stat.prts_count;
+//                StartIndex = 0;
+//            }
+//            else{
+//                DataCount = M20_Data_Points;         //Database is full
+//                StartIndex = Splice_Stat.data_ptr;   //Points to next item
+//            }
+//            //Record last data for comparisons:
+//            DataIndex = (DataCount - 1 + StartIndex) % M20_Data_Points;
+//            SoftLimitData[SLindexer].LastData = DataBase[DataIndex];
+//            //Initialize the calculations with the last piece of data
+//            Sum = SoftLimitData[SLindexer].LastData;
+//            SumSquared = SoftLimitData[SLindexer].LastData *
+//                    SoftLimitData[SLindexer].LastData;
+//            //Add the previous elements to the data
+//            for(i = (DataCount - 2); i >= (DataCount - SampleSize); i--)
+//            {
+//                DataIndex = (i + StartIndex) % M20_Data_Points;
+//                WELDdata = DataBase[DataIndex];
+//                Sum += WELDdata;
+//                SumSquared += (WELDdata * WELDdata);
+//            }
+//            Average = Sum / SampleSize;
+//            if ((FlagBit % 3) == 2)   //High flag = Percent mode
+//            {
+//                //Calculate the upper soft limit
+//                //Convert a percentage to a decimal by half for the upper range
+//                SLHrange = _Interface->StatusData.SoftLimit[SLIUpperControlLimit][SLindexer] / 200;
+//                SLHrange = SLHrange * (MaxLimit - MinLimit);
+//                //Calculate the lower soft limit
+//                SLLrange = _Interface->StatusData.SoftLimit[SLILowerControlLimit][SLindexer] / 200;
+//                SLLrange = SLLrange * (MaxLimit - MinLimit);
+//            }
+//            else{
+//                //Sigma mode
+//                Intermediate = (SampleSize * SumSquared - Sum * Sum) / SampleSize;
+//                if ((_Interface->StatusData.SoftLimitsModeFlags & SoftLimitWeightFlag) == 0)
+//                    //Bias = N-1
+//                    Sigma = sqrt(Intermediate / (SampleSize - 1));
+//                else
+//                    //Bias = N
+//                    Sigma = sqrt(Intermediate / SampleSize);
 
-                SLHrange = Sigma * _Interface->StatusData.SoftLimit[SLIUpperControlLimit][SLindexer];
-                SLLrange = Sigma * _Interface->StatusData.SoftLimit[SLILowerControlLimit][SLindexer];
-            }
-            SoftLimitData[SLindexer].Average = Average;
-            SoftLimitData[SLindexer].HighLimit = Average + SLHrange;
-            SoftLimitData[SLindexer].LowLimit = Average - SLLrange;
+//                SLHrange = Sigma * _Interface->StatusData.SoftLimit[SLIUpperControlLimit][SLindexer];
+//                SLLrange = Sigma * _Interface->StatusData.SoftLimit[SLILowerControlLimit][SLindexer];
+//            }
+//            SoftLimitData[SLindexer].Average = Average;
+//            SoftLimitData[SLindexer].HighLimit = Average + SLHrange;
+//            SoftLimitData[SLindexer].LowLimit = Average - SLLrange;
 
-            //Regardless of the results the limits must be in the hard limit windows
-            if (SoftLimitData[SLindexer].HighLimit > MaxLimit)
-                SoftLimitData[SLindexer].HighLimit = MaxLimit;
-            if (SoftLimitData[SLindexer].LowLimit < MinLimit)
-                SoftLimitData[SLindexer].LowLimit = MinLimit;
-            if (ShowResults == true)
-            {
-                if ((SoftLimitData[SLindexer].LastData > SoftLimitData[SLindexer].HighLimit) ||
-                    (SoftLimitData[SLindexer].LastData < SoftLimitData[SLindexer].LowLimit))
-                {
+//            //Regardless of the results the limits must be in the hard limit windows
+//            if (SoftLimitData[SLindexer].HighLimit > MaxLimit)
+//                SoftLimitData[SLindexer].HighLimit = MaxLimit;
+//            if (SoftLimitData[SLindexer].LowLimit < MinLimit)
+//                SoftLimitData[SLindexer].LowLimit = MinLimit;
+//            if (ShowResults == true)
+//            {
+//                if ((SoftLimitData[SLindexer].LastData > SoftLimitData[SLindexer].HighLimit) ||
+//                    (SoftLimitData[SLindexer].LastData < SoftLimitData[SLindexer].LowLimit))
+//                {
 
-                    if ((_Interface->StatusData.SoftLimitsModeFlags & SoftLimitAudibleFlag) != 0)
-                        ptr_M102IA->Generate_Beep();
-                }
-            }      //ShowResults
-        }          //FlagBit <> 0
-    }             //SLindexer
-}
+//                    if ((_Interface->StatusData.SoftLimitsModeFlags & SoftLimitAudibleFlag) != 0)
+//                        ptr_M102IA->Generate_Beep();
+//                }
+//            }      //ShowResults
+//        }          //FlagBit <> 0
+//    }             //SLindexer
+//}
 
 void Statistics::RotateOut(StatStats &SumStats, int OldData)
 {
@@ -165,11 +165,11 @@ void Statistics::RotateOut(StatStats &SumStats, int OldData)
     SumStats.Sum_sqr = SumStats.Sum_sqr - (OldData * OldData);
 }
 
-void Statistics::RotateIn(StatStats &SumStats, QList<int>& DataEvent, int NewData)
+void Statistics::RotateIn(StatStats &SumStats, int* DataEvent, int NewData)
 {
-    DataEvent.append(NewData);
-    SumStats.Sum = SumStats.Sum + NewData;
-    SumStats.Sum_sqr = SumStats.Sum_sqr + (NewData * NewData);
+    *DataEvent = NewData;
+    SumStats.Sum += NewData;
+    SumStats.Sum_sqr += (NewData * NewData);
 }
 
 void Statistics::UpdateSpliceStatStats()
@@ -181,22 +181,24 @@ void Statistics::EnterM20DataEvent()
 {
     int ptr;
     M102IA *_M102IA = M102IA::Instance();
-//    M2010 *_M2010 = M2010::Instance();
     ptr = Splice_Stat.data_ptr;
-    if (Splice_Stat.prts_count > M20_Stat_Points)
+    if (Splice_Stat.prts_count >= M20_Stat_Points)
     {
-       RotateOut(Splice_Stat.Time, Splice_Stat.TimeData.Data[ptr]);
-       RotateOut(Splice_Stat.Power, Splice_Stat.PowerData.Data[ptr]);
-       RotateOut(Splice_Stat.Pre_hght, Splice_Stat.PreHghtData.Data[ptr]);
-       RotateOut(Splice_Stat.Height, Splice_Stat.HeightData.Data[ptr]);
+       RotateOut(Splice_Stat.Time, Splice_Stat.TimeData[ptr]);
+       RotateOut(Splice_Stat.Power, Splice_Stat.PowerData[ptr]);
+       RotateOut(Splice_Stat.Pre_hght, Splice_Stat.PreHghtData[ptr]);
+       RotateOut(Splice_Stat.Height, Splice_Stat.HeightData[ptr]);
     }
 
-    RotateIn(Splice_Stat.Time, Splice_Stat.TimeData.Data, _M102IA->IAactual.Time);
-    RotateIn(Splice_Stat.Power, Splice_Stat.PowerData.Data, _M102IA->IAactual.Power);
-    RotateIn(Splice_Stat.Pre_hght, Splice_Stat.PreHghtData.Data, _M102IA->IAactual.Preheight);
-    RotateIn(Splice_Stat.Height, Splice_Stat.HeightData.Data, _M102IA->IAactual.Height);
+    RotateIn(Splice_Stat.Time, &Splice_Stat.TimeData[ptr], _M102IA->IAactual.Time);
+    RotateIn(Splice_Stat.Power, &Splice_Stat.PowerData[ptr], _M102IA->IAactual.Power);
+    RotateIn(Splice_Stat.Pre_hght, &Splice_Stat.PreHghtData[ptr], _M102IA->IAactual.Preheight);
+    RotateIn(Splice_Stat.Height, &Splice_Stat.HeightData[ptr], _M102IA->IAactual.Height);
 
-    Splice_Stat.prts_count = Splice_Stat.prts_count + 1;
+
+    Splice_Stat.prts_count += 1;
+    Splice_Stat.data_ptr += 1;
+    Splice_Stat.data_ptr %= M20_Stat_Points;
     //Cannot allow counter to go negative
     //It also must be set to a high number to keep the count tests to display the correct data
     if (Splice_Stat.prts_count > 32760) Splice_Stat.prts_count = 1000;
@@ -217,9 +219,17 @@ void Statistics::ZeroM20DataEvents()
     Splice_Stat.Height.Sum = 0;
     Splice_Stat.Height.Sum_sqr = 0;
 
-    Splice_Stat.TimeData.Data.clear();
+    Splice_Stat.TimeData.clear();
+    Splice_Stat.PowerData.clear();
+    Splice_Stat.PreHghtData.clear();
+    Splice_Stat.HeightData.clear();
     for(int i = 0; i < M20_Data_Pnt_MI; i++)
-        Splice_Stat.TimeData.Data.push_back(NOT_VALID);
+    {
+        Splice_Stat.TimeData.push_back(NOT_VALID);
+        Splice_Stat.PowerData.push_back(NOT_VALID);
+        Splice_Stat.PreHghtData.push_back(NOT_VALID);
+        Splice_Stat.HeightData.push_back(NOT_VALID);
+    }
 
     ptr_M10runMode->InvalidWeldCounter = 0; //used in Auto Teach mode only
 }
@@ -407,10 +417,25 @@ void Statistics::HistoryEvent(QString WorkOrderName, QString PartName,
 void Statistics::CalcConfLimits(PresetElement *_Splice)
 {
     UtilityClass *_Utility = UtilityClass::Instance();
+    M102IA *_M102IA = M102IA::Instance();
     int entries;
     double time_sigma, power_sigma, pre_hght_sigma, height_sigma;
     double time_x_bar, power_x_bar, pre_hght_x_bar, height_x_bar;
-    if(Splice_Stat.prts_count > M20_Stat_Points)
+    if(Splice_Stat.prts_count < 1)
+    {
+        time_lower_limit = (double)_M102IA->IAsetup.Time.min;
+        time_upper_limit = (double)_M102IA->IAsetup.Time.max;
+        power_lower_limit = (double)_M102IA->IAsetup.Power.min;
+        power_upper_limit = (double)_M102IA->IAsetup.Power.max;
+        pre_hght_lower_limit = (double)_M102IA->IAsetup.Preheight.min;
+        pre_hght_upper_limit = (double)_M102IA->IAsetup.Preheight.max;
+        height_lower_limit = (double)_M102IA->IAsetup.Height.min;
+        height_upper_limit = (double)_M102IA->IAsetup.Height.max;
+        Splice_Stat.prts_count = 0;
+        return;
+    }
+
+    if(Splice_Stat.prts_count >= M20_Stat_Points)
         entries = M20_Stat_Points;
     else
         entries = Splice_Stat.prts_count;
@@ -463,6 +488,7 @@ void Statistics::CalcConfLimits(PresetElement *_Splice)
                     Splice_Stat.Height.Sum / entries) / (entries - 1);
             if(height_sigma < 0) height_sigma = height_sigma * (-1);
             height_sigma = sqrt(height_sigma);
+
             time_lower_limit = time_x_bar - _Splice->TestSetting.TeachModeSetting.TeachModequal_Window[TIME_CONFRG_MS] * time_sigma;
             time_upper_limit = time_x_bar + _Splice->TestSetting.TeachModeSetting.TeachModequal_Window[TIME_CONFRG_PL] * time_sigma;
             power_lower_limit = power_x_bar - _Splice->TestSetting.TeachModeSetting.TeachModequal_Window[POWER_CONFRG_MS] * power_sigma;
@@ -513,6 +539,124 @@ void Statistics::CalcConfLimits(PresetElement *_Splice)
               "height_lower_limit: "<<height_lower_limit<<
               "height_upper_limit: "<<height_upper_limit;
 
+}
+
+void Statistics::CalcConfLimits(Status_Data *_StatusData)
+{
+    int entries = 0;
+    double time_sigma = 0.0, power_sigma = 0.0, pre_hght_sigma = 0.0, height_sigma = 0.0;
+    double time_x_bar = 0.0, power_x_bar = 0.0, pre_hght_x_bar = 0.0, height_x_bar = 0.0;
+    M102IA *_M102IA = M102IA::Instance();
+    UtilityClass *_Utility = UtilityClass::Instance();
+    //Check for enough data to produce graphs
+    if(Splice_Stat.prts_count < 1)
+    {
+        time_lower_limit = (double)_M102IA->IAsetup.Time.min;
+        time_upper_limit = (double)_M102IA->IAsetup.Time.max;
+        power_lower_limit = (double)_M102IA->IAsetup.Power.min;
+        power_upper_limit = (double)_M102IA->IAsetup.Power.max;
+        pre_hght_lower_limit = (double)_M102IA->IAsetup.Preheight.min;
+        pre_hght_upper_limit = (double)_M102IA->IAsetup.Preheight.max;
+        height_lower_limit = (double)_M102IA->IAsetup.Height.min;
+        height_upper_limit = (double)_M102IA->IAsetup.Height.max;
+        Splice_Stat.prts_count = 0;
+        return;
+    }
+
+    if(Splice_Stat.prts_count > M20_Stat_Points)
+        entries = M20_Stat_Points;
+    else
+        entries = Splice_Stat.prts_count;
+
+    time_x_bar = (double)(Splice_Stat.Time.Sum / entries);          //average of weld results so far
+    power_x_bar = (double)(Splice_Stat.Power.Sum / entries);
+    pre_hght_x_bar = (double)(Splice_Stat.Pre_hght.Sum / entries);
+    height_x_bar = (double)(Splice_Stat.Height.Sum / entries);
+    if(Splice_Stat.prts_count == TEACH_AUTO_THRESHOLD)              //for use in Auto Teach stage 2
+    {
+        Time_Average = time_x_bar;
+        Power_Average = power_x_bar;
+        PreHeight_Avreage = pre_hght_x_bar;
+        Height_Average = height_x_bar;
+    }
+
+    switch(_StatusData->Soft_Settings.Teach_Mode)
+    {
+    case TEACHMODESETTING::SIGMA:
+        if(entries < MIN_STATS_QUANT)
+        {
+            time_lower_limit = 0.5 * time_x_bar;
+            time_upper_limit = 1.5 * time_x_bar;
+            power_lower_limit = 0.5 * power_x_bar;
+            power_upper_limit = 1.5 * power_x_bar;
+            pre_hght_lower_limit = 0.5 * pre_hght_x_bar;
+            pre_hght_upper_limit = 1.5 * pre_hght_x_bar;
+            height_lower_limit = 0.5 * height_x_bar;
+            height_upper_limit = 1.5 * height_x_bar;
+        }
+        else
+        {
+            power_sigma = ((double)(Splice_Stat.Power.Sum_sqr) - (double)(Splice_Stat.Power.Sum) *
+                    (double)(Splice_Stat.Power.Sum) / entries) / (entries - 1);
+            if(power_sigma < 0) power_sigma = power_sigma * (-1);
+            power_sigma = sqrt(power_sigma);
+
+            time_sigma = ((double)(Splice_Stat.Time.Sum_sqr) - (double)(Splice_Stat.Time.Sum) *
+                    (double)(Splice_Stat.Time.Sum) / entries) / (entries - 1);
+            if(time_sigma < 0) time_sigma = time_sigma * (-1);
+            time_sigma = sqrt(time_sigma);    //find square root
+
+            pre_hght_sigma = ((double)(Splice_Stat.Pre_hght.Sum_sqr) - (double)(Splice_Stat.Pre_hght.Sum) *
+                    (double)(Splice_Stat.Pre_hght.Sum) / entries) / (entries - 1);
+            if(pre_hght_sigma < 0) pre_hght_sigma = pre_hght_sigma * (-1);
+            pre_hght_sigma = sqrt(pre_hght_sigma);
+
+            height_sigma = ((double)(Splice_Stat.Height.Sum_sqr) - (double)(Splice_Stat.Height.Sum) *
+                    (double)(Splice_Stat.Height.Sum) / entries) / (entries - 1);
+            if(height_sigma < 0) height_sigma = height_sigma * (-1);
+            height_sigma = sqrt(height_sigma);
+
+            time_lower_limit = (double)(time_x_bar) - _StatusData->Cust_Data.cust_qual_range[TIME_CONFRG_MS] * time_sigma;
+            time_upper_limit = (double)(time_x_bar) + _StatusData->Cust_Data.cust_qual_range[TIME_CONFRG_PL] * time_sigma;
+            power_lower_limit = (double)(power_x_bar) - _StatusData->Cust_Data.cust_qual_range[POWER_CONFRG_MS] * power_sigma;
+            power_upper_limit = (double)(power_x_bar) + _StatusData->Cust_Data.cust_qual_range[POWER_CONFRG_PL] * power_sigma;
+            pre_hght_lower_limit = (double)(pre_hght_x_bar) - _StatusData->Cust_Data.cust_qual_range[PRE_HGT_CONFRG_MS] * pre_hght_sigma;
+            pre_hght_upper_limit = (double)(pre_hght_x_bar) + _StatusData->Cust_Data.cust_qual_range[PRE_HGT_CONFRG_PL] * pre_hght_sigma;
+            height_lower_limit = (double)(height_x_bar) - _StatusData->Cust_Data.cust_qual_range[HEIGHT_CONFRG_MS] * height_sigma;
+            height_upper_limit = (double)(height_x_bar) + _StatusData->Cust_Data.cust_qual_range[HEIGHT_CONFRG_PL] * height_sigma;
+        }
+        break;
+    case TEACHMODESETTING::STANDARD:
+        time_lower_limit = (double)(time_x_bar) * (1 - (_StatusData->Cust_Data.cust_qual_range[TIME_MSRG_STD] * 0.01));
+        time_upper_limit = (double)(time_x_bar) * (1 + (_StatusData->Cust_Data.cust_qual_range[TIME_PLRG_STD] * 0.01));
+        power_lower_limit = (double)(power_x_bar) * (1 - (_StatusData->Cust_Data.cust_qual_range[POWER_MSRG_STD] * 0.01));
+        power_upper_limit = (double)(power_x_bar) * (1 + (_StatusData->Cust_Data.cust_qual_range[POWER_PLRG_STD] * 0.01));
+        pre_hght_lower_limit = (double)(pre_hght_x_bar) * (1 - (_StatusData->Cust_Data.cust_qual_range[PRE_HGT_MSRG_STD] * 0.01));
+        pre_hght_upper_limit = (double)(pre_hght_x_bar) * (1 + (_StatusData->Cust_Data.cust_qual_range[PRE_HGT_PLRG_STD] * 0.01));
+        height_lower_limit = (double)(height_x_bar) * (1 - (_StatusData->Cust_Data.cust_qual_range[HEIGHT_MSRG_STD] * 0.01));
+        height_upper_limit = (double)(height_x_bar) * (1 + (_StatusData->Cust_Data.cust_qual_range[HEIGHT_PLRG_STD] * 0.01));
+        break;
+    case TEACHMODESETTING::AUTO:
+        time_lower_limit = (double)(time_x_bar) * (1 - (_StatusData->Cust_Data.cust_qual_range[TIME_MSRG_AUTO] * 0.01));
+        time_upper_limit = (double)(time_x_bar) * (1 + (_StatusData->Cust_Data.cust_qual_range[TIME_PLRG_AUTO] * 0.01));
+        power_lower_limit = (double)(power_x_bar) * (1 - (_StatusData->Cust_Data.cust_qual_range[POWER_MSRG_AUTO] * 0.01));
+        power_upper_limit = (double)(power_x_bar) * (1 + (_StatusData->Cust_Data.cust_qual_range[POWER_PLRG_AUTO] * 0.01));
+        pre_hght_lower_limit = (double)(pre_hght_x_bar) * (1 - (_StatusData->Cust_Data.cust_qual_range[PRE_HGT_MSRG_AUTO] * 0.01));
+        pre_hght_upper_limit = (double)(pre_hght_x_bar) * (1 + (_StatusData->Cust_Data.cust_qual_range[PRE_HGT_PLRG_AUTO] * 0.01));
+        height_lower_limit = (double)(height_x_bar) * (1 - (_StatusData->Cust_Data.cust_qual_range[HEIGHT_MSRG_AUTO] * 0.01));
+        height_upper_limit = (double)(height_x_bar) * (1 + (_StatusData->Cust_Data.cust_qual_range[HEIGHT_PLRG_AUTO] * 0.01));
+        break;
+    default:
+        break;
+    }
+    if(time_lower_limit < 0) time_lower_limit = MINTIME;
+    if(time_upper_limit > MAXTIME / 2) time_lower_limit = MAXTIME / 2;
+    if(power_lower_limit < 0) power_lower_limit = 0;
+    if(power_upper_limit > _Utility->Maxpower) power_upper_limit = _Utility->Maxpower;
+    if(pre_hght_lower_limit < 0) pre_hght_lower_limit = MINPREHEIGHT;
+    if(pre_hght_upper_limit > MAXPREHEIGHT) pre_hght_upper_limit = MAXPREHEIGHT;
+    if(height_lower_limit < 0) height_lower_limit = MINHEIGHT;
+    if(height_upper_limit > MAXHEIGHT) height_upper_limit = MAXHEIGHT;
 }
 
 void Statistics::GetLimitsAfterWeld(PresetElement *_Splice)

@@ -8,43 +8,22 @@
 using namespace std;
 
 // Bar Code One Data
-const int MINRunQ = 1;
-const int MAXRunQ = 1000;
-const int RowMax = 10000;
-const int ColomnMax = 2000;
-const int BarCodeMax = 9;
-const int PartNameLength = 32;
+//const int MINRunQ = 1;
+//const int MAXRunQ = 1000;
+//const int RowMax = 10000;
+//const int ColomnMax = 2000;
+//const int BarCodeMax = 9;
+#define PartNameLength 32
 
-
-const int LB_SETHORIZONTALEXTENT = 0x0194;
-
-//Public Sub SetListboxScrollbar(ByVal lst As listbox)
-//Dim i As Integer
-//Dim new_len As Long
-//Dim max_len As Long
-//max_len = 470
-//   For i = 0 To lst.ListCount - 1
-//        new_len = 10 + lst.Parent.ScaleX( _
-//            lst.Parent.TextWidth(lst.List(i)), _
-//            lst.Parent.ScaleMode, vbPixels)
-//        If max_len < new_len Then max_len = new_len
-//    Next i
-
-//    SendMessage lst.hWnd, _
-//        LB_SETHORIZONTALEXTENT, _
-//        max_len, 0
-//End Sub
 struct MSGFLAG{
     bool DataGraphComplete;
     bool EmergencyStopMessage;
 
 };
 
-
 class MDefine
 {
 public:
-//    int TableWireNameFontSize[9][PartNameLength];
     int TempPrtCount;
     string Barcode;
     string FamilyName;

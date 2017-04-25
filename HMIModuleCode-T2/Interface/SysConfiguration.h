@@ -171,7 +171,6 @@ struct BRANSON_INI_STRUCT
     enum LangSupport Lang_Support;
     int Horn_Calibrate;
     int AutoPreburst;
-//    bool AutoGetNext;
     int SonicGenWatts;
     bool ToolCoverIgnore;
     enum PRESSUREUNIT Pressure2Unit;
@@ -180,8 +179,6 @@ struct BRANSON_INI_STRUCT
     float PWWidth2Height;       //Not used anywhere?
     int MinAmplitude;
     int MinPressure;
-//    int GotoRunScreen;         //Not used, open for re-use
-//    int NoToolCover4SU;
     enum WeldSetFormula WeldFormula;
     int RunCount;              //  Number to Run to Qualify the Splice
     TEACHMODESETTING::TEACH_MODE_TYPE Teach_Mode;
@@ -189,60 +186,20 @@ struct BRANSON_INI_STRUCT
     int FrequencyOffset;
 };
 
-// Structure for reading the settings.inf file if one exists
-struct M20_SETTINGS
-{
-    // Stores bitfields for several options listed below
-    int UnsignedWeldData;
-    // Unsigned WeldtoEnergy  :1   Energy, Height, and Time are mutually exclusive options
-    // Unsigned WeldToHeight  :1   Program will only accept last one
-    // Unsigned WeldToTime    :1
-    // Unsigned AfterBurst    :1
-    // Unsigned Setup_allowed :1
-    int AfterBurstDelay;
-    int AfterBurstDuration;
-    int EnergyWindowPL;
-    int PreBurstIndex;
-};
 
-struct QUALITY_DATA_FILE
+class QUALITY_DATA_FILE
 {
-    M20_SETTINGS mod10a_settings;
-    int cust_qual_range[WIDTH_ADJ];
-};
+public:
+    enum PRESET_TEACHSETTING{
+        GLOBALS,
+        SPECIAL,
+    };
 
-
-// Structure fo the Hard/Soft Limit Ranges
-enum VALUETYPE
-{
-    Sigam,
-    Percent,
-};
-
-struct HARD_SOFT_DATA
-{
-    enum VALUETYPE TypeHS;       //Value is either 0 = Sigma OR 1 = Percent
-    int ValueHS;                 //Value Depends on the Type Either 1-9 Sigma Or 1%-99%
-};
-
-//Range Markers for the Hard/Soft Usl/Lsl limits
-enum HARD_SOFT_MARKER
-{
-    TIME_USL,
-    TIME_LSL,
-    POWER_USL,
-    POWER_LSL,
-    PREHEIGHT_USL,
-    PREHEIGHT_LSL,
-    HEIGHT_USL,
-    HEIGHT_LSL,
-    END_SL,
-};
-
-struct HARD_SOFT_SETTINGS
-{
-    HARD_SOFT_DATA HARD_LIMIT[END_SL];
-    HARD_SOFT_DATA SOFT_LIMIT[END_SL];
+    int cust_qual_range[QUAL_RANGES];
+    PRESET_TEACHSETTING PresetTeachModeSetting;
+    int StandardRunQuantity;
+    int AutoRunQuantity;
+    int SigmaRunQuantity;
 };
 
 struct IAComElement
@@ -408,6 +365,18 @@ public:
         OFF = 0,
         ON = 1,
     };
+    enum SoftLimitsIndex
+    {
+        SLIUpperControlLimit = 0,    //Based on the screen view of the data
+        SLILowerControlLimit = 1,
+        SLIControlLimitSize = 2,
+        SLITime = 0,
+        SLIPower = 1,
+        SLIPreHeight = 2,
+        SLIHeight = 3,
+        SLI_Size = 4,
+    };
+public:
     int RevCode;
     QString CreatedDate;
     QString OperatorName;
@@ -415,7 +384,6 @@ public:
     QMap<int, int> AWGToAreaTable;
 
     QUALITY_DATA_FILE Cust_Data;
-    HARD_SOFT_SETTINGS HSDATA;     //Not used, held for backwords compatibility
 
     enum ActuatorType MachineType;
     QString MachineDate;

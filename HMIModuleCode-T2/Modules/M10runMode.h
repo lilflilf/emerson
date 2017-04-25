@@ -94,8 +94,6 @@ public:
 
     bool CheckWeldData(int weldresult = -1);
 
-    void CalculateTeachMode(PresetElement* _Splice);
-
     void SafetyAlertMsg(unsigned long IOStatus);
     void FootPedalMsg(unsigned long IOStatus);
     void Run_E_Stop_Screen(unsigned long LastIOStatus);
