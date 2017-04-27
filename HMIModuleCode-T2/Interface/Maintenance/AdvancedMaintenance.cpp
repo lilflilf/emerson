@@ -1,6 +1,7 @@
 #include "AdvancedMaintenance.h"
 #include "Modules/M2010.h"
 #include "Modules/M102IA.h"
+#include "Modules/typedef.h"
 #include "Interface/Interface.h"
 #include "Interface/Maintenance/MaintenanceLog.h"
 #include "DataBase/DBMaintenanceLogTable.h"
@@ -18,6 +19,7 @@ bool AdvancedMaintenance::ConverterCoolingTest = false;
 bool AdvancedMaintenance::ToolingCoolingTest = false;
 unsigned long AdvancedMaintenance::PreviousIO = 0;
 QTimer* AdvancedMaintenance::Timer = NULL;
+bool AdvancedMaintenance::SonicsOnFlag = false;
 AdvancedMaintenance::AdvancedMaintenance()
 {
 //    m_Thread = NULL;
@@ -100,16 +102,6 @@ bool AdvancedMaintenance::_execute(int funCode)
         break;
     }
     return bResult;
-}
-
-void AdvancedMaintenance::Reset()
-{
-    M2010* _M2010 = M2010::Instance();
-    M102IA* _M102IA = M102IA::Instance();
-    //Send Command to reset
-    _M2010->M10Run.Alarm_found = false;
-    _M102IA->IACommand(IAComSigLightOff);
-    _M102IA->IACommand(IAComClrAlarms);
 }
 
 void AdvancedMaintenance::AnvilArm_Click()
@@ -285,6 +277,7 @@ void AdvancedMaintenance::TimeoutEventSlot()
 {
     Timer->stop();
     M102IA* _M102IA = M102IA::Instance();
+    M2010* _M2010 = M2010::Instance();
     if(_M102IA->IOstatus.IO != PreviousIO)
     {
         PreviousIO = _M102IA->IOstatus.IO;
@@ -297,7 +290,13 @@ void AdvancedMaintenance::TimeoutEventSlot()
         UpdateCrash();
         UpdateCutter();
         UpdateToolingCooling();
-        emit IOstatusFeedback(PreviousIO);
+        emit IOstatusFeedbackSignal(PreviousIO);
+    }else if(SonicsOnFlag == true)
+    {
+        _M2010->ReceiveFlags.PowerFreqData = false;
+        _M102IA->IACommand(IAComGetPowerFreq);
+        _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.PowerFreqData);
+        emit CurrentPowerAndFrequencySignal(_M102IA->ADPower, _M102IA->ADFrequency);
     }
     Timer->start(500);//500 msecond
 }
@@ -442,4 +441,92 @@ void AdvancedMaintenance::UpdateToolingCooling()
         ToolingCoolingTest = false;
         _M2010->M10Run.ToolingCoolingOn = false;
     }
+}
+
+//**************************Following is Branson Special Setting******************************/
+
+void AdvancedMaintenance::Reset()
+{
+    M2010* _M2010 = M2010::Instance();
+    M102IA* _M102IA = M102IA::Instance();
+    //Send Command to reset
+    _M2010->M10Run.Alarm_found = false;
+//    _M102IA->IACommand(IAComSigLightOff);
+    _M102IA->IACommand(IAComClrAlarms);
+}
+
+void AdvancedMaintenance::RunSonicsPressed()
+{
+    M102IA* _M102IA = M102IA::Instance();
+    _M102IA->SendIACommand(IAComAuxMotion, DO_SONICS_ON);
+    SonicsOnFlag = true;
+}
+
+void AdvancedMaintenance::RunSonicsUnPressed()
+{
+    M102IA* _M102IA = M102IA::Instance();
+    _M102IA->SendIACommand(IAComAuxMotion, DO_SONICS_OFF);
+    SonicsOnFlag = false;
+}
+
+void AdvancedMaintenance::RunSonics100Pressed()
+{
+    M102IA* _M102IA = M102IA::Instance();
+    _M102IA->SendIACommand(IAComAuxMotion, DO_SONICS_FULL);
+    SonicsOnFlag = true;
+}
+
+void AdvancedMaintenance::RunSonics100UnPressed()
+{
+    M102IA* _M102IA = M102IA::Instance();
+    _M102IA->SendIACommand(IAComAuxMotion, DO_SONICS_OFF);
+    SonicsOnFlag = false;
+}
+
+void AdvancedMaintenance::AmplitudeSetText(int iAmplitude)
+{
+    M102IA* _M102IA = M102IA::Instance();
+    M2010* _M2010 = M2010::Instance();
+    InterfaceClass* _Interface = InterfaceClass::Instance();
+    _Interface->StatusData.Soft_Settings.Horn_Calibrate = iAmplitude;
+    _M2010->ReceiveFlags.HORNamplitude = false;
+    _M102IA->SendIACommand(IAComSetHornCalibAmplitude, iAmplitude);
+    _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.HORNamplitude);
+    _Interface->StatusData.WriteStatusDataToQSetting();
+}
+
+void AdvancedMaintenance::PowerSetText(int iPower)
+{
+    M102IA* _M102IA = M102IA::Instance();
+    M2010* _M2010 = M2010::Instance();
+    InterfaceClass* _Interface = InterfaceClass::Instance();
+    _Interface->StatusData.Soft_Settings.SonicGenWatts = iPower;
+    _M2010->ReceiveFlags.POWERrating = false;
+    _M102IA->SendIACommand(IAComSetGenPower, iPower);
+    _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.POWERrating);
+    _Interface->StatusData.WriteStatusDataToQSetting();
+}
+
+void AdvancedMaintenance::TunePointText(int iTunePointHz)
+{
+    M102IA* _M102IA = M102IA::Instance();
+    M2010* _M2010 = M2010::Instance();
+    InterfaceClass* _Interface = InterfaceClass::Instance();
+    _Interface->StatusData.Soft_Settings.TunePoint = iTunePointHz;
+    _M2010->ReceiveFlags.TunePointData = false;
+    _M102IA->SendIACommand(IAComSetTunePoint, iTunePointHz);
+    _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.TunePointData);
+    _Interface->StatusData.WriteStatusDataToQSetting();
+}
+
+void AdvancedMaintenance::FrequencyOffsetText(int iFrequencyHz)
+{
+    M102IA* _M102IA = M102IA::Instance();
+    M2010* _M2010 = M2010::Instance();
+    InterfaceClass* _Interface = InterfaceClass::Instance();
+    _Interface->StatusData.Soft_Settings.FrequencyOffset = iFrequencyHz;
+    _M2010->ReceiveFlags.FreqOffsetData = false;
+    _M102IA->SendIACommand(IAComSetFrequencyOffset, iFrequencyHz);
+    _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.FreqOffsetData);
+    _Interface->StatusData.WriteStatusDataToQSetting();
 }

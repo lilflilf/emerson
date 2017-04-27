@@ -72,6 +72,7 @@ private:
     static bool ToolingCoolingTest;
     static unsigned long PreviousIO;
     static QTimer *Timer;
+    static bool SonicsOnFlag;
 public:
     static bool HornTest;
 private:
@@ -98,11 +99,23 @@ public:
     virtual bool _start();
     virtual bool _stop();
     virtual bool _execute(int funCode);
+public:
+    //Branson Speical
     void Reset();
+    void RunSonicsPressed();
+    void RunSonicsUnPressed();
+    void RunSonics100Pressed();
+    void RunSonics100UnPressed();
+    void AmplitudeSetText(int iAmplitude);
+    void PowerSetText(int iPower);
+    void TunePointText(int iTunePointHz);
+    void FrequencyOffsetText(int iFrequencyHz);
+
 public:
     explicit AdvancedMaintenance();
 signals:
-    void IOstatusFeedback(const unsigned long &_status);
+    void IOstatusFeedbackSignal(const unsigned long &_status);
+    void CurrentPowerAndFrequencySignal(const int power, const int Frequency);
 public slots:
     void TimeoutEventSlot();
 };

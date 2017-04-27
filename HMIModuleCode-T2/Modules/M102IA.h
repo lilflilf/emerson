@@ -193,6 +193,8 @@ enum IASig{
     IASigPhysicalKeyMode,   //0x2F
     IASigPartNumber,        //0x30
     IASigAlarm,             //0x31
+    IASigFrequency,         //0x32
+    IASigPowerFrequency,    //0x33
     IASigEnd,               //Identifies end of Enum
     IASigMax = IASigEnd - 1,     //Used by functions to test for limit
 };
@@ -302,6 +304,8 @@ enum IACommands{
     IAComGetPartNumber         = 140, //0x8C
     IAComGetAlarmData          = 141, //0x8D
     IAComGetPhysicalKey        = 142, //0x8E
+    IAComGetFrequency          = 143, //0x8F
+    IAComGetPowerFreq          = 144, //0x90
     IAComLim,
     IAComEnd                   = IAComLim - 1,
 };
@@ -377,6 +381,7 @@ public:
     double EnergyAccumulator;
     double EnergyMaintenanceDue;
     int ADPower;
+    int ADFrequency;
 
     QString IAdataSignature;
 

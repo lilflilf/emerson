@@ -83,6 +83,8 @@
 #define MAXTESTQUANTITY       50
 #define MINSEQUENCEQUANTITY   1
 #define MAXSEQUENCEQUANTITY   500
+#define MINTEACHMODEQUANTITY  1
+#define MAXTEACHMODEQUANTITY  50
 
 //Used by the program to consistently change from PSI to BAR
 #define PRESS2BARFACTOR  (0.1 / 14.5)
@@ -165,6 +167,7 @@ enum ScreenShowDataType{
     DINTestQuantity,
     DINSequenceQuantity,
     DINDefaultAmplitude,
+    DINTeachModeQuantity,
     DIN_end,
 };
 

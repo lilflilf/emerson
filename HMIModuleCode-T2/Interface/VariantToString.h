@@ -52,6 +52,7 @@ public:
 
     struct BRANSONDATA TestQuantity(int);
     struct BRANSONDATA SequenceQuantity(int);
+    struct BRANSONDATA TeachModeQuantity(int);
 
 
 
