@@ -22,46 +22,99 @@ Item {
 
     property var checkString: ""
     property int checkIndex: -1
-    function setState(checkIndex)
+
+    function setData()
     {
-//        if (checkIndex == 0 || checkIndex == 1) {
-//           sigmaUpperrecbg.source = ""
-//           sigmaLowerrecbg.source = ""
-//        }
-//        else if (checkIndex == 2)
-//        {
-//            standardupperrecbg.source = ""
-//            standardLowerrecbg.source = ""
-//        }
-    }
-
-    function defaultData()
-    {
-        standardUpperModel.clear()
-        standardLowerModel.clear()
-        sigmaUpperModel.clear()
-        sigmaLowerModel.clear()
-
-        standardUpperModel.append({"head":qsTr("Time"),"value":spliceModel.getStructValue("TestStandardTime+","current"),"maxValue":spliceModel.getStructValue("TestStandardTime+","max"),"minValue":spliceModel.getStructValue("TestStandardTime+","min")})
-        standardUpperModel.append({"head":qsTr("Power"),"value":spliceModel.getStructValue("TestStandardPower+","current"),"maxValue":spliceModel.getStructValue("TestStandardPower+","max"),"minValue":spliceModel.getStructValue("TestStandardPower+","min")})
-        standardUpperModel.append({"head":qsTr("Pre-Height"),"value":spliceModel.getStructValue("TestStandardPre+","current"),"maxValue":spliceModel.getStructValue("TestStandardPre+","max"),"minValue":spliceModel.getStructValue("TestStandardPre+","min")})
-        standardUpperModel.append({"head":qsTr("Height"),"value":spliceModel.getStructValue("TestStandardPost+","current"),"maxValue":spliceModel.getStructValue("TestStandardPost+","max"),"minValue":spliceModel.getStructValue("TestStandardPost+","min")})
-
-        standardLowerModel.append({"head":qsTr("Time"),"value":spliceModel.getStructValue("TestStandardTime-","current"),"maxValue":spliceModel.getStructValue("TestStandardTime-","max"),"minValue":spliceModel.getStructValue("TestStandardTime-","min")})
-        standardLowerModel.append({"head":qsTr("Power"),"value":spliceModel.getStructValue("TestStandardPower-","current"),"maxValue":spliceModel.getStructValue("TestStandardPower-","max"),"minValue":spliceModel.getStructValue("TestStandardPower-","min")})
-        standardLowerModel.append({"head":qsTr("Pre-Height"),"value":spliceModel.getStructValue("TestStandardPre-","current"),"maxValue":spliceModel.getStructValue("TestStandardPre-","max"),"minValue":spliceModel.getStructValue("TestStandardPre-","min")})
-        standardLowerModel.append({"head":qsTr("Height"),"value":spliceModel.getStructValue("TestStandardPost-","current"),"maxValue":spliceModel.getStructValue("TestStandardPost-","max"),"minValue":spliceModel.getStructValue("TestStandardPost-","min")})
-
-        sigmaUpperModel.append({"head":qsTr("Time"),"value":spliceModel.getStructValue("TestSigmaTime+","current"),"maxValue":spliceModel.getStructValue("TestSigmaTime+","max"),"minValue":spliceModel.getStructValue("TestSigmaTime+","min")})
-        sigmaUpperModel.append({"head":qsTr("Power"),"value":spliceModel.getStructValue("TestSigmaPower+","current"),"maxValue":spliceModel.getStructValue("TestSigmaPower+","max"),"minValue":spliceModel.getStructValue("TestSigmaPower+","min")})
-        sigmaUpperModel.append({"head":qsTr("Pre-Height"),"value":spliceModel.getStructValue("TestSigmaPre+","current"),"maxValue":spliceModel.getStructValue("TestSigmaPre+","max"),"minValue":spliceModel.getStructValue("TestSigmaPre+","min")})
-        sigmaUpperModel.append({"head":qsTr("Height"),"value":spliceModel.getStructValue("TestSigmaPost+","current"),"maxValue":spliceModel.getStructValue("TestSigmaPost+","max"),"minValue":spliceModel.getStructValue("TestSigmaPost+","min")})
-
-        sigmaLowerModel.append({"head":qsTr("Time"),"value":spliceModel.getStructValue("TestSigmaTime-","current"),"maxValue":spliceModel.getStructValue("TestSigmaTime-","max"),"minValue":spliceModel.getStructValue("TestSigmaTime-","min")})
-        sigmaLowerModel.append({"head":qsTr("Power"),"value":spliceModel.getStructValue("TestSigmaPower-","current"),"maxValue":spliceModel.getStructValue("TestSigmaPower-","max"),"minValue":spliceModel.getStructValue("TestSigmaPower-","min")})
-        sigmaLowerModel.append({"head":qsTr("Pre-Height"),"value":spliceModel.getStructValue("TestSigmaPre-","current"),"maxValue":spliceModel.getStructValue("TestSigmaPre-","max"),"minValue":spliceModel.getStructValue("TestSigmaPre-","min")})
-        sigmaLowerModel.append({"head":qsTr("Height"),"value":spliceModel.getStructValue("TestSigmaPost-","current"),"maxValue":spliceModel.getStructValue("TestSigmaPost-","max"),"minValue":spliceModel.getStructValue("TestSigmaPost-","min")})
-
+        teachModel.append({"head":qsTr("Upper"),"standardValue":spliceModel.getTeachModeValue("TestStandardTime+","current"),
+                                               "standardMaxValue":spliceModel.getTeachModeValue("TestStandardTime+","max"),
+                                               "standardMinValue":spliceModel.getTeachModeValue("TestStandardTime+","min"),
+                                               "autoValue":spliceModel.getTeachModeValue("TestAutoTime+","current"),
+                                               "autoMaxValue":spliceModel.getTeachModeValue("TestAutoTime+","max"),
+                                               "autoMinValue":spliceModel.getTeachModeValue("TestAutoTime+","min"),
+                                               "sigmaValue":spliceModel.getTeachModeValue("TestSigmaTime+","current"),
+                                               "sigmaMaxValue":spliceModel.getTeachModeValue("TestSigmaTime+","max"),
+                                               "sigmaMinValue":spliceModel.getTeachModeValue("TestSigmaTime+","min"),
+                          })
+        teachModel.append({"head":qsTr("Lower"),"standardValue":spliceModel.getTeachModeValue("TestStandardTime-","current"),
+                                               "standardMaxValue":spliceModel.getTeachModeValue("TestStandardTime-","max"),
+                                               "standardMinValue":spliceModel.getTeachModeValue("TestStandardTime-","min"),
+                                               "autoValue":spliceModel.getTeachModeValue("TestAutoTime-","current"),
+                                               "autoMaxValue":spliceModel.getTeachModeValue("TestAutoTime-","max"),
+                                               "autoMinValue":spliceModel.getTeachModeValue("TestAutoTime-","min"),
+                                               "sigmaValue":spliceModel.getTeachModeValue("TestSigmaTime-","current"),
+                                               "sigmaMaxValue":spliceModel.getTeachModeValue("TestSigmaTime-","max"),
+                                               "sigmaMinValue":spliceModel.getTeachModeValue("TestSigmaTime-","min"),
+                          })
+        teachModel.append({"head":qsTr("Upper"),"standardValue":spliceModel.getTeachModeValue("TestStandardPower+","current"),
+                                               "standardMaxValue":spliceModel.getTeachModeValue("TestStandardPower+","max"),
+                                               "standardMinValue":spliceModel.getTeachModeValue("TestStandardPower+","min"),
+                                               "autoValue":spliceModel.getTeachModeValue("TestAutoPower+","current"),
+                                               "autoMaxValue":spliceModel.getTeachModeValue("TestAutoPower+","max"),
+                                               "autoMinValue":spliceModel.getTeachModeValue("TestAutoPower+","min"),
+                                               "sigmaValue":spliceModel.getTeachModeValue("TestSigmaPower+","current"),
+                                               "sigmaMaxValue":spliceModel.getTeachModeValue("TestSigmaPower+","max"),
+                                               "sigmaMinValue":spliceModel.getTeachModeValue("TestSigmaPower+","min"),
+                          })
+        teachModel.append({"head":qsTr("Lower"),"standardValue":spliceModel.getTeachModeValue("TestStandardPower-","current"),
+                                               "standardMaxValue":spliceModel.getTeachModeValue("TestStandardPower-","max"),
+                                               "standardMinValue":spliceModel.getTeachModeValue("TestStandardPower-","min"),
+                                               "autoValue":spliceModel.getTeachModeValue("TestAutoPower-","current"),
+                                               "autoMaxValue":spliceModel.getTeachModeValue("TestAutoPower-","max"),
+                                               "autoMinValue":spliceModel.getTeachModeValue("TestAutoPower-","min"),
+                                               "sigmaValue":spliceModel.getTeachModeValue("TestSigmaPower-","current"),
+                                               "sigmaMaxValue":spliceModel.getTeachModeValue("TestSigmaPower-","max"),
+                                               "sigmaMinValue":spliceModel.getTeachModeValue("TestSigmaPower-","min"),
+                          })
+        teachModel.append({"head":qsTr("Upper"),"standardValue":spliceModel.getTeachModeValue("TestStandardPre+","current"),
+                                               "standardMaxValue":spliceModel.getTeachModeValue("TestStandardPre+","max"),
+                                               "standardMinValue":spliceModel.getTeachModeValue("TestStandardPre+","min"),
+                                               "autoValue":spliceModel.getTeachModeValue("TestAutoPre+","current"),
+                                               "autoMaxValue":spliceModel.getTeachModeValue("TestAutoPre+","max"),
+                                               "autoMinValue":spliceModel.getTeachModeValue("TestAutoPre+","min"),
+                                               "sigmaValue":spliceModel.getTeachModeValue("TestSigmaPre+","current"),
+                                               "sigmaMaxValue":spliceModel.getTeachModeValue("TestSigmaPre+","max"),
+                                               "sigmaMinValue":spliceModel.getTeachModeValue("TestSigmaPre+","min"),
+                          })
+        teachModel.append({"head":qsTr("Lower"),"standardValue":spliceModel.getTeachModeValue("TestStandardPre-","current"),
+                                               "standardMaxValue":spliceModel.getTeachModeValue("TestStandardPre-","max"),
+                                               "standardMinValue":spliceModel.getTeachModeValue("TestStandardPre-","min"),
+                                               "autoValue":spliceModel.getTeachModeValue("TestAutoPre-","current"),
+                                               "autoMaxValue":spliceModel.getTeachModeValue("TestAutoPre-","max"),
+                                               "autoMinValue":spliceModel.getTeachModeValue("TestAutoPre-","min"),
+                                               "sigmaValue":spliceModel.getTeachModeValue("TestSigmaPre-","current"),
+                                               "sigmaMaxValue":spliceModel.getTeachModeValue("TestSigmaPre-","max"),
+                                               "sigmaMinValue":spliceModel.getTeachModeValue("TestSigmaPre-","min"),
+                          })
+        teachModel.append({"head":qsTr("Upper"),"standardValue":spliceModel.getTeachModeValue("TestStandardPost+","current"),
+                                               "standardMaxValue":spliceModel.getTeachModeValue("TestStandardPost+","max"),
+                                               "standardMinValue":spliceModel.getTeachModeValue("TestStandardPost+","min"),
+                                               "autoValue":spliceModel.getTeachModeValue("TestAutoPost+","current"),
+                                               "autoMaxValue":spliceModel.getTeachModeValue("TestAutoPost+","max"),
+                                               "autoMinValue":spliceModel.getTeachModeValue("TestAutoPost+","min"),
+                                               "sigmaValue":spliceModel.getTeachModeValue("TestSigmaPost+","current"),
+                                               "sigmaMaxValue":spliceModel.getTeachModeValue("TestSigmaPost+","max"),
+                                               "sigmaMinValue":spliceModel.getTeachModeValue("TestSigmaPost+","min"),
+                          })
+        teachModel.append({"head":qsTr("Lower"),"standardValue":spliceModel.getTeachModeValue("TestStandardPost-","current"),
+                                               "standardMaxValue":spliceModel.getTeachModeValue("TestStandardPost-","max"),
+                                               "standardMinValue":spliceModel.getTeachModeValue("TestStandardPost-","min"),
+                                               "autoValue":spliceModel.getTeachModeValue("TestAutoPost-","current"),
+                                               "autoMaxValue":spliceModel.getTeachModeValue("TestAutoPost-","max"),
+                                               "autoMinValue":spliceModel.getTeachModeValue("TestAutoPost-","min"),
+                                               "sigmaValue":spliceModel.getTeachModeValue("TestSigmaPost-","current"),
+                                               "sigmaMaxValue":spliceModel.getTeachModeValue("TestSigmaPost-","max"),
+                                               "sigmaMinValue":spliceModel.getTeachModeValue("TestSigmaPost-","min"),
+                          })
+        teachModel.append({"head":qsTr("Quantity"),"standardValue":spliceModel.getTeachModeValue("TestStandardQty","current"),
+                                               "standardMaxValue":spliceModel.getTeachModeValue("TestStandardQty","max"),
+                                               "standardMinValue":spliceModel.getTeachModeValue("TestStandardQty","min"),
+                                               "autoValue":spliceModel.getTeachModeValue("TestAutoQty","current"),
+                                               "autoMaxValue":spliceModel.getTeachModeValue("TestAutoQty","max"),
+                                               "autoMinValue":spliceModel.getTeachModeValue("TestAutoQty","min"),
+                                               "sigmaValue":spliceModel.getTeachModeValue("TestSigmaQty","current"),
+                                               "sigmaMaxValue":spliceModel.getTeachModeValue("TestSigmaQty","max"),
+                                               "sigmaMinValue":spliceModel.getTeachModeValue("TestSigmaQty","min"),
+                          })
     }
 
     function setadvancesetingValue(text)
@@ -76,26 +129,7 @@ Item {
 
     function setadvancesetingdefalut()
     {
-        standardUpperModel.clear()
-        standardUpperModel.append({"head":qsTr("Time"),"value":"40%"})
-        standardUpperModel.append({"head":qsTr("Power"),"value":"25%"})
-        standardUpperModel.append({"head":qsTr("Pre-Height"),"value":"15%"})
-        standardUpperModel.append({"head":qsTr("Height"),"value":"10%"})
-        standardLowerModel.clear()
-        standardLowerModel.append({"head":qsTr("Time"),"value":"40%"})
-        standardLowerModel.append({"head":qsTr("Power"),"value":"25%"})
-        standardLowerModel.append({"head":qsTr("Pre-Height"),"value":"15%"})
-        standardLowerModel.append({"head":qsTr("Height"),"value":"10%"})
-        sigmaUpperModel.clear()
-        sigmaUpperModel.append({"head":qsTr("Time"),"value":"4"})
-        sigmaUpperModel.append({"head":qsTr("Power"),"value":"4"})
-        sigmaUpperModel.append({"head":qsTr("Pre-Height"),"value":"4"})
-        sigmaUpperModel.append({"head":qsTr("Height"),"value":"4"})
-        sigmaLowerModel.clear()
-        sigmaLowerModel.append({"head":qsTr("Time"),"value":"4"})
-        sigmaLowerModel.append({"head":qsTr("Power"),"value":"4"})
-        sigmaLowerModel.append({"head":qsTr("Pre-Height"),"value":"4"})
-        sigmaLowerModel.append({"head":qsTr("Height"),"value":"4"})
+
     }
 
     Image {
@@ -147,97 +181,7 @@ Item {
     ListModel {
         id: teachModel
         Component.onCompleted: {
-            teachModel.append({"head":qsTr("Upper"),"standardValue":spliceModel.getTeachModeValue("TestStandardTime+","current"),
-                                                   "standardMaxValue":spliceModel.getTeachModeValue("TestStandardTime+","max"),
-                                                   "standardMinValue":spliceModel.getTeachModeValue("TestStandardTime+","min"),
-                                                   "autoValue":spliceModel.getTeachModeValue("TestAutoTime+","current"),
-                                                   "autoMaxValue":spliceModel.getTeachModeValue("TestAutoTime+","max"),
-                                                   "autoMinValue":spliceModel.getTeachModeValue("TestAutoTime+","min"),
-                                                   "sigmaValue":spliceModel.getTeachModeValue("TestSigmaTime+","current"),
-                                                   "sigmaMaxValue":spliceModel.getTeachModeValue("TestSigmaTime+","max"),
-                                                   "sigmaMinValue":spliceModel.getTeachModeValue("TestSigmaTime+","min"),
-                              })
-            teachModel.append({"head":qsTr("Lower"),"standardValue":spliceModel.getTeachModeValue("TestStandardTime-","current"),
-                                                   "standardMaxValue":spliceModel.getTeachModeValue("TestStandardTime-","max"),
-                                                   "standardMinValue":spliceModel.getTeachModeValue("TestStandardTime-","min"),
-                                                   "autoValue":spliceModel.getTeachModeValue("TestAutoTime-","current"),
-                                                   "autoMaxValue":spliceModel.getTeachModeValue("TestAutoTime-","max"),
-                                                   "autoMinValue":spliceModel.getTeachModeValue("TestAutoTime-","min"),
-                                                   "sigmaValue":spliceModel.getTeachModeValue("TestSigmaTime-","current"),
-                                                   "sigmaMaxValue":spliceModel.getTeachModeValue("TestSigmaTime-","max"),
-                                                   "sigmaMinValue":spliceModel.getTeachModeValue("TestSigmaTime-","min"),
-                              })
-            teachModel.append({"head":qsTr("Upper"),"standardValue":spliceModel.getTeachModeValue("TestStandardPower+","current"),
-                                                   "standardMaxValue":spliceModel.getTeachModeValue("TestStandardPower+","max"),
-                                                   "standardMinValue":spliceModel.getTeachModeValue("TestStandardPower+","min"),
-                                                   "autoValue":spliceModel.getTeachModeValue("TestAutoPower+","current"),
-                                                   "autoMaxValue":spliceModel.getTeachModeValue("TestAutoPower+","max"),
-                                                   "autoMinValue":spliceModel.getTeachModeValue("TestAutoPower+","min"),
-                                                   "sigmaValue":spliceModel.getTeachModeValue("TestSigmaPower+","current"),
-                                                   "sigmaMaxValue":spliceModel.getTeachModeValue("TestSigmaPower+","max"),
-                                                   "sigmaMinValue":spliceModel.getTeachModeValue("TestSigmaPower+","min"),
-                              })
-            teachModel.append({"head":qsTr("Lower"),"standardValue":spliceModel.getTeachModeValue("TestStandardPower-","current"),
-                                                   "standardMaxValue":spliceModel.getTeachModeValue("TestStandardPower-","max"),
-                                                   "standardMinValue":spliceModel.getTeachModeValue("TestStandardPower-","min"),
-                                                   "autoValue":spliceModel.getTeachModeValue("TestAutoPower-","current"),
-                                                   "autoMaxValue":spliceModel.getTeachModeValue("TestAutoPower-","max"),
-                                                   "autoMinValue":spliceModel.getTeachModeValue("TestAutoPower-","min"),
-                                                   "sigmaValue":spliceModel.getTeachModeValue("TestSigmaPower-","current"),
-                                                   "sigmaMaxValue":spliceModel.getTeachModeValue("TestSigmaPower-","max"),
-                                                   "sigmaMinValue":spliceModel.getTeachModeValue("TestSigmaPower-","min"),
-                              })
-            teachModel.append({"head":qsTr("Upper"),"standardValue":spliceModel.getTeachModeValue("TestStandardPre+","current"),
-                                                   "standardMaxValue":spliceModel.getTeachModeValue("TestStandardPre+","max"),
-                                                   "standardMinValue":spliceModel.getTeachModeValue("TestStandardPre+","min"),
-                                                   "autoValue":spliceModel.getTeachModeValue("TestAutoPre+","current"),
-                                                   "autoMaxValue":spliceModel.getTeachModeValue("TestAutoPre+","max"),
-                                                   "autoMinValue":spliceModel.getTeachModeValue("TestAutoPre+","min"),
-                                                   "sigmaValue":spliceModel.getTeachModeValue("TestSigmaPre+","current"),
-                                                   "sigmaMaxValue":spliceModel.getTeachModeValue("TestSigmaPre+","max"),
-                                                   "sigmaMinValue":spliceModel.getTeachModeValue("TestSigmaPre+","min"),
-                              })
-            teachModel.append({"head":qsTr("Lower"),"standardValue":spliceModel.getTeachModeValue("TestStandardPre-","current"),
-                                                   "standardMaxValue":spliceModel.getTeachModeValue("TestStandardPre-","max"),
-                                                   "standardMinValue":spliceModel.getTeachModeValue("TestStandardPre-","min"),
-                                                   "autoValue":spliceModel.getTeachModeValue("TestAutoPre-","current"),
-                                                   "autoMaxValue":spliceModel.getTeachModeValue("TestAutoPre-","max"),
-                                                   "autoMinValue":spliceModel.getTeachModeValue("TestAutoPre-","min"),
-                                                   "sigmaValue":spliceModel.getTeachModeValue("TestSigmaPre-","current"),
-                                                   "sigmaMaxValue":spliceModel.getTeachModeValue("TestSigmaPre-","max"),
-                                                   "sigmaMinValue":spliceModel.getTeachModeValue("TestSigmaPre-","min"),
-                              })
-            teachModel.append({"head":qsTr("Upper"),"standardValue":spliceModel.getTeachModeValue("TestStandardPost+","current"),
-                                                   "standardMaxValue":spliceModel.getTeachModeValue("TestStandardPost+","max"),
-                                                   "standardMinValue":spliceModel.getTeachModeValue("TestStandardPost+","min"),
-                                                   "autoValue":spliceModel.getTeachModeValue("TestAutoPost+","current"),
-                                                   "autoMaxValue":spliceModel.getTeachModeValue("TestAutoPost+","max"),
-                                                   "autoMinValue":spliceModel.getTeachModeValue("TestAutoPost+","min"),
-                                                   "sigmaValue":spliceModel.getTeachModeValue("TestSigmaPost+","current"),
-                                                   "sigmaMaxValue":spliceModel.getTeachModeValue("TestSigmaPost+","max"),
-                                                   "sigmaMinValue":spliceModel.getTeachModeValue("TestSigmaPost+","min"),
-                              })
-            teachModel.append({"head":qsTr("Lower"),"standardValue":spliceModel.getTeachModeValue("TestStandardPost-","current"),
-                                                   "standardMaxValue":spliceModel.getTeachModeValue("TestStandardPost-","max"),
-                                                   "standardMinValue":spliceModel.getTeachModeValue("TestStandardPost-","min"),
-                                                   "autoValue":spliceModel.getTeachModeValue("TestAutoPost-","current"),
-                                                   "autoMaxValue":spliceModel.getTeachModeValue("TestAutoPost-","max"),
-                                                   "autoMinValue":spliceModel.getTeachModeValue("TestAutoPost-","min"),
-                                                   "sigmaValue":spliceModel.getTeachModeValue("TestSigmaPost-","current"),
-                                                   "sigmaMaxValue":spliceModel.getTeachModeValue("TestSigmaPost-","max"),
-                                                   "sigmaMinValue":spliceModel.getTeachModeValue("TestSigmaPost-","min"),
-                              })
-            teachModel.append({"head":qsTr("Quantity"),"standardValue":spliceModel.getTeachModeValue("TestStandardQty","current"),
-                                                   "standardMaxValue":spliceModel.getTeachModeValue("TestStandardQty","max"),
-                                                   "standardMinValue":spliceModel.getTeachModeValue("TestStandardQty","min"),
-                                                   "autoValue":spliceModel.getTeachModeValue("TestAutoQty","current"),
-                                                   "autoMaxValue":spliceModel.getTeachModeValue("TestAutoQty","max"),
-                                                   "autoMinValue":spliceModel.getTeachModeValue("TestAutoQty","min"),
-                                                   "sigmaValue":spliceModel.getTeachModeValue("TestSigmaQty","current"),
-                                                   "sigmaMaxValue":spliceModel.getTeachModeValue("TestSigmaQty","max"),
-                                                   "sigmaMinValue":spliceModel.getTeachModeValue("TestSigmaQty","min"),
-                              })
-
+            setData()
         }
     }
     ListModel {
@@ -247,7 +191,6 @@ Item {
             titleModel.append({"title":"PeakPower"})
             titleModel.append({"title":"Pre-Height"})
             titleModel.append({"title":"Post-Height"})
-//            titleModel.append({"title":"SampleSize"})
         }
     }
     Column {
@@ -422,26 +365,21 @@ Item {
         text: qsTr("OK")
         textColor: "white"
         onClicked: {
-            spliceModel.setStructValue("TestStandardTime+",standardUpperModel.get(0).value)
-            spliceModel.setStructValue("TestStandardPower+",standardUpperModel.get(1).value)
-            spliceModel.setStructValue("TestStandardPre+",standardUpperModel.get(2).value)
-            spliceModel.setStructValue("TestStandardPost+",standardUpperModel.get(3).value)
+            spliceModel.setTeachModeValue("TestTime+",teachModel.get(0).standardValue,teachModel.get(0).autoValue,teachModel.get(0).sigmaValue)
+            spliceModel.setTeachModeValue("TestTime-",teachModel.get(1).standardValue,teachModel.get(1).autoValue,teachModel.get(1).sigmaValue)
 
-            spliceModel.setStructValue("TestStandardTime-",standardLowerModel.get(0).value)
-            spliceModel.setStructValue("TestStandardPower-",standardLowerModel.get(1).value)
-            spliceModel.setStructValue("TestStandardPre-",standardLowerModel.get(2).value)
-            spliceModel.setStructValue("TestStandardPost-",standardLowerModel.get(3).value)
+            spliceModel.setTeachModeValue("TestPower+",teachModel.get(2).standardValue,teachModel.get(2).autoValue,teachModel.get(2).sigmaValue)
+            spliceModel.setTeachModeValue("TestPower-",teachModel.get(3).standardValue,teachModel.get(3).autoValue,teachModel.get(3).sigmaValue)
 
-            spliceModel.setStructValue("TestSigmaTime+",sigmaUpperModel.get(0).value)
-            spliceModel.setStructValue("TestSigmaPower+",sigmaUpperModel.get(1).value)
-            spliceModel.setStructValue("TestSigmaPre+",sigmaUpperModel.get(2).value)
-            spliceModel.setStructValue("TestSigmaPost+",sigmaUpperModel.get(3).value)
+            spliceModel.setTeachModeValue("TestPre+",teachModel.get(4).standardValue,teachModel.get(4).autoValue,teachModel.get(4).sigmaValue)
+            spliceModel.setTeachModeValue("TestPre-",teachModel.get(5).standardValue,teachModel.get(5).autoValue,teachModel.get(5).sigmaValue)
 
-            spliceModel.setStructValue("TestSigmaTime-",sigmaLowerModel.get(0).value)
-            spliceModel.setStructValue("TestSigmaPower-",sigmaLowerModel.get(1).value)
-            spliceModel.setStructValue("TestSigmaPre-",sigmaLowerModel.get(2).value)
-            spliceModel.setStructValue("TestSigmaPost-",sigmaLowerModel.get(3).value)
-            spliceModel.saveSplice(true)
+            spliceModel.setTeachModeValue("TestPost+",teachModel.get(6).standardValue,teachModel.get(6).autoValue,teachModel.get(6).sigmaValue)
+            spliceModel.setTeachModeValue("TestPost-",teachModel.get(7).standardValue,teachModel.get(7).autoValue,teachModel.get(7).sigmaValue)
+
+            spliceModel.setTeachModeValue("TestQty",teachModel.get(8).standardValue,teachModel.get(8).autoValue,teachModel.get(8).sigmaValue)
+
+            spliceModel.saveTeachMode()
             signalAdvanceOk()
         }
     }

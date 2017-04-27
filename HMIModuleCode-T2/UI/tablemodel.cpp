@@ -401,6 +401,11 @@ QString SplicesModel::getValueString(QString valueKey, QString value)
 
 }
 
+void SplicesModel::saveTeachMode()
+{
+
+}
+
 
 QString SplicesModel::getTeachModeValue(QString valueKey, QString valueType)
 {
@@ -600,27 +605,27 @@ QString SplicesModel::getTeachModeValue(QString valueKey, QString valueType)
     }
     else if (valueKey == "TestStandardQty") {
         if (valueType == "current")
-            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.StandardRunQuantity).Current;
+            ResultStr = variantToString->TeachModeQuantity(m_interface->StatusData.Cust_Data.StandardRunQuantity).Current;
         else if (valueType == "max")
-            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.StandardRunQuantity).Maximum;
+            ResultStr = variantToString->TeachModeQuantity(m_interface->StatusData.Cust_Data.StandardRunQuantity).Maximum;
         else if (valueType == "min")
-            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.StandardRunQuantity).Minimum;
+            ResultStr = variantToString->TeachModeQuantity(m_interface->StatusData.Cust_Data.StandardRunQuantity).Minimum;
     }
     else if (valueKey == "TestAutoQty") {
         if (valueType == "current")
-            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.AutoRunQuantity).Current;
+            ResultStr = variantToString->TeachModeQuantity(m_interface->StatusData.Cust_Data.AutoRunQuantity).Current;
         else if (valueType == "max")
-            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.AutoRunQuantity).Maximum;
+            ResultStr = variantToString->TeachModeQuantity(m_interface->StatusData.Cust_Data.AutoRunQuantity).Maximum;
         else if (valueType == "min")
-            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.AutoRunQuantity).Minimum;
+            ResultStr = variantToString->TeachModeQuantity(m_interface->StatusData.Cust_Data.AutoRunQuantity).Minimum;
     }
     else if (valueKey == "TestSigmaQty") {
         if (valueType == "current")
-            ResultStr = variantToString->SigmaTeachModeToString(m_interface->StatusData.Cust_Data.SigmaRunQuantity).Current;
+            ResultStr = variantToString->TeachModeQuantity(m_interface->StatusData.Cust_Data.SigmaRunQuantity).Current;
         else if (valueType == "max")
-            ResultStr = variantToString->SigmaTeachModeToString(m_interface->StatusData.Cust_Data.SigmaRunQuantity).Maximum;
+            ResultStr = variantToString->TeachModeQuantity(m_interface->StatusData.Cust_Data.SigmaRunQuantity).Maximum;
         else if (valueType == "min")
-            ResultStr = variantToString->SigmaTeachModeToString(m_interface->StatusData.Cust_Data.SigmaRunQuantity).Minimum;
+            ResultStr = variantToString->TeachModeQuantity(m_interface->StatusData.Cust_Data.SigmaRunQuantity).Minimum;
     }
 //    else if (valueKey == "TestModel") {
 //        ResultStr = QString("%1").arg((int)presetElement.TestSetting.TestMode);
@@ -634,6 +639,78 @@ QString SplicesModel::getTeachModeValue(QString valueKey, QString valueType)
     else
         ResultStr = "";
     return ResultStr;
+}
+
+QString SplicesModel::setTeachModeValue(QString valueKey, QString standValue, QString autoValue, QString sigmaValue)
+{
+//    spliceModel.setTeachModeValue("TestTime+",teachModel.get(0).standardValue,teachModel.get(0).autoValue,teachModel.get(0).sigmaValue)
+//    spliceModel.setTeachModeValue("TestTime-",teachModel.get(1).standardValue,teachModel.get(1).autoValue,teachModel.get(1).sigmaValue)
+
+//    spliceModel.setTeachModeValue("TestPower+",teachModel.get(2).standardValue,teachModel.get(2).autoValue,teachModel.get(2).sigmaValue)
+//    spliceModel.setTeachModeValue("TestPower-",teachModel.get(3).standardValue,teachModel.get(3).autoValue,teachModel.get(3).sigmaValue)
+
+//    spliceModel.setTeachModeValue("TestPre+",teachModel.get(4).standardValue,teachModel.get(4).autoValue,teachModel.get(4).sigmaValue)
+//    spliceModel.setTeachModeValue("TestPre-",teachModel.get(5).standardValue,teachModel.get(5).autoValue,teachModel.get(5).sigmaValue)
+
+//    spliceModel.setTeachModeValue("TestPost+",teachModel.get(6).standardValue,teachModel.get(6).autoValue,teachModel.get(6).sigmaValue)
+//    spliceModel.setTeachModeValue("TestPost-",teachModel.get(7).standardValue,teachModel.get(7).autoValue,teachModel.get(7).sigmaValue)
+
+//    spliceModel.setTeachModeValue("TestQty",teachModel.get(8).standardValue,teachModel.get(8).autoValue,teachModel.get(8).sigmaValue)
+
+    if (valueKey == "TestTime+")
+    {
+        m_interface->tempStatusData.Cust_Data.cust_qual_range[TIME_PLRG_STD] = stringToVariant->SigmaTeachModeToInt(standValue);
+        m_interface->tempStatusData.Cust_Data.cust_qual_range[TIME_PLRG_AUTO] = stringToVariant->SigmaTeachModeToInt(autoValue);
+        m_interface->tempStatusData.Cust_Data.cust_qual_range[TIME_CONFRG_PL] = stringToVariant->SigmaTeachModeToInt(sigmaValue);
+    }
+    else if (valueKey == "TestTime-")
+    {
+        m_interface->tempStatusData.Cust_Data.cust_qual_range[TIME_MSRG_STD] = stringToVariant->SigmaTeachModeToInt(standValue);
+        m_interface->tempStatusData.Cust_Data.cust_qual_range[TIME_MSRG_AUTO] = stringToVariant->SigmaTeachModeToInt(autoValue);
+        m_interface->tempStatusData.Cust_Data.cust_qual_range[TIME_CONFRG_MS] = stringToVariant->SigmaTeachModeToInt(sigmaValue);
+    }
+    else if (valueKey == "TestPower+")
+    {
+        m_interface->tempStatusData.Cust_Data.cust_qual_range[POWER_PLRG_STD] = stringToVariant->SigmaTeachModeToInt(standValue);
+        m_interface->tempStatusData.Cust_Data.cust_qual_range[POWER_PLRG_AUTO] = stringToVariant->SigmaTeachModeToInt(autoValue);
+        m_interface->tempStatusData.Cust_Data.cust_qual_range[POWER_CONFRG_PL] = stringToVariant->SigmaTeachModeToInt(sigmaValue);
+    }
+    else if (valueKey == "TestPower-")
+    {
+        m_interface->tempStatusData.Cust_Data.cust_qual_range[POWER_MSRG_STD] = stringToVariant->SigmaTeachModeToInt(standValue);
+        m_interface->tempStatusData.Cust_Data.cust_qual_range[POWER_MSRG_AUTO] = stringToVariant->SigmaTeachModeToInt(autoValue);
+        m_interface->tempStatusData.Cust_Data.cust_qual_range[POWER_CONFRG_MS] = stringToVariant->SigmaTeachModeToInt(sigmaValue);
+    }
+    else if (valueKey == "TestPre+")
+    {
+        m_interface->tempStatusData.Cust_Data.cust_qual_range[PRE_HGT_PLRG_STD] = stringToVariant->SigmaTeachModeToInt(standValue);
+        m_interface->tempStatusData.Cust_Data.cust_qual_range[PRE_HGT_PLRG_AUTO] = stringToVariant->SigmaTeachModeToInt(autoValue);
+        m_interface->tempStatusData.Cust_Data.cust_qual_range[PRE_HGT_CONFRG_PL] = stringToVariant->SigmaTeachModeToInt(sigmaValue);
+    }
+    else if (valueKey == "TestPre-")
+    {
+        m_interface->tempStatusData.Cust_Data.cust_qual_range[PRE_HGT_MSRG_STD] = stringToVariant->SigmaTeachModeToInt(standValue);
+        m_interface->tempStatusData.Cust_Data.cust_qual_range[PRE_HGT_MSRG_AUTO] = stringToVariant->SigmaTeachModeToInt(autoValue);
+        m_interface->tempStatusData.Cust_Data.cust_qual_range[PRE_HGT_CONFRG_MS] = stringToVariant->SigmaTeachModeToInt(sigmaValue);
+    }
+    else if (valueKey == "TestPost+")
+    {
+        m_interface->tempStatusData.Cust_Data.cust_qual_range[HEIGHT_PLRG_STD] = stringToVariant->SigmaTeachModeToInt(standValue);
+        m_interface->tempStatusData.Cust_Data.cust_qual_range[HEIGHT_PLRG_AUTO] = stringToVariant->SigmaTeachModeToInt(autoValue);
+        m_interface->tempStatusData.Cust_Data.cust_qual_range[HEIGHT_CONFRG_PL] = stringToVariant->SigmaTeachModeToInt(sigmaValue);
+    }
+    else if (valueKey == "TestPost-")
+    {
+        m_interface->tempStatusData.Cust_Data.cust_qual_range[HEIGHT_MSRG_STD] = stringToVariant->SigmaTeachModeToInt(standValue);
+        m_interface->tempStatusData.Cust_Data.cust_qual_range[HEIGHT_MSRG_AUTO] = stringToVariant->SigmaTeachModeToInt(autoValue);
+        m_interface->tempStatusData.Cust_Data.cust_qual_range[HEIGHT_CONFRG_MS] = stringToVariant->SigmaTeachModeToInt(sigmaValue);
+    }
+    else if (valueKey == "TestQty")
+    {
+        m_interface->tempStatusData.Cust_Data.StandardRunQuantity = stringToVariant->SigmaTeachModeToInt(standValue);
+        m_interface->tempStatusData.Cust_Data.AutoRunQuantity = stringToVariant->SigmaTeachModeToInt(autoValue);
+        m_interface->tempStatusData.Cust_Data.SigmaRunQuantity = stringToVariant->SigmaTeachModeToInt(sigmaValue);
+    }
 }
 
 
