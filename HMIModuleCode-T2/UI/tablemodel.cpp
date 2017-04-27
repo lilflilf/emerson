@@ -6,7 +6,6 @@
 WorkOrderModel::WorkOrderModel(QObject *parent) :
     QAbstractTableModel(parent)
 {
-    m_workOrderAdaptor = DBWorkOrderTable::Instance();
     m_harnessAdaptor = DBHarnessTable::Instance();
     workOrders = new QMap<int, QString>();
 }
@@ -35,7 +34,7 @@ QVariant WorkOrderModel::data(const QModelIndex &index, int role) const
             }
         }
         WorkOrderElement myWorkOrder;
-        m_workOrderAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myWorkOrder);
+//        m_workOrderAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myWorkOrder);
 
         if (columnIdx == 0)
             value = QVariant::fromValue(myWorkOrder.WorkOrderID);
@@ -51,7 +50,7 @@ QVariant WorkOrderModel::data(const QModelIndex &index, int role) const
             value = QVariant::fromValue(temp);
         }
         else if (columnIdx == 4)
-            value = QVariant::fromValue(myWorkOrder.Quantity);
+            value = QVariant::fromValue(myWorkOrder.BatchSize);
     }
     return value;
 }
@@ -62,8 +61,8 @@ void WorkOrderModel::setModelList(unsigned int time_from, unsigned int time_to)
 {
     beginResetModel();
     workOrders->clear();
-    if (m_workOrderAdaptor->QueryOnlyUseTime(time_from,time_to,workOrders))
-        qDebug( )<< "setModelList WorkOrderModel" << workOrders->count();
+//    if (m_workOrderAdaptor->QueryOnlyUseTime(time_from,time_to,workOrders))
+//        qDebug( )<< "setModelList WorkOrderModel" << workOrders->count();
     endResetModel();
 }
 
@@ -71,8 +70,8 @@ void WorkOrderModel::setModelList()
 {
     beginResetModel();
     workOrders->clear();
-    if (m_workOrderAdaptor->QueryEntireTable(workOrders))
-        qDebug( )<< "setModelList WorkOrderModel" << workOrders->count();
+//    if (m_workOrderAdaptor->QueryEntireTable(workOrders))
+//        qDebug( )<< "setModelList WorkOrderModel" << workOrders->count();
     endResetModel();
 }
 
@@ -128,14 +127,14 @@ int WorkOrderModel::getCurrentIndex(QString info)
 bool WorkOrderModel::updateRecordIntoTable(int workId,QString oldWorkName, QString workName, int partId, QString partName, int count)
 {
     struct WorkOrderElement tempWorkOrder;
-    m_workOrderAdaptor->QueryOneRecordFromTable(workId, oldWorkName,&tempWorkOrder);
+//    m_workOrderAdaptor->QueryOneRecordFromTable(workId, oldWorkName,&tempWorkOrder);
     tempWorkOrder.WorkOrderName = workName;
     if (partName != tempWorkOrder.PartList.begin().value()) {
         tempWorkOrder.PartList.remove(tempWorkOrder.PartList.begin().key());
         tempWorkOrder.PartList.insert(partId, partName);
     }
-    tempWorkOrder.Quantity = count;
-    m_workOrderAdaptor->UpdateRecordIntoTable(&tempWorkOrder);
+    tempWorkOrder.BatchSize = count;
+//    m_workOrderAdaptor->UpdateRecordIntoTable(&tempWorkOrder);
     setModelList();
     return true;
 }
@@ -144,22 +143,23 @@ bool WorkOrderModel::insertRecordIntoTable(QString workName, int partId, QString
 {
     struct WorkOrderElement tempWorkOrder;
     tempWorkOrder.WorkOrderName = workName;
-    tempWorkOrder.Quantity = count;
+    tempWorkOrder.BatchSize = count;
     tempWorkOrder.PartList.insert(partId,partName);
     qDebug() << "insertRecordIntoTable"<<tempWorkOrder.PartList.count();
-    m_workOrderAdaptor->InsertRecordIntoTable(&tempWorkOrder);
+//    m_workOrderAdaptor->InsertRecordIntoTable(&tempWorkOrder);
     setModelList();
     return true;
 }
 
 bool WorkOrderModel::exportData(int workOrderId, QString fileUrl)
 {
-    return m_workOrderAdaptor->exportData(workOrderId,fileUrl);
+//    return m_workOrderAdaptor->exportData(workOrderId,fileUrl);
+    return true;
 }
 
 int WorkOrderModel::importData(QString value, QMap<int, QString> partMap)
 {
-    int ret = m_workOrderAdaptor->importData(value,partMap);
+    int ret = 0;//m_workOrderAdaptor->importData(value,partMap);
     setModelList();
     return ret;
 }
@@ -180,7 +180,7 @@ int WorkOrderModel::getPartId(int index)
         }
     }
     WorkOrderElement myWorkOrder;
-    m_workOrderAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myWorkOrder);
+//    m_workOrderAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myWorkOrder);
     return myWorkOrder.PartList.begin().key();
 }
 
@@ -197,7 +197,7 @@ QList<int> WorkOrderModel::getSpliceList()
 void WorkOrderModel::editNew(int index,int workOrderId)
 {
     m_harnessAdaptor->QueryOneRecordFromTable(index,&harnessElement);
-    m_workOrderAdaptor->QueryOneRecordFromTable(workOrderId,&workOrderElement);
+//    m_workOrderAdaptor->QueryOneRecordFromTable(workOrderId,&workOrderElement);
 }
 
 QVariant WorkOrderModel::getStructValue(QString key)
@@ -229,7 +229,7 @@ QVariant WorkOrderModel::getValue(int index, QString key)
         }
     }
     WorkOrderElement myWorkOrder;
-    m_workOrderAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myWorkOrder);
+//    m_workOrderAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myWorkOrder);
     QHash<QString, QVariant> WorkOrderModelHash;
     WorkOrderModelHash.insert("WorkOrderId",myWorkOrder.WorkOrderID);
     WorkOrderModelHash.insert("WorkOrderName",myWorkOrder.WorkOrderName);
@@ -238,7 +238,7 @@ QVariant WorkOrderModel::getValue(int index, QString key)
     if (myWorkOrder.PartList.count() > 0)
         temp = myWorkOrder.PartList.begin().value();
     WorkOrderModelHash.insert("PART",temp);
-    WorkOrderModelHash.insert("QUANTITY",myWorkOrder.Quantity);
+    WorkOrderModelHash.insert("QUANTITY",myWorkOrder.BatchSize);
     if (key == "") {
         return WorkOrderModelHash;
     } else {
@@ -248,7 +248,7 @@ QVariant WorkOrderModel::getValue(int index, QString key)
 
 void WorkOrderModel::removeValue(int id, QString name)
 {
-    m_workOrderAdaptor->DeleteOneRecordFromTable(id,name);
+//    m_workOrderAdaptor->DeleteOneRecordFromTable(id,name);
     setModelList();
 }
 
@@ -651,9 +651,10 @@ QString SplicesModel::getTeachModeValue(QString valueKey, QString valueType)
     return ResultStr;
 }
 
-QString SplicesModel::setTeachModeValue(QString valueKey, QString standValue, QString autoValue, QString sigmaValue)
+void SplicesModel::setTeachModeValue(QString valueKey, QString standValue, QString autoValue, QString sigmaValue)
 {
-    qDebug() << "setTeachModeValue" << valueKey << standValue << autoValue << sigmaValue;
+    qDebug() << "setTeachModeValue" << valueKey << standValue << autoValue << sigmaValue
+             << sizeof(m_interface->tempStatusData.Cust_Data.cust_qual_range);
     if (valueKey == "TestTime+")
     {
         m_interface->tempStatusData.Cust_Data.cust_qual_range[TIME_PLRG_STD] = stringToVariant->SigmaTeachModeToInt(standValue);

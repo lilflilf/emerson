@@ -8,8 +8,9 @@ public:
     enum WORKORDERMODE
     {
         SPLICE = 0,
-        HARNESS,
         SEQUENCE,
+        HARNESS,
+
     };
 public:
     int RevCode;
@@ -18,10 +19,11 @@ public:
     unsigned int CreatedDate;
     int OperatorID;
     enum WORKORDERMODE WorkOrderMode;
-    int NoOfPart;
-    int Quantity;
-    int CurrentPartCount;
-    QMap<int, QString> MissPartList;
+    int CurrentSpliceIndex;
+    int BatchSize; //only for splice or Harness
+    TEACHMODESETTING::TEACH_MODE_TYPE Teach_Mode;
+    int CurrentPartCount;//only for current cycle count
+    QMap<int, QString> MissPartList;//harness
     QMap<int, QString> PartList;
     struct PartIndex CurrentPartIndex;
     bool WorkOrderDone;

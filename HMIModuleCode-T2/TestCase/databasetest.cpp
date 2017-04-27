@@ -3,7 +3,6 @@
 #include "DataBase/DBWireTable.h"
 #include "DataBase/DBPresetTable.h"
 #include "DataBase/DBHarnessTable.h"
-#include "DataBase/DBWorkOrderTable.h"
 #include "DataBase/DBOperatorTable.h"
 #include "DataBase/DBWeldResultTable.h"
 #include <QMap>
@@ -150,33 +149,6 @@ void DataBaseTest::TestInsertOneRecordIntoPartTable()
     _SQLITCLASS->InsertRecordIntoTable(&tmpHarness);
 }
 
-void DataBaseTest::TestInsertOneRecordIntoWorkOrderTable()
-{
-    SQLITCLASS *_SQLITCLASS = DBWorkOrderTable::Instance();
-
-    struct WorkOrderElement tmpWorkOrder;
-    tmpWorkOrder.WorkOrderName = "TESTWorkOrder4";
-    QDateTime tmp = QDateTime::fromString("2016/10/20 00:00:00", "yyyy/MM/dd hh:mm:ss");
-    tmpWorkOrder.CreatedDate = tmp.toTime_t();
-    tmpWorkOrder.OperatorID = 2;
-    tmpWorkOrder.PartList.insert(1,"PartName");
-    tmpWorkOrder.NoOfPart = tmpWorkOrder.PartList.size();
-
-    tmpWorkOrder.Quantity = 10;
-    tmpWorkOrder.CurrentPartCount = 30;
-
-    tmpWorkOrder.MissPartList.insert(0, "MissSplice1");
-    tmpWorkOrder.MissPartList.insert(1, "MissSplice2");
-    tmpWorkOrder.MissPartList.insert(2, "MissSplice3");
-
-    tmpWorkOrder.CurrentPartIndex.PartID = 5;
-    tmpWorkOrder.CurrentPartIndex.PartName = "TestSplice";
-
-    tmpWorkOrder.WorkOrderDone = false;
-
-    _SQLITCLASS->InsertRecordIntoTable(&tmpWorkOrder);
-}
-
 void DataBaseTest::TestInsertOneRecordIntoOperatorTable()
 {
     SQLITCLASS *_SQLITCLASS = DBOperatorTable::Instance();
@@ -307,20 +279,6 @@ void DataBaseTest::TestQueryEntirePartTable()
     }
 }
 
-void DataBaseTest::TestQueryEntireWorkOrderTable()
-{
-    SQLITCLASS *_SQLITCLASS = DBWorkOrderTable::Instance();
-    QMap<int, QString> tmpMap;
-    _SQLITCLASS->QueryEntireTable(&tmpMap);
-    QMap<int, QString>::ConstIterator i = tmpMap.constBegin();
-    while(i != tmpMap.constEnd())
-    {
-        qDebug()<<"WorkOrder ID: "<<i.key();
-        qDebug()<<"WorkOrder Name: "<<i.value();
-        ++i;
-    }
-}
-
 void DataBaseTest::TestQueryEntireOpertorTable()
 {
     SQLITCLASS *_SQLITCLASS = DBOperatorTable::Instance();
@@ -416,15 +374,6 @@ void DataBaseTest::TestDeleteEntirePartTable()
         qDebug()<<"Delete Part Table Unsucessful.";
 }
 
-void DataBaseTest::TestDeleteEntireWorkOrderTable()
-{
-    SQLITCLASS *_SQLITCLASS = DBWorkOrderTable::Instance();
-    if(_SQLITCLASS->DeleteEntireTable())
-        qDebug()<<"Delete WorkOrder Table Sucessful.";
-    else
-        qDebug()<<"Delete WorkOrder Table Unsucessful.";
-}
-
 void DataBaseTest::TestDeleteEntireOperator()
 {
     SQLITCLASS *_SQLITCLASS = DBOperatorTable::Instance();
@@ -459,15 +408,6 @@ void DataBaseTest::TestDeleteOnePartTable()
         qDebug()<<"Delete Part Table Sucessful.";
     else
         qDebug()<<"Delete Part Table Unsucessful.";
-}
-
-void DataBaseTest::TestDeleteOneWorkOrderTable()
-{
-    SQLITCLASS *_SQLITCLASS = DBWorkOrderTable::Instance();
-    if(_SQLITCLASS->DeleteOneRecordFromTable(2, "TESTWorkOrder"))
-        qDebug()<<"Delete WorkOrder Table Sucessful.";
-    else
-        qDebug()<<"Delete WorkOrder Table Unsucessful.";
 }
 
 void DataBaseTest::TestDeleteOneOperatorTable()
@@ -602,34 +542,6 @@ void DataBaseTest::TestUpdateOneRecordIntoPartTable()
     tmpHarness.NoOfSplice = tmpHarness.SpliceList.size();
 
     _SQLITCLASS->UpdateRecordIntoTable(&tmpHarness);
-}
-
-void DataBaseTest::TestUpdateOneRecordIntoWorkOrderTable()
-{
-    SQLITCLASS *_SQLITCLASS = DBWorkOrderTable::Instance();
-
-    struct WorkOrderElement tmpWorkOrder;
-    tmpWorkOrder.WorkOrderID = 3;
-    tmpWorkOrder.WorkOrderName = "TESTWORKORDER";
-    QDateTime tmp = QDateTime::fromString("2016/10/20 00:00:00", "yyyy/MM/dd hh:mm:ss");
-    tmpWorkOrder.CreatedDate = tmp.toTime_t();
-    tmpWorkOrder.OperatorID = 2;
-    tmpWorkOrder.PartList.insert(1,"PartName");
-    tmpWorkOrder.NoOfPart = tmpWorkOrder.PartList.size();
-
-    tmpWorkOrder.Quantity = 50;
-    tmpWorkOrder.CurrentPartCount = 30;
-
-    tmpWorkOrder.MissPartList.insert(0, "MissSplice1");
-    tmpWorkOrder.MissPartList.insert(1, "MissSplice2");
-    tmpWorkOrder.MissPartList.insert(2, "MissSplice3");
-
-    tmpWorkOrder.CurrentPartIndex.PartID = 5;
-    tmpWorkOrder.CurrentPartIndex.PartName = "TESTSPLICE";
-
-    tmpWorkOrder.WorkOrderDone = false;
-
-    _SQLITCLASS->UpdateRecordIntoTable(&tmpWorkOrder);
 }
 
 void DataBaseTest::TestUpdateOneRecordIntoOperatorTable()

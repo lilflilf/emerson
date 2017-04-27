@@ -12,7 +12,6 @@
 #include "Interface/Interface.h"
 #include "UtilityClass.h"
 #include "TimerClass.h"
-#include "DataBase/DBWorkOrderTable.h"
 #include "DataBase/DBHarnessTable.h"
 #include "DataBase/DBPresetTable.h"
 #include "DataBase/DBWireTable.h"
@@ -44,7 +43,6 @@ MODstart::MODstart()
     ModRunSetup *_ModRunSetup = ModRunSetup::Instance();
     InterfaceClass *_Interface = InterfaceClass::Instance();
     BransonServer* _Server = BransonServer::Instance();
-    DBWorkOrderTable* _WorkOrderTable = DBWorkOrderTable::Instance();
     DBHarnessTable*      _HarnessTable = DBHarnessTable::Instance();
     DBPresetTable*    _SpliceTable = DBPresetTable::Instance();
     DBWireTable*      _WireTable = DBWireTable::Instance();
@@ -239,7 +237,6 @@ MODstart::MODstart()
         }
         if (_Interface->StatusData.ModularProductionEnabled == true)
         {
-            _WorkOrderTable->SwitchDBObject(_Interface->StatusData.ModularProductionEnabled);
             _HarnessTable->SwitchDBObject(_Interface->StatusData.ModularProductionEnabled);
             _SpliceTable->SwitchDBObject(_Interface->StatusData.ModularProductionEnabled);
             _WireTable->SwitchDBObject(_Interface->StatusData.ModularProductionEnabled);
@@ -508,7 +505,6 @@ void MODstart::OfflineInitialization(void* ptr)
     M2010 *_M2010 = M2010::Instance();
     InterfaceClass* _Interface = InterfaceClass::Instance();
     BransonServer* _Server = BransonServer::Instance();
-    DBWorkOrderTable* _WorkOrderTable = DBWorkOrderTable::Instance();
     DBHarnessTable* _HarnessTable = DBHarnessTable::Instance();
     DBPresetTable* _SpliceTable = DBPresetTable::Instance();
     DBWireTable* _WireTable = DBWireTable::Instance();
@@ -531,7 +527,6 @@ void MODstart::OfflineInitialization(void* ptr)
     }
     if (_Interface->StatusData.ModularProductionEnabled == true)
     {
-        _WorkOrderTable->SwitchDBObject(_Interface->StatusData.ModularProductionEnabled);
         _HarnessTable->SwitchDBObject(_Interface->StatusData.ModularProductionEnabled);
         _SpliceTable->SwitchDBObject(_Interface->StatusData.ModularProductionEnabled);
         _WireTable->SwitchDBObject(_Interface->StatusData.ModularProductionEnabled);

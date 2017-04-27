@@ -35,7 +35,6 @@ SOURCES += main.cpp \
     UI/alpainteditem.cpp \
     DataBase/DBWireTable.cpp \
     DataBase/DBPresetTable.cpp \
-    DataBase/DBWorkOrderTable.cpp \
     UI/tablemodel.cpp \
     DataBase/DBOperatorTable.cpp \
     TestCase/ScreenShowConvertTest.cpp \
@@ -107,7 +106,6 @@ HEADERS += \
     UI/alpainteditem.h \
     DataBase/DBWireTable.h \
     DataBase/DBPresetTable.h \
-    DataBase/DBWorkOrderTable.h \
     UI/tablemodel.h \
     DataBase/DBOperatorTable.h \
     TestCase/ScreenShowConvertTest.h \
