@@ -114,6 +114,8 @@ Item {
         Column {
             height: parent.height + 100
             anchors.right: leftLine.left
+//            anchors.bottom: parent.bottom
+            anchors.bottomMargin: leftLine.height / 11 / 2
             Repeater {
                 id: leftRepeater
                 model: 12

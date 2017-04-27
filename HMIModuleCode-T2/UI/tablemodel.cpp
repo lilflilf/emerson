@@ -260,6 +260,7 @@ SplicesModel::SplicesModel(QObject *parent) :
     m_wireAdaptor = DBWireTable::Instance();
     splices = new QMap<int, QString>();
     variantToString = VariantToString::Instance();
+    m_interface = InterfaceClass::Instance();
 }
 
 QVariant SplicesModel::data(const QModelIndex &index, int role) const
@@ -399,6 +400,218 @@ QString SplicesModel::getValueString(QString valueKey, QString value)
 
 
 }
+
+
+QString SplicesModel::getTeachModeValue(QString valueKey, QString valueType)
+{
+    QString ResultStr = "";
+
+    if (valueKey == "TestStandardTime+") {
+        if (valueType == "current")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[TIME_PLRG_STD]).Current;
+        else if (valueType == "max")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[TIME_PLRG_STD]).Maximum;
+        else if (valueType == "min")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[TIME_PLRG_STD]).Minimum;
+    }
+    else if (valueKey == "TestStandardTime-") {
+        if (valueType == "current")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[TIME_MSRG_STD]).Current;
+        else if (valueType == "max")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[TIME_MSRG_STD]).Maximum;
+        else if (valueType == "min")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[TIME_MSRG_STD]).Minimum;
+    }
+    else if (valueKey == "TestStandardPower+") {
+        if (valueType == "current")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[POWER_PLRG_STD]).Current;
+        else if (valueType == "max")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[POWER_PLRG_STD]).Maximum;
+        else if (valueType == "min")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[POWER_PLRG_STD]).Minimum;
+    }
+    else if (valueKey == "TestStandardPower-") {
+        if (valueType == "current")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[POWER_MSRG_STD]).Current;
+        else if (valueType == "max")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[POWER_MSRG_STD]).Maximum;
+        else if (valueType == "min")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[POWER_MSRG_STD]).Minimum;
+    }
+    else if (valueKey == "TestStandardPre+") {
+        if (valueType == "current")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[PRE_HGT_PLRG_STD]).Current;
+        else if (valueType == "max")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[PRE_HGT_PLRG_STD]).Maximum;
+        else if (valueType == "min")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[PRE_HGT_PLRG_STD]).Minimum;
+    }
+    else if (valueKey == "TestStandardPre-") {
+        if (valueType == "current")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[PRE_HGT_MSRG_STD]).Current;
+        else if (valueType == "max")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[PRE_HGT_MSRG_STD]).Maximum;
+        else if (valueType == "min")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[PRE_HGT_MSRG_STD]).Minimum;
+    }
+    else if (valueKey == "TestStandardPost+") {
+        if (valueType == "current")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[HEIGHT_PLRG_STD]).Current;
+        else if (valueType == "max")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[HEIGHT_PLRG_STD]).Maximum;
+        else if (valueType == "min")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[HEIGHT_PLRG_STD]).Minimum;
+    }
+    else if (valueKey == "TestStandardPost-") {
+        if (valueType == "current")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[HEIGHT_MSRG_STD]).Current;
+        else if (valueType == "max")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[HEIGHT_MSRG_STD]).Maximum;
+        else if (valueType == "min")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[HEIGHT_MSRG_STD]).Minimum;
+    }
+    else if (valueKey == "TestAutoTime+") {
+        if (valueType == "current")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[TIME_PLRG_AUTO]).Current;
+        else if (valueType == "max")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[TIME_PLRG_AUTO]).Maximum;
+        else if (valueType == "min")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[TIME_PLRG_AUTO]).Minimum;
+    }
+    else if (valueKey == "TestAutoTime-") {
+        if (valueType == "current")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[TIME_MSRG_AUTO]).Current;
+        else if (valueType == "max")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[TIME_MSRG_AUTO]).Maximum;
+        else if (valueType == "min")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[TIME_MSRG_AUTO]).Minimum;
+    }
+    else if (valueKey == "TestAutoPower+") {
+        if (valueType == "current")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[POWER_PLRG_AUTO]).Current;
+        else if (valueType == "max")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[POWER_PLRG_AUTO]).Maximum;
+        else if (valueType == "min")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[POWER_PLRG_AUTO]).Minimum;
+    }
+    else if (valueKey == "TestAutoPower-") {
+        if (valueType == "current")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[POWER_MSRG_AUTO]).Current;
+        else if (valueType == "max")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[POWER_MSRG_AUTO]).Maximum;
+        else if (valueType == "min")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[POWER_MSRG_AUTO]).Minimum;
+    }
+    else if (valueKey == "TestAutoPre+") {
+        if (valueType == "current")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[PRE_HGT_PLRG_AUTO]).Current;
+        else if (valueType == "max")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[PRE_HGT_PLRG_AUTO]).Maximum;
+        else if (valueType == "min")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[PRE_HGT_PLRG_AUTO]).Minimum;
+    }
+    else if (valueKey == "TestAutoPre-") {
+        if (valueType == "current")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[PRE_HGT_MSRG_AUTO]).Current;
+        else if (valueType == "max")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[PRE_HGT_MSRG_AUTO]).Maximum;
+        else if (valueType == "min")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[PRE_HGT_MSRG_AUTO]).Minimum;
+    }
+    else if (valueKey == "TestAutoPost+") {
+        if (valueType == "current")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[HEIGHT_PLRG_AUTO]).Current;
+        else if (valueType == "max")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[HEIGHT_PLRG_AUTO]).Maximum;
+        else if (valueType == "min")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[HEIGHT_PLRG_AUTO]).Minimum;
+    }
+    else if (valueKey == "TestAutoPost-") {
+        if (valueType == "current")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[HEIGHT_MSRG_AUTO]).Current;
+        else if (valueType == "max")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[HEIGHT_MSRG_AUTO]).Maximum;
+        else if (valueType == "min")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[HEIGHT_MSRG_AUTO]).Minimum;
+    }
+    else if (valueKey == "TestSigmaTime+") {
+        if (valueType == "current")
+            ResultStr = variantToString->SigmaTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[TIME_CONFRG_PL]).Current;
+        else if (valueType == "max")
+            ResultStr = variantToString->SigmaTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[TIME_CONFRG_PL]).Maximum;
+        else if (valueType == "min")
+            ResultStr = variantToString->SigmaTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[TIME_CONFRG_PL]).Minimum;
+    }
+    else if (valueKey == "TestSigmaTime-") {
+        if (valueType == "current")
+            ResultStr = variantToString->SigmaTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[TIME_CONFRG_MS]).Current;
+        else if (valueType == "max")
+            ResultStr = variantToString->SigmaTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[TIME_CONFRG_MS]).Maximum;
+        else if (valueType == "min")
+            ResultStr = variantToString->SigmaTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[TIME_CONFRG_MS]).Minimum;
+    }
+    else if (valueKey == "TestSigmaPower+") {
+        if (valueType == "current")
+            ResultStr = variantToString->SigmaTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[POWER_CONFRG_PL]).Current;
+        else if (valueType == "max")
+            ResultStr = variantToString->SigmaTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[POWER_CONFRG_PL]).Maximum;
+        else if (valueType == "min")
+            ResultStr = variantToString->SigmaTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[POWER_CONFRG_PL]).Minimum;
+    }
+    else if (valueKey == "TestSigmaPower-") {
+        if (valueType == "current")
+            ResultStr = variantToString->SigmaTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[POWER_CONFRG_MS]).Current;
+        else if (valueType == "max")
+            ResultStr = variantToString->SigmaTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[POWER_CONFRG_MS]).Maximum;
+        else if (valueType == "min")
+            ResultStr = variantToString->SigmaTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[POWER_CONFRG_MS]).Minimum;
+    }
+    else if (valueKey == "TestSigmaPre+") {
+        if (valueType == "current")
+            ResultStr = variantToString->SigmaTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[PRE_HGT_CONFRG_PL]).Current;
+        else if (valueType == "max")
+            ResultStr = variantToString->SigmaTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[PRE_HGT_CONFRG_PL]).Maximum;
+        else if (valueType == "min")
+            ResultStr = variantToString->SigmaTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[PRE_HGT_CONFRG_PL]).Minimum;
+    }
+    else if (valueKey == "TestSigmaPre-") {
+        if (valueType == "current")
+            ResultStr = variantToString->SigmaTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[PRE_HGT_CONFRG_MS]).Current;
+        else if (valueType == "max")
+            ResultStr = variantToString->SigmaTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[PRE_HGT_CONFRG_MS]).Maximum;
+        else if (valueType == "min")
+            ResultStr = variantToString->SigmaTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[PRE_HGT_CONFRG_MS]).Minimum;
+    }
+    else if (valueKey == "TestSigmaPost+") {
+        if (valueType == "current")
+            ResultStr = variantToString->SigmaTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[HEIGHT_CONFRG_PL]).Current;
+        else if (valueType == "max")
+            ResultStr = variantToString->SigmaTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[HEIGHT_CONFRG_PL]).Maximum;
+        else if (valueType == "min")
+            ResultStr = variantToString->SigmaTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[HEIGHT_CONFRG_PL]).Minimum;
+    }
+    else if (valueKey == "TestSigmaPost-") {
+        if (valueType == "current")
+            ResultStr = variantToString->SigmaTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[HEIGHT_CONFRG_MS]).Current;
+        else if (valueType == "max")
+            ResultStr = variantToString->SigmaTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[HEIGHT_CONFRG_MS]).Maximum;
+        else if (valueType == "min")
+            ResultStr = variantToString->SigmaTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[HEIGHT_CONFRG_MS]).Minimum;
+    }
+//    else if (valueKey == "TestModel") {
+//        ResultStr = QString("%1").arg((int)presetElement.TestSetting.TestMode);
+//    }
+//    else if (valueKey == "TestCount") {
+//        ResultStr = QString("%1").arg(presetElement.TestSetting.BatchSize);
+//    }
+//    else if (valueKey == "TeachMode") {
+//        ResultStr = QString("%1").arg((int)presetElement.TestSetting.TeachModeSetting.TeachModeType);
+//    }
+    else
+        ResultStr = "";
+    return ResultStr;
+}
+
 
 QString SplicesModel::getStructValue(QString valueKey, QString valueType)
 {
@@ -781,6 +994,70 @@ QString SplicesModel::getStructValue(QString valueKey, QString valueType)
             ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_MSRG_STD]).Maximum;
         else if (valueType == "min")
             ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_MSRG_STD]).Minimum;
+    }
+    else if (valueKey == "TestAutoTime+") {
+        if (valueType == "current")
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_PLRG_AUTO]).Current;
+        else if (valueType == "max")
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_PLRG_AUTO]).Maximum;
+        else if (valueType == "min")
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_PLRG_AUTO]).Minimum;
+    }
+    else if (valueKey == "TestAutoTime-") {
+        if (valueType == "current")
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_MSRG_AUTO]).Current;
+        else if (valueType == "max")
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_MSRG_AUTO]).Maximum;
+        else if (valueType == "min")
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[TIME_MSRG_AUTO]).Minimum;
+    }
+    else if (valueKey == "TestAutoPower+") {
+        if (valueType == "current")
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_PLRG_AUTO]).Current;
+        else if (valueType == "max")
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_PLRG_AUTO]).Maximum;
+        else if (valueType == "min")
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_PLRG_AUTO]).Minimum;
+    }
+    else if (valueKey == "TestAutoPower-") {
+        if (valueType == "current")
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_MSRG_AUTO]).Current;
+        else if (valueType == "max")
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_MSRG_AUTO]).Maximum;
+        else if (valueType == "min")
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[POWER_MSRG_AUTO]).Minimum;
+    }
+    else if (valueKey == "TestAutoPre+") {
+        if (valueType == "current")
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_PLRG_AUTO]).Current;
+        else if (valueType == "max")
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_PLRG_AUTO]).Maximum;
+        else if (valueType == "min")
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_PLRG_AUTO]).Minimum;
+    }
+    else if (valueKey == "TestAutoPre-") {
+        if (valueType == "current")
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_MSRG_AUTO]).Current;
+        else if (valueType == "max")
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_MSRG_AUTO]).Maximum;
+        else if (valueType == "min")
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[PRE_HGT_MSRG_AUTO]).Minimum;
+    }
+    else if (valueKey == "TestAutoPost+") {
+        if (valueType == "current")
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_PLRG_AUTO]).Current;
+        else if (valueType == "max")
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_PLRG_AUTO]).Maximum;
+        else if (valueType == "min")
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_PLRG_AUTO]).Minimum;
+    }
+    else if (valueKey == "TestAutoPost-") {
+        if (valueType == "current")
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_MSRG_AUTO]).Current;
+        else if (valueType == "max")
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_MSRG_AUTO]).Maximum;
+        else if (valueType == "min")
+            ResultStr = variantToString->StandardAutoTeachModeToString(presetElement.TestSetting.TeachModeSetting.TeachModequal_Window[HEIGHT_MSRG_AUTO]).Minimum;
     }
     else if (valueKey == "TestSigmaTime+") {
         if (valueType == "current")

@@ -22,7 +22,7 @@ Item {
     Rectangle {
         id: backGround
         width: parent.width
-        height: parent.height-9
+        height: parent.height
         border.color: localbordercolor
         border.width: 2
         color: Qt.rgba(0,0,0,0)

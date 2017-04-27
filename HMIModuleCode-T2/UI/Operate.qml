@@ -9,6 +9,7 @@ Item {
     id: operate
     property int selectIndx: -1
     property int selectWorkId: -1
+    property int setCheckIndex: -1
 
     Component.onDestruction: {
         hmiAdaptor.operateProcessExec("Stop")
@@ -394,13 +395,15 @@ Item {
 //                hmiAdaptor.maintenanceCountExecute("_Recall")
 //                loader.source = "qrc:/UI/OperateDetails.qml"
 //            }
-            backGround.visible = true
-            backGround.opacity = 0.5
-            testDialog.visible = true
-            mainRoot.bIsEditSplice = true
-            spliceModel.editNew(spliceModel.getValue(selectIndx,"SpliceId"))
-//            mainRoot.checkNeedPassWd(-1)
-            testDialog.setData()
+            if (operate.selectIndx != -1) {
+                backGround.visible = true
+                backGround.opacity = 0.5
+                testDialog.visible = true
+                mainRoot.bIsEditSplice = true
+                spliceModel.editNew(spliceModel.getValue(selectIndx,"SpliceId"))
+                //            mainRoot.checkNeedPassWd(-1)
+                testDialog.setData()
+            }
         }
     }
     Rectangle {
@@ -620,6 +623,17 @@ Item {
 
     */
 
+    Connections {
+        target: loader.item
+        onSignalCancel: {
+            loader.source = ""
+        }
+        onSignalAdvanceOk: {
+            loader.source = ""
+            testDialog.visible = true
+        }
+    }
+
     TestSetingDialog {
         id: testDialog
         visible: false
@@ -630,7 +644,7 @@ Item {
         }
 
         onSignalAdvanceSettingStart: {
-            testSpliceLibrary.setCheckIndex = checkIndex
+            operate.setCheckIndex = checkIndex
             if (mainRoot.checkAllInterface(20)) {
                 passDialog.visible = true
                 passDialog.pageName = "Teach Mode"

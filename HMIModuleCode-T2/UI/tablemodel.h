@@ -30,6 +30,7 @@
 #include "Interface/UpperRightIcon/AlarmIcon.h"
 #include "Interface/SequenceElement.h"
 #include "DataBase/DBSequenceTable.h"
+#include "Interface/interface.h"
 
 class WorkOrderModel : public QAbstractTableModel
 {
@@ -97,6 +98,7 @@ public:
     DBOperatorTable *m_operatorAdaptor;
     QMap<int, QString> *splices;
     PresetElement processPresetElement;
+    InterfaceClass *m_interface;
 
  protected:
     int rowCount(const QModelIndex &parent) const;
@@ -120,6 +122,8 @@ public slots:
     Q_INVOKABLE void calculateSpliceData();
 
     Q_INVOKABLE QString getValueString(QString valueKey, QString value);
+
+    Q_INVOKABLE QString getTeachModeValue(QString valueKey, QString valueType);
 
     Q_INVOKABLE QString getStructValue(QString valueKey, QString valueType); // create wire
     Q_INVOKABLE int getRawData(QString key);
