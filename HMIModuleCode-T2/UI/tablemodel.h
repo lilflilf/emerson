@@ -31,6 +31,7 @@
 #include "Interface/SequenceElement.h"
 #include "DataBase/DBSequenceTable.h"
 #include "Interface/interface.h"
+#include "Interface/TeachModeAdvance/TeachModeAdvance.h"
 
 class WorkOrderModel : public QAbstractTableModel
 {
@@ -99,6 +100,7 @@ public:
     QMap<int, QString> *splices;
     PresetElement processPresetElement;
     InterfaceClass *m_interface;
+    TeachModeAdvance *m_teachModeAdvance;
 
  protected:
     int rowCount(const QModelIndex &parent) const;
@@ -124,6 +126,8 @@ public slots:
     Q_INVOKABLE QString getValueString(QString valueKey, QString value);
 
     Q_INVOKABLE void saveTeachMode();
+    Q_INVOKABLE void defaultTeachMode();
+
     Q_INVOKABLE QString getTeachModeValue(QString valueKey, QString valueType);
     Q_INVOKABLE QString setTeachModeValue(QString valueKey, QString standValue,QString autoValue,QString sigmaValue);
 

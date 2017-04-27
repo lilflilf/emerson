@@ -260,7 +260,9 @@ SplicesModel::SplicesModel(QObject *parent) :
     m_wireAdaptor = DBWireTable::Instance();
     splices = new QMap<int, QString>();
     variantToString = VariantToString::Instance();
+    stringToVariant = StringToVariant::Instance();
     m_interface = InterfaceClass::Instance();
+    m_teachModeAdvance = TeachModeAdvance::Instance();
 }
 
 QVariant SplicesModel::data(const QModelIndex &index, int role) const
@@ -401,8 +403,16 @@ QString SplicesModel::getValueString(QString valueKey, QString value)
 
 }
 
+
+
 void SplicesModel::saveTeachMode()
 {
+    m_teachModeAdvance->_set();
+}
+
+void SplicesModel::defaultTeachMode()
+{
+    m_teachModeAdvance->_default();
 
 }
 
@@ -643,20 +653,7 @@ QString SplicesModel::getTeachModeValue(QString valueKey, QString valueType)
 
 QString SplicesModel::setTeachModeValue(QString valueKey, QString standValue, QString autoValue, QString sigmaValue)
 {
-//    spliceModel.setTeachModeValue("TestTime+",teachModel.get(0).standardValue,teachModel.get(0).autoValue,teachModel.get(0).sigmaValue)
-//    spliceModel.setTeachModeValue("TestTime-",teachModel.get(1).standardValue,teachModel.get(1).autoValue,teachModel.get(1).sigmaValue)
-
-//    spliceModel.setTeachModeValue("TestPower+",teachModel.get(2).standardValue,teachModel.get(2).autoValue,teachModel.get(2).sigmaValue)
-//    spliceModel.setTeachModeValue("TestPower-",teachModel.get(3).standardValue,teachModel.get(3).autoValue,teachModel.get(3).sigmaValue)
-
-//    spliceModel.setTeachModeValue("TestPre+",teachModel.get(4).standardValue,teachModel.get(4).autoValue,teachModel.get(4).sigmaValue)
-//    spliceModel.setTeachModeValue("TestPre-",teachModel.get(5).standardValue,teachModel.get(5).autoValue,teachModel.get(5).sigmaValue)
-
-//    spliceModel.setTeachModeValue("TestPost+",teachModel.get(6).standardValue,teachModel.get(6).autoValue,teachModel.get(6).sigmaValue)
-//    spliceModel.setTeachModeValue("TestPost-",teachModel.get(7).standardValue,teachModel.get(7).autoValue,teachModel.get(7).sigmaValue)
-
-//    spliceModel.setTeachModeValue("TestQty",teachModel.get(8).standardValue,teachModel.get(8).autoValue,teachModel.get(8).sigmaValue)
-
+    qDebug() << "setTeachModeValue" << valueKey << standValue << autoValue << sigmaValue;
     if (valueKey == "TestTime+")
     {
         m_interface->tempStatusData.Cust_Data.cust_qual_range[TIME_PLRG_STD] = stringToVariant->SigmaTeachModeToInt(standValue);
@@ -707,9 +704,9 @@ QString SplicesModel::setTeachModeValue(QString valueKey, QString standValue, QS
     }
     else if (valueKey == "TestQty")
     {
-        m_interface->tempStatusData.Cust_Data.StandardRunQuantity = stringToVariant->SigmaTeachModeToInt(standValue);
-        m_interface->tempStatusData.Cust_Data.AutoRunQuantity = stringToVariant->SigmaTeachModeToInt(autoValue);
-        m_interface->tempStatusData.Cust_Data.SigmaRunQuantity = stringToVariant->SigmaTeachModeToInt(sigmaValue);
+        m_interface->tempStatusData.Cust_Data.StandardRunQuantity = stringToVariant->QuantityTeachModeToInt(standValue);
+        m_interface->tempStatusData.Cust_Data.AutoRunQuantity = stringToVariant->QuantityTeachModeToInt(autoValue);
+        m_interface->tempStatusData.Cust_Data.SigmaRunQuantity = stringToVariant->QuantityTeachModeToInt(sigmaValue);
     }
 }
 
