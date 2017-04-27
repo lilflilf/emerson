@@ -441,6 +441,17 @@ struct BRANSONDATA VariantToString::TestQuantity(int parameter)
     return tmpData;
 }
 
+struct BRANSONDATA VariantToString::TeachModeQuantity(int parameter)
+{
+    struct BRANSONDATA tmpData;
+    tmpData.Current = _Utility->FormatedDataToString(DINTeachModeQuantity, parameter);
+    tmpData.Maximum = _Utility->FormatedDataToString(DINTeachModeQuantity,
+                    _Utility->txtData[DINTeachModeQuantity].max);
+    tmpData.Minimum = _Utility->FormatedDataToString(DINTeachModeQuantity,
+                    _Utility->txtData[DINTeachModeQuantity].min);
+    return tmpData;
+}
+
 struct BRANSONDATA VariantToString::SequenceQuantity(int parameter)
 {
     struct BRANSONDATA tmpData;

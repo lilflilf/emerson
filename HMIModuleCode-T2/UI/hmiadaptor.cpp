@@ -86,7 +86,7 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
     interfaceClass = InterfaceClass::Instance();
     m_variantToString = VariantToString::Instance();
     m_stringToVariant = StringToVariant::Instance();
-    connect(advanceMaintenance, SIGNAL(IOstatusFeedback(ulong)),this,SLOT(slotButtonState(ulong)));
+    connect(advanceMaintenance, SIGNAL(IOstatusFeedbackSignal(ulong)),this,SLOT(slotButtonState(ulong)));
     connect(interfaceClass, SIGNAL(EnableErrorMessageSignal(BransonMessageBox&)), this, SLOT(slotEnableDialog(BransonMessageBox&)));
     connect(interfaceClass, SIGNAL(DisableErrorMessageSignal(BransonMessageBox&)), this, SLOT(slotDisableDialog(BransonMessageBox&)));
 

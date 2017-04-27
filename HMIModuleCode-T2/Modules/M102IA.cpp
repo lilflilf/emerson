@@ -1056,6 +1056,15 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
 //        DEBUG_PRINT(IAactual.Alarmflags);
         emit AlarmStatusSignal(_M2010->ReceiveFlags.AlarmData);
         break;
+    case IASigFrequency:
+        ADFrequency = MakeHexWordNumber(HexString.mid(9, 4));
+        _M2010->ReceiveFlags.FrequencyData = true;
+        break;
+    case IASigPowerFrequency:
+        ADPower = MakeHexWordNumber(HexString.mid(9, 4));
+        ADFrequency = MakeHexWordNumber(HexString.mid(13, 4));
+        _M2010->ReceiveFlags.PowerFreqData = true;
+        break;
     default:
         break;
     }
@@ -1137,7 +1146,7 @@ bool M102IA::SetIAWidth(int WidthSet, bool SettingCheck)
 
     //Wait for width data
     Done = false;
-    _Timer->SetCommandTimer(15000);
+    _Timer->SetCommandTimer(DELAY15SEC);
     while (Done == false)
     {
         QCoreApplication::processEvents(); // Wait for response

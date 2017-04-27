@@ -120,6 +120,8 @@ struct BitFlag{
     bool PNData;
     bool AlarmData;
     bool PhysicalKeyData;
+    bool FrequencyData;
+    bool PowerFreqData;
 };
 
 enum Last_made{

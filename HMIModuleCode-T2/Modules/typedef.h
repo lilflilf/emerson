@@ -76,5 +76,6 @@ typedef enum{
 #define DELAY2SEC    				2000   /* 2.0 sec */
 #define DELAY3SEC	 				3000   /* 3.0 sec */
 #define DELAY5SEC    				5000   /* 5.0 sec */
+#define DELAY15SEC                  15000  /* 15.0 sec */
 
 #endif // TYPEDEF_H
