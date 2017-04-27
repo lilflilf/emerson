@@ -154,6 +154,8 @@ enum ActualIndexer{      //Indexes for Labels on Setup Screen
 #define ADMINOShowMaintData  0x08
 #define ADMINOQualifiedOnly  0x10
 
+#define POWERFACTOR (3 * 0xFFFF / 4)
+
 enum M20_ERROR_TYPE{
     Non_ERR,
     EnergyERR,

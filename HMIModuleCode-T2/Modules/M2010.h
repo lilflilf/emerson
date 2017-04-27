@@ -71,11 +71,6 @@ struct M20Build{
 #define TIMESTEPMASK       0x4000
 #define POWERSTEPMASK      0x2000
 
-enum PRESET_TEACHSETTING{
-    GLOBALS,
-    SPECIAL,
-};
-
 struct BitFlag{
     bool SETUPdata;
     bool PRESETdata;
@@ -363,7 +358,6 @@ public:
     void PutLastRunRecord(int TypeMade, QString PartName);
     void MakeNormalSplice(M10Part ThisSplice);
     int DecPtrCircular(int ptr, int ptrMAX);
-    int IncPtrCircular(int ptr, int ptrMAX);
     void ConvertPowerGraphData(QStringList SourceGraphDataList, QList<int> *DestList);
     void ConvertHeightGraphData(QStringList SourceGraphDataList, QList<int> *DestList);
     QString ParseSerialNumber(QString SerialCode);

@@ -16,7 +16,7 @@ using namespace std;
 
 #define M20_Stat_Points  128  //The number of data points in the file
 #define M20_Data_Points  128  //The number of data points on the screen
-#define M20_Data_Pnt_MI  M20_Data_Points    //Max Index for data
+#define M20_Data_Pnt_MI  M20_Data_Points - 1    //Max Index for data
 
 #define iOverLoadFault  0x01
 #define iTimeFault      0x20
@@ -47,11 +47,6 @@ struct StatStats{
     double Sum_sqr;
 };
 
-struct WeldEventData{
-    QList<int> Data;
-};
-
-
 class Splice_Statistics{
 public:
     QString FileName;
@@ -62,10 +57,10 @@ public:
     StatStats Power;
     StatStats Pre_hght;
     StatStats Height;
-    WeldEventData TimeData;
-    WeldEventData PowerData;
-    WeldEventData PreHghtData;
-    WeldEventData HeightData;
+    QList<int> TimeData;
+    QList<int> PowerData;
+    QList<int> PreHghtData;
+    QList<int> HeightData;
 private:
     void InitializeSpliceStat()
     {
@@ -87,10 +82,10 @@ private:
         Height.min = 0;
         Height.Sum = 0;
         Height.Sum_sqr = 0;
-        TimeData.Data.clear();
-        PowerData.Data.clear();
-        PreHghtData.Data.clear();
-        HeightData.Data.clear();
+        TimeData.clear();
+        PowerData.clear();
+        PreHghtData.clear();
+        HeightData.clear();
     }
 
 public:
@@ -159,13 +154,13 @@ public:
             Height.Sum_sqr =
                     settings.value("Height_Sum_sqr").value<double>();
             QString JsonStr = settings.value("TimeData").value<QString>();
-            _Utility->StringJsonToList(JsonStr, &(TimeData.Data));
+            _Utility->StringJsonToList(JsonStr, &(TimeData));
             JsonStr = settings.value("PowerData").value<QString>();
-            _Utility->StringJsonToList(JsonStr, &(PowerData.Data));
+            _Utility->StringJsonToList(JsonStr, &(PowerData));
             JsonStr = settings.value("PreHghtData").value<QString>();
-            _Utility->StringJsonToList(JsonStr, &(PreHghtData.Data));
+            _Utility->StringJsonToList(JsonStr, &(PreHghtData));
             JsonStr = settings.value("HeightData").value<QString>();
-            _Utility->StringJsonToList(JsonStr, &(HeightData.Data));
+            _Utility->StringJsonToList(JsonStr, &(HeightData));
             settings.endGroup();
             if((FileName == _Splice->SpliceName) &&
                     (HashCode == _Splice->HashCode))
@@ -209,13 +204,13 @@ public:
         settings.setValue("Height_Sum", Height.Sum);
         settings.setValue("Height_Sum_sqr", Height.Sum_sqr);
         QString JsonStr;
-        _Utility->ListJsonToString(&TimeData.Data, JsonStr);
+        _Utility->ListJsonToString(&TimeData, JsonStr);
         settings.setValue("TimeData", JsonStr);
-        _Utility->ListJsonToString(&PowerData.Data, JsonStr);
+        _Utility->ListJsonToString(&PowerData, JsonStr);
         settings.setValue("PowerData", JsonStr);
-        _Utility->ListJsonToString(&PreHghtData.Data, JsonStr);
+        _Utility->ListJsonToString(&PreHghtData, JsonStr);
         settings.setValue("PreHghtData", JsonStr);
-        _Utility->ListJsonToString(&HeightData.Data, JsonStr);
+        _Utility->ListJsonToString(&HeightData, JsonStr);
         settings.setValue("HeightData", JsonStr);
         settings.endGroup();
         return bResult;
@@ -305,22 +300,23 @@ public:
     double Time_Average, Power_Average, PreHeight_Avreage, Height_Average;
 private:
     QString GraphData(enum ScreenShowDataType DataType, QList<int> *_GraphData);
-    void RotateIn(StatStats &SumStats, QList<int>& DataEvent, int NewData);
-    void RotateOut(StatStats &SumStats, int OldData);
+    void RotateIn(StatStats &SumStats, int* DataEvent, int NewData);
 public:
     QString HeaderString();
-    void UpdateSoftLimitData(bool ShowResults = true);
+//    void UpdateSoftLimitData(bool ShowResults = true);
 
     void UpdateSpliceStatStats();
     void EnterM20DataEvent();
     void ZeroM20DataEvents();
     void UpdateCounter();
     void CalcConfLimits(PresetElement*);
+    void CalcConfLimits(Status_Data*);
     void GetLimitsAfterWeld(PresetElement*);
     void start_data_structures();
     void Open_Maint_Log();
     void HistoryEvent(QString WorkOrderName, QString PartName,
                       WeldResultElement *_WeldResult, PresetElement *_Splice);
+    void RotateOut(StatStats &SumStats, int OldData);
 
 
 public:

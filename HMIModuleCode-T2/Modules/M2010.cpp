@@ -107,6 +107,7 @@ M2010::M2010()
 
 void M2010::ConvertPowerGraphData(QStringList SourceGraphDataList, QList<int> *DestList)
 {
+    M102IA *_M102IA = M102IA::Instance();
     if(DestList == NULL)
         return;
     int StartData = 17;      //First data character
@@ -115,23 +116,23 @@ void M2010::ConvertPowerGraphData(QStringList SourceGraphDataList, QList<int> *D
     for (int i = 0; i < (SourceGraphDataList.size() - 1);i++)
     {
         Str = SourceGraphDataList.at(i);
-        GraphString += Str.mid(StartData, 32);
+        GraphString += Str.mid(StartData, 64);
     }
     Str = SourceGraphDataList.last();
     GraphString += Str.mid(StartData, (Str.length() - 19));
 
     int WeldPoints, Points, LenString;
     LenString = GraphString.length();
-    WeldPoints = (int)(LenString/2);
+    WeldPoints = (int)(LenString / 4);
     Points = WeldPoints - 5;
     int j = 0;
-    bool bResult;
+//    bool bResult;
     for(int i = 0; i < Points; i++)
     {
-        Str = GraphString.mid(j, 2);
-        int value = Str.toInt(&bResult, 16);
+        Str = GraphString.mid(j, 4);
+        int value = _M102IA->MakeHexWordNumber(Str);
         DestList->insert(i, value);
-        j += 2;
+        j += 4;
     }
 }
 
@@ -286,3 +287,15 @@ void M2010::ReZeroSpliceData()
     Splice.NoOfWires = 0;
     Splice.Energy = 0;
 }
+
+int M2010::DecPtrCircular(int ptr, int ptrMAX)
+{
+    //These functions are designed for maipulating pointers with values 0 to ptrMax
+    int ptrTmp = -1;
+    if(ptr > 0)
+        ptrTmp = ptr -1;
+    else
+        ptrTmp = ptrMAX;
+    return ptrTmp;
+}
+

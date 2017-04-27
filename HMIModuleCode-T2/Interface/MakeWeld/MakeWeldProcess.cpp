@@ -150,15 +150,6 @@ bool MakeWeldProcess::HeightGraphReceive()
     return bResult;
 }
 
-void MakeWeldProcess::TeachModeProcess()
-{
-    qDebug() << "TeachModeProcess";
-    M10runMode* _M10runMode = M10runMode::Instance();
-    Statistics *_Statistics = Statistics::Instance();
-    _M10runMode->CalculateTeachMode(&CurrentSplice);
-    _Statistics->GetLimitsAfterWeld(&CurrentSplice);
-}
-
 void MakeWeldProcess::WeldCycleDaemonThread(void* _obj)
 {
     M2010 *_M2010 = M2010::Instance();
@@ -185,7 +176,8 @@ void MakeWeldProcess::WeldCycleDaemonThread(void* _obj)
             for(int i = 0; i < _ObjectPtr->CurrentWeldResult.PowerGraph.size(); i++)
             {
                 _ObjectPtr->CurrentWeldResult.PowerGraph[i] *=
-                        (_Interface->StatusData.Soft_Settings.SonicGenWatts / 200);
+                        ((float)_Interface->StatusData.Soft_Settings.SonicGenWatts / POWERFACTOR);
+//                DEBUG_PRINT(_ObjectPtr->CurrentWeldResult.PowerGraph[i]);
             }
             _ObjectPtr->CurrentStep = HEIGHTSnd;
             _ObjectPtr->m_triedCount = 0;
@@ -295,6 +287,7 @@ bool MakeWeldProcess::_start()
     M102IA *_M102IA = M102IA::Instance();
     M10runMode* _M10runMode = M10runMode::Instance();
     InterfaceClass* _Interface = InterfaceClass::Instance();
+    Statistics* _Statistics = Statistics::Instance();
     struct BransonMessageBox tmpMsgBox;
     _Interface->FirstScreenComesUp = true;
     bool bResult = true;
@@ -311,14 +304,12 @@ bool MakeWeldProcess::_start()
         m_pThread = new ThreadClass(0, (void*)(MakeWeldProcess::WeldCycleDaemonThread), this);
         m_pThread->setStopEnabled(false);
         m_pThread->setSuspendEnabled(false);
-//        if(CurrentNecessaryInfo.IsTestProcess == true)
-//        {
         if(CurrentSplice.TestSetting.TeachModeSetting.TeachModeType != TEACHMODESETTING::UNDEFINED)
+        {
             _M10runMode->init_m20_data_events(&CurrentSplice);
-//        }
-
+            _Statistics->ZeroM20DataEvents();
+        }
         m_pReadySM->_start();
-
         m_pReadySM->ReadyState = ReadyStateMachine::READYON;
     }
     return bResult;
@@ -448,4 +439,50 @@ void MakeWeldProcess::StopTeachMode()
 {
     M10runMode* _M10runMode = M10runMode::Instance();
     _M10runMode->TeachModeFinished(&CurrentSplice);
+}
+
+void MakeWeldProcess::TeachModeProcess()
+{
+    qDebug() << "TeachModeProcess";
+    Statistics *_Statistics = Statistics::Instance();
+    M2010 *_M2010 = M2010::Instance();
+    InterfaceClass *_Interface = InterfaceClass::Instance();
+    if(_M2010->M10Run.Alarm_found == false)
+    {
+        if(_Interface->StatusData.Cust_Data.PresetTeachModeSetting == QUALITY_DATA_FILE::GLOBALS)
+            _Statistics->CalcConfLimits(&_Interface->StatusData);
+        else
+            _Statistics->CalcConfLimits(&CurrentSplice);
+    }
+    _Statistics->GetLimitsAfterWeld(&CurrentSplice);
+}
+
+void MakeWeldProcess::EraseLastEntry()
+{
+    Statistics *_Statistics = Statistics::Instance();
+    InterfaceClass *_Interface = InterfaceClass::Instance();
+    M10runMode *_M10RunMode = M10runMode::Instance();
+    if(_Statistics->Splice_Stat.prts_count <= 0) return;
+    if(((_Interface->StatusData.Soft_Settings.Teach_Mode == TEACHMODESETTING::STANDARD) ||
+            (_Interface->StatusData.Soft_Settings.Teach_Mode == TEACHMODESETTING::SIGMA)))
+    {
+        if(_M10RunMode->PreviousWeldValid == true)
+        {
+            _Statistics->Splice_Stat.prts_count -= 1;
+            if(_Statistics->Splice_Stat.data_ptr > 0)
+                _Statistics->Splice_Stat.data_ptr -= 1;
+            else
+                _Statistics->Splice_Stat.data_ptr = M20_Data_Pnt_MI;
+
+            _Statistics->RotateOut(_Statistics->Splice_Stat.Time,
+                _Statistics->Splice_Stat.TimeData[_Statistics->Splice_Stat.data_ptr]);
+            _Statistics->RotateOut(_Statistics->Splice_Stat.Power,
+                _Statistics->Splice_Stat.PowerData[_Statistics->Splice_Stat.data_ptr]);
+            _Statistics->RotateOut(_Statistics->Splice_Stat.Pre_hght,
+                _Statistics->Splice_Stat.PreHghtData[_Statistics->Splice_Stat.data_ptr]);
+            _Statistics->RotateOut(_Statistics->Splice_Stat.Height,
+                _Statistics->Splice_Stat.HeightData[_Statistics->Splice_Stat.data_ptr]);
+            _Statistics->CalcConfLimits(&_Interface->StatusData);
+        }
+    }
 }

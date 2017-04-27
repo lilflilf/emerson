@@ -41,7 +41,6 @@ MODstart::MODstart()
     M2010   *_M2010   = M2010::Instance();
     M102IA  *_M102IA  = M102IA::Instance();
     M10runMode *_M10runMode = M10runMode::Instance();
-    Statistics *_Statistics = Statistics::Instance();
     ModRunSetup *_ModRunSetup = ModRunSetup::Instance();
     InterfaceClass *_Interface = InterfaceClass::Instance();
     BransonServer* _Server = BransonServer::Instance();
@@ -87,47 +86,47 @@ MODstart::MODstart()
         _M2010->ReceiveFlags.ActuatorType = false;
         _M102IA->IACommand(IAComGetActuator);
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.ActuatorType);
-        DEBUG_PRINT(_M2010->ReceiveFlags.ActuatorType);
+//        DEBUG_PRINT(_M2010->ReceiveFlags.ActuatorType);
 
         //Send command to get Controller Version string.
         _M2010->ReceiveFlags.ControllerVersionData = false;
         _M102IA->IACommand(IAComGetControllerVer);
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.ControllerVersionData);
-        DEBUG_PRINT(_M2010->ReceiveFlags.ControllerVersionData);
+//        DEBUG_PRINT(_M2010->ReceiveFlags.ControllerVersionData);
 
         _M2010->ReceiveFlags.ActuatorVersionData = false;
         _M102IA->IACommand(IAComGetActuatorVer);
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.ActuatorVersionData);
-        DEBUG_PRINT(_M2010->ReceiveFlags.ActuatorVersionData);
+//        DEBUG_PRINT(_M2010->ReceiveFlags.ActuatorVersionData);
 
         _M2010->ReceiveFlags.ActuatorPartNumData = false;
         _M102IA->IACommand(IAComGetActuatorPartNum);
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.ActuatorPartNumData);
-        DEBUG_PRINT(_M2010->ReceiveFlags.ActuatorPartNumData);
+//        DEBUG_PRINT(_M2010->ReceiveFlags.ActuatorPartNumData);
 
         _M2010->ReceiveFlags.ActuatorSerialNumData = false;
         _M102IA->IACommand(IAComGetActuatorSerialNum);
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.ActuatorSerialNumData);
-        DEBUG_PRINT(_M2010->ReceiveFlags.ActuatorPartNumData);
+//        DEBUG_PRINT(_M2010->ReceiveFlags.ActuatorPartNumData);
 
         _M2010->ReceiveFlags.SNdata = false;
         _M102IA->IACommand(IAComGetSerialNumber);
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.SNdata);
-        DEBUG_PRINT(_M2010->ReceiveFlags.SNdata);
+//        DEBUG_PRINT(_M2010->ReceiveFlags.SNdata);
 
         _M2010->ReceiveFlags.PNData = false;
         _M102IA->IACommand(IAComGetPartNumber);
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.PNData);
-        DEBUG_PRINT(_M2010->ReceiveFlags.PNData);
+//        DEBUG_PRINT(_M2010->ReceiveFlags.PNData);
 
         _M2010->ReceiveFlags.POWERrating = false;
         _M102IA->IACommand(IAComSendPWRrating);
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.POWERrating);
-        DEBUG_PRINT(_M2010->ReceiveFlags.POWERrating);
+//        DEBUG_PRINT(_M2010->ReceiveFlags.POWERrating);
         if (_M2010->ReceiveFlags.POWERrating == true)
         {
             _M2010->ReceiveFlags.POWERrating = false;
-            _M10INI->Power_to_Watts = _Interface->StatusData.Soft_Settings.SonicGenWatts / 200;
+            _M10INI->Power_to_Watts = (float)_Interface->StatusData.Soft_Settings.SonicGenWatts / POWERFACTOR;
             for(int i = 0; i <= 6; i++)
             {
                 _M10INI->Pwr_Prefix_Data[i] = i * (int)(0.2 *
@@ -137,53 +136,57 @@ MODstart::MODstart()
         _M2010->ReceiveFlags.HORNamplitude = false;
         _M102IA->IACommand(IAComSendHornAmplitude);
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.HORNamplitude);
-        DEBUG_PRINT(_M2010->ReceiveFlags.HORNamplitude);
+//        DEBUG_PRINT(_M2010->ReceiveFlags.HORNamplitude);
 
         _M2010->ReceiveFlags.SonicHitsData = false;
         _M102IA->IACommand(IAComSendSonicHits);    //Always make this last, it terminates the watch loop
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.SonicHitsData);
-        DEBUG_PRINT(_M2010->ReceiveFlags.SonicHitsData);
+//        DEBUG_PRINT(_M2010->ReceiveFlags.SonicHitsData);
 
         _M2010->ReceiveFlags.AlarmData = false;
         _M102IA->IACommand(IAComGetAlarmData);
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.AlarmData);
-        DEBUG_PRINT(_M2010->ReceiveFlags.AlarmData);
+//        DEBUG_PRINT(_M2010->ReceiveFlags.AlarmData);
+
+//        _M2010->ReceiveFlags.WELDdata = false;
+//        _M102IA->IACommand(IAComSendWeldData);
+//        _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.WELDdata);
 
         _M2010->ReceiveFlags.CoolingTypeData = false;
         _M102IA->IACommand(IAComGetCooling);
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.CoolingTypeData);
-        DEBUG_PRINT(_M2010->ReceiveFlags.CoolingTypeData);
+//        DEBUG_PRINT(_M2010->ReceiveFlags.CoolingTypeData);
 
         _M2010->ReceiveFlags.LockOnAlarmData = false;
         _M102IA->IACommand(IAComGetLockonAlarm);
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.LockOnAlarmData);
-        DEBUG_PRINT(_M2010->ReceiveFlags.LockOnAlarmData);
+//        DEBUG_PRINT(_M2010->ReceiveFlags.LockOnAlarmData);
 
         _M2010->ReceiveFlags.FootPadelDATA = false;
         _M102IA->IACommand(IAComGetRunModeNew);
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.FootPadelDATA);
         _Interface->StatusData.RunMode.Word &= 0xF800;
-        DEBUG_PRINT(_M2010->ReceiveFlags.FootPadelDATA);
+//        DEBUG_PRINT(_M2010->ReceiveFlags.FootPadelDATA);
 
         _M2010->ReceiveFlags.MachineFlagsData = false;
         _M102IA->IACommand(IAComGetMachineFlags);
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.MachineFlagsData);
-        DEBUG_PRINT(_M2010->ReceiveFlags.MachineFlagsData);
+//        DEBUG_PRINT(_M2010->ReceiveFlags.MachineFlagsData);
 
         _M2010->ReceiveFlags.TunePointData = false;
         _M102IA->IACommand(IAComGetTunePoint);
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.TunePointData);
-        DEBUG_PRINT(_M2010->ReceiveFlags.TunePointData);
+//        DEBUG_PRINT(_M2010->ReceiveFlags.TunePointData);
 
         _M2010->ReceiveFlags.FreqOffsetData = false;
         _M102IA->IACommand(IAComGetFrequencyOffset);
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.FreqOffsetData);
-        DEBUG_PRINT(_M2010->ReceiveFlags.FreqOffsetData);
+//        DEBUG_PRINT(_M2010->ReceiveFlags.FreqOffsetData);
 
         _M2010->ReceiveFlags.PhysicalKeyData = false;
         _M102IA->IACommand(IAComGetPhysicalKey);
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.PhysicalKeyData);
-        DEBUG_PRINT(_M2010->ReceiveFlags.PhysicalKeyData);
+//        DEBUG_PRINT(_M2010->ReceiveFlags.PhysicalKeyData);
 
         //Prepare Current VersaGraphics Version String.
         _Interface->CurrentVersions.SoftwareVersion = App.Major + "." + App.Minor + "." + App.Revision;
@@ -229,7 +232,6 @@ MODstart::MODstart()
             _M10runMode->UpdateMaintenanceData();
             Checkmaintenancelimit_EaWeld = false;
         }
-        _Statistics->UpdateSoftLimitData(false);
         //Open Ethernet serer
         if (_Interface->StatusData.NetworkingEnabled == true)
         {
@@ -321,7 +323,7 @@ void MODstart::GlobalInitM10()
     ptr_M2010->M10Run.Select_Part_file = false;
     ptr_M2010->M10Run.Select_Seq_file = false;
     ptr_M2010->M10Run.Alarm_found = false;
-    ptr_M10INI->Power_to_Watts = _Interface->StatusData.Soft_Settings.SonicGenWatts / 200;
+    ptr_M10INI->Power_to_Watts = (float)_Interface->StatusData.Soft_Settings.SonicGenWatts / POWERFACTOR;
     _Utility->Maxpower = (float)(1.2 * _Interface->StatusData.Soft_Settings.SonicGenWatts);
     for (i = 0; i <= 6; i++)
         ptr_M10INI->Pwr_Prefix_Data[i] = i * float(0.2 * _Interface->StatusData.Soft_Settings.SonicGenWatts);
@@ -504,7 +506,6 @@ void MODstart::OfflineInitialization(void* ptr)
     ModRunSetup *_ModRunSetup = ModRunSetup::Instance();
 //    M10INI *_M10INI = M10INI::Instance();
     M2010 *_M2010 = M2010::Instance();
-    Statistics *_Statistics = Statistics::Instance();
     InterfaceClass* _Interface = InterfaceClass::Instance();
     BransonServer* _Server = BransonServer::Instance();
     DBWorkOrderTable* _WorkOrderTable = DBWorkOrderTable::Instance();
@@ -523,7 +524,6 @@ void MODstart::OfflineInitialization(void* ptr)
             + _MODstart->App.Minor + "."
             + _MODstart->App.Revision;
 
-    _Statistics->UpdateSoftLimitData(false);
     //Open Ethernet serer
     if (_Interface->StatusData.NetworkingEnabled == true)
     {

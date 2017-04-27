@@ -43,31 +43,12 @@ Status_Data &Status_Data::operator= (const Status_Data &StatusDataObj)
     this->Soft_Settings.TunePoint = StatusDataObj.Soft_Settings.TunePoint;
     this->Soft_Settings.FrequencyOffset = StatusDataObj.Soft_Settings.FrequencyOffset;
 
-    this->Cust_Data.mod10a_settings.UnsignedWeldData =
-            StatusDataObj.Cust_Data.mod10a_settings.UnsignedWeldData;
-    this->Cust_Data.mod10a_settings.AfterBurstDelay =
-            StatusDataObj.Cust_Data.mod10a_settings.AfterBurstDelay;
-    this->Cust_Data.mod10a_settings.AfterBurstDuration =
-            StatusDataObj.Cust_Data.mod10a_settings.AfterBurstDuration;
-    this->Cust_Data.mod10a_settings.EnergyWindowPL =
-            StatusDataObj.Cust_Data.mod10a_settings.EnergyWindowPL;
-    this->Cust_Data.mod10a_settings.PreBurstIndex =
-            StatusDataObj.Cust_Data.mod10a_settings.PreBurstIndex;
     for(int i = 0; i < WIDTH_ADJ; i++)
         this->Cust_Data.cust_qual_range[i] = StatusDataObj.Cust_Data.cust_qual_range[i];
-
-    for(int i = 0; i< END_SL; i++)
-    {
-        this->HSDATA.HARD_LIMIT[i].TypeHS =
-                StatusDataObj.HSDATA.HARD_LIMIT[i].TypeHS;
-        this->HSDATA.HARD_LIMIT[i].ValueHS =
-                StatusDataObj.HSDATA.HARD_LIMIT[i].ValueHS;
-        this->HSDATA.SOFT_LIMIT[i].TypeHS =
-                StatusDataObj.HSDATA.SOFT_LIMIT[i].TypeHS;
-        this->HSDATA.SOFT_LIMIT[i].ValueHS =
-                StatusDataObj.HSDATA.SOFT_LIMIT[i].ValueHS;
-    }
-
+    this->Cust_Data.PresetTeachModeSetting = StatusDataObj.Cust_Data.PresetTeachModeSetting;
+    this->Cust_Data.StandardRunQuantity = StatusDataObj.Cust_Data.StandardRunQuantity;
+    this->Cust_Data.AutoRunQuantity = StatusDataObj.Cust_Data.AutoRunQuantity;
+    this->Cust_Data.SigmaRunQuantity = StatusDataObj.Cust_Data.SigmaRunQuantity;
 
     this->ComInfo.BaudRate = StatusDataObj.ComInfo.BaudRate;
     this->ComInfo.COMport = StatusDataObj.ComInfo.COMport;
@@ -219,34 +200,15 @@ bool Status_Data::ReadStatusDataFromQSetting()
     settings.endGroup();
 
     settings.beginGroup("Cust_Data");
-    settings.beginGroup("mod10a_settings");
-    Cust_Data.mod10a_settings.UnsignedWeldData = settings.value("UnsignedWeldData").value<int>();
-    Cust_Data.mod10a_settings.AfterBurstDelay = settings.value("AfterBurstDelay").value<int>();
-    Cust_Data.mod10a_settings.AfterBurstDuration = settings.value("AfterBurstDuration").value<int>();
-    Cust_Data.mod10a_settings.EnergyWindowPL = settings.value("EnergyWindowPL").value<int>();
-    Cust_Data.mod10a_settings.PreBurstIndex = settings.value("PreBurstIndex").value<int>();
-    settings.endGroup();
     for(int i = 0; i < WIDTH_ADJ; i++)
     {
         str = QString("cust_qual_range%1").arg(QString::number(i,10));
         Cust_Data.cust_qual_range[i] = settings.value(str).value<int>();
     }
-    settings.endGroup();
-
-    settings.beginGroup("HSDATA");
-    for(int i = 0; i< END_SL; i++)
-    {
-        str = QString("HARD_LIMIT%1.TypeHS").arg(QString::number(i, 10));
-        i_tmp = settings.value(str).value<int>();
-        HSDATA.HARD_LIMIT[i].TypeHS = (enum VALUETYPE)i_tmp;
-        str = QString("HARD_LIMIT%1.ValueHS").arg(QString::number(i, 10));
-        HSDATA.HARD_LIMIT[i].ValueHS = settings.value(str).value<int>();
-        str = QString("SOFT_LIMIT%1.TypeHS").arg(QString::number(i, 10));
-        i_tmp = settings.value(str).value<int>();
-        HSDATA.SOFT_LIMIT[i].TypeHS = (enum VALUETYPE)i_tmp;
-        str = QString("SOFT_LIMIT%1.ValueHS").arg(QString::number(i, 10));
-        HSDATA.SOFT_LIMIT[i].ValueHS = settings.value(str).value<int>();
-    }
+    Cust_Data.PresetTeachModeSetting = (QUALITY_DATA_FILE::PRESET_TEACHSETTING)settings.value("PresetTeachModeSetting").value<int>();
+    Cust_Data.StandardRunQuantity = settings.value("StandardRunQuantity").value<int>();
+    Cust_Data.AutoRunQuantity = settings.value("AutoRunQuantity").value<int>();
+    Cust_Data.SigmaRunQuantity = settings.value("SigmaRunQuantity").value<int>();
     settings.endGroup();
 
     settings.beginGroup("ComInfo");
@@ -409,32 +371,15 @@ void Status_Data::WriteStatusDataToQSetting()
     settings.endGroup();
 
     settings.beginGroup("Cust_Data");
-    settings.beginGroup("mod10a_settings");
-    settings.setValue("UnsignedWeldData", Cust_Data.mod10a_settings.UnsignedWeldData);
-    settings.setValue("AfterBurstDelay", Cust_Data.mod10a_settings.AfterBurstDelay);
-    settings.setValue("AfterBurstDuration", Cust_Data.mod10a_settings.AfterBurstDuration);
-    settings.setValue("EnergyWindowPL", Cust_Data.mod10a_settings.EnergyWindowPL);
-    settings.setValue("PreBurstIndex", Cust_Data.mod10a_settings.PreBurstIndex);
-    settings.endGroup();
     for(int i = 0; i < WIDTH_ADJ; i++)
     {
         str = QString("cust_qual_range%1").arg(QString::number(i,10));
         settings.setValue(str,Cust_Data.cust_qual_range[i]);
     }
-    settings.endGroup();
-
-    settings.beginGroup("HSDATA");
-    for(int i = 0; i< END_SL; i++)
-    {
-        str = QString("HARD_LIMIT%1.TypeHS").arg(QString::number(i, 10));
-        settings.setValue(str, HSDATA.HARD_LIMIT[i].TypeHS);
-        str = QString("HARD_LIMIT%1.ValueHS").arg(QString::number(i, 10));
-        settings.setValue(str, HSDATA.HARD_LIMIT[i].ValueHS);
-        str = QString("SOFT_LIMIT%1.TypeHS").arg(QString::number(i, 10));
-        settings.setValue(str, HSDATA.SOFT_LIMIT[i].TypeHS);
-        str = QString("SOFT_LIMIT%1.ValueHS").arg(QString::number(i, 10));
-        settings.setValue(str, HSDATA.SOFT_LIMIT[i].ValueHS);
-    }
+    settings.setValue("PresetTeachModeSetting", Cust_Data.PresetTeachModeSetting);
+    settings.setValue("StandardRunQuantity", Cust_Data.StandardRunQuantity);
+    settings.setValue("AutoRunQuantity", Cust_Data.AutoRunQuantity);
+    settings.setValue("SigmaRunQuantity", Cust_Data.SigmaRunQuantity);
     settings.endGroup();
 
     settings.beginGroup("ComInfo");

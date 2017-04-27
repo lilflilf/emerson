@@ -52,8 +52,10 @@ public:
     bool _start();
     bool _stop();
     bool _execute();
+public:
     void StopTeachMode();
     void TeachModeProcess();
+    void EraseLastEntry();
 public:
     static MakeWeldProcess* Instance();
 private:
