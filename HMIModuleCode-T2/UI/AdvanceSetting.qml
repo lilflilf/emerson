@@ -20,17 +20,19 @@ Item {
     signal signalCancel()
     signal signalAdvanceOk()
 
+    property var checkString: ""
+    property int checkIndex: -1
     function setState(checkIndex)
     {
-        if (checkIndex == 0 || checkIndex == 1) {
-           sigmaUpperrecbg.source = ""
-           sigmaLowerrecbg.source = ""
-        }
-        else if (checkIndex == 2)
-        {
-            standardupperrecbg.source = ""
-            standardLowerrecbg.source = ""
-        }
+//        if (checkIndex == 0 || checkIndex == 1) {
+//           sigmaUpperrecbg.source = ""
+//           sigmaLowerrecbg.source = ""
+//        }
+//        else if (checkIndex == 2)
+//        {
+//            standardupperrecbg.source = ""
+//            standardLowerrecbg.source = ""
+//        }
     }
 
     function defaultData()
@@ -62,9 +64,14 @@ Item {
 
     }
 
-    function setadvancesetingValue(index,text)
+    function setadvancesetingValue(text)
     {
-
+        if (checkString == "standardValue")
+            teachModel.set(checkIndex,{"standardValue":text})
+        else if (checkString == "autoValue")
+            teachModel.set(checkIndex,{"autoValue":text})
+        else if (checkString == "sigmaValue")
+            teachModel.set(checkIndex,{"sigmaValue":text})
     }
 
     function setadvancesetingdefalut()
@@ -220,6 +227,16 @@ Item {
                                                    "sigmaMaxValue":spliceModel.getTeachModeValue("TestSigmaPost-","max"),
                                                    "sigmaMinValue":spliceModel.getTeachModeValue("TestSigmaPost-","min"),
                               })
+            teachModel.append({"head":qsTr("Quantity"),"standardValue":spliceModel.getTeachModeValue("TestStandardQty","current"),
+                                                   "standardMaxValue":spliceModel.getTeachModeValue("TestStandardQty","max"),
+                                                   "standardMinValue":spliceModel.getTeachModeValue("TestStandardQty","min"),
+                                                   "autoValue":spliceModel.getTeachModeValue("TestAutoQty","current"),
+                                                   "autoMaxValue":spliceModel.getTeachModeValue("TestAutoQty","max"),
+                                                   "autoMinValue":spliceModel.getTeachModeValue("TestAutoQty","min"),
+                                                   "sigmaValue":spliceModel.getTeachModeValue("TestSigmaQty","current"),
+                                                   "sigmaMaxValue":spliceModel.getTeachModeValue("TestSigmaQty","max"),
+                                                   "sigmaMinValue":spliceModel.getTeachModeValue("TestSigmaQty","min"),
+                              })
 
         }
     }
@@ -257,6 +274,22 @@ Item {
         }
     }
 
+    Text {
+        id: sample
+        text: qsTr("SampleSize")
+        horizontalAlignment: Qt.AlignHCenter
+        verticalAlignment: Qt.AlignVCenter
+        color: "white"
+        font.pointSize: 18
+        font.family: "arial"
+        height: 60
+        width: 150
+
+        anchors.bottom: line3.top
+        anchors.left: line1.left
+        anchors.leftMargin: 30
+    }
+
     ListView{
         anchors.top: line1.bottom
         anchors.left: line1.left
@@ -264,6 +297,7 @@ Item {
         anchors.right: line3.right
         anchors.topMargin: 5
         model: teachModel
+        interactive: false
         delegate: Item {
             width: line1.width
             height: 50
@@ -287,6 +321,8 @@ Item {
                 height: 46
                 anchors.left: headText.right
                 onMouseAreaClick: {
+                    checkString = "standardValue"
+                    checkIndex = index
                     keyNum.visible = true
                     keyNum.titleText = head
                     keyNum.currentValue = standardValue
@@ -314,6 +350,8 @@ Item {
                 height: 46
                 anchors.left: headText2.right
                 onMouseAreaClick: {
+                    checkString = "autoValue"
+                    checkIndex = index
                     keyNum.visible = true
                     keyNum.titleText = head
                     keyNum.currentValue = autoValue
@@ -341,6 +379,8 @@ Item {
                 height: 46
                 anchors.left: headText3.right
                 onMouseAreaClick: {
+                    checkString = "sigmaValue"
+                    checkIndex = index
                     keyNum.visible = true
                     keyNum.titleText = head
                     keyNum.currentValue = sigmaValue
@@ -459,7 +499,7 @@ Item {
         currentValue: "123"
         onCurrentClickIndex: {
             if (index == 15) {
-                setadvancesetingValue(advanceset.currentIndex,keyNum.inputText)
+                setadvancesetingValue(keyNum.inputText)
                 background.visible = false
                 background.opacity = 0
                 keyNum.visible = false
@@ -475,7 +515,7 @@ Item {
         }
         onInputTextChanged: {
             if (keyNum.inputText != "") {
-                setadvancesetingValue(advanceset.currentIndex,keyNum.inputText)
+                setadvancesetingValue(keyNum.inputText)
             }
         }
     }

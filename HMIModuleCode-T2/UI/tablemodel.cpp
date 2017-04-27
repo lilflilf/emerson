@@ -598,6 +598,30 @@ QString SplicesModel::getTeachModeValue(QString valueKey, QString valueType)
         else if (valueType == "min")
             ResultStr = variantToString->SigmaTeachModeToString(m_interface->StatusData.Cust_Data.cust_qual_range[HEIGHT_CONFRG_MS]).Minimum;
     }
+    else if (valueKey == "TestStandardQty") {
+        if (valueType == "current")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.StandardRunQuantity).Current;
+        else if (valueType == "max")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.StandardRunQuantity).Maximum;
+        else if (valueType == "min")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.StandardRunQuantity).Minimum;
+    }
+    else if (valueKey == "TestAutoQty") {
+        if (valueType == "current")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.AutoRunQuantity).Current;
+        else if (valueType == "max")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.AutoRunQuantity).Maximum;
+        else if (valueType == "min")
+            ResultStr = variantToString->StandardAutoTeachModeToString(m_interface->StatusData.Cust_Data.AutoRunQuantity).Minimum;
+    }
+    else if (valueKey == "TestSigmaQty") {
+        if (valueType == "current")
+            ResultStr = variantToString->SigmaTeachModeToString(m_interface->StatusData.Cust_Data.SigmaRunQuantity).Current;
+        else if (valueType == "max")
+            ResultStr = variantToString->SigmaTeachModeToString(m_interface->StatusData.Cust_Data.SigmaRunQuantity).Maximum;
+        else if (valueType == "min")
+            ResultStr = variantToString->SigmaTeachModeToString(m_interface->StatusData.Cust_Data.SigmaRunQuantity).Minimum;
+    }
 //    else if (valueKey == "TestModel") {
 //        ResultStr = QString("%1").arg((int)presetElement.TestSetting.TestMode);
 //    }
