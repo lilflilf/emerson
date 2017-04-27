@@ -72,7 +72,8 @@ SOURCES += main.cpp \
     Interface/SequenceElement.cpp \
     DataBase/DBSequenceTable.cpp \
     Interface/MakeWeld/ReadyStateMachine.cpp \
-    Modules/ShrinkTubeSerial.cpp
+    Modules/ShrinkTubeSerial.cpp \
+    Interface/TeachModeAdvance/TeachModeAdvance.cpp
 
 
 
@@ -148,7 +149,8 @@ HEADERS += \
     Interface/SequenceElement.h \
     DataBase/DBSequenceTable.h \
     Interface/MakeWeld/ReadyStateMachine.h \
-    Modules/ShrinkTubeSerial.h
+    Modules/ShrinkTubeSerial.h \
+    Interface/TeachModeAdvance/TeachModeAdvance.h
 
 DISTFILES += \
 #    UI/displayChinese_zh_CN.qm \

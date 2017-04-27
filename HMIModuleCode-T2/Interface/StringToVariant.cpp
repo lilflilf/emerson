@@ -195,3 +195,8 @@ int StringToVariant::SigmaTeachModeToInt(QString strSigma)
 {
     return (int)_Utility->StringToFormatedData(DINSigmaTeachMode, strSigma);
 }
+
+int StringToVariant::QuantityTeachModeToInt(QString strQuantity)
+{
+    return (int)_Utility->StringToFormatedData(DINTeachModeQuantity, strQuantity);
+}

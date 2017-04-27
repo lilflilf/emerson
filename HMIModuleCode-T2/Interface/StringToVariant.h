@@ -39,6 +39,7 @@ public:
     int ShrinkTimeToInt(QString);
     int SigmaTeachModeToInt(QString);
     int PercentTeachModeToInt(QString);
+    int QuantityTeachModeToInt(QString);
 public:
     static StringToVariant* Instance();
 private:
