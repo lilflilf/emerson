@@ -8,8 +8,8 @@ WorkOrderElement::WorkOrderElement()
     CreatedDate = 0;
     OperatorID = -1;
     PartList.clear();
-    NoOfPart = PartList.size();
-    Quantity = -1;
+    CurrentSpliceIndex = -1;
+    BatchSize = -1;
     CurrentPartCount = -1;
     MissPartList.clear();
     CurrentPartIndex.PartID = -1;
@@ -39,8 +39,8 @@ WorkOrderElement WorkOrderElement::operator=(const WorkOrderElement &WorkOrderOb
         this->PartList.insert(i.key(),i.value());
         ++i;
     }
-    this->NoOfPart = this->PartList.size();
-    this->Quantity = WorkOrderObject.Quantity;
+    this->CurrentSpliceIndex = WorkOrderObject.CurrentSpliceIndex;
+    this->BatchSize = WorkOrderObject.BatchSize;
     this->CurrentPartCount = WorkOrderObject.CurrentPartCount;
     i = WorkOrderObject.MissPartList.constBegin();
     while(i != WorkOrderObject.MissPartList.constEnd())

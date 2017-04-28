@@ -2,7 +2,10 @@
 #include "Interface/Interface.h"
 #include "Modules/UtilityClass.h"
 #include "Modules/BransonServer.h"
-#include "DataBase/DBWorkOrderTable.h"
+#include "DataBase/DBHarnessTable.h"
+#include "DataBase/DBSequenceTable.h"
+#include "DataBase/DBPresetTable.h"
+#include "DataBase/DBWireTable.h"
 #include <QDebug>
 DataCommunication::DataCommunication()
 {
@@ -58,14 +61,13 @@ bool DataCommunication::_Set()
 {
     InterfaceClass* _Interface = InterfaceClass::Instance();
     UtilityClass* _Utility = UtilityClass::Instance();
-    DBWorkOrderTable* _WorkOrderTable = DBWorkOrderTable::Instance();
     DBHarnessTable*   _HarnessTable   = DBHarnessTable::Instance();
+    DBSequenceTable* _SequenceTable = DBSequenceTable::Instance();
     DBPresetTable*    _SpliceTable    = DBPresetTable::Instance();
     DBWireTable*      _WireTable      = DBWireTable::Instance();
     qDebug()<<"_Set";
     _Interface->StatusData.ShrinkTubeMode =
             CurrentDataCommunication.GlobalShrinkTubeMode;
-
     QString str;
     _Interface->StatusData.ShrinkTubeDefaults.clear();
     struct ShrinkTubeData tmpShrinkTube;
@@ -84,7 +86,7 @@ bool DataCommunication::_Set()
     if(_Interface->StatusData.ModularProductionEnabled != CurrentDataCommunication.ModularProduction)
     {
         _Interface->StatusData.ModularProductionEnabled = CurrentDataCommunication.ModularProduction;
-        _WorkOrderTable->SwitchDBObject(_Interface->StatusData.ModularProductionEnabled);
+        _SequenceTable->SwitchDBObject(_Interface->StatusData.ModularProductionEnabled);
         _HarnessTable->SwitchDBObject(_Interface->StatusData.ModularProductionEnabled);
         _SpliceTable->SwitchDBObject(_Interface->StatusData.ModularProductionEnabled);
         _WireTable->SwitchDBObject(_Interface->StatusData.ModularProductionEnabled);
@@ -98,10 +100,8 @@ bool DataCommunication::_Set()
 void DataCommunication::_Default()
 {
     InterfaceClass* _Interface = InterfaceClass::Instance();
-//    UtilityClass* _Utility = UtilityClass::Instance();
     _Interface->StatusData.ShrinkTubeMode =
             _Interface->DefaultStatusData.ShrinkTubeMode;
-
     QString str;
     _Interface->StatusData.ShrinkTubeDefaults.clear();
     struct ShrinkTubeData tmpShrinkTube;

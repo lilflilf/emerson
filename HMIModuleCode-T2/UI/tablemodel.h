@@ -7,7 +7,6 @@
 #include <string>
 #include "stdio.h"
 #include "stdlib.h"
-#include "DataBase/DBWorkOrderTable.h"
 #include "DataBase/DBPresetTable.h"
 #include "DataBase/DBHarnessTable.h"
 #include "DataBase/DBOperatorTable.h"
@@ -43,7 +42,6 @@ public:
     void setModelList();
 
     QStringList m_idList;
-    DBWorkOrderTable *m_workOrderAdaptor;
     DBHarnessTable *m_harnessAdaptor;
     QMap<int, QString> *workOrders;
     HarnessElement harnessElement;
