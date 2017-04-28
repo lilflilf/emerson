@@ -655,7 +655,13 @@ Item {
         onSignalTestStart: {
             testDialog.visible = false
             backGround.visible = false
-            loader.source = "qrc:/UI/TestDetail.qml"
+//            loader.source = "qrc:/UI/TestDetail.qml"
+
+            mainRoot.bIsTest = true
+            hmiAdaptor.setTestSpliceId(spliceModel.getValue(selectIndx,"SpliceId"))
+            mainRoot.bIsEditSplice = true
+            spliceModel.editNew(spliceModel.getValue(selectIndx,"SpliceId"))
+            mainRoot.checkNeedPassWd(-1)
 
         }
         onSignalInputNum: {

@@ -637,23 +637,22 @@ QString SplicesModel::getTeachModeValue(QString valueKey, QString valueType)
         else if (valueType == "min")
             ResultStr = variantToString->TeachModeQuantity(m_interface->StatusData.Cust_Data.SigmaRunQuantity).Minimum;
     }
-//    else if (valueKey == "TestModel") {
-//        ResultStr = QString("%1").arg((int)presetElement.TestSetting.TestMode);
-//    }
-//    else if (valueKey == "TestCount") {
-//        ResultStr = QString("%1").arg(presetElement.TestSetting.BatchSize);
-//    }
-//    else if (valueKey == "TeachMode") {
-//        ResultStr = QString("%1").arg((int)presetElement.TestSetting.TeachModeSetting.TeachModeType);
-//    }
+    else if (valueKey == "TestModel") {
+        ResultStr = QString("%1").arg((int)m_interface->StatusData.Soft_Settings.Teach_Mode);
+    }
+    else if (valueKey == "TestCount") {
+        ResultStr = QString("%1").arg((int)m_interface->StatusData.Soft_Settings.RunCount);
+    }
+    else if (valueKey == "TeachMode") {
+        ResultStr = QString("%1").arg((int)presetElement.TestSetting.TeachModeSetting.TeachModeType);
+    }
     else
         ResultStr = "";
     return ResultStr;
 }
 
-QString SplicesModel::setTeachModeValue(QString valueKey, QString standValue, QString autoValue, QString sigmaValue)
+void SplicesModel::setTeachModeValue(QString valueKey, QString standValue, QString autoValue, QString sigmaValue)
 {
-    qDebug() << "setTeachModeValue" << valueKey << standValue << autoValue << sigmaValue;
     if (valueKey == "TestTime+")
     {
         m_interface->tempStatusData.Cust_Data.cust_qual_range[TIME_PLRG_STD] = stringToVariant->SigmaTeachModeToInt(standValue);

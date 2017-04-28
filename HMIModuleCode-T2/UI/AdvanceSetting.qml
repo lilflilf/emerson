@@ -367,9 +367,6 @@ Item {
         text: qsTr("OK")
         textColor: "white"
         onClicked: {
-
-            for (var i = 0;i < teachModel.count;i++)
-                console.log("for ",teachModel.get(i).standardValue,teachModel.get(i).autoValue,teachModel.get(i).sigmaValue)
             spliceModel.setTeachModeValue("TestTime+",teachModel.get(0).standardValue,teachModel.get(0).autoValue,teachModel.get(0).sigmaValue)
             spliceModel.setTeachModeValue("TestTime-",teachModel.get(1).standardValue,teachModel.get(1).autoValue,teachModel.get(1).sigmaValue)
 

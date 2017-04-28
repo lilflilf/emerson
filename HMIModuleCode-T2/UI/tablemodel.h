@@ -129,7 +129,7 @@ public slots:
     Q_INVOKABLE void defaultTeachMode();
 
     Q_INVOKABLE QString getTeachModeValue(QString valueKey, QString valueType);
-    Q_INVOKABLE QString setTeachModeValue(QString valueKey, QString standValue,QString autoValue,QString sigmaValue);
+    Q_INVOKABLE void setTeachModeValue(QString valueKey, QString standValue,QString autoValue,QString sigmaValue);
 
     Q_INVOKABLE QString getStructValue(QString valueKey, QString valueType); // create wire
     Q_INVOKABLE int getRawData(QString key);
