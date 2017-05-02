@@ -445,10 +445,14 @@ public:
     int AntisideSpliceTime;
     int LockonAlarm;
     int CycleCount;
-    int MaintenanceLimits[8];
-    int CurrentMaintenanceLimits[8];
+
+    int CurrentCountMaintenanceLimits[8];
+    double CurrentEnergyMaintenanceLimits[8];
+    int MaintenanceCountLimits[8];
+    double MaintenanceEnergyLimits[8];
     unsigned int MaintenanceDateStarted[8];
     bool Maintenance80PercentAlarm[8];
+    bool Maintenance100PercentLock[8];
 
 //    enum SCREEN_MODE StartScreen;
     bool EnableModularFlag;

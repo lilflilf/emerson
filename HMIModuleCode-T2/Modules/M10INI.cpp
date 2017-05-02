@@ -446,24 +446,31 @@ void M10INI::Init_StatusData()
     _Interface->DefaultStatusData.RemoteGraphData = false;
 //    _Interface->StatusData.AntisideSpliceTime = DEFAULTUNLOADTIME; //Default Unload time should be 1.5s
 
-//    for(int i = 0; i<= 7; i++)
-//    {
-//        _Interface->DefaultStatusData.MaintenanceLimits[i] = 0;
-//        _Interface->DefaultStatusData.CurrentMaintenanceLimits[i] = 0;
-//        _Interface->DefaultStatusData.MaintenanceDateStarted[i] = 0;
-//    }
-    _Interface->DefaultStatusData.MaintenanceLimits[0] = 200000;
-    _Interface->DefaultStatusData.MaintenanceLimits[1] = 400000;
-    _Interface->DefaultStatusData.MaintenanceLimits[2] = 400000;
-    _Interface->DefaultStatusData.MaintenanceLimits[3] = 400000;
-    _Interface->DefaultStatusData.MaintenanceLimits[4] = 400000;
+    for(int i = 0; i<= 7; i++)
+    {
+        _Interface->DefaultStatusData.Maintenance80PercentAlarm[i] = false;
+        _Interface->DefaultStatusData.Maintenance100PercentLock[i] = false;
+    }
+    _Interface->DefaultStatusData.MaintenanceCountLimits[0] = 400000;
+    _Interface->DefaultStatusData.MaintenanceCountLimits[1] = 400000;
+    _Interface->DefaultStatusData.MaintenanceCountLimits[2] = 400000;
+    _Interface->DefaultStatusData.MaintenanceCountLimits[3] = 400000;
 
-    _Interface->DefaultStatusData.CurrentMaintenanceLimits[0] = 105009;
-    _Interface->DefaultStatusData.CurrentMaintenanceLimits[1] = 15001;
-    _Interface->DefaultStatusData.CurrentMaintenanceLimits[2] = 25111;
-    _Interface->DefaultStatusData.CurrentMaintenanceLimits[3] = 35222;
-    _Interface->DefaultStatusData.CurrentMaintenanceLimits[4] = 35224;
-    _Interface->DefaultStatusData.CurrentMaintenanceLimits[5] = 53098086;
+    _Interface->DefaultStatusData.MaintenanceEnergyLimits[0] = 200000;
+    _Interface->DefaultStatusData.MaintenanceEnergyLimits[1] = 200000;
+    _Interface->DefaultStatusData.MaintenanceEnergyLimits[2] = 200000;
+    _Interface->DefaultStatusData.MaintenanceEnergyLimits[3] = 200000;
+
+    _Interface->DefaultStatusData.CurrentCountMaintenanceLimits[0] = 105009;
+    _Interface->DefaultStatusData.CurrentCountMaintenanceLimits[1] = 15001;
+    _Interface->DefaultStatusData.CurrentCountMaintenanceLimits[2] = 25111;
+    _Interface->DefaultStatusData.CurrentCountMaintenanceLimits[3] = 35222;
+    _Interface->DefaultStatusData.CurrentCountMaintenanceLimits[5] = 53098086;
+
+    _Interface->DefaultStatusData.CurrentEnergyMaintenanceLimits[0] = 100000;
+    _Interface->DefaultStatusData.CurrentEnergyMaintenanceLimits[1] = 100000;
+    _Interface->DefaultStatusData.CurrentEnergyMaintenanceLimits[2] = 100000;
+    _Interface->DefaultStatusData.CurrentEnergyMaintenanceLimits[3] = 100000;
 
     QDateTime tmp = QDateTime::fromString("10/20/2016","MM/dd/yyyy");
     _Interface->DefaultStatusData.MaintenanceDateStarted[0] = tmp.toTime_t();

@@ -911,20 +911,20 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         _M2010->ReceiveFlags.MachineFlagsData = true;
         break;
     case IASigDataMaintCntr:
-        _Interface->StatusData.CurrentMaintenanceLimits[0] = GetLongValue(HexString, 10);
-        _Interface->StatusData.CurrentMaintenanceLimits[1] = GetLongValue(HexString, 18);
-        _Interface->StatusData.CurrentMaintenanceLimits[2] = GetLongValue(HexString, 26);
-        _Interface->StatusData.CurrentMaintenanceLimits[3] = GetLongValue(HexString, 34);
+//        _Interface->StatusData.CurrentEnergyMaintenanceLimits[0] = GetLongValue(HexString, 9);
+//        _Interface->StatusData.CurrentEnergyMaintenanceLimits[1] = GetLongValue(HexString, 17);
+//        _Interface->StatusData.CurrentEnergyMaintenanceLimits[2] = GetLongValue(HexString, 25);
+//        _Interface->StatusData.CurrentEnergyMaintenanceLimits[3] = GetLongValue(HexString, 33);
 
-        _Interface->StatusData.CurrentMaintenanceLimits[4] = GetLongValue(HexString, 42);
-        _Interface->StatusData.CurrentMaintenanceLimits[5] = GetLongValue(HexString, 50);
-        _Interface->StatusData.CurrentMaintenanceLimits[6] = GetLongValue(HexString, 58);
-        _Interface->StatusData.CurrentMaintenanceLimits[7] = GetLongValue(HexString, 66);
+//        _Interface->StatusData.CurrentCountMaintenanceLimits[0] = GetLongValue(HexString, 41);
+//        _Interface->StatusData.CurrentCountMaintenanceLimits[1] = GetLongValue(HexString, 49);
+//        _Interface->StatusData.CurrentCountMaintenanceLimits[2] = GetLongValue(HexString, 57);
+//        _Interface->StatusData.CurrentCountMaintenanceLimits[3] = GetLongValue(HexString, 65);
         _M2010->ReceiveFlags.MAINTENANCEcounters = true;
 //        Save_StatusData False
         break;
     case IASigDataCycleCntr:
-        _Interface->StatusData.CycleCount = GetLongValue(HexString, 10);
+        _Interface->StatusData.CycleCount = GetLongValue(HexString, 9);
         _M10INI->Save_StatusData(false);
         break;
     case IASigReadPower:

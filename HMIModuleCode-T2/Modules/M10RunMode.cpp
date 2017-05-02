@@ -52,15 +52,18 @@ void M10runMode::Save_Data_Events()
 void M10runMode::UpdateMaintenanceData()
 {
     M10INI *_M10INI = M10INI::Instance();
+    M102IA *_M102IA = M102IA::Instance();
     InterfaceClass* _Interface = InterfaceClass::Instance();
     QDateTime TimeLabel = QDateTime::currentDateTime();
     for(int i = 0; i < 8; i++)
     {
-        if(_Interface->StatusData.CurrentMaintenanceLimits[i] == 0)
+        if((_Interface->StatusData.CurrentCountMaintenanceLimits[i] == 0) ||
+            (_Interface->StatusData.CurrentEnergyMaintenanceLimits[i] == 0))
         {
             _Interface->StatusData.MaintenanceDateStarted[i] = TimeLabel.toTime_t();
         }
-        _Interface->StatusData.CurrentMaintenanceLimits[i]++;
+        _Interface->StatusData.CurrentCountMaintenanceLimits[i]++;
+        _Interface->StatusData.CurrentEnergyMaintenanceLimits[i] += ((double)_M102IA->IAactual.Power / 1000);
     }
     _M10INI->Save_StatusData(false);
 }

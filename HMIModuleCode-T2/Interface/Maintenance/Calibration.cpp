@@ -23,7 +23,8 @@ bool Calibration::CloseSafetyGuard()
     M2010* _M2010 = M2010::Instance();
     DBMaintenanceLogTable* _MaintenanceLogTable = DBMaintenanceLogTable::Instance();
     MaintenanceLogElement MaintenanceLog;
-    MaintenanceLog.MaintenanceType = MaintenanceTypeString[CALIBRATE];
+    MaintenanceLog.MaintenanceType =
+            MaintenanceTypeString[MaintenanceLogElement::CALIBRATE];
     MaintenanceLog.OperatorID = _Interface->CurrentOperator.OperatorID;
     MaintenanceLog.CreatedDate = QDateTime::currentDateTime().toTime_t();
     struct BransonMessageBox tmpMsgBox;
@@ -32,7 +33,8 @@ bool Calibration::CloseSafetyGuard()
     {
         _M102IA->SendIACommand(IAComAuxMotion, DO_CLOSE_SAFETY);
         bool bResult = false;
-        MaintenanceLog.MaintenanceMsg = MaintenanceMessageString[CALIBRATE_W_H_START];
+        MaintenanceLog.MaintenanceMsg =
+                MaintenanceMessageString[MaintenanceLogElement::CALIBRATE_W_H_START];
         _MaintenanceLogTable->InsertRecordIntoTable(&MaintenanceLog);
         _M2010->ReceiveFlags.IOdata = false;
         _M102IA->IACommand(IAComSendIOdata);
@@ -54,7 +56,8 @@ bool Calibration::CloseSafetyGuard()
                 tmpMsgBox.func_ptr = NULL;
                 _Interface->cMsgBox(&tmpMsgBox);
                 bResult = false;
-                MaintenanceLog.MaintenanceMsg = MaintenanceMessageString[CALIBRATE_W_H_FALSE];
+                MaintenanceLog.MaintenanceMsg =
+                        MaintenanceMessageString[MaintenanceLogElement::CALIBRATE_W_H_FALSE];
                 _MaintenanceLogTable->InsertRecordIntoTable(&MaintenanceLog);
             }
         }
@@ -70,14 +73,16 @@ void Calibration::OpenSafetyGuard()
     M102IA* _M102IA = M102IA::Instance();
     DBMaintenanceLogTable* _MaintenanceLogTable = DBMaintenanceLogTable::Instance();
     MaintenanceLogElement MaintenanceLog;
-    MaintenanceLog.MaintenanceType = MaintenanceTypeString[CALIBRATE];
+    MaintenanceLog.MaintenanceType =
+            MaintenanceTypeString[MaintenanceLogElement::CALIBRATE];
     MaintenanceLog.OperatorID = _Interface->CurrentOperator.OperatorID;
     MaintenanceLog.CreatedDate = QDateTime::currentDateTime().toTime_t();
     if((_Interface->StatusData.MachineType == ACT2032) ||
             (_Interface->StatusData.MachineType == ACTNEWSPLICER))
     {
         _M102IA->SendIACommand(IAComAuxMotion, DO_OPEN_SAFETY);
-        MaintenanceLog.MaintenanceMsg = MaintenanceMessageString[CALIBRATE_W_H_CANCEL];
+        MaintenanceLog.MaintenanceMsg =
+                MaintenanceMessageString[MaintenanceLogElement::CALIBRATE_W_H_CANCEL];
         _MaintenanceLogTable->InsertRecordIntoTable(&MaintenanceLog);
     }
 }
@@ -140,7 +145,8 @@ void Calibration::HeightCalibration()
     InterfaceClass* _Interface = InterfaceClass::Instance();
     DBMaintenanceLogTable* _MaintenanceLogTable = DBMaintenanceLogTable::Instance();
     MaintenanceLogElement MaintenanceLog;
-    MaintenanceLog.MaintenanceType = MaintenanceTypeString[CALIBRATE];
+    MaintenanceLog.MaintenanceType =
+            MaintenanceTypeString[MaintenanceLogElement::CALIBRATE];
     MaintenanceLog.OperatorID = _Interface->CurrentOperator.OperatorID;
     MaintenanceLog.CreatedDate = QDateTime::currentDateTime().toTime_t();
     bool bResult = false;
@@ -161,7 +167,8 @@ void Calibration::HeightCalibration()
             _Interface->cMsgBox(&tmpMsgBox);
             CalbCount = 1;
             bResult = true;
-            MaintenanceLog.MaintenanceMsg = MaintenanceMessageString[CALIBRATE_W_H_COMPLETE];
+            MaintenanceLog.MaintenanceMsg =
+                    MaintenanceMessageString[MaintenanceLogElement::CALIBRATE_W_H_COMPLETE];
             _MaintenanceLogTable->InsertRecordIntoTable(&MaintenanceLog);
         }else if (_M102IA->HeightCalResult == 0)
         {
@@ -171,7 +178,8 @@ void Calibration::HeightCalibration()
             tmpMsgBox.func_ptr = NULL;
             _Interface->cMsgBox(&tmpMsgBox);
             CalbCount = 1;
-            MaintenanceLog.MaintenanceMsg = MaintenanceMessageString[CALIBRATE_W_H_FALSE];
+            MaintenanceLog.MaintenanceMsg =
+                    MaintenanceMessageString[MaintenanceLogElement::CALIBRATE_W_H_FALSE];
             _MaintenanceLogTable->InsertRecordIntoTable(&MaintenanceLog);
         }else{
 
@@ -183,7 +191,8 @@ void Calibration::HeightCalibration()
         tmpMsgBox.func_ptr = NULL;
         _Interface->cMsgBox(&tmpMsgBox);
         CalbCount = 1;
-        MaintenanceLog.MaintenanceMsg = MaintenanceMessageString[CALIBRATE_W_H_FALSE];
+        MaintenanceLog.MaintenanceMsg =
+                MaintenanceMessageString[MaintenanceLogElement::CALIBRATE_W_H_FALSE];
         _MaintenanceLogTable->InsertRecordIntoTable(&MaintenanceLog);
     }
     _M102IA->IACommand(IAComHornOpen);
@@ -199,10 +208,12 @@ void Calibration::HornCalibrationStart()
     InterfaceClass* _Interface = InterfaceClass::Instance();
     DBMaintenanceLogTable* _MaintenanceLogTable = DBMaintenanceLogTable::Instance();
     MaintenanceLogElement MaintenanceLog;
-    MaintenanceLog.MaintenanceType = MaintenanceTypeString[CALIBRATE];
+    MaintenanceLog.MaintenanceType =
+            MaintenanceTypeString[MaintenanceLogElement::CALIBRATE];
     MaintenanceLog.OperatorID = _Interface->CurrentOperator.OperatorID;
     MaintenanceLog.CreatedDate = QDateTime::currentDateTime().toTime_t();
-    MaintenanceLog.MaintenanceMsg = MaintenanceMessageString[CALIBRATE_AMP_START];
+    MaintenanceLog.MaintenanceMsg =
+            MaintenanceMessageString[MaintenanceLogElement::CALIBRATE_AMP_START];
     _MaintenanceLogTable->InsertRecordIntoTable(&MaintenanceLog);
     bool bResult = false;
     RunSonicsPressed();
@@ -218,10 +229,12 @@ void Calibration::HornCalibrationStop()
     InterfaceClass* _Interface = InterfaceClass::Instance();
     DBMaintenanceLogTable* _MaintenanceLogTable = DBMaintenanceLogTable::Instance();
     MaintenanceLogElement MaintenanceLog;
-    MaintenanceLog.MaintenanceType = MaintenanceTypeString[CALIBRATE];
+    MaintenanceLog.MaintenanceType =
+            MaintenanceTypeString[MaintenanceLogElement::CALIBRATE];
     MaintenanceLog.OperatorID = _Interface->CurrentOperator.OperatorID;
     MaintenanceLog.CreatedDate = QDateTime::currentDateTime().toTime_t();
-    MaintenanceLog.MaintenanceMsg = MaintenanceMessageString[CALIBRATE_AMP_COMPLETE];
+    MaintenanceLog.MaintenanceMsg =
+            MaintenanceMessageString[MaintenanceLogElement::CALIBRATE_AMP_COMPLETE];
     _MaintenanceLogTable->InsertRecordIntoTable(&MaintenanceLog);
 }
 

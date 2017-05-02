@@ -55,40 +55,40 @@ bool AdvancedMaintenance::_execute(int funCode)
             DBMaintenanceLogTable::Instance();
     MaintenanceLogElement MaintenanceLog;
     InterfaceClass* _Interface = InterfaceClass::Instance();
-    MaintenanceLog.MaintenanceType = MaintenanceTypeString[ADVMAINTAIN];
+    MaintenanceLog.MaintenanceType = MaintenanceTypeString[MaintenanceLogElement::ADVMAINTAIN];
     MaintenanceLog.OperatorID = _Interface->CurrentOperator.OperatorID;
     MaintenanceLog.CreatedDate = QDateTime::currentDateTime().toTime_t();
     switch(funCode)
     {
     case ANVILARMCLICK:
         AnvilArm_Click();
-        MaintenanceLog.MaintenanceMsg = MaintenanceMessageString[ANVILARM_MOVE];
+        MaintenanceLog.MaintenanceMsg = MaintenanceMessageString[MaintenanceLogElement::ANVILARM_MOVE];
         _MaintenanceLog->InsertRecordIntoTable(&MaintenanceLog);
         break;
     case ANVILCLICK:
         Anvil_Click();
-        MaintenanceLog.MaintenanceMsg = MaintenanceMessageString[ANVIL_MOVE];
+        MaintenanceLog.MaintenanceMsg = MaintenanceMessageString[MaintenanceLogElement::ANVIL_MOVE];
         _MaintenanceLog->InsertRecordIntoTable(&MaintenanceLog);
         break;
     case GATHERCLICK:
         qDebug()<<"Gather";
         Gather_Click();
-        MaintenanceLog.MaintenanceMsg = MaintenanceMessageString[GATHER_MOVE];
+        MaintenanceLog.MaintenanceMsg = MaintenanceMessageString[MaintenanceLogElement::GATHER_MOVE];
         _MaintenanceLog->InsertRecordIntoTable(&MaintenanceLog);
         break;
     case CUTTERCLICK:
         Cutter_Click();
-        MaintenanceLog.MaintenanceMsg = MaintenanceMessageString[CUTTER_MOVE];
+        MaintenanceLog.MaintenanceMsg = MaintenanceMessageString[MaintenanceLogElement::CUTTER_MOVE];
         _MaintenanceLog->InsertRecordIntoTable(&MaintenanceLog);
         break;
     case CRASHCLICK:
         Crash_Click();
-        MaintenanceLog.MaintenanceMsg = MaintenanceMessageString[CRASH_MOVE];
+        MaintenanceLog.MaintenanceMsg = MaintenanceMessageString[MaintenanceLogElement::CRASH_MOVE];
         _MaintenanceLog->InsertRecordIntoTable(&MaintenanceLog);
         break;
     case SAFETYCLICK:
         Safety_Click();
-        MaintenanceLog.MaintenanceMsg = MaintenanceMessageString[SAFETY_MOVE];
+        MaintenanceLog.MaintenanceMsg = MaintenanceMessageString[MaintenanceLogElement::SAFETY_MOVE];
         _MaintenanceLog->InsertRecordIntoTable(&MaintenanceLog);
         break;
     case CONVERTERCOOLINGCLICK:
