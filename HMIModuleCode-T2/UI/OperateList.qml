@@ -11,10 +11,6 @@ Item {
     property int selectWorkId: -1
     property int setCheckIndex: -1
 
-    Component.onDestruction: {
-        hmiAdaptor.operateProcessExec("Stop")
-    }
-
     Image {
         anchors.fill: parent
         source: "qrc:/images/images/bg.png"
@@ -22,44 +18,16 @@ Item {
     ExclusiveGroup {
         id: listviewPositionGroup;
     }
-    Loader {
-        id: loader
-        z: 10
-        anchors.fill: parent
-        onLoaded: {
-            if (loader.source == "qrc:/UI/OperateDetails.qml")
-            {
-                alarmModel.setStartTime();
-                var list = new Array
-                list =  workOrderModel.getSpliceList(selectIndx)
-                if (list.length > 0) {
-                    loader.item.spliceList = workOrderModel.getSpliceList(selectIndx)
-                    if (partModel.getPartOnlineOrOffLine()) {
-                        loader.item.showFlag = 1
-                    } else {
-                        if (loader.item.spliceList.length == 1) {
-                            loader.item.showFlag = 3
-                        } else {
-                            loader.item.showFlag = 2
-                        }
-                    }
-                    loader.item.selectSplice(workOrderModel.getSpliceList(selectIndx)[0])
-                    loader.item.qliantity = workOrderModel.getValue(selectIndx, "QUANTITY")
-                }
-                hmiAdaptor.operateProcessExec("Start")
-            }
+    Component.onCompleted: {
+        if (mainRoot.headTitle == "Operate Sequence"){
+            listView.model = sequenceModel
+        }
+        else if (mainRoot.headTitle == "Operate Harness"){
+            listView.model = partModel
+            nameText.text = qsTr("HARNESS NAME")
         }
     }
-    Connections{
-        target: loader.item
-        onSignalFileDialogCancel: {
-            loader.source = ""
-        }
-        onSignalChoseFile: {
-            loader.source = ""
-            hmiAdaptor.importData(fileName)
-        }
-    }
+
     Row {
         id: headTitle
         anchors.top: parent.top
@@ -71,13 +39,14 @@ Item {
         spacing: 40
         height: 40
         Text {
+            id: nameText
             anchors.verticalCenter: parent.verticalCenter
             color: "white"
             width: (parent.width-120)/4
             font.pixelSize: 25
             clip: true
             font.family: "arial"
-            text: qsTr("SPLICE NAME")
+            text: qsTr("SEQUENCE NAME")
         }
         Text {
             anchors.verticalCenter: parent.verticalCenter
@@ -95,7 +64,7 @@ Item {
             font.pixelSize: 25
             clip: true
             font.family: "arial"
-            text: qsTr("#OF WIRES")
+            text: qsTr("#OF STEPS")
         }
         Text {
             anchors.verticalCenter: parent.verticalCenter
@@ -137,7 +106,7 @@ Item {
         anchors.bottom: bottomTip.top
         width: parent.width - 104
         clip: true
-        model: spliceModel
+        model: sequenceModel
         delegate: listDelegate
     }
     Image {
@@ -205,7 +174,7 @@ Item {
                 anchors.left: parent.left
                 width: (parent.width-120)/4
                 elide: Text.ElideRight
-                text: SpliceName
+                text: listView.model == sequenceModel ? SequenceName : HarnessName
                 clip: true
                 color: "white"
                 font.pixelSize: 20
@@ -229,7 +198,7 @@ Item {
                 anchors.left: headData.right
                 anchors.leftMargin: 40
                 width: (parent.width-120)/4
-                text: TotalWires
+                text: TotalSplices
                 elide: Text.ElideRight
                 clip: true
                 color: "white"
@@ -242,7 +211,7 @@ Item {
                 anchors.left: headMiddle.right
                 anchors.leftMargin: 40
                 width: (parent.width-120)/4
-                text: count
+                text: listView.model == sequenceModel ? QUANTITY : ""
                 elide: Text.ElideRight
                 color: "white"
                 clip: true
@@ -253,7 +222,10 @@ Item {
                 anchors.fill: parent
                 onClicked: {
                     operate.selectIndx = index
-                    operate.selectWorkId = SpliceId
+                    if (listView.model == sequenceModel)
+                        operate.selectWorkId = SequenceId
+                    else if (listView.model == partModel )
+                        operate.selectWorkId = PartId
                     selectCheck.checked = !selectCheck.checked
                 }
             }
@@ -297,84 +269,7 @@ Item {
         height: 1
         color: "#0d0f11"
     }
-    /*
-    CButton {
-        id: addnewOrder
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 10
-        anchors.left: parent.left
-        anchors.leftMargin: 15
-        width: (parent.width-100)/5
-        spacing: 10
-        iconSource: "qrc:/images/images/Add.png"
-        text: qsTr("ADD NEW")
-        pointSize: 20
-        clip: true
-        textColor: "white"
-        onClicked: {
-            backGround.visible = true
-            backGround.opacity = 0.5
-            dialog.bIsEdit = false
-            dialog.visible = true
-        }
-    }
-    CButton {
-        id: editExistingOrder
-        anchors.bottom: addnewOrder.bottom
-        anchors.left: addnewOrder.right
-        anchors.leftMargin: 15
-        width: (parent.width-100)/5
-        spacing: 10
-        iconSource: "qrc:/images/images/stting.png"
-        text: qsTr("EDIT")
-        pointSize: 20
-        clip: true
-        textColor: "white"
-        onClicked: {
-            if(workOrderModel.count() == 0 || selectIndx == -1) {
-                return
-            }
-            backGround.visible = true
-            backGround.opacity = 0.5
-            dialog.bIsEdit = true
-            dialog.visible = true
-        }
-    }
-    CButton {
-        id: deleOrder
-        anchors.bottom: addnewOrder.bottom
-        anchors.left: editExistingOrder.right
-        anchors.leftMargin: 15
-        width: (parent.width-100)/5
-        spacing: 10
-        iconSource: "qrc:/images/images/cancel.png"
-        text: qsTr("DELETE")
-        pointSize: 20
-        clip: true
-        textColor: "white"
-        onClicked: {
-            if (selectIndx < 0)
-                return
-            spliceModel.removeValue(spliceModel.getValue(selectIndx,"SpliceId"),spliceModel.getValue(selectIndx,"SpliceName"))
-        }
-    }
-    CButton {
-        id: importOrder
-        anchors.bottom: addnewOrder.bottom
-        anchors.left: deleOrder.right
-        anchors.leftMargin: 15
-        width: (parent.width-100)/5
-        spacing: 10
-        iconSource: "qrc:/images/images/import.png"
-        text: qsTr("IMPORT")
-        pointSize: 20
-        clip: true
-        textColor: "white"
-        onClicked: {
-            loader.source = "qrc:/UI/MySelectFileDialog.qml"
-        }
-    }
-    */
+
     CButton {
         id: selectOk
         anchors.bottom: parent.bottom
@@ -389,21 +284,12 @@ Item {
         clip: true
         textColor: "white"
         onClicked: {
-//            if (operate.selectIndx != -1) {
-//                workOrderModel.editNew(workOrderModel.getPartId(operate.selectIndx),operate.selectWorkId)
-//                partModel.getPartInfo(true,workOrderModel.getPartId(selectIndx),workOrderModel.getValue(selectIndx,"PART"))
-//                hmiAdaptor.maintenanceCountExecute("_Recall")
-//                loader.source = "qrc:/UI/OperateDetails.qml"
-//            }
-            if (operate.selectIndx != -1) {
-                backGround.visible = true
-                backGround.opacity = 0.5
-                testDialog.visible = true
-                mainRoot.bIsEditSplice = true
-                spliceModel.editNew(spliceModel.getValue(selectIndx,"SpliceId"))
-                //            mainRoot.checkNeedPassWd(-1)
-                testDialog.setData()
-            }
+            mainRoot.checkNeedPassWd(-5)
+            if (listView.model == sequenceModel)
+                mainRoot.headTitle = qsTr("Operate Sequence")
+            else
+                mainRoot.headTitle = qsTr("Operate Harness")
+
         }
     }
     Rectangle {
@@ -419,304 +305,4 @@ Item {
         }
     }
 
-    /*
-    Image {
-        id: dialog
-        visible: false
-        anchors.centerIn: parent
-        property bool bIsEdit: false
-        property var oldWorkOrderName: ""
-        width: 670
-        height: 390
-        source: "qrc:/images/images/dialogbg.png"
-        onBIsEditChanged: {
-            if (bIsEdit) {
-               inputworkId.inputText = workOrderModel.getValue(selectIndx, "WorkOrderName")
-               selectPart.text = workOrderModel.getValue(selectIndx, "PART")
-               inputquantity.inputText = workOrderModel.getValue( selectIndx, "QUANTITY")
-            }
-        }
-        onVisibleChanged: {
-            if (dialog.bIsEdit && dialog.visible) {
-                dialog.oldWorkOrderName = workOrderModel.getValue(selectIndx, "WorkOrderName")
-            } else if (!dialog.bIsEdit && dialog.visible) {
-                inputquantity.inputText = ""
-                inputworkId.inputText = ""
-            }
-        }
-
-        Text {
-            id: orderId
-            anchors.top: parent.top
-            anchors.topMargin: 60
-            anchors.right: inputworkId.left
-            anchors.rightMargin: 20
-            width: 150
-            height: 60
-            font.pointSize: 18
-            font.family: "arial"
-            text: qsTr("Work Order Name")
-            verticalAlignment: Qt.AlignVCenter
-            horizontalAlignment: Qt.AlignRight
-            color: "white"
-        }
-        MyLineEdit {
-            id: inputworkId
-            anchors.top: parent.top
-            anchors.topMargin: 60
-            anchors.right: parent.right
-            anchors.rightMargin: 72
-            horizontalAlignment: Qt.AlignHCenter
-            width: 375
-            height: 60
-            inputWidth: 375
-            inputColor: "white"
-            inputHeight: 60
-            inputText: dialog.bIsEdit ? workOrderModel.getValue(selectIndx, "WorkOrderName") : ""
-        }
-        Text {
-            id: selectTips
-            anchors.top: inputworkId.bottom
-            anchors.topMargin: 20
-            anchors.right: selectPart.left
-            anchors.rightMargin: 20
-            width: 150
-            height: 60
-            font.pointSize: 18
-            font.family: "arial"
-            text: qsTr("Select Part")
-            verticalAlignment: Qt.AlignVCenter
-            horizontalAlignment: Qt.AlignRight
-            color: "white"
-        }
-        CButton {
-            id: selectPart
-            property var partId: 1
-            anchors.top: inputworkId.bottom
-            anchors.topMargin: 20
-            anchors.right: parent.right
-            anchors.rightMargin: 72
-            width: 375
-            height: 60
-            clip: true
-            text: dialog.bIsEdit ? workOrderModel.getValue(selectIndx, "PART") : qsTr("SELECT PART")
-            onClicked: {
-                addExit.visible = true
-            }
-        }
-        Text {
-            id: quantity
-            anchors.top: selectTips.bottom
-            anchors.topMargin: 20
-            anchors.right: inputquantity.left
-            anchors.rightMargin: 20
-            width: 150
-            height: 60
-            font.pointSize: 18
-            font.family: "arial"
-            text: qsTr("Quantity")
-            verticalAlignment: Qt.AlignVCenter
-            horizontalAlignment: Qt.AlignRight
-            color: "white"
-        }
-        MiniKeyNumInput {
-            id: inputquantity
-            anchors.top: selectTips.bottom
-            anchors.topMargin: 20
-            anchors.right: parent.right
-            anchors.rightMargin: 72
-            width: 375
-            height: 60
-            inputWidth: 375
-            inputText: dialog.bIsEdit ? workOrderModel.getValue( selectIndx, "QUANTITY") : ""
-            onInputFocusChanged: {
-                if (inputquantity.inputFocus) {
-                    keyNum.visible = true
-                    keyNum.titleText = quantity.text
-                    keyNum.currentValue = inputquantity.inputText
-                    if (inputquantity.inputText == "") {
-                        keyNum.minvalue = hmiAdaptor.getTestQuantity(0,false)
-                        keyNum.maxvalue = hmiAdaptor.getTestQuantity(0,true)
-                    } else {
-                        keyNum.minvalue = hmiAdaptor.getTestQuantity(inputquantity.inputText,false)
-                        keyNum.maxvalue = hmiAdaptor.getTestQuantity(inputquantity.inputText,true)
-                    }
-                }
-            }
-        }
-        CButton {
-            id: cancel
-            anchors.right: sure.left
-            anchors.rightMargin: 15
-            anchors.top: quantity.bottom
-            anchors.topMargin: 16
-            width: 180
-            text: qsTr("CANCEL")
-            textColor: "white"
-            iconSource: "qrc:/images/images/cancel.png"
-            onClicked: {
-                backGround.visible = false
-                backGround.opacity = 0
-                dialog.visible = false
-                dialog.bIsEdit = false
-                if (!dialog.bIsEdit) {
-                    selectPart.text = qsTr("SELECT PART")
-                }
-            }
-        }
-
-
-
-        CButton {
-            id: sure
-            anchors.right: parent.right
-            anchors.rightMargin: 72
-            anchors.top: quantity.bottom
-            anchors.topMargin: 16
-            width: 180
-            text: qsTr("OK")
-            textColor: "white"
-            iconSource: "qrc:/images/images/OK.png"
-            onClicked: {
-                backGround.visible = false
-                backGround.opacity = 0
-                dialog.visible = false
-                if (dialog.bIsEdit)
-                    workOrderModel.updateRecordIntoTable(workOrderModel.getValue(selectIndx, "WorkOrderId"),dialog.oldWorkOrderName, inputworkId.inputText,selectPart.partId,selectPart.text, inputquantity.inputText )
-                else {
-                    workOrderModel.insertRecordIntoTable(inputworkId.inputText,selectPart.partId,selectPart.text,inputquantity.inputText)
-                    selectPart.text = qsTr("SELECT PART")
-                }
-                dialog.bIsEdit = false
-            }
-        }
-    }
-
-    AddExistingSpliceWire {
-        id: addExit
-        anchors.centerIn: parent
-        width: parent.width*0.9
-        height: parent.width*0.4
-        visible: false
-        listModel: partModel
-        titleName: qsTr("ADD PART")
-        componentName: qsTr("PART NAME")
-        componentData: qsTr("DATE CREATED")
-        componentMiddle: qsTr("# OF SPLICE")
-        componenttype: qsTr("CROSS SECTION")
-        componentCount: ""
-        bIsOnlyOne: true
-        onSignalAddExistCancel : {
-            addExit.visible = false
-        }
-        onSignalAddExistSelectClick: {
-            selectPart.partId = modelId
-            selectPart.text = name
-            addExit.visible = false
-        }
-        onVisibleChanged: {
-            if (addExit.visible) {
-                addExit.clearSelect()
-            }
-        }
-    }
-
-    */
-
-    Connections {
-        target: loader.item
-        onSignalCancel: {
-            loader.source = ""
-        }
-        onSignalAdvanceOk: {
-            loader.source = ""
-            testDialog.visible = true
-        }
-    }
-
-    TestSetingDialog {
-        id: testDialog
-        visible: false
-        anchors.centerIn: parent
-        width: 435
-        height: 540
-        onVisibleChanged: {
-        }
-
-        onSignalAdvanceSettingStart: {
-            operate.setCheckIndex = checkIndex
-            if (mainRoot.checkAllInterface(20)) {
-                passDialog.visible = true
-                passDialog.pageName = "Teach Mode"
-            } else {
-                loader.source = "qrc:/UI/AdvanceSetting.qml"
-            }
-        }
-        onSignalTestStart: {
-            testDialog.visible = false
-            backGround.visible = false
-//            loader.source = "qrc:/UI/TestDetail.qml"
-
-            mainRoot.bIsTest = true
-            hmiAdaptor.setTestSpliceId(spliceModel.getValue(selectIndx,"SpliceId"))
-            mainRoot.bIsEditSplice = true
-            spliceModel.editNew(spliceModel.getValue(selectIndx,"SpliceId"))
-            mainRoot.checkNeedPassWd(-1)
-
-        }
-        onSignalInputNum: {
-            keyNum.visible = true
-            keyNum.titleText = qsTr("#of Splices")
-            if (text == qsTr("#of Splices")) {
-                keyNum.currentValue = "0"
-                keyNum.maxvalue = hmiAdaptor.getTestQuantity(0,true)
-                keyNum.minvalue = hmiAdaptor.getTestQuantity(0,false)
-            } else {
-                keyNum.currentValue = text
-                keyNum.maxvalue = hmiAdaptor.getTestQuantity(text,true)
-                keyNum.minvalue = hmiAdaptor.getTestQuantity(text,false)
-            }
-        }
-    }
-
-    KeyBoardNum {
-        id: keyNum
-        anchors.centerIn: parent
-        width: 962
-        height: 526
-        visible: false
-        titleText: ""
-        maxvalue: "4"
-        minvalue: "1"
-        currentValue: "4"
-        onCurrentClickIndex: {
-            if (index == 15) {
-                if (hmiAdaptor.comepareCurrentValue(keyNum.minvalue,keyNum.maxvalue,keyNum.inputText)) {
-                    if (inputquantity.inputFocus) {
-                        inputquantity.inputText = keyNum.inputText
-                        inputquantity.inputFocus = false
-                    }
-                    keyNum.visible = false
-                    keyNum.inputText = ""
-                    keyNum.tempValue = ""
-                } else {
-                    keyNum.timeRun = true
-                }
-            } else if (index == 11) {
-                if (inputquantity.inputFocus) {
-                    inputquantity.inputFocus = false
-                }
-                keyNum.visible = false
-                keyNum.inputText = ""
-                keyNum.tempValue = ""
-            }
-        }
-        onInputTextChanged: {
-            if (keyNum.inputText != "") {
-                if (inputquantity.inputFocus) {
-                    inputquantity.inputText = keyNum.inputText
-                }
-            }
-        }
-    }
 }

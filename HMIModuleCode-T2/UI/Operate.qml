@@ -657,17 +657,33 @@ Item {
             backGround.visible = false
 //            loader.source = "qrc:/UI/TestDetail.qml"
 
-            if (bIsOn)
+            if (index == 0)
+            {
+                mainRoot.checkNeedPassWd(-5)
+            }
+            else if (index == 1)
             {
                 mainRoot.bIsTest = true
                 hmiAdaptor.setTestSpliceId(spliceModel.getValue(selectIndx,"SpliceId"))
                 mainRoot.bIsEditSplice = true
                 spliceModel.editNew(spliceModel.getValue(selectIndx,"SpliceId"))
-                mainRoot.checkNeedPassWd(-1)
+                mainRoot.checkNeedPassWd(-2)
             }
-            else
+            else if (index == 2)
             {
-
+                mainRoot.bIsTest = true
+                hmiAdaptor.setTestSpliceId(spliceModel.getValue(selectIndx,"SpliceId"))
+                mainRoot.bIsEditSplice = true
+                spliceModel.editNew(spliceModel.getValue(selectIndx,"SpliceId"))
+                mainRoot.checkNeedPassWd(-3)
+            }
+            else if (index == 3)
+            {
+                mainRoot.bIsTest = true
+                hmiAdaptor.setTestSpliceId(spliceModel.getValue(selectIndx,"SpliceId"))
+                mainRoot.bIsEditSplice = true
+                spliceModel.editNew(spliceModel.getValue(selectIndx,"SpliceId"))
+                mainRoot.checkNeedPassWd(-4)
             }
 
         }

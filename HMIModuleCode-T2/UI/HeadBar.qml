@@ -365,17 +365,6 @@ Item {
                                         mainRoot.checkNeedPassWd(2)
                                     }
                                 }
-                                else if (menuKey == qsTr("Harness")){
-                                    mainRoot.clearStackView()
-                                    if (childMenu.model == creatMenuList)
-                                    {
-                                        mainRoot.checkNeedPassWd(0)
-                                    }
-                                    else if (childMenu.model == operateMenuList)
-                                    {
-
-                                    }
-                                }
                                 else if (menuKey == qsTr("Sequence")){
                                     mainRoot.clearStackView()
                                     if (childMenu.model == creatMenuList)
@@ -384,7 +373,18 @@ Item {
                                     }
                                     else if (childMenu.model == operateMenuList)
                                     {
-
+                                        mainRoot.checkNeedPassWd(-6)
+                                    }
+                                }
+                                else if (menuKey == qsTr("Harness")){
+                                    mainRoot.clearStackView()
+                                    if (childMenu.model == creatMenuList)
+                                    {
+                                        mainRoot.checkNeedPassWd(0)
+                                    }
+                                    else if (childMenu.model == operateMenuList)
+                                    {
+                                        mainRoot.checkNeedPassWd(-7)
                                     }
                                 }
                                 else if (menuKey == qsTr("Calibration")){

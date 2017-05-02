@@ -45,9 +45,38 @@ Item {
         }
     }
 
-//    Component.onCompleted: {
+    Component.onCompleted: {
+
+//        selectSplice(spliceModel.getStructValue("SpliceId",""))
+//        if (mainRoot.headTitle = qsTr("Operate Sequence"))
+//        {
+//            showFlag = 2
+//        }
+//        else if (mainRoot.headTitle = qsTr("Operate Harness"))
+//            showFlag = 1
+
+
+        alarmModel.setStartTime();
+        var list = new Array
+        list =  workOrderModel.getSpliceList(selectIndx)
+        if (list.length > 0) {
+            loader.item.spliceList = workOrderModel.getSpliceList(selectIndx)
+            if (partModel.getPartOnlineOrOffLine()) {
+                loader.item.showFlag = 1
+            } else {
+                if (loader.item.spliceList.length == 1) {
+                    loader.item.showFlag = 3
+                } else {
+                    loader.item.showFlag = 2
+                }
+            }
+            loader.item.selectSplice(workOrderModel.getSpliceList(selectIndx)[0])
+            loader.item.qliantity = workOrderModel.getValue(selectIndx, "QUANTITY")
+        }
+        hmiAdaptor.operateProcessExec("Start")
+
 //        hmiAdaptor.operateProcessExec("Start")
-//    }
+    }
 //    Component.onDestruction: {
 //        hmiAdaptor.operateProcessExec("Stop")
 //    }
@@ -218,7 +247,19 @@ Item {
         maxNum: maxCount
     }
     onShowFlagChanged: {
-//        console.log("555555555555555",showFlag)
+        if (showFlag == 1) {
+            spliceLocation.visible = true
+            currentSplice.visible = true
+        }
+        else {
+            spliceLocation.visible = false
+            currentSplice.visible = false
+        }
+        if (showFlag == 2)
+            offline.visible = true
+        else
+            offline.visible = false
+
     }
 
     SpliceStatusOffLine {
@@ -259,7 +300,7 @@ Item {
         font.family: "arial"
         color: "white"
         text: qsTr("CURRENT SPLICE")
-        visible:  showFlag == 1 ? true : false
+        visible:  currentSplice.visible
     }
     Rectangle {
         id: nextSPlice
@@ -271,7 +312,7 @@ Item {
         width: 15
         height: 15
         color: "#00afe9"
-        visible:   showFlag == 1 ? true : false
+        visible:   currentSplice.visible
     }
     Text {
         id: nextSPliceTips
@@ -283,7 +324,7 @@ Item {
         font.family: "arial"
         color: "white"
         text: qsTr("NEXT SPLICE")
-        visible:   showFlag == 1 ? true : false
+        visible:   currentSplice.visible
     }
     Rectangle {
         id: missSplice
@@ -295,7 +336,7 @@ Item {
         width: 15
         height: 15
         color: "#d31145"
-        visible:   showFlag == 1 ? true : false
+        visible:   currentSplice.visible
     }
     Text {
         id: missSpliceTips
@@ -307,7 +348,7 @@ Item {
         font.family: "arial"
         color: "white"
         text: qsTr("MISSED SPLICE")
-        visible:   showFlag == 1 ? true : false
+        visible:   currentSplice.visible
     }
     Rectangle {
         id: completeMiss

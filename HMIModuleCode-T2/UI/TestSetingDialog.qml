@@ -8,20 +8,20 @@ Item {
     height: parent.height
     property alias inputNum: defalut.text
     signal signalAdvanceSettingStart(var checkIndex)
-    signal signalTestStart(var bIsOn)
+    signal signalTestStart(var index) // 0-- off 1--standard 2--auto 3--sigma
     function setData()
     {
-        if (spliceModel.getStructValue("TestModel","") == "0") {
+        if (spliceModel.getTeachModeValue("TestModel","") == "0") {
             splices.bIsCheck = false
             unButton.bIsCheck = true
         }
-        else if (spliceModel.getStructValue("TestModel","") == "1")
+        else if (spliceModel.getTeachModeValue("TestModel","") == "1")
         {
             unButton.bIsCheck = false
             splices.bIsCheck = true
-            defalut.text = spliceModel.getStructValue("TestCount","")
+            defalut.text = spliceModel.getTeachModeValue("TestCount","")
         }
-        if (spliceModel.getStructValue("TeachMode","") == "3") {
+        if (spliceModel.getTeachModeValue("TeachMode","") == "3") {
             diagram.state = "left"
         }
         else {
@@ -29,11 +29,11 @@ Item {
             standard.bIsCheck = false
             auto.bIsCheck = false
             sigma.bIsCheck = false
-            if (spliceModel.getStructValue("TeachMode","") == "0")
+            if (spliceModel.getTeachModeValue("TeachMode","") == "0")
                 standard.bIsCheck = true
-            else if (spliceModel.getStructValue("TeachMode","") == "1")
+            else if (spliceModel.getTeachModeValue("TeachMode","") == "1")
                 auto.bIsCheck = true
-            else if (spliceModel.getStructValue("TeachMode","") == "2")
+            else if (spliceModel.getTeachModeValue("TeachMode","") == "2")
                 sigma.bIsCheck = true
 
         }
@@ -81,7 +81,7 @@ Item {
             clip: true
             buttontext: qsTr("Unconstrained")
             exclusiveGroup: mos
-//            bIsCheck: true
+            //            bIsCheck: true
         }
         MyRadioButton {
             id: splices
@@ -232,29 +232,32 @@ Item {
             textColor: "white"
             onClicked: {
                 if (unButton.bIsCheck)
-                    spliceModel.setStructValue("TestModel",0)
+                    spliceModel.setTeachModeValue("TestModel","false","","")
                 else if (splices.bIsCheck) {
-                    spliceModel.setStructValue("TestModel",1)
-                    spliceModel.setStructValue("TestCount",defalut.text)
+                    spliceModel.setTeachModeValue("TestModel","true","","")
+                    spliceModel.setTeachModeValue("TestCount",defalut.text,"","")
                 }
                 if(diagram.state == "left") {
-                    spliceModel.setStructValue("TeachMode",3)
-                    signalTestStart(false)
+                    spliceModel.setTeachModeValue("TeachMode","0","","")
+                    signalTestStart(0)
                 }
                 else if (diagram.state == "right") {
                     if (standard.bIsCheck)
-                        spliceModel.setStructValue("TeachMode",0)
+                        spliceModel.setTeachModeValue("TeachMode","1","","")
                     else if (auto.bIsCheck)
-                        spliceModel.setStructValue("TeachMode",1)
+                        spliceModel.setTeachModeValue("TeachMode","2","","")
                     else if (sigma.bIsCheck)
-                        spliceModel.setStructValue("TeachMode",2)
+                        spliceModel.setTeachModeValue("TeachMode","3","","")
 
-                    signalTestStart(true)
-
+                    if (standard.bIsCheck)
+                        signalTestStart(1)
+                    else if (auto.bIsCheck)
+                        signalTestStart(2)
+                    else if (sigma.bIsCheck)
+                        signalTestStart(3)
                 }
-                spliceModel.saveSplice(true)
-
             }
         }
     }
 }
+
