@@ -8,7 +8,7 @@ Item {
     height: parent.height
     property alias inputNum: defalut.text
     signal signalAdvanceSettingStart(var checkIndex)
-    signal signalTestStart()
+    signal signalTestStart(var bIsOn)
     function setData()
     {
         if (spliceModel.getStructValue("TestModel","") == "0") {
@@ -237,8 +237,10 @@ Item {
                     spliceModel.setStructValue("TestModel",1)
                     spliceModel.setStructValue("TestCount",defalut.text)
                 }
-                if(diagram.state == "left")
+                if(diagram.state == "left") {
                     spliceModel.setStructValue("TeachMode",3)
+                    signalTestStart(false)
+                }
                 else if (diagram.state == "right") {
                     if (standard.bIsCheck)
                         spliceModel.setStructValue("TeachMode",0)
@@ -246,10 +248,12 @@ Item {
                         spliceModel.setStructValue("TeachMode",1)
                     else if (sigma.bIsCheck)
                         spliceModel.setStructValue("TeachMode",2)
+
+                    signalTestStart(true)
+
                 }
                 spliceModel.saveSplice(true)
 
-                signalTestStart()
             }
         }
     }

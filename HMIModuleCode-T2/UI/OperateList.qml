@@ -657,18 +657,11 @@ Item {
             backGround.visible = false
 //            loader.source = "qrc:/UI/TestDetail.qml"
 
-            if (bIsOn)
-            {
-                mainRoot.bIsTest = true
-                hmiAdaptor.setTestSpliceId(spliceModel.getValue(selectIndx,"SpliceId"))
-                mainRoot.bIsEditSplice = true
-                spliceModel.editNew(spliceModel.getValue(selectIndx,"SpliceId"))
-                mainRoot.checkNeedPassWd(-1)
-            }
-            else
-            {
-
-            }
+            mainRoot.bIsTest = true
+            hmiAdaptor.setTestSpliceId(spliceModel.getValue(selectIndx,"SpliceId"))
+            mainRoot.bIsEditSplice = true
+            spliceModel.editNew(spliceModel.getValue(selectIndx,"SpliceId"))
+            mainRoot.checkNeedPassWd(-1)
 
         }
         onSignalInputNum: {
