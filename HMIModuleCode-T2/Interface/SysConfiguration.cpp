@@ -121,10 +121,13 @@ Status_Data &Status_Data::operator= (const Status_Data &StatusDataObj)
     this->CycleCount = StatusDataObj.CycleCount;
     for(int i = 0; i< 8; i++)
     {
-        this->MaintenanceLimits[i] = StatusDataObj.MaintenanceLimits[i];
-        this->CurrentMaintenanceLimits[i] = StatusDataObj.CurrentMaintenanceLimits[i];
+        this->MaintenanceCountLimits[i] = StatusDataObj.MaintenanceCountLimits[i];
+        this->MaintenanceEnergyLimits[i] = StatusDataObj.MaintenanceEnergyLimits[i];
+        this->CurrentCountMaintenanceLimits[i] = StatusDataObj.CurrentCountMaintenanceLimits[i];
+        this->CurrentEnergyMaintenanceLimits[i] = StatusDataObj.CurrentEnergyMaintenanceLimits[i];
         this->MaintenanceDateStarted[i] = StatusDataObj.MaintenanceDateStarted[i];
         this->Maintenance80PercentAlarm[i] = StatusDataObj.Maintenance80PercentAlarm[i];
+        this->Maintenance100PercentLock[i] = StatusDataObj.Maintenance100PercentLock[i];
     }
     this->ShrinkTubeComInfo.COMport = StatusDataObj.ShrinkTubeComInfo.COMport;
     this->ShrinkTubeComInfo.BaudRate = StatusDataObj.ShrinkTubeComInfo.BaudRate;
@@ -289,14 +292,20 @@ bool Status_Data::ReadStatusDataFromQSetting()
 
     for(int i = 0; i< 8; i++)
     {
-        str = QString("MaintenanceLimits%1").arg(QString::number(i, 10));
-        MaintenanceLimits[i] = settings.value(str).value<long>();
-        str = QString("CurrentMaintenanceLimits%1").arg(QString::number(i, 10));
-        CurrentMaintenanceLimits[i] = settings.value(str).value<long>();
+        str = QString("MaintenanceCountLimits%1").arg(QString::number(i, 10));
+        MaintenanceCountLimits[i] = settings.value(str).value<long>();
+        str = QString("MaintenanceEnergyLimits%1").arg(QString::number(i, 10));
+        MaintenanceEnergyLimits[i] = settings.value(str).value<long>();
+        str = QString("CurrentCountMaintenanceLimits%1").arg(QString::number(i, 10));
+        CurrentCountMaintenanceLimits[i] = settings.value(str).value<long>();
+        str = QString("CurrentEnergyMaintenanceLimits%1").arg(QString::number(i, 10));
+        CurrentEnergyMaintenanceLimits[i] = settings.value(str).value<long>();
         str = QString("MaintenanceDateStarted%1").arg(QString::number(i, 10));
         MaintenanceDateStarted[i] = settings.value(str).value<unsigned int>();
         str = QString("Maintenance80PercentAlarm%1").arg(QString::number(i, 10));
         Maintenance80PercentAlarm[i] = settings.value(str).value<bool>();
+        str = QString("Maintenance100PercentLock%1").arg(QString::number(i, 10));
+        Maintenance100PercentLock[i] = settings.value(str).value<bool>();
     }
 
     settings.beginGroup("ShrinkTubeComInfo");
@@ -457,14 +466,20 @@ void Status_Data::WriteStatusDataToQSetting()
 
     for(int i = 0; i< 8; i++)
     {
-        str = QString("MaintenanceLimits%1").arg(QString::number(i, 10));
-        settings.setValue(str, MaintenanceLimits[i]);
-        str = QString("CurrentMaintenanceLimits%1").arg(QString::number(i, 10));
-        settings.setValue(str, CurrentMaintenanceLimits[i]);
+        str = QString("MaintenanceCountLimits%1").arg(QString::number(i, 10));
+        settings.setValue(str, MaintenanceCountLimits[i]);
+        str = QString("MaintenanceEnergyLimits%1").arg(QString::number(i, 10));
+        settings.setValue(str, MaintenanceEnergyLimits[i]);
+        str = QString("CurrentCountMaintenanceLimits%1").arg(QString::number(i, 10));
+        settings.setValue(str, CurrentCountMaintenanceLimits[i]);
+        str = QString("CurrentEnergyMaintenanceLimits%1").arg(QString::number(i, 10));
+        settings.setValue(str, CurrentEnergyMaintenanceLimits[i]);
         str = QString("MaintenanceDateStarted%1").arg(QString::number(i, 10));
         settings.setValue(str, MaintenanceDateStarted[i]);
         str = QString("Maintenance80PercentAlarm%1").arg(QString::number(i, 10));
         settings.setValue(str, Maintenance80PercentAlarm[i]);
+        str = QString("Maintenance100PercentLock%1").arg(QString::number(i, 10));
+        settings.setValue(str, Maintenance100PercentLock[i]);
     }
 
 

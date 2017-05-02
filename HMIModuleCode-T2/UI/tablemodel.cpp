@@ -41,7 +41,7 @@ QVariant WorkOrderModel::data(const QModelIndex &index, int role) const
         else if (columnIdx == 1)
             value = QVariant::fromValue(myWorkOrder.WorkOrderName);
         else if (columnIdx == 2)
-            value = QVariant::fromValue(QDateTime::fromTime_t(myWorkOrder.CreatedDate).toString("MM/dd/yyyy hh:mm"));
+            value = QVariant::fromValue(myWorkOrder.CreatedDate);
         else if (columnIdx == 3)
         {
             QString temp = "";
@@ -233,7 +233,7 @@ QVariant WorkOrderModel::getValue(int index, QString key)
     QHash<QString, QVariant> WorkOrderModelHash;
     WorkOrderModelHash.insert("WorkOrderId",myWorkOrder.WorkOrderID);
     WorkOrderModelHash.insert("WorkOrderName",myWorkOrder.WorkOrderName);
-    WorkOrderModelHash.insert("DateCreated",QDateTime::fromTime_t(myWorkOrder.CreatedDate).toString("MM/dd/yyyy hh:mm"));
+    WorkOrderModelHash.insert("DateCreated",myWorkOrder.CreatedDate);
     QString temp = "";
     if (myWorkOrder.PartList.count() > 0)
         temp = myWorkOrder.PartList.begin().value();

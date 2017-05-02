@@ -11,6 +11,7 @@
 #include "PresetElement.h"
 #include "SysConfiguration.h"
 #include "Settings/OperatorLibrary.h"
+#include "WorkOrderElement.h"
 #define HMI_PRINT (qDebug() <<"That needs to be fixed: " << __FILE__ << __FUNCTION__ << __LINE__ << ": ")
 using namespace std;
 enum TipsScreenMode{
@@ -48,6 +49,7 @@ public:
     VersionList PreviousVersions;
     VersionList CurrentVersions;
     OperatorElement CurrentOperator;
+    WorkOrderElement CurrentWorkOrder;
     bool FirstScreenComesUp;
     bool ApplicationFirstStartFlag;
 public:

@@ -152,6 +152,7 @@ struct System_Configuration{
 
 
 #define BRANSON_INI_FILE        "Branson.ini" //StatusData is stored in this file
+#define BRANSON_WORKORDER_FILE  "WorkOrder.ini" //Current workorder is stored in this file
 
 class M10INI
 {

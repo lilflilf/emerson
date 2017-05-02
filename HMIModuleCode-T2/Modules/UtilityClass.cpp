@@ -514,10 +514,14 @@ void UtilityClass::InitializeTextData()
     SetTextData(DINShrinkTubeTemperature, 0, ShrinkTubeMinTemp, ShrinkTubeMaxTemp, 1, 1, "%d℃");
     SetTextData(DINShrinkTubeTime, 0, ShrinkTubeMinTime, ShrinkTubeMaxTime, 1, 0.1, "%.1fs");
     SetTextData(DINServerPortNumber, 0, MINSERVER_PORT_NUMBER, MAXSERVER_PORT_NUMBER, 1, 1, "%d");
-    SetTextData(DINHornLimit, 0, MINHORNLIMIT, MAXHORNLIMIT, 1, 1, "%d");
-    SetTextData(DINAnvilTipLimit, 0, MINANVILTIPLIMIT, MAXANVILTIPLIMIT, 1, 1, "%d");
-    SetTextData(DINGatherLimit, 0, MINGATHERLIMIT, MAXGATHERLIMIT, 1, 1, "%d");
-    SetTextData(DINAnvilGuideLimit, 0, MINANVILGUIDELIMIT, MAXANVILGUIDELIMIT, 1, 1, "%d");
+    SetTextData(DINHornCountLimit, 0, MINHORNCOUNTLIMIT, MAXHORNCOUNTLIMIT, 1, 1, "%d");
+    SetTextData(DINHornEnergyLimit, 0, MINHORNENERGYLIMIT, MAXHORNENERGYLIMIT, 1, 1, "%.1fKJ");
+    SetTextData(DINAnvilCountLimit, 0, MINANVILCOUNTLIMIT, MAXANVILCOUNTLIMIT, 1, 1, "%d");
+    SetTextData(DINAnvilEnergyLimit, 0, MINANVILENERGYLIMIT, MAXANVILENERGYLIMIT, 1, 1, "%.1fKJ");
+    SetTextData(DINGatherCountLimit, 0, MINGATHERCOUNTLIMIT, MAXGATHERCOUNTLIMIT, 1, 1, "%d");
+    SetTextData(DINGatherEnergyLimit, 0, MINGATHERENERGYLIMIT, MAXGATHERENERGYLIMIT, 1, 1, "%.1fKJ");
+    SetTextData(DINGuideCountLimit, 0, MINGUIDECOUNTLIMIT, MAXGUIDECOUNTLIMIT, 1, 1, "%d");
+    SetTextData(DINGuideEnergyLimit, 0, MINGUIDEENERGYLIMIT, MAXGUIDEENERGYLIMIT, 1, 1, ".1fKJ");
     SetTextData(DINConverterLimit, 0, MINCONVERTERLIMIT, MAXCONVERTERLIMIT, 1, 1, "%d");
     SetTextData(DINPercentTeachMode, 0, MINPERCENTTEACHMODE, MAXPERCENTTEACHMODE, 1, 1, "%d%");
     SetTextData(DINSigmaTeachMode, 0, MINSIGMATEACHMODE, MAXSIGMATEACHMODE, 1, 1, "%d");
@@ -577,6 +581,18 @@ QString UtilityClass::FormatedDataToString(ScreenShowDataType TypeIndex, float D
     return tmpStr;
 }
 
+QString UtilityClass::FormatedDataToString(ScreenShowDataType TypeIndex, double Data)
+{
+    QString tmpStr;
+    if(txtData[TypeIndex].Format.contains("d") == true)
+        tmpStr.sprintf(txtData[TypeIndex].Format.toStdString().c_str(),(double)(Data * txtData[TypeIndex].Factor));
+    else if(txtData[TypeIndex].Format.contains("f") == true)
+        tmpStr.sprintf(txtData[TypeIndex].Format.toStdString().c_str(),(double)(Data * txtData[TypeIndex].Factor));
+    else
+        tmpStr.clear();
+    return tmpStr;
+}
+
 float UtilityClass::FormatedDataToFloat(ScreenShowDataType TypeIndex, int Data)
 {
     if(txtData[TypeIndex].Format.contains("f") == true)
@@ -593,7 +609,7 @@ int UtilityClass::FormatedDataToInteger(ScreenShowDataType TypeIndex, int Data)
         return -1;
 }
 
-float UtilityClass::StringToFormatedData(ScreenShowDataType TypeIndex, QString ShownData)
+double UtilityClass::StringToFormatedData(ScreenShowDataType TypeIndex, QString ShownData)
 {
     ShownData.trimmed();
     if(ShownData.isEmpty() == true)
@@ -611,7 +627,6 @@ float UtilityClass::StringToFormatedData(ScreenShowDataType TypeIndex, QString S
 
     double tmpValue = ShownData.toDouble();
     tmpValue /= txtData[TypeIndex].Factor;
-    return (float)tmpValue;
+    return tmpValue;
 }
-
 

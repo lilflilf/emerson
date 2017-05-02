@@ -39,7 +39,7 @@ MODstart::MODstart()
     M10INI  *_M10INI  = M10INI::Instance();
     M2010   *_M2010   = M2010::Instance();
     M102IA  *_M102IA  = M102IA::Instance();
-    M10runMode *_M10runMode = M10runMode::Instance();
+//    M10runMode *_M10runMode = M10runMode::Instance();
     ModRunSetup *_ModRunSetup = ModRunSetup::Instance();
     InterfaceClass *_Interface = InterfaceClass::Instance();
     BransonServer* _Server = BransonServer::Instance();
@@ -227,7 +227,7 @@ MODstart::MODstart()
         Checkmaintenancelimit_EaWeld = true;
         if(Checkmaintenancelimit_EaWeld == true)
         {
-            _M10runMode->UpdateMaintenanceData();
+//            _M10runMode->UpdateMaintenanceData();
             Checkmaintenancelimit_EaWeld = false;
         }
         //Open Ethernet serer

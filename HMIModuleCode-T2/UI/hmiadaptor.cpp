@@ -215,19 +215,19 @@ QString HmiAdaptor::maintenanceCountGetValue(int code, int index)
     {
         switch (index) {
         case 2:
-            value = maintenanceCount->CurrentMaintenanceCounter.AnvilTipCounterLimit.Current;
+            value = maintenanceCount->CurrentMaintenanceCounter.AnvilCounterLimit.Current;
             break;
         case 3:
-            value = maintenanceCount->CurrentMaintenanceCounter.AnvilTipCurrentCount;
+            value = maintenanceCount->CurrentMaintenanceCounter.AnvilCurrentCount;
             break;
         case 4:
-            value = maintenanceCount->CurrentMaintenanceCounter.AnvilTipDateStarted;
+            value = maintenanceCount->CurrentMaintenanceCounter.AnvilDateStarted;
             break;
         case 5:
-            value = maintenanceCount->CurrentMaintenanceCounter.AnvilTipCounterLimit.Maximum;
+            value = maintenanceCount->CurrentMaintenanceCounter.AnvilCounterLimit.Maximum;
             break;
         case 6:
-            value = maintenanceCount->CurrentMaintenanceCounter.AnvilTipCounterLimit.Minimum;
+            value = maintenanceCount->CurrentMaintenanceCounter.AnvilCounterLimit.Minimum;
             break;
         case 7:
             bResult = maintenanceCount->CurrentMaintenanceCounter.Anvil80PercentAlarm;
@@ -272,22 +272,22 @@ QString HmiAdaptor::maintenanceCountGetValue(int code, int index)
     {
         switch (index) {
         case 2:
-            value = maintenanceCount->CurrentMaintenanceCounter.AnvilGuideCounterLimit.Current;
+            value = maintenanceCount->CurrentMaintenanceCounter.GuideCounterLimit.Current;
             break;
         case 3:
-            value = maintenanceCount->CurrentMaintenanceCounter.AnvilGuideCurrentCount;
+            value = maintenanceCount->CurrentMaintenanceCounter.GuideCurrentCount;
             break;
         case 4:
-            value = maintenanceCount->CurrentMaintenanceCounter.AnvilGuideDateStarted;
+            value = maintenanceCount->CurrentMaintenanceCounter.GuideDateStarted;
             break;
         case 5:
-            value = maintenanceCount->CurrentMaintenanceCounter.AnvilGuideCounterLimit.Maximum;
+            value = maintenanceCount->CurrentMaintenanceCounter.GuideCounterLimit.Maximum;
             break;
         case 6:
-            value = maintenanceCount->CurrentMaintenanceCounter.AnvilGuideCounterLimit.Minimum;
+            value = maintenanceCount->CurrentMaintenanceCounter.GuideCounterLimit.Minimum;
             break;
         case 7:
-            bResult = maintenanceCount->CurrentMaintenanceCounter.AnvilGuide80PercentAlarm;
+            bResult = maintenanceCount->CurrentMaintenanceCounter.Guide80PercentAlarm;
             if(bResult == true)
                 value = "left";
             else
@@ -296,34 +296,34 @@ QString HmiAdaptor::maintenanceCountGetValue(int code, int index)
             break;
         }
     }
-    else if (code == 4)
-    {
-        switch (index) {
-        case 2:
-            value = maintenanceCount->CurrentMaintenanceCounter.ConverterCounterLimit.Current;
-            break;
-        case 3:
-            value = maintenanceCount->CurrentMaintenanceCounter.ConverterCurrentCount;
-            break;
-        case 4:
-            value = maintenanceCount->CurrentMaintenanceCounter.ConverterDateStarted;
-            break;
-        case 5:
-            value = maintenanceCount->CurrentMaintenanceCounter.ConverterCounterLimit.Maximum;
-            break;
-        case 6:
-            value = maintenanceCount->CurrentMaintenanceCounter.ConverterCounterLimit.Minimum;
-            break;
-        case 7:
-            bResult = maintenanceCount->CurrentMaintenanceCounter.Converter80PercentAlarm;
-            if(bResult == true)
-                value = "left";
-            else
-                value = "right";
-        default:
-            break;
-        }
-    }
+//    else if (code == 4)
+//    {
+//        switch (index) {
+//        case 2:
+//            value = maintenanceCount->CurrentMaintenanceCounter.ConverterCounterLimit.Current;
+//            break;
+//        case 3:
+//            value = maintenanceCount->CurrentMaintenanceCounter.ConverterCurrentCount;
+//            break;
+//        case 4:
+//            value = maintenanceCount->CurrentMaintenanceCounter.ConverterDateStarted;
+//            break;
+//        case 5:
+//            value = maintenanceCount->CurrentMaintenanceCounter.ConverterCounterLimit.Maximum;
+//            break;
+//        case 6:
+//            value = maintenanceCount->CurrentMaintenanceCounter.ConverterCounterLimit.Minimum;
+//            break;
+//        case 7:
+//            bResult = maintenanceCount->CurrentMaintenanceCounter.Converter80PercentAlarm;
+//            if(bResult == true)
+//                value = "left";
+//            else
+//                value = "right";
+//        default:
+//            break;
+//        }
+//    }
     else if (code == 5)
     {
         switch (index) {
@@ -377,24 +377,24 @@ QString HmiAdaptor::maintenanceCountGetImage(int index)
 QString HmiAdaptor::getMaintenanceVerson(int index)
 {
     QString value = "";
-    switch (index) {
-    case 0:
-        value = maintenanceCount->CurrentMaintenanceCounter.ActuatorPartNumber;
-        break;
-    case 1:
-        value = maintenanceCount->CurrentMaintenanceCounter.ActuatorSoftwareVersion;
-        if(value.isEmpty() == true)
-            value = QObject::tr("Actuator not online!");
-        break;
-    case 2:
-        value = maintenanceCount->CurrentMaintenanceCounter.ActuatorSerialNumber;
-        break;
-    case 3:
-        value = maintenanceCount->CurrentMaintenanceCounter.ActuatorModuleNumber;
-        break;
-    default:
-        break;
-    }
+//    switch (index) {
+//    case 0:
+//        value = maintenanceCount->CurrentMaintenanceCounter.ActuatorPartNumber;
+//        break;
+//    case 1:
+//        value = maintenanceCount->CurrentMaintenanceCounter.ActuatorSoftwareVersion;
+//        if(value.isEmpty() == true)
+//            value = QObject::tr("Actuator not online!");
+//        break;
+//    case 2:
+//        value = maintenanceCount->CurrentMaintenanceCounter.ActuatorSerialNumber;
+//        break;
+//    case 3:
+//        value = maintenanceCount->CurrentMaintenanceCounter.ActuatorModuleNumber;
+//        break;
+//    default:
+//        break;
+//    }
     return value;
 }
 
@@ -441,38 +441,36 @@ QString HmiAdaptor::getSoftVerson(int index)
 void HmiAdaptor::maintenanceCountReset(QString code)
 {
     if (code == "Horn")
-        maintenanceCount->_execute(TOOLINGCOUNT::HORNRESET);
+        maintenanceCount->_execute(MaintenanceLogElement::HORN_COUNT_RESET);
     else if (code == "AnvilTip")
-        maintenanceCount->_execute(TOOLINGCOUNT::ANVILTIPRESET);
+        maintenanceCount->_execute(MaintenanceLogElement::ANVIL_COUNT_RESET);
     else if (code == "Gather")
-        maintenanceCount->_execute(TOOLINGCOUNT::GATHERRESET);
+        maintenanceCount->_execute(MaintenanceLogElement::GATHER_COUNT_RESET);
     else if (code == "AnvilGuide")
-        maintenanceCount->_execute(TOOLINGCOUNT::ANVILGUIDERESET);
-    else if (code == "Converter")
-        maintenanceCount->_execute(TOOLINGCOUNT::CONVERTERRESET);
+        maintenanceCount->_execute(MaintenanceLogElement::GUIDE_COUNT_RESET);
 }
 
 void HmiAdaptor::maintenanceCountSetLimit(QString code, QString value)
 {
-    if (code == "Horn"){
+    if (code == "Horn")
+    {
         maintenanceCount->CurrentMaintenanceCounter.HornCounterLimit.Current = value;
-        maintenanceCount->_execute(TOOLINGCOUNT::HORNCHANGE);
+        maintenanceCount->_execute(MaintenanceLogElement::HORN_COUNT_LIMIT);
     }
-    else if (code == "AnvilTip") {
-        maintenanceCount->CurrentMaintenanceCounter.AnvilTipCounterLimit.Current = value;
-        maintenanceCount->_execute(TOOLINGCOUNT::ANVILTIPCHANGE);
+    else if (code == "AnvilTip")
+    {
+        maintenanceCount->CurrentMaintenanceCounter.AnvilCounterLimit.Current = value;
+        maintenanceCount->_execute(MaintenanceLogElement::ANVIL_COUNT_LIMIT);
     }
-    else if (code == "Gather"){
+    else if (code == "Gather")
+    {
         maintenanceCount->CurrentMaintenanceCounter.GatherCounterLimit.Current = value;
-        maintenanceCount->_execute(TOOLINGCOUNT::GATHERCHANGE);
+        maintenanceCount->_execute(MaintenanceLogElement::GATHER_COUNT_LIMIT);
     }
-    else if (code == "AnvilGuide"){
-        maintenanceCount->CurrentMaintenanceCounter.AnvilGuideCounterLimit.Current = value;
-        maintenanceCount->_execute(TOOLINGCOUNT::ANVILGUIDECHANGE);
-    }
-    else if (code == "Converter"){
-        maintenanceCount->CurrentMaintenanceCounter.ConverterCounterLimit.Current = value;
-        maintenanceCount->_execute(TOOLINGCOUNT::CONVERTERCHANGE);
+    else if (code == "AnvilGuide")
+    {
+        maintenanceCount->CurrentMaintenanceCounter.GuideCounterLimit.Current = value;
+        maintenanceCount->_execute(MaintenanceLogElement::GUIDE_COUNT_LIMIT);
     }
 }
 
@@ -481,19 +479,13 @@ void HmiAdaptor::maintenanceCount80PercentAlarm(QString code, QString value)
 //    qDebug()<<"80%alarm code"<<code<<"value"<<value;
     UNUSED(value);
     if (code == "Horn")
-        maintenanceCount->_execute(TOOLINGCOUNT::HORN80PERCENTALARM);
-    else if (code == "AnvilTip") {
-        maintenanceCount->_execute(TOOLINGCOUNT::ANVILTIP80PERCENTALARM);
-    }
-    else if (code == "Gather"){
-        maintenanceCount->_execute(TOOLINGCOUNT::GATHER80PERCENTALARM);
-    }
-    else if (code == "AnvilGuide"){
-        maintenanceCount->_execute(TOOLINGCOUNT::ANVILGUID80PERCENTALARM);
-    }
-    else if (code == "Converter"){
-        maintenanceCount->_execute(TOOLINGCOUNT::CONVERTER80PERCENTALARM);
-    }
+        maintenanceCount->_execute(MaintenanceLogElement::HORN_80PERCENT_ALARM);
+    else if (code == "AnvilTip")
+        maintenanceCount->_execute(MaintenanceLogElement::ANVIL_80PERCENT_ALARM);
+    else if (code == "Gather")
+        maintenanceCount->_execute(MaintenanceLogElement::GATHER_80PERCENT_ALARM);
+    else if (code == "AnvilGuide")
+        maintenanceCount->_execute(MaintenanceLogElement::GUIDE_80PERCENT_ALARM);
 }
 
 void HmiAdaptor::maintenanceStart(int page)
@@ -1050,7 +1042,7 @@ void HmiAdaptor::slotWeldCycleCompleted(bool result)
 
         //        maintenanceCountExecute("_Recall");
 //        int count = maintenanceCountGetValue(0,3).toInt();
-        emit signalMantenaneceCount(interfaceClass->StatusData.CurrentMaintenanceLimits[0]);
+        emit signalMantenaneceCount(interfaceClass->StatusData.CurrentCountMaintenanceLimits[0]);
     }
 }
 

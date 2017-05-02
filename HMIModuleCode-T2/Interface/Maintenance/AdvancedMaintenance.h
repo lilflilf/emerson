@@ -47,21 +47,23 @@ enum BUTTONSTATUS
     TOOLINGCOOL_ON = 0x04000000,
 };
 
-enum BUTTONCLICK
-{
-    ANVILARMCLICK,
-    ANVILCLICK,
-    GATHERCLICK,
-    CUTTERCLICK,
-    CRASHCLICK,
-    SAFETYCLICK,
-    CONVERTERCOOLINGCLICK,
-    TOOLINGCOOLINGCLICK,
-};
+
 
 class AdvancedMaintenance : public Maintenance
 {
     Q_OBJECT
+public:
+    enum BUTTONCLICK
+    {
+        ANVILARMCLICK,
+        ANVILCLICK,
+        GATHERCLICK,
+        CUTTERCLICK,
+        CRASHCLICK,
+        SAFETYCLICK,
+        CONVERTERCOOLINGCLICK,
+        TOOLINGCOOLINGCLICK,
+    };
 private:
     static bool GatherTest;
     static bool AnvilTest;

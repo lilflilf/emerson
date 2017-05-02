@@ -65,16 +65,24 @@
 #define DEFAULTSTEP      0                  //Default values of all Steps
 #define ZEROHEIGHTPRESSURE 256              //PSI * 10
 #define DEFAULTUNLOADTIME  300              //secs * 200
-#define MAXHORNLIMIT     200000
-#define MINHORNLIMIT     1
-#define MAXANVILTIPLIMIT 400000
-#define MINANVILTIPLIMIT 1
-#define MAXGATHERLIMIT   400000
-#define MINGATHERLIMIT   1
-#define MAXANVILGUIDELIMIT    400000
-#define MINANVILGUIDELIMIT    1
-#define MAXCONVERTERLIMIT     400000
-#define MINCONVERTERLIMIT     1
+#define MAXHORNCOUNTLIMIT       20000000
+#define MINHORNCOUNTLIMIT       0
+#define MAXHORNENERGYLIMIT      2000000
+#define MINHORNENERGYLIMIT      0
+#define MAXANVILCOUNTLIMIT      20000000
+#define MINANVILCOUNTLIMIT      0
+#define MAXANVILENERGYLIMIT     2000000
+#define MINANVILENERGYLIMIT     0
+#define MAXGATHERCOUNTLIMIT     20000000
+#define MINGATHERCOUNTLIMIT     0
+#define MAXGATHERENERGYLIMIT    2000000
+#define MINGATHERENERGYLIMIT    0
+#define MAXGUIDECOUNTLIMIT      20000000
+#define MINGUIDECOUNTLIMIT      0
+#define MAXGUIDEENERGYLIMIT     2000000
+#define MINGUIDEENERGYLIMIT     0
+#define MAXCONVERTERLIMIT       20000000
+#define MINCONVERTERLIMIT       0
 #define MAXPERCENTTEACHMODE   100
 #define MINPERCENTTEACHMODE   1
 #define MAXSIGMATEACHMODE     9
@@ -154,10 +162,14 @@ enum ScreenShowDataType{
     DINShrinkTubeTemperature,
     DINShrinkTubeTime,
     DINServerPortNumber,
-    DINHornLimit,
-    DINAnvilTipLimit,
-    DINGatherLimit,
-    DINAnvilGuideLimit,
+    DINHornCountLimit,
+    DINHornEnergyLimit,
+    DINAnvilCountLimit,
+    DINAnvilEnergyLimit,
+    DINGatherCountLimit,
+    DINGatherEnergyLimit,
+    DINGuideCountLimit,
+    DINGuideEnergyLimit,
     DINConverterLimit,
     DINPercentTeachMode,
     DINSigmaTeachMode,
