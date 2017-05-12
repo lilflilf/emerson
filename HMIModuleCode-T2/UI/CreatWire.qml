@@ -66,7 +66,7 @@ Item {
 
     Timer{
         id:countDown;
-        interval: 1000;
+        interval: 500;
         repeat: false;
         triggeredOnStart: false;
         onTriggered: {

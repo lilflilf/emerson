@@ -30,6 +30,7 @@ Window {
     property bool bIsTest: false
     property bool bIsPhysicalKey: false
     property var initIndex: 0
+    property alias headTitle: headBar.titleText
     /*0-- create
       1-- edit
       2-- Operate
@@ -91,6 +92,24 @@ Window {
 //            break;
         case -1:
             source = "Create Splice"
+            break;
+        case -2:
+            source = "Create Splice"
+            break;
+        case -3:
+            source = "Create Splice"
+            break;
+        case -4:
+            source = "Create Splice"
+            break;
+        case -5:
+            source = "Operate"
+            break;
+        case -6:
+            source = "Operate"
+            break;
+        case -7:
+            source = "Operate"
             break;
         case 0:
             source = "Create Harness"
@@ -173,6 +192,42 @@ Window {
             if (bIsTest)
                 headBar.titleText = qsTr("Test Splice")
 
+            break;
+        case -2:
+//            contentLoader.source = "qrc:/UI/CreatWire.qml"
+            stackview.push("qrc:/UI/CreatWire.qml",{},StackView.Immediate)
+            headBar.titleText = qsTr("Create Splice")
+            if (bIsTest)
+                headBar.titleText = qsTr("TeachMode-Standard")
+
+            break;
+        case -3:
+//            contentLoader.source = "qrc:/UI/CreatWire.qml"
+            stackview.push("qrc:/UI/CreatWire.qml",{},StackView.Immediate)
+            headBar.titleText = qsTr("Create Splice")
+            if (bIsTest)
+                headBar.titleText = qsTr("TeachMode-Auto")
+
+            break;
+//            if (loader.source == "qrc:/UI/OperateDetails.qml")
+
+        case -4:
+            stackview.push("qrc:/UI/CreatWire.qml",{},StackView.Immediate)
+            headBar.titleText = qsTr("Create Splice")
+            if (bIsTest)
+                headBar.titleText = qsTr("TeachMode-Sigma")
+            break;
+        case -5:
+            headBar.titleText = qsTr("Operate Splice")
+            stackview.push("qrc:/UI/OperateDetails.qml",{},StackView.Immediate)
+            break;
+        case -6:
+            headBar.titleText = qsTr("Operate Sequence")
+            stackview.push("qrc:/UI/OperateList.qml",{},StackView.Immediate)
+            break;
+        case -7:
+            headBar.titleText = qsTr("Operate Harness")
+            stackview.push("qrc:/UI/OperateList.qml",{},StackView.Immediate)
             break;
         case 0:
             partModel.getPartInfo(false,0,"")

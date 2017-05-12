@@ -638,13 +638,13 @@ QString SplicesModel::getTeachModeValue(QString valueKey, QString valueType)
             ResultStr = variantToString->TeachModeQuantity(m_interface->StatusData.Cust_Data.SigmaRunQuantity).Minimum;
     }
     else if (valueKey == "TestModel") {
-        ResultStr = QString("%1").arg((int)m_interface->StatusData.Soft_Settings.Teach_Mode);
+        ResultStr = QString("%1").arg((int)m_interface->StatusData.Soft_Settings.ToolCoverIgnore);
     }
     else if (valueKey == "TestCount") {
         ResultStr = QString("%1").arg((int)m_interface->StatusData.Soft_Settings.RunCount);
     }
     else if (valueKey == "TeachMode") {
-        ResultStr = QString("%1").arg((int)presetElement.TestSetting.TeachModeSetting.TeachModeType);
+        ResultStr = QString("%1").arg((int)m_interface->StatusData.Soft_Settings.Teach_Mode);
     }
     else
         ResultStr = "";
@@ -708,6 +708,26 @@ void SplicesModel::setTeachModeValue(QString valueKey, QString standValue, QStri
         m_interface->tempStatusData.Cust_Data.StandardRunQuantity = stringToVariant->QuantityTeachModeToInt(standValue);
         m_interface->tempStatusData.Cust_Data.AutoRunQuantity = stringToVariant->QuantityTeachModeToInt(autoValue);
         m_interface->tempStatusData.Cust_Data.SigmaRunQuantity = stringToVariant->QuantityTeachModeToInt(sigmaValue);
+    }    
+    else if (valueKey == "TestModel") {
+        if (standValue == "true")
+            m_interface->StatusData.Soft_Settings.ToolCoverIgnore == true;
+        else if (standValue == "false")
+            m_interface->StatusData.Soft_Settings.ToolCoverIgnore == false;
+    }
+    else if (valueKey == "TestCount") {
+        bool ok;
+        m_interface->StatusData.Soft_Settings.RunCount = standValue.toInt(&ok,10);
+    }
+    else if (valueKey == "TeachMode") {
+        if (standValue == "0")
+            m_interface->StatusData.Soft_Settings.Teach_Mode = TEACHMODESETTING::TEACH_MODE_TYPE::UNDEFINED;
+        else if (standValue == "1")
+            m_interface->StatusData.Soft_Settings.Teach_Mode = TEACHMODESETTING::TEACH_MODE_TYPE::STANDARD;
+        else if (standValue == "2")
+            m_interface->StatusData.Soft_Settings.Teach_Mode = TEACHMODESETTING::TEACH_MODE_TYPE::AUTO;
+        else if (standValue == "3")
+            m_interface->StatusData.Soft_Settings.Teach_Mode = TEACHMODESETTING::TEACH_MODE_TYPE::SIGMA;
     }
 }
 
