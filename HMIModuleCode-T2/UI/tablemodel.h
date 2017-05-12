@@ -188,6 +188,7 @@ signals:
 
 public slots:
     void setRoles(const QStringList &names);
+    Q_INVOKABLE void editNew(int partId);
     Q_INVOKABLE QVariant getValue(int index, QString key);
     Q_INVOKABLE void getPartInfo(bool bIsEdit, int id, QString name);
     Q_INVOKABLE void removeValue(int id, QString name);
@@ -218,6 +219,8 @@ public slots:
     Q_INVOKABLE bool exportData(int partId, QString fileUrl);
     Q_INVOKABLE int importData(QString filePath, QMap<int,QString> spliceMap);
     Q_INVOKABLE QString getPartName(int partId);
+
+    Q_INVOKABLE QList<int> getSpliceList();
    // int getCurrentIndex(QString info);
 
 //    Q_INVOKABLE bool updateRecordIntoTable(int workId, QString oldWorkName, QString workName, int partId, QString partName, int count);
@@ -477,9 +480,10 @@ public slots:
     void setRoles(const QStringList &names);
     Q_INVOKABLE QVariant getValue(int index, QString key);
     Q_INVOKABLE void removeValue(int id, QString name);
+    Q_INVOKABLE QList<int> getSpliceList();
 //    Q_INVOKABLE int getSequenceId(int index);
 
-//    Q_INVOKABLE void editNew(int index, int sequenceId);
+    Q_INVOKABLE void editNew(int sequenceId);
 //    Q_INVOKABLE QVariant getStructValue(QString key);
 
     Q_INVOKABLE QString getSequenceName(int sequenceId);
@@ -487,6 +491,7 @@ public slots:
     Q_INVOKABLE QStringList getCurrentSequenceOfSpliceName();
     Q_INVOKABLE QList<int> getCurrentSequenceOfSpliceId();
     Q_INVOKABLE QList<int> getCurrentSequenceOfSpliceQty();
+//    Q_INVOKABLE void setWorkSequence(int sequenceId);
 
     Q_INVOKABLE int count();
     Q_INVOKABLE void sequenceSpliceListClear();

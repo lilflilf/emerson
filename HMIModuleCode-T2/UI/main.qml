@@ -75,6 +75,15 @@ Window {
         stackview.clear();
     }
 
+    function operateToEdit(spliceId)
+    {
+        clearStackView()
+        mainRoot.bIsEditSplice = true
+        spliceModel.editNew(spliceId)
+        mainRoot.checkNeedPassWd(-1)
+        mainRoot.titleTextChanged(qsTr("Edit Splice"))
+    }
+
     function checkNeedPassWd(index)
     {
 //         ("Create New", "Edit Existing", "Operate", "Test", "Teach Mode", "Calibration",
@@ -457,6 +466,7 @@ Window {
                 bIsPhysicalKey = false
                 headBar.backColor = "#0079c1"
                 statusBar.backColor = "#004b8d"
+                logoff()
             }
         }
     }

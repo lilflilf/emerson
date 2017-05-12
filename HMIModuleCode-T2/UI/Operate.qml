@@ -27,27 +27,27 @@ Item {
         z: 10
         anchors.fill: parent
         onLoaded: {
-            if (loader.source == "qrc:/UI/OperateDetails.qml")
-            {
-                alarmModel.setStartTime();
-                var list = new Array
-                list =  workOrderModel.getSpliceList(selectIndx)
-                if (list.length > 0) {
-                    loader.item.spliceList = workOrderModel.getSpliceList(selectIndx)
-                    if (partModel.getPartOnlineOrOffLine()) {
-                        loader.item.showFlag = 1
-                    } else {
-                        if (loader.item.spliceList.length == 1) {
-                            loader.item.showFlag = 3
-                        } else {
-                            loader.item.showFlag = 2
-                        }
-                    }
-                    loader.item.selectSplice(workOrderModel.getSpliceList(selectIndx)[0])
-                    loader.item.qliantity = workOrderModel.getValue(selectIndx, "QUANTITY")
-                }
-                hmiAdaptor.operateProcessExec("Start")
-            }
+//            if (loader.source == "qrc:/UI/OperateDetails.qml")
+//            {
+//                alarmModel.setStartTime();
+//                var list = new Array
+//                list =  workOrderModel.getSpliceList(selectIndx)
+//                if (list.length > 0) {
+//                    loader.item.spliceList = workOrderModel.getSpliceList(selectIndx)
+//                    if (partModel.getPartOnlineOrOffLine()) {
+//                        loader.item.showFlag = 1
+//                    } else {
+//                        if (loader.item.spliceList.length == 1) {
+//                            loader.item.showFlag = 3
+//                        } else {
+//                            loader.item.showFlag = 2
+//                        }
+//                    }
+//                    loader.item.selectSplice(workOrderModel.getSpliceList(selectIndx)[0])
+//                    loader.item.qliantity = workOrderModel.getValue(selectIndx, "QUANTITY")
+//                }
+//                hmiAdaptor.operateProcessExec("Start")
+//            }
         }
     }
     Connections{
@@ -645,12 +645,15 @@ Item {
 
         onSignalAdvanceSettingStart: {
             operate.setCheckIndex = checkIndex
-            if (mainRoot.checkAllInterface(20)) {
-                passDialog.visible = true
-                passDialog.pageName = "Teach Mode"
-            } else {
-                loader.source = "qrc:/UI/AdvanceSetting.qml"
-            }
+//            if (mainRoot.checkAllInterface(20)) {
+//                passDialog.visible = true
+//                passDialog.pageName = "Teach Mode"
+//            } else {
+//                loader.source = "qrc:/UI/AdvanceSetting.qml"
+//            }
+
+            loader.source = "qrc:/UI/AdvanceSetting.qml"
+
         }
         onSignalTestStart: {
             testDialog.visible = false
@@ -715,10 +718,11 @@ Item {
         onCurrentClickIndex: {
             if (index == 15) {
                 if (hmiAdaptor.comepareCurrentValue(keyNum.minvalue,keyNum.maxvalue,keyNum.inputText)) {
-                    if (inputquantity.inputFocus) {
-                        inputquantity.inputText = keyNum.inputText
-                        inputquantity.inputFocus = false
-                    }
+//                    if (inputquantity.inputFocus) {
+//                        inputquantity.inputText = keyNum.inputText
+//                        inputquantity.inputFocus = false
+//                    }
+                    testDialog.inputNum = keyNum.inputText
                     keyNum.visible = false
                     keyNum.inputText = ""
                     keyNum.tempValue = ""
@@ -726,9 +730,9 @@ Item {
                     keyNum.timeRun = true
                 }
             } else if (index == 11) {
-                if (inputquantity.inputFocus) {
-                    inputquantity.inputFocus = false
-                }
+//                if (inputquantity.inputFocus) {
+//                    inputquantity.inputFocus = false
+//                }
                 keyNum.visible = false
                 keyNum.inputText = ""
                 keyNum.tempValue = ""
@@ -736,9 +740,11 @@ Item {
         }
         onInputTextChanged: {
             if (keyNum.inputText != "") {
-                if (inputquantity.inputFocus) {
-                    inputquantity.inputText = keyNum.inputText
-                }
+                testDialog.inputNum = keyNum.inputText
+
+//                if (inputquantity.inputFocus) {
+//                    inputquantity.inputText = keyNum.inputText
+//                }
             }
         }
     }

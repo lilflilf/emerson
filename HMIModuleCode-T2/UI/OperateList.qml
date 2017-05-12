@@ -269,7 +269,6 @@ Item {
         height: 1
         color: "#0d0f11"
     }
-
     CButton {
         id: selectOk
         anchors.bottom: parent.bottom
@@ -284,11 +283,24 @@ Item {
         clip: true
         textColor: "white"
         onClicked: {
-            mainRoot.checkNeedPassWd(-5)
+
             if (listView.model == sequenceModel)
-                mainRoot.headTitle = qsTr("Operate Sequence")
-            else
-                mainRoot.headTitle = qsTr("Operate Harness")
+            {
+                hmiAdaptor.setWorkFlow(1,operate.selectWorkId)
+                mainRoot.checkNeedPassWd(-5)
+                if (listView.model == sequenceModel)
+                    mainRoot.headTitle = qsTr("Operate Sequence")
+                else
+                    mainRoot.headTitle = qsTr("Operate Harness")
+            }
+            else if (listView.model == partModel )
+            {
+                harnessSetting.visible = true
+//                hmiAdaptor.setWorkFlow(2,operate.selectWorkId)
+            }
+
+
+
 
         }
     }
@@ -301,6 +313,190 @@ Item {
         MouseArea {
             anchors.fill: parent
             onClicked: {
+            }
+        }
+    }
+
+    Item {
+        id: harnessSetting
+        visible: false
+        width: 540
+        height: 435
+        anchors.centerIn: parent
+        Image {
+            anchors.fill: parent
+            source: "qrc:/images/images/dialogbg.png"
+        }
+
+        Text {
+            id: settingTitle
+            text: qsTr("HarnessName:")
+            color: "white"
+            font.pointSize: 20
+            font.family: "arial"
+            anchors.top: parent.top
+            anchors.topMargin: 46
+            anchors.left: parent.left
+            anchors.leftMargin: 24
+        }
+        Text {
+            id: batchSize
+            anchors.top: settingTitle.bottom
+            anchors.topMargin: 46
+            anchors.right: settingTitle.right
+            text: qsTr("Batch Size")
+            color: "white"
+            font.pointSize: 20
+            font.family: "arial"
+            clip: true
+        }
+        Text {
+            id: settingName
+            anchors.top: settingTitle.top
+            anchors.left: settingTitle.right
+            anchors.leftMargin: 50
+            text: qsTr("Batch Size")
+            color: "white"
+            font.pointSize: 20
+            font.family: "arial"
+            clip: true
+        }
+
+        ExclusiveGroup {
+            id: mos
+        }
+
+        MyRadioButton {
+            id: splices
+            anchors.left: batchSize.right
+            anchors.leftMargin: 14
+            anchors.top: batchSize.top
+            height: 57
+            width: 217
+            clip: true
+            exclusiveGroup: mos
+            bIsCheck: true
+
+        }
+        MyRadioButton {
+            id: unButton
+            anchors.left: batchSize.right
+            anchors.leftMargin: 14
+            anchors.top: splices.bottom
+            height: 57
+            width: 217
+            clip: true
+            buttontext: qsTr("Unconstrained")
+            exclusiveGroup: mos
+        }
+        Image {
+            id: lineEdit
+            anchors.left: batchSize.right
+            anchors.leftMargin: 78
+            anchors.top: splices.top
+            anchors.topMargin: 6
+
+            height: 45
+            width: 140
+            source: "qrc:/images/images/advancesetting-bg1.png"
+            Rectangle {
+                id: backGroundd
+                width: parent.width
+                height: parent.height-2
+                border.color: "#0079c1"
+                border.width: 2
+                color: Qt.rgba(0,0,0,0)
+            }
+            Text {
+                id: defalut
+                anchors.fill: parent
+                font.pixelSize: 24
+                font.family: "arial"
+                horizontalAlignment: Qt.AlignHCenter
+                verticalAlignment: Qt.AlignVCenter
+                color: "white"
+                text: qsTr("1")
+            }
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    keyNum.visible = true
+                    keyNum.currentValue = defalut.text
+                    keyNum.maxvalue = 80
+                    keyNum.minvalue = 0
+                }
+                onPressed: {
+                    splices.bIsCheck = true
+                }
+            }
+        }
+
+        Row {
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 20
+            anchors.horizontalCenter: parent.horizontalCenter
+            spacing: 14
+            CButton {
+                id: advanceSet
+                width: 210
+                height: 60
+                text: qsTr("CANCEL")
+                textColor: "white"
+                onClicked: {
+                    harnessSetting.visible = false
+                }
+            }
+            CButton {
+                id: start
+                width: 210
+                height: 60
+                text: qsTr("START")
+                textColor: "white"
+                onClicked: {
+                    harnessSetting.visible = false
+                    hmiAdaptor.setWorkFlow(2,operate.selectWorkId)
+
+                    mainRoot.checkNeedPassWd(-5)
+                    mainRoot.headTitle = qsTr("Operate Harness")
+                }
+            }
+        }
+
+
+    }
+
+    KeyBoardNum {
+        id: keyNum
+        anchors.centerIn: parent
+        width: 962
+        height: 526
+        visible: false
+        titleText: ""
+        maxvalue: "4"
+        minvalue: "1"
+        currentValue: "4"
+        onCurrentClickIndex: {
+            if (index == 15) {
+                if (hmiAdaptor.comepareCurrentValue(keyNum.minvalue,keyNum.maxvalue,keyNum.inputText)) {
+                    if (keyNum.inputText != "") {
+                        defalut.text = keyNum.inputText
+                    }
+//                    defalut.text = keyNum.inputText
+                    keyNum.visible = false
+                    keyNum.inputText = ""
+                    keyNum.tempValue = ""
+                } else {
+                    keyNum.timeRun = true
+                }
+            } else if (index == 11) {
+                keyNum.visible = false
+                keyNum.inputText = ""
+                keyNum.tempValue = ""
+            }
+        }
+        onInputTextChanged: {
+            if (keyNum.inputText != "") {
+                defalut.text = keyNum.inputText
             }
         }
     }

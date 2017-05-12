@@ -6,10 +6,11 @@ import QtQuick.Window 2.2
 Item {
     id: operateDetail
     property var spliceList: new Array
-    property int showFlag: 3 /*1:inLine 2:offLine 3:signal*/
+    property int showFlag: -1 /*1:inLine 2:offLine 3:signal*/
     property int cycleCount: 0
     property int qliantity: 0
     property int maxCount: partModel.getCurrentPartSpliceCount()
+    property int workMode: 0
     Rectangle {
         anchors.fill: parent
         color: "#626465"
@@ -20,19 +21,29 @@ Item {
     Connections {
         target: hmiAdaptor
         onSignalWeldCycleCompleted: {
-            progressBar.current++
-            if (operateDetail.cycleCount == operateDetail.qliantity) {
-                cdialog.visible = true
-                hmiAdaptor.operateProcessExec("Stop")
-                return
+
+            if (workMode == 2)
+            {
+                progressBar.current++
+                if (operateDetail.cycleCount == operateDetail.qliantity) {
+                    cdialog.visible = true
+                    hmiAdaptor.operateProcessExec("Stop")
+                    return
+                }
+                spliceLocation.setTreeModelOver()
+                progressBar.moveToNext()
+                selectSplice(spliceList[progressBar.current-1])
+                if (showFlag == 2)
+                    offline.setStusOffLineUpdate(progressBar.current)
+                else if (showFlag == 1)
+                    spliceLocation.updateTreeModel(progressBar.current)
+
             }
-            spliceLocation.setTreeModelOver()
-            progressBar.moveToNext()
-            selectSplice(spliceList[progressBar.current-1])
-            if (showFlag == 2)
-                offline.setStusOffLineUpdate(progressBar.current)
-            else if (showFlag == 1)
-                spliceLocation.updateTreeModel(progressBar.current)
+            else if (workMode == 1)
+            {
+
+            }
+
 //            console.log("333333331111",operateDetail.cycleCount,operateDetail.qliantity)
 //            if (operateDetail.cycleCount == operateDetail.qliantity) {
 //                cdialog.visible = true
@@ -47,7 +58,45 @@ Item {
 
     Component.onCompleted: {
 
-//        selectSplice(spliceModel.getStructValue("SpliceId",""))
+        var flag = hmiAdaptor.getWorkFlow("WorkMode")
+        workMode = flag
+        alarmModel.setStartTime();
+        var list = new Array
+        qliantity = spliceModel.getTeachModeValue("TestCount","","")
+        if (flag == 0) {
+            spliceList = spliceModel.getStructValue("SpliceId","")
+            showFlag = 3
+            selectSplice(spliceModel.getStructValue("SpliceId",""))
+
+        }
+        else if (flag == 2) {
+            spliceList = partModel.getSpliceList(hmiAdaptor.getWorkFlow("WorkId"))
+            if (partModel.getPartOnlineOrOffLine()) {
+                showFlag = 1
+            } else {
+                if (spliceList.length == 1) {
+                    showFlag = 3
+                } else {
+                    showFlag = 2
+                }
+            }
+            selectSplice(spliceList[0])
+        }
+        else if (flag == 1) {
+            spliceList = sequenceModel.getSpliceList(hmiAdaptor.getWorkFlow("WorkId"))
+            showFlag = 2
+            operateDetail.maxCount = spliceList.length
+            selectSplice(spliceList[0])
+        }
+
+
+
+
+
+
+
+
+
 //        if (mainRoot.headTitle = qsTr("Operate Sequence"))
 //        {
 //            showFlag = 2
@@ -56,24 +105,24 @@ Item {
 //            showFlag = 1
 
 
-        alarmModel.setStartTime();
-        var list = new Array
-        list =  workOrderModel.getSpliceList(selectIndx)
-        if (list.length > 0) {
-            loader.item.spliceList = workOrderModel.getSpliceList(selectIndx)
-            if (partModel.getPartOnlineOrOffLine()) {
-                loader.item.showFlag = 1
-            } else {
-                if (loader.item.spliceList.length == 1) {
-                    loader.item.showFlag = 3
-                } else {
-                    loader.item.showFlag = 2
-                }
-            }
-            loader.item.selectSplice(workOrderModel.getSpliceList(selectIndx)[0])
-            loader.item.qliantity = workOrderModel.getValue(selectIndx, "QUANTITY")
-        }
-        hmiAdaptor.operateProcessExec("Start")
+//        alarmModel.setStartTime();
+//        var list = new Array
+//        list =  workOrderModel.getSpliceList(selectIndx)
+//        if (list.length > 0) {
+//            loader.item.spliceList = workOrderModel.getSpliceList(selectIndx)
+//            if (partModel.getPartOnlineOrOffLine()) {
+//                loader.item.showFlag = 1
+//            } else {
+//                if (loader.item.spliceList.length == 1) {
+//                    loader.item.showFlag = 3
+//                } else {
+//                    loader.item.showFlag = 2
+//                }
+//            }
+//            loader.item.selectSplice(workOrderModel.getSpliceList(selectIndx)[0])
+//            loader.item.qliantity = workOrderModel.getValue(selectIndx, "QUANTITY")
+//        }
+//        hmiAdaptor.operateProcessExec("Start")
 
 //        hmiAdaptor.operateProcessExec("Start")
     }
@@ -124,6 +173,70 @@ Item {
         }
         hmiAdaptor.setOperateProcess(spliceId, false)
         hmiAdaptor.operateProcessExec("Execute")
+    }
+
+    onShowFlagChanged: {
+        if (showFlag == 1) {
+            spliceLocation.visible = true
+            currentSplice.visible = true
+        }
+        else {
+            spliceLocation.visible = false
+            currentSplice.visible = false
+        }
+        if (showFlag == 2) {
+            offline.visible = true
+        }
+        else {
+            offline.visible = false
+        }
+        if (workMode == 1) {
+            offline.visible = false
+            completeMiss.visible = false
+            editSplice.visible = true
+            progressBar.anchors.left = operateDetail.left
+            progressBar.anchors.leftMargin = 87
+            progressBar.anchors.bottom = operateDetail.bottom
+            progressBar.anchors.bottomMargin = 14
+
+            workStation.visible = false
+            workStation.anchors.bottomMargin = 50
+
+            maintenance.anchors.left = progressBar3.left
+            partCount2.anchors.left = progressBar2.left
+            progressBar2.anchors.bottom = progressBar.top
+            progressBar2.anchors.bottomMargin = 14
+            progressBar3.anchors.bottom = progressBar2.bottom
+            progressBar3.anchors.bottomMargin = 0
+            progressBar3.anchors.left = progressBar2.right
+            progressBar3.anchors.leftMargin = 15
+
+            progressBar3.width = progressBar3.width / 2
+            progressBar2.width = progressBar2.width / 2
+            progressBar3.height = 10
+
+        }
+        else if (workMode == 0) {
+            progressBar3.anchors.left = progressBar2.left
+            editSplice.visible = true
+            editCounter.visible = true
+        }
+        else if (workMode == 2 && showFlag == 1) {
+            completeMiss.visible = false
+            editSplice.visible = true
+            editSplice.anchors.right = completeMiss.right
+            editSplice.anchors.bottom = completeMiss.bottom
+            editSplice.width = editSplice.width - 30
+            progressBar3.anchors.left = progressBar2.right
+            progressBar3.anchors.leftMargin = 40
+
+        }
+        else if (workMode == 2 && showFlag == 3) {
+            progressBar3.anchors.left = progressBar2.left
+            editSplice.visible = true
+            editCounter.visible = true
+        }
+
     }
 
     Text {
@@ -246,21 +359,7 @@ Item {
         listModel: treeModel
         maxNum: maxCount
     }
-    onShowFlagChanged: {
-        if (showFlag == 1) {
-            spliceLocation.visible = true
-            currentSplice.visible = true
-        }
-        else {
-            spliceLocation.visible = false
-            currentSplice.visible = false
-        }
-        if (showFlag == 2)
-            offline.visible = true
-        else
-            offline.visible = false
 
-    }
 
     SpliceStatusOffLine {
         id: offline
@@ -272,7 +371,7 @@ Item {
         width: Screen.width * 0.37
         maxNum: maxCount
         listModel: maxCount > 8 ? 8 : maxCount
-        visible: showFlag == 2 ? true : false
+        visible: false
         Component.onCompleted: {
             offLineInit()
         }
@@ -403,12 +502,18 @@ Item {
         Connections {
             target: progressBar
             onCycleDone: {
-                cycleCount++
-                if (cycleCount > qliantity)
-                    return
-                selectSplice(spliceList[0])
-                partCount2.text = qsTr("PART COUNTER ") + cycleCount + "/" + qliantity;
-                progressBar2.value = cycleCount
+                if (workMode == 2) {
+                    cycleCount++
+                    if (cycleCount > qliantity)
+                        return
+                    selectSplice(spliceList[0])
+                    partCount2.text = qsTr("PART COUNTER ") + cycleCount + "/" + qliantity;
+                    progressBar2.value = cycleCount
+                }
+                else if (workMode == 1)
+                {
+
+                }
             }
         }
     }
@@ -423,22 +528,22 @@ Item {
         minimum: 0
         value: 0
     }
-    Text {
-        id: progresstracking2
-        anchors.top: offline.top
-        anchors.topMargin: 10
-        anchors.left: offline.left
-        font.pointSize: 16
-        font.family: "arial"
-        text: qsTr("Progress and Tracking")
-        color: "white"
-        visible: showFlag == 3 ? true : false
-    }
+//    Text {
+//        id: progresstracking2
+//        anchors.top: offline.top
+//        anchors.topMargin: 10
+//        anchors.left: offline.left
+//        font.pointSize: 16
+//        font.family: "arial"
+//        text: qsTr("Progress and Tracking")
+//        color: "white"
+//        visible: showFlag == 3 ? true : false
+//    }
     Text {
         id: progresstracking
         anchors.bottom: workStation.top
         anchors.bottomMargin: 4
-        anchors.left: qualityWindow.left
+        anchors.left: leftButton.left
         font.pointSize: 16
         font.family: "arial"
         text: qsTr("Progress and Tracking")
@@ -471,7 +576,9 @@ Item {
     CButton {
         id: leftButton
         anchors.verticalCenter: progressBar.verticalCenter
-        anchors.left: qualityWindow.left
+//        anchors.left: qualityWindow.left
+        anchors.right: progressBar.left
+        anchors.rightMargin: 25
         width: 41
         height: 63
         iconSource: "qrc:/images/images/left_operate.png"
@@ -490,13 +597,15 @@ Item {
     }
     Progressbar {
         id: progressBar
-        anchors.left: leftButton.right
-        anchors.leftMargin: 25
-        anchors.right: rightButton.left
-        anchors.rightMargin: 25
+//        anchors.left: leftButton.right
+//        anchors.leftMargin: 25
+//        anchors.right: rightButton.left
+//        anchors.rightMargin: 25
+        anchors.left: qualityWindow.left
+        anchors.leftMargin: 63
         anchors.bottom: partCount2.top
         anchors.bottomMargin: 4
-        width: Screen.width*0.4-150
+        width: 455//Screen.width*0.4-150
         height: 64
         total: operateDetail.spliceList.length
         current: 1
@@ -505,7 +614,9 @@ Item {
     CButton {
         id: rightButton
         anchors.verticalCenter: progressBar.verticalCenter
-        anchors.right: qualityWindow.right
+//        anchors.right: qualityWindow.right
+        anchors.left: progressBar.right
+        anchors.leftMargin: 25
         width: 41
         height: 63
         iconSource: "qrc:/images/images/right_operate.png"
@@ -539,7 +650,8 @@ Item {
     }
     CProgressBar {
         id: progressBar3
-        anchors.right: showFlag != 3 ? qualityWindow.right : spliceDetailsItem.right
+//        anchors.right: showFlag != 3 ? qualityWindow.right : spliceDetailsItem.right
+        anchors.left: leftButton.left
         anchors.bottom: showFlag != 3 ? parent.bottom : partCount2.top
         anchors.bottomMargin: 20
         width: showFlag == 1 ? qualityWindow.width/2-20 : (showFlag == 2 ? qualityWindow.width : spliceDetailsItem.width)
@@ -548,6 +660,37 @@ Item {
         minimum: 0
         value: hmiAdaptor.maintenanceCountGetValue(0,3)
     }
+
+    CButton {
+        id: editCounter
+        anchors.right: progressBar3.right
+        anchors.bottom: progressBar3.top
+        anchors.bottomMargin: 40
+        width: 210
+        height: 60
+        text: qsTr("EDIT COUNTER")
+        textColor: "white"
+        visible: false
+        onClicked: {
+            spliceCounterSetting.visible = true
+        }
+    }
+
+    CButton {
+        id: editSplice
+        anchors.right: qualityWindow.right
+        anchors.bottom: operateDetail.bottom
+        anchors.bottomMargin: 14
+        width: 210
+        height: 60
+        text: qsTr("EDIT SPLICE")
+        textColor: "white"
+        visible: false
+        onClicked: {
+            operateToEdit(spliceList[progressBar.current-1])
+        }
+    }
+
     CDialog {
         id: cdialog
         anchors.centerIn: parent
@@ -562,4 +705,135 @@ Item {
                 mainRoot.checkNeedPassWd(2)
         }
     }
+
+    Item {
+        id: spliceCounterSetting
+        visible: false
+        width: 540
+        height: 435
+        anchors.centerIn: parent
+        Image {
+            anchors.fill: parent
+            source: "qrc:/images/images/dialogbg.png"
+        }
+
+        Text {
+            id: settingTitle
+            anchors.top: parent.top
+            anchors.topMargin: 40
+            anchors.left: parent.left
+            anchors.leftMargin: 24
+            text: qsTr("EDIT COUNTER")
+            color: "white"
+            font.pointSize: 20
+            font.family: "arial"
+            clip: true
+        }
+
+        Text {
+            id: setting1
+            text: qsTr("CurrentCycle:")
+            color: "white"
+            font.pointSize: 20
+            font.family: "arial"
+            anchors.top: settingTitle.bottom
+            anchors.topMargin: 46
+            anchors.left: parent.left
+            anchors.leftMargin: 50
+        }
+        CButton {
+            id: resetButton
+            anchors.left: setting1.right
+            anchors.leftMargin: 78
+            anchors.verticalCenter: setting1.verticalCenter
+            height: 50
+            width: 180
+            text: qsTr("Reset")
+            textColor: "white"
+            onClicked: {
+
+            }
+        }
+
+        Text {
+            id: setting2
+            anchors.top: setting1.bottom
+            anchors.topMargin: 46
+            anchors.left: setting1.left
+            text: qsTr("Batch Size")
+            color: "white"
+            font.pointSize: 20
+            font.family: "arial"
+            clip: true
+        }
+
+        Image {
+            id: lineEdit
+            anchors.left: resetButton.left
+            anchors.verticalCenter: setting2.verticalCenter
+            height: 50
+            width: 180
+            source: "qrc:/images/images/advancesetting-bg1.png"
+            Rectangle {
+                id: backGroundd
+                width: parent.width
+                height: parent.height-2
+                border.color: "#0079c1"
+                border.width: 2
+                color: Qt.rgba(0,0,0,0)
+            }
+            Text {
+                id: defalut
+                anchors.fill: parent
+                font.pixelSize: 24
+                font.family: "arial"
+                horizontalAlignment: Qt.AlignHCenter
+                verticalAlignment: Qt.AlignVCenter
+                color: "white"
+                text: qsTr("1")
+            }
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    keyNum.visible = true
+                    keyNum.currentValue = defalut.text
+                    keyNum.maxvalue = 80
+                    keyNum.minvalue = 0
+                }
+                onPressed: {
+                    splices.bIsCheck = true
+                }
+            }
+        }
+
+        Row {
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 20
+            anchors.horizontalCenter: parent.horizontalCenter
+            spacing: 14
+            CButton {
+                id: advanceSet
+                width: 210
+                height: 60
+                text: qsTr("CANCEL")
+                textColor: "white"
+                onClicked: {
+                   spliceCounterSetting.visible = false
+                }
+            }
+            CButton {
+                id: start
+                width: 210
+                height: 60
+                text: qsTr("OK")
+                textColor: "white"
+                onClicked: {
+                    spliceCounterSetting.visible = false
+                }
+            }
+        }
+
+
+    }
+
 }

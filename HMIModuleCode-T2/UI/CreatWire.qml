@@ -297,7 +297,7 @@ Item {
                 inputColor: "#8295a0"
                 borderColor: "#375566"
                 defaultText: qsTr("WIRE NAME")
-                maxSize: 20
+                maxSize: 21
                 onTextChange: {
                     if (detailIsChang)
                         return
@@ -1085,6 +1085,7 @@ Item {
                 width: parent.width-20
                 color: "#375566"
                 height: 1
+                z:11
             }
 
             Item {
@@ -1112,7 +1113,7 @@ Item {
                     anchors.left: parent.left
                     anchors.leftMargin: width + 10
                     items: [
-                    { lang: "NA", img: "" },
+                    { lang: "n/a", img: "" },
                     { lang: "DIN", img: "" },
                     { lang: "ISO", img: "" },
                     { lang: "SAE", img: "" },
@@ -1140,7 +1141,16 @@ Item {
                     backGround.opacity = 0.5
                     addWireLibrary.visible = true
                     addWireLibrary.listModel = spliceModel
+
+                    addWireLibrary.titleName = qsTr("Splice Library")
+                    addWireLibrary.componentName = qsTr("SpliceName")
+                    addWireLibrary.componentData = qsTr("DateCreated")
+                    addWireLibrary.componentMiddle = qsTr("OperatorName")
+                    addWireLibrary.componenttype = qsTr("Cross Section")
+                    addWireLibrary.componentCount = qsTr("#Of Wires")
                 }
+                z:11
+
             }
 
             CButton {
@@ -1769,6 +1779,13 @@ Item {
 
                 addWireLibrary.visible = true
                 wireModel.setTemplateModelList()
+
+                addWireLibrary.titleName = qsTr("Wire Library")
+                addWireLibrary.componentName = qsTr("WireName")
+                addWireLibrary.componentData = qsTr("DateCreated")
+                addWireLibrary.componentMiddle = qsTr("OperatorName")
+                addWireLibrary.componenttype = qsTr("Color")
+                addWireLibrary.componentCount = qsTr("Gauge")
             }
         }
         CButton {
@@ -2822,10 +2839,18 @@ Item {
             backGround.opacity = 0
             addWireLibrary.visible = false
             //modelId
-            currentSpliceId = modelId
-            wireModel.addFromLibrary(modelId)
-            spliceDetailsItem.addWireFromLibrary()
-
+            if (addWireLibrary.listModel == wireModel) {
+                currentSpliceId = modelId
+                wireModel.addFromLibrary(modelId)
+                spliceDetailsItem.addWireFromLibrary()
+            }
+            else if (addWireLibrary.listModel == spliceModel)
+            {
+                spliceModel.editNew(modelId)
+                var list = new Array
+                list = spliceModel.getWireIdList()
+                editSplice(list)
+            }
         }
         onVisibleChanged: {
             if (addWireLibrary.visible)

@@ -131,26 +131,26 @@ Item {
             }
         }
 
-        CButton {
-            width: 40
-            height: 42
-            anchors.top: mima.top
-            anchors.left: mima.right
-            onClicked: {
-                if (hmiAdaptor.borrowLogin(mima.text,pageName)) {
-                    if (pageName == "Teach Mode") {
-                        mimaShow.text = ""
-                        mima.text = ""
-                        passwdDialog.visible = false
-                    } else {
-                        mainRoot.menuInit(passwdDialog.index)
-                        mimaShow.text = ""
-                        mima.text = ""
-                        passwdDialog.visible = false
-                    }
-                }
-            }
-        }
+//        CButton {
+//            width: 40
+//            height: 42
+//            anchors.top: mima.top
+//            anchors.left: mima.right
+//            onClicked: {
+//                if (hmiAdaptor.borrowLogin(mima.text,pageName)) {
+//                    if (pageName == "Teach Mode") {
+//                        mimaShow.text = ""
+//                        mima.text = ""
+//                        passwdDialog.visible = false
+//                    } else {
+//                        mainRoot.menuInit(passwdDialog.index)
+//                        mimaShow.text = ""
+//                        mima.text = ""
+//                        passwdDialog.visible = false
+//                    }
+//                }
+//            }
+//        }
 
         Text {
             id: mimaShow
@@ -286,8 +286,20 @@ Item {
                                 mima.text = ""
                                 mimaShow.text = ""
                             } else if (index == 11) {
-                                mima.remove(mima.text.length-1,mima.text.length)
-                                mimaShow.text = mimaShow.text.substring(0,mimaShow.text.length - 1)
+                                if (hmiAdaptor.borrowLogin(mima.text,pageName)) {
+                                    if (pageName == "Teach Mode") {
+                                        mimaShow.text = ""
+                                        mima.text = ""
+                                        passwdDialog.visible = false
+                                    } else {
+                                        mainRoot.menuInit(passwdDialog.index)
+                                        mimaShow.text = ""
+                                        mima.text = ""
+                                        passwdDialog.visible = false
+                                    }
+                                }
+//                                mima.remove(mima.text.length-1,mima.text.length)
+//                                mimaShow.text = mimaShow.text.substring(0,mimaShow.text.length - 1)
                             } else {
                                 if (mimaShow.text.length >= 12)
                                     return

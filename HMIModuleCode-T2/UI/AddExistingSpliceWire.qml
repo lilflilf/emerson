@@ -363,7 +363,7 @@ Item {
             onClicked: {
                 if ((bIsOnlyOne && selectIndex != -1) || selectList.count) {
                     if (listModel == partModel) {
-                        signalAddExistSelectClick(listModel.getValue(selectIndex,"PartId"),listModel.getValue(selectIndex,"PartName"))
+                        signalAddExistSelectClick(listModel.getValue(selectIndex,"PartId"),listModel.getValue(selectIndex,"HarnessName"))
                     } else if (listModel == spliceModel) {
                         for (var i = 0; i < selectList.count; i++) {
                             var num = selectList.get(i).selectNum

@@ -181,6 +181,7 @@ void HmiAdaptor::maintenanceCountExecute(QString code)
 
 QString HmiAdaptor::maintenanceCountGetValue(int code, int index)
 {
+    qDebug() << "maintenanceCountGetValue" << code << index;
     QString value;
     bool bResult;
     if (code == 0)
@@ -1652,6 +1653,44 @@ int HmiAdaptor::stringToInt(QString temp)
 {
     bool ok;
     return temp.toInt(&ok,10);
+}
+
+void HmiAdaptor::setWorkFlow(int workMode, int workId)
+{
+    interfaceClass->CurrentWorkOrder.WorkOrderMode = (WorkOrderElement::WORKORDERMODE)workMode;
+    if (workMode == 0)
+    {
+        interfaceClass->CurrentWorkOrder.CurrentPartIndex.PartID = workId;
+        interfaceClass->CurrentWorkOrder.CurrentPartIndex.PartName = spliceModel->getSpliceName(workId);
+        spliceModel->editNew(workId);
+    }
+    else if (workMode == 1)
+    {
+        interfaceClass->CurrentWorkOrder.CurrentPartIndex.PartID = workId;
+        interfaceClass->CurrentWorkOrder.CurrentPartIndex.PartName = sequenceModel->getSequenceName(workId);
+        sequenceModel->editNew(workId);
+    }
+    else if (workMode == 2)
+    {
+        interfaceClass->CurrentWorkOrder.CurrentPartIndex.PartID = workId;
+        interfaceClass->CurrentWorkOrder.CurrentPartIndex.PartName = partModel->getPartName(workId);
+        partModel->editNew(workId);
+    }
+    qDebug() << "setWorkFlow" << workMode << workId;
+
+
+}
+
+QVariant HmiAdaptor::getWorkFlow(QString workKey)
+{
+    QVariant value;
+    if (workKey == "WorkMode")
+        value = (int)interfaceClass->CurrentWorkOrder.WorkOrderMode;
+    else if (workKey == "WorkId")
+        value = (int)interfaceClass->CurrentWorkOrder.CurrentPartIndex.PartID;
+    else if ((workKey) == "WorkIndex")
+        value = (int)interfaceClass->CurrentWorkOrder.CurrentSpliceIndex;
+    return value;
 }
 
 void HmiAdaptor::slotPhysicalKeySignal(bool &status)

@@ -53,7 +53,7 @@ Rectangle {
             anchors.left: parent.left
             anchors.leftMargin: 12
             font.family: "Arial"
-            font.pointSize: 20;
+            font.pointSize: 14;
             smooth:true
             visible: true;
         }

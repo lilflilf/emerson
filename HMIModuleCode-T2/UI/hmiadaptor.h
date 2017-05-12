@@ -148,6 +148,10 @@ public:
     Q_INVOKABLE void exportShrink(QString insualtionId, QString temp, QString time, QString fileUrl);
     Q_INVOKABLE void removeShrink(int selectIndex);
     Q_INVOKABLE int stringToInt(QString temp);
+
+    Q_INVOKABLE void setWorkFlow(int workMode, int workId);
+    Q_INVOKABLE QVariant getWorkFlow(QString workKey);
+
     BransonMessageBox bransonMessageBox;
     InterfaceClass *interfaceClass;
     M102IA *m102ia;

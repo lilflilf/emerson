@@ -187,7 +187,7 @@ Item {
             anchors.right: sure.left
             anchors.rightMargin: 15
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: 16
+            anchors.bottomMargin: 5
             width: 180
             text: qsTr("CANCEL")
             textColor: "white"
@@ -201,7 +201,7 @@ Item {
             anchors.right: parent.right
             anchors.rightMargin: 72
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: 16
+            anchors.bottomMargin: 5
             width: 180
             text: qsTr("OK")
             textColor: "white"

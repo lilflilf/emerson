@@ -126,6 +126,7 @@ Item {
         var qtyList = new Array()
         qtyList = sequenceModel.getCurrentSequenceOfSpliceQty()
 
+        spliceList.listModel.clear()
         for (var i = 0; i < nameList.length; i++) {
             spliceList.listModel.append({"SpliceName":nameList[i],"stationColor":"white","station":"?","SpliceId":idList[i],"qty":qtyList[i]})
         }
@@ -149,6 +150,7 @@ Item {
         nameList = partModel.getCurrentPartOfSpliceName()
         var idList = new Array()
         idList = partModel.getCurrentPartOfSpliceId()
+        spliceList.listModel.clear()
         for (var i = 0; i < nameList.length; i++) {
             if (corlorlist[i] == -1 || zoneList[i] == -1) {
                 spliceList.listModel.append({"SpliceName":nameList[i],"stationColor":"white","station":"?","SpliceId":idList[i],"qty":0})
@@ -160,6 +162,7 @@ Item {
             basicSwitch.state = "right"
         else
             basicSwitch.state = "left"
+
     }
 
     Connections {
@@ -834,7 +837,7 @@ Item {
             height: 43
             inputWidth: boardlayout.width*0.65
             inputHeight: 40
-            horizontalAlignment: Qt.AlignHCenter
+//            horizontalAlignment: Qt.AlignHCenter
             defaultText: qsTr("PART NAME")
             //regExp: RegExpValidator{regExp: /^[1-9]{1,2}$/}
             maxSize: 60
@@ -1346,7 +1349,7 @@ Item {
         }
         onSignalAddExistSelectClick: {
             //que hanshu
-
+            content.bIsEdit = true
             if (addExit.listModel == partModel) {
                 selectPartUpdataPage(modelId,name)
             } else if (addExit.listModel == spliceModel) {

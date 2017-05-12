@@ -158,7 +158,8 @@ Item {
     }
 
     function clearBoardLayout()
-    {   var i
+    {
+        var i
         for (i = 0; i < boardLayout.columns*boardLayout.rows; i++) {
             if (rec.itemAt(i).zoneModel.count != 0) {
                 for (var j = 0; j < rec.itemAt(i).zoneModel.count; j++) {

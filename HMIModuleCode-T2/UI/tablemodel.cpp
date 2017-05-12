@@ -2105,9 +2105,18 @@ QString PartModel::getPartName(int partId)
 {
     HarnessElement myHarness;
     bool reb;
-    UNUSED(reb);
     reb = m_harnessAdaptor->QueryOneRecordFromTable(partId,&myHarness);
     return myHarness.HarnessName;
+}
+
+QList<int> PartModel::getSpliceList()
+{
+    QMap<int,struct HARNESSATTRIBUTE>::iterator it; //遍历map
+    QList<int> list;
+    for ( it = m_Harness->SpliceList.begin(); it != m_Harness->SpliceList.end(); ++it ) {
+        list.append(it.value().SpliceID);
+    }
+    return list;
 }
 
 
@@ -2132,6 +2141,11 @@ void PartModel::setRoles(const QStringList &names)
     {
         m_roleNames[Qt::UserRole + idx + 1] = names[idx].toLocal8Bit();
     }
+}
+
+void PartModel::editNew(int partId)
+{
+    m_harnessAdaptor->QueryOneRecordFromTable(partId, m_Harness);
 }
 
 QHash<int, QByteArray> PartModel::roleNames() const
@@ -2193,6 +2207,7 @@ void PartModel::removeValue(int id, QString name)
 
 void PartModel::getPartInfo(bool bIsEdit, int id, QString name)
 {
+
     if (bIsEdit) {
         m_harnessAdaptor->QueryOneRecordFromTable(id,name,m_Harness);
     } else {
@@ -3396,7 +3411,7 @@ int WireModel::insertValueToTable(QString type,QString wireName,int wireId,int o
     insertWire.VerticalSide = (WireElement::VerticalLocation)verside;
     insertWire.Position = (WireElement::VerticalPosition)position;
     insertWire.SpliceID = -1;
-    if (moduleType == "NA")
+    if (moduleType == "n/a")
         insertWire.TypeOfModule = WireElement::ModuleType::NA;
     else if (moduleType == "DIN")
         insertWire.TypeOfModule = WireElement::ModuleType::DIN;
@@ -3475,7 +3490,7 @@ QVariant WireModel::getStructValue(QString key)
     }
     QString moduleString;
     if (wireElement.TypeOfModule == WireElement::NA)
-        moduleString = "NA";
+        moduleString = "n/a";
     else if (wireElement.TypeOfModule == WireElement::DIN)
         moduleString = "DIN";
     else if (wireElement.TypeOfModule == WireElement::SAE)
@@ -3990,6 +4005,21 @@ void SequenceModel::removeValue(int id, QString name)
 {
     m_sequenceAdaptor->DeleteOneRecordFromTable(id,name);
     setModelList();
+}
+
+QList<int> SequenceModel::getSpliceList()
+{
+    QMap<int,struct SEQUENCEATTRIBUTE>::iterator it; //遍历map
+    QList<int> list;
+    for ( it = sequenceElement.SpliceList.begin(); it != sequenceElement.SpliceList.end(); ++it ) {
+        list.append(it.value().SpliceID);
+    }
+    return list;
+}
+
+void SequenceModel::editNew(int sequenceId)
+{
+    m_sequenceAdaptor->QueryOneRecordFromTable(sequenceId, &sequenceElement);
 }
 
 QString SequenceModel::getSequenceName(int sequenceId)

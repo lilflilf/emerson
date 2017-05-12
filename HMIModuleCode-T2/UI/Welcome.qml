@@ -39,6 +39,8 @@ Item {
             listModel.append({"iconsource":"qrc:/images/images/keyc.png","value":""})
             listModel.append({"iconsource":"qrc:/images/images/key0.png","value":"0"})
             listModel.append({"iconsource":"qrc:/images/images/keydel.png","value":"."})
+//            listModel.append({"iconsource":"","value":"OK"})
+
         }
 
     }
@@ -167,16 +169,17 @@ Item {
         verticalAlignment: Qt.AlignVCenter
     }
 
-    CButton {
-        width: 40
-        height: 42
-        anchors.top: mima.top
-        anchors.left: mima.right
-        onClicked: {
-            if (hmiAdaptor.login(mima.text))
-                passWordInputOk()
-        }
-    }
+//    CButton {
+//        width: 40
+//        height: 42
+//        anchors.top: mima.top
+//        anchors.left: mima.right
+//        onClicked: {
+//            if (hmiAdaptor.login(mima.text))
+//                passWordInputOk()
+//        }
+
+//    }
 
     Text {
         id: mimaShow
@@ -215,7 +218,6 @@ Item {
                 mimaShow.text = mimaShow.text + "●"
                 mima.text = mima.text + "2"
             }
-
             else if (event.key == Qt.Key_3) {
                 mimaShow.text = mimaShow.text + "●"
                 mima.text = mima.text + "3"
@@ -322,8 +324,10 @@ Item {
                             mima.text = ""
                             mimaShow.text = ""
                         } else if (index == 11) {
-                            mima.remove(mima.text.length-1,mima.text.length)
-                            mimaShow.text = mimaShow.text.substring(0,mimaShow.text.length - 1)
+                            if (hmiAdaptor.login(mima.text))
+                                passWordInputOk()
+//                            mima.remove(mima.text.length-1,mima.text.length)
+//                            mimaShow.text = mimaShow.text.substring(0,mimaShow.text.length - 1)
                         } else {
                             if (mimaShow.text.length >= 12)
                                 return
