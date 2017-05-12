@@ -338,6 +338,45 @@ bool DBSequenceTable::QueryOneRecordFromTable(int ID, void *_obj)
     return bResult;
 }
 
+bool DBSequenceTable::QueryOneRecordFromTable(int ID, QStringList &ResultStr)
+{
+    UtilityClass *_Utility = UtilityClass::Instance();
+    QSqlQuery query(SequenceDBObj);
+    bool bResult = OpenDBObject();
+    if(bResult == false)
+    {
+        qDebug() << "Sequence Table SQL ERROR:"<< query.lastError();
+        return bResult;
+    }
+
+    query.prepare(SQLSentence[SQLITCLASS::QUERY_ONE_RECORD_ONLY_ID]);
+    query.addBindValue(ID);
+
+    bResult = query.exec();
+    if(bResult == false)
+    {
+        SequenceDBObj.close();
+        qDebug() << "Sequence Table SQL ERROR:"<< query.lastError();
+        return bResult;
+    }
+
+    bResult = query.next();
+    if(bResult == false)
+    {
+        SequenceDBObj.close();
+        return bResult;
+    }
+    ResultStr.clear();
+    ResultStr.append(query.value("ID").toString());
+    ResultStr.append(query.value("SequenceName").toString());
+    ResultStr.append(query.value("CreatedDate").toString());
+    ResultStr.append( query.value("OperatorID").toString());
+    ResultStr.append(query.value("NoOfSplice").toString());
+    ResultStr.append(query.value("JSONSplice").toString());
+    SequenceDBObj.close();
+    return bResult;
+}
+
 bool DBSequenceTable::DeleteEntireTable()
 {
     QSqlQuery query(SequenceDBObj);

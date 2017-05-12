@@ -227,6 +227,45 @@ bool DBOperatorTable::QueryOneRecordFromTable(int ID, void *_obj)
     return bResult;
 }
 
+bool DBOperatorTable::QueryOneRecordFromTable(int ID, QStringList &ResultStr)
+{
+    QSqlQuery query(OperatorDBObj);
+    bool bResult = OperatorDBObj.open();
+    if(bResult == false)
+    {
+        qDebug() << "Operator Table SQL ERROR:"<< query.lastError();
+        return bResult;
+    }
+
+    query.prepare(SQLSentence[SQLITCLASS::QUERY_ONE_RECORD_ONLY_ID]);
+    query.addBindValue(ID);
+
+    bResult = query.exec();
+    if(bResult == false)
+    {
+        OperatorDBObj.close();
+        qDebug() << "Operator Table SQL ERROR:"<< query.lastError();
+        return bResult;
+    }
+
+    bResult = query.next();
+    if(bResult == false)
+    {
+        OperatorDBObj.close();
+        return bResult;
+    }
+
+    ResultStr.clear();
+    ResultStr.append(query.value("ID").toString());
+    ResultStr.append(query.value("OperatorName").toString());
+    ResultStr.append(query.value("CreatedDate").toString());
+    ResultStr.append(query.value("WhoCreatedNewID").toString());
+    ResultStr.append(query.value("Password").toString());
+    ResultStr.append(query.value("PermissionLevel").toString());
+    OperatorDBObj.close();
+    return bResult;
+}
+
 bool DBOperatorTable::DeleteEntireTable()
 {
     QSqlQuery query(OperatorDBObj);

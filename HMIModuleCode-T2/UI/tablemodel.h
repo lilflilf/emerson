@@ -13,7 +13,6 @@
 #include "DataBase/DBAlarmLogTable.h"
 #include "DataBase/DBWeldResultTable.h"
 #include "DataBase/DBWireTable.h"
-//#include "Interface/Definition.h"
 #include "Interface/WireElement.h"
 #include "Interface/PresetElement.h"
 #include "Interface/HarnessElement.h"
@@ -31,6 +30,9 @@
 #include "DataBase/DBSequenceTable.h"
 #include "Interface/interface.h"
 #include "Interface/TeachModeAdvance/TeachModeAdvance.h"
+#include "DataExport_Import/CSVWireData.h"
+#include "DataExport_Import/CSVPresetData.h"
+#include "DataExport_Import/CSVHarnessData.h"
 
 class WorkOrderModel : public QAbstractTableModel
 {
@@ -93,6 +95,7 @@ public:
 
     QStringList m_idList;
     DBPresetTable *m_spliceAdaptor;
+    CSVPresetData *m_PresetDataObj;
     DBWireTable * m_wireAdaptor;
     DBOperatorTable *m_operatorAdaptor;
     QMap<int, QString> *splices;
@@ -173,6 +176,7 @@ public:
 
     QStringList m_idList;
     DBHarnessTable *m_harnessAdaptor;
+    CSVHarnessData *m_HarnessDataObj;
     DBOperatorTable *m_operatorAdaptor;
     QMap<int, QString> *parts;
     HarnessElement *m_Harness;
@@ -375,6 +379,7 @@ public:
 
     QStringList m_idList;
     DBWireTable *m_wireAdaptor;
+    CSVWireData *m_wireDataObj;
     DBOperatorTable *m_operatorAdaptor;
     QMap<int, QString> *wires;
 

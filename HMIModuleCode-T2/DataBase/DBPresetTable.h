@@ -2,7 +2,6 @@
 #define DBPRESETTABLE_H
 
 #include "Sqlit3Class.h"
-#include "DBWireTable.h"
 class DBPresetTable : public SQLITCLASS
 {
 private:
@@ -21,6 +20,7 @@ public:
     virtual bool QueryEntireTable(QMap<int, QString>* _obj);
     virtual bool QueryOneRecordFromTable(int ID, QString Name, void* _obj);
     virtual bool QueryOneRecordFromTable(int ID, void* _obj);
+    virtual bool QueryOneRecordFromTable(int ID, QStringList &ResultStr);
     virtual bool DeleteEntireTable();
     virtual bool DeleteOneRecordFromTable(int ID, QString Name);
 
@@ -29,16 +29,10 @@ public:
     virtual bool QueryUseNameAndTime(QString Name, unsigned int time_from,
                 unsigned int time_to, QMap<int, QString>* _obj);
     virtual void SwitchDBObject(bool IsModularProduction);
-
-    bool exportData(int spliceId, QString fileUrl);
-    int importData(QString value,QMap<int, QString> wireIdMap);
-    QString GetExportString(int spliceId);
 public:
     static DBPresetTable* Instance();
 protected:
     DBPresetTable();
-    void InsertTestDataIntoTable();
-    DBWireTable *wireTable;
 private:
     static DBPresetTable* _instance;
 public:

@@ -229,6 +229,46 @@ bool DBAlarmLogTable::QueryOneRecordFromTable(int ID, void* _obj)
     return bResult;
 }
 
+bool DBAlarmLogTable::QueryOneRecordFromTable(int ID, QStringList &ResultStr)
+{
+    QSqlQuery query(AlarmLogDBObj);
+    bool bResult = AlarmLogDBObj.open();
+    if(bResult == false)
+    {
+        qDebug() << "Alarm Table SQL ERROR:"<< query.lastError();
+        return bResult;
+    }
+
+    query.prepare(SQLSentence[SQLITCLASS::QUERY_ONE_RECORD_ONLY_ID]);
+    query.addBindValue(ID);
+
+    bResult = query.exec();
+    if(bResult == false)
+    {
+        AlarmLogDBObj.close();
+        qDebug() << "Alarm Table SQL ERROR:"<< query.lastError();
+        return bResult;
+    }
+
+    bResult = query.next();
+    if(bResult == false)
+    {
+        AlarmLogDBObj.close();
+        return bResult;
+    }
+
+    ResultStr.clear();
+    ResultStr.append(query.value("ID").toString());
+    ResultStr.append(query.value("AlarmMsg").toString());
+    ResultStr.append(query.value("CreatedDate").toString());
+    ResultStr.append(query.value("AlarmType").toString());
+    ResultStr.append(query.value("SpliceID").toString());
+    ResultStr.append(query.value("OperatorID").toString());
+    ResultStr.append(query.value("IsReseted").toString());
+    AlarmLogDBObj.close();
+    return bResult;
+}
+
 bool DBAlarmLogTable::DeleteEntireTable()
 {
     QSqlQuery query(AlarmLogDBObj);

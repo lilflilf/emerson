@@ -1833,13 +1833,13 @@ QString SplicesModel::graphHeightToString(int height)
 
 bool SplicesModel::exportData(int spliceId, QString fileUrl)
 {
-    m_spliceAdaptor->exportData(spliceId, fileUrl);
+    m_PresetDataObj->ExportData(spliceId, fileUrl);
     return true;
 }
 
 int SplicesModel::importData(QString value, QMap<int, QString> wireIdMap)
 {
-    int ret = m_spliceAdaptor->importData(value,wireIdMap);
+    int ret = m_PresetDataObj->ImportData(value, wireIdMap);
     qDebug()<<"111111111111111111111111111111111";
     setModelList();
     return ret;
@@ -1979,6 +1979,7 @@ PartModel::PartModel(QObject *parent) :
     QAbstractTableModel(parent)
 {
     m_harnessAdaptor = DBHarnessTable::Instance();
+    m_HarnessDataObj = CSVHarnessData::Instance();
     m_operatorAdaptor = DBOperatorTable::Instance();
     parts = new QMap<int, QString>();
     m_Harness = new HarnessElement();
@@ -2091,12 +2092,12 @@ QVariant PartModel::getStruceValue(QString key)
 
 bool PartModel::exportData(int partId, QString fileUrl)
 {
-    return m_harnessAdaptor->exportData(partId,fileUrl);
+    return m_HarnessDataObj->ExportData(partId,fileUrl);
 }
 
 int PartModel::importData(QString filePath, QMap<int, QString> spliceMap)
 {
-    int ret = m_harnessAdaptor->importData(filePath,spliceMap);
+    int ret = m_HarnessDataObj->ImportData(filePath,spliceMap);
     setModelList();
     return ret;
 }
@@ -3229,6 +3230,7 @@ WireModel::WireModel(QObject *parent) :
     QAbstractTableModel(parent)
 {
     m_wireAdaptor = DBWireTable::Instance();
+    m_wireDataObj = CSVWireData::Instance();
     m_operatorAdaptor = DBOperatorTable::Instance();
     wires = new QMap<int, QString>();
     variantToString = VariantToString::Instance();
@@ -3566,13 +3568,13 @@ QString WireModel::getStructValue4(int gauge, int awg)
 
 bool WireModel::exportData(int wireId, QString fileUrl)
 {
-    return m_wireAdaptor->ExportData(wireId,fileUrl);
+    return m_wireDataObj->ExportData(wireId,fileUrl);
 }
 
 int WireModel::importData(QString filePath)
 {
     int wireId;
-    wireId =  m_wireAdaptor->ImportData(filePath);
+    wireId =  m_wireDataObj->ImportData(filePath);
     setModelList();
     return wireId;
 }
