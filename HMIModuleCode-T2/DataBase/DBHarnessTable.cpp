@@ -60,7 +60,7 @@ DBHarnessTable* DBHarnessTable::Instance()
 
 DBHarnessTable::DBHarnessTable()
 {
-    spliceTable = DBPresetTable::Instance();
+//    spliceTable = DBPresetTable::Instance();
     HarnessDBObj = QSqlDatabase::addDatabase("QSQLITE", "HarnessDBObjConnect");
     HarnessDBObj.setDatabaseName(DatabaseDir + HarnessDBFile);
     if(HarnessDBObj.open())
@@ -119,54 +119,6 @@ void DBHarnessTable::SwitchDBObject(bool IsModularProduction)
 
     OpenDBObject();
     HarnessDBObj.close();
-}
-
-void DBHarnessTable::InsertTestDataIntoTable()
-{
-    struct HarnessElement tmpHarness;
-    for (int i = 0; i < 7; i++)
-    {
-        if ( i == 0)
-            tmpHarness.HarnessName = "32117-SHA-0001-00(INSTHARNESSS)";
-        if ( i == 1)
-            tmpHarness.HarnessName = "32200-SGA-2000-01(CABINHARNESS)";
-        if ( i == 2)
-            tmpHarness.HarnessName = "32751-TAA-A190-03(FRDOORHARNESS)";
-        if ( i == 3)
-            tmpHarness.HarnessName = "P5VH006Y0";
-        if ( i == 4)
-            tmpHarness.HarnessName = "P5VH006P0";
-        if ( i == 5)
-            tmpHarness.HarnessName = "P5VH006Z0";
-        else
-            tmpHarness.HarnessName = QString("P5VH006Z0 + %1").arg(i);
-
-        tmpHarness.CreatedDate = QDateTime::currentDateTime().toTime_t();
-        tmpHarness.OperatorID = 2;
-        tmpHarness.HarnessTypeSetting.ProcessMode = BASIC;
-        tmpHarness.HarnessTypeSetting.WorkStations.TotalWorkstation = 20;
-        tmpHarness.HarnessTypeSetting.WorkStations.MaxSplicesPerWorkstation = 30;
-        tmpHarness.HarnessTypeSetting.BoardLayout.Rows = 4;
-        tmpHarness.HarnessTypeSetting.BoardLayout.Columns = 4;
-        tmpHarness.HarnessTypeSetting.BoardLayout.MaxSplicesPerZone = 10;
-
-        struct HARNESSATTRIBUTE HarnessAttribute;
-        HarnessAttribute.SpliceName = "WangYIBIN";
-        HarnessAttribute.CurrentBoardLayoutZone = 1;
-        HarnessAttribute.CurrentWorkstation = 2;
-        tmpHarness.SpliceList.insert(0,HarnessAttribute);
-        HarnessAttribute.SpliceName = "JWang";
-        HarnessAttribute.CurrentBoardLayoutZone = 2;
-        HarnessAttribute.CurrentWorkstation = 3;
-        tmpHarness.SpliceList.insert(1,HarnessAttribute);
-        HarnessAttribute.SpliceName = "JW";
-        HarnessAttribute.CurrentBoardLayoutZone = 3;
-        HarnessAttribute.CurrentWorkstation = 4;
-        tmpHarness.SpliceList.insert(2,HarnessAttribute);
-        tmpHarness.NoOfSplice = tmpHarness.SpliceList.size();
-
-        InsertRecordIntoTable(&tmpHarness);
-    }
 }
 
 DBHarnessTable::~DBHarnessTable()
@@ -385,6 +337,51 @@ bool DBHarnessTable::QueryOneRecordFromTable(int ID, void *_obj)
     return bResult;
 }
 
+bool DBHarnessTable::QueryOneRecordFromTable(int ID, QStringList &ResultStr)
+{
+    QSqlQuery query(HarnessDBObj);
+    bool bResult = OpenDBObject();
+    if(bResult == false)
+    {
+        qDebug() << "Harness Table SQL ERROR:"<< query.lastError();
+        return bResult;
+    }
+
+    query.prepare(SQLSentence[SQLITCLASS::QUERY_ONE_RECORD_ONLY_ID]);
+    query.addBindValue(ID);
+
+    bResult = query.exec();
+    if(bResult == false)
+    {
+        HarnessDBObj.close();
+        qDebug() << "Harness Table SQL ERROR:"<< query.lastError();
+        return bResult;
+    }
+
+    bResult = query.next();
+    if(bResult == false)
+    {
+        HarnessDBObj.close();
+        return bResult;
+    }
+
+    ResultStr.clear();
+    ResultStr.append(query.value("ID").toString());
+    ResultStr.append(query.value("HarnessName").toString());
+    ResultStr.append(query.value("CreatedDate").toString());
+    ResultStr.append(query.value("OperatorID").toString());
+    ResultStr.append(query.value("ProcessMode").toString());
+    ResultStr.append(query.value("TotalWorkstation").toString());
+    ResultStr.append(query.value("MaxSplicesPerWorkstation").toString());
+    ResultStr.append(query.value("Rows").toString());
+    ResultStr.append(query.value("Columns").toString());
+    ResultStr.append(query.value("MaxSplicesPerZone").toString());
+    ResultStr.append(query.value("NoOfSplice").toString());
+    ResultStr.append(query.value("JSONSplice").toString());
+    HarnessDBObj.close();
+    return bResult;
+}
+
 bool DBHarnessTable::DeleteEntireTable()
 {
     QSqlQuery query(HarnessDBObj);
@@ -569,173 +566,4 @@ bool DBHarnessTable::QueryUseNameAndTime(QString Name, unsigned int time_from,
 
     HarnessDBObj.close();
     return bResult;
-}
-
-bool DBHarnessTable::exportData(int partId, QString fileUrl)
-{
-    QString queryStr;
-    QString lineValue = "";
-    QSqlQuery query(HarnessDBObj);
-    QString spliceData;
-    bool bResult = OpenDBObject();
-//    bool ok;
-    QString tempWireData;
-    QString fileSource;
-    if(bResult == true)
-    {
-        queryStr = QString("SELECT * FROM Part WHERE ID == '%1'").arg(partId);
-        query.prepare(queryStr);
-        bResult = query.exec();
-        if (bResult) {
-            bResult = query.next();
-            if(bResult) {
-                for (int i = 0;i < 12;i++)
-                {
-                    if (i == 11)
-                    {
-                        QJsonParseError json_error;
-                        QJsonDocument parse_document = QJsonDocument::fromJson(query.value(i).toString().toLatin1(), &json_error);
-                        if(json_error.error == QJsonParseError::NoError)
-                        {
-                            if(parse_document.isObject())
-                            {
-                                QJsonObject obj = parse_document.object();
-                                QJsonObject::const_iterator iterator = obj.constBegin();
-                                for(int i = 0; i< obj.count(); i++)
-                                {
-                                    iterator = obj.constFind(QString::number(i, 10));
-                                    if(iterator != obj.constEnd())
-                                    {
-                                        QString value = iterator.value().toString();
-                                        QStringList strList = value.split(";");
-                                        tempWireData = spliceTable->GetExportString(((QString)strList.at(0)).toInt());
-                                        spliceData.append(tempWireData + "|");
-                                    }
-                                }
-                            }
-                        }
-                        lineValue.append(spliceData + ",");
-                    }
-                    else
-                        lineValue.append(query.value(i).toString() + ",");
-                }
-                fileSource = fileUrl;
-                if (fileSource.contains("file:///"))
-                    fileSource = fileSource.mid(8);
-                QFile csvFile(fileSource);
-                if (csvFile.open(QIODevice::Text | QIODevice::ReadWrite | QIODevice::Truncate))
-                {
-                    QTextStream out(&csvFile);
-                    out << "PartData" << '\n' << lineValue;
-                    csvFile.close();
-                }
-            }
-        }
-        HarnessDBObj.close();
-    }
-    return bResult;
-}
-
-int DBHarnessTable::importData(QString value, QMap<int, QString> spliceIdMap)
-{
-    QString lineData;
-    QStringList lineList;
-    bool ok;
-    int ret = -1;
-
-    lineData = value;
-    lineList = lineData.split(",");
-    if (lineList.size() >= 11) {
-        HarnessElement myHarness;
-        myHarness.HarnessName = lineList[1];
-        myHarness.CreatedDate = QDateTime::fromString(lineList[2],"yyyy/MM/dd hh:mm:ss").toTime_t();
-        myHarness.OperatorID = QString(lineList[3]).toInt(&ok,10);
-        myHarness.HarnessTypeSetting.ProcessMode = (PROCESSMODE)QString(lineList[4]).toInt(&ok,10);
-        myHarness.HarnessTypeSetting.WorkStations.TotalWorkstation = QString(lineList[5]).toInt(&ok,10);
-        myHarness.HarnessTypeSetting.WorkStations.MaxSplicesPerWorkstation = QString(lineList[6]).toInt(&ok,10);
-        myHarness.HarnessTypeSetting.BoardLayout.Rows = QString(lineList[7]).toInt(&ok,10);
-        myHarness.HarnessTypeSetting.BoardLayout.Columns = QString(lineList[8]).toInt(&ok,10);
-        myHarness.HarnessTypeSetting.BoardLayout.MaxSplicesPerZone = QString(lineList[9]).toInt(&ok,10);
-        QMap<int ,struct HARNESSATTRIBUTE> tempMap;
-
-        int i = 0;
-        QMap<int,QString>::iterator it; //遍历map
-        for ( it = spliceIdMap.begin(); it != spliceIdMap.end(); ++it ) {
-            struct HARNESSATTRIBUTE temp;
-            temp.SpliceID = it.key();
-            temp.SpliceName = it.value();
-            tempMap.insert(i,temp);
-            i++;
-        }
-        myHarness.SpliceList = tempMap;
-        myHarness.NoOfSplice = myHarness.SpliceList.size();
-
-        ret = InsertRecordIntoTable(&myHarness);
-        while (ret == -1) {
-            qDebug() << "harness";
-            QMap<int ,QString> tempMap;
-            QueryOnlyUseName(myHarness.HarnessName, &tempMap);
-            if (tempMap.size() > 0) {
-                myHarness.HarnessName = myHarness.HarnessName + "(1)";
-                ret = InsertRecordIntoTable(&myHarness);
-            }
-            else if (tempMap.size() == 0)
-                return -1;
-        }
-    }
-    return ret;
-}
-
-QString DBHarnessTable::GetExportString(int partId)
-{
-    QString tempSpliceData;
-    QString spliceData;
-    QString queryStr;
-    QString lineValue = "";
-    QSqlQuery query(HarnessDBObj);
-    bool bResult = OpenDBObject();
-    if(bResult == true)
-    {
-        queryStr = QString("SELECT * FROM Part WHERE ID == '%1'").arg(partId);
-        query.prepare(queryStr);
-        bResult = query.exec();
-        if (bResult) {
-            bResult = query.next();
-            if(bResult) {
-                for (int i = 0;i < 12;i++)
-                {
-                    if (i == 11)
-                    {
-                        QJsonParseError json_error;
-                        QJsonDocument parse_document = QJsonDocument::fromJson(query.value(i).toString().toLatin1(), &json_error);
-                        if(json_error.error == QJsonParseError::NoError)
-                        {
-                            if(parse_document.isObject())
-                            {
-                                QJsonObject obj = parse_document.object();
-                                QJsonObject::const_iterator iterator = obj.constBegin();
-                                for(int i = 0; i< obj.count(); i++)
-                                {
-                                    iterator = obj.constFind(QString::number(i, 10));
-                                    if(iterator != obj.constEnd())
-                                    {
-                                        QString value = iterator.value().toString();
-                                        QStringList strList = value.split(";");
-                                        tempSpliceData = spliceTable->GetExportString(((QString)strList.at(0)).toInt());
-                                        spliceData.append(tempSpliceData + "|");
-                                    }
-                                }
-                            }
-                        }
-                        lineValue.append(spliceData + "@");
-                    }
-                    else
-                        lineValue.append(query.value(i).toString() + "@");
-                }
-
-            }
-        }
-        HarnessDBObj.close();
-    }
-    return lineValue;
 }

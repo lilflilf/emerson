@@ -225,6 +225,43 @@ bool DBMaintenanceLogTable::QueryOneRecordFromTable(int ID, void *_obj)
     return bResult;
 }
 
+bool DBMaintenanceLogTable::QueryOneRecordFromTable(int ID, QStringList &ResultStr)
+{
+    QSqlQuery query(MaintenanceLogDBObj);
+    bool bResult = MaintenanceLogDBObj.open();
+    if(bResult == false)
+    {
+        qDebug() << "Maintenance Table SQL ERROR:"<< query.lastError();
+        return bResult;
+    }
+
+    query.prepare(SQLSentence[SQLITCLASS::QUERY_ONE_RECORD_ONLY_ID]);
+    query.addBindValue(ID);
+
+    bResult = query.exec();
+    if(bResult == false)
+    {
+        MaintenanceLogDBObj.close();
+        qDebug() << "Maintenance Table SQL ERROR:"<< query.lastError();
+        return bResult;
+    }
+
+    bResult = query.next();
+    if(bResult == false)
+    {
+        MaintenanceLogDBObj.close();
+        return bResult;
+    }
+    ResultStr.clear();
+    ResultStr.append(query.value("ID").toString());
+    ResultStr.append(query.value("MaintenanceType").toString());
+    ResultStr.append(query.value("MaintenanceMsg").toString());
+    ResultStr.append(query.value("CreatedDate").toString());
+    ResultStr.append(query.value("OperatorID").toString());
+    MaintenanceLogDBObj.close();
+    return bResult;
+}
+
 bool DBMaintenanceLogTable::DeleteEntireTable()
 {
     QSqlQuery query(MaintenanceLogDBObj);

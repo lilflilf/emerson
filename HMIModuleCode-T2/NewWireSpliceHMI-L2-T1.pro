@@ -72,7 +72,11 @@ SOURCES += main.cpp \
     DataBase/DBSequenceTable.cpp \
     Interface/MakeWeld/ReadyStateMachine.cpp \
     Modules/ShrinkTubeSerial.cpp \
-    Interface/TeachModeAdvance/TeachModeAdvance.cpp
+    Interface/TeachModeAdvance/TeachModeAdvance.cpp \
+    DataExport_Import/CSVWireData.cpp \
+    DataExport_Import/CSVPresetData.cpp \
+    DataExport_Import/CSVHarnessData.cpp \
+    DataExport_Import/CSVSequenceData.cpp
 
 
 
@@ -148,7 +152,12 @@ HEADERS += \
     DataBase/DBSequenceTable.h \
     Interface/MakeWeld/ReadyStateMachine.h \
     Modules/ShrinkTubeSerial.h \
-    Interface/TeachModeAdvance/TeachModeAdvance.h
+    Interface/TeachModeAdvance/TeachModeAdvance.h \
+    DataExport_Import/DataClass.h \
+    DataExport_Import/CSVPresetData.h \
+    DataExport_Import/CSVWireData.h \
+    DataExport_Import/CSVHarnessData.h \
+    DataExport_Import/CSVSequenceData.h
 
 DISTFILES += \
 #    UI/displayChinese_zh_CN.qm \

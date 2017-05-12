@@ -41,7 +41,7 @@ const QString SQLSentence[] = {
 
 DBWireTable* DBWireTable::Instance()
 {
-    if(_instance == 0){
+    if(_instance == NULL){
         _instance = new DBWireTable();
     }
     return _instance;
@@ -306,6 +306,57 @@ bool DBWireTable::QueryOneRecordFromTable(int ID, void *_obj)
     return bResult;
 }
 
+
+bool DBWireTable::QueryOneRecordFromTable(int ID, QStringList &ResultStr)
+{
+    QSqlQuery query(WireDBObj);
+    bool bResult = OpenDBObject();
+    if(bResult == false)
+    {
+        qDebug() << "Wire Table SQL ERROR:"<< query.lastError();
+        return bResult;
+    }
+
+    query.prepare(SQLSentence[SQLITCLASS::QUERY_ONE_RECORD_ONLY_ID]);
+    query.addBindValue(ID);
+
+    bResult = query.exec();
+    if(bResult == false)
+    {
+        WireDBObj.close();
+        qDebug() << "Wire Table SQL ERROR:"<< query.lastError();
+        return bResult;
+    }
+
+    bResult = query.next();
+    if(bResult == false)
+    {
+        WireDBObj.close();
+        return bResult;
+    }
+
+    ResultStr.append(query.value("ID").toString());
+    ResultStr.append(query.value("WireName").toString());
+    ResultStr.append(query.value("CreatedDate").toString());
+    ResultStr.append(query.value("OperatorID").toString());
+    ResultStr.append(query.value("SpliceID").toString());
+    ResultStr.append(query.value("Color").toString());
+    ResultStr.append(query.value("StripeColor").toString());
+    ResultStr.append(query.value("StripeType").toString());
+    ResultStr.append(query.value("Gauge").toString());
+    ResultStr.append(query.value("GaugeAWG").toString());
+    ResultStr.append(query.value("MetalType").toString());
+    ResultStr.append(query.value("ModuleType").toString());
+    ResultStr.append(query.value("HorizontalLocation").toString());
+    ResultStr.append(query.value("VerticalLocation").toString());
+    ResultStr.append(query.value("VerticalPosition").toString());
+
+    bResult = true;
+    WireDBObj.close();
+
+    return bResult;
+}
+
 bool DBWireTable::DeleteEntireTable()
 {
     QSqlQuery query(WireDBObj);
@@ -522,115 +573,115 @@ bool DBWireTable::QueryOnlyUseField(QString FieldName, QString value, QMap<int, 
     return bResult;
 }
 
-bool DBWireTable::ExportData(int wireId, QString fileUrl)
-{
-    QString queryStr;
-    QString lineValue = "";
-    QSqlQuery query(WireDBObj);
-    QString fileSource;
-    bool bResult = OpenDBObject();
-    if(bResult == true)
-    {
-        queryStr = QString("SELECT * FROM Wire WHERE ID == '%1'").arg(wireId);
-        query.prepare(queryStr);
-        bResult = query.exec();
-        if (bResult) {
-            bResult = query.next();
-            if(bResult) {
-                for (int i = 0;i < 14;i++)
-                {
-                    if (i == 4)
-                        lineValue.append(QString("-1,"));
-                    else
-                        lineValue.append(query.value(i).toString() + ",");
-                }
-                fileSource = fileUrl;
-                if (fileSource.contains("file:///"))
-                    fileSource = fileSource.mid(8);
-                QFile csvFile(fileSource);
-                if (csvFile.open(QIODevice::Text | QIODevice::ReadWrite | QIODevice::Truncate))
-                {
-                    QTextStream out(&csvFile);
-                    out << "WireData" << '\n' << lineValue;
-                    csvFile.close();
-                }
-            }
-        }
-        WireDBObj.close();
-    }
-    return bResult;
-}
+//bool DBWireTable::ExportData(int wireId, QString fileUrl)
+//{
+//    QString queryStr;
+//    QString lineValue = "";
+//    QSqlQuery query(WireDBObj);
+//    QString fileSource;
+//    bool bResult = OpenDBObject();
+//    if(bResult == true)
+//    {
+//        queryStr = QString("SELECT * FROM Wire WHERE ID == '%1'").arg(wireId);
+//        query.prepare(queryStr);
+//        bResult = query.exec();
+//        if (bResult) {
+//            bResult = query.next();
+//            if(bResult) {
+//                for (int i = 0;i < 14;i++)
+//                {
+//                    if (i == 4)
+//                        lineValue.append(QString("-1,"));
+//                    else
+//                        lineValue.append(query.value(i).toString() + ",");
+//                }
+//                fileSource = fileUrl;
+//                if (fileSource.contains("file:///"))
+//                    fileSource = fileSource.mid(8);
+//                QFile csvFile(fileSource);
+//                if (csvFile.open(QIODevice::Text | QIODevice::ReadWrite | QIODevice::Truncate))
+//                {
+//                    QTextStream out(&csvFile);
+//                    out << "WireData" << '\n' << lineValue;
+//                    csvFile.close();
+//                }
+//            }
+//        }
+//        WireDBObj.close();
+//    }
+//    return bResult;
+//}
 
-QString DBWireTable::GetExportString(int wireId)
-{
-    QString queryStr;
-    QString lineValue = "";
-    QSqlQuery query(WireDBObj);
-    bool bResult = OpenDBObject();
-    if(bResult == true)
-    {
-        queryStr = QString("SELECT * FROM Wire WHERE ID == '%1'").arg(wireId);
-        query.prepare(queryStr);
-        bResult = query.exec();
-        if (bResult) {
-            bResult = query.next();
-            if(bResult) {
-                for (int i = 0;i < 14;i++)
-                {
-                    if (i == 4)
-                        lineValue.append(QString("-1."));
-                    else
-                        lineValue.append(query.value(i).toString() + ".");
-                }
+//QString DBWireTable::GetExportString(int wireId)
+//{
+//    QString queryStr;
+//    QString lineValue = "";
+//    QSqlQuery query(WireDBObj);
+//    bool bResult = OpenDBObject();
+//    if(bResult == true)
+//    {
+//        queryStr = QString("SELECT * FROM Wire WHERE ID == '%1'").arg(wireId);
+//        query.prepare(queryStr);
+//        bResult = query.exec();
+//        if (bResult) {
+//            bResult = query.next();
+//            if(bResult) {
+//                for (int i = 0;i < 14;i++)
+//                {
+//                    if (i == 4)
+//                        lineValue.append(QString("-1."));
+//                    else
+//                        lineValue.append(query.value(i).toString() + ".");
+//                }
 
-            }
-        }
-        WireDBObj.close();
-    }
-    return lineValue;
-}
+//            }
+//        }
+//        WireDBObj.close();
+//    }
+//    return lineValue;
+//}
 
-int DBWireTable::ImportData(QString value)
-{
-    QString lineData;
-    QStringList lineList;
-    bool ok;
-    int ret = -1;
+//int DBWireTable::ImportData(QString value)
+//{
+//    QString lineData;
+//    QStringList lineList;
+//    bool ok;
+//    int ret = -1;
 
-    lineData = value;
-    lineList = lineData.split(",");
-    if (lineList.size() >= 14)
-    {
-        WireElement myWire;
-        myWire.WireName = lineList[1];
-        myWire.CreatedDate = QDateTime::fromString(lineList[2],"yyyy/MM/dd hh:mm:ss").toTime_t();
-        myWire.OperatorID = QString(lineList[3]).toInt(&ok,10);
-        myWire.SpliceID = QString(lineList[4]).toInt(&ok,10);
-        myWire.Color = lineList[5];
-        myWire.Stripe.TypeOfStripe = (STRIPE::StripeType)QString(lineList[6]).toInt(&ok,10);
-        myWire.Stripe.Color = lineList[7];
-        myWire.Gauge = QString(lineList[8]).toInt(&ok,10);
-        myWire.GaugeAWG = QString(lineList[9]).toInt(&ok,10);
-        myWire.TypeOfWire = (WireElement::MetalType)QString(lineList[10]).toInt(&ok,10);
-        myWire.TypeOfModule = (WireElement::ModuleType)QString(lineList[11]).toInt(&ok, 10);
-        myWire.Side = (WireElement::HorizontalLocation)QString(lineList[12]).toInt(&ok,10);
-        myWire.VerticalSide = (WireElement::VerticalLocation)QString(lineList[13]).toInt(&ok,10);
-        myWire.Position = (WireElement::VerticalPosition)QString(lineList[14]).toInt(&ok,10);
+//    lineData = value;
+//    lineList = lineData.split(",");
+//    if (lineList.size() >= 14)
+//    {
+//        WireElement myWire;
+//        myWire.WireName = lineList[1];
+//        myWire.CreatedDate = QDateTime::fromString(lineList[2],"yyyy/MM/dd hh:mm:ss").toTime_t();
+//        myWire.OperatorID = QString(lineList[3]).toInt(&ok,10);
+//        myWire.SpliceID = QString(lineList[4]).toInt(&ok,10);
+//        myWire.Color = lineList[5];
+//        myWire.Stripe.TypeOfStripe = (STRIPE::StripeType)QString(lineList[6]).toInt(&ok,10);
+//        myWire.Stripe.Color = lineList[7];
+//        myWire.Gauge = QString(lineList[8]).toInt(&ok,10);
+//        myWire.GaugeAWG = QString(lineList[9]).toInt(&ok,10);
+//        myWire.TypeOfWire = (WireElement::MetalType)QString(lineList[10]).toInt(&ok,10);
+//        myWire.TypeOfModule = (WireElement::ModuleType)QString(lineList[11]).toInt(&ok, 10);
+//        myWire.Side = (WireElement::HorizontalLocation)QString(lineList[12]).toInt(&ok,10);
+//        myWire.VerticalSide = (WireElement::VerticalLocation)QString(lineList[13]).toInt(&ok,10);
+//        myWire.Position = (WireElement::VerticalPosition)QString(lineList[14]).toInt(&ok,10);
 
-        ret = InsertRecordIntoTable(&myWire);
-        while (ret == -1)
-        {
-            QMap<int ,QString> tempMap;
-            QueryOnlyUseName(myWire.WireName, &tempMap);
-            if (tempMap.size() > 0)
-            {
-                myWire.WireName = myWire.WireName + "(1)";
-                ret = InsertRecordIntoTable(&myWire);
-            }
-            else if (tempMap.size() == 0)
-                return -1;
-        }
-    }
-    return ret;
+//        ret = InsertRecordIntoTable(&myWire);
+//        while (ret == -1)
+//        {
+//            QMap<int ,QString> tempMap;
+//            QueryOnlyUseName(myWire.WireName, &tempMap);
+//            if (tempMap.size() > 0)
+//            {
+//                myWire.WireName = myWire.WireName + "(1)";
+//                ret = InsertRecordIntoTable(&myWire);
+//            }
+//            else if (tempMap.size() == 0)
+//                return -1;
+//        }
+//    }
+//    return ret;
 
-}
+//}

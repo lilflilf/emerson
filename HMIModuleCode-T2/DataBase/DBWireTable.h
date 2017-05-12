@@ -21,6 +21,7 @@ public:
     virtual bool QueryEntireTable(QMap<int, QString>* _obj);
     virtual bool QueryOneRecordFromTable(int ID, QString Name, void* _obj);
     virtual bool QueryOneRecordFromTable(int ID, void* _obj);
+    virtual bool QueryOneRecordFromTable(int ID, QStringList &ResultStr);
     virtual bool DeleteEntireTable();
     virtual bool DeleteOneRecordFromTable(int ID, QString Name);
 
@@ -32,10 +33,10 @@ public:
 
     bool QueryOnlyUseField(QString FieldName, QString value, QMap<int, QString> *_obj, bool Orderby = true);
 
-    bool ExportData(int wireId, QString fileUrl);
-    QString GetExportString(int wireId);
+//    bool ExportData(int wireId, QString fileUrl);
+//    QString GetExportString(int wireId);
 
-    int ImportData(QString value);
+//    int ImportData(QString value);
 public:
     static DBWireTable* Instance();
 protected:

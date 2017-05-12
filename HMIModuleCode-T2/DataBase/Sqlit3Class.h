@@ -29,6 +29,7 @@ public:
     virtual bool QueryEntireTable(QMap<int, QString>* _obj) = 0;
     virtual bool QueryOneRecordFromTable(int ID, QString Name, void* _obj) = 0;
     virtual bool QueryOneRecordFromTable(int ID, void* _obj) = 0;
+    virtual bool QueryOneRecordFromTable(int ID, QStringList &ResultStr) = 0;
     virtual bool DeleteEntireTable() = 0;
     virtual bool DeleteOneRecordFromTable(int ID, QString Name) = 0;
     virtual bool QueryOnlyUseName(QString Name, QMap<int, QString>* _obj) = 0;

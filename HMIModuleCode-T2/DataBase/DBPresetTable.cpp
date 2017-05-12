@@ -2,6 +2,7 @@
 #include "Modules/UtilityClass.h"
 #include "Interface/PresetElement.h"
 #include "Interface/interface.h"
+//#include "DataExport_Import/CSVWireData.h"
 #include <QHash>
 #include <QDebug>
 #include <QJsonObject>
@@ -192,7 +193,7 @@ DBPresetTable::DBPresetTable()
         }
     }
     SpliceDBObj.close();
-    wireTable = DBWireTable::Instance();
+//    wireTable = DBWireTable::Instance();
 }
 
 bool DBPresetTable::OpenDBObject()
@@ -242,92 +243,6 @@ void DBPresetTable::SwitchDBObject(bool IsModularProduction)
 
     OpenDBObject();
     SpliceDBObj.close();
-}
-
-void DBPresetTable::InsertTestDataIntoTable()
-{
-    struct PresetElement tmpSplice;
-    QMap<int, QString> TestMap;
-    TestMap.insert(0, "WANG");
-    TestMap.insert(1,"Mr.Li");
-    TestMap.insert(2, "Zhang");
-    for (int i = 0; i < 6; i++)
-    {
-        if ( i == 0)
-            tmpSplice.SpliceName = "KW001.0032";
-        if ( i == 1)
-            tmpSplice.SpliceName = "KW004.0013";
-        if ( i == 2)
-            tmpSplice.SpliceName = "mod_50742305_proc_1";
-        if ( i == 3)
-            tmpSplice.SpliceName = "mod_50742298_proc_1";
-        tmpSplice.CreatedDate = QDateTime::currentDateTime().toTime_t();
-        tmpSplice.OperatorID = 2;
-        tmpSplice.CrossSection = 100;
-        tmpSplice.PresetPicNamePath = "C:\\";
-        tmpSplice.Verified = false;
-        tmpSplice.WeldSettings.BasicSetting.Energy = 155;
-        tmpSplice.WeldSettings.BasicSetting.Amplitude = 55;
-        tmpSplice.WeldSettings.BasicSetting.Width = 800;
-        tmpSplice.WeldSettings.BasicSetting.Pressure = 80;
-        tmpSplice.WeldSettings.BasicSetting.TrigPres = 50;
-        tmpSplice.WeldSettings.QualitySetting.Time.Plus = 500;
-        tmpSplice.WeldSettings.QualitySetting.Time.Minus = 0;
-        tmpSplice.WeldSettings.QualitySetting.Power.Plus = 3960;
-        tmpSplice.WeldSettings.QualitySetting.Power.Minus = 0;
-        tmpSplice.WeldSettings.QualitySetting.Preheight.Plus = 1500;
-        tmpSplice.WeldSettings.QualitySetting.Preheight.Minus = 0;
-        tmpSplice.WeldSettings.QualitySetting.Height.Plus = 1500;
-        tmpSplice.WeldSettings.QualitySetting.Height.Minus = 0;
-        tmpSplice.WeldSettings.QualitySetting.Force.Plus = 55;
-        tmpSplice.WeldSettings.QualitySetting.Force.Minus = 0;
-        tmpSplice.WeldSettings.AdvanceSetting.WeldMode = ADVANCESETTING::ENERGY;
-        tmpSplice.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode = STEPWELD::STEPDISABLE;
-        tmpSplice.WeldSettings.AdvanceSetting.StepWeld.EnergyToStep = 55;
-        tmpSplice.WeldSettings.AdvanceSetting.StepWeld.TimeToStep = 1;
-        tmpSplice.WeldSettings.AdvanceSetting.StepWeld.PowerToStep = 500;
-        tmpSplice.WeldSettings.AdvanceSetting.StepWeld.Amplitude2 = 22;
-        tmpSplice.WeldSettings.AdvanceSetting.PreBurst = 1000;
-        tmpSplice.WeldSettings.AdvanceSetting.HoldTime = 100;
-        tmpSplice.WeldSettings.AdvanceSetting.SqzTime = 200;
-        tmpSplice.WeldSettings.AdvanceSetting.ABDelay = 300;
-        tmpSplice.WeldSettings.AdvanceSetting.ABDur = 400;
-        tmpSplice.WeldSettings.AdvanceSetting.CutOffOption.CutOff = false;
-        tmpSplice.WeldSettings.AdvanceSetting.CutOffOption.CutOffSpliceTime = -1;
-        tmpSplice.WeldSettings.AdvanceSetting.CutOffOption.Cutter4HeightAlarm = false;
-        tmpSplice.WeldSettings.AdvanceSetting.CutOffOption.Cutter4PowerAlarm = false;
-        tmpSplice.WeldSettings.AdvanceSetting.CutOffOption.Cutter4PreHeightAlarm = false;
-        tmpSplice.WeldSettings.AdvanceSetting.CutOffOption.Cutter4TimeAlarm = false;
-        tmpSplice.WeldSettings.AdvanceSetting.AntiSideOption.AntiSideMode = true;
-        tmpSplice.WeldSettings.AdvanceSetting.AntiSideOption.AntiSideSpliceTime = -1;
-        tmpSplice.WeldSettings.AdvanceSetting.OffsetOption.MeasuredWidth = 100;
-        tmpSplice.WeldSettings.AdvanceSetting.OffsetOption.MeasuredHeight = 100;
-        tmpSplice.WeldSettings.AdvanceSetting.OffsetOption.DisplayWidth = 100;
-        tmpSplice.WeldSettings.AdvanceSetting.OffsetOption.DisplayHeight = 100;
-        tmpSplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkOption = false;
-        tmpSplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID = "0";
-        tmpSplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime = 10;
-        tmpSplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTemperature = 260;
-        tmpSplice.HashCode = qHashBits(&tmpSplice.WeldSettings, sizeof(tmpSplice.WeldSettings), 0);
-        tmpSplice.TestSetting.BatchSize = 10;
-        tmpSplice.TestSetting.StopCount = 20;
-        tmpSplice.TestSetting.TestMode = TESTSETTING::UNCONSTRAINED;
-        tmpSplice.TestSetting.TeachModeSetting.TeachModeType = TEACHMODESETTING::UNDEFINED;
-        for(int i = 0;i < ENERGY_ADJ;i++)
-            tmpSplice.TestSetting.TeachModeSetting.TeachModequal_Window[i] = 40;
-        tmpSplice.TestSetting.TeachModeSetting.StandardRunQuantity = 5;
-        tmpSplice.TestSetting.TeachModeSetting.AutoRunQuantity = 20;
-        tmpSplice.TestSetting.TeachModeSetting.SigmaRunQuantity = 128;
-        tmpSplice.TestSetting.TestingDone = true;
-        QMap<int, QString>::const_iterator it = TestMap.constBegin();
-        while (it != TestMap.constEnd()) {
-            tmpSplice.WireIndex.insert(it.key(),it.value());
-            ++it;
-        }
-        tmpSplice.NoOfWires = tmpSplice.WireIndex.size();
-
-        InsertRecordIntoTable(&tmpSplice);
-    }
 }
 
 DBPresetTable::~DBPresetTable()
@@ -898,6 +813,133 @@ bool DBPresetTable::QueryOneRecordFromTable(int ID, void *_obj)
     return bResult;
 }
 
+bool DBPresetTable::QueryOneRecordFromTable(int ID, QStringList &ResultStr)
+{
+    QSqlQuery query(SpliceDBObj);
+    bool bResult = OpenDBObject();
+    if(bResult == false)
+    {
+        qDebug() << "Preset Table SQL ERROR:"<< query.lastError();
+        return bResult;
+    }
+
+    query.prepare(SQLSentence[SQLITCLASS::QUERY_ONE_RECORD_ONLY_ID]);
+    query.addBindValue(ID);
+
+    bResult = query.exec();
+    if(bResult == false)
+    {
+        SpliceDBObj.close();
+        qDebug() << "Preset Table SQL ERROR:"<< query.lastError();
+        return bResult;
+    }
+
+    bResult = query.next();
+    if(bResult == false)
+    {
+        SpliceDBObj.close();
+        return bResult;
+    }
+
+    ResultStr.append(query.value("ID").toString());
+    ResultStr.append(query.value("SpliceName").toString());
+    ResultStr.append(query.value("CreatedDate").toString());
+    ResultStr.append(query.value("OperatorID").toString());
+    ResultStr.append(query.value("CrossSection").toString());
+    ResultStr.append(query.value("PresetPicPath").toString());
+    ResultStr.append(query.value("Verified").toString());
+    ResultStr.append(query.value("Energy").toString());
+    ResultStr.append(query.value("Amplitude").toString());
+    ResultStr.append(query.value("Width").toString());
+    ResultStr.append(query.value("Pressure").toString());
+    ResultStr.append(query.value("TrigPres").toString());
+    ResultStr.append(query.value("TimePlus").toString());
+    ResultStr.append(query.value("TimeMinus").toString());
+    ResultStr.append(query.value("PowerPlus").toString());
+    ResultStr.append(query.value("PowerMinus").toString());
+    ResultStr.append(query.value("PreheightPlus").toString());
+    ResultStr.append(query.value("PreheightMinus").toString());
+    ResultStr.append(query.value("HeightPlus").toString());
+    ResultStr.append(query.value("HeightMinus").toString());
+    ResultStr.append(query.value("ForcePlus").toString());
+    ResultStr.append(query.value("ForceMinus").toString());
+    ResultStr.append(query.value("WeldMode").toString());
+    ResultStr.append(query.value("StepWeldMode").toString());
+    ResultStr.append(query.value("EnergyToStep").toString());
+    ResultStr.append(query.value("TimeToStep").toString());
+    ResultStr.append(query.value("PowerToStep").toString());
+    ResultStr.append(query.value("Amplitude2").toString());
+    ResultStr.append(query.value("PreBurst").toString());
+    ResultStr.append(query.value("HoldTime").toString());
+    ResultStr.append(query.value("SqueezeTime").toString());
+    ResultStr.append(query.value("AfterBurstDelay").toString());
+    ResultStr.append(query.value("AfterBurstDuring").toString());
+    ResultStr.append(query.value("CutOff").toString());
+    ResultStr.append(query.value("CutOffSpliceTime").toString());
+    ResultStr.append(query.value("CutOffHeightAlarm").toString());
+    ResultStr.append(query.value("CutOffPowerAlarm").toString());
+    ResultStr.append(query.value("CutOffPreHeightAlarm").toString());
+    ResultStr.append(query.value("CutOffTimeAlarm").toString());
+    ResultStr.append(query.value("AntiSide").toString());
+    ResultStr.append(query.value("AntiSideSpliceTime").toString());
+    ResultStr.append(query.value("MeasuredWidth").toString());
+    ResultStr.append(query.value("MeasuredHeight").toString());
+    ResultStr.append(query.value("DisplayWidth").toString());
+    ResultStr.append(query.value("DisplayHeight").toString());
+    ResultStr.append(query.value("ShrinkOption").toString());
+    ResultStr.append(query.value("ShrinkTubeID").toString());
+    ResultStr.append(query.value("ShrinkTime").toString());
+    ResultStr.append(query.value("ShrinkTemperature").toString());
+    ResultStr.append(query.value("ShrinkMutex").toString());
+    ResultStr.append(query.value("HashCode").toString());
+
+    ResultStr.append(query.value("BatchSize").toString());
+    ResultStr.append(query.value("StopCount").toString());
+    ResultStr.append(query.value("TestMode").toString());
+    ResultStr.append(query.value("TeachModeType").toString());
+
+    ResultStr.append(query.value("TimePLRG_STD").toString());
+    ResultStr.append(query.value("TimeMSRG_STD").toString());
+    ResultStr.append(query.value("PowerPLRG_STD").toString());
+    ResultStr.append(query.value("PowerMSRG_STD").toString());
+    ResultStr.append(query.value("PreHeightPLRG_STD").toString());
+    ResultStr.append(query.value("PreHeightMSRG_STD").toString());
+    ResultStr.append(query.value("HeightPLRG_STD").toString());
+    ResultStr.append(query.value("HeightMSRG_STD").toString());
+    ResultStr.append(query.value("ForcePLRG_STD").toString());
+    ResultStr.append(query.value("ForceMSRG_STD").toString());
+
+    ResultStr.append(query.value("TimePLRG_AUTO").toString());
+    ResultStr.append(query.value("TimeMSRG_AUTO").toString());
+    ResultStr.append(query.value("PowerPLRG_AUTO").toString());
+    ResultStr.append(query.value("PowerMSRG_AUTO").toString());
+    ResultStr.append(query.value("PreHeightPLRG_AUTO").toString());
+    ResultStr.append(query.value("PreHeightMSRG_AUTO").toString());
+    ResultStr.append(query.value("HeightPLRG_AUTO").toString());
+    ResultStr.append(query.value("HeightMSRG_AUTO").toString());
+    ResultStr.append(query.value("ForcePLRG_AUTO").toString());
+    ResultStr.append(query.value("ForceMSRG_AUTO").toString());
+
+    ResultStr.append(query.value("TimeConfigPL").toString());
+    ResultStr.append(query.value("TimeConfigMS").toString());
+    ResultStr.append(query.value("PowerConfigPL").toString());
+    ResultStr.append(query.value("PowerConfigMS").toString());
+    ResultStr.append(query.value("PreHeightConfigPL").toString());
+    ResultStr.append(query.value("PreHeightConfigMS").toString());
+    ResultStr.append(query.value("HeightConfigPL").toString());
+    ResultStr.append(query.value("HeightCOnfigMS").toString());
+    ResultStr.append(query.value("StandardQuantity").toString());
+    ResultStr.append(query.value("AutoQuantity").toString());
+    ResultStr.append(query.value("SigmaQuantity").toString());
+    ResultStr.append(query.value("TestingDone").toString());
+
+    ResultStr.append(query.value("NoOfWires").toString());
+    ResultStr.append(query.value("JSONWire").toString());
+
+    SpliceDBObj.close();
+    return bResult;
+}
+
 bool DBPresetTable::DeleteEntireTable()
 {
     QSqlQuery query(SpliceDBObj);
@@ -1135,227 +1177,4 @@ bool DBPresetTable::QueryUseNameAndTime(QString Name, unsigned int time_from,
 
     SpliceDBObj.close();
     return bResult;
-}
-
-bool DBPresetTable::exportData(int spliceId, QString fileUrl)
-{
-    QString queryStr;
-    QString lineValue = "";
-    QSqlQuery query(SpliceDBObj);
-    QString wireData;
-    bool bResult = OpenDBObject();
-//    bool ok;
-    QString tempWireData;
-    QString fileSource;
-    if(bResult == true)
-    {
-        queryStr = QString("SELECT * FROM Preset WHERE ID == '%1'").arg(spliceId);
-        query.prepare(queryStr);
-        bResult = query.exec();
-        if (bResult) {
-            bResult = query.next();
-            if(bResult) {
-                for (int i = 0;i < 69;i++)
-                {
-                    if (i == 68)
-                    {
-                        QJsonParseError json_error;
-                        QJsonDocument parse_document = QJsonDocument::fromJson(query.value(i).toString().toLatin1(), &json_error);
-                        if(json_error.error == QJsonParseError::NoError)
-                        {
-                            if(parse_document.isObject())
-                            {
-                                QJsonObject obj = parse_document.object();
-                                QJsonObject::const_iterator iterator = obj.constBegin();
-                                for(int i = 0; i< obj.count(); i++)
-                                {
-                                    iterator = obj.constFind(QString::number(i, 10));
-                                    if(iterator != obj.constEnd())
-                                    {
-                                        QString value = iterator.value().toString();
-                                        QStringList strList = value.split(";");
-                                        tempWireData = wireTable->GetExportString(((QString)strList.at(0)).toInt());
-                                        wireData.append(tempWireData + ";");
-                                    }
-                                }
-                            }
-                        }
-                        lineValue.append(wireData + ",");
-                    }
-                    else
-                        lineValue.append(query.value(i).toString() + ",");
-                }
-
-                fileSource = fileUrl;
-                if (fileSource.contains("file:///"))
-                    fileSource = fileSource.mid(8);
-                QFile csvFile(fileSource);
-                if (csvFile.open(QIODevice::Text | QIODevice::ReadWrite | QIODevice::Truncate))
-                {
-                    QTextStream out(&csvFile);
-                    out << "SpliceData" << '\n' << lineValue;
-                    csvFile.close();
-                }
-            }
-        }
-        SpliceDBObj.close();
-    }
-    return bResult;
-}
-
-int DBPresetTable::importData(QString value, QMap<int, QString> wireIdMap)
-{
-    QString spliceString;
-    QStringList spliceList;
-    PresetElement mySplice;
-    bool ok;
-    int ret = -1;
-//    UtilityClass* _Utility = UtilityClass::Instance();
-
-    spliceString = value;
-    spliceList = spliceString.split(",");
-    if (spliceList.count() > 60)
-    {
-        mySplice.SpliceName = spliceList[1];
-        mySplice.OperatorID = QString(spliceList[3]).toInt(&ok,10);
-        mySplice.CrossSection = QString(spliceList[4]).toInt(&ok,10);
-        mySplice.PresetPicNamePath = spliceList[5];
-        mySplice.Verified = spliceList[6] == "0" ? false : true;
-        mySplice.WeldSettings.BasicSetting.Energy = QString(spliceList[7]).toInt(&ok,10);
-        mySplice.WeldSettings.BasicSetting.Amplitude = QString(spliceList[8]).toInt(&ok,10);
-        mySplice.WeldSettings.BasicSetting.Width = QString(spliceList[9]).toInt(&ok,10);
-        mySplice.WeldSettings.BasicSetting.Pressure = QString(spliceList[10]).toInt(&ok,10);
-        mySplice.WeldSettings.BasicSetting.TrigPres = QString(spliceList[11]).toInt(&ok,10);
-
-        mySplice.WeldSettings.QualitySetting.Time.Plus = QString(spliceList[12]).toInt(&ok,10);
-        mySplice.WeldSettings.QualitySetting.Time.Minus = QString(spliceList[13]).toInt(&ok,10);
-        mySplice.WeldSettings.QualitySetting.Power.Plus = QString(spliceList[14]).toInt(&ok,10);
-        mySplice.WeldSettings.QualitySetting.Power.Minus = QString(spliceList[15]).toInt(&ok,10);
-        mySplice.WeldSettings.QualitySetting.Preheight.Plus = QString(spliceList[16]).toInt(&ok,10);
-        mySplice.WeldSettings.QualitySetting.Preheight.Minus = QString(spliceList[17]).toInt(&ok,10);
-        mySplice.WeldSettings.QualitySetting.Height.Plus = QString(spliceList[18]).toInt(&ok,10);
-        mySplice.WeldSettings.QualitySetting.Height.Minus = QString(spliceList[19]).toInt(&ok,10);
-        mySplice.WeldSettings.QualitySetting.Force.Plus = QString(spliceList[20]).toInt(&ok,10);
-        mySplice.WeldSettings.QualitySetting.Force.Minus = QString(spliceList[21]).toInt(&ok,10);
-
-        mySplice.WeldSettings.AdvanceSetting.WeldMode = (ADVANCESETTING::WELDMODE)QString(spliceList[22]).toInt(&ok,10);
-        mySplice.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode = (STEPWELD::STEPWELDMODE)QString(spliceList[23]).toInt(&ok,10);
-        mySplice.WeldSettings.AdvanceSetting.StepWeld.EnergyToStep = QString(spliceList[24]).toInt(&ok,10);
-        mySplice.WeldSettings.AdvanceSetting.StepWeld.TimeToStep = QString(spliceList[25]).toInt(&ok,10);
-        mySplice.WeldSettings.AdvanceSetting.StepWeld.PowerToStep = QString(spliceList[26]).toInt(&ok,10);
-        mySplice.WeldSettings.AdvanceSetting.StepWeld.Amplitude2 = QString(spliceList[27]).toInt(&ok,10);
-        mySplice.WeldSettings.AdvanceSetting.PreBurst = QString(spliceList[28]).toInt(&ok,10);
-        mySplice.WeldSettings.AdvanceSetting.HoldTime = QString(spliceList[29]).toInt(&ok,10);
-        mySplice.WeldSettings.AdvanceSetting.SqzTime = QString(spliceList[30]).toInt(&ok,10);
-        mySplice.WeldSettings.AdvanceSetting.ABDelay = QString(spliceList[31]).toInt(&ok,10);
-        mySplice.WeldSettings.AdvanceSetting.ABDur = QString(spliceList[32]).toInt(&ok,10);
-        mySplice.WeldSettings.AdvanceSetting.CutOffOption.CutOff =
-                QString(spliceList[33]).toInt(&ok,10);
-        mySplice.WeldSettings.AdvanceSetting.CutOffOption.CutOffSpliceTime =
-                QString(spliceList[34]).toInt(&ok,10);
-        mySplice.WeldSettings.AdvanceSetting.CutOffOption.Cutter4HeightAlarm =
-                QString(spliceList[35]).toInt(&ok, 10);
-        mySplice.WeldSettings.AdvanceSetting.CutOffOption.Cutter4PowerAlarm =
-                QString(spliceList[36]).toInt(&ok, 10);
-        mySplice.WeldSettings.AdvanceSetting.CutOffOption.Cutter4PreHeightAlarm =
-                QString(spliceList[37]).toInt(&ok, 10);
-        mySplice.WeldSettings.AdvanceSetting.CutOffOption.Cutter4TimeAlarm =
-                QString(spliceList[38]).toInt(&ok, 10);
-        mySplice.WeldSettings.AdvanceSetting.AntiSideOption.AntiSideMode =
-                QString(spliceList[39]).toInt(&ok, 10);
-        mySplice.WeldSettings.AdvanceSetting.AntiSideOption.AntiSideSpliceTime =
-                QString(spliceList[40]).toInt(&ok, 10);
-        mySplice.WeldSettings.AdvanceSetting.OffsetOption.MeasuredWidth =
-                QString(spliceList[41]).toInt(&ok, 10);
-        mySplice.WeldSettings.AdvanceSetting.OffsetOption.MeasuredHeight =
-                QString(spliceList[42]).toInt(&ok, 10);
-        mySplice.WeldSettings.AdvanceSetting.OffsetOption.DisplayWidth =
-                QString(spliceList[43]).toInt(&ok, 10);
-        mySplice.WeldSettings.AdvanceSetting.OffsetOption.DisplayHeight =
-                QString(spliceList[44]).toInt(&ok, 10);
-        mySplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkOption = spliceList[45] == "0" ? false : true;
-        mySplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID = spliceList[46];
-        mySplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime = QString(spliceList[47]).toInt(&ok,10);
-        mySplice.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTemperature = QString(spliceList[48]).toInt(&ok,10);
-        mySplice.HashCode = QString(spliceList[49]).toUInt(&ok,10);
-
-        mySplice.TestSetting.BatchSize = QString(spliceList[50]).toInt(&ok,10);
-        mySplice.TestSetting.StopCount = QString(spliceList[51]).toInt(&ok,10);
-        mySplice.TestSetting.TestMode = (TESTSETTING::TESTMODE)QString(spliceList[52]).toInt(&ok,10);
-        mySplice.TestSetting.TeachModeSetting.TeachModeType = (TEACHMODESETTING::TEACH_MODE_TYPE)QString(spliceList[53]).toInt(&ok,10);
-        for(int i = 0; i < 18; i++)
-            mySplice.TestSetting.TeachModeSetting.TeachModequal_Window[i] = QString(spliceList[i + 54]).toInt(&ok,10);
-        mySplice.TestSetting.TestingDone = spliceList[72] == "0" ? false : true;
-
-        QString tmpStr;
-        mySplice.WireIndex = wireIdMap;
-        mySplice.NoOfWires =  mySplice.WireIndex.size();
-        ret =  InsertRecordIntoTable(&mySplice);
-        while (ret == -1) {
-            qDebug() << "splice";
-            QMap<int ,QString> tempMap;
-            QueryOnlyUseName(mySplice.SpliceName, &tempMap);
-            if (tempMap.size() > 0) {
-                mySplice.SpliceName = mySplice.SpliceName + "(1)";
-                ret = InsertRecordIntoTable(&mySplice);
-            }
-            else if (tempMap.size() == 0)
-                return -1;
-        }
-    }
-    return ret;
-}
-
-QString DBPresetTable::GetExportString(int spliceId)
-{
-    QString tempWireData;
-    QString wireData;
-    QString queryStr;
-    QString lineValue = "";
-    QSqlQuery query(SpliceDBObj);
-    bool bResult = OpenDBObject();
-    if(bResult == true)
-    {
-        queryStr = QString("SELECT * FROM Preset WHERE ID == '%1'").arg(spliceId);
-        query.prepare(queryStr);
-        bResult = query.exec();
-        if (bResult) {
-            bResult = query.next();
-            if(bResult) {
-                for (int i = 0;i < 69;i++)
-                {
-                    if (i == 68)
-                    {
-                        QJsonParseError json_error;
-                        QJsonDocument parse_document = QJsonDocument::fromJson(query.value(i).toString().toLatin1(), &json_error);
-                        if(json_error.error == QJsonParseError::NoError)
-                        {
-                            if(parse_document.isObject())
-                            {
-                                QJsonObject obj = parse_document.object();
-                                QJsonObject::const_iterator iterator = obj.constBegin();
-                                for(int i = 0; i< obj.count(); i++)
-                                {
-                                    iterator = obj.constFind(QString::number(i, 10));
-                                    if(iterator != obj.constEnd())
-                                    {
-                                        QString value = iterator.value().toString();
-                                        QStringList strList = value.split(";");
-                                        tempWireData = wireTable->GetExportString(((QString)strList.at(0)).toInt());
-                                        wireData.append(tempWireData + ";");
-                                    }
-                                }
-                            }
-                        }
-                        lineValue.append(wireData + "*");
-                    }
-                    else
-                        lineValue.append(query.value(i).toString() + "*");
-                }
-
-            }
-        }
-        SpliceDBObj.close();
-    }
-    return lineValue;
 }

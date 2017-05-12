@@ -402,6 +402,64 @@ bool DBWeldResultTable::QueryOneRecordFromTable(int ID, void *_obj)
     return bResult;
 }
 
+bool DBWeldResultTable::QueryOneRecordFromTable(int ID, QStringList &ResultStr)
+{
+    QSqlQuery query(WeldResultDBObj);
+    bool bResult = WeldResultDBObj.open();
+    if(bResult == false)
+    {
+        qDebug() << "Weld Result SQL ERROR:"<< query.lastError();
+        return bResult;
+    }
+    query.prepare(SQLSentence[SQLITCLASS::QUERY_ONE_RECORD_ONLY_ID]);
+    query.addBindValue(ID);
+    bResult = query.exec();
+    if(bResult == false)
+    {
+        WeldResultDBObj.close();
+        qDebug() << "Weld Result SQL ERROR:"<< query.lastError();
+        return bResult;
+    }
+
+    bResult = query.next();
+    if(bResult == false)
+    {
+        WeldResultDBObj.close();
+        return bResult;
+    }
+
+    ResultStr.clear();
+    ResultStr.append(query.value("ID").toString());
+    ResultStr.append(query.value("OperatorName").toString());
+    ResultStr.append(query.value("CreatedDate").toString());
+    ResultStr.append(query.value("WorkOrderID").toString());
+    ResultStr.append(query.value("WorkOrderName").toString());
+    ResultStr.append(query.value("HarnessID").toString());
+    ResultStr.append(query.value("HarnessName").toString());
+    ResultStr.append(query.value("SequenceID").toString());
+    ResultStr.append(query.value("SequenceName").toString());
+    ResultStr.append(query.value("SpliceID").toString());
+    ResultStr.append(query.value("SpliceName").toString());
+    ResultStr.append(query.value("SpliceHash").toString());
+    ResultStr.append(query.value("WeldCount").toString());
+    ResultStr.append(query.value("PartCount").toString());
+    ResultStr.append(query.value("ActualEnergy").toString());
+    ResultStr.append(query.value("ActualTPressure").toString());
+    ResultStr.append(query.value("ActualPressure").toString());
+    ResultStr.append(query.value("ActualAmplitude").toString());
+    ResultStr.append(query.value("ActualAmplitude2").toString());
+    ResultStr.append(query.value("ActualWidth").toString());
+    ResultStr.append(query.value("ActualTime").toString());
+    ResultStr.append(query.value("ActualPeakPower").toString());
+    ResultStr.append(query.value("ActualPreheight").toString());
+    ResultStr.append(query.value("ActualPostHeight").toString());
+    ResultStr.append(query.value("ActualAlarmFlags").toString());
+    ResultStr.append(query.value("SampleRatio").toString());
+    ResultStr.append(query.value("NoOfSamples").toString());
+    WeldResultDBObj.close();
+    return bResult;
+}
+
 bool DBWeldResultTable::DeleteEntireTable()
 {
     QSqlQuery query(WeldResultDBObj);

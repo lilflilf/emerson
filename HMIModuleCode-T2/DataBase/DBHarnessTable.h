@@ -21,6 +21,7 @@ public:
     virtual bool QueryEntireTable(QMap<int, QString>* _obj);
     virtual bool QueryOneRecordFromTable(int ID, QString Name, void* _obj);
     virtual bool QueryOneRecordFromTable(int ID, void* _obj);
+    virtual bool QueryOneRecordFromTable(int ID, QStringList &ResultStr);
     virtual bool DeleteEntireTable();
     virtual bool DeleteOneRecordFromTable(int ID, QString Name);
 
@@ -30,15 +31,10 @@ public:
                 unsigned int time_to, QMap<int, QString>* _obj);
     virtual void SwitchDBObject(bool IsModularProduction);
 
-    bool exportData(int partId, QString fileUrl);
-    int importData(QString value,QMap<int, QString> spliceIdMap);
-    QString GetExportString(int partId);
 public:
     static DBHarnessTable* Instance();
 protected:
     DBHarnessTable();
-    void InsertTestDataIntoTable();
-    DBPresetTable *spliceTable;
 private:
     static DBHarnessTable* _instance;
 public:
