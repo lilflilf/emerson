@@ -11,6 +11,7 @@ Item {
     property int qliantity: 0
     property int maxCount: partModel.getCurrentPartSpliceCount()
     property int workMode: 0
+    property var counterString: "PART COUNTER"
     Rectangle {
         anchors.fill: parent
         color: "#626465"
@@ -53,11 +54,11 @@ Item {
                     progressBar.current++
                     progressBar.moveToNext()
                     selectSplice(spliceList[progressBar.current-1])
-                    partCount2.text = qsTr("PART COUNTER ") + progressBar2.value + "/" + qliantity;
+                    partCount2.text = qsTr(counterString) + progressBar2.value + "/" + qliantity;
                 }
                 else if (progressBar2.value < progressBar2.maximum) {
                     progressBar2.value = progressBar2.value + 1
-                    partCount2.text = qsTr("PART COUNTER ") + progressBar2.value + "/" + qliantity;
+                    partCount2.text = qsTr(counterString) + progressBar2.value + "/" + qliantity;
                 }
             }
             else if (workMode == 0)
@@ -65,7 +66,7 @@ Item {
                 setData()
                 if (progressBar2.value < progressBar2.maximum - 1) {
                     progressBar2.value = progressBar2.value + 1
-                    partCount2.text = qsTr("PART COUNTER ") + progressBar2.value + "/" + qliantity;
+                    partCount2.text = qsTr(counterString) + progressBar2.value + "/" + qliantity;
                 }
                 else {
                     cdialog.visible = true
@@ -96,6 +97,7 @@ Item {
             spliceList = spliceModel.getStructValue("SpliceId","")
             showFlag = 3
             selectSplice(spliceModel.getStructValue("SpliceId",""))
+            counterString = "SPLICE COUNTER:"
         }
         else if (flag == 2) {
             spliceList = partModel.getSpliceList(hmiAdaptor.getWorkFlow("WorkId"))
@@ -109,12 +111,14 @@ Item {
                 }
             }
             selectSplice(spliceList[0])
+            counterString = "HARNESS COUNTER"
         }
         else if (flag == 1) {
             spliceList = sequenceModel.getSpliceList(hmiAdaptor.getWorkFlow("WorkId"))
             showFlag = 2
             operateDetail.maxCount = spliceList.length
             selectSplice(spliceList[0])
+            counterString = "SEQUENCE COUNTER"
         }
 
         hmiAdaptor.operateProcessExec("Start")
@@ -249,6 +253,7 @@ Item {
             progressBar3.width = progressBar3.width / 2
             progressBar2.width = progressBar2.width / 2
             progressBar3.height = 10
+            editCounter.visible = true
 
         }
         else if (workMode == 0) {
@@ -265,6 +270,14 @@ Item {
             progressBar3.anchors.left = progressBar2.right
             progressBar3.anchors.leftMargin = 40
 
+        }
+        else if (workMode == 2 && showFlag == 2)
+        {
+            completeMiss.visible = false
+            editSplice.visible = true
+            editSplice.anchors.right = completeMiss.right
+            editSplice.anchors.bottom = completeMiss.bottom
+            editSplice.width = editSplice.width - 30
         }
         else if (workMode == 2 && showFlag == 3) {
             progressBar3.anchors.left = progressBar2.left
@@ -532,7 +545,7 @@ Item {
         anchors.bottomMargin: 6
         font.pointSize: 13
         font.family: "arial"
-        text: qsTr("PART COUNTER 0/")+ qliantity
+        text: qsTr(counterString) + "0/" + qliantity
         color: "white"
         Connections {
             target: progressBar
@@ -542,7 +555,7 @@ Item {
                     if (cycleCount > qliantity)
                         return
                     selectSplice(spliceList[0])
-                    partCount2.text = qsTr("PART COUNTER ") + cycleCount + "/" + qliantity;
+                    partCount2.text = qsTr(counterString) + cycleCount + "/" + qliantity;
                     progressBar2.value = cycleCount
                 }
                 else if (workMode == 1)
@@ -554,26 +567,29 @@ Item {
     }
     CProgressBar {
         id: progressBar2
-        anchors.bottom: parent.bottom
+
+        //        anchors.right: showFlag != 3 ? qualityWindow.right : spliceDetailsItem.right
+        anchors.left: partCount2.left
+        anchors.bottom: showFlag != 3 ? parent.bottom : maintenance.top
         anchors.bottomMargin: 20
-        anchors.left: showFlag != 1 ? offline.left : qualityWindow.left
+
         width: showFlag != 1 ? spliceDetailsItem.width : qualityWindow.width/2 - 20
         height: 10
         maximum: qliantity
         minimum: 0
         value: 0
     }
-//    Text {
-//        id: progresstracking2
-//        anchors.top: offline.top
-//        anchors.topMargin: 10
-//        anchors.left: offline.left
-//        font.pointSize: 16
-//        font.family: "arial"
-//        text: qsTr("Progress and Tracking")
-//        color: "white"
-//        visible: showFlag == 3 ? true : false
-//    }
+    Text {
+        id: progresstracking2
+        anchors.top: offline.top
+        anchors.topMargin: 10
+        anchors.left: offline.left
+        font.pointSize: 16
+        font.family: "arial"
+        text: qsTr("Progress and Tracking")
+        color: "white"
+        visible: showFlag == 3 ? true : false
+    }
     Text {
         id: progresstracking
         anchors.bottom: workStation.top
@@ -592,7 +608,7 @@ Item {
         anchors.left: qualityWindow.left
         font.pointSize: 13
         font.family: "arial"
-        text: partModel.getPartOnlineOrOffLine() ? qsTr("Work Station: ") + spliceLocation.workStation : qsTr("PART TASKS: ") + progressBar.current + "-" + progressBar.total
+        text: partModel.getPartOnlineOrOffLine() ? qsTr("Work Station: ") + spliceLocation.workStation : qsTr("HARNESS TASKS: ") + progressBar.current + "-" + progressBar.total
         color: "white"
         visible: showFlag != 3 ? true : false
     }
@@ -605,7 +621,7 @@ Item {
         font.pointSize: 13
         font.family: "arial"
         visible: partModel.getPartOnlineOrOffLine()
-        text: qsTr("PART TASKS: ") + progressBar.current + "-" + progressBar.total
+        text: qsTr("HARNESS TASKS: ") + progressBar.current + "-" + progressBar.total
         color: "white"
     }
     CButton {
@@ -685,10 +701,12 @@ Item {
     }
     CProgressBar {
         id: progressBar3
-//        anchors.right: showFlag != 3 ? qualityWindow.right : spliceDetailsItem.right
-        anchors.left: leftButton.left
-        anchors.bottom: showFlag != 3 ? parent.bottom : partCount2.top
+
+
+        anchors.bottom: parent.bottom
         anchors.bottomMargin: 20
+        anchors.left: showFlag != 1 ? offline.left : qualityWindow.left
+
         width: showFlag == 1 ? qualityWindow.width/2-20 : (showFlag == 2 ? qualityWindow.width : spliceDetailsItem.width)
         height: 10
         maximum: hmiAdaptor.maintenanceCountGetValue(0,2)
@@ -698,9 +716,10 @@ Item {
 
     CButton {
         id: editCounter
-        anchors.right: progressBar3.right
-        anchors.bottom: progressBar3.top
-        anchors.bottomMargin: 40
+        anchors.right: editSplice.left
+        anchors.rightMargin: 10
+        anchors.bottom: editSplice.bottom
+//        anchors.bottomMargin: 40
         width: 210
         height: 60
         text: qsTr("EDIT COUNTER")
