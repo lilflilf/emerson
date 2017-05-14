@@ -41,9 +41,10 @@ Item {
             }
             else if (workMode == 1)
             {
-                if (progressBar2.value <= progressBar2.maximum)
-                    progressBar2.value = progressBar2 + 1
-                else {
+                setData()
+                if (progressBar2.value + 1 == progressBar2.maximum)
+                {
+                    progressBar2.value = 0
                     if (progressBar.current == progressBar.total) {
                         cdialog.visible = true
                         hmiAdaptor.operateProcessExec("Stop")
@@ -52,12 +53,20 @@ Item {
                     progressBar.current++
                     progressBar.moveToNext()
                     selectSplice(spliceList[progressBar.current-1])
+                    partCount2.text = qsTr("PART COUNTER ") + progressBar2.value + "/" + qliantity;
+                }
+                else if (progressBar2.value < progressBar2.maximum) {
+                    progressBar2.value = progressBar2.value + 1
+                    partCount2.text = qsTr("PART COUNTER ") + progressBar2.value + "/" + qliantity;
                 }
             }
             else if (workMode == 0)
             {
-                if (progressBar2.value <= progressBar2.maximum)
-                    progressBar2.value = progressBar2 + 1
+                setData()
+                if (progressBar2.value < progressBar2.maximum - 1) {
+                    progressBar2.value = progressBar2.value + 1
+                    partCount2.text = qsTr("PART COUNTER ") + progressBar2.value + "/" + qliantity;
+                }
                 else {
                     cdialog.visible = true
                     hmiAdaptor.operateProcessExec("Stop")
@@ -152,12 +161,14 @@ Item {
 
     function setData()
     {
-        qualityWindow.partCount = progressBar.current - 1
+        if (workMode == 1 || workMode == 0)
+            qualityWindow.partCount = progressBar2.value + 1
+        else if (workMode == 2)
+            qualityWindow.partCount = progressBar.current - 1
         qualityWindow.timeModel = alarmModel.getPointList("Time",spliceModel.getStructValue("SpliceName",""),spliceModel.getHashCode())
         qualityWindow.powerModel = alarmModel.getPointList("Power",spliceModel.getStructValue("SpliceName",""),spliceModel.getHashCode())
         qualityWindow.preModel = alarmModel.getPointList("Pre-Height",spliceModel.getStructValue("SpliceName",""),spliceModel.getHashCode())
         qualityWindow.postModel = alarmModel.getPointList("Post-Height",spliceModel.getStructValue("SpliceName",""),spliceModel.getHashCode())
-
         qualityWindow.qualityModel.clear()
         if (qualityWindow.timeModel.length > 0) {
             qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Time+"),"redMin":spliceModel.getRawData("Time-"),"yellowMax":hmiAdaptor.controlLimitProcess("Time+",qualityWindow.timeModel,spliceModel.getRawData("Time+"),spliceModel.getRawData("Time-")),"yellowMin":hmiAdaptor.controlLimitProcess("Time-",qualityWindow.timeModel,spliceModel.getRawData("Time+"),spliceModel.getRawData("Time-")),"current":qualityWindow.timeModel[qualityWindow.timeModel.length - 1],"currentText":spliceModel.actualTimeToString(qualityWindow.timeModel[qualityWindow.timeModel.length - 1])})

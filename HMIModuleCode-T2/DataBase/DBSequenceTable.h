@@ -37,7 +37,7 @@ public:
     static DBSequenceTable* Instance();
 protected:
     DBSequenceTable();
-    void InsertTestDataIntoTable();
+//    void InsertTestDataIntoTable();
 //    DBPresetTable *spliceTable;
 private:
     static DBSequenceTable* _instance;

@@ -2959,7 +2959,6 @@ WeldHistoryModel::WeldHistoryModel(QObject *parent) :
 
 QVariant WeldHistoryModel::data(const QModelIndex &index, int role) const
 {
-    qDebug() << "m_weldHistoryAdaptorcccccccccccccccccccccccc";
 
     QVariant value;
     if(role < Qt::UserRole)
@@ -3537,7 +3536,6 @@ QString WireModel::getStructValue2(QString key, QString type)
             ResultStr = variantToString->GaugeToString(wireElement.Gauge,wireElement.GaugeAWG).Minimum;
     }
     else if (key == "StripeColor") {
-        qDebug() << "ccccccccccccccc" << wireElement.Stripe.Color;
         ResultStr = wireElement.Stripe.Color;
     }
     return ResultStr;

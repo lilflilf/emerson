@@ -114,46 +114,46 @@ void DBSequenceTable::SwitchDBObject(bool IsModularProduction)
     SequenceDBObj.close();
 }
 
-void DBSequenceTable::InsertTestDataIntoTable()
-{
-    struct SequenceElement tmpSequence;
-    for (int i = 0; i < 7; i++)
-    {
-        if ( i == 0)
-            tmpSequence.SequenceName = "32117-SHA-0001-00(INSTHARNESSS)";
-        if ( i == 1)
-            tmpSequence.SequenceName = "32200-SGA-2000-01(CABINHARNESS)";
-        if ( i == 2)
-            tmpSequence.SequenceName = "32751-TAA-A190-03(FRDOORHARNESS)";
-        if ( i == 3)
-            tmpSequence.SequenceName = "P5VH006Y0";
-        if ( i == 4)
-            tmpSequence.SequenceName = "P5VH006P0";
-        if ( i == 5)
-            tmpSequence.SequenceName = "P5VH006Z0";
-        else
-            tmpSequence.SequenceName = QString("P5VH006Z0 + %1").arg(i);
+//void DBSequenceTable::InsertTestDataIntoTable()
+//{
+//    struct SequenceElement tmpSequence;
+//    for (int i = 0; i < 7; i++)
+//    {
+//        if ( i == 0)
+//            tmpSequence.SequenceName = "32117-SHA-0001-00(INSTHARNESSS)";
+//        if ( i == 1)
+//            tmpSequence.SequenceName = "32200-SGA-2000-01(CABINHARNESS)";
+//        if ( i == 2)
+//            tmpSequence.SequenceName = "32751-TAA-A190-03(FRDOORHARNESS)";
+//        if ( i == 3)
+//            tmpSequence.SequenceName = "P5VH006Y0";
+//        if ( i == 4)
+//            tmpSequence.SequenceName = "P5VH006P0";
+//        if ( i == 5)
+//            tmpSequence.SequenceName = "P5VH006Z0";
+//        else
+//            tmpSequence.SequenceName = QString("P5VH006Z0 + %1").arg(i);
 
-        tmpSequence.CreatedDate = QDateTime::currentDateTime().toTime_t();
-        tmpSequence.OperatorID = 2;
+//        tmpSequence.CreatedDate = QDateTime::currentDateTime().toTime_t();
+//        tmpSequence.OperatorID = 2;
 
-        struct SEQUENCEATTRIBUTE SequenceAttribute;
-        SequenceAttribute.SpliceName = "WangYIBIN";
-        SequenceAttribute.SpliceID = 1;
-        SequenceAttribute.Quantity = 10;
-        tmpSequence.SpliceList.insert(0, SequenceAttribute);
-        SequenceAttribute.SpliceName = "JWang";
-        SequenceAttribute.SpliceID = 2;
-        SequenceAttribute.Quantity = 20;
-        tmpSequence.SpliceList.insert(1, SequenceAttribute);
-        SequenceAttribute.SpliceName = "JW";
-        SequenceAttribute.SpliceID = 2;
-        SequenceAttribute.Quantity = 30;
-        tmpSequence.SpliceList.insert(2, SequenceAttribute);
-        tmpSequence.NoOfSplice = tmpSequence.SpliceList.size();
-        InsertRecordIntoTable(&tmpSequence);
-    }
-}
+//        struct SEQUENCEATTRIBUTE SequenceAttribute;
+//        SequenceAttribute.SpliceName = "WangYIBIN";
+//        SequenceAttribute.SpliceID = 1;
+//        SequenceAttribute.Quantity = 10;
+//        tmpSequence.SpliceList.insert(0, SequenceAttribute);
+//        SequenceAttribute.SpliceName = "JWang";
+//        SequenceAttribute.SpliceID = 2;
+//        SequenceAttribute.Quantity = 20;
+//        tmpSequence.SpliceList.insert(1, SequenceAttribute);
+//        SequenceAttribute.SpliceName = "JW";
+//        SequenceAttribute.SpliceID = 2;
+//        SequenceAttribute.Quantity = 30;
+//        tmpSequence.SpliceList.insert(2, SequenceAttribute);
+//        tmpSequence.NoOfSplice = tmpSequence.SpliceList.size();
+//        InsertRecordIntoTable(&tmpSequence);
+//    }
+//}
 
 DBSequenceTable::~DBSequenceTable()
 {
