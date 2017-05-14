@@ -41,7 +41,28 @@ Item {
             }
             else if (workMode == 1)
             {
-
+                if (progressBar2.value <= progressBar2.maximum)
+                    progressBar2.value = progressBar2 + 1
+                else {
+                    if (progressBar.current == progressBar.total) {
+                        cdialog.visible = true
+                        hmiAdaptor.operateProcessExec("Stop")
+                        return
+                    }
+                    progressBar.current++
+                    progressBar.moveToNext()
+                    selectSplice(spliceList[progressBar.current-1])
+                }
+            }
+            else if (workMode == 0)
+            {
+                if (progressBar2.value <= progressBar2.maximum)
+                    progressBar2.value = progressBar2 + 1
+                else {
+                    cdialog.visible = true
+                    hmiAdaptor.operateProcessExec("Stop")
+                    return
+                }
             }
 
 //            console.log("333333331111",operateDetail.cycleCount,operateDetail.qliantity)
@@ -57,7 +78,6 @@ Item {
     }
 
     Component.onCompleted: {
-
         var flag = hmiAdaptor.getWorkFlow("WorkMode")
         workMode = flag
         alarmModel.setStartTime();
@@ -67,7 +87,6 @@ Item {
             spliceList = spliceModel.getStructValue("SpliceId","")
             showFlag = 3
             selectSplice(spliceModel.getStructValue("SpliceId",""))
-
         }
         else if (flag == 2) {
             spliceList = partModel.getSpliceList(hmiAdaptor.getWorkFlow("WorkId"))
@@ -89,6 +108,7 @@ Item {
             selectSplice(spliceList[0])
         }
 
+        hmiAdaptor.operateProcessExec("Start")
 
 
 
@@ -126,9 +146,9 @@ Item {
 
 //        hmiAdaptor.operateProcessExec("Start")
     }
-//    Component.onDestruction: {
-//        hmiAdaptor.operateProcessExec("Stop")
-//    }
+    Component.onDestruction: {
+        hmiAdaptor.operateProcessExec("Stop")
+    }
 
     function setData()
     {
@@ -171,6 +191,10 @@ Item {
             wireModel.addFromLibrary(list[i])
             spliceDetailsItem.addWireFromSplice()
         }
+        if (workMode == 1)
+            qliantity = sequenceModel.getSpliceQty(spliceId)
+        else if (workMode == 2 || workMode == 0)
+            qliantity = hmiAdaptor.getWorkValue("WorkCount")
         hmiAdaptor.setOperateProcess(spliceId, false)
         hmiAdaptor.operateProcessExec("Execute")
     }

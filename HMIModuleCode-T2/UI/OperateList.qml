@@ -456,6 +456,19 @@ Item {
                     harnessSetting.visible = false
                     hmiAdaptor.setWorkFlow(2,operate.selectWorkId)
 
+                    if (splices.bIsCheck)
+                    {
+                        if (defalut.text.length > 0) {
+                            hmiAdaptor.setWorkValue("WorkCount",defalut.text)
+                        }
+                        else
+                            return
+                    }
+                    else if (unButton.bIsCheck)
+                    {
+                        hmiAdaptor.setWorkValue("WorkCount","-1")
+                    }
+
                     mainRoot.checkNeedPassWd(-5)
                     mainRoot.headTitle = qsTr("Operate Harness")
                 }

@@ -233,11 +233,14 @@ Item {
             onClicked: {
                 hmiAdaptor.setWorkFlow(0,spliceModel.getStructValue("SpliceId",""))
 
-                if (unButton.bIsCheck)
+                if (unButton.bIsCheck) {
                     spliceModel.setTeachModeValue("TestModel","false","","")
+                    hmiAdaptor.setWorkValue("WorkCount",-1)
+                }
                 else if (splices.bIsCheck) {
                     spliceModel.setTeachModeValue("TestModel","true","","")
                     spliceModel.setTeachModeValue("TestCount",defalut.text,"","")
+                    hmiAdaptor.setWorkValue("WorkCount",defalut.text)
                 }
                 if(diagram.state == "left") {
                     spliceModel.setTeachModeValue("TeachMode","0","","")

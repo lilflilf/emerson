@@ -1693,6 +1693,32 @@ QVariant HmiAdaptor::getWorkFlow(QString workKey)
     return value;
 }
 
+void HmiAdaptor::setWorkValue(QString key, QString value)
+{
+    bool ok;
+    if (key == "WorkCount") {
+        if (value == "-1")
+            interfaceClass->CurrentWorkOrder.IsConstrainedFlag = true;
+        else
+        {
+            interfaceClass->CurrentWorkOrder.IsConstrainedFlag = false;
+            interfaceClass->CurrentWorkOrder.BatchSize = value.toInt(&ok,10);
+        }
+    }
+}
+
+QVariant HmiAdaptor::getWorkValue(QString workKey)
+{
+    QVariant value;
+    if (workKey == "WorkCount") {
+        if (interfaceClass->CurrentWorkOrder.IsConstrainedFlag)
+            value = -1;
+        else
+            value = interfaceClass->CurrentWorkOrder.BatchSize;
+    }
+    return value;
+}
+
 void HmiAdaptor::slotPhysicalKeySignal(bool &status)
 {
     bIsPhysicalKey = interfaceClass->StatusData.PhysicalKeyMode;

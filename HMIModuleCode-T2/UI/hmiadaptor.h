@@ -152,6 +152,9 @@ public:
     Q_INVOKABLE void setWorkFlow(int workMode, int workId);
     Q_INVOKABLE QVariant getWorkFlow(QString workKey);
 
+    Q_INVOKABLE void setWorkValue(QString key, QString value);
+    Q_INVOKABLE QVariant getWorkValue(QString workKey);
+
     BransonMessageBox bransonMessageBox;
     InterfaceClass *interfaceClass;
     M102IA *m102ia;

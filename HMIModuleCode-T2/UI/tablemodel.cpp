@@ -4019,6 +4019,17 @@ QList<int> SequenceModel::getSpliceList()
     return list;
 }
 
+int SequenceModel::getSpliceQty(int spliceId)
+{
+    QMap<int,struct SEQUENCEATTRIBUTE>::iterator it; //遍历map
+    int qty;
+    for ( it = sequenceElement.SpliceList.begin(); it != sequenceElement.SpliceList.end(); ++it ) {
+        if (it.value().SpliceID == spliceId)
+            qty = it.value().Quantity;
+    }
+    return qty;
+}
+
 void SequenceModel::editNew(int sequenceId)
 {
     m_sequenceAdaptor->QueryOneRecordFromTable(sequenceId, &sequenceElement);
