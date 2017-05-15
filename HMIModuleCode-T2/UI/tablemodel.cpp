@@ -4036,7 +4036,6 @@ void SequenceModel::reSetSpliceCount(int spliceId, int qty)
             it.value().Quantity = qty;
     }
     bool reb = m_sequenceAdaptor->UpdateRecordIntoTable(&sequenceElement);
-    qDebug() << "sssssssssssssssssssssssss" << reb;
 }
 
 void SequenceModel::editNew(int sequenceId)
@@ -4115,6 +4114,7 @@ bool SequenceModel::updateRecordIntoTable(int sequenceId, QString sequenceName,i
     mySequence.NoOfSplice = sequenceElement.SpliceList.count();
     mySequence.SpliceList = sequenceElement.SpliceList;
     bool reb =m_sequenceAdaptor->UpdateRecordIntoTable(&mySequence);
+
     setModelList();
     return reb;
 }
@@ -4137,6 +4137,8 @@ bool SequenceModel::insertRecordIntoTable(QString sequenceName,int operatorId)
     sequenceElement.NoOfSplice = sequenceElement.SpliceList.count();
 
     insertSequenceId = m_sequenceAdaptor->InsertRecordIntoTable(&sequenceElement);
+    qDebug() << "sssssssssssssssssssssssss" << insertSequenceId;
+
     setModelList();
     return insertSequenceId;
 }

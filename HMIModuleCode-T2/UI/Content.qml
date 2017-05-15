@@ -477,6 +477,7 @@ Item {
                             for (var i = 0; i < listModel.count; i++) {
                                 sequenceModel.setSpliceData(i,listModel.get(i).SpliceId,listModel.get(i).SpliceName,listModel.get(i).qty)
                             }
+                            console.log("ffffffffffffff",bIsEdit)
                             if (bIsEdit)
                                 sequenceModel.updateRecordIntoTable(hmiAdaptor.getEditPartId(),edit6.inputText, hmiAdaptor.getCurrentOperatorId())
                             else
@@ -1351,8 +1352,8 @@ Item {
         }
         onSignalAddExistSelectClick: {
             //que hanshu
-            content.bIsEdit = true
             if (addExit.listModel == partModel) {
+                content.bIsEdit = true
                 selectPartUpdataPage(modelId,name)
             } else if (addExit.listModel == spliceModel) {
                 var bIsFind = false
@@ -1367,6 +1368,7 @@ Item {
                 }
             }
             else if (addExit.listModel == sequenceModel) {
+                content.bIsEdit = true
                 selectSequenceUpdataPage(modelId,name)
             }
 
