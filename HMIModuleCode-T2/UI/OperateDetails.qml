@@ -26,7 +26,7 @@ Item {
             if (workMode == 2)
             {
                 progressBar.current++
-                if (operateDetail.cycleCount == operateDetail.qliantity) {
+                if (operateDetail.cycleCount == operateDetail.qliantity && operateDetail.qliantity != -1) {
                     cdialog.visible = true
                     hmiAdaptor.operateProcessExec("Stop")
                     return
@@ -63,6 +63,8 @@ Item {
             }
             else if (workMode == 0)
             {
+                if (qliantity == -1)
+                    return
                 setData()
                 if (progressBar2.value < progressBar2.maximum - 1) {
                     progressBar2.value = progressBar2.value + 1
@@ -701,12 +703,9 @@ Item {
     }
     CProgressBar {
         id: progressBar3
-
-
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 20
         anchors.left: showFlag != 1 ? offline.left : qualityWindow.left
-
         width: showFlag == 1 ? qualityWindow.width/2-20 : (showFlag == 2 ? qualityWindow.width : spliceDetailsItem.width)
         height: 10
         maximum: hmiAdaptor.maintenanceCountGetValue(0,2)
@@ -717,7 +716,7 @@ Item {
     CButton {
         id: editCounter
         anchors.right: editSplice.left
-        anchors.rightMargin: 10
+        anchors.rightMargin: 24
         anchors.bottom: editSplice.bottom
 //        anchors.bottomMargin: 40
         width: 210
@@ -741,7 +740,10 @@ Item {
         textColor: "white"
         visible: false
         onClicked: {
-            operateToEdit(spliceList[progressBar.current-1])
+            if (progressBar.current-1 < 0)
+                operateToEdit(spliceList[0])
+            else
+                operateToEdit(spliceList[progressBar.current-1])
         }
     }
 
@@ -766,6 +768,7 @@ Item {
         width: 540
         height: 435
         anchors.centerIn: parent
+        property var bIsEdit: false
         Image {
             anchors.fill: parent
             source: "qrc:/images/images/dialogbg.png"
@@ -802,10 +805,11 @@ Item {
             anchors.verticalCenter: setting1.verticalCenter
             height: 50
             width: 180
-            text: qsTr("Reset")
+            text: qsTr("Reset") + "(" + progressBar2.value + ")"
             textColor: "white"
             onClicked: {
-
+                progressBar2.value = 0
+                resetButton.text = qsTr("Reset") + "(" + progressBar2.value + ")"
             }
         }
 
@@ -844,18 +848,16 @@ Item {
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
                 color: "white"
-                text: qsTr("1")
+                text: qliantity
             }
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
+                    spliceCounterSetting.bIsEdit = true
                     keyNum.visible = true
                     keyNum.currentValue = defalut.text
                     keyNum.maxvalue = 80
                     keyNum.minvalue = 0
-                }
-                onPressed: {
-                    splices.bIsCheck = true
                 }
             }
         }
@@ -882,12 +884,60 @@ Item {
                 text: qsTr("OK")
                 textColor: "white"
                 onClicked: {
+                    if (spliceCounterSetting.bIsEdit) {
+                        progressBar2.maximum = defalut.text
+                        operateDetail.qliantity = defalut.text
+                        if (workMode == 1)
+                        {
+                            if (progressBar.current-1 < 0)
+                                sequenceModel.reSetSpliceCount(spliceList[0],defalut.text)
+                            else
+                                sequenceModel.reSetSpliceCount(spliceList[progressBar.current-1],defalut.text)
+                        }
+                        spliceCounterSetting.bIsEdit = false
+                    }
                     spliceCounterSetting.visible = false
                 }
             }
         }
 
 
+    }
+
+    KeyBoardNum {
+        id: keyNum
+        anchors.centerIn: parent
+        width: 962
+        height: 526
+        visible: false
+        titleText: ""
+        maxvalue: "4"
+        minvalue: "1"
+        currentValue: "4"
+        onCurrentClickIndex: {
+            if (index == 15) {
+                if (hmiAdaptor.comepareCurrentValue(keyNum.minvalue,keyNum.maxvalue,keyNum.inputText)) {
+                    if (keyNum.inputText != "") {
+                        defalut.text = keyNum.inputText
+                    }
+//                    defalut.text = keyNum.inputText
+                    keyNum.visible = false
+                    keyNum.inputText = ""
+                    keyNum.tempValue = ""
+                } else {
+                    keyNum.timeRun = true
+                }
+            } else if (index == 11) {
+                keyNum.visible = false
+                keyNum.inputText = ""
+                keyNum.tempValue = ""
+            }
+        }
+        onInputTextChanged: {
+            if (keyNum.inputText != "") {
+                defalut.text = keyNum.inputText
+            }
+        }
     }
 
 }

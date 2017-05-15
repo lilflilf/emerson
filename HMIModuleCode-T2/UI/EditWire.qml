@@ -57,6 +57,7 @@ Item {
         itemSide.state = wireModel.getStructValue("WireDirection") == 0 ? "left" : "right";
         itemLocation.state = wireModel.getStructValue("WireBasic") == 0 ? "left" : "right";
         column1.positionIndex = wireModel.getStructValue("WirePosition")
+        typeDirection.currentText = wireModel.getStructValue("ModuleType")
     }
 
     SpliceDetails {
@@ -779,11 +780,11 @@ Item {
                     state: "left"
                     opacity: 0.8
                     onOnChanged: {
-                        if (basicSwitch.state == "left") {
-                            column1.visible = false
-                        } else {
-                            column1.visible = true
-                        }
+//                        if (basicSwitch.state == "left") {
+//                            column1.visible = false
+//                        } else {
+//                            column1.visible = true
+//                        }
                     }
                 }
             }
@@ -923,6 +924,46 @@ Item {
                 color: "#375566"
                 height: 1
             }
+
+            Item {
+                id: type
+                width: parent.width
+                height: 34
+                anchors.top: line3.bottom
+                anchors.topMargin: 15
+                z: 10
+
+                Label {
+                    id: typeText
+                    color: "#8295a0"
+                    text: qsTr("Type")
+                    font.family: "arial"
+                    font.pointSize: 14
+                    anchors.right: parent.right
+                    anchors.rightMargin: 290
+//                    anchors.verticalCenter: wireDirection.verticalCenter
+                }
+                MyCombox {
+                    id: typeDirection
+                    width: parent.width * 0.4
+                    height: 34
+                    anchors.left: parent.left
+                    anchors.leftMargin: width + 10
+                    items: [
+                    { lang: "n/a", img: "" },
+                    { lang: "DIN", img: "" },
+                    { lang: "ISO", img: "" },
+                    { lang: "SAE", img: "" },
+                    { lang: "JIS", img: "" }
+
+                    ]
+                    backGroundColor: "#052a40"
+                    dropDownColor: "#052a40"
+                    onCurrentTextChanged: {
+                        spliceDetailsItem.selectModuleType = currentText
+                    }
+                }
+            }
         }
     }
 
@@ -949,7 +990,7 @@ Item {
             side = itemSide.state == "left" ? 0 : 1
             location = itemLocation.state == "left" ? 0 : 1
             wireModel.insertValueToTable("update",wireName.inputText,creatWire.editWirdId,hmiAdaptor.getCurrentOperatorId(),itemColor.color,
-                                         itemStripe.color,itemStripe.stripeType,gauge,awg,wireType,side,location,column1.positionIndex)
+                                         itemStripe.color,itemStripe.stripeType,gauge,awg,wireType,side,location,column1.positionIndex,typeDirection.currentText)
             mainRoot.popStackView()
         }
     }

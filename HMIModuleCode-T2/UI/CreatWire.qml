@@ -1174,7 +1174,8 @@ Item {
                     else if (bottomRadio.checked)
                         positionside = 2;
 
-                    wireModel.insertValueToTable("insert",wireName.inputText,-1,hmiAdaptor.getCurrentOperatorId(),rectcolor.color,itemStripe.color,itemStripe.stripeType,edit2.inputText,wireType,side,verside,positionside)
+                    console.log("fffffffffffffffffffffff",spliceDetailsItem.selectWireAWG,spliceDetailsItem.selectWireGauge)
+                    wireModel.insertValueToTable("insert",wireName.inputText,-1,hmiAdaptor.getCurrentOperatorId(),rectcolor.color,itemStripe.color,itemStripe.stripeType, spliceDetailsItem.selectWireGauge, spliceDetailsItem.selectWireAWG,edit2.inputText,wireType,side,verside,positionside,typeDirection.currentText)
 
 //                    if (spliceDetailsItem.selectWireId == -1)
 //                    {

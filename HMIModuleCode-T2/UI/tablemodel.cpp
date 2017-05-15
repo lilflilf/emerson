@@ -4028,6 +4028,17 @@ int SequenceModel::getSpliceQty(int spliceId)
     return qty;
 }
 
+void SequenceModel::reSetSpliceCount(int spliceId, int qty)
+{
+    QMap<int,struct SEQUENCEATTRIBUTE>::iterator it; //遍历map
+    for ( it = sequenceElement.SpliceList.begin(); it != sequenceElement.SpliceList.end(); ++it ) {
+        if (it.value().SpliceID == spliceId)
+            it.value().Quantity = qty;
+    }
+    bool reb = m_sequenceAdaptor->UpdateRecordIntoTable(&sequenceElement);
+    qDebug() << "sssssssssssssssssssssssss" << reb;
+}
+
 void SequenceModel::editNew(int sequenceId)
 {
     m_sequenceAdaptor->QueryOneRecordFromTable(sequenceId, &sequenceElement);

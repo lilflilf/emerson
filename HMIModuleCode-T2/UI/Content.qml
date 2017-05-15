@@ -117,6 +117,7 @@ Item {
 
     function selectSequenceUpdataPage(id,name)
     {
+        hmiAdaptor.setEditPartId(id)
         sequenceModel.getSequenceInfo(true,id,name)
         edit6.inputText = name
         var nameList = new Array()
@@ -135,6 +136,7 @@ Item {
 
     function selectPartUpdataPage(id,name)
     {
+        hmiAdaptor.setEditPartId(id)
         partModel.getPartInfo(true,id,name)
         edit1.inputText = partModel.getWorkStationCount()
         edit2.inputText = partModel.getWorkStationMaxSplicePerStation()
