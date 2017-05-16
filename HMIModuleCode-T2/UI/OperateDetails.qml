@@ -111,13 +111,14 @@ Item {
                     showFlag = 3
                 } else {
                     showFlag = 2
-//                    progressBar3.anchors.left = qualityWindow.left
+                    progressBar.width = 550
                 }
             }
             selectSplice(spliceList[0])
             counterString = "HARNESS COUNTER"
         }
         else if (flag == 1) {
+            progressBar.width = 550
             spliceList = sequenceModel.getSpliceList(hmiAdaptor.getWorkFlow("WorkId"))
             showFlag = 2
             operateDetail.maxCount = spliceList.length
@@ -241,7 +242,6 @@ Item {
             progressBar.anchors.leftMargin = 87
             progressBar.anchors.bottom = operateDetail.bottom
             progressBar.anchors.bottomMargin = 14
-
             workStation.visible = false
             workStation.anchors.bottomMargin = 50
 
