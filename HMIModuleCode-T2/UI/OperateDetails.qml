@@ -257,7 +257,7 @@ Item {
             progressBar3.width = progressBar3.width / 2 - 8
             progressBar2.width = progressBar2.width / 2 - 8
             progressBar3.height = 10
-            editCounter.visible = true
+            editCounter.visible = false
 
         }
         else if (workMode == 0) {
