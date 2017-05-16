@@ -340,7 +340,7 @@ bool DBSequenceTable::QueryOneRecordFromTable(int ID, void *_obj)
 
 bool DBSequenceTable::QueryOneRecordFromTable(int ID, QStringList &ResultStr)
 {
-    UtilityClass *_Utility = UtilityClass::Instance();
+//    UtilityClass *_Utility = UtilityClass::Instance();
     QSqlQuery query(SequenceDBObj);
     bool bResult = OpenDBObject();
     if(bResult == false)

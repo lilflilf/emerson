@@ -18,7 +18,6 @@
 
 int main(int argc, char *argv[])
 {
-
     RECT rt = {0,0,0,0};
     SystemParametersInfo(SPI_GETWORKAREA,0,&rt,0);
     int y = GetSystemMetrics(SM_CYSCREEN)-rt.bottom;
