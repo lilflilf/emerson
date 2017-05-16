@@ -1351,8 +1351,8 @@ Item {
         }
         onSignalAddExistSelectClick: {
             //que hanshu
-            content.bIsEdit = true
             if (addExit.listModel == partModel) {
+                content.bIsEdit = true
                 selectPartUpdataPage(modelId,name)
             } else if (addExit.listModel == spliceModel) {
                 var bIsFind = false
@@ -1367,6 +1367,7 @@ Item {
                 }
             }
             else if (addExit.listModel == sequenceModel) {
+                content.bIsEdit = true
                 selectSequenceUpdataPage(modelId,name)
             }
 
