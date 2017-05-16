@@ -34,8 +34,9 @@ Item {
                 spliceLocation.setTreeModelOver()
                 progressBar.moveToNext()
                 selectSplice(spliceList[progressBar.current-1])
-                if (showFlag == 2)
+                if (showFlag == 2) {
                     offline.setStusOffLineUpdate(progressBar.current)
+                }
                 else if (showFlag == 1)
                     spliceLocation.updateTreeModel(progressBar.current)
 
@@ -110,12 +111,14 @@ Item {
                     showFlag = 3
                 } else {
                     showFlag = 2
+                    progressBar.width = 550
                 }
             }
             selectSplice(spliceList[0])
             counterString = "HARNESS COUNTER"
         }
         else if (flag == 1) {
+            progressBar.width = 550
             spliceList = sequenceModel.getSpliceList(hmiAdaptor.getWorkFlow("WorkId"))
             showFlag = 2
             operateDetail.maxCount = spliceList.length
@@ -239,7 +242,6 @@ Item {
             progressBar.anchors.leftMargin = 87
             progressBar.anchors.bottom = operateDetail.bottom
             progressBar.anchors.bottomMargin = 14
-
             workStation.visible = false
             workStation.anchors.bottomMargin = 50
 
@@ -250,10 +252,10 @@ Item {
             progressBar3.anchors.bottom = progressBar2.bottom
             progressBar3.anchors.bottomMargin = 0
             progressBar3.anchors.left = progressBar2.right
-            progressBar3.anchors.leftMargin = 15
+            progressBar3.anchors.leftMargin = 16
 
-            progressBar3.width = progressBar3.width / 2
-            progressBar2.width = progressBar2.width / 2
+            progressBar3.width = progressBar3.width / 2 - 8
+            progressBar2.width = progressBar2.width / 2 - 8
             progressBar3.height = 10
             editCounter.visible = true
 
@@ -275,11 +277,37 @@ Item {
         }
         else if (workMode == 2 && showFlag == 2)
         {
+//            completeMiss.visible = false
+//            editSplice.visible = true
+//            editSplice.anchors.right = completeMiss.right
+//            editSplice.anchors.bottom = completeMiss.bottom
+//            editSplice.width = editSplice.width - 30
+
+            offline.visible = false
             completeMiss.visible = false
             editSplice.visible = true
-            editSplice.anchors.right = completeMiss.right
-            editSplice.anchors.bottom = completeMiss.bottom
-            editSplice.width = editSplice.width - 30
+            progressBar.anchors.left = operateDetail.left
+            progressBar.anchors.leftMargin = 87
+            progressBar.anchors.bottom = operateDetail.bottom
+            progressBar.anchors.bottomMargin = 14
+
+            workStation.visible = false
+            workStation.anchors.bottomMargin = 50
+
+            maintenance.anchors.left = progressBar3.left
+            partCount2.anchors.left = progressBar2.left
+            progressBar3.width = progressBar3.width / 2 - 8
+            progressBar2.width = progressBar2.width / 2 - 8
+            progressBar3.height = 10
+            progressBar2.anchors.bottom = progressBar.top
+            progressBar2.anchors.bottomMargin = 14
+            progressBar3.anchors.bottom = progressBar2.bottom
+            progressBar3.anchors.bottomMargin = 0
+            progressBar3.anchors.left = progressBar2.right
+            progressBar3.anchors.leftMargin = 16
+
+
+            editCounter.visible = true
         }
         else if (workMode == 2 && showFlag == 3) {
             progressBar3.anchors.left = progressBar2.left
@@ -719,7 +747,7 @@ Item {
         anchors.rightMargin: 24
         anchors.bottom: editSplice.bottom
 //        anchors.bottomMargin: 40
-        width: 210
+        width: 200
         height: 60
         text: qsTr("EDIT COUNTER")
         textColor: "white"
@@ -734,7 +762,7 @@ Item {
         anchors.right: qualityWindow.right
         anchors.bottom: operateDetail.bottom
         anchors.bottomMargin: 14
-        width: 210
+        width: 200
         height: 60
         text: qsTr("EDIT SPLICE")
         textColor: "white"
