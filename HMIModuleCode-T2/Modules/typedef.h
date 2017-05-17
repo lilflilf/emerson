@@ -58,6 +58,7 @@ enum{
 };
 
 typedef enum{
+    ERROR = -1,
     No = 0,
     Yes = 1,
     False = 0,
@@ -77,5 +78,9 @@ typedef enum{
 #define DELAY3SEC	 				3000   /* 3.0 sec */
 #define DELAY5SEC    				5000   /* 5.0 sec */
 #define DELAY15SEC                  15000  /* 15.0 sec */
+
+#define DECIMALISM                  10
+#define HEXADECIMAL                 16
+
 
 #endif // TYPEDEF_H

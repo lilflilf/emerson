@@ -79,7 +79,7 @@ bool DBOperatorTable::CreateNewTable()
 int DBOperatorTable::InsertRecordIntoTable(void *_obj)
 {
     bool bResult = false;
-    int iResult = -1;
+    int iResult = ERROR;
     if(_obj == NULL)
         return false;
 
@@ -105,7 +105,7 @@ int DBOperatorTable::InsertRecordIntoTable(void *_obj)
     else
         iResult = query.lastInsertId().toInt(&bResult);
     if(bResult == false)
-        iResult = -1;
+        iResult = ERROR;
     OperatorDBObj.close();
     return iResult;
 }

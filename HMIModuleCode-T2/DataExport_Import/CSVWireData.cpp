@@ -1,6 +1,7 @@
 #include "CSVWireData.h"
 #include "DataBase/DBWireTable.h"
 #include "Interface/WireElement.h"
+#include "Modules/typedef.h"
 #include <QFile>
 #include <QDir>
 #include <QTextStream>
@@ -33,12 +34,12 @@ bool CSVWireData::ExportData(int ID, QString fileUrl)
     bool bResult = _WireDB->QueryOneRecordFromTable(ID, ListStr);
     if(bResult == false)
         return bResult;
-    if(ListStr.size() != 15)
+    if(ListStr.size() != WireEnd)
         return false;
     RowStr.clear();
     for(int i = 0; i< ListStr.size(); i++)
     {
-        if(i == 4)
+        if(i == SpliceID)
             RowStr.append(QString("-1,"));
         else
             RowStr.append(ListStr[i] + ",");
@@ -71,7 +72,7 @@ QString CSVWireData::GetExportString(int ID)
     RowStr.clear();
     for(int i = 0; i < ListStr.size(); i++)
     {
-        if(i == 4)
+        if(i == SpliceID)
             RowStr.append(QString("-1."));
         else
             RowStr.append(ListStr[i] + ".");
@@ -89,30 +90,37 @@ int CSVWireData::ImportData(QString StrValue)
     DBWireTable* _WireDB = DBWireTable::Instance();
     RowStr = StrValue;
     DataList = RowStr.split(",");
-    if(DataList.size() < 15)
+    if(DataList.size() < WireEnd)
         return ret;
 
-    WireObj.WireID = QString(DataList[0]).toInt(&bResult, 10);
-    WireObj.WireName = DataList[1];
+    WireObj.WireID = QString(DataList[WireID]).toInt(&bResult, DECIMALISM);
+    WireObj.WireName = DataList[WireName];
     QDateTime TimeLabel =
-            QDateTime::fromString(DataList[2], "yyyy/MM/dd hh:mm:ss");
+        QDateTime::fromString(DataList[CreatedDate], "yyyy/MM/dd hh:mm:ss");
     WireObj.CreatedDate = TimeLabel.toTime_t();
-    WireObj.OperatorID = QString(DataList[3]).toInt(&bResult, 10);
-    WireObj.SpliceID = QString(DataList[4]).toInt(&bResult, 10);
-    WireObj.Color = DataList[5];
-    WireObj.Stripe.TypeOfStripe = (STRIPE::StripeType)QString(DataList[6]).toInt(&bResult, 10);
-    WireObj.Stripe.Color = DataList[7];
-    WireObj.Gauge = QString(DataList[8]).toInt(&bResult, 10);
-    WireObj.GaugeAWG = QString(DataList[9]).toInt(&bResult, 10);
-    WireObj.TypeOfWire = (WireElement::MetalType)QString(DataList[10]).toInt(&bResult, 10);
-    WireObj.TypeOfModule = (WireElement::ModuleType)QString(DataList[11]).toInt(&bResult, 10);
-    WireObj.Side = (WireElement::HorizontalLocation)QString(DataList[12]).toInt(&bResult, 10);
-    WireObj.VerticalSide = (WireElement::VerticalLocation)QString(DataList[13]).toInt(&bResult, 10);
-    WireObj.Position = (WireElement::VerticalPosition)QString(DataList[14]).toInt(&bResult, 10);
+    WireObj.OperatorID = QString(DataList[OperatorID]).toInt(&bResult, DECIMALISM);
+    WireObj.SpliceID = QString(DataList[SpliceID]).toInt(&bResult, DECIMALISM);
+    WireObj.Color = DataList[Color];
+    WireObj.Stripe.TypeOfStripe =
+        (STRIPE::StripeType)QString(DataList[StripeType]).toInt(&bResult, DECIMALISM);
+    WireObj.Stripe.Color = DataList[StripeColor];
+    WireObj.Gauge = QString(DataList[Gauge]).toInt(&bResult, DECIMALISM);
+    WireObj.GaugeAWG =
+        QString(DataList[GaugeAWG]).toInt(&bResult, DECIMALISM);
+    WireObj.TypeOfWire =
+        (WireElement::MetalType)QString(DataList[MetalType]).toInt(&bResult, DECIMALISM);
+    WireObj.TypeOfModule =
+        (WireElement::ModuleType)QString(DataList[ModuleType]).toInt(&bResult, DECIMALISM);
+    WireObj.Side =
+        (WireElement::HorizontalLocation)QString(DataList[HorizontalLocation]).toInt(&bResult, DECIMALISM);
+    WireObj.VerticalSide =
+        (WireElement::VerticalLocation)QString(DataList[VerticalLocation]).toInt(&bResult, DECIMALISM);
+    WireObj.Position =
+        (WireElement::VerticalPosition)QString(DataList[VerticalPosition]).toInt(&bResult, DECIMALISM);
     if(bResult == false)
         return ret;
     ret = _WireDB->InsertRecordIntoTable(&WireObj);
-    while (ret == -1)
+    while (ret == ERROR)
     {
         QMap<int ,QString> tmpMap;
         _WireDB->QueryOnlyUseName(WireObj.WireName, &tmpMap);
@@ -122,7 +130,7 @@ int CSVWireData::ImportData(QString StrValue)
             ret = _WireDB->InsertRecordIntoTable(&WireObj);
         }
         else if (tmpMap.size() == 0)
-            return -1;
+            return ERROR;
     }
     return ret;
 }

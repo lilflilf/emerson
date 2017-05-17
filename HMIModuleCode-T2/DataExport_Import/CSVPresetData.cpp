@@ -3,6 +3,7 @@
 #include "DataBase/DBPresetTable.h"
 #include "Interface/PresetElement.h"
 #include "Modules/UtilityClass.h"
+#include "Modules/typedef.h"
 #include <QFile>
 #include <QDir>
 #include <QTextStream>
@@ -47,7 +48,7 @@ bool CSVPresetData::ExportData(int ID, QString fileUrl)
     WireList.clear();
     for(int i = 0; i < ListStr.size(); i++)
     {
-        if(i == 88)
+        if(i == JSONWire)
         {
             _Utility->StringJsonToMap(ListStr[i], &WireList);
             QMap<int, QString>::const_iterator iterator = WireList.constBegin();
@@ -97,7 +98,7 @@ QString CSVPresetData::GetExportString(int ID)
     WireList.clear();
     for(int i = 0; i< ListStr.size(); i++)
     {
-        if(i == 68)
+        if(i == JSONWire)
         {
             _Utility->StringJsonToMap(ListStr[i], &WireList);
             QMap<int, QString>::const_iterator iterator = WireList.constBegin();
@@ -124,129 +125,134 @@ int CSVPresetData::ImportData(QString StrValue, QMap<int, QString> WireIDMap)
     DBPresetTable* _PresetDB = DBPresetTable::Instance();
     RowStr = StrValue;
     DataList = RowStr.split(",");
-    if(DataList.size() < 87)
+    if(DataList.size() < PresetEnd)
         return ret;
 
-    PresetObj.SpliceID = QString(DataList[0]).toInt(&bResult, 10);
-    PresetObj.SpliceName = DataList[1];
+    PresetObj.SpliceID = QString(DataList[SpliceID]).toInt(&bResult, DECIMALISM);
+    PresetObj.SpliceName = DataList[SpliceName];
     QDateTime TimeLabel =
-            QDateTime::fromString(DataList[2], "yyyy/MM/dd hh:mm:ss");
+        QDateTime::fromString(DataList[CreatedDate], "yyyy/MM/dd hh:mm:ss");
     PresetObj.CreatedDate = TimeLabel.toTime_t();
-    PresetObj.OperatorID = QString(DataList[3]).toInt(&bResult, 10);
-    PresetObj.CrossSection = QString(DataList[4]).toInt(&bResult, 10);
-    PresetObj.PresetPicNamePath = DataList[5];
-    PresetObj.Verified = (bool)QString(DataList[6]).toInt(&bResult, 10);
+    PresetObj.OperatorID =
+        QString(DataList[OperatorID]).toInt(&bResult, DECIMALISM);
+    PresetObj.CrossSection =
+        QString(DataList[CrossSection]).toInt(&bResult, DECIMALISM);
+    PresetObj.PresetPicNamePath = DataList[PresetPicPath];
+    PresetObj.Verified =
+        (bool)QString(DataList[Verified]).toInt(&bResult, DECIMALISM);
     PresetObj.WeldSettings.BasicSetting.Energy =
-            QString(DataList[7]).toInt(&bResult, 10);
+        QString(DataList[Energy]).toInt(&bResult, DECIMALISM);
     PresetObj.WeldSettings.BasicSetting.Amplitude =
-            QString(DataList[8]).toInt(&bResult, 10);
+        QString(DataList[Amplitude]).toInt(&bResult, DECIMALISM);
     PresetObj.WeldSettings.BasicSetting.Width =
-            QString(DataList[9]).toInt(&bResult, 10);
+        QString(DataList[Width]).toInt(&bResult, DECIMALISM);
     PresetObj.WeldSettings.BasicSetting.Pressure =
-            QString(DataList[10]).toInt(&bResult, 10);
+        QString(DataList[Pressure]).toInt(&bResult, DECIMALISM);
     PresetObj.WeldSettings.BasicSetting.TrigPres =
-            QString(DataList[11]).toInt(&bResult, 10);
+        QString(DataList[TrigPres]).toInt(&bResult, DECIMALISM);
     PresetObj.WeldSettings.QualitySetting.Time.Plus =
-            QString(DataList[12]).toInt(&bResult, 10);
+        QString(DataList[TimePlus]).toInt(&bResult, DECIMALISM);
     PresetObj.WeldSettings.QualitySetting.Time.Minus =
-            QString(DataList[13]).toInt(&bResult, 10);
+        QString(DataList[TimeMinus]).toInt(&bResult, DECIMALISM);
     PresetObj.WeldSettings.QualitySetting.Power.Plus =
-            QString(DataList[14]).toInt(&bResult, 10);
+        QString(DataList[PowerPlus]).toInt(&bResult, DECIMALISM);
     PresetObj.WeldSettings.QualitySetting.Power.Minus =
-            QString(DataList[15]).toInt(&bResult, 10);
+        QString(DataList[PowerMinus]).toInt(&bResult, DECIMALISM);
     PresetObj.WeldSettings.QualitySetting.Preheight.Plus =
-            QString(DataList[16]).toInt(&bResult, 10);
+        QString(DataList[PreheightPlus]).toInt(&bResult, DECIMALISM);
     PresetObj.WeldSettings.QualitySetting.Preheight.Minus =
-            QString(DataList[17]).toInt(&bResult, 10);
+        QString(DataList[PreheightMinus]).toInt(&bResult, DECIMALISM);
     PresetObj.WeldSettings.QualitySetting.Height.Plus =
-            QString(DataList[18]).toInt(&bResult, 10);
+        QString(DataList[HeightPlus]).toInt(&bResult, DECIMALISM);
     PresetObj.WeldSettings.QualitySetting.Height.Minus =
-            QString(DataList[19]).toInt(&bResult, 10);
+        QString(DataList[HeightMinus]).toInt(&bResult, DECIMALISM);
     PresetObj.WeldSettings.QualitySetting.Force.Plus =
-            QString(DataList[20]).toInt(&bResult, 10);
+        QString(DataList[ForcePlus]).toInt(&bResult, DECIMALISM);
     PresetObj.WeldSettings.QualitySetting.Force.Minus =
-            QString(DataList[21]).toInt(&bResult, 10);
+        QString(DataList[ForceMinus]).toInt(&bResult, DECIMALISM);
     PresetObj.WeldSettings.AdvanceSetting.WeldMode =
-            (ADVANCESETTING::WELDMODE)QString(DataList[22]).toInt(&bResult, 10);
+        (ADVANCESETTING::WELDMODE)QString(DataList[WeldMode]).toInt(&bResult, DECIMALISM);
     PresetObj.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode =
-            (STEPWELD::STEPWELDMODE)QString(DataList[23]).toInt(&bResult, 10);
+        (STEPWELD::STEPWELDMODE)QString(DataList[StepWeldMode]).toInt(&bResult, DECIMALISM);
     PresetObj.WeldSettings.AdvanceSetting.StepWeld.EnergyToStep =
-            QString(DataList[24]).toInt(&bResult, 10);
+        QString(DataList[EnergyToStep]).toInt(&bResult, DECIMALISM);
     PresetObj.WeldSettings.AdvanceSetting.StepWeld.TimeToStep =
-            QString(DataList[25]).toInt(&bResult, 10);
+        QString(DataList[TimeToStep]).toInt(&bResult, DECIMALISM);
     PresetObj.WeldSettings.AdvanceSetting.StepWeld.PowerToStep =
-            QString(DataList[26]).toInt(&bResult, 10);
+        QString(DataList[PowerToStep]).toInt(&bResult, DECIMALISM);
     PresetObj.WeldSettings.AdvanceSetting.StepWeld.Amplitude2 =
-            QString(DataList[27]).toInt(&bResult, 10);
+        QString(DataList[Amplitude2]).toInt(&bResult, DECIMALISM);
     PresetObj.WeldSettings.AdvanceSetting.PreBurst =
-            QString(DataList[28]).toInt(&bResult, 10);
+        QString(DataList[PreBurst]).toInt(&bResult, DECIMALISM);
     PresetObj.WeldSettings.AdvanceSetting.HoldTime =
-            QString(DataList[29]).toInt(&bResult, 10);
+        QString(DataList[HoldTime]).toInt(&bResult, DECIMALISM);
     PresetObj.WeldSettings.AdvanceSetting.SqzTime =
-            QString(DataList[30]).toInt(&bResult, 10);
+        QString(DataList[SqueezeTime]).toInt(&bResult, DECIMALISM);
     PresetObj.WeldSettings.AdvanceSetting.ABDelay =
-            QString(DataList[31]).toInt(&bResult, 10);
+        QString(DataList[AfterBurstDelay]).toInt(&bResult, DECIMALISM);
     PresetObj.WeldSettings.AdvanceSetting.ABDur =
-            QString(DataList[32]).toInt(&bResult, 10);
+        QString(DataList[AfterBurstDuring]).toInt(&bResult, DECIMALISM);
     PresetObj.WeldSettings.AdvanceSetting.CutOffOption.CutOff =
-            (bool)QString(DataList[33]).toInt(&bResult, 10);
+        (bool)QString(DataList[CutOff]).toInt(&bResult, DECIMALISM);
     PresetObj.WeldSettings.AdvanceSetting.CutOffOption.CutOffSpliceTime =
-            QString(DataList[34]).toInt(&bResult, 10);
+        QString(DataList[CutOffSpliceTime]).toInt(&bResult, DECIMALISM);
     PresetObj.WeldSettings.AdvanceSetting.CutOffOption.Cutter4HeightAlarm =
-            (bool)QString(DataList[35]).toInt(&bResult, 10);
+        (bool)QString(DataList[CutOffHeightAlarm]).toInt(&bResult, DECIMALISM);
     PresetObj.WeldSettings.AdvanceSetting.CutOffOption.Cutter4PowerAlarm =
-            (bool)QString(DataList[36]).toInt(&bResult, 10);
+        (bool)QString(DataList[CutOffPowerAlarm]).toInt(&bResult, DECIMALISM);
     PresetObj.WeldSettings.AdvanceSetting.CutOffOption.Cutter4PreHeightAlarm =
-            (bool)QString(DataList[37]).toInt(&bResult, 10);
+        (bool)QString(DataList[CutOffPreHeightAlarm]).toInt(&bResult, DECIMALISM);
     PresetObj.WeldSettings.AdvanceSetting.CutOffOption.Cutter4TimeAlarm =
-            (bool)QString(DataList[38]).toInt(&bResult, 10);
+        (bool)QString(DataList[CutOffTimeAlarm]).toInt(&bResult, DECIMALISM);
     PresetObj.WeldSettings.AdvanceSetting.AntiSideOption.AntiSideMode =
-            (bool)QString(DataList[39]).toInt(&bResult, 10);
+        (bool)QString(DataList[AntiSide]).toInt(&bResult, DECIMALISM);
     PresetObj.WeldSettings.AdvanceSetting.AntiSideOption.AntiSideSpliceTime =
-            (bool)QString(DataList[40]).toInt(&bResult, 10);
+        (bool)QString(DataList[AntiSideSpliceTime]).toInt(&bResult, DECIMALISM);
     PresetObj.WeldSettings.AdvanceSetting.OffsetOption.MeasuredWidth =
-            QString(DataList[41]).toInt(&bResult, 10);
+        QString(DataList[MeasuredWidth]).toInt(&bResult, DECIMALISM);
     PresetObj.WeldSettings.AdvanceSetting.OffsetOption.MeasuredHeight =
-            QString(DataList[42]).toInt(&bResult, 10);
+        QString(DataList[MeasuredHeight]).toInt(&bResult, DECIMALISM);
     PresetObj.WeldSettings.AdvanceSetting.OffsetOption.DisplayWidth =
-            QString(DataList[43]).toInt(&bResult, 10);
+        QString(DataList[DisplayWidth]).toInt(&bResult, DECIMALISM);
     PresetObj.WeldSettings.AdvanceSetting.OffsetOption.DisplayHeight =
-            QString(DataList[44]).toInt(&bResult, 10);
+        QString(DataList[DisplayHeight]).toInt(&bResult, DECIMALISM);
     PresetObj.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkOption =
-            (bool)QString(DataList[45]).toInt(&bResult, 10);
-    PresetObj.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID = DataList[46];
+        (bool)QString(DataList[ShrinkOption]).toInt(&bResult, DECIMALISM);
+    PresetObj.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID = DataList[ShrinkTubeID];
     PresetObj.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime =
-            QString(DataList[47]).toInt(&bResult, 10);
+        QString(DataList[ShrinkTime]).toInt(&bResult, DECIMALISM);
     PresetObj.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTemperature =
-            QString(DataList[48]).toInt(&bResult, 10);
+        QString(DataList[ShrinkTemperature]).toInt(&bResult, DECIMALISM);
     PresetObj.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkMutex =
-            (bool)QString(DataList[49]).toInt(&bResult, 10);
-    PresetObj.HashCode = QString(DataList[50]).toInt(&bResult, 10);
+        (bool)QString(DataList[ShrinkMutex]).toInt(&bResult, DECIMALISM);
+    PresetObj.HashCode = QString(DataList[HashCode]).toInt(&bResult, DECIMALISM);
 
-    PresetObj.TestSetting.BatchSize = QString(DataList[51]).toInt(&bResult, 10);
-    PresetObj.TestSetting.StopCount = QString(DataList[52]).toInt(&bResult, 10);
+    PresetObj.TestSetting.BatchSize =
+        QString(DataList[BatchSize]).toInt(&bResult, DECIMALISM);
+    PresetObj.TestSetting.StopCount =
+        QString(DataList[StopCount]).toInt(&bResult, DECIMALISM);
     PresetObj.TestSetting.TestMode =
-            (TESTSETTING::TESTMODE)QString(DataList[53]).toInt(&bResult, 10);
+            (TESTSETTING::TESTMODE)QString(DataList[TestMode]).toInt(&bResult, DECIMALISM);
     PresetObj.TestSetting.TeachModeSetting.TeachModeType =
-            (TEACHMODESETTING::TEACH_MODE_TYPE)QString(DataList[54]).toInt(&bResult, 10);
+            (TEACHMODESETTING::TEACH_MODE_TYPE)QString(DataList[TEACHMODETYPE]).toInt(&bResult, DECIMALISM);
 
     for(int i = 0; i< ENERGY_ADJ; i++)
         PresetObj.TestSetting.TeachModeSetting.TeachModequal_Window[i] =
-            QString(DataList[i + 55]).toInt(&bResult, 10);
+            QString(DataList[i + TimePLRG_STD]).toInt(&bResult, DECIMALISM);
 
     PresetObj.TestSetting.TeachModeSetting.StandardRunQuantity =
-            QString(DataList[83]).toInt(&bResult, 10);
+            QString(DataList[StandardQuantity]).toInt(&bResult, DECIMALISM);
     PresetObj.TestSetting.TeachModeSetting.AutoRunQuantity =
-            QString(DataList[84]).toInt(&bResult, 10);
+            QString(DataList[AutoQuantity]).toInt(&bResult, DECIMALISM);
     PresetObj.TestSetting.TeachModeSetting.SigmaRunQuantity =
-            QString(DataList[85]).toInt(&bResult, 10);
+            QString(DataList[SigmaQuantity]).toInt(&bResult, DECIMALISM);
     PresetObj.TestSetting.TestingDone =
-            (bool)QString(DataList[86]).toInt(&bResult, 10);
+            (bool)QString(DataList[TestingDone]).toInt(&bResult, DECIMALISM);
 
     PresetObj.WireIndex = WireIDMap;
     PresetObj.NoOfWires = PresetObj.WireIndex.size();
     ret = _PresetDB->InsertRecordIntoTable(&PresetObj);
-    while(ret == -1)
+    while(ret == ERROR)
     {
         qDebug()<<"splice";
         QMap<int, QString> tmpMap;
@@ -256,7 +262,7 @@ int CSVPresetData::ImportData(QString StrValue, QMap<int, QString> WireIDMap)
             PresetObj.SpliceName = PresetObj.SpliceName + "(1)";
             ret = _PresetDB->InsertRecordIntoTable(&PresetObj);
         }else if(tmpMap.size() == 0)
-            return -1;
+            return ERROR;
     }
     return ret;
 }
