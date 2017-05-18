@@ -133,8 +133,8 @@ Item {
 
 
         settingsModel.append({"tipText":qsTr("Energy"),"topText":qsTr(""),"bottomText":spliceModel.getStructValue("Energy","current"),"maxText":spliceModel.getStructValue("Energy","max"),"minText":spliceModel.getStructValue("Energy","min")})
-        settingsModel.append({"tipText":qsTr("T.Pressure"),"topText":qsTr(""),"bottomText":spliceModel.getStructValue("Trigger Pressure","current"),"maxText":spliceModel.getStructValue("Trigger Pressure","max"),"minText":spliceModel.getStructValue("Trigger Pressure","min")})
-        settingsModel.append({"tipText":qsTr("W.Pressure"),"topText":qsTr(""),"bottomText":spliceModel.getStructValue("Weld Pressure","current"),"maxText":spliceModel.getStructValue("Weld Pressure","max"),"minText":spliceModel.getStructValue("Weld Pressure","min")})
+        settingsModel.append({"tipText":qsTr("T.P"),"topText":qsTr(""),"bottomText":spliceModel.getStructValue("Trigger Pressure","current"),"maxText":spliceModel.getStructValue("Trigger Pressure","max"),"minText":spliceModel.getStructValue("Trigger Pressure","min")})
+        settingsModel.append({"tipText":qsTr("W.P"),"topText":qsTr(""),"bottomText":spliceModel.getStructValue("Weld Pressure","current"),"maxText":spliceModel.getStructValue("Weld Pressure","max"),"minText":spliceModel.getStructValue("Weld Pressure","min")})
         settingsModel.append({"tipText":qsTr("Amplitude"),"topText":qsTr(""),"bottomText":spliceModel.getStructValue("Amplitude","current"),"maxText":spliceModel.getStructValue("Amplitude","max"),"minText":spliceModel.getStructValue("Amplitude","min")})
         settingsModel.append({"tipText":qsTr("Width"),"topText":qsTr(""),"bottomText":spliceModel.getStructValue("Width","current"),"maxText":spliceModel.getStructValue("Width","max"),"minText":spliceModel.getStructValue("Width","min")})
 
@@ -1143,11 +1143,11 @@ Item {
                     addWireLibrary.listModel = spliceModel
 
                     addWireLibrary.titleName = qsTr("Splice Library")
-                    addWireLibrary.componentName = qsTr("SpliceName")
-                    addWireLibrary.componentData = qsTr("DateCreated")
-                    addWireLibrary.componentMiddle = qsTr("OperatorName")
+                    addWireLibrary.componentName = qsTr("Splice Name")
+                    addWireLibrary.componentData = qsTr("Date Created")
+                    addWireLibrary.componentMiddle = qsTr("User Name")
                     addWireLibrary.componenttype = qsTr("Cross Section")
-                    addWireLibrary.componentCount = qsTr("#Of Wires")
+                    addWireLibrary.componentCount = qsTr("Total Wires")
                 }
                 z:11
 
@@ -1379,6 +1379,8 @@ Item {
 
             }
 
+
+
             Column {
                 anchors.top: settingLayout2.top
                 anchors.bottom: settingLayout2.bottom
@@ -1425,6 +1427,17 @@ Item {
                         }
                     }
                 }
+            }
+
+            Text {
+                font.pointSize: 16
+                font.family: "arial"
+                color: "white"
+                text: qsTr("Quality Window")
+                anchors.bottom: settingLayout2.top
+                anchors.bottomMargin: 5
+                anchors.left: parent.left
+                anchors.leftMargin: 5
             }
 
             Column {
@@ -1741,7 +1754,7 @@ Item {
 //                anchors.leftMargin: 10
             anchors.left: wireLibrary.left
             anchors.top: wireLibrary.top
-            spacing: 10
+            spacing: 24
             height: 61
             width: (spliceDetailsItem.width-72)/2
             visible: false
@@ -1759,6 +1772,14 @@ Item {
                 text: qsTr("Graph")
                 onClicked: {
                     myCanvas.visible = !myCanvas.visible
+                }
+            }
+            CButton {
+                pointSize: 14
+                width: (spliceDetailsItem.width-72)/4
+                text: qsTr("Cancel")
+                onClicked: {
+                    mainRoot.popStackView()
                 }
             }
         }

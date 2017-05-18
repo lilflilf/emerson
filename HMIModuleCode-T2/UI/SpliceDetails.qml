@@ -1109,6 +1109,8 @@ Item {
                 width: leftRec.width * 3
                 anchors.right: leftRec.left
                 anchors.verticalCenter: leftRec.verticalCenter
+                horizontalAlignment: Qt.AlignRight
+
                 anchors.rightMargin: 8
                 font.family: "arial"
                 font.pointSize: 16

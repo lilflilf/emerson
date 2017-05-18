@@ -77,7 +77,7 @@ Item {
             font.pixelSize: 25
             clip: true
             font.family: "arial"
-            text: qsTr("SPLICE NAME")
+            text: qsTr("Splice Name")
         }
         Text {
             anchors.verticalCenter: parent.verticalCenter
@@ -86,7 +86,7 @@ Item {
             font.pixelSize: 25
             clip: true
             font.family: "arial"
-            text: qsTr("DATE CREATED")
+            text: qsTr("Date Created")
         }
         Text {
             anchors.verticalCenter: parent.verticalCenter
@@ -95,7 +95,7 @@ Item {
             font.pixelSize: 25
             clip: true
             font.family: "arial"
-            text: qsTr("#OF WIRES")
+            text: qsTr("Total Wires")
         }
         Text {
             anchors.verticalCenter: parent.verticalCenter
@@ -104,7 +104,7 @@ Item {
             font.pixelSize: 25
             clip: true
             font.family: "arial"
-            text: qsTr("QUANTITY")
+            text: qsTr("Cross Section")
         }
     }
     Rectangle {
@@ -242,7 +242,7 @@ Item {
                 anchors.left: headMiddle.right
                 anchors.leftMargin: 40
                 width: (parent.width-120)/4
-                text: count
+                text: CrossSection
                 elide: Text.ElideRight
                 color: "white"
                 clip: true
@@ -627,9 +627,11 @@ Item {
         target: loader.item
         onSignalCancel: {
             loader.source = ""
+            mainRoot.headTitle = qsTr("Operate")
         }
         onSignalAdvanceOk: {
             loader.source = ""
+            mainRoot.headTitle = qsTr("Operate")
             testDialog.visible = true
         }
     }
@@ -653,6 +655,7 @@ Item {
 //            }
 
             loader.source = "qrc:/UI/AdvanceSetting.qml"
+            mainRoot.headTitle = qsTr("Teach Mode")
 
         }
         onSignalTestStart: {

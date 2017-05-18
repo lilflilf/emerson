@@ -106,6 +106,10 @@ Item {
             spliceList = partModel.getSpliceList(hmiAdaptor.getWorkFlow("WorkId"))
             if (partModel.getPartOnlineOrOffLine()) {
                 showFlag = 1
+                workName.anchors.bottom = progresstracking.bottom
+                workName.anchors.bottomMargin = 0
+                workName.anchors.left = progresstracking.right
+                workName.anchors.leftMargin = 20
             } else {
                 if (spliceList.length == 1) {
                     showFlag = 3
@@ -116,6 +120,7 @@ Item {
             }
             selectSplice(spliceList[0])
             counterString = "HARNESS COUNTER"
+            workName.text = qsTr("Harness Name: ") + partModel.getPartName(hmiAdaptor.getWorkFlow("WorkId"))
         }
         else if (flag == 1) {
             progressBar.width = 550
@@ -124,6 +129,7 @@ Item {
             operateDetail.maxCount = spliceList.length
             selectSplice(spliceList[0])
             counterString = "SEQUENCE COUNTER"
+            workName.text = qsTr("Sequence Name: ") + sequenceModel.getSequenceName(hmiAdaptor.getWorkFlow("WorkId"))
         }
 
         hmiAdaptor.operateProcessExec("Start")
@@ -273,6 +279,7 @@ Item {
             editSplice.width = editSplice.width - 30
             progressBar3.anchors.left = progressBar2.right
             progressBar3.anchors.leftMargin = 40
+            maintenance.anchors.left = progressBar3.left
 
         }
         else if (workMode == 2 && showFlag == 2)
@@ -610,9 +617,21 @@ Item {
         value: 0
     }
     Text {
+        id: workName
+        anchors.bottom: progresstracking.top
+        anchors.bottomMargin: 20
+        anchors.left: progresstracking.left
+        font.pointSize: 16
+        font.family: "arial"
+        text: qsTr("Harness Name:")
+        color: "white"
+    }
+
+    //single
+    Text {
         id: progresstracking2
         anchors.top: offline.top
-        anchors.topMargin: 10
+        anchors.topMargin: 45
         anchors.left: offline.left
         font.pointSize: 16
         font.family: "arial"
@@ -720,8 +739,8 @@ Item {
     Text {
         id: maintenance
         anchors.right: showFlag != 3 ? qualityWindow.right : spliceDetailsItem.right
-        anchors.left: showFlag == 1 ? partCount2.right : (showFlag == 2 ? qualityWindow.left : spliceDetailsItem.left)
-        horizontalAlignment: showFlag == 1 ? Qt.AlignRight : Qt.AlignLeft
+        anchors.left: showFlag == 1 ? progressBar3.left : (showFlag == 2 ? qualityWindow.left : spliceDetailsItem.left)
+//        horizontalAlignment: showFlag == 1 ? Qt.AlignRight : Qt.AlignLeft
         anchors.bottom: progressBar3.top
         anchors.bottomMargin: 6
         font.pointSize: 13

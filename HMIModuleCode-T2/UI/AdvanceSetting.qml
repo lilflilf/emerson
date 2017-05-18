@@ -143,17 +143,29 @@ Item {
         anchors.top: parent.top
         anchors.topMargin: 26
         anchors.left: parent.left
-        anchors.leftMargin: 50
+        anchors.leftMargin: 485
         font.family: "arial"
         font.pixelSize: 25
         color: "white"
-        text: qsTr("Standard & Auto")
+        text: qsTr("Standard")
+    }
+    Text {
+        id: auto
+        anchors.top: parent.top
+        anchors.topMargin: 26
+        anchors.left: standard.right
+        anchors.leftMargin: 230
+        font.family: "arial"
+        font.pixelSize: 25
+        color: "white"
+        text: qsTr("Auto")
     }
     Text {
         id: sigma
         anchors.top: parent.top
         anchors.topMargin: 26
-        anchors.left: standard.right
+        anchors.left: auto.right
+        anchors.leftMargin: 260
         font.family: "arial"
         font.pixelSize: 25
         color: "white"

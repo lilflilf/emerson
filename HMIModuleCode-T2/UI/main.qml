@@ -13,7 +13,7 @@ import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.0
 import QtQuick.Window 2.2
 import ALPaintedItem 1.0
-
+//import QtWebView 1.1
 Window {
     id: mainRoot
     width: Screen.width // 1366
