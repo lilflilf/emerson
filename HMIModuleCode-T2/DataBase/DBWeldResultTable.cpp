@@ -138,7 +138,7 @@ bool DBWeldResultTable::QSettingToJsonString(QString sPathName, QString &PowerGr
 int DBWeldResultTable::InsertRecordIntoTable(void *_obj)
 {
     bool bResult = false;
-    int iResult = -1;
+    int iResult = ERROR;
     if(_obj == NULL)
         return false;
 
@@ -196,7 +196,7 @@ int DBWeldResultTable::InsertRecordIntoTable(void *_obj)
     else
         iResult = query.lastInsertId().toInt(&bResult);
     if(bResult == false)
-        iResult = -1;
+        iResult = ERROR;
     WeldResultDBObj.close();
     return iResult;
 }

@@ -1,8 +1,8 @@
 #include "DBPresetTable.h"
 #include "Modules/UtilityClass.h"
+#include "Modules/typedef.h"
 #include "Interface/PresetElement.h"
 #include "Interface/interface.h"
-//#include "DataExport_Import/CSVWireData.h"
 #include <QHash>
 #include <QDebug>
 #include <QJsonObject>
@@ -189,11 +189,9 @@ DBPresetTable::DBPresetTable()
     {
         if(!SpliceDBObj.tables().contains("Preset")){
             CreateNewTable();
-//            InsertTestDataIntoTable();
         }
     }
     SpliceDBObj.close();
-//    wireTable = DBWireTable::Instance();
 }
 
 bool DBPresetTable::OpenDBObject()
@@ -268,7 +266,7 @@ bool DBPresetTable::CreateNewTable()
 int DBPresetTable::InsertRecordIntoTable(void *_obj)
 {
     bool bResult = false;
-    int iResult = -1;
+    int iResult = ERROR;
     if(_obj == NULL)
         return false;
 
@@ -371,7 +369,7 @@ int DBPresetTable::InsertRecordIntoTable(void *_obj)
     else
         iResult = query.lastInsertId().toInt(&bResult);
     if(bResult == false)
-        iResult = -1;
+        iResult = ERROR;
     SpliceDBObj.close();
     return iResult;
 

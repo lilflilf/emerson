@@ -5,6 +5,18 @@
 class CSVSequenceData : public DataClass
 {
 public:
+    enum SequenceItem
+    {
+        SequenceID = 0,
+        SequenceName = 1,
+        CreatedDate = 2,
+        OperatorID = 3,
+        NoOfSplice = 4,
+        JSONSplice = 5,
+        SequenceEnd = 6
+    };
+
+public:
     virtual bool ExportData(int ID, QString fileUrl);
     virtual QString GetExportString(int ID);
     virtual int ImportData(QString StrValue);

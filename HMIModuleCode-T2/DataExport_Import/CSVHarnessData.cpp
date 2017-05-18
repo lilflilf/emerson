@@ -3,6 +3,7 @@
 #include "Modules/UtilityClass.h"
 #include "CSVPresetData.h"
 #include "Interface/HarnessElement.h"
+#include "Modules/typedef.h"
 #include <QFile>
 #include <QTextStream>
 #include <QDebug>
@@ -44,7 +45,7 @@ bool CSVHarnessData::ExportData(int ID, QString fileUrl)
     SpliceList.clear();
     for(int i = 0; i < ListStr.size(); i++)
     {
-        if(i == 11)
+        if(i == JSONSplice)
         {
             _Utility->StringJsonToMap(ListStr[i], &SpliceList);
             QMap<int, struct HARNESSATTRIBUTE>::const_iterator iterator = SpliceList.constBegin();
@@ -94,7 +95,7 @@ QString CSVHarnessData::GetExportString(int ID)
     SpliceList.clear();
     for(int i = 0; i< ListStr.size(); i++)
     {
-        if(i == 11)
+        if(i == JSONSplice)
         {
             _Utility->StringJsonToMap(ListStr[i], &SpliceList);
             QMap<int, struct HARNESSATTRIBUTE>::const_iterator iterator = SpliceList.constBegin();
@@ -121,27 +122,27 @@ int CSVHarnessData::ImportData(QString StrValue, QMap<int, QString> SpliceIDMap)
     DBHarnessTable* _HarnessDB = DBHarnessTable::Instance();
     RowStr = StrValue;
     DataList = RowStr.split(",");
-    if(DataList.size() < 11)
+    if(DataList.size() < HarnessEnd)
         return ret;
 
-    HarnessObj.HarnessID = QString(DataList[0]).toInt(&bResult, 10);
-    HarnessObj.HarnessName = DataList[1];
+    HarnessObj.HarnessID = QString(DataList[HarnessID]).toInt(&bResult, DECIMALISM);
+    HarnessObj.HarnessName = DataList[HarnessName];
     QDateTime TimeLabel =
-            QDateTime::fromString(DataList[2], "yyyy/MM/dd hh:mm:ss");
+            QDateTime::fromString(DataList[CreatedDate], "yyyy/MM/dd hh:mm:ss");
     HarnessObj.CreatedDate = TimeLabel.toTime_t();
-    HarnessObj.OperatorID = QString(DataList[3]).toInt(&bResult, 10);
+    HarnessObj.OperatorID = QString(DataList[OperatorID]).toInt(&bResult, DECIMALISM);
     HarnessObj.HarnessTypeSetting.ProcessMode =
-            (PROCESSMODE)QString(DataList[4]).toInt(&bResult, 10);
+            (PROCESSMODE)QString(DataList[ProcessMode]).toInt(&bResult, DECIMALISM);
     HarnessObj.HarnessTypeSetting.WorkStations.TotalWorkstation =
-            QString(DataList[5]).toInt(&bResult, 10);
+            QString(DataList[TotalWorkstation]).toInt(&bResult, DECIMALISM);
     HarnessObj.HarnessTypeSetting.WorkStations.MaxSplicesPerWorkstation =
-            QString(DataList[6]).toInt(&bResult, 10);
+            QString(DataList[MaxSplicesPerWorkstation]).toInt(&bResult, DECIMALISM);
     HarnessObj.HarnessTypeSetting.BoardLayout.Rows =
-            QString(DataList[7]).toInt(&bResult, 10);
+            QString(DataList[Rows]).toInt(&bResult, DECIMALISM);
     HarnessObj.HarnessTypeSetting.BoardLayout.Columns =
-            QString(DataList[8]).toInt(&bResult, 10);
+            QString(DataList[Columns]).toInt(&bResult, DECIMALISM);
     HarnessObj.HarnessTypeSetting.BoardLayout.MaxSplicesPerZone =
-            QString(DataList[9]).toInt(&bResult, 10);
+            QString(DataList[MaxSplicesPerZone]).toInt(&bResult, DECIMALISM);
     QMap<int, struct HARNESSATTRIBUTE> tmpMap;
     int i = 0;
     QMap<int, QString>::const_iterator iterator = SpliceIDMap.constBegin();
@@ -159,7 +160,7 @@ int CSVHarnessData::ImportData(QString StrValue, QMap<int, QString> SpliceIDMap)
     HarnessObj.NoOfSplice = HarnessObj.SpliceList.size();
 
     ret = _HarnessDB->InsertRecordIntoTable(&HarnessObj);
-    while(ret == -1)
+    while(ret == ERROR)
     {
         qDebug()<<"harness";
         QMap<int, QString> tmpMap;
@@ -169,7 +170,7 @@ int CSVHarnessData::ImportData(QString StrValue, QMap<int, QString> SpliceIDMap)
             HarnessObj.HarnessName += "(1)";
             ret = _HarnessDB->InsertRecordIntoTable(&HarnessObj);
         }else if(tmpMap.size() == 0)
-            return -1;
+            return ERROR;
     }
     return ret;
 }

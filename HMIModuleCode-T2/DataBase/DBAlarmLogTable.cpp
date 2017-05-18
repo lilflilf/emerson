@@ -79,7 +79,7 @@ bool DBAlarmLogTable::CreateNewTable()
 int DBAlarmLogTable::InsertRecordIntoTable(void *_obj)
 {
     bool bResult = false;
-    int iResult = -1;
+    int iResult = ERROR;
     if(_obj == NULL)
         return false;
 
@@ -105,7 +105,7 @@ int DBAlarmLogTable::InsertRecordIntoTable(void *_obj)
     else
         query.lastInsertId().toInt(&bResult);
     if(bResult == false)
-        iResult = -1;
+        iResult = ERROR;
     AlarmLogDBObj.close();
     return iResult;
 }

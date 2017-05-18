@@ -1,4 +1,5 @@
 #include "CSVSequenceData.h"
+#include "Modules/typedef.h"
 CSVSequenceData* CSVSequenceData::_instance = NULL;
 CSVSequenceData* CSVSequenceData::Instance()
 {
@@ -30,5 +31,5 @@ QString CSVSequenceData::GetExportString(int ID)
 
 int CSVSequenceData::ImportData(QString StrValue)
 {
-    return -1;
+    return ERROR;
 }
