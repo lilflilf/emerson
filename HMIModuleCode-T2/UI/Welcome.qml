@@ -1,5 +1,5 @@
-import QtQuick 2.7
-import QtQuick.Controls.Styles 1.4
+import QtQuick 2.2
+import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.0
 import QtQuick.Controls 1.3
 import QtQuick.Window 2.2
@@ -231,7 +231,6 @@ Item {
             else if (event.key == Qt.Key_5) {
                 mimaShow.text = mimaShow.text + "●"
                 mima.text = mima.text + "5"
-
             }
             else if (event.key == Qt.Key_6) {
                 mimaShow.text = mimaShow.text + "●"
@@ -240,7 +239,6 @@ Item {
             else if (event.key == Qt.Key_7) {
                 mimaShow.text = mimaShow.text + "●"
                 mima.text = mima.text + "7"
-
             }
             else if (event.key == Qt.Key_8) {
                 mimaShow.text = mimaShow.text + "●"
@@ -349,6 +347,6 @@ Item {
 //    WebView {
 //        id: webVie1;
 //        anchors.fill: parent;
-//        url: ("https://www.baidu.com");
+//        url: ("file:///d:\\test2.html");
 //    }
 }

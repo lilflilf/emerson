@@ -4,6 +4,7 @@ QT += qml quick
 QT += serialport
 QT += network
 QT += sql axcontainer
+#QT += webview
 CONFIG += c++11
 RC_FILE = res.rc
 static {

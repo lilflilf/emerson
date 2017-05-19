@@ -1,6 +1,7 @@
 #ifndef DATACLASS_H
 #define DATACLASS_H
 #include <QString>
+#include <QMap>
 class DataClass
 {
 public:

@@ -1,7 +1,6 @@
 #ifndef CSVPRESETDATA_H
 #define CSVPRESETDATA_H
 #include "DataClass.h"
-
 class CSVPresetData //: public DataClass
 {
 public:

@@ -5,9 +5,9 @@ Author:zhangjiyong&lilongfei
 Description:status bar component,it is showed time
 The function interface:
 *******************************************************************/
-import QtQuick 2.7
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
+import QtQuick 2.2
+import QtQuick.Controls 1.1
+import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.0
 import QtQuick.Window 2.2
 
