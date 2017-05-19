@@ -302,17 +302,17 @@ QString Statistics::GraphData(enum ScreenShowDataType DataType, QList<int> *_Gra
 //Create a tab deliminated file for loading into an Excel worksheet
 //It stores all the Actual data regarding a Preset in the .tsv file during welding.
 //Also Displays Amplitude2 along with Amplitude1 if Amplitude Step is enabled
-void Statistics::HistoryEvent(QString WorkOrderName, QString PartName,
+QString Statistics::HistoryEvent(QString WorkOrderName, QString PartName,
                 WeldResultElement *_WeldResult, PresetElement *_Splice)
 {
     InterfaceClass *_Interface = InterfaceClass::Instance();
     UtilityClass *_Utility = UtilityClass::Instance();
     M2010 *_M2010 = M2010::Instance();
     QString sDate, sTime, sEvent, sAlarms, sMode, sCut, sGraph, sStatus, sSampleRatio;
-    QString sHeader;
-    sHeader = HeaderString();
-    if(_Interface->StatusData.NetworkingEnabled == false)
-        return;
+//    QString sHeader;
+//    sHeader = HeaderString();
+//    if(_Interface->StatusData.NetworkingEnabled == false)
+//        return;
     //Build alarm string, Overload precludes any other and pre-hiehgt can't get here
     if ((_WeldResult->ActualResult.ActualAlarmflags & iAlarms) == 0)
     {
@@ -412,6 +412,7 @@ void Statistics::HistoryEvent(QString WorkOrderName, QString PartName,
     sGraph = GraphData(DINActPower, &_WeldResult->PowerGraph);
     sGraph += GraphData(DINActHgt, &_WeldResult->PostHeightGraph);
     QString sRecord = sEvent + "\t" + sGraph + "\r\n";
+    return sRecord;
 }
 
 void Statistics::CalcConfLimits(PresetElement *_Splice)

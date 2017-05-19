@@ -1,5 +1,7 @@
 #include "hmiadaptor.h"
 #include "Modules/typedef.h"
+#include "DataExport_Import/CSVPresetData.h"
+#include "DataExport_Import/CSVSequenceData.h"
 #include <qdebug.h>
 #include <QSqlQuery>
 #include <QSqlError>
@@ -22,11 +24,11 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
     workOrderModel->setRoles(list);
     workOrderModel->setModelList();
 
-    partModel = new PartModel(this);
+    harnessModel = new PartModel(this);
     list.clear();
     list << "PartId" << "HarnessName" << "DateCreated" << "OperatorName" << "TotalSplices" << "ProcessMode" << "#ofWorkstation" << "#ofSplicesperWorkstation" << "Rows" << "Columns" << "MaxSplicesPerZone";
-    partModel->setRoles(list);
-    partModel->setModelList();
+    harnessModel->setRoles(list);
+    harnessModel->setModelList();
 
     wireModel = new WireModel(this);
     list.clear();
@@ -1489,7 +1491,7 @@ void HmiAdaptor::importData(QString fileUrl)
             importSplice(CSVList[1]);
         }
         else if (CSVList.at(0) == "PartData") {
-            importPart(CSVList[1]);
+            importHarness(CSVList[1]);
         }
         else if (CSVList.at(0) == "ShrinkData") {
             QStringList shrinkList = QString(CSVList.at(1)).split(",");
@@ -1504,74 +1506,31 @@ void HmiAdaptor::importData(QString fileUrl)
 
 int HmiAdaptor::importSplice(QString spliceStr)
 {
-    QStringList tempList;
-    QStringList wireList;
-    QList<int> wireIdList;
-    QString temp;
-    QString spliceString;
-    QMap<int,QString> tempMap;
-    int i;
-    tempList = spliceStr.split(",");
-
-    temp = tempList.at(tempList.count() - 2);
-    temp.replace(".",",");
-    wireList = temp.split(";");
-    for (i = 0;i < wireList.count();i++)
-    {
-        if (wireList[i] != "")
-            wireIdList.push_back(wireModel->importData(wireList[i]));
-    }
-
-    for (i = 0; i < wireIdList.count();i++)
-    {
-        if (wireIdList[i] != -1)
-            tempMap.insert(wireIdList[i],wireModel->getWireName(wireIdList[i]));
-    }
-
-    for (int j = 0;j < tempList.count(); j++)
-    {
-        spliceString.append(tempList[j] + ",");
-    }
-    int spliceId = spliceModel->importData(spliceString,tempMap);
-    if (spliceId != -1)
-        wireModel->updateSpliceIdToWire(wireIdList,spliceId);
+    CSVPresetData *_PresetData = CSVPresetData::Instance();
+    int spliceId = _PresetData->ImportData(spliceStr);
+    wireModel->setModelList();
+    spliceModel->setModelList();
     return spliceId;
 }
 
-int HmiAdaptor::importPart(QString partStr)
+int HmiAdaptor::importHarness(QString harnessStr)
 {
-    qDebug() << "importPartppppppp" << partStr;
-    QStringList tempList;
-    QStringList spliceList;
-    QList<int> spliceIdList;
-    QString temp;
-    QString partString;
-    QMap<int,QString> tempMap;
-    int i;
-    tempList = partStr.split(",");
-    if (tempList.count() > 2)
-        temp = tempList.at(tempList.count() - 2);
-    else
-        return -1;
-    temp.replace("*",",");
-    spliceList = temp.split("|");
-    for (i = 0;i < spliceList.count();i++)
-    {
-        if (spliceList[i] != "")
-            spliceIdList.push_back(importSplice(spliceList[i]));
-    }
-    for (i = 0; i < spliceIdList.count();i++)
-    {
-        if (spliceIdList[i] != -1)
-            tempMap.insert(spliceIdList[i],spliceModel->getSpliceName(spliceIdList[i]));
-    }
-
-    for (int j = 0;j < tempList.count(); j++)
-    {
-        partString.append(tempList[j] + ",");
-    }
-    int partId = partModel->importData(partString,tempMap);
+    CSVHarnessData *_HarnessData = CSVHarnessData::Instance();
+    int partId = _HarnessData->ImportData(harnessStr);
+    wireModel->setModelList();
+    spliceModel->setModelList();
+    harnessModel->setModelList();
     return partId;
+}
+
+int HmiAdaptor::importSequence(QString sequenceStr)
+{
+    CSVSequenceData *_SequenceData = CSVSequenceData::Instance();
+    int sequenceId = _SequenceData->ImportData(sequenceStr);
+    wireModel->setModelList();
+    spliceModel->setModelList();
+    sequenceModel->setModelList();
+    return sequenceId;
 }
 
 int HmiAdaptor::importWorkOrder(QString workOrderStr)
@@ -1593,12 +1552,12 @@ int HmiAdaptor::importWorkOrder(QString workOrderStr)
     for (i = 0;i < partList.count();i++)
     {
         if (partList[i] != "")
-            partIdList.push_back(importPart(partList[i]));
+            partIdList.push_back(importHarness(partList[i]));
     }
     for (i = 0; i < partIdList.count();i++)
     {
         if (partIdList[i] != -1)
-            tempMap.insert(partIdList[i],partModel->getPartName(partIdList[i]));
+            tempMap.insert(partIdList[i],harnessModel->getPartName(partIdList[i]));
     }
 
     for (int j = 0;j < tempList.count(); j++)
@@ -1673,8 +1632,8 @@ void HmiAdaptor::setWorkFlow(int workMode, int workId)
     else if (workMode == 2)
     {
         interfaceClass->CurrentWorkOrder.CurrentPartIndex.PartID = workId;
-        interfaceClass->CurrentWorkOrder.CurrentPartIndex.PartName = partModel->getPartName(workId);
-        partModel->editNew(workId);
+        interfaceClass->CurrentWorkOrder.CurrentPartIndex.PartName = harnessModel->getPartName(workId);
+        harnessModel->editNew(workId);
     }
     qDebug() << "setWorkFlow" << workMode << workId;
 

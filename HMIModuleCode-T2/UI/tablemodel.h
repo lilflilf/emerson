@@ -149,7 +149,7 @@ public slots:
     Q_INVOKABLE QString graphPowerToString(int power);
     Q_INVOKABLE QString graphHeightToString(int height);
     Q_INVOKABLE bool exportData(int spliceId, QString fileUrl);
-    Q_INVOKABLE int importData(QString value, QMap<int,QString> wireIdMap);
+    Q_INVOKABLE int importData(QString value);
     Q_INVOKABLE QString getSpliceName(int spliceId);
 
     QString timePlusToString(int time);
@@ -221,7 +221,7 @@ public slots:
     Q_INVOKABLE QVariant getStruceValue(QString key);
 
     Q_INVOKABLE bool exportData(int partId, QString fileUrl);
-    Q_INVOKABLE int importData(QString filePath, QMap<int,QString> spliceMap);
+    Q_INVOKABLE int importData(QString filePath);
     Q_INVOKABLE QString getPartName(int partId);
 
     Q_INVOKABLE QList<int> getSpliceList();
@@ -379,7 +379,7 @@ public:
 
     QStringList m_idList;
     DBWireTable *m_wireAdaptor;
-    CSVWireData *m_wireDataObj;
+    CSVWireData *m_WireDataObj;
     DBOperatorTable *m_operatorAdaptor;
     QMap<int, QString> *wires;
 

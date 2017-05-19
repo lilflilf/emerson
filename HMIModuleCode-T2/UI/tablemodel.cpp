@@ -126,7 +126,7 @@ int WorkOrderModel::getCurrentIndex(QString info)
 
 bool WorkOrderModel::updateRecordIntoTable(int workId,QString oldWorkName, QString workName, int partId, QString partName, int count)
 {
-    struct WorkOrderElement tempWorkOrder;
+    WorkOrderElement tempWorkOrder;
 //    m_workOrderAdaptor->QueryOneRecordFromTable(workId, oldWorkName,&tempWorkOrder);
     tempWorkOrder.WorkOrderName = workName;
     if (partName != tempWorkOrder.PartList.begin().value()) {
@@ -141,7 +141,7 @@ bool WorkOrderModel::updateRecordIntoTable(int workId,QString oldWorkName, QStri
 
 bool WorkOrderModel::insertRecordIntoTable(QString workName, int partId, QString partName, int count)
 {
-    struct WorkOrderElement tempWorkOrder;
+    WorkOrderElement tempWorkOrder;
     tempWorkOrder.WorkOrderName = workName;
     tempWorkOrder.BatchSize = count;
     tempWorkOrder.PartList.insert(partId,partName);
@@ -400,7 +400,7 @@ void SplicesModel::calculateSpliceData()
 QString SplicesModel::getValueString(QString valueKey, QString value)
 {
 
-
+    return "";
 }
 
 
@@ -711,9 +711,9 @@ void SplicesModel::setTeachModeValue(QString valueKey, QString standValue, QStri
     }    
     else if (valueKey == "TestModel") {
         if (standValue == "true")
-            m_interface->StatusData.Soft_Settings.ToolCoverIgnore == true;
+            m_interface->StatusData.Soft_Settings.ToolCoverIgnore = true;
         else if (standValue == "false")
-            m_interface->StatusData.Soft_Settings.ToolCoverIgnore == false;
+            m_interface->StatusData.Soft_Settings.ToolCoverIgnore = false;
     }
     else if (valueKey == "TestCount") {
         bool ok;
@@ -1836,9 +1836,9 @@ bool SplicesModel::exportData(int spliceId, QString fileUrl)
     return true;
 }
 
-int SplicesModel::importData(QString value, QMap<int, QString> wireIdMap)
+int SplicesModel::importData(QString value)
 {
-    int ret = m_PresetDataObj->ImportData(value, wireIdMap);
+    int ret = m_PresetDataObj->ImportData(value);
     setModelList();
     return ret;
 }
@@ -2093,9 +2093,9 @@ bool PartModel::exportData(int partId, QString fileUrl)
     return m_HarnessDataObj->ExportData(partId,fileUrl);
 }
 
-int PartModel::importData(QString filePath, QMap<int, QString> spliceMap)
+int PartModel::importData(QString filePath)
 {
-    int ret = m_HarnessDataObj->ImportData(filePath,spliceMap);
+    int ret = m_HarnessDataObj->ImportData(filePath);
     setModelList();
     return ret;
 }
@@ -3227,7 +3227,7 @@ WireModel::WireModel(QObject *parent) :
     QAbstractTableModel(parent)
 {
     m_wireAdaptor = DBWireTable::Instance();
-    m_wireDataObj = CSVWireData::Instance();
+    m_WireDataObj = CSVWireData::Instance();
     m_operatorAdaptor = DBOperatorTable::Instance();
     wires = new QMap<int, QString>();
     variantToString = VariantToString::Instance();
@@ -3564,13 +3564,13 @@ QString WireModel::getStructValue4(int gauge, int awg)
 
 bool WireModel::exportData(int wireId, QString fileUrl)
 {
-    return m_wireDataObj->ExportData(wireId,fileUrl);
+    return m_WireDataObj->ExportData(wireId,fileUrl);
 }
 
 int WireModel::importData(QString filePath)
 {
     int wireId;
-    wireId =  m_wireDataObj->ImportData(filePath);
+    wireId =  m_WireDataObj->ImportData(filePath);
     setModelList();
     return wireId;
 }

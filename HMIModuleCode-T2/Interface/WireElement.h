@@ -42,7 +42,7 @@ public:
     int OperatorID;
     int SpliceID;
     QString Color;
-    struct STRIPE Stripe;
+    STRIPE Stripe;
     int Gauge;               //Area of Wire in mm*mm/100
     int GaugeAWG;
     enum MetalType TypeOfWire;

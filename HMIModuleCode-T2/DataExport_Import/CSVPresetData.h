@@ -1,7 +1,9 @@
 #ifndef CSVPRESETDATA_H
 #define CSVPRESETDATA_H
 #include "DataClass.h"
-class CSVPresetData //: public DataClass
+#include <QMap>
+
+class CSVPresetData : public DataClass
 {
 public:
     enum PresetItem{
@@ -48,11 +50,16 @@ public:
         JSONWire = 88,                /*2 items */
         PresetEnd = 89
     };
+private:
+    QMap<int,QString> WireIndexMap;
+    QList<int> WireIndexList;
+private:
+    bool ParseWireData(QString StrWire);
+    void UpdateSpliceIdToWire(QList<int> WireList, int SpliceId);
 public:
     virtual bool ExportData(int ID, QString fileUrl);
     virtual QString GetExportString(int ID);
-//    virtual int ImportData(QString StrValue);
-    virtual int ImportData(QString StrValue, QMap<int, QString> WireIDMap);
+    virtual int ImportData(QString StrValue);
 public:
     static CSVPresetData* Instance();
 protected:

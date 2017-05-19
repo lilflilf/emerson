@@ -24,7 +24,7 @@ DataBaseTest::DataBaseTest()
 void DataBaseTest::TestInsertOneRecordIntoWireTable()
 {
     SQLITCLASS *_SQLITCLASS = DBWireTable::Instance();
-    struct WireElement tmpWire;
+    WireElement tmpWire;
     tmpWire.WireName = "TESTWire1";
     QDateTime tmp = QDateTime::fromString("2016/10/24 00:00:00", "yyyy/MM/dd hh:mm:ss");
     tmpWire.CreatedDate = tmp.toTime_t();
@@ -48,7 +48,7 @@ void DataBaseTest::TestInsertOneRecordIntoPresetTable()
     TestMap.insert(0, "WANG");
     TestMap.insert(1,"Mr.Li");
     TestMap.insert(2, "Zhang");
-    struct PresetElement tmpSplice;
+    PresetElement tmpSplice;
     tmpSplice.SpliceName = "TESTSplice4";
     QDateTime tmp = QDateTime::fromString("2016/10/20 00:00:00", "yyyy/MM/dd hh:mm:ss");
     tmpSplice.CreatedDate = tmp.toTime_t();
@@ -119,7 +119,7 @@ void DataBaseTest::TestInsertOneRecordIntoPartTable()
 {
     SQLITCLASS *_SQLITCLASS = DBHarnessTable::Instance();
 
-    struct HarnessElement tmpHarness;
+    HarnessElement tmpHarness;
     tmpHarness.HarnessName = "TESTPart";
     QDateTime tmp = QDateTime::fromString("2016/10/20 00:00:00", "yyyy/MM/dd hh:mm:ss");
     tmpHarness.CreatedDate = tmp.toTime_t();
@@ -166,7 +166,7 @@ void DataBaseTest::TestInsertOneRecordIntoOperatorTable()
 void DataBaseTest::TestInsertOneRecordIntoWeldResultTable()
 {
     SQLITCLASS *_SQLITCLASS = DBWeldResultTable::Instance();
-    struct WeldResultElement tmpWeldResult;
+    WeldResultElement tmpWeldResult;
     tmpWeldResult.OperatorName = "TESTOperator";
     QDateTime tmp = QDateTime::currentDateTime();
     tmpWeldResult.CreatedDate = tmp.toTime_t();
@@ -422,7 +422,7 @@ void DataBaseTest::TestDeleteOneOperatorTable()
 void DataBaseTest::TestUpdateOneRecordIntoWireTable()
 {
     SQLITCLASS *_SQLITCLASS = DBWireTable::Instance();
-    struct WireElement tmpWire;
+    WireElement tmpWire;
     tmpWire.WireID = 2;
     tmpWire.WireName = "TESTWire1";
     QDateTime tmp = QDateTime::fromString("10/23/2016 15:40:00", "yyyy/MM/dd hh:mm:ss");
@@ -446,7 +446,7 @@ void DataBaseTest::TestUpdateOneRecordIntoPresetTable()
     TestMap.insert(0, "WANG");
     TestMap.insert(1,"Mr.Li");
     TestMap.insert(2, "Zhang");
-    struct PresetElement tmpSplice;
+    PresetElement tmpSplice;
     tmpSplice.SpliceID = 3;
     tmpSplice.SpliceName = "TESTSPLICE";
     QDateTime tmp = QDateTime::fromString("2016/10/20 00:00:00", "yyyy/MM/dd hh:mm:ss");
@@ -513,7 +513,7 @@ void DataBaseTest::TestUpdateOneRecordIntoPresetTable()
 void DataBaseTest::TestUpdateOneRecordIntoPartTable()
 {
     SQLITCLASS *_SQLITCLASS = DBHarnessTable::Instance();
-    struct HarnessElement tmpHarness;
+    HarnessElement tmpHarness;
     tmpHarness.HarnessID = 3;
     tmpHarness.HarnessName = "TESTPART";
     QDateTime tmp = QDateTime::fromString("2016/10/20 00:00:00", "yyyy/MM/dd hh:mm:ss");

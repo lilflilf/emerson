@@ -135,12 +135,12 @@ void M10INI::SetDefaultWeldFormula(Status_Data* _DataStruct)
                 _DataStruct->WeldSettings4Build[i].Offset = Defmm2EnergyOffset0;
             break;
             case 1:
-                _DataStruct->WeldSettings4Build[i].Multplier = Defmm2EnergyMult1;
-                _DataStruct->WeldSettings4Build[i].Offset = Defmm2EnergyOffset1;
+                _DataStruct->WeldSettings4Build[i].Multplier = (float)Defmm2EnergyMult1;
+                _DataStruct->WeldSettings4Build[i].Offset = (float)Defmm2EnergyOffset1;
             break;
             case 2:
-                _DataStruct->WeldSettings4Build[i].Multplier = Defmm2EnergyMult2;
-                _DataStruct->WeldSettings4Build[i].Offset = Defmm2EnergyOffset2;
+                _DataStruct->WeldSettings4Build[i].Multplier = (float)Defmm2EnergyMult2;
+                _DataStruct->WeldSettings4Build[i].Offset = (float)Defmm2EnergyOffset2;
             break;
             case 3:
                 _DataStruct->WeldSettings4Build[i].Multplier = Defmm2WidthAreaRatio0;
@@ -155,35 +155,35 @@ void M10INI::SetDefaultWeldFormula(Status_Data* _DataStruct)
                 _DataStruct->WeldSettings4Build[i].Offset = 0;            //Not used
             break;
             case 6:
-                _DataStruct->WeldSettings4Build[i].Multplier = Defmm2PressMult0;
+                _DataStruct->WeldSettings4Build[i].Multplier = (float)Defmm2PressMult0;
                 _DataStruct->WeldSettings4Build[i].Offset = Defmm2PressOffset0;
             break;
             case 7:
-                _DataStruct->WeldSettings4Build[i].Multplier = Defmm2PressMult1;
+                _DataStruct->WeldSettings4Build[i].Multplier = (float)Defmm2PressMult1;
                 _DataStruct->WeldSettings4Build[i].Offset = Defmm2PressOffset1;
             break;
             case 8:
-                _DataStruct->WeldSettings4Build[i].Multplier = Defmm2PressMult2;
-                _DataStruct->WeldSettings4Build[i].Offset = Defmm2PressOffset2;
+                _DataStruct->WeldSettings4Build[i].Multplier = (float)Defmm2PressMult2;
+                _DataStruct->WeldSettings4Build[i].Offset = (float)Defmm2PressOffset2;
             break;
             case 9:
-                _DataStruct->WeldSettings4Build[i].Multplier = Defmm2AmplitudeMult0;
+                _DataStruct->WeldSettings4Build[i].Multplier = (float)Defmm2AmplitudeMult0;
                 _DataStruct->WeldSettings4Build[i].Offset = Defmm2AmplitudeOffset0;
             break;
             case 10:
-                _DataStruct->WeldSettings4Build[i].Multplier = Defmm2AmplitudeMult1;
-                _DataStruct->WeldSettings4Build[i].Offset = Defmm2AmplitudeOffset1;
+                _DataStruct->WeldSettings4Build[i].Multplier = (float)Defmm2AmplitudeMult1;
+                _DataStruct->WeldSettings4Build[i].Offset = (float)Defmm2AmplitudeOffset1;
             break;
             case 11:
-                _DataStruct->WeldSettings4Build[i].Multplier = Defmm2AmplitudeMult2;
-                _DataStruct->WeldSettings4Build[i].Offset = Defmm2AmplitudeOffset2;
+                _DataStruct->WeldSettings4Build[i].Multplier = (float)Defmm2AmplitudeMult2;
+                _DataStruct->WeldSettings4Build[i].Offset = (float)Defmm2AmplitudeOffset2;
             break;
         };
     }
     _DataStruct->WeldSettings4Build[0].MinRange = MinRange1;
-    _DataStruct->WeldSettings4Build[0].MaxRange = MaxRange1;
+    _DataStruct->WeldSettings4Build[0].MaxRange = (float)MaxRange1;
     _DataStruct->WeldSettings4Build[1].MinRange = MinRange2;
-    _DataStruct->WeldSettings4Build[1].MaxRange = MaxRange2;
+    _DataStruct->WeldSettings4Build[1].MaxRange = (float)MaxRange2;
     _DataStruct->WeldSettings4Build[2].MinRange = MinRange3;
     _DataStruct->WeldSettings4Build[2].MaxRange = MaxRange3;
 }

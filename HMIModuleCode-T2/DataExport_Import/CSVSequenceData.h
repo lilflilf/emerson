@@ -1,6 +1,7 @@
 #ifndef CSVSEQUENCEDATA_H
 #define CSVSEQUENCEDATA_H
 #include "DataClass.h"
+#include <QMap>
 
 class CSVSequenceData : public DataClass
 {
@@ -13,9 +14,15 @@ public:
         OperatorID = 3,
         NoOfSplice = 4,
         JSONSplice = 5,
-        SequenceEnd = 6
+        SpliceString = 6,
+        SequenceEnd = 7
     };
-
+private:
+    QMap<int, struct SEQUENCEATTRIBUTE> SpliceIndexMap;
+    QList<int> SpliceIndexList;
+private:
+    bool ParseSpliceData(QString StrSplice);
+    void ParseSequenceJOSN(QString SequenceJOSN);
 public:
     virtual bool ExportData(int ID, QString fileUrl);
     virtual QString GetExportString(int ID);
