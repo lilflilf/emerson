@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("hmiAdaptor",hmiAdaptor);
     engine.rootContext()->setContextProperty("workOrderModel",hmiAdaptor->workOrderModel);
     engine.rootContext()->setContextProperty("spliceModel",hmiAdaptor->spliceModel);
-    engine.rootContext()->setContextProperty("partModel",hmiAdaptor->partModel);
+    engine.rootContext()->setContextProperty("partModel",hmiAdaptor->harnessModel);
     engine.rootContext()->setContextProperty("operatorModel",hmiAdaptor->operatorModel);
     engine.rootContext()->setContextProperty("wireModel",hmiAdaptor->wireModel);
     engine.rootContext()->setContextProperty("weldHistoryModel",hmiAdaptor->weldHistoryModel);

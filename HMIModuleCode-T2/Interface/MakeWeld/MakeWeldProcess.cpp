@@ -10,6 +10,7 @@
 #include "Modules/StatisticalFunction.h"
 #include "Modules/Statistics.h"
 #include "Modules/typedef.h"
+#include "Modules/BransonServer.h"
 #include <QDateTime>
 #include <QDebug>
 MakeWeldProcess* MakeWeldProcess::_instance = NULL;
@@ -225,9 +226,14 @@ void MakeWeldProcess::WeldCycleDaemonThread(void* _obj)
 //        _ObjectPtr->WeldCycleStatus = true;
         //6. Shrink Tube
         //7. Remote Data sending
-        _Statistics->HistoryEvent(_ObjectPtr->CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderName,
+        if (_Interface->StatusData.NetworkingEnabled == true)
+        {
+            QString StrRecord =
+                    _Statistics->HistoryEvent(_ObjectPtr->CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderName,
                 _ObjectPtr->CurrentNecessaryInfo.CurrentHarness.HarnessName, &_ObjectPtr->CurrentWeldResult, &_ObjectPtr->CurrentSplice);
-
+            BransonServer *_Server = BransonServer::Instance();
+            _Server->SendDataToClients(StrRecord);
+        }
         if((_M102IA->IAactual.Alarmflags & BIT14) == BIT14)
         {
             _ObjectPtr->WeldCycleStatus = true;

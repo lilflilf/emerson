@@ -14,7 +14,7 @@ using namespace std;
 #define MAX_ADAPTER_NAME_LENGTH         260
 #define MAX_ADAPTER_ADDRESS_LENGTH      8
 #define MAX_ADAPTER_DESCRIPTION_LENGTH  132
-#define ERROR_BUFFER_OVERFLOW           111
+//#define ERROR_BUFFER_OVERFLOW           111
 #define MIB_IF_TYPE_ETHERNET            6
 #define MIB_IF_TYPE_TOKENRING           9
 #define MIB_IF_TYPE_FDDI                15

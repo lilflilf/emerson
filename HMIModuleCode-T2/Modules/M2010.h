@@ -239,7 +239,7 @@ struct SequenceDataStruct{
     string sSeqName;
     int iListCount;                 //This is a convenience
     string* sPartName;
-    int iPartCount[];               //This will be 1 for at least a while
+    int* iPartCount;               //This will be 1 for at least a while
 };
 
 enum EDITTASKS{
@@ -319,7 +319,7 @@ public:
     int AcTapMax;
     int AcTapMin;
 
-    unsigned char ArrayOfBytes[];
+    unsigned char *ArrayOfBytes;
     string RunFilePart;
 
     bool BaseColorFlag;

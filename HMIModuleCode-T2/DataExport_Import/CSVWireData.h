@@ -2,7 +2,7 @@
 #define CSVWIREDATA_H
 #include "DataClass.h"
 
-class CSVWireData //: public DataClass
+class CSVWireData : public DataClass
 {
 public:
     enum WireItem{

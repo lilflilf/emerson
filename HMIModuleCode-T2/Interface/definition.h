@@ -213,7 +213,7 @@ struct WELDSETTING
 {
     struct BASICWELDSETTING BasicSetting;
     struct QUALITYWINDONSETTING QualitySetting;
-    struct ADVANCESETTING AdvanceSetting;
+    ADVANCESETTING AdvanceSetting;
 };
 
 //Part Structure

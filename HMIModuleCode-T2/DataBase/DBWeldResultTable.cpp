@@ -456,6 +456,7 @@ bool DBWeldResultTable::QueryOneRecordFromTable(int ID, QStringList &ResultStr)
     ResultStr.append(query.value("ActualAlarmFlags").toString());
     ResultStr.append(query.value("SampleRatio").toString());
     ResultStr.append(query.value("NoOfSamples").toString());
+    ResultStr.append(query.value("CurrentGraphDirectory").toString());
     WeldResultDBObj.close();
     return bResult;
 }

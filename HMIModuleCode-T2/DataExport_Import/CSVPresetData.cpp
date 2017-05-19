@@ -1,7 +1,9 @@
 #include "CSVPresetData.h"
 #include "CSVWireData.h"
 #include "DataBase/DBPresetTable.h"
+#include "DataBase/DBWireTable.h"
 #include "Interface/PresetElement.h"
+#include "Interface/WireElement.h"
 #include "Modules/UtilityClass.h"
 #include "Modules/typedef.h"
 #include <QFile>
@@ -115,9 +117,56 @@ QString CSVPresetData::GetExportString(int ID)
     return RowStr;
 }
 
-int CSVPresetData::ImportData(QString StrValue, QMap<int, QString> WireIDMap)
+bool CSVPresetData::ParseWireData(QString StrWire)
+{
+    CSVWireData* _WireData = CSVWireData::Instance();
+    QStringList WireList;
+    QString TmpStr = StrWire;
+    WireElement WireObj;
+    DBWireTable* _WireDB = DBWireTable::Instance();
+    bool bResult = false;
+    int i;
+    WireIndexList.clear();
+    TmpStr.replace(".",",");
+    WireList = TmpStr.split(";");
+    for (i = 0;i < WireList.count();i++)
+    {
+        if (WireList[i] != "")
+            WireIndexList.append(_WireData->ImportData(WireList[i]));
+    }
+    WireIndexMap.clear();
+    for (i = 0; i < WireIndexList.count();i++)
+    {
+        if (WireIndexList[i] != ERROR)
+        {
+            bResult = _WireDB->QueryOneRecordFromTable(WireIndexList[i], &WireObj);
+            if(bResult == true)
+                WireIndexMap.insert(WireObj.WireID, WireObj.WireName);
+        }
+    }
+    return true;
+}
+
+void CSVPresetData::UpdateSpliceIdToWire(QList<int> WireList, int SpliceId)
+{
+    DBWireTable* _WireDB = DBWireTable::Instance();
+    if (SpliceId == -1)
+        return;
+    WireElement WireObj;
+    for(int i = 0; i < WireList.size(); i++)
+    {
+        if(_WireDB->QueryOneRecordFromTable(WireList[i], &WireObj))
+        {
+            WireObj.SpliceID = SpliceId;
+            _WireDB->UpdateRecordIntoTable(&WireObj);
+        }
+    }
+}
+
+int CSVPresetData::ImportData(QString StrValue)
 {
     QString RowStr;
+    QString TmpStr;
     QStringList DataList;
     bool bResult;
     PresetElement PresetObj;
@@ -127,6 +176,9 @@ int CSVPresetData::ImportData(QString StrValue, QMap<int, QString> WireIDMap)
     DataList = RowStr.split(",");
     if(DataList.size() < PresetEnd)
         return ret;
+
+    TmpStr = DataList[JSONWire];
+    ParseWireData(TmpStr);
 
     PresetObj.SpliceID = QString(DataList[SpliceID]).toInt(&bResult, DECIMALISM);
     PresetObj.SpliceName = DataList[SpliceName];
@@ -249,7 +301,7 @@ int CSVPresetData::ImportData(QString StrValue, QMap<int, QString> WireIDMap)
     PresetObj.TestSetting.TestingDone =
             (bool)QString(DataList[TestingDone]).toInt(&bResult, DECIMALISM);
 
-    PresetObj.WireIndex = WireIDMap;
+    PresetObj.WireIndex = WireIndexMap;
     PresetObj.NoOfWires = PresetObj.WireIndex.size();
     ret = _PresetDB->InsertRecordIntoTable(&PresetObj);
     while(ret == ERROR)
@@ -264,5 +316,6 @@ int CSVPresetData::ImportData(QString StrValue, QMap<int, QString> WireIDMap)
         }else if(tmpMap.size() == 0)
             return ERROR;
     }
+    UpdateSpliceIdToWire(WireIndexList,ret);
     return ret;
 }

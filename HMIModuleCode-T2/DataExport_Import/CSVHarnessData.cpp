@@ -3,6 +3,7 @@
 #include "Modules/UtilityClass.h"
 #include "CSVPresetData.h"
 #include "Interface/HarnessElement.h"
+#include "Interface/PresetElement.h"
 #include "Modules/typedef.h"
 #include <QFile>
 #include <QTextStream>
@@ -24,6 +25,8 @@ CSVHarnessData::~CSVHarnessData()
 {
 
 }
+
+
 
 bool CSVHarnessData::ExportData(int ID, QString fileUrl)
 {
@@ -54,6 +57,7 @@ bool CSVHarnessData::ExportData(int ID, QString fileUrl)
                 SpliceData.append(tmpSpliceData + "|");
                 ++iterator;
             }
+            RowStr.append(ListStr[i] + ",");
             RowStr.append(SpliceData + ",");
         }
         else
@@ -104,6 +108,7 @@ QString CSVHarnessData::GetExportString(int ID)
                 SpliceData.append(tmpSpliceData + "|");
                 ++iterator;
             }
+            RowStr.append(ListStr[i] + "@");
             RowStr.append(SpliceData + "@");
         }
         else
@@ -112,9 +117,51 @@ QString CSVHarnessData::GetExportString(int ID)
     return RowStr;
 }
 
-int CSVHarnessData::ImportData(QString StrValue, QMap<int, QString> SpliceIDMap)
+bool CSVHarnessData::ParseSpliceData(QString StrSplice)
+{
+    QString TmpStr = StrSplice;
+    QStringList SpliceList;
+    CSVPresetData* _SpliceData = CSVPresetData::Instance();
+    TmpStr.replace("*",",");
+    SpliceList = TmpStr.split("|");
+    SpliceIndexList.clear();
+    for (int i = 0;i < SpliceList.count();i++)
+    {
+        if (SpliceList[i] != "")
+            SpliceIndexList.append(_SpliceData->ImportData(SpliceList[i]));
+    }
+    return true;
+}
+
+void CSVHarnessData::ParseHarnessJOSN(QString HarnessJOSN)
+{
+    UtilityClass* _Utility = UtilityClass::Instance();
+    QMap<int,struct HARNESSATTRIBUTE> SpliceList;
+    QMap<int, struct HARNESSATTRIBUTE>::const_iterator iterator;
+    DBPresetTable* _SpliceDB = DBPresetTable::Instance();
+    PresetElement PresetObj;
+    bool bResult = false;
+    _Utility->StringJsonToMap(HarnessJOSN, &SpliceList);
+    SpliceIndexMap.clear();
+    for (int i = 0; i < SpliceIndexList.count(); i++)
+    {
+        if (SpliceIndexList[i] != -1)
+        {
+            bResult = _SpliceDB->QueryOneRecordFromTable(SpliceIndexList[i], &PresetObj);
+            if(bResult == true)
+            {
+                iterator = SpliceList.find(SpliceIndexList[i]);
+                if(iterator != SpliceList.constEnd())
+                    SpliceIndexMap.insert(PresetObj.SpliceID, iterator.value());
+            }
+        }
+    }
+}
+
+int CSVHarnessData::ImportData(QString StrValue)
 {
     QString RowStr;
+    QString TmpStr;
     QStringList DataList;
     bool bResult;
     HarnessElement HarnessObj;
@@ -124,6 +171,11 @@ int CSVHarnessData::ImportData(QString StrValue, QMap<int, QString> SpliceIDMap)
     DataList = RowStr.split(",");
     if(DataList.size() < HarnessEnd)
         return ret;
+
+    TmpStr = DataList[SpliceString];
+    ParseSpliceData(TmpStr);
+    TmpStr = DataList[JSONSplice];
+    ParseHarnessJOSN(TmpStr);
 
     HarnessObj.HarnessID = QString(DataList[HarnessID]).toInt(&bResult, DECIMALISM);
     HarnessObj.HarnessName = DataList[HarnessName];
@@ -143,20 +195,8 @@ int CSVHarnessData::ImportData(QString StrValue, QMap<int, QString> SpliceIDMap)
             QString(DataList[Columns]).toInt(&bResult, DECIMALISM);
     HarnessObj.HarnessTypeSetting.BoardLayout.MaxSplicesPerZone =
             QString(DataList[MaxSplicesPerZone]).toInt(&bResult, DECIMALISM);
-    QMap<int, struct HARNESSATTRIBUTE> tmpMap;
-    int i = 0;
-    QMap<int, QString>::const_iterator iterator = SpliceIDMap.constBegin();
-    while(iterator != SpliceIDMap.constEnd())
-    {
-        struct HARNESSATTRIBUTE tmp;
-        tmp.SpliceID = iterator.key();
-        tmp.SpliceName = iterator.value();
-        tmpMap.insert(i, tmp);
-        i++;
-        ++iterator;
-    }
 
-    HarnessObj.SpliceList = tmpMap;
+    HarnessObj.SpliceList = SpliceIndexMap;
     HarnessObj.NoOfSplice = HarnessObj.SpliceList.size();
 
     ret = _HarnessDB->InsertRecordIntoTable(&HarnessObj);

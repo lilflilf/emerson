@@ -141,7 +141,8 @@ public:
 
     Q_INVOKABLE void importData(QString fileUrl);
     Q_INVOKABLE int importSplice(QString spliceStr);
-    Q_INVOKABLE int importPart(QString partStr);
+    Q_INVOKABLE int importHarness(QString harnessStr);
+    Q_INVOKABLE int importSequence(QString sequenceStr);
     Q_INVOKABLE int importWorkOrder(QString workOrderStr);
 
     Q_INVOKABLE void addInsulation(QString insualtionId, QString temp, QString time);
@@ -165,7 +166,7 @@ public:
 
     WorkOrderModel *workOrderModel;
     SplicesModel *spliceModel;
-    PartModel *partModel;
+    PartModel *harnessModel;
     OperatorModel *operatorModel;
     WireModel *wireModel;
     WeldHistoryModel *weldHistoryModel;

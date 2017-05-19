@@ -1,8 +1,10 @@
 #ifndef CSVHARNESSDATA_H
 #define CSVHARNESSDATA_H
 #include "DataClass.h"
+#include <QMap>
+#include <QList>
 
-class CSVHarnessData //: public DataClass
+class CSVHarnessData : public DataClass
 {
 public:
     enum HarnessItem
@@ -20,13 +22,19 @@ public:
         MaxSplicesPerZone =9,
         NoOfSplice = 10,
         JSONSplice = 11,
-        HarnessEnd = 12
+        SpliceString = 12,
+        HarnessEnd = 13
     };
-
+private:
+    QMap<int, struct HARNESSATTRIBUTE> SpliceIndexMap;
+    QList<int> SpliceIndexList;
+private:
+    bool ParseSpliceData(QString StrSplice);
+    void ParseHarnessJOSN(QString HarnessJOSN);
 public:
     virtual bool ExportData(int ID, QString fileUrl);
     virtual QString GetExportString(int ID);
-    virtual int ImportData(QString StrValue, QMap<int, QString> SpliceIDMap);
+    virtual int ImportData(QString StrValue);
 public:
     static CSVHarnessData* Instance();
 protected:
