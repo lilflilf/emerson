@@ -85,44 +85,44 @@ Item {
             verticalAlignment: Qt.AlignVCenter
             width: (parent.width-120)/4
             color: "white"
-            font.pixelSize: 25
+            font.pixelSize: 18
             font.family: "arial"
             clip: true
             elide: Text.ElideRight
-            text: qsTr("SPLICE NAME")
+            text: qsTr("Splice Name")
         }
         Text {
             anchors.verticalCenter: parent.verticalCenter
             verticalAlignment: Qt.AlignVCenter
             width: (parent.width-120)/4
             color: "white"
-            font.pixelSize: 25
+            font.pixelSize: 18
             font.family: "arial"
             clip: true
             elide: Text.ElideRight
-            text: qsTr("DATE CREATED")
+            text: qsTr("Date Created")
         }
         Text {
             anchors.verticalCenter: parent.verticalCenter
             verticalAlignment: Qt.AlignVCenter
             width: (parent.width-120)/4
             color: "white"
-            font.pixelSize: 25
+            font.pixelSize: 18
             font.family: "arial"
             clip: true
             elide: Text.ElideRight
-            text: qsTr("#OF WIRES")
+            text: qsTr("Total Wires")
         }
         Text {
             anchors.verticalCenter: parent.verticalCenter
             verticalAlignment: Qt.AlignVCenter
             width: (parent.width-120)/4
             color: "white"
-            font.pixelSize: 25
+            font.pixelSize: 18
             font.family: "arial"
             clip: true
             elide: Text.ElideRight
-            text: qsTr("CROSS SECTION")
+            text: qsTr("Cross Section")
         }
     }
     Rectangle {
@@ -229,7 +229,7 @@ Item {
                 text: SpliceName
                 clip: true
                 color: "white"
-                font.pixelSize: 20
+                font.pixelSize: 14
                 font.family: "arial"
             }
             Text {
@@ -242,7 +242,7 @@ Item {
                 text: DateCreated
                 clip: true
                 color: "white"
-                font.pixelSize: 20
+                font.pixelSize: 14
                 font.family: "arial"
             }
             Text {
@@ -256,7 +256,7 @@ Item {
                 elide: Text.ElideRight
                 clip: true
                 color: "white"
-                font.pixelSize: 20
+                font.pixelSize: 14
                 font.family: "arial"
             }
             Text {
@@ -270,7 +270,7 @@ Item {
                 elide: Text.ElideRight
                 color: "white"
                 clip: true
-                font.pixelSize: 20
+                font.pixelSize: 14
                 font.family: "arial"
             }
             MouseArea {

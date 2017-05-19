@@ -1817,7 +1817,6 @@ QList<int> SplicesModel::getWireIdList()
 
 QString SplicesModel::graphTimeToString(int time)
 {
-    qDebug() << "graphTimeToString" << time << variantToString->GraphTimeToString(time);
     return variantToString->GraphTimeToString(time);
 }
 
@@ -1840,7 +1839,6 @@ bool SplicesModel::exportData(int spliceId, QString fileUrl)
 int SplicesModel::importData(QString value)
 {
     int ret = m_PresetDataObj->ImportData(value);
-    qDebug()<<"111111111111111111111111111111111";
     setModelList();
     return ret;
 }

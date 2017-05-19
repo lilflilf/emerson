@@ -416,9 +416,9 @@ Item {
                         addExit.listModel = partModel
                         addExit.titleName = qsTr("Add Harness")
                         addExit.componentName = qsTr("Harness Name")
-                        addExit.componentData = qsTr("DATE CREATED")
-                        addExit.componentMiddle = qsTr("# OF SPLICE")
-                        addExit.componenttype = qsTr("CROSS SECTION")
+                        addExit.componentData = qsTr("Date Created")
+                        addExit.componentMiddle = qsTr("Total Steps")
+                        addExit.componenttype = qsTr("Cross Section")
                         addExit.bIsOnlyOne = true
                         addExit.componentCount = "MaxSplicesPerZone"
                     }
@@ -427,11 +427,11 @@ Item {
                         addExit.listModel = sequenceModel
                         addExit.titleName = qsTr("Add Sequence")
                         addExit.componentName = qsTr("Sequence Name")
-                        addExit.componentData = qsTr("DATE CREATED")
-                        addExit.componentMiddle = qsTr("OperatorName")
-                        addExit.componenttype = qsTr("# OF SPLICE")
+                        addExit.componentData = qsTr("Date Created")
+                        addExit.componentMiddle = qsTr("User Name")
+                        addExit.componenttype = qsTr("Total Steps")
                         addExit.bIsOnlyOne = true
-                        addExit.componentCount = "QUANTITY"
+                        addExit.componentCount = "Total Splices"
                     }
 
 //                    fileSelectLoader.source = "qrc:/UI/MySelectFileDialog.qml"
@@ -1338,12 +1338,12 @@ Item {
         visible: content.bIsFirst ? true : false
         listModel: content.bIsFirst ? partModel : spliceModel
         titleName: content.bIsFirst ? qsTr("Add Harness") : qsTr("Add Existing Splice")
-        componentName: content.bIsFirst ? qsTr("Part Name") : qsTr("SPLICE NAME")
-        componentData: qsTr("DATE CREATED")
-        componentMiddle: content.bIsFirst ? qsTr("# OF SPLICE") : qsTr("OperatorName")
-        componenttype: qsTr("CROSS SECTION")
+        componentName: content.bIsFirst ? qsTr("Part Name") : qsTr("Splice Name")
+        componentData: qsTr("Date Created")
+        componentMiddle: content.bIsFirst ? qsTr("# OF SPLICE") : qsTr("User Name")
+        componenttype: qsTr("Cross Section")
         bIsOnlyOne: (addExit.listModel == partModel) ? true : false
-        componentCount: content.bIsFirst ? "" : qsTr("# OF WIRES")
+        componentCount: content.bIsFirst ? "" : qsTr("Total Wires")
         onSignalAddExistCancel: {
             backGround.visible = false
             backGround.opacity = 0

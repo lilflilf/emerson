@@ -3,7 +3,8 @@ import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.0
 import QtQuick.Controls 1.3
 import QtQuick.Window 2.2
-
+//import QtWebKit 3.0
+import QtQuick.Window 2.2
 Item {
     signal passWordInputOk()
 
@@ -343,4 +344,11 @@ Item {
             }
         }
     }
+
+
+//    WebView {
+//        id: webVie1;
+//        anchors.fill: parent;
+//        url: ("https://www.baidu.com");
+//    }
 }
