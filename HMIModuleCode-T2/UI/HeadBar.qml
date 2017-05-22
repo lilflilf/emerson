@@ -9,9 +9,9 @@ The function interface:
     mainRoot.checkNeedPassWd()
     hmiAdaptor.getCurrentOperatorId()
 *******************************************************************/
-import QtQuick 2.7
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
+import QtQuick 2.2
+import QtQuick.Controls 1.1
+import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.0
 import QtQuick.Window 2.2
 
@@ -267,6 +267,8 @@ Item {
         ListElement {menuKey:qsTr("Advanced Maintenance")}
         ListElement {menuKey:qsTr("Maintenance Counter")}
         ListElement {menuKey:qsTr("Maintenance log")}
+        ListElement {menuKey:qsTr("User Manual")}
+
     }
     ListModel {
         id: viewDataList
@@ -411,6 +413,10 @@ Item {
                                     mainRoot.clearStackView()
                                     mainRoot.checkNeedPassWd(8)
 //                                    title.text = qsTr("Maintenance log")
+                                }
+                                else if (menuKey == qsTr("User Manual")){
+                                    mainRoot.clearStackView()
+                                    mainRoot.checkNeedPassWd(21)
                                 }
                                 else if (menuKey == qsTr("Library")) {
                                     mainRoot.clearStackView()

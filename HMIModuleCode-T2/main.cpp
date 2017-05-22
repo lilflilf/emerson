@@ -15,7 +15,10 @@
 #include <QHash>
 #include <QDateTime>
 #include <QDesktopWidget>
-
+#include <QtWebView/QtWebView>
+#if _MSC_VER >= 1600
+#pragma execution_character_set("utf-8")
+#endif
 int main(int argc, char *argv[])
 {
     RECT rt = {0,0,0,0};
@@ -44,6 +47,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<ALPaintedItem>("ALPaintedItem", 1, 0, "ALPaintedItem");
 
     QGuiApplication app(argc, argv);
+    QtWebView::initialize();
     QString locale = QLocale::system().name();
     QTranslator translator;
 //    bool success = translator.load("displayChinese_zh_CN.qm");

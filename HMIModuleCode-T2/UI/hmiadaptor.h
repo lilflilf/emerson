@@ -155,6 +155,7 @@ public:
 
     Q_INVOKABLE void setWorkValue(QString key, QString value);
     Q_INVOKABLE QVariant getWorkValue(QString workKey);
+    Q_INVOKABLE QString getUserManualPath();
 
     BransonMessageBox bransonMessageBox;
     InterfaceClass *interfaceClass;

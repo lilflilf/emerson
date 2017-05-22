@@ -8,8 +8,8 @@ The function interface:
     showDialog()
     contentLoader
 *******************************************************************/
-import QtQuick 2.7
-import QtQuick.Controls 1.4
+import QtQuick 2.2
+import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.0
 import QtQuick.Window 2.2
 import ALPaintedItem 1.0
@@ -176,6 +176,9 @@ Window {
             break;
         case 19:
             source = "qrc:/UI/EditWire.qml"
+            break;
+        case 21:
+            source = "qrc:/Ui/UserManual.qml"
             break;
         default:
             break;
@@ -358,7 +361,10 @@ Window {
             headBar.titleText = qsTr("Edit Existing")
 //            contentLoader.source = "qrc:/UI/EditWire.qml"
             stackview.push("qrc:/UI/EditWire.qml")
-
+            break;
+        case 21:
+            headBar.titleText = qsTr("User Manual")
+            stackview.push("qrc:/UI/UserManual.qml")
             break;
         default:
             break;

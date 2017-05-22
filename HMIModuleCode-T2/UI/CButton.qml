@@ -5,8 +5,8 @@ Author:zhangjiyong&lilongfei
 Description: button components
 The function interface:
 *******************************************************************/
-import QtQuick 2.7
-import QtQuick.Controls.Styles 1.4
+import QtQuick 2.2
+import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.0
 import QtQuick.Controls 1.3
 import QtQuick.Window 2.2
@@ -59,23 +59,23 @@ MouseArea {
 
     /*! 用于定制按钮的背景样式*/
     property Component backgroundComponent: Image {
-            anchors.fill: parent
-            source: "qrc:/images/images/icon-bg.png"
+        anchors.fill: parent
+        source: "qrc:/images/images/icon-bg.png"
     }
-//        Rectangle {
-//            anchors.centerIn: parent
-//            anchors.fill: parent
-//            radius: 3
-//            color: "#0079c1"
-//            Rectangle{
-//                anchors.fill: parent
-//                anchors.margins: 1
-//                radius: 3
-//                anchors.centerIn: parent
-//                color: "#0079c1"
-//            }
-//        }
-//    }
+    //        Rectangle {
+    //            anchors.centerIn: parent
+    //            anchors.fill: parent
+    //            radius: 3
+    //            color: "#0079c1"
+    //            Rectangle{
+    //                anchors.fill: parent
+    //                anchors.margins: 1
+    //                radius: 3
+    //                anchors.centerIn: parent
+    //                color: "#0079c1"
+    //            }
+    //        }
+    //    }
 
     /*!
         \qmlproperty item CButton::labelItem

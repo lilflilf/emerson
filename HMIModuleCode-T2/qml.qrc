@@ -60,6 +60,7 @@
         <file>UI/MySelectFileDialog.qml</file>
         <file>UI/MyCombox.qml</file>
         <file>UI/OperateList.qml</file>
+        <file>UI/UserManual.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file>images/you.png</file>
