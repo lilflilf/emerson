@@ -12,6 +12,7 @@
 #include <windows.h>
 #include <QDesktopWidget>
 #include <QTimer>
+#include <QCoreApplication>
 HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
 {
 
@@ -1676,6 +1677,16 @@ QVariant HmiAdaptor::getWorkValue(QString workKey)
             value = interfaceClass->CurrentWorkOrder.BatchSize;
     }
     return value;
+}
+
+QString HmiAdaptor::getUserManualPath()
+{
+    //url: ("file:///d:\\Special Double Hit Mode functionality for Delphi Ground Terminal Welder II.html");
+
+    QString path = QCoreApplication::applicationDirPath();
+    path = "file:///" + path + "/Special Double Hit Mode functionality for Delphi Ground Terminal Welder II.html";
+    qDebug() << "path =================" <<path;
+    return path;
 }
 
 void HmiAdaptor::slotPhysicalKeySignal(bool &status)

@@ -3,7 +3,7 @@ import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.0
 import QtQuick.Controls 1.3
 import QtQuick.Window 2.2
-//import QtWebKit 3.0
+import QtWebView 1.1
 import QtQuick.Window 2.2
 Item {
     signal passWordInputOk()
@@ -223,7 +223,6 @@ Item {
                 mimaShow.text = mimaShow.text + "●"
                 mima.text = mima.text + "3"
             }
-
             else if (event.key == Qt.Key_4) {
                 mimaShow.text = mimaShow.text + "●"
                 mima.text = mima.text + "4"

@@ -177,6 +177,9 @@ Window {
         case 19:
             source = "qrc:/UI/EditWire.qml"
             break;
+        case 21:
+            source = "qrc:/Ui/UserManual.qml"
+            break;
         default:
             break;
         }
@@ -358,7 +361,10 @@ Window {
             headBar.titleText = qsTr("Edit Existing")
 //            contentLoader.source = "qrc:/UI/EditWire.qml"
             stackview.push("qrc:/UI/EditWire.qml")
-
+            break;
+        case 21:
+            headBar.titleText = qsTr("User Manual")
+            stackview.push("qrc:/UI/UserManual.qml")
             break;
         default:
             break;

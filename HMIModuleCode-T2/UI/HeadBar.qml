@@ -267,6 +267,8 @@ Item {
         ListElement {menuKey:qsTr("Advanced Maintenance")}
         ListElement {menuKey:qsTr("Maintenance Counter")}
         ListElement {menuKey:qsTr("Maintenance log")}
+        ListElement {menuKey:qsTr("User Manual")}
+
     }
     ListModel {
         id: viewDataList
@@ -411,6 +413,10 @@ Item {
                                     mainRoot.clearStackView()
                                     mainRoot.checkNeedPassWd(8)
 //                                    title.text = qsTr("Maintenance log")
+                                }
+                                else if (menuKey == qsTr("User Manual")){
+                                    mainRoot.clearStackView()
+                                    mainRoot.checkNeedPassWd(21)
                                 }
                                 else if (menuKey == qsTr("Library")) {
                                     mainRoot.clearStackView()
