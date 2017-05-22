@@ -4,6 +4,7 @@
 #include "Interface/Interface.h"
 #include "Interface/SysConfiguration.h"
 #include "UtilityClass.h"
+#include "typedef.h"
 #include <QDir>
 #include <QFile>
 #include <QDataStream>
@@ -355,7 +356,7 @@ void M10INI::ClearPasswordData()
 void M10INI::Init_StatusData()
 {
     InterfaceClass *_Interface = InterfaceClass::Instance();
-    _Interface->DefaultStatusData.RevCode = -1;
+    _Interface->DefaultStatusData.RevCode = INVALID;
     _Interface->DefaultStatusData.CreatedDate = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
     _Interface->DefaultStatusData.StartScreen = CreateNew_SCREEN;
     _Interface->DefaultStatusData.Soft_Settings.Lang_Support = ENGLISH_lang;
@@ -365,9 +366,12 @@ void M10INI::Init_StatusData()
     _Interface->DefaultStatusData.Soft_Settings.SonicGenWatts = 4000; // newsplicer 4000w, others we can set 3300w
     _Interface->DefaultStatusData.Soft_Settings.ToolCoverIgnore  = true;
 //    _Interface->StatusData.Soft_Settings.NoToolCover4SU = true;
-    _Interface->DefaultStatusData.Soft_Settings.Pressure2Unit = ToPSI;
-    _Interface->DefaultStatusData.Soft_Settings.Mm2Awg = false;
-    _Interface->DefaultStatusData.Soft_Settings.Mm2Inch = false;
+    _Interface->DefaultStatusData.Soft_Settings.Pressure2Unit =
+            BRANSON_INI_STRUCT::ToPSI;
+    _Interface->DefaultStatusData.Soft_Settings.Square2Unit =
+            BRANSON_INI_STRUCT::ToSqrMM;
+    _Interface->DefaultStatusData.Soft_Settings.Length2Unit =
+            BRANSON_INI_STRUCT::ToMM;
     _Interface->DefaultStatusData.Soft_Settings.PWWidth2Height = 0;
     _Interface->DefaultStatusData.Soft_Settings.MinAmplitude = MINAMPLITUDE;
     _Interface->DefaultStatusData.Soft_Settings.MinPressure = MINWELDPRESSURE;
@@ -427,7 +431,7 @@ void M10INI::Init_StatusData()
 //    _Interface->StatusData.WeldSettingDefaultTrigPress = -1;
 //    _Interface->StatusData.AutoStartLastPart = false;
 //    _Interface->StatusData.NRGtoHeightMode = false;
-    _Interface->DefaultStatusData.ShrinkTubeMode = false;
+    _Interface->DefaultStatusData.ShrinkTubeModeEnable = false;
     _Interface->DefaultStatusData.FileSystemFlags = FSFDefaultSet;
     _Interface->DefaultStatusData.AutoGetNextDelay = DefAutoGetNextDelay;
     _Interface->DefaultStatusData.NetworkingEnabled = false;

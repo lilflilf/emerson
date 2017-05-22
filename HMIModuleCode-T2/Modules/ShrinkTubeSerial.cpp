@@ -2,6 +2,8 @@
 #include "UtilityClass.h"
 #include "Interface/interface.h"
 ShrinkTubeSerial* ShrinkTubeSerial::_instance = NULL;
+bool ShrinkTubeSerial::IsTest = false;
+bool ShrinkTubeSerial::IsMutexLock = false;
 QSerialPort* ShrinkTubeSerial::m_pShrinkTubeCom = NULL;
 QMutex* ShrinkTubeSerial::m_pMutex = NULL;
 
@@ -17,6 +19,8 @@ ShrinkTubeSerial::ShrinkTubeSerial(QObject *parent) : QObject(parent)
 {
     m_pShrinkTubeCom = new QSerialPort();
     m_pMutex = new QMutex(QMutex::NonRecursive);
+    IsTest = false;
+    IsMutexLock = false;
 }
 
 ShrinkTubeSerial::~ShrinkTubeSerial()
@@ -25,7 +29,8 @@ ShrinkTubeSerial::~ShrinkTubeSerial()
     delete m_pMutex;
 }
 
-void ShrinkTubeSerial::FormatShrinkTubeData(M10INI::ShrinkTubeIndex Index, int ShrinkTime, int Temperature)
+void ShrinkTubeSerial::FormatShrinkTubeData(M10INI::ShrinkTubeIndex Index,
+                                            float ShrinkTime, int Temperature)
 {
     QString ShrinkTubeTime, ShrinkTubeName, ShrinkTubeTemp;
     QByteArray ShrinkTubeData;
@@ -35,7 +40,7 @@ void ShrinkTubeSerial::FormatShrinkTubeData(M10INI::ShrinkTubeIndex Index, int S
     unsigned char Command = 0x00;
     InterfaceClass *pInterface = InterfaceClass::Instance();
     ShrinkTubeData.clear();
-    ShrinkTubeTime.sprintf("%2.1f",(float)(ShrinkTime * 0.1));
+    ShrinkTubeTime.sprintf("%2.1f",ShrinkTime);
     for(i = ShrinkTubeTime.length(); i< 4; i++)
         ShrinkTubeTime = "0" + ShrinkTubeTime;
     ShrinkTubeData.append(ShrinkTubeTime);
@@ -62,7 +67,6 @@ void ShrinkTubeSerial::FormatShrinkTubeData(M10INI::ShrinkTubeIndex Index, int S
     ShrinkTubeData.prepend(Command);
     Command = 0x04; //EOT
     ShrinkTubeData.append(Command);
-    disconnect(m_pShrinkTubeCom, SIGNAL(readyRead()),this, SLOT(comShrinkTubeTestEventSlot()));
     connect(m_pShrinkTubeCom,SIGNAL(readyRead()),this,SLOT(comShrinkTubeReadEventSlot()));
     CommName = QString::number(pInterface->StatusData.ShrinkTubeComInfo.COMport, 10);
     CommName = "COM" + CommName;
@@ -82,6 +86,7 @@ void ShrinkTubeSerial::FormatShrinkTubeData(M10INI::ShrinkTubeIndex Index, int S
 
 void ShrinkTubeSerial::comShrinkTubeReadEventSlot()
 {
+    InterfaceClass* _Interface = InterfaceClass::Instance();
     QByteArray DataBuffer;
     bool bResult = false;
 //    char Command;
@@ -103,46 +108,23 @@ void ShrinkTubeSerial::comShrinkTubeReadEventSlot()
         if(bResult == true)
             break;
     }
-
-}
-
-void ShrinkTubeSerial::comShrinkTubeTestEventSlot()
-{
-    QByteArray DataBuffer;
-    InterfaceClass *pInterface = InterfaceClass::Instance();
-    bool bResult = false;
-//    char Command;
-    DataBuffer.clear();
-    DataBuffer = m_pShrinkTubeCom->readAll();
-    for(int i = 0; i < DataBuffer.size(); i++)
+    if(IsTest == true)
     {
-        char InChar = DataBuffer.at(i);
-        switch(InChar)
-        {
-        case 0x06: //ACK
-            bResult = true;
-            break;
-        case 0x15: //NAK
-            break;
-        case 0x12: // ShrinkTube Mutex Lock ACK
-            break;
-        }
+        BransonMessageBox tmpMsgBox;
         if(bResult == true)
-            break;
+        {
+            tmpMsgBox.MsgPrompt = QObject::tr("Tube Shrinker has accepted data ");
+            tmpMsgBox.MsgTitle = QObject::tr("Information");
+            tmpMsgBox.TipsMode = (OKOnly + Information);
+        }else{
+            tmpMsgBox.MsgPrompt = QObject::tr("Tube Shrinker has rejected ddata.\n"
+                                              "Please check and retry");
+            tmpMsgBox.MsgTitle = QObject::tr("Exclamation");
+            tmpMsgBox.TipsMode = (OKOnly + Exclamation);
+        }
+        tmpMsgBox.func_ptr = NULL;
+        tmpMsgBox._Object = NULL;
+        _Interface->cMsgBox(&tmpMsgBox);
     }
-    BransonMessageBox tmpMsgBox;
-    if(bResult == true)
-    {
-        tmpMsgBox.MsgPrompt = QObject::tr("Tube Shrinker has accepted data ");
-        tmpMsgBox.MsgTitle = QObject::tr("Information");
-        tmpMsgBox.TipsMode = (OKOnly + Information);
-    }else{
-        tmpMsgBox.MsgPrompt = QObject::tr("Tube Shrinker has rejected ddata.\n"
-                                          "Please check and retry");
-        tmpMsgBox.MsgTitle = QObject::tr("Exclamation");
-        tmpMsgBox.TipsMode = (OKOnly + Exclamation);
-    }
-    tmpMsgBox.func_ptr = NULL;
-    tmpMsgBox._Object = NULL;
-    pInterface->cMsgBox(&tmpMsgBox);
 }
+

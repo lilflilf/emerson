@@ -314,8 +314,7 @@ public:
     void GetLimitsAfterWeld(PresetElement*);
     void start_data_structures();
     void Open_Maint_Log();
-    QString HistoryEvent(QString WorkOrderName, QString PartName,
-                      WeldResultElement *_WeldResult, PresetElement *_Splice);
+    QString HistoryEvent(WeldResultElement *_WeldResult, PresetElement *_Splice);
     void RotateOut(StatStats &SumStats, int OldData);
 
 

@@ -99,6 +99,7 @@
 #define PRESS2KPAFACTOR  (0.1 / 0.145)
 #define PSItoBARfactor   (1 / 14.5)
 #define PSItoKPAfactor   (1 / 0.145)
+#define LENGTH2INCHFACTOR (0.01/2.54)
 
 enum ScreenShowDataType{
 // Data Index Numbers

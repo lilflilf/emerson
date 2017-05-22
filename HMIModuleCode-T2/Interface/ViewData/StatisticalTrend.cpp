@@ -5,6 +5,7 @@
 //#include "Interface/Definition.h"
 #include "Modules/UtilityClass.h"
 #include "Modules/StatisticalFunction.h"
+#include "Modules/typedef.h"
 #include <QDateTime>
 #include <QDebug>
 StatisticalTrend::StatisticalTrend(QObject *parent) : QObject(parent)
@@ -46,9 +47,10 @@ bool StatisticalTrend::GetCurrentWeldResultOneByOne(QMap<int, QString>* ResultIn
     struct WeldActualParameter CurrentWeldActual;
     if(ResultIndex->isEmpty() == true)
         return false;
-    QMap<int, QString>::const_iterator i = ResultIndex->constBegin();
-    while (i != ResultIndex->constEnd()) {
-        bResult =_DBWeldResult->QueryOneRecordFromTable(i.key(), i.value(), &CurrentWeldResultRecord);
+    QMap<int, QString>::const_iterator iterator = ResultIndex->constBegin();
+    while (iterator != ResultIndex->constEnd()) {
+        bResult =_DBWeldResult->QueryOneRecordFromTable(iterator.key(),
+                iterator.value(), &CurrentWeldResultRecord);
         if(bResult == true)
         {
             float time = _Utility->FormatedDataToFloat(DINActTime,
@@ -73,7 +75,8 @@ bool StatisticalTrend::GetCurrentWeldResultOneByOne(QMap<int, QString>* ResultIn
             CurrentWeldActual.DateCreated  = TimeLabel.toString("MM/dd/yyyy hh:mm:ss");
             CurrentWeldActual.Energy = _Utility->FormatedDataToString(DINEnergy,
                         CurrentWeldResultRecord.ActualResult.ActualEnergy);
-            CurrentWeldActual.PartName = CurrentWeldResultRecord.CurrentHarness.HarnessName;
+            CurrentWeldActual.SequenceName = CurrentWeldResultRecord.CurrentSequence.SequenceName;
+            CurrentWeldActual.HarnessName = CurrentWeldResultRecord.CurrentHarness.HarnessName;
             CurrentWeldActual.PeakPower = _Utility->FormatedDataToString(DINActPower,
                         CurrentWeldResultRecord.ActualResult.ActualPeakPower);
             CurrentWeldActual.PostHeight = _Utility->FormatedDataToString(DINActHgt,
@@ -88,7 +91,6 @@ bool StatisticalTrend::GetCurrentWeldResultOneByOne(QMap<int, QString>* ResultIn
                         CurrentWeldResultRecord.ActualResult.ActualPressure);
             CurrentWeldActual.Width = _Utility->FormatedDataToString(DINWidth,
                         CurrentWeldResultRecord.ActualResult.ActualWidth);
-            CurrentWeldActual.WorkOrderName = CurrentWeldResultRecord.CurrentWorkOrder.WorkOrderName;
             CurrentWeldParameterList.push_back(CurrentWeldActual);
             DataList[QUALITYTIME].push_back(time);
             RawQualityWindowList[QUALITYTIME].push_back(CurrentWeldResultRecord.ActualResult.ActualTime);
@@ -99,7 +101,7 @@ bool StatisticalTrend::GetCurrentWeldResultOneByOne(QMap<int, QString>* ResultIn
             DataList[QUALITYPOSTHEIGHT].push_back(postheight);
             RawQualityWindowList[QUALITYPOSTHEIGHT].push_back(CurrentWeldResultRecord.ActualResult.ActualPostheight);
         }
-        ++i;
+        ++iterator;
     }
     return true;
 }
@@ -175,17 +177,11 @@ bool StatisticalTrend::GetStatisticsParameter()
         }
         CurrentStatisticsParameter[i].Sigma.sprintf("%.4f", sigma);
         CurrentStatisticsParameter[i].Cpk.sprintf("%.4f", CPK);
-        CurrentStatisticsParameter[i].SampleSize = QString::number(size, 10);
-        float CentralValue = (USL + LSL)/ 2;
-        if(USL > (3 * sigma))
-            UCL = USL - 3 * sigma;
-        else
-            UCL = USL;
-        if(UCL < CentralValue)
-            UCL = CentralValue;
-        LCL = LSL + 3 * sigma;
-        if(LCL > CentralValue)
-            LCL = CentralValue;
+        CurrentStatisticsParameter[i].SampleSize = QString::number(size, DECIMALISM);
+
+        UCL = mean + 6 * sigma;
+        LCL = mean + 6 * sigma;
+
         switch(i)
         {
         case QUALITYTIME:
@@ -193,24 +189,32 @@ bool StatisticalTrend::GetStatisticsParameter()
                     UCL / _Utility->txtData[DINActTime].Factor;
             CurrentStatisticsParameter[i].LowerControlLimit =
                     LCL / _Utility->txtData[DINActTime].Factor;
+            CurrentStatisticsParameter[i].WhiteMean =
+                    mean / _Utility->txtData[DINActTime].Factor;
             break;
         case QUALITYPOWER:
             CurrentStatisticsParameter[i].UpperControlLimit =
                     UCL / _Utility->txtData[DINActPower].Factor;
             CurrentStatisticsParameter[i].LowerControlLimit =
                     LCL / _Utility->txtData[DINActPower].Factor;
+            CurrentStatisticsParameter[i].WhiteMean =
+                    mean / _Utility->txtData[DINActPower].Factor;
             break;
         case QUALITYPREHEIGHT:
             CurrentStatisticsParameter[i].UpperControlLimit =
                     UCL / _Utility->txtData[DINActPreHgt].Factor;
             CurrentStatisticsParameter[i].LowerControlLimit =
                     LCL / _Utility->txtData[DINActPreHgt].Factor;
+            CurrentStatisticsParameter[i].WhiteMean =
+                    mean / _Utility->txtData[DINActPreHgt].Factor;
             break;
         case QUALITYPOSTHEIGHT:
             CurrentStatisticsParameter[i].UpperControlLimit =
                     UCL / _Utility->txtData[DINActHgt].Factor;
             CurrentStatisticsParameter[i].LowerControlLimit =
                     LCL / _Utility->txtData[DINActHgt].Factor;
+            CurrentStatisticsParameter[i].WhiteMean =
+                    mean / _Utility->txtData[DINActHgt].Factor;
             break;
         }
     }
@@ -220,7 +224,7 @@ bool StatisticalTrend::GetStatisticsParameter()
 void StatisticalTrend::Initialization()
 {
     CurrentWeldParameterList.clear();
-    for(int i = 0; i< 4; i++)
+    for(int i = QUALITYTIME; i <= QUALITYPOSTHEIGHT; i++)
     {
         CurrentStatisticsParameter[i].Cpk.clear();
         CurrentStatisticsParameter[i].LowerControlLimit = 0;
@@ -231,6 +235,7 @@ void StatisticalTrend::Initialization()
         CurrentStatisticsParameter[i].Sigma.clear();
         CurrentStatisticsParameter[i].UpperControlLimit = 0;
         CurrentStatisticsParameter[i].UpperSpecLimit = 0;
+        CurrentStatisticsParameter[i].WhiteMean = 0;
         RawQualityWindowList[i].clear();
     }
 }
@@ -240,13 +245,15 @@ void StatisticalTrend::_apply(int SpliceID, QString SpliceName,
 {
     Initialization();
     bool bResult = GetCurrentPresetFromLibrary(SpliceID, SpliceName);
-    if(bResult == true)
-        bResult = GetCurrentWeldResultList(CurrentPreset.SpliceName,
+    if(bResult == false)
+        return;
+    bResult = GetCurrentWeldResultList(CurrentPreset.SpliceName,
                 CurrentPreset.HashCode, time_from, time_to);
-    if(bResult == true)
-        bResult = GetCurrentWeldResultOneByOne(&RetrievedWeldResultIndexList);
-    if(bResult == true) {
-         GetStatisticsParameter();
-    }
+    if(bResult == false)
+        return;
+    bResult = GetCurrentWeldResultOneByOne(&RetrievedWeldResultIndexList);
+    if(bResult == false)
+        return;
+    GetStatisticsParameter();
     emit _ProcessFinished(bResult);
 }

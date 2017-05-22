@@ -10,13 +10,12 @@ struct ShrinkTubeReference
 
 struct DataCommunicationForScreen
 {
-    bool GlobalShrinkTubeMode;
-    QList<struct ShrinkTubeReference> ShrinkTubeDefault;
-    QString MaxmmTemp;
-    QString MinmmTemp;
-    QString MaxmmTime;
-    QString MinmmTime;
-    bool EthernetMode;
+    bool GlobalShrinkTubeModeEnable;
+//    QString MaxmmTemp;
+//    QString MinmmTemp;
+//    QString MaxmmTime;
+//    QString MinmmTime;
+    bool EthernetModeEnable;
     BRANSONDATA ServerPort;
     QString IPConfiguration;
     bool RemoteDataLogging; //bool NetworkingEnabled;
@@ -32,6 +31,7 @@ public:
     bool _Recall();
     bool _Set();
     void _Default();
+    void ShrinkTubeTesting();
 public:
     DataCommunication();
 };

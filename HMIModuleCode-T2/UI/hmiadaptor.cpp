@@ -979,7 +979,7 @@ bool HmiAdaptor::dataCommunicationGetSwitch(QString index)
 {
     bool reb = false;
     if (index == "Network(Ethernet)")
-        reb = dataCommunication->CurrentDataCommunication.EthernetMode;
+        reb = dataCommunication->CurrentDataCommunication.EthernetModeEnable;
     else if (index == "Remote Data Logging")
         reb = dataCommunication->CurrentDataCommunication.RemoteDataLogging;
     else if (index == "Graph Data")
@@ -999,22 +999,22 @@ QStringList HmiAdaptor::dataCommunicationGetValue(QString index)
              << dataCommunication->CurrentDataCommunication.ServerPort.Current
              << dataCommunication->CurrentDataCommunication.ServerPort.Minimum;
     }
-    else if (index == "shrinkData")
-    {
-        for (int i = 0; i < dataCommunication->CurrentDataCommunication.ShrinkTubeDefault.size();i++)
-        {
-            list << dataCommunication->CurrentDataCommunication.ShrinkTubeDefault.at(i).Name
-                 << dataCommunication->CurrentDataCommunication.ShrinkTubeDefault.at(i).Temp
-                 << dataCommunication->CurrentDataCommunication.ShrinkTubeDefault.at(i).Time;
-        }
-    }
-    else if (index == "shrinkLimit")
-    {
-        list << dataCommunication->CurrentDataCommunication.MaxmmTemp
-             << dataCommunication->CurrentDataCommunication.MinmmTemp
-             << dataCommunication->CurrentDataCommunication.MaxmmTime
-             << dataCommunication->CurrentDataCommunication.MinmmTime;
-    }
+//    else if (index == "shrinkData")
+//    {
+//        for (int i = 0; i < dataCommunication->CurrentDataCommunication.ShrinkTubeDefault.size();i++)
+//        {
+//            list << dataCommunication->CurrentDataCommunication.ShrinkTubeDefault.at(i).Name
+//                 << dataCommunication->CurrentDataCommunication.ShrinkTubeDefault.at(i).Temp
+//                 << dataCommunication->CurrentDataCommunication.ShrinkTubeDefault.at(i).Time;
+//        }
+//    }
+//    else if (index == "shrinkLimit")
+//    {
+//        list << dataCommunication->CurrentDataCommunication.MaxmmTemp
+//             << dataCommunication->CurrentDataCommunication.MinmmTemp
+//             << dataCommunication->CurrentDataCommunication.MaxmmTime
+//             << dataCommunication->CurrentDataCommunication.MinmmTime;
+//    }
     return list;
 }
 
@@ -1022,7 +1022,7 @@ bool HmiAdaptor::dataCommunicationSetValue(QList<bool> boolList, QStringList str
 {
     UNUSED(strList);
     UNUSED(ip);
-    dataCommunication->CurrentDataCommunication.EthernetMode = boolList[0];
+    dataCommunication->CurrentDataCommunication.EthernetModeEnable = boolList[0];
     dataCommunication->CurrentDataCommunication.RemoteDataLogging = boolList[1];
     dataCommunication->CurrentDataCommunication.RemoteGraphData = boolList[2];
     dataCommunication->CurrentDataCommunication.ModularProduction = boolList[3];
@@ -1361,10 +1361,10 @@ QStringList HmiAdaptor::getWeldActualParameterDataList(int index)
     list.append(statisticalTrend->CurrentWeldParameterList[index].TriggerPressure);
     list.append(statisticalTrend->CurrentWeldParameterList[index].PostHeight);
     list.append(statisticalTrend->CurrentWeldParameterList[index].Amplitude);
-    list.append(statisticalTrend->CurrentWeldParameterList[index].PartName);
+    list.append(statisticalTrend->CurrentWeldParameterList[index].HarnessName);
+    list.append(statisticalTrend->CurrentWeldParameterList[index].SequenceName);
     list.append(statisticalTrend->CurrentWeldParameterList[index].Width);
     list.append(statisticalTrend->CurrentWeldParameterList[index].DateCreated);
-    list.append(statisticalTrend->CurrentWeldParameterList[index].WorkOrderName);
     return list;
 }
 

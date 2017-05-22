@@ -74,7 +74,7 @@ bool CSVHarnessData::ExportData(int ID, QString fileUrl)
     if(bResult == false)
         return bResult;
     QTextStream out(&csvFile);
-    out << "WireData" << '\n' << RowStr;
+    out << "Harness Data" << '\n' << RowStr;
     csvFile.close();
     return true;
 }

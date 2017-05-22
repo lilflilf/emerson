@@ -169,7 +169,7 @@ enum IASig{
     IASigActuator,          //0x17
     IASigWidthZero,         //0x18
     IASigHeightZero,        //0x19
-    IAsigCooling,           //0x1A
+    IASigCooling,           //0x1A
     IASigDataLockOnAlarm,   //0x1B
     IASigDataMaintCntr,     //0x1C
     IASigDataCycleCntr,     //0x1D

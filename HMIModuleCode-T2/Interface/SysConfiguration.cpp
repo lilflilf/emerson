@@ -31,7 +31,7 @@ Status_Data &Status_Data::operator= (const Status_Data &StatusDataObj)
     this->Soft_Settings.SonicGenWatts = StatusDataObj.Soft_Settings.SonicGenWatts;
     this->Soft_Settings.ToolCoverIgnore = StatusDataObj.Soft_Settings.ToolCoverIgnore;
     this->Soft_Settings.Pressure2Unit = StatusDataObj.Soft_Settings.Pressure2Unit;
-    this->Soft_Settings.Mm2Awg = StatusDataObj.Soft_Settings.Mm2Awg;
+    this->Soft_Settings.Square2Unit = StatusDataObj.Soft_Settings.Square2Unit;
     this->Soft_Settings.PWWidth2Height = StatusDataObj.Soft_Settings.PWWidth2Height;
     this->Soft_Settings.MinAmplitude = StatusDataObj.Soft_Settings.MinAmplitude;
     this->Soft_Settings.MinPressure = StatusDataObj.Soft_Settings.MinPressure;
@@ -82,7 +82,7 @@ Status_Data &Status_Data::operator= (const Status_Data &StatusDataObj)
 //    Obj.WeldSettingDefaultTrigPress = StatusDataObj.WeldSettingDefaultTrigPress;
 //    Obj.AutoStartLastPart = StatusDataObj.AutoStartLastPart;
 //    Obj.NRGtoHeightMode = StatusDataObj.NRGtoHeightMode;
-    this->ShrinkTubeMode = StatusDataObj.ShrinkTubeMode;
+    this->ShrinkTubeModeEnable = StatusDataObj.ShrinkTubeModeEnable;
     ShrinkTubeData tmpShrinkTube;
     this->ShrinkTubeDefaults.clear();
     for(int i = 0; i < StatusDataObj.ShrinkTubeDefaults.size(); i++)
@@ -188,8 +188,11 @@ bool Status_Data::ReadStatusDataFromQSetting()
     Soft_Settings.SonicGenWatts = settings.value("SonicGenWatts").value<int>();
     Soft_Settings.ToolCoverIgnore = settings.value("ToolCoverIgnore").value<bool>();
     i_tmp = settings.value("Pressure2Unit").value<int>();
-    Soft_Settings.Pressure2Unit = (enum PRESSUREUNIT)i_tmp;
-    Soft_Settings.Mm2Awg = settings.value("Mm2Awg").value<bool>();
+    Soft_Settings.Pressure2Unit = (BRANSON_INI_STRUCT::PRESSUREUNIT)i_tmp;
+    i_tmp = settings.value("Square2Unit").value<int>();
+    Soft_Settings.Square2Unit = (BRANSON_INI_STRUCT::SQUAREUNIT)i_tmp;
+    i_tmp = settings.value("Length2Unit").value<int>();
+    Soft_Settings.Length2Unit = (BRANSON_INI_STRUCT::LENGTHUNIT)i_tmp;
     Soft_Settings.PWWidth2Height = settings.value("PWWidth2Height").value<float>();
     Soft_Settings.MinAmplitude = settings.value("MinAmplitude").value<int>();
     Soft_Settings.MinPressure = settings.value("MinPressure").value<int>();
@@ -368,7 +371,8 @@ void Status_Data::WriteStatusDataToQSetting()
     settings.setValue("SonicGenWatts", Soft_Settings.SonicGenWatts);
     settings.setValue("ToolCoverIgnore", Soft_Settings.ToolCoverIgnore);
     settings.setValue("Pressure2Unit", Soft_Settings.Pressure2Unit);
-    settings.setValue("Mm2Awg", Soft_Settings.Mm2Awg);
+    settings.setValue("Square2Unit", Soft_Settings.Square2Unit);
+    settings.setValue("Length2Unit", Soft_Settings.Length2Unit);
     settings.setValue("PWWidth2Height", Soft_Settings.PWWidth2Height);
     settings.setValue("MinAmplitude", Soft_Settings.MinAmplitude);
     settings.setValue("MinPressure", Soft_Settings.MinPressure);
