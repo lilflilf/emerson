@@ -16,15 +16,16 @@ private:
     static QMutex* m_pMutex;
 public:
     static QSerialPort *m_pShrinkTubeCom;
-
+    static bool IsTest;
+    static bool IsMutexLock;
 public:
-    void FormatShrinkTubeData(M10INI::ShrinkTubeIndex Index, int ShrinkTime, int Temperature);
+    void FormatShrinkTubeData(M10INI::ShrinkTubeIndex Index,
+                              float ShrinkTime, int Temperature);
 
 signals:
 
 public slots:
     static void comShrinkTubeReadEventSlot();
-    static void comShrinkTubeTestEventSlot();
 
 public:
     static ShrinkTubeSerial* Instance();

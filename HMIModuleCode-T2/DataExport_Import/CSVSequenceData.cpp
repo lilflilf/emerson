@@ -72,7 +72,7 @@ bool CSVSequenceData::ExportData(int ID, QString fileUrl)
     if(bResult == false)
         return bResult;
     QTextStream out(&csvFile);
-    out << "SequenceData" << '\n' << RowStr;
+    out << "Sequence Data" << '\n' << RowStr;
     csvFile.close();
     return true;
 }

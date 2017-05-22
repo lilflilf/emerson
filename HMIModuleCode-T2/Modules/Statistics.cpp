@@ -302,8 +302,7 @@ QString Statistics::GraphData(enum ScreenShowDataType DataType, QList<int> *_Gra
 //Create a tab deliminated file for loading into an Excel worksheet
 //It stores all the Actual data regarding a Preset in the .tsv file during welding.
 //Also Displays Amplitude2 along with Amplitude1 if Amplitude Step is enabled
-QString Statistics::HistoryEvent(QString WorkOrderName, QString PartName,
-                WeldResultElement *_WeldResult, PresetElement *_Splice)
+QString Statistics::HistoryEvent(WeldResultElement *_WeldResult, PresetElement *_Splice)
 {
     InterfaceClass *_Interface = InterfaceClass::Instance();
     UtilityClass *_Utility = UtilityClass::Instance();
@@ -363,7 +362,23 @@ QString Statistics::HistoryEvent(QString WorkOrderName, QString PartName,
     else
         sEvent = _Interface->StatusData.CycleCount + "*\t" + sDate + "\t" + sTime;
 
-    sEvent += WorkOrderName + "\t" + PartName + "\t" + _Splice->SpliceName;
+    QString PartName;
+    switch(_Interface->CurrentWorkOrder.WorkOrderMode)
+    {
+    case WorkOrderElement::SPLICE:
+        PartName = "NONE";
+        break;
+    case WorkOrderElement::SEQUENCE:
+        PartName = _WeldResult->CurrentSequence.SequenceName;
+        break;
+    case WorkOrderElement::HARNESS:
+        PartName = _WeldResult->CurrentHarness.HarnessName;
+        break;
+    default:
+        PartName = "NONE";
+        break;
+    }
+    sEvent += "\t" + PartName + "\t" + _Splice->SpliceName;
     sEvent += "\t\t" + _Utility->FormatedDataToString(DINEnergy,
             _WeldResult->ActualResult.ActualEnergy);
     if(_M2010->Machine != Welder)

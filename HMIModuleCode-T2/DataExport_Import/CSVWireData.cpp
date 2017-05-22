@@ -54,7 +54,7 @@ bool CSVWireData::ExportData(int ID, QString fileUrl)
     if(bResult == false)
         return bResult;
     QTextStream out(&csvFile);
-    out << "WireData" << '\n' << RowStr;
+    out << "Wire Data" << '\n' << RowStr;
     csvFile.close();
     return true;
 }

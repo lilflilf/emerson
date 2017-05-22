@@ -417,15 +417,24 @@ bool UtilityClass::StringJsonToList(QString SourceString, QList<struct ShrinkTub
 void UtilityClass::InitializeTextData()
 {
     InterfaceClass* _Interface = InterfaceClass::Instance();
-    SetTextData(DINGauge, 0, MINEDITWIRE, MAXEDITWIRE, 1, (float)0.01, "%.2fmm²");
+    SetTextData(DINGauge, 0, MINEDITWIRE, MAXEDITWIRE, 1, (float)0.01, QString("%.2fmm").append(QChar(0xB2)));//"%.2fmm²"
     SetTextData(DINGaugeAWG, 0, MINWIREAREA_AWG, MAXWIREAREA_AWG, 1, 1, "%dAWG");
-    SetTextData(DINCrossSection, 0, MINWIREAREA, MAXWIREAREA, 1, (float)0.01, "%.2fmm²");
+    SetTextData(DINCrossSection, 0, MINWIREAREA, MAXWIREAREA, 1, (float)0.01, QString("%.2fmm").append(QChar(0xB2)));//"%.2fmm²"
     SetTextData(DINEnergy, 0, MINENERGY, MAXENERGY, 2, 1, "%dJ");
-    if (_Interface->StatusData.MachineType != ACT2032)
-        SetTextData(DINWidth, 0, MINWIDTH, MAXWIDTH, 2, (float)0.01, "%.2fmm");
-    else
-        SetTextData(DINWidth, 0, MINWIDTH, MAXWIDTH2032, 2, (float)0.01, "%.2fmm");
-    if (_Interface->StatusData.Soft_Settings.Pressure2Unit == ToBar)
+    if(_Interface->StatusData.Soft_Settings.Length2Unit == BRANSON_INI_STRUCT::ToMM)
+    {
+        if (_Interface->StatusData.MachineType != ACT2032)
+            SetTextData(DINWidth, 0, MINWIDTH, MAXWIDTH, 2, (float)0.01, "%.2fmm");
+        else
+            SetTextData(DINWidth, 0, MINWIDTH, MAXWIDTH2032, 2, (float)0.01, "%.2fmm");
+    }else
+    {
+        if (_Interface->StatusData.MachineType != ACT2032)
+            SetTextData(DINWidth, 0, MINWIDTH, MAXWIDTH, 2, (float)LENGTH2INCHFACTOR, "%.2fin");
+        else
+            SetTextData(DINWidth, 0, MINWIDTH, MAXWIDTH2032, 2, (float)LENGTH2INCHFACTOR, "%.2fin");
+    }
+    if (_Interface->StatusData.Soft_Settings.Pressure2Unit == BRANSON_INI_STRUCT::ToBar)
     {
         SetTextData(DINPressure,        0, MINWELDPRESSURE, MAXWELDPRESSURE, 1, (float)PRESS2BARFACTOR, "%.2fB");
         SetTextData(DINTriggerPressure, 0, MINTRIGPRESSURE, MAXTRIGPRESSURE, 1, (float)PRESS2BARFACTOR, "%.2fB");
@@ -433,7 +442,7 @@ void UtilityClass::InitializeTextData()
         SetTextData(DINForcePl,         0, MINFORCE,        MAXFORCE,        2, (float)PRESS2BARFACTOR, "%.2fB");
         SetTextData(DINForceMs,         0, MINFORCE,        MAXFORCE,        2, (float)PRESS2BARFACTOR, "%.2fB");
     }
-    else if (_Interface->StatusData.Soft_Settings.Pressure2Unit == TokPa)
+    else if (_Interface->StatusData.Soft_Settings.Pressure2Unit == BRANSON_INI_STRUCT::TokPa)
     {
         SetTextData(DINPressure, 0, MINWELDPRESSURE, MAXWELDPRESSURE, 1, (float)PRESS2KPAFACTOR, "%dkPa");
         SetTextData(DINTriggerPressure, 0, MINTRIGPRESSURE, MAXTRIGPRESSURE, 1, (float)PRESS2KPAFACTOR,  "%dkPa");
@@ -443,15 +452,17 @@ void UtilityClass::InitializeTextData()
     }
     else
     {
-        SetTextData(DINPressure, 0, MINWELDPRESSURE, MAXWELDPRESSURE, 2, (float)0.1, "%.1fPsi");
-        SetTextData(DINTriggerPressure, 0, MINTRIGPRESSURE, MAXTRIGPRESSURE, 2, (float)0.1,  "%.1fPsi");
+        SetTextData(DINPressure, 0, MINWELDPRESSURE, MAXWELDPRESSURE, 2, (float)0.1, "%.1fpsi");
+        SetTextData(DINTriggerPressure, 0, MINTRIGPRESSURE, MAXTRIGPRESSURE, 2, (float)0.1,  "%.1fpsi");
         // Force is actually not displayed anywhere
-        SetTextData(DINForcePl, 0, MINFORCE, MAXFORCE, 2, (float)0.1, "%.1fPsi");
-        SetTextData(DINForceMs, 0, MINFORCE, MAXFORCE, 2, (float)0.1, "%.1fPsi");
+        SetTextData(DINForcePl, 0, MINFORCE, MAXFORCE, 2, (float)0.1, "%.1fpsi");
+        SetTextData(DINForceMs, 0, MINFORCE, MAXFORCE, 2, (float)0.1, "%.1fpsi");
     }
 
+    QString str = QString("%d%1%2").arg(QString(QChar(0x03BC))).arg("m");
     SetTextData(DINAmplitude,0, MINAMPLITUDE,
-                _Interface->StatusData.Soft_Settings.Horn_Calibrate, 1, 1, "%dμm");
+                _Interface->StatusData.Soft_Settings.Horn_Calibrate, 1, 1, str);//"%dμm"
+
     SetTextData(DINActTime, 0, MINTIME, MAXTIME, 2, (float)0.01, "%.2fs");
     SetTextData(DINTimePl, 0, MINTIME, MAXTIME, 2, (float)0.01, "%.2fs");
     SetTextData(DINTimeMs, 0, MINTIME, MAXTIME, 2, (float)0.01, "%.2fs");
@@ -460,12 +471,24 @@ void UtilityClass::InitializeTextData()
 //    SetTextData(DINPowerMs, 0, MINPOWER,
 //                _Interface->StatusData.Soft_Settings.SonicGenWatts, 100, 1, "%dW");
     SetTextData(DINPowerMs, 0, MINPOWER, Maxpower, 100, 1, "%dW");
-    SetTextData(DINActPreHgt, 0, MINHEIGHT, MAXHEIGHT, 2, (float)0.01, "%.2fmm");
-    SetTextData(DINPre_HgtPl, 0, MINHEIGHT, MAXHEIGHT, 2, (float)0.01, "%.2fmm");
-    SetTextData(DINPre_HgtMs, 0, MINHEIGHT, MAXHEIGHT, 2, (float)0.01, "%.2fmm");
-    SetTextData(DINActHgt, 0, MINHEIGHT, MAXHEIGHT, 2, (float)0.01, "%.2fmm");
-    SetTextData(DINHeightPl, 0, MINHEIGHT, MAXHEIGHT, 2, (float)0.01, "%.2fmm");
-    SetTextData(DINHeightMs, 0, MINHEIGHT, MAXHEIGHT, 2, (float)0.01, "%.2fmm");
+    if(_Interface->StatusData.Soft_Settings.Length2Unit == BRANSON_INI_STRUCT::ToMM)
+    {
+        SetTextData(DINActPreHgt, 0, MINHEIGHT, MAXHEIGHT, 2, (float)0.01, "%.2fmm");
+        SetTextData(DINPre_HgtPl, 0, MINHEIGHT, MAXHEIGHT, 2, (float)0.01, "%.2fmm");
+        SetTextData(DINPre_HgtMs, 0, MINHEIGHT, MAXHEIGHT, 2, (float)0.01, "%.2fmm");
+        SetTextData(DINActHgt, 0, MINHEIGHT, MAXHEIGHT, 2, (float)0.01, "%.2fmm");
+        SetTextData(DINHeightPl, 0, MINHEIGHT, MAXHEIGHT, 2, (float)0.01, "%.2fmm");
+        SetTextData(DINHeightMs, 0, MINHEIGHT, MAXHEIGHT, 2, (float)0.01, "%.2fmm");
+    }
+    else
+    {
+        SetTextData(DINActPreHgt, 0, MINHEIGHT, MAXHEIGHT, 2, (float)LENGTH2INCHFACTOR, "%.2fin");
+        SetTextData(DINPre_HgtPl, 0, MINHEIGHT, MAXHEIGHT, 2, (float)LENGTH2INCHFACTOR, "%.2fin");
+        SetTextData(DINPre_HgtMs, 0, MINHEIGHT, MAXHEIGHT, 2, (float)LENGTH2INCHFACTOR, "%.2fin");
+        SetTextData(DINActHgt, 0, MINHEIGHT, MAXHEIGHT, 2, (float)LENGTH2INCHFACTOR, "%.2fin");
+        SetTextData(DINHeightPl, 0, MINHEIGHT, MAXHEIGHT, 2, (float)LENGTH2INCHFACTOR, "%.2fin");
+        SetTextData(DINHeightMs, 0, MINHEIGHT, MAXHEIGHT, 2, (float)LENGTH2INCHFACTOR, "%.2fin");
+    }
 
     SetTextData(DINABDelay, 0, MINABDELAY, MAXABDELAY, 2, (float)0.01, "%.2fs");
     SetTextData(DINABDuration, 0, MINABDURATION, MAXABDURATION, 2, (float)0.01, "%.2fs");
@@ -483,24 +506,25 @@ void UtilityClass::InitializeTextData()
     SetTextData(DINPreBurst, 0, MINPREBURST, MAXPREBURST, 10, (float)0.01, "%.2fs");
     SetTextData(DINWeldMode, 0, 0, 2, 1, 1, "");
 
+    str = QString("%d%1%2").arg(QString(QChar(0x03BC))).arg("m");
     SetTextData(DINAmplitude2, 0, MINAMPLITUDE,
-       _Interface->StatusData.Soft_Settings.Horn_Calibrate, 1, 1, "%dμm");
+       _Interface->StatusData.Soft_Settings.Horn_Calibrate, 1, 1, str);//"%dμm"
     SetTextData(DINEnergy2Step, 0, MINSTEPENERGY, MAXENERGY, 2, 1, "%dJ");
     SetTextData(DINPower2Step, 0, MINPOWER, Maxpower, 100, 1, "%dW");
     SetTextData(DINTime2Step, 0, MINTIME, MAXSTEPTIME, 2, (float)0.001, "%.2fs");
     SetTextData(DINCoolDur, 0, MINCOOLDUR, MAXCOOLDUR, 1, (float)0.01, "%.2fs");
     SetTextData(DINCoolDel, 0, MINCOOLDEL, MAXCOOLDEL, 1, (float)0.01, "%.2fs");
-    SetTextData(DINFormulaArea, 0, MINFORMULAAREA, MAXFORMULAAREA, 1, 1, "%.2fmm²");
+    SetTextData(DINFormulaArea, 0, MINFORMULAAREA, MAXFORMULAAREA, 1, 1, QString("%.2fmm").append(QChar(0xB2)));//"%.2fmm²"
     SetTextData(DINFormulaEnergyOffset, 0, Minmm2EnergyOffset, Maxmm2EnergyOffset, 1, 1, "%.2fJ");
     SetTextData(DINFormulaEnergyMult, 0, Minmm2EnergyMult, Maxmm2EnergyMult, 1, 1, "%.2fJ" );
     SetTextData(DINFormulaWidthOffset, 0, 0, 0, 1, 1, "%dmm");
     SetTextData(DINFormulaWidthMult, 0, Minmm2WidthAreaRatio, Maxmm2WidthAreaRatio, 1, 1, "%.2f");
-    if (_Interface->StatusData.Soft_Settings.Pressure2Unit == ToBar)
+    if (_Interface->StatusData.Soft_Settings.Pressure2Unit == BRANSON_INI_STRUCT::ToBar)
     {
         SetTextData(DINFormulaPressureOffset, 0, Minmm2PressOffset, Maxmm2PressOffset, 1, (float)PSItoBARfactor, "%.2fB");
         SetTextData(DINFormulaPressureMult, 0, Minmm2PressMult, Maxmm2PressMult, 1, (float)PSItoBARfactor, "%.2f");
     }
-    else if (_Interface->StatusData.Soft_Settings.Pressure2Unit == TokPa)
+    else if (_Interface->StatusData.Soft_Settings.Pressure2Unit == BRANSON_INI_STRUCT::TokPa)
     {
         SetTextData(DINFormulaPressureOffset, 0, Minmm2PressOffset, Maxmm2PressOffset, 1, (float)PSItoKPAfactor, "%dkPa");
         SetTextData(DINFormulaPressureMult, 0, Minmm2PressMult, Maxmm2PressMult, 1, (float)PSItoKPAfactor, "%d");
@@ -508,10 +532,10 @@ void UtilityClass::InitializeTextData()
         SetTextData(DINFormulaPressureOffset, 0, Minmm2PressOffset, Maxmm2PressOffset, 1, 1, "%.1fPSI");
         SetTextData(DINFormulaPressureMult, 0, Minmm2PressMult, Maxmm2PressMult, 1, 1, "%.2f");
     }
-    SetTextData(DINFormulaAmplitudeOffset, 0, Minmm2AmplitudeOffset, Maxmm2AmplitudeOffset, 1, 1, "%.2fμm");
+    str = QString("%.2f%1%2").arg(QString(QChar(0x03BC))).arg("m");
+    SetTextData(DINFormulaAmplitudeOffset, 0, Minmm2AmplitudeOffset, Maxmm2AmplitudeOffset, 1, 1, str);//"%.2fμm"
     SetTextData(DINFormulaAmplitudeMult, 0, Minmm2AmplitudeMult, Maxmm2AmplitudeMult, 1, 1, "%.2f");
-
-    SetTextData(DINShrinkTubeTemperature, 0, ShrinkTubeMinTemp, ShrinkTubeMaxTemp, 1, 1, "%d℃"); //"%d℃"
+    SetTextData(DINShrinkTubeTemperature, 0, ShrinkTubeMinTemp, ShrinkTubeMaxTemp, 1, 1, QString("%d").append(QChar(0x2103))); //"%d℃"
     SetTextData(DINShrinkTubeTime, 0, ShrinkTubeMinTime, ShrinkTubeMaxTime, 1, (float)0.1, "%.1fs");
     SetTextData(DINServerPortNumber, 0, MINSERVER_PORT_NUMBER, MAXSERVER_PORT_NUMBER, 1, 1, "%d");
     SetTextData(DINHornCountLimit, 0, MINHORNCOUNTLIMIT, MAXHORNCOUNTLIMIT, 1, 1, "%d");
@@ -530,7 +554,8 @@ void UtilityClass::InitializeTextData()
     SetTextData(DINGraphHeight, 0, MINHEIGHT, MAXHEIGHT, 2, (float)0.01, "%.2f");
     SetTextData(DINTestQuantity, 0, MINTESTQUANTITY, MAXTESTQUANTITY, 1, 1, "%d");
     SetTextData(DINSequenceQuantity, 0, MINSEQUENCEQUANTITY, MAXSEQUENCEQUANTITY, 1, 1, "%d");
-    SetTextData(DINDefaultAmplitude, 0, MINAMPLITUDE, MAXAMPLITUDE, 1, 1, "%dμm");
+    str = QString("%d%1%2").arg(QString(QChar(0x03BC))).arg("m");
+    SetTextData(DINDefaultAmplitude, 0, MINAMPLITUDE, MAXAMPLITUDE, 1, 1, str);//"%dμm"
     SetTextData(DINTeachModeQuantity, 0, MINTEACHMODEQUANTITY, MAXTEACHMODEQUANTITY,1, 1, "%d");
 }
 

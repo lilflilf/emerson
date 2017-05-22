@@ -16,8 +16,8 @@ struct  WeldActualParameter
     QString PeakPower;
     QString PreHeight;
     QString PostHeight;
-    QString WorkOrderName;
-    QString PartName;
+    QString SequenceName;
+    QString HarnessName;
     QString DateCreated;
 };
 struct StatisticsParameter
@@ -27,10 +27,11 @@ struct StatisticsParameter
     QString Median;
     QString Sigma;
     QString Cpk;
-    int UpperSpecLimit;
-    int LowerSpecLimit;
-    int UpperControlLimit;
-    int LowerControlLimit;
+    int UpperSpecLimit; //upper red line
+    int LowerSpecLimit; // lower red line
+    int UpperControlLimit; //upper screen border
+    int LowerControlLimit; //lower screen border
+    int WhiteMean;
 };
 
 class StatisticalTrend : public QObject

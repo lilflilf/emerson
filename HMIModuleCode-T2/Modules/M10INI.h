@@ -131,7 +131,7 @@ struct System_Configuration{
    bool HeightEncoder;
    bool PressureRead;
    bool bseek;
-   int RunMode;
+   unsigned short RunMode;
    bool DailyHistory;
    bool Pressure2bar;
    bool AutoGet;
@@ -140,10 +140,10 @@ struct System_Configuration{
    bool Shrink;
    int SequenceError;
    int DoubleClick;
-   int CoolingDur;
-   int CoolingDel;
-   int CoolingTooling;
-   int CoolingMode;
+   unsigned short CoolingDur;
+   unsigned short CoolingDel;
+   unsigned short CoolingTooling;
+   unsigned short CoolingMode;
    unsigned short Machineflags[4];
    int StartScreen;
    int CutoffMode;

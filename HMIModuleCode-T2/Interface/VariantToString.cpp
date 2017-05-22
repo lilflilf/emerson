@@ -21,7 +21,8 @@ struct BRANSONDATA VariantToString::GaugeToString(int Gauge, int GaugeAWG)
 {
     struct BRANSONDATA tmpData;
     InterfaceClass* _Interface = InterfaceClass::Instance();
-    if(_Interface->StatusData.Soft_Settings.Mm2Awg == true)
+    if(_Interface->StatusData.Soft_Settings.Square2Unit ==
+            BRANSON_INI_STRUCT::ToAWG)
     {
         if(GaugeAWG != -1)
         {

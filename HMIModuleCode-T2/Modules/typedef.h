@@ -58,6 +58,7 @@ enum{
 };
 
 typedef enum{
+    INVALID = -1,
     ERROR = -1,
     No = 0,
     Yes = 1,

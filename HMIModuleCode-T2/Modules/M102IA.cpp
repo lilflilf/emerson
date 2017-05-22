@@ -886,7 +886,7 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         _ModRunSetup->tempWidthOffsetVal = MakeHexWordNumber(HexString.mid(9, 4));
         _M2010->ReceiveFlags.CalibrationDone = true;
         break;
-    case IAsigCooling:
+    case IASigCooling:
         _Interface->StatusData.CurrentCoolingDur = MakeHexWordNumber(HexString.mid(9, 4));
         _Interface->StatusData.CurrentCoolingDel = MakeHexWordNumber(HexString.mid(13, 4));
         _Interface->StatusData.CurrentCoolingTooling = MakeHexWordNumber(HexString.mid(17,4));

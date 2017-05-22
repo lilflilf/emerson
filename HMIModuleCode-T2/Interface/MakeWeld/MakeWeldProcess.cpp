@@ -101,12 +101,35 @@ void MakeWeldProcess::UpdateWeldResult()
         CurrentWeldResult.ActualResult.ActualAmplitude2 = 0;
 
     CurrentWeldResult.OperatorName = _Interface->CurrentOperator.OperatorName;
-    CurrentWeldResult.CurrentWorkOrder.WorkOrderID
-            = CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderID;
-    CurrentWeldResult.CurrentWorkOrder.WorkOrderName
-            = CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderName;
-    CurrentWeldResult.CurrentHarness.HarnessID = CurrentNecessaryInfo.CurrentHarness.HarnessID;
-    CurrentWeldResult.CurrentHarness.HarnessName = CurrentNecessaryInfo.CurrentHarness.HarnessName;
+    CurrentWeldResult.CurrentWorkOrder.WorkOrderID = INVALID;
+    CurrentWeldResult.CurrentWorkOrder.WorkOrderName.clear();
+    switch(_Interface->CurrentWorkOrder.WorkOrderMode)
+    {
+    case WorkOrderElement::SPLICE:
+        CurrentWeldResult.CurrentHarness.HarnessID = INVALID;
+        CurrentWeldResult.CurrentHarness.HarnessName.clear();
+        CurrentWeldResult.CurrentSequence.SequenceID = INVALID;
+        CurrentWeldResult.CurrentSequence.SequenceName.clear();
+        break;
+    case WorkOrderElement::SEQUENCE:
+        CurrentWeldResult.CurrentHarness.HarnessID = INVALID;
+        CurrentWeldResult.CurrentHarness.HarnessName.clear();
+        CurrentWeldResult.CurrentSequence.SequenceID = CurrentNecessaryInfo.CurrentSequence.SequenceID;
+        CurrentWeldResult.CurrentSequence.SequenceName = CurrentNecessaryInfo.CurrentSequence.SequenceName;
+        break;
+    case WorkOrderElement::HARNESS:
+        CurrentWeldResult.CurrentHarness.HarnessID = CurrentNecessaryInfo.CurrentHarness.HarnessID;
+        CurrentWeldResult.CurrentHarness.HarnessName = CurrentNecessaryInfo.CurrentHarness.HarnessName;
+        CurrentWeldResult.CurrentSequence.SequenceID = INVALID;
+        CurrentWeldResult.CurrentSequence.SequenceName.clear();
+        break;
+    default:
+        CurrentWeldResult.CurrentHarness.HarnessID = INVALID;
+        CurrentWeldResult.CurrentHarness.HarnessName.clear();
+        CurrentWeldResult.CurrentSequence.SequenceID = INVALID;
+        CurrentWeldResult.CurrentSequence.SequenceName.clear();
+        break;
+    }
     CurrentWeldResult.CurrentSplice.PartID = CurrentSplice.SpliceID;
     CurrentWeldResult.CurrentSplice.PartName = CurrentSplice.SpliceName;
     CurrentWeldResult.CurrentSplice.PartHash = CurrentSplice.HashCode;
@@ -229,8 +252,7 @@ void MakeWeldProcess::WeldCycleDaemonThread(void* _obj)
         if (_Interface->StatusData.NetworkingEnabled == true)
         {
             QString StrRecord =
-                    _Statistics->HistoryEvent(_ObjectPtr->CurrentNecessaryInfo.CurrentWorkOrder.WorkOrderName,
-                _ObjectPtr->CurrentNecessaryInfo.CurrentHarness.HarnessName, &_ObjectPtr->CurrentWeldResult, &_ObjectPtr->CurrentSplice);
+                    _Statistics->HistoryEvent(&_ObjectPtr->CurrentWeldResult, &_ObjectPtr->CurrentSplice);
             BransonServer *_Server = BransonServer::Instance();
             _Server->SendDataToClients(StrRecord);
         }

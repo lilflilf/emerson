@@ -153,11 +153,7 @@ enum LangSupport{
     END_Lang            //Add above this
 };
 
-enum PRESSUREUNIT{
-    ToPSI,
-    ToBar,
-    TokPa,
-};
+
 
 enum WeldSetFormula{
     WeldFormulaAmtechStandard,
@@ -166,16 +162,32 @@ enum WeldSetFormula{
 };
 
 //Structure for the Amtech.Bin (Software Settings File)
-struct BRANSON_INI_STRUCT
+class BRANSON_INI_STRUCT
 {
+public:
+    enum PRESSUREUNIT{
+        ToPSI,
+        ToBar,
+        TokPa,
+    };
+    enum SQUAREUNIT{
+        ToAWG,
+        ToSqrMM,
+    };
+    enum LENGTHUNIT{
+        ToINCH,
+        ToMM,
+    };
+
+public:
     enum LangSupport Lang_Support;
     int Horn_Calibrate;
     int AutoPreburst;
     int SonicGenWatts;
     bool ToolCoverIgnore;
-    enum PRESSUREUNIT Pressure2Unit;
-    bool Mm2Awg;
-    bool Mm2Inch;
+    PRESSUREUNIT Pressure2Unit;
+    SQUAREUNIT Square2Unit;
+    LENGTHUNIT Length2Unit;
     float PWWidth2Height;       //Not used anywhere?
     int MinAmplitude;
     int MinPressure;
@@ -412,7 +424,7 @@ public:
 //    bool AutoStartLastPart;
 //    bool NRGtoHeightMode;      //Mode 3 not on all machines
 /*Data Communication*/
-    bool ShrinkTubeMode;       //Tube shrinker not on all machines
+    bool ShrinkTubeModeEnable;       //Tube shrinker not on all machines
     QList<ShrinkTubeData> ShrinkTubeDefaults;
     IAComElement ShrinkTubeComInfo;
 

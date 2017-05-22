@@ -75,7 +75,7 @@ bool CSVPresetData::ExportData(int ID, QString fileUrl)
     if(bResult == false)
         return bResult;
     QTextStream out(&csvFile);
-    out << "WireData" << '\n' << RowStr;
+    out << "Preset Data" << '\n' << RowStr;
     csvFile.close();
     return true;
 }
