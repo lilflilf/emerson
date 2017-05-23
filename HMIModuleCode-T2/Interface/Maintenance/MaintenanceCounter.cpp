@@ -53,17 +53,64 @@ bool MaintenanceCounter::_execute(int funCode)
                 MaintenanceMessageString[MaintenanceLogElement::HORN_COUNT_RESET];
         _MaintenanceLogTable->InsertRecordIntoTable(&MaintenanceLog);
         break;
-    case MaintenanceLogElement::HORN_80PERCENT_ALARM:
-        if(_Interface->StatusData.Maintenance80PercentAlarm[HORN80PERCENTALARM] == true)
-            _Interface->StatusData.Maintenance80PercentAlarm[HORN80PERCENTALARM] = false;
+    case MaintenanceLogElement::HORN_COUNT_80PERCENT_ALARM:
+        if(_Interface->StatusData.Maintenance80PercentAlarm[HORNCOUNTER80PERCENTALARM] == true)
+        {
+            _Interface->StatusData.Maintenance80PercentAlarm[HORNCOUNTER80PERCENTALARM] = false;
+            MaintenanceLog.MaintenanceMsg =
+                MaintenanceMessageString[MaintenanceLogElement::HORN_COUNT_80PERCENT_ALARM] + QObject::tr("OFF");
+        }
         else
-            _Interface->StatusData.Maintenance80PercentAlarm[HORN80PERCENTALARM] = true;
+        {
+            _Interface->StatusData.Maintenance80PercentAlarm[HORNCOUNTER80PERCENTALARM] = true;
+            MaintenanceLog.MaintenanceMsg =
+                MaintenanceMessageString[MaintenanceLogElement::HORN_COUNT_80PERCENT_ALARM] + QObject::tr("ON");
+        }
+        _MaintenanceLogTable->InsertRecordIntoTable(&MaintenanceLog);
         break;
-    case MaintenanceLogElement::HORN_100PERCENT_LOCK:
-        if(_Interface->StatusData.Maintenance100PercentLock[HORN100PERCENTLOCK] == true)
-            _Interface->StatusData.Maintenance100PercentLock[HORN100PERCENTLOCK] = false;
+    case MaintenanceLogElement::HORN_ENERGY_80PERCENT_ALARM:
+        if(_Interface->StatusData.Maintenance80PercentAlarm[HORNENERGY80PERCENTALARM] == true)
+        {
+            _Interface->StatusData.Maintenance80PercentAlarm[HORNENERGY80PERCENTALARM] = false;
+            MaintenanceLog.MaintenanceMsg =
+                MaintenanceMessageString[MaintenanceLogElement::HORN_ENERGY_80PERCENT_ALARM] + QObject::tr("OFF");
+        }
         else
-            _Interface->StatusData.Maintenance100PercentLock[HORN100PERCENTLOCK] = true;
+        {
+            _Interface->StatusData.Maintenance80PercentAlarm[HORNENERGY80PERCENTALARM] = true;
+            MaintenanceLog.MaintenanceMsg =
+                MaintenanceMessageString[MaintenanceLogElement::ANVIL_COUNT_80PERCENT_ALARM] + QObject::tr("ON");
+        }
+        _MaintenanceLogTable->InsertRecordIntoTable(&MaintenanceLog);
+        break;
+    case MaintenanceLogElement::HORN_COUNT_100PERCENT_LOCK:
+        if(_Interface->StatusData.Maintenance100PercentLock[HORNCOUNTER100PERCENTLOCK] == true)
+        {
+            _Interface->StatusData.Maintenance100PercentLock[HORNCOUNTER100PERCENTLOCK] = false;
+            MaintenanceLog.MaintenanceMsg =
+                MaintenanceMessageString[MaintenanceLogElement::HORN_COUNT_100PERCENT_LOCK] + QObject::tr("OFF");
+        }
+        else
+        {
+            _Interface->StatusData.Maintenance100PercentLock[HORNCOUNTER100PERCENTLOCK] = true;
+            MaintenanceLog.MaintenanceMsg =
+                MaintenanceMessageString[MaintenanceLogElement::HORN_COUNT_100PERCENT_LOCK] + QObject::tr("ON");
+        }
+        _MaintenanceLogTable->InsertRecordIntoTable(&MaintenanceLog);
+        break;
+    case MaintenanceLogElement::HORN_ENERGY_100PERCENT_LOCK:
+        if(_Interface->StatusData.Maintenance100PercentLock[HORNENERGY100PERCENTLOCK] == true)
+        {
+            _Interface->StatusData.Maintenance100PercentLock[HORNENERGY100PERCENTLOCK] = false;
+            MaintenanceLog.MaintenanceMsg =
+                MaintenanceMessageString[MaintenanceLogElement::HORN_ENERGY_100PERCENT_LOCK] + QObject::tr("OFF");
+        }else
+        {
+            _Interface->StatusData.Maintenance100PercentLock[HORNENERGY100PERCENTLOCK] = true;
+            MaintenanceLog.MaintenanceMsg =
+                MaintenanceMessageString[MaintenanceLogElement::HORN_COUNT_100PERCENT_LOCK] + QObject::tr("ON");
+        }
+        _MaintenanceLogTable->InsertRecordIntoTable(&MaintenanceLog);
         break;
     case MaintenanceLogElement::ANVIL_COUNT_LIMIT:
         ChangeAnvilCounterLimit();
@@ -83,17 +130,65 @@ bool MaintenanceCounter::_execute(int funCode)
                 MaintenanceMessageString[MaintenanceLogElement::ANVIL_COUNT_RESET];
         _MaintenanceLogTable->InsertRecordIntoTable(&MaintenanceLog);
         break;
-    case MaintenanceLogElement::ANVIL_80PERCENT_ALARM:
-        if(_Interface->StatusData.Maintenance80PercentAlarm[ANVIL80PERCENTALARM] == true)
-            _Interface->StatusData.Maintenance80PercentAlarm[ANVIL80PERCENTALARM] = false;
+    case MaintenanceLogElement::ANVIL_COUNT_80PERCENT_ALARM:
+        if(_Interface->StatusData.Maintenance80PercentAlarm[ANVILCOUNTER80PERCENTALARM] == true)
+        {
+            _Interface->StatusData.Maintenance80PercentAlarm[ANVILCOUNTER80PERCENTALARM] = false;
+            MaintenanceLog.MaintenanceMsg =
+                MaintenanceMessageString[MaintenanceLogElement::ANVIL_COUNT_80PERCENT_ALARM] + QObject::tr("OFF");
+        }
         else
-            _Interface->StatusData.Maintenance80PercentAlarm[ANVIL80PERCENTALARM] = true;
+        {
+            _Interface->StatusData.Maintenance80PercentAlarm[ANVILCOUNTER80PERCENTALARM] = true;
+            MaintenanceLog.MaintenanceMsg =
+                MaintenanceMessageString[MaintenanceLogElement::ANVIL_COUNT_80PERCENT_ALARM] + QObject::tr("ON");
+        }
+        _MaintenanceLogTable->InsertRecordIntoTable(&MaintenanceLog);
         break;
-    case MaintenanceLogElement::ANVIL_100PERCENT_LOCK:
-        if(_Interface->StatusData.Maintenance100PercentLock[ANVIL100PERCENTLOCK] == true)
-            _Interface->StatusData.Maintenance100PercentLock[ANVIL100PERCENTLOCK] = false;
+    case MaintenanceLogElement::ANVIL_ENERGY_80PERCENT_ALARM:
+        if(_Interface->StatusData.Maintenance80PercentAlarm[ANVILENERGY80PERCENTALARM] == true)
+        {
+            _Interface->StatusData.Maintenance80PercentAlarm[ANVILENERGY80PERCENTALARM] = false;
+            MaintenanceLog.MaintenanceMsg =
+                MaintenanceMessageString[MaintenanceLogElement::ANVIL_ENERGY_80PERCENT_ALARM] + QObject::tr("OFF");
+        }
         else
-            _Interface->StatusData.Maintenance100PercentLock[ANVIL100PERCENTLOCK] = true;
+        {
+            _Interface->StatusData.Maintenance80PercentAlarm[ANVILENERGY80PERCENTALARM] = true;
+            MaintenanceLog.MaintenanceMsg =
+                MaintenanceMessageString[MaintenanceLogElement::ANVIL_ENERGY_80PERCENT_ALARM] + QObject::tr("ON");
+        }
+        _MaintenanceLogTable->InsertRecordIntoTable(&MaintenanceLog);
+        break;
+    case MaintenanceLogElement::ANVIL_COUNT_100PERCENT_LOCK:
+        if(_Interface->StatusData.Maintenance100PercentLock[ANVILCOUNTER100PERCENTLOCK] == true)
+        {
+            _Interface->StatusData.Maintenance100PercentLock[ANVILCOUNTER100PERCENTLOCK] = false;
+            MaintenanceLog.MaintenanceMsg =
+                MaintenanceMessageString[MaintenanceLogElement::ANVIL_COUNT_100PERCENT_LOCK] + QObject::tr("OFF");
+        }
+        else
+        {
+            _Interface->StatusData.Maintenance100PercentLock[ANVILCOUNTER100PERCENTLOCK] = true;
+            MaintenanceLog.MaintenanceMsg =
+                MaintenanceMessageString[MaintenanceLogElement::ANVIL_COUNT_100PERCENT_LOCK] + QObject::tr("ON");
+        }
+        _MaintenanceLogTable->InsertRecordIntoTable(&MaintenanceLog);
+        break;
+    case MaintenanceLogElement::ANVIL_ENERGY_100PERCENT_LOCK:
+        if(_Interface->StatusData.Maintenance100PercentLock[ANVILENERGY100PERCENTLOCK] == true)
+        {
+            _Interface->StatusData.Maintenance100PercentLock[ANVILENERGY100PERCENTLOCK] = false;
+            MaintenanceLog.MaintenanceMsg =
+                MaintenanceMessageString[MaintenanceLogElement::ANVIL_ENERGY_100PERCENT_LOCK] + QObject::tr("OFF");
+        }
+        else
+        {
+            _Interface->StatusData.Maintenance100PercentLock[ANVILENERGY100PERCENTLOCK] = true;
+            MaintenanceLog.MaintenanceMsg =
+                MaintenanceMessageString[MaintenanceLogElement::ANVIL_ENERGY_100PERCENT_LOCK] + QObject::tr("ON");
+        }
+        _MaintenanceLogTable->InsertRecordIntoTable(&MaintenanceLog);
         break;
     case MaintenanceLogElement::GATHER_COUNT_LIMIT:
         ChangeGatherCounterLimit();
@@ -113,17 +208,65 @@ bool MaintenanceCounter::_execute(int funCode)
                 MaintenanceMessageString[MaintenanceLogElement::GATHER_COUNT_RESET];
         _MaintenanceLogTable->InsertRecordIntoTable(&MaintenanceLog);
         break;
-    case MaintenanceLogElement::GATHER_80PERCENT_ALARM:
-        if(_Interface->StatusData.Maintenance80PercentAlarm[GATHER80PERCENTALARM] == true)
-            _Interface->StatusData.Maintenance80PercentAlarm[GATHER80PERCENTALARM] = false;
+    case MaintenanceLogElement::GATHER_COUNT_80PERCENT_ALARM:
+        if(_Interface->StatusData.Maintenance80PercentAlarm[GATHERCOUNTER80PERCENTALARM] == true)
+        {
+            _Interface->StatusData.Maintenance80PercentAlarm[GATHERCOUNTER80PERCENTALARM] = false;
+            MaintenanceLog.MaintenanceMsg =
+                MaintenanceMessageString[MaintenanceLogElement::GATHER_COUNT_80PERCENT_ALARM] + QObject::tr("OFF");
+        }
         else
-            _Interface->StatusData.Maintenance80PercentAlarm[GATHER80PERCENTALARM] = true;
+        {
+            _Interface->StatusData.Maintenance80PercentAlarm[GATHERCOUNTER80PERCENTALARM] = true;
+            MaintenanceLog.MaintenanceMsg =
+                MaintenanceMessageString[MaintenanceLogElement::GATHER_COUNT_80PERCENT_ALARM] + QObject::tr("ON");
+        }
+        _MaintenanceLogTable->InsertRecordIntoTable(&MaintenanceLog);
         break;
-    case MaintenanceLogElement::GATHER_100PERCENT_LOCK:
-        if(_Interface->StatusData.Maintenance100PercentLock[GATHER100PERCENTLOCK] == true)
-            _Interface->StatusData.Maintenance100PercentLock[GATHER100PERCENTLOCK] = false;
+    case MaintenanceLogElement::GATHER_ENERGY_80PERCENT_ALARM:
+        if(_Interface->StatusData.Maintenance80PercentAlarm[GATHERENERGY80PERCENTALARM] == true)
+        {
+            _Interface->StatusData.Maintenance80PercentAlarm[GATHERENERGY80PERCENTALARM] = false;
+            MaintenanceLog.MaintenanceMsg =
+                MaintenanceMessageString[MaintenanceLogElement::GATHER_ENERGY_80PERCENT_ALARM] + QObject::tr("OFF");
+        }
         else
-            _Interface->StatusData.Maintenance100PercentLock[GATHER100PERCENTLOCK] = true;
+        {
+            _Interface->StatusData.Maintenance80PercentAlarm[GATHERENERGY80PERCENTALARM] = true;
+            MaintenanceLog.MaintenanceMsg =
+                MaintenanceMessageString[MaintenanceLogElement::GATHER_ENERGY_80PERCENT_ALARM] + QObject::tr("ON");
+        }
+        _MaintenanceLogTable->InsertRecordIntoTable(&MaintenanceLog);
+        break;
+    case MaintenanceLogElement::GATHER_COUNT_100PERCENT_LOCK:
+        if(_Interface->StatusData.Maintenance100PercentLock[GATHERCOUNTER100PERCENTLOCK] == true)
+        {
+            _Interface->StatusData.Maintenance100PercentLock[GATHERCOUNTER100PERCENTLOCK] = false;
+            MaintenanceLog.MaintenanceMsg =
+                MaintenanceMessageString[MaintenanceLogElement::GATHER_COUNT_100PERCENT_LOCK] + QObject::tr("OFF");
+        }
+        else
+        {
+            _Interface->StatusData.Maintenance100PercentLock[GATHERCOUNTER100PERCENTLOCK] = true;
+            MaintenanceLog.MaintenanceMsg =
+                MaintenanceMessageString[MaintenanceLogElement::GATHER_COUNT_100PERCENT_LOCK] + QObject::tr("ON");
+        }
+        _MaintenanceLogTable->InsertRecordIntoTable(&MaintenanceLog);
+        break;
+    case MaintenanceLogElement::GATHER_ENERGY_100PERCENT_LOCK:
+        if(_Interface->StatusData.Maintenance100PercentLock[GATHERENERGY100PERCENTLOCK] == true)
+        {
+            _Interface->StatusData.Maintenance100PercentLock[GATHERENERGY100PERCENTLOCK] = false;
+            MaintenanceLog.MaintenanceMsg =
+                MaintenanceMessageString[MaintenanceLogElement::GATHER_ENERGY_100PERCENT_LOCK] + QObject::tr("OFF");
+        }
+        else
+        {
+            _Interface->StatusData.Maintenance100PercentLock[GATHERENERGY100PERCENTLOCK] = true;
+            MaintenanceLog.MaintenanceMsg =
+                MaintenanceMessageString[MaintenanceLogElement::GATHER_ENERGY_100PERCENT_LOCK] + QObject::tr("ON");
+        }
+        _MaintenanceLogTable->InsertRecordIntoTable(&MaintenanceLog);
         break;
     case MaintenanceLogElement::GUIDE_COUNT_LIMIT:
         ChangeGuideCounterLimit();
@@ -143,17 +286,65 @@ bool MaintenanceCounter::_execute(int funCode)
                 MaintenanceMessageString[MaintenanceLogElement::GUIDE_COUNT_RESET];
         _MaintenanceLogTable->InsertRecordIntoTable(&MaintenanceLog);
         break;
-    case MaintenanceLogElement::GUIDE_80PERCENT_ALARM:
-        if(_Interface->StatusData.Maintenance80PercentAlarm[GUID80PERCENTALARM] == true)
-            _Interface->StatusData.Maintenance80PercentAlarm[GUID80PERCENTALARM] = false;
+    case MaintenanceLogElement::GUIDE_COUNT_80PERCENT_ALARM:
+        if(_Interface->StatusData.Maintenance80PercentAlarm[GUIDCOUNTER80PERCENTALARM] == true)
+        {
+            _Interface->StatusData.Maintenance80PercentAlarm[GUIDCOUNTER80PERCENTALARM] = false;
+            MaintenanceLog.MaintenanceMsg =
+                MaintenanceMessageString[MaintenanceLogElement::GUIDE_COUNT_80PERCENT_ALARM] + QObject::tr("OFF");
+        }
         else
-            _Interface->StatusData.Maintenance80PercentAlarm[GUID80PERCENTALARM] = true;
+        {
+            _Interface->StatusData.Maintenance80PercentAlarm[GUIDCOUNTER80PERCENTALARM] = true;
+            MaintenanceLog.MaintenanceMsg =
+                MaintenanceMessageString[MaintenanceLogElement::GUIDE_COUNT_80PERCENT_ALARM] + QObject::tr("ON");
+        }
+        _MaintenanceLogTable->InsertRecordIntoTable(&MaintenanceLog);
         break;
-    case MaintenanceLogElement::GUIDE_100PERCENT_LOCK:
-        if(_Interface->StatusData.Maintenance100PercentLock[GUID100PERCENTLOCK] == true)
-            _Interface->StatusData.Maintenance100PercentLock[GUID100PERCENTLOCK] = false;
+    case MaintenanceLogElement::GUIDE_ENERGY_80PERCENT_ALARM:
+        if(_Interface->StatusData.Maintenance80PercentAlarm[GUIDENERGY80PERCENTALARM] == true)
+        {
+            _Interface->StatusData.Maintenance80PercentAlarm[GUIDENERGY80PERCENTALARM] = false;
+            MaintenanceLog.MaintenanceMsg =
+                MaintenanceMessageString[MaintenanceLogElement::GUIDE_ENERGY_80PERCENT_ALARM] + QObject::tr("OFF");
+        }
         else
-            _Interface->StatusData.Maintenance100PercentLock[GUID100PERCENTLOCK] = true;
+        {
+            _Interface->StatusData.Maintenance80PercentAlarm[GUIDENERGY80PERCENTALARM] = true;
+            MaintenanceLog.MaintenanceMsg =
+                MaintenanceMessageString[MaintenanceLogElement::GUIDE_ENERGY_80PERCENT_ALARM] + QObject::tr("ON");
+        }
+        _MaintenanceLogTable->InsertRecordIntoTable(&MaintenanceLog);
+        break;
+    case MaintenanceLogElement::GUIDE_COUNT_100PERCENT_LOCK:
+        if(_Interface->StatusData.Maintenance100PercentLock[GUIDCOUNTER100PERCENTLOCK] == true)
+        {
+            _Interface->StatusData.Maintenance100PercentLock[GUIDCOUNTER100PERCENTLOCK] = false;
+            MaintenanceLog.MaintenanceMsg =
+                MaintenanceMessageString[MaintenanceLogElement::GUIDE_COUNT_100PERCENT_LOCK] + QObject::tr("OFF");
+        }
+        else
+        {
+            _Interface->StatusData.Maintenance100PercentLock[GUIDCOUNTER100PERCENTLOCK] = true;
+            MaintenanceLog.MaintenanceMsg =
+                MaintenanceMessageString[MaintenanceLogElement::GUIDE_COUNT_100PERCENT_LOCK] + QObject::tr("ON");
+        }
+        _MaintenanceLogTable->InsertRecordIntoTable(&MaintenanceLog);
+        break;
+    case MaintenanceLogElement::GUIDE_ENERGY_100PERCENT_LOCK:
+        if(_Interface->StatusData.Maintenance100PercentLock[GUIDENERGY100PERCENTLOCK] == true)
+        {
+            _Interface->StatusData.Maintenance100PercentLock[GUIDENERGY100PERCENTLOCK] = false;
+            MaintenanceLog.MaintenanceMsg =
+                MaintenanceMessageString[MaintenanceLogElement::GUIDE_ENERGY_100PERCENT_LOCK] + QObject::tr("OFF");
+        }
+        else
+        {
+            _Interface->StatusData.Maintenance100PercentLock[GUIDENERGY100PERCENTLOCK] = true;
+            MaintenanceLog.MaintenanceMsg =
+                MaintenanceMessageString[MaintenanceLogElement::GUIDE_ENERGY_100PERCENT_LOCK] + QObject::tr("ON");
+        }
+        _MaintenanceLogTable->InsertRecordIntoTable(&MaintenanceLog);
         break;
     default:
         break;
@@ -312,10 +503,14 @@ bool MaintenanceCounter::_recall()
         CurrentMaintenanceCounter.HornDateStarted
             = TimeLabel.toString("MM/dd/yyyy");
     }
-    CurrentMaintenanceCounter.Horn80PercentAlarm =
-            _Interface->StatusData.Maintenance80PercentAlarm[HORN80PERCENTALARM];
-    CurrentMaintenanceCounter.Horn100PercentLock =
-            _Interface->StatusData.Maintenance100PercentLock[HORN100PERCENTLOCK];
+    CurrentMaintenanceCounter.HornCounter80PercentAlarm =
+            _Interface->StatusData.Maintenance80PercentAlarm[HORNCOUNTER80PERCENTALARM];
+    CurrentMaintenanceCounter.HornEnergy80PercentAlarm =
+            _Interface->StatusData.Maintenance80PercentAlarm[HORNENERGY80PERCENTALARM];
+    CurrentMaintenanceCounter.HornCounter100PercentLock =
+            _Interface->StatusData.Maintenance100PercentLock[HORNCOUNTER100PERCENTLOCK];
+    CurrentMaintenanceCounter.HornEnergy100PercentLock =
+            _Interface->StatusData.Maintenance100PercentLock[HORNENERGY100PERCENTLOCK];
 
     //Anvil Tip
     Str = _Utility->FormatedDataToString(DINAnvilCountLimit,
@@ -350,10 +545,14 @@ bool MaintenanceCounter::_recall()
         CurrentMaintenanceCounter.AnvilDateStarted
             = TimeLabel.toString("MM/dd/yyyy");
     }
-    CurrentMaintenanceCounter.Anvil80PercentAlarm =
-            _Interface->StatusData.Maintenance80PercentAlarm[ANVIL80PERCENTALARM];
-    CurrentMaintenanceCounter.Anvil100PercentLock =
-            _Interface->StatusData.Maintenance100PercentLock[ANVIL100PERCENTLOCK];
+    CurrentMaintenanceCounter.AnvilCounter80PercentAlarm =
+            _Interface->StatusData.Maintenance80PercentAlarm[ANVILCOUNTER80PERCENTALARM];
+    CurrentMaintenanceCounter.AnvilEnergy80PercentAlarm =
+            _Interface->StatusData.Maintenance80PercentAlarm[ANVILENERGY80PERCENTALARM];
+    CurrentMaintenanceCounter.AnvilCounter100PercentLock =
+            _Interface->StatusData.Maintenance100PercentLock[ANVILCOUNTER100PERCENTLOCK];
+    CurrentMaintenanceCounter.AnvilEnergy100PercentLock =
+            _Interface->StatusData.Maintenance100PercentLock[ANVILENERGY100PERCENTLOCK];
 
     //Gather
     Str = _Utility->FormatedDataToString(DINGatherCountLimit,
@@ -388,10 +587,14 @@ bool MaintenanceCounter::_recall()
         CurrentMaintenanceCounter.GatherDateStarted
             = TimeLabel.toString("MM/dd/yyyy");
     }
-    CurrentMaintenanceCounter.Gather80PercentAlarm =
-            _Interface->StatusData.Maintenance80PercentAlarm[GATHER80PERCENTALARM];
-    CurrentMaintenanceCounter.Gather100PercentLock =
-            _Interface->StatusData.Maintenance100PercentLock[GATHER100PERCENTLOCK];
+    CurrentMaintenanceCounter.GatherCounter80PercentAlarm =
+            _Interface->StatusData.Maintenance80PercentAlarm[GATHERCOUNTER80PERCENTALARM];
+    CurrentMaintenanceCounter.GatherEnergy80PercentAlarm =
+            _Interface->StatusData.Maintenance80PercentAlarm[GATHERENERGY80PERCENTALARM];
+    CurrentMaintenanceCounter.GatherCounter100PercentLock =
+            _Interface->StatusData.Maintenance100PercentLock[GATHERCOUNTER100PERCENTLOCK];
+    CurrentMaintenanceCounter.GatherEnergy100PercentLock =
+            _Interface->StatusData.Maintenance100PercentLock[GATHERENERGY100PERCENTLOCK];
 
     //Anvil Guide
     Str = _Utility->FormatedDataToString(DINGuideCountLimit,
@@ -426,10 +629,14 @@ bool MaintenanceCounter::_recall()
         CurrentMaintenanceCounter.GuideDateStarted
             = TimeLabel.toString("MM/dd/yyyy");
     }
-    CurrentMaintenanceCounter.Guide80PercentAlarm =
-            _Interface->StatusData.Maintenance80PercentAlarm[GUID80PERCENTALARM];
-    CurrentMaintenanceCounter.Gather100PercentLock =
-            _Interface->StatusData.Maintenance100PercentLock[GUID100PERCENTLOCK];
+    CurrentMaintenanceCounter.GuideCounter80PercentAlarm =
+            _Interface->StatusData.Maintenance80PercentAlarm[GUIDCOUNTER80PERCENTALARM];
+    CurrentMaintenanceCounter.GuideEnergy80PercentAlarm =
+            _Interface->StatusData.Maintenance80PercentAlarm[GUIDENERGY80PERCENTALARM];
+    CurrentMaintenanceCounter.GatherCounter100PercentLock =
+            _Interface->StatusData.Maintenance100PercentLock[GUIDCOUNTER100PERCENTLOCK];
+    CurrentMaintenanceCounter.GatherEnergy100PercentLock =
+            _Interface->StatusData.Maintenance100PercentLock[GUIDENERGY100PERCENTLOCK];
 
     //Actuator
     CurrentCount = _Interface->StatusData.CurrentCountMaintenanceLimits[ITEM_SYSTEM];

@@ -614,13 +614,13 @@ void HmiAdaptor::maintenanceCount80PercentAlarm(QString code, QString value)
 //    qDebug()<<"80%alarm code"<<code<<"value"<<value;
     UNUSED(value);
     if (code == "Horn")
-        maintenanceCount->_execute(MaintenanceLogElement::HORN_80PERCENT_ALARM);
+        maintenanceCount->_execute(MaintenanceLogElement::HORN_COUNT_80PERCENT_ALARM);
     else if (code == "AnvilTip")
-        maintenanceCount->_execute(MaintenanceLogElement::ANVIL_80PERCENT_ALARM);
+        maintenanceCount->_execute(MaintenanceLogElement::ANVIL_COUNT_80PERCENT_ALARM);
     else if (code == "Gather")
-        maintenanceCount->_execute(MaintenanceLogElement::GATHER_80PERCENT_ALARM);
+        maintenanceCount->_execute(MaintenanceLogElement::GATHER_COUNT_80PERCENT_ALARM);
     else if (code == "AnvilGuide")
-        maintenanceCount->_execute(MaintenanceLogElement::GUIDE_80PERCENT_ALARM);
+        maintenanceCount->_execute(MaintenanceLogElement::GUIDE_COUNT_80PERCENT_ALARM);
 }
 
 void HmiAdaptor::maintenanceStart(int page)
