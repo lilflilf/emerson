@@ -1684,7 +1684,7 @@ QString HmiAdaptor::getUserManualPath()
     //url: ("file:///d:\\Special Double Hit Mode functionality for Delphi Ground Terminal Welder II.html");
 
     QString path = QCoreApplication::applicationDirPath();
-    path = "file:///" + path + "/Special Double Hit Mode functionality for Delphi Ground Terminal Welder II.html";
+    path = "file:///" + path + "/usermanual/Special Double Hit Mode functionality for Delphi Ground Terminal Welder II.html";
     qDebug() << "path =================" <<path;
     return path;
 }
