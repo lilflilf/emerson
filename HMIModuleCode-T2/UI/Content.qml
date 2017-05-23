@@ -418,9 +418,11 @@ Item {
                         addExit.componentName = qsTr("Harness Name")
                         addExit.componentData = qsTr("Date Created")
                         addExit.componentMiddle = qsTr("Total Steps")
-                        addExit.componenttype = qsTr("Cross Section")
+                        addExit.componenttype = qsTr("Process Mode")
                         addExit.bIsOnlyOne = true
-                        addExit.componentCount = "MaxSplicesPerZone"
+                        addExit.componentCount = "Of WorkStation"
+
+//                        addExit.componentCount = "MaxSplicesPerZone"
                     }
                     else if (upload.text == qsTr("EDIT EXISTING\nSEQUENCE"))
                     {

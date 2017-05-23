@@ -189,7 +189,6 @@ Item {
                     currentQty(text,spliceName.text,index)
                 }
             }
-
             CButton {
                 id: deleteButton
                 anchors.top: parent.top
@@ -199,7 +198,9 @@ Item {
                 clip: true
                 width: 28
                 height: 28
-                iconSource: "qrc:/images/images/close.png"
+                backgroundEnabled: false
+                iconSource: "qrc:/images/images/right.png" //"qrc:/images/images/close.png"
+                scale: 1.5
                 onClicked: {
                     var temp = splice.mapFromItem(deleteButton,mouseX,mouseY)
                     tempY = temp.y / 48

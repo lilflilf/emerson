@@ -466,7 +466,7 @@ Item {
                 verticalAlignment: Qt.AlignVCenter
                 width: 200
                 font.family: "arial"
-                font.pixelSize: 25
+                font.pixelSize: 18
                 color: "white"
                 clip: true
                 elide: Text.ElideRight
@@ -666,7 +666,7 @@ Item {
                         anchors.verticalCenter: parent.verticalCenter
                         width: 200
                         font.family: "arial"
-                        font.pixelSize: 20
+                        font.pixelSize: 14
                         color: "white"
                         clip: true
                         elide: Text.ElideRight

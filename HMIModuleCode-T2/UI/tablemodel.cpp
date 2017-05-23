@@ -2186,7 +2186,7 @@ QVariant PartModel::getValue(int index, QString key)
     else if (myHarness.HarnessTypeSetting.ProcessMode == ADVANCE)
         processModel = "ADVANCE";
     PartModelHash.insert("ProcessMode",processModel);
-    PartModelHash.insert("#ofWorkstation",myHarness.HarnessTypeSetting.WorkStations.TotalWorkstation);
+    PartModelHash.insert("ofWorkstation",myHarness.HarnessTypeSetting.WorkStations.TotalWorkstation);
     PartModelHash.insert("#ofSplicesperWorkstation",myHarness.NoOfSplice);
     PartModelHash.insert("Rows",myHarness.HarnessTypeSetting.BoardLayout.Rows);
     PartModelHash.insert("Columns",myHarness.HarnessTypeSetting.BoardLayout.Columns);

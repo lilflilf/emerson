@@ -27,7 +27,7 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
 
     harnessModel = new PartModel(this);
     list.clear();
-    list << "PartId" << "HarnessName" << "DateCreated" << "OperatorName" << "TotalSplices" << "ProcessMode" << "#ofWorkstation" << "#ofSplicesperWorkstation" << "Rows" << "Columns" << "MaxSplicesPerZone";
+    list << "PartId" << "HarnessName" << "DateCreated" << "OperatorName" << "TotalSplices" << "ProcessMode" << "ofWorkstation" << "#ofSplicesperWorkstation" << "Rows" << "Columns" << "MaxSplicesPerZone";
     harnessModel->setRoles(list);
     harnessModel->setModelList();
 
@@ -184,33 +184,69 @@ void HmiAdaptor::maintenanceCountExecute(QString code)
 
 QString HmiAdaptor::maintenanceCountGetValue(int code, int index)
 {
-    qDebug() << "maintenanceCountGetValue" << code << index;
     QString value;
     bool bResult;
     if (code == 0)
     {
         switch (index) {
-        case 2:
-            value = maintenanceCount->CurrentMaintenanceCounter.HornCounterLimit.Current;
+        case 1:
+            value = maintenanceCount->CurrentMaintenanceCounter.HornPartNumber;
             break;
-        case 3:
+        case 2:
             value = maintenanceCount->CurrentMaintenanceCounter.HornCurrentCount;
             break;
+        case 3:
+            value = maintenanceCount->CurrentMaintenanceCounter.HornCurrentEnergy;
+            break;
         case 4:
-            value = maintenanceCount->CurrentMaintenanceCounter.HornDateStarted;
+            value = maintenanceCount->CurrentMaintenanceCounter.HornCounterLimit.Current;
             break;
         case 5:
-            value = maintenanceCount->CurrentMaintenanceCounter.HornCounterLimit.Maximum;
+            value = maintenanceCount->CurrentMaintenanceCounter.HornEnergyLimit.Current;
             break;
         case 6:
-            value = maintenanceCount->CurrentMaintenanceCounter.HornCounterLimit.Minimum;
+            value = maintenanceCount->CurrentMaintenanceCounter.HornDateStarted;
             break;
         case 7:
+            value = maintenanceCount->CurrentMaintenanceCounter.HornCounterLimit.Maximum;
+            break;
+        case 8:
+            value = maintenanceCount->CurrentMaintenanceCounter.HornCounterLimit.Minimum;
+            break;
+        case 9:
+            value = maintenanceCount->CurrentMaintenanceCounter.HornEnergyLimit.Maximum;
+            break;
+        case 10:
+            value = maintenanceCount->CurrentMaintenanceCounter.HornEnergyLimit.Minimum;
+            break;
+        case 11:
             bResult = maintenanceCount->CurrentMaintenanceCounter.Horn80PercentAlarm;
             if(bResult == true)
                 value = "left";
             else
                 value = "right";
+            break;
+        case 12:
+            bResult = maintenanceCount->CurrentMaintenanceCounter.Horn80PercentAlarm;
+            if(bResult == true)
+                value = "left";
+            else
+                value = "right";
+            break;
+        case 13:
+            bResult = maintenanceCount->CurrentMaintenanceCounter.Horn100PercentLock;
+            if(bResult == true)
+                value = "left";
+            else
+                value = "right";
+            break;
+        case 14:
+            bResult = maintenanceCount->CurrentMaintenanceCounter.Horn100PercentLock;
+            if(bResult == true)
+                value = "left";
+            else
+                value = "right";
+            break;
         default:
             break;
         }
@@ -218,27 +254,64 @@ QString HmiAdaptor::maintenanceCountGetValue(int code, int index)
     else if (code == 1)
     {
         switch (index) {
-        case 2:
-            value = maintenanceCount->CurrentMaintenanceCounter.AnvilCounterLimit.Current;
+        case 1:
+            value = maintenanceCount->CurrentMaintenanceCounter.AnvilPartNumber;
             break;
-        case 3:
+        case 2:
             value = maintenanceCount->CurrentMaintenanceCounter.AnvilCurrentCount;
             break;
+        case 3:
+            value = maintenanceCount->CurrentMaintenanceCounter.AnvilCurrentEnergy;
+            break;
         case 4:
-            value = maintenanceCount->CurrentMaintenanceCounter.AnvilDateStarted;
+            value = maintenanceCount->CurrentMaintenanceCounter.AnvilCounterLimit.Current;
             break;
         case 5:
-            value = maintenanceCount->CurrentMaintenanceCounter.AnvilCounterLimit.Maximum;
+            value = maintenanceCount->CurrentMaintenanceCounter.AnvilEnergyLimit.Current;
             break;
         case 6:
-            value = maintenanceCount->CurrentMaintenanceCounter.AnvilCounterLimit.Minimum;
+            value = maintenanceCount->CurrentMaintenanceCounter.AnvilDateStarted;
             break;
         case 7:
+            value = maintenanceCount->CurrentMaintenanceCounter.AnvilCounterLimit.Maximum;
+            break;
+        case 8:
+            value = maintenanceCount->CurrentMaintenanceCounter.AnvilCounterLimit.Minimum;
+            break;
+        case 9:
+            value = maintenanceCount->CurrentMaintenanceCounter.AnvilEnergyLimit.Maximum;
+            break;
+        case 10:
+            value = maintenanceCount->CurrentMaintenanceCounter.AnvilEnergyLimit.Minimum;
+            break;
+        case 11:
             bResult = maintenanceCount->CurrentMaintenanceCounter.Anvil80PercentAlarm;
             if(bResult == true)
                 value = "left";
             else
                 value = "right";
+            break;
+        case 12:
+            bResult = maintenanceCount->CurrentMaintenanceCounter.Anvil80PercentAlarm;
+            if(bResult == true)
+                value = "left";
+            else
+                value = "right";
+            break;
+        case 13:
+            bResult = maintenanceCount->CurrentMaintenanceCounter.Anvil100PercentLock;
+            if(bResult == true)
+                value = "left";
+            else
+                value = "right";
+            break;
+        case 14:
+            bResult = maintenanceCount->CurrentMaintenanceCounter.Anvil100PercentLock;
+            if(bResult == true)
+                value = "left";
+            else
+                value = "right";
+            break;
         default:
             break;
         }
@@ -246,23 +319,59 @@ QString HmiAdaptor::maintenanceCountGetValue(int code, int index)
     else if (code == 2)
     {
         switch (index) {
-        case 2:
-            value = maintenanceCount->CurrentMaintenanceCounter.GatherCounterLimit.Current;
+        case 1:
+            value = maintenanceCount->CurrentMaintenanceCounter.GatherPartNumber;
             break;
-        case 3:
+        case 2:
             value = maintenanceCount->CurrentMaintenanceCounter.GatherCurrentCount;
             break;
+        case 3:
+            value = maintenanceCount->CurrentMaintenanceCounter.GatherCurrentEnergy;
+            break;
         case 4:
-            value = maintenanceCount->CurrentMaintenanceCounter.GatherDateStarted;
+            value = maintenanceCount->CurrentMaintenanceCounter.GatherCounterLimit.Current;
             break;
         case 5:
-            value = maintenanceCount->CurrentMaintenanceCounter.GatherCounterLimit.Maximum;
+            value = maintenanceCount->CurrentMaintenanceCounter.GatherEnergyLimit.Current;
             break;
         case 6:
-            value = maintenanceCount->CurrentMaintenanceCounter.GatherCounterLimit.Minimum;
+            value = maintenanceCount->CurrentMaintenanceCounter.GatherDateStarted;
             break;
         case 7:
+            value = maintenanceCount->CurrentMaintenanceCounter.GatherCounterLimit.Maximum;
+            break;
+        case 8:
+            value = maintenanceCount->CurrentMaintenanceCounter.GatherCounterLimit.Minimum;
+            break;
+        case 9:
+            value = maintenanceCount->CurrentMaintenanceCounter.GatherEnergyLimit.Maximum;
+            break;
+        case 10:
+            value = maintenanceCount->CurrentMaintenanceCounter.GatherEnergyLimit.Minimum;
+            break;
+        case 11:
             bResult = maintenanceCount->CurrentMaintenanceCounter.Gather80PercentAlarm;
+            if(bResult == true)
+                value = "left";
+            else
+                value = "right";
+            break;
+        case 12:
+            bResult = maintenanceCount->CurrentMaintenanceCounter.Gather80PercentAlarm;
+            if(bResult == true)
+                value = "left";
+            else
+                value = "right";
+            break;
+        case 13:
+            bResult = maintenanceCount->CurrentMaintenanceCounter.Gather100PercentLock;
+            if(bResult == true)
+                value = "left";
+            else
+                value = "right";
+            break;
+        case 14:
+            bResult = maintenanceCount->CurrentMaintenanceCounter.Gather100PercentLock;
             if(bResult == true)
                 value = "left";
             else
@@ -275,81 +384,103 @@ QString HmiAdaptor::maintenanceCountGetValue(int code, int index)
     else if (code == 3)
     {
         switch (index) {
-        case 2:
-            value = maintenanceCount->CurrentMaintenanceCounter.GuideCounterLimit.Current;
+        case 1:
+            value = maintenanceCount->CurrentMaintenanceCounter.GuidePartNumber;
             break;
-        case 3:
+        case 2:
             value = maintenanceCount->CurrentMaintenanceCounter.GuideCurrentCount;
             break;
+        case 3:
+            value = maintenanceCount->CurrentMaintenanceCounter.GuideCurrentEnergy;
+            break;
         case 4:
-            value = maintenanceCount->CurrentMaintenanceCounter.GuideDateStarted;
+            value = maintenanceCount->CurrentMaintenanceCounter.GuideCounterLimit.Current;
             break;
         case 5:
-            value = maintenanceCount->CurrentMaintenanceCounter.GuideCounterLimit.Maximum;
+            value = maintenanceCount->CurrentMaintenanceCounter.GuideEnergyLimit.Current;
             break;
         case 6:
-            value = maintenanceCount->CurrentMaintenanceCounter.GuideCounterLimit.Minimum;
+            value = maintenanceCount->CurrentMaintenanceCounter.GuideDateStarted;
             break;
         case 7:
+            value = maintenanceCount->CurrentMaintenanceCounter.GuideCounterLimit.Maximum;
+            break;
+        case 8:
+            value = maintenanceCount->CurrentMaintenanceCounter.GuideCounterLimit.Minimum;
+            break;
+        case 9:
+            value = maintenanceCount->CurrentMaintenanceCounter.GuideEnergyLimit.Maximum;
+            break;
+        case 10:
+            value = maintenanceCount->CurrentMaintenanceCounter.GuideEnergyLimit.Minimum;
+            break;
+        case 11:
             bResult = maintenanceCount->CurrentMaintenanceCounter.Guide80PercentAlarm;
             if(bResult == true)
                 value = "left";
             else
                 value = "right";
+            break;
+        case 12:
+            bResult = maintenanceCount->CurrentMaintenanceCounter.Guide80PercentAlarm;
+            if(bResult == true)
+                value = "left";
+            else
+                value = "right";
+            break;
+        case 13:
+            bResult = maintenanceCount->CurrentMaintenanceCounter.Guide100PercentLock;
+            if(bResult == true)
+                value = "left";
+            else
+                value = "right";
+            break;
+        case 14:
+            bResult = maintenanceCount->CurrentMaintenanceCounter.Guide100PercentLock;
+            if(bResult == true)
+                value = "left";
+            else
+                value = "right";
+            break;
         default:
             break;
         }
     }
-//    else if (code == 4)
+    else if (code == 4)
+    {
+        switch (index) {
+        case 2:
+            value = maintenanceCount->CurrentMaintenanceCounter.ActuatorCurrentCount;
+            break;
+        case 6:
+            value = maintenanceCount->CurrentMaintenanceCounter.ActuatorDateStarted;
+            break;
+        default:
+            break;
+        }
+    }
+//    else if (code == 5)
 //    {
 //        switch (index) {
 //        case 2:
-//            value = maintenanceCount->CurrentMaintenanceCounter.ConverterCounterLimit.Current;
+//            value = "-";
 //            break;
 //        case 3:
-//            value = maintenanceCount->CurrentMaintenanceCounter.ConverterCurrentCount;
+//            value = maintenanceCount->CurrentMaintenanceCounter.ActuatorCurrentCount;
 //            break;
 //        case 4:
-//            value = maintenanceCount->CurrentMaintenanceCounter.ConverterDateStarted;
+//            value = maintenanceCount->CurrentMaintenanceCounter.ActuatorDateStarted;
 //            break;
 //        case 5:
-//            value = maintenanceCount->CurrentMaintenanceCounter.ConverterCounterLimit.Maximum;
+//            value = "-";
 //            break;
 //        case 6:
-//            value = maintenanceCount->CurrentMaintenanceCounter.ConverterCounterLimit.Minimum;
+//            value = "-";
 //            break;
-//        case 7:
-//            bResult = maintenanceCount->CurrentMaintenanceCounter.Converter80PercentAlarm;
-//            if(bResult == true)
-//                value = "left";
-//            else
-//                value = "right";
 //        default:
 //            break;
 //        }
 //    }
-    else if (code == 5)
-    {
-        switch (index) {
-        case 2:
-            value = "-";
-            break;
-        case 3:
-            value = maintenanceCount->CurrentMaintenanceCounter.ActuatorCurrentCount;
-            break;
-        case 4:
-            value = maintenanceCount->CurrentMaintenanceCounter.ActuatorDateStarted;
-            break;
-        case 5:
-            value = "-";
-            break;
-        case 6:
-            value = "-";
-            break;
-        default:
-            break;
-        }
-    }
     return value;
 }
 
