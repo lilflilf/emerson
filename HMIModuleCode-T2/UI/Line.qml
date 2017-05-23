@@ -5,7 +5,7 @@ Author:zhangjiyong&lilongfei
 Description: line component
 The function interface:
 *******************************************************************/
-import QtQuick 2.0
+import QtQuick 2.7
 
 Item {
     property alias lineColor: line.color
