@@ -24,7 +24,7 @@ Item {
             font.pixelSize: 18
             font.family: "arial"
             color: "white"
-            text: qsTr("Search℃")
+            text: qsTr("Search")
         }
         MyLineEdit {
             id: searchValue
