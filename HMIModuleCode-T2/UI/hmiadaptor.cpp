@@ -206,7 +206,7 @@ QString HmiAdaptor::maintenanceCountGetValue(int code, int index)
             value = maintenanceCount->CurrentMaintenanceCounter.HornCounterLimit.Minimum;
             break;
         case 7:
-            bResult = maintenanceCount->CurrentMaintenanceCounter.Horn80PercentAlarm;
+            bResult = maintenanceCount->CurrentMaintenanceCounter.HornCounter80PercentAlarm;
             if(bResult == true)
                 value = "left";
             else
@@ -234,7 +234,7 @@ QString HmiAdaptor::maintenanceCountGetValue(int code, int index)
             value = maintenanceCount->CurrentMaintenanceCounter.AnvilCounterLimit.Minimum;
             break;
         case 7:
-            bResult = maintenanceCount->CurrentMaintenanceCounter.Anvil80PercentAlarm;
+            bResult = maintenanceCount->CurrentMaintenanceCounter.AnvilCounter80PercentAlarm;
             if(bResult == true)
                 value = "left";
             else
@@ -262,7 +262,7 @@ QString HmiAdaptor::maintenanceCountGetValue(int code, int index)
             value = maintenanceCount->CurrentMaintenanceCounter.GatherCounterLimit.Minimum;
             break;
         case 7:
-            bResult = maintenanceCount->CurrentMaintenanceCounter.Gather80PercentAlarm;
+            bResult = maintenanceCount->CurrentMaintenanceCounter.GatherCounter80PercentAlarm;
             if(bResult == true)
                 value = "left";
             else
@@ -291,7 +291,7 @@ QString HmiAdaptor::maintenanceCountGetValue(int code, int index)
             value = maintenanceCount->CurrentMaintenanceCounter.GuideCounterLimit.Minimum;
             break;
         case 7:
-            bResult = maintenanceCount->CurrentMaintenanceCounter.Guide80PercentAlarm;
+            bResult = maintenanceCount->CurrentMaintenanceCounter.GuideCounter80PercentAlarm;
             if(bResult == true)
                 value = "left";
             else
@@ -483,13 +483,13 @@ void HmiAdaptor::maintenanceCount80PercentAlarm(QString code, QString value)
 //    qDebug()<<"80%alarm code"<<code<<"value"<<value;
     UNUSED(value);
     if (code == "Horn")
-        maintenanceCount->_execute(MaintenanceLogElement::HORN_80PERCENT_ALARM);
+        maintenanceCount->_execute(MaintenanceLogElement::HORN_COUNT_80PERCENT_ALARM);
     else if (code == "AnvilTip")
-        maintenanceCount->_execute(MaintenanceLogElement::ANVIL_80PERCENT_ALARM);
+        maintenanceCount->_execute(MaintenanceLogElement::ANVIL_COUNT_80PERCENT_ALARM);
     else if (code == "Gather")
-        maintenanceCount->_execute(MaintenanceLogElement::GATHER_80PERCENT_ALARM);
+        maintenanceCount->_execute(MaintenanceLogElement::GATHER_COUNT_80PERCENT_ALARM);
     else if (code == "AnvilGuide")
-        maintenanceCount->_execute(MaintenanceLogElement::GUIDE_80PERCENT_ALARM);
+        maintenanceCount->_execute(MaintenanceLogElement::GUIDE_COUNT_80PERCENT_ALARM);
 }
 
 void HmiAdaptor::maintenanceStart(int page)

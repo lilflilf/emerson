@@ -40,12 +40,12 @@ MODstart::MODstart()
     M2010   *_M2010   = M2010::Instance();
     M102IA  *_M102IA  = M102IA::Instance();
 //    M10runMode *_M10runMode = M10runMode::Instance();
-    ModRunSetup *_ModRunSetup = ModRunSetup::Instance();
-    InterfaceClass *_Interface = InterfaceClass::Instance();
-    BransonServer* _Server = BransonServer::Instance();
-    DBHarnessTable*      _HarnessTable = DBHarnessTable::Instance();
-    DBPresetTable*    _SpliceTable = DBPresetTable::Instance();
-    DBWireTable*      _WireTable = DBWireTable::Instance();
+    ModRunSetup*    _ModRunSetup  = ModRunSetup::Instance();
+    InterfaceClass* _Interface    = InterfaceClass::Instance();
+    BransonServer*  _Server       = BransonServer::Instance();
+    DBHarnessTable* _HarnessTable = DBHarnessTable::Instance();
+    DBPresetTable*  _SpliceTable  = DBPresetTable::Instance();
+    DBWireTable*    _WireTable    = DBWireTable::Instance();
 
     int check_result = 0;
 

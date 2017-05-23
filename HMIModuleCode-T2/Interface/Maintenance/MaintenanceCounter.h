@@ -40,17 +40,25 @@ private:
     };
     enum TOOLING80PERCENTALARM
     {
-        HORN80PERCENTALARM,
-        ANVIL80PERCENTALARM,
-        GATHER80PERCENTALARM,
-        GUID80PERCENTALARM,
+        HORNCOUNTER80PERCENTALARM = 0,
+        HORNENERGY80PERCENTALARM = 1,
+        ANVILCOUNTER80PERCENTALARM = 2,
+        ANVILENERGY80PERCENTALARM = 3,
+        GATHERCOUNTER80PERCENTALARM = 4,
+        GATHERENERGY80PERCENTALARM = 5,
+        GUIDCOUNTER80PERCENTALARM = 6,
+        GUIDENERGY80PERCENTALARM = 7,
     };
     enum TOOLING100PERCENTLOCK
     {
-        HORN100PERCENTLOCK,
-        ANVIL100PERCENTLOCK,
-        GATHER100PERCENTLOCK,
-        GUID100PERCENTLOCK,
+        HORNCOUNTER100PERCENTLOCK = 0,
+        HORNENERGY100PERCENTLOCK = 1,
+        ANVILCOUNTER100PERCENTLOCK = 2,
+        ANVILENERGY100PERCENTLOCK = 3,
+        GATHERCOUNTER100PERCENTLOCK = 4,
+        GATHERENERGY100PERCENTLOCK = 5,
+        GUIDCOUNTER100PERCENTLOCK = 6,
+        GUIDENERGY100PERCENTLOCK = 7,
     };
 public:
     struct MaintenanceCounterForScreen
@@ -61,8 +69,10 @@ public:
         QString HornCurrentCount;
         QString HornCurrentEnergy;
         QString HornDateStarted;
-        bool Horn80PercentAlarm;
-        bool Horn100PercentLock;
+        bool HornCounter80PercentAlarm;
+        bool HornCounter100PercentLock;
+        bool HornEnergy80PercentAlarm;
+        bool HornEnergy100PercentLock;
 
         QString AnvilPartNumber;
         BRANSONDATA AnvilCounterLimit;
@@ -70,8 +80,10 @@ public:
         QString AnvilCurrentCount;
         QString AnvilCurrentEnergy;
         QString AnvilDateStarted;
-        bool Anvil80PercentAlarm;
-        bool Anvil100PercentLock;
+        bool AnvilCounter80PercentAlarm;
+        bool AnvilCounter100PercentLock;
+        bool AnvilEnergy80PercentAlarm;
+        bool AnvilEnergy100PercentLock;
 
         QString GatherPartNumber;
         BRANSONDATA GatherCounterLimit;
@@ -79,8 +91,10 @@ public:
         QString GatherCurrentCount;
         QString GatherCurrentEnergy;
         QString GatherDateStarted;
-        bool Gather80PercentAlarm;
-        bool Gather100PercentLock;
+        bool GatherCounter80PercentAlarm;
+        bool GatherCounter100PercentLock;
+        bool GatherEnergy80PercentAlarm;
+        bool GatherEnergy100PercentLock;
 
         QString GuidePartNumber;
         BRANSONDATA GuideCounterLimit;
@@ -88,8 +102,10 @@ public:
         QString GuideCurrentCount;
         QString GuideCurrentEnergy;
         QString GuideDateStarted;
-        bool Guide80PercentAlarm;
-        bool Guide100PercentLock;
+        bool GuideCounter80PercentAlarm;
+        bool GuideCounter100PercentLock;
+        bool GuideEnergy80PercentAlarm;
+        bool GuideEnergy100PercentLock;
 
         QString ActuatorCurrentCount;
         QString ActuatorDateStarted;

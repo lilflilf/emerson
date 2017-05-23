@@ -30,26 +30,34 @@ const QString MaintenanceMessageString[] = {
     QObject::tr("Horn Counter Limit Change"),//16
     QObject::tr("Horn Energy Limit Change"), //17
     QObject::tr("Horn Counter Reset"),//18
-    QObject::tr("Horn 80% Limit Alarm "), //19
-    QObject::tr("Horn 100% Limit Lock "), //20
+    QObject::tr("Horn Counter 80% Limit Alarm"), //19
+    QObject::tr("Horn Energy 80% Limit Alarm"), //20
+    QObject::tr("Horn Counter 100% Limit Lock"), //21
+    QObject::tr("Horn Energy 100% Limit Lock"), //22
 
-    QObject::tr("Anvil Counter Limit Change"),//21
-    QObject::tr("Anvil Energy Limit Change"), //22
-    QObject::tr("Anvil Counter Reset"),//23
-    QObject::tr("Anvil 80% Limit Alarm "), //24
-    QObject::tr("Anvil 100% Limit Lock "), //25
+    QObject::tr("Anvil Counter Limit Change"),//23
+    QObject::tr("Anvil Energy Limit Change"), //24
+    QObject::tr("Anvil Counter Reset"),//25
+    QObject::tr("Anvil Counter 80% Limit Alarm "), //26
+    QObject::tr("Anvil Energy 80% Limit Alarm "), //27
+    QObject::tr("Anvil Counter 100% Limit Lock "), //28
+    QObject::tr("Anvil Energy 100% Limit Lock "), //29
 
-    QObject::tr("Gather Counter Limit Change"),//26
-    QObject::tr("Gather Energy Limit Change"), //27
-    QObject::tr("Gather Counter Reset"),//28
-    QObject::tr("Gather 80% Limit Alarm "),//29
-    QObject::tr("Gather 100% Limit Lock "),//30
+    QObject::tr("Gather Counter Limit Change"),//30
+    QObject::tr("Gather Energy Limit Change"), //31
+    QObject::tr("Gather Counter Reset"),//32
+    QObject::tr("Gather Counter 80% Limit Alarm "),//33
+    QObject::tr("Gather Energy 80% Limit Alarm "), //34
+    QObject::tr("Gather Counter 100% Limit Lock "),//35
+    QObject::tr("Gather Energy 100% Limit Lock "), //36
 
-    QObject::tr("Guide Counter Limit Change"),//31
-    QObject::tr("Guide Energy Limit Change"), //32
-    QObject::tr("Guide Counter Reset"),//33
-    QObject::tr("Guide 80% Limit Alarm "),//34
-    QObject::tr("Guide 100% Limit Lock "),//35
+    QObject::tr("Guide Counter Limit Change"),//37
+    QObject::tr("Guide Energy Limit Change"), //38
+    QObject::tr("Guide Counter Reset"),//39
+    QObject::tr("Guide Counter 80% Limit Alarm "),//40
+    QObject::tr("Guide Energy 80% Limit Alarm "), //41
+    QObject::tr("Guide Counter 100% Limit Lock "),//42
+    QObject::tr("Guide Energy 100% Limit Lock "), //43
 };
 
 
@@ -84,26 +92,34 @@ public:
         HORN_COUNT_LIMIT       = 16,
         HORN_ENERGY_LIMIT      = 17,
         HORN_COUNT_RESET       = 18,
-        HORN_80PERCENT_ALARM   = 19,
-        HORN_100PERCENT_LOCK   = 20,
+        HORN_COUNT_80PERCENT_ALARM   = 19,
+        HORN_ENERGY_80PERCENT_ALARM  = 20,
+        HORN_COUNT_100PERCENT_LOCK   = 21,
+        HORN_ENERGY_100PERCENT_LOCK  = 22,
 
-        ANVIL_COUNT_LIMIT      = 21,
-        ANVIL_ENERGY_LIMIT     = 22,
-        ANVIL_COUNT_RESET      = 23,
-        ANVIL_80PERCENT_ALARM  = 24,
-        ANVIL_100PERCENT_LOCK  = 25,
+        ANVIL_COUNT_LIMIT      = 23,
+        ANVIL_ENERGY_LIMIT     = 24,
+        ANVIL_COUNT_RESET      = 25,
+        ANVIL_COUNT_80PERCENT_ALARM  = 26,
+        ANVIL_ENERGY_80PERCENT_ALARM = 27,
+        ANVIL_COUNT_100PERCENT_LOCK  = 28,
+        ANVIL_ENERGY_100PERCENT_LOCK = 29,
 
-        GATHER_COUNT_LIMIT     = 26,
-        GATHER_ENERGY_LIMIT    = 27,
-        GATHER_COUNT_RESET     = 28,
-        GATHER_80PERCENT_ALARM = 29,
-        GATHER_100PERCENT_LOCK = 30,
+        GATHER_COUNT_LIMIT     = 30,
+        GATHER_ENERGY_LIMIT    = 31,
+        GATHER_COUNT_RESET     = 32,
+        GATHER_COUNT_80PERCENT_ALARM = 33,
+        GATHER_ENERGY_80PERCENT_ALARM= 34,
+        GATHER_COUNT_100PERCENT_LOCK = 35,
+        GATHER_ENERGY_100PERCENT_LOCK= 36,
 
-        GUIDE_COUNT_LIMIT      = 31,
-        GUIDE_ENERGY_LIMIT     = 32,
-        GUIDE_COUNT_RESET      = 33,
-        GUIDE_80PERCENT_ALARM  = 34,
-        GUIDE_100PERCENT_LOCK  = 35,
+        GUIDE_COUNT_LIMIT      = 37,
+        GUIDE_ENERGY_LIMIT     = 38,
+        GUIDE_COUNT_RESET      = 39,
+        GUIDE_COUNT_80PERCENT_ALARM  = 40,
+        GUIDE_ENERGY_80PERCENT_ALARM = 41,
+        GUIDE_COUNT_100PERCENT_LOCK  = 42,
+        GUIDE_ENERGY_100PERCENT_LOCK = 43,
     };
 
 public:
