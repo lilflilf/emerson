@@ -545,7 +545,7 @@ void UtilityClass::InitializeTextData()
     SetTextData(DINGatherCountLimit, 0, MINGATHERCOUNTLIMIT, MAXGATHERCOUNTLIMIT, 1, 1, "%d");
     SetTextData(DINGatherEnergyLimit, 0, MINGATHERENERGYLIMIT, MAXGATHERENERGYLIMIT, 1, 1, "%.1fKJ");
     SetTextData(DINGuideCountLimit, 0, MINGUIDECOUNTLIMIT, MAXGUIDECOUNTLIMIT, 1, 1, "%d");
-    SetTextData(DINGuideEnergyLimit, 0, MINGUIDEENERGYLIMIT, MAXGUIDEENERGYLIMIT, 1, 1, ".1fKJ");
+    SetTextData(DINGuideEnergyLimit, 0, MINGUIDEENERGYLIMIT, MAXGUIDEENERGYLIMIT, 1, 1, "%.1fKJ");
     SetTextData(DINConverterLimit, 0, MINCONVERTERLIMIT, MAXCONVERTERLIMIT, 1, 1, "%d");
     SetTextData(DINPercentTeachMode, 0, MINPERCENTTEACHMODE, MAXPERCENTTEACHMODE, 1, 1, "%d%");
     SetTextData(DINSigmaTeachMode, 0, MINSIGMATEACHMODE, MAXSIGMATEACHMODE, 1, 1, "%d");

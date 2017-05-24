@@ -283,7 +283,7 @@ bool MaintenanceCounter::_execute(int funCode)
         _MaintenanceLogTable->InsertRecordIntoTable(&MaintenanceLog);
         break;
     case MaintenanceLogElement::GUIDE_COUNT_RESET:
-        ResetAnvilCurrentCountAndEnergy();
+        ResetGuideCurrentCountAndEnergy();
         MaintenanceLog.MaintenanceMsg =
                 MaintenanceMessageString[MaintenanceLogElement::GUIDE_COUNT_RESET];
         _MaintenanceLogTable->InsertRecordIntoTable(&MaintenanceLog);
