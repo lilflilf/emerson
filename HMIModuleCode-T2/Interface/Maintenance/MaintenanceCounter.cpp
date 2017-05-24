@@ -3,6 +3,7 @@
 #include "Interface/Interface.h"
 #include "DataBase/DBMaintenanceLogTable.h"
 #include "Modules/UtilityClass.h"
+#include "Modules/typedef.h"
 #include <QDateTime>
 #include <QDebug>
 MaintenanceCounter::MaintenanceCounter()
@@ -33,6 +34,7 @@ bool MaintenanceCounter::_execute(int funCode)
     MaintenanceLog.OperatorID = _Interface->CurrentOperator.OperatorID;
     MaintenanceLog.CreatedDate = QDateTime::currentDateTime().toTime_t();
 
+    DEBUG_PRINT(funCode);
     switch(funCode)
     {
     case MaintenanceLogElement::HORN_COUNT_LIMIT:
