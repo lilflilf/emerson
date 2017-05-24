@@ -305,6 +305,10 @@ Item {
             Text {
                 id: amplitude
                 text: qsTr("Amplitude")
+                font.family: "arial"
+                font.pixelSize: 16
+                color: "white"
+                anchors.verticalCenter: parent.verticalCenter
             }
             Recsetting {
                 anchors.right: parent.right
@@ -328,15 +332,6 @@ Item {
         anchors.top: rowButton2.bottom
         rowSpacing: 20
         columnSpacing: (rowButton3.width - 20) / 2 - 240
-//        anchors.bottom: rowButton3.top
-//        anchors.bottomMargin: 20
-//        anchors.top: title.bottom
-//        anchors.topMargin: 20
-//        anchors.left: title.left
-//        anchors.right: parent.right
-//        anchors.rightMargin: 20
-//        anchors.bottom: rowButton3.top
-//        anchors.bottomMargin: 20
         columns: 2
         rows: 2
         Repeater {
