@@ -41,6 +41,7 @@ private:
     PresetElement CurrentPreset;
     QMap<int, QString> RetrievedWeldResultIndexList;
     QList<float> DataList[4];
+    QStringList RetrievedWeldResultList;
 private:
     void Initialization();
     bool GetCurrentPresetFromLibrary(int SpliceID, QString SpliceName);
@@ -54,6 +55,7 @@ public:
     QList<int> RawQualityWindowList[4];
 public:
     void _apply(int, QString, unsigned int time_from, unsigned int time_to);
+    bool ExportData(QString fileUrl);
 public:
     explicit StatisticalTrend(QObject *parent = 0);
 

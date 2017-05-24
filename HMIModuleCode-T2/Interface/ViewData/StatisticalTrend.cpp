@@ -5,6 +5,7 @@
 //#include "Interface/Definition.h"
 #include "Modules/UtilityClass.h"
 #include "Modules/StatisticalFunction.h"
+#include "Modules/Statistics.h"
 #include "Modules/typedef.h"
 #include <QDateTime>
 #include <QDebug>
@@ -34,6 +35,7 @@ bool StatisticalTrend::GetCurrentWeldResultOneByOne(QMap<int, QString>* ResultIn
 {
     DBWeldResultTable* _DBWeldResult = DBWeldResultTable::Instance();
     UtilityClass* _Utility = UtilityClass::Instance();
+    Statistics* _Statistics = Statistics::Instance();
     WeldResultElement CurrentWeldResultRecord;
     bool bResult = false;
     DataList[QUALITYTIME].clear();
@@ -100,6 +102,7 @@ bool StatisticalTrend::GetCurrentWeldResultOneByOne(QMap<int, QString>* ResultIn
             RawQualityWindowList[QUALITYPREHEIGHT].push_back(CurrentWeldResultRecord.ActualResult.ActualPreheight);
             DataList[QUALITYPOSTHEIGHT].push_back(postheight);
             RawQualityWindowList[QUALITYPOSTHEIGHT].push_back(CurrentWeldResultRecord.ActualResult.ActualPostheight);
+            RetrievedWeldResultList.push_back(_Statistics->HistoryEvent(&CurrentWeldResultRecord, &CurrentPreset));
         }
         ++iterator;
     }
@@ -224,6 +227,7 @@ bool StatisticalTrend::GetStatisticsParameter()
 void StatisticalTrend::Initialization()
 {
     CurrentWeldParameterList.clear();
+    RetrievedWeldResultList.clear();
     for(int i = QUALITYTIME; i <= QUALITYPOSTHEIGHT; i++)
     {
         CurrentStatisticsParameter[i].Cpk.clear();
@@ -256,4 +260,34 @@ void StatisticalTrend::_apply(int SpliceID, QString SpliceName,
         return;
     GetStatisticsParameter();
     emit _ProcessFinished(bResult);
+}
+
+bool StatisticalTrend::ExportData(QString fileUrl)
+{
+    Statistics* _Statistics = Statistics::Instance();
+    QString fileSource;
+    bool bResult = false;
+    fileSource = fileUrl;
+    bResult = fileSource.contains("file:///");
+    if(bResult == false)
+        return bResult;
+    fileSource = fileSource.mid(8);
+    QFile csvFile(fileSource);
+    bResult = csvFile.open(QIODevice::Text | QIODevice::ReadWrite | QIODevice::Truncate);
+    if(bResult == false)
+        return bResult;
+    QDateTime TimeLabel = QDateTime::currentDateTime();
+    QString TimeStr = TimeLabel.toString("yyyy/MM/dd hh:mm:ss");
+    QString TitleStr = "Weld Data Statistical Analysis " + TimeStr;
+    QString HeadStr = _Statistics->HeaderString();
+    QTextStream out(&csvFile);
+    out << TitleStr << '\n'
+        << HeadStr << '\n';
+    for(int i = 0; i < RetrievedWeldResultList.size(); i++)
+    {
+        out << RetrievedWeldResultList[i] << '\n';
+    }
+
+    csvFile.close();
+    return true;
 }
