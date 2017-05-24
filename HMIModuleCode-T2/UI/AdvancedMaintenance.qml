@@ -207,63 +207,18 @@ Item {
         id: title
         anchors.top: parent.top
         anchors.topMargin: 30
-        anchors.left: rowButton.left
+        anchors.left: buttonCoumn.right
+        anchors.leftMargin: 20
         font.family: "arial"
         font.pixelSize: 20
         color: "white"
-        text: qsTr("Sonics Test")
-    }
-    Grid {
-        id: testSetting
-        anchors.horizontalCenter: rowButton.horizontalCenter
-        anchors.top: title.bottom
-        rowSpacing: 20
-        columnSpacing: (rowButton3.width - 20) / 2 - 240
-//        anchors.bottom: rowButton3.top
-//        anchors.bottomMargin: 20
-//        anchors.top: title.bottom
-//        anchors.topMargin: 20
-//        anchors.left: title.left
-//        anchors.right: parent.right
-//        anchors.rightMargin: 20
-//        anchors.bottom: rowButton3.top
-//        anchors.bottomMargin: 20
-        columns: 2
-        rows: 2
-        Repeater {
-            anchors.right: parent.right
-            model: listModel
-            delegate: Recsetting {
-                width: 250 //(rowButton3.width-20)/3
-                height: 130 //(testSetting.height-20)/3
-                headTitle: titleHead
-                centervalue: value
-            }
-        }
-    }
-    Row {
-        id: rowButton3
-        anchors.bottom: powerText.top
-        anchors.bottomMargin: 20
-        anchors.right: rowButton.right
-        anchors.left: rowButton.left
-        spacing: 20
-        CButton {
-            id: test1
-            text: qsTr("Run Sonics")
-            width: (rowButton3.width -20)/2
-        }
-        CButton {
-            id: test2
-            text: qsTr("Run Sonics 100%")
-            width: (rowButton3.width -20)/2
-        }
+        text: qsTr("Sonics and Power Test")
     }
     Text {
         id: powerText
-        anchors.bottom: rowButton2.top
-        anchors.bottomMargin: 20
-        anchors.left: rowButton2.left
+        anchors.top: title.bottom
+        anchors.topMargin: 20
+        anchors.left: title.left
         verticalAlignment: Qt.AlignVCenter
         height: 40
         font.family: "arial"
@@ -307,20 +262,57 @@ Item {
         anchors.verticalCenter: powerText.verticalCenter
         anchors.left: powerText.right
         anchors.leftMargin: 10
-        anchors.right: rowButton2.right
+        anchors.right: parent.right
+        anchors.rightMargin: 20
         maximum: 100
         value: 50
         minimum: 1
     }
 
+    Row {
+        id: rowButton3
+        anchors.top: progressBar.bottom
+        anchors.topMargin: 20
+        anchors.right: progressBar.right
+        anchors.rightMargin: 50
+        anchors.left: progressBar.left
+        anchors.leftMargin: 50
+        spacing: 20
+        CButton {
+            id: test1
+            text: qsTr("Run Sonics")
+            width: (rowButton3.width -20)/2
+        }
+        CButton {
+            id: test2
+            text: qsTr("Run Sonics 100%")
+            width: (rowButton3.width -20)/2
+        }
+    }
 
     Row {
         id: rowButton2
-        anchors.bottom: rowButton.top
-        anchors.bottomMargin: 20
-        anchors.right: rowButton.right
-        anchors.left: rowButton.left
+        anchors.top: rowButton3.bottom
+        anchors.topMargin: 20
+        anchors.right: rowButton3.right
+        anchors.left: rowButton3.left
+
         spacing: 20
+        Item {
+            width: (rowButton2.width-20)/2
+            height: Screen.height * 0.08
+
+            Text {
+                id: amplitude
+                text: qsTr("Amplitude")
+            }
+            Recsetting {
+                anchors.right: parent.right
+                width: (rowButton2.width-20)/4
+                height: Screen.height * 0.08
+            }
+        }
+
         CButton {
             text: qsTr("Reset")
             width: (rowButton2.width-20)/2
@@ -328,29 +320,54 @@ Item {
                 hmiAdaptor.maintenanceReset()
             }
         }
-        CButton {
-            text: qsTr("Default Setting")
-            width: (rowButton2.width-20)/2
+    }
+
+    Grid {
+        id: testSetting
+        anchors.horizontalCenter: rowButton3.horizontalCenter
+        anchors.top: rowButton2.bottom
+        rowSpacing: 20
+        columnSpacing: (rowButton3.width - 20) / 2 - 240
+//        anchors.bottom: rowButton3.top
+//        anchors.bottomMargin: 20
+//        anchors.top: title.bottom
+//        anchors.topMargin: 20
+//        anchors.left: title.left
+//        anchors.right: parent.right
+//        anchors.rightMargin: 20
+//        anchors.bottom: rowButton3.top
+//        anchors.bottomMargin: 20
+        columns: 2
+        rows: 2
+        Repeater {
+            anchors.right: parent.right
+            model: listModel
+            delegate: Recsetting {
+                width: 250 //(rowButton3.width-20)/3
+                height: 130 //(testSetting.height-20)/3
+                headTitle: titleHead
+                centervalue: value
+            }
         }
     }
-    Row {
-        id: rowButton
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 20
-        anchors.left: buttonCoumn.right
-        anchors.leftMargin: 20
-        anchors.right: parent.right
-        anchors.rightMargin: 20
-        spacing: 20
-        CButton {
-            iconSource: "qrc:/images/images/cancel.png"
-            text: qsTr("Cancel")
-            width: (rowButton.width-20)/2
-        }
-        CButton {
-            iconSource: "qrc:/images/images/OK.png"
-            text: qsTr("OK")
-            width: (rowButton.width-20)/2
-        }
-    }
+//    Row {
+//        id: rowButton
+//        anchors.bottom: parent.bottom
+//        anchors.bottomMargin: 20
+//        anchors.left: buttonCoumn.right
+//        anchors.leftMargin: 20
+//        anchors.right: parent.right
+//        anchors.rightMargin: 20
+//        spacing: 20
+//        CButton {
+//            iconSource: "qrc:/images/images/cancel.png"
+//            text: qsTr("Cancel")
+//            width: (rowButton.width-20)/2
+//        }
+//        CButton {
+//            iconSource: "qrc:/images/images/OK.png"
+//            text: qsTr("OK")
+//            width: (rowButton.width-20)/2
+//        }
+//    }
 }

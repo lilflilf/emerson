@@ -16,8 +16,9 @@ import QtQuick.Dialogs 1.2
 Item {
     id: toolChange
     property int select: -1
-    property bool myfocus: false
+//    property bool myfocus: true
     property bool bIsEditLimit1: false
+    signal focusChanged()
     width: Screen.width*0.7
     height: Screen.height*0.6
     signal clickDone(var value)
@@ -32,7 +33,7 @@ Item {
     {
         listModel.clear()
         listModel.append({mytitle:qsTr("Horn")})
-        listModel.append({mytitle:qsTr("Annvil")})
+        listModel.append({mytitle:qsTr("Anvil")})
         listModel.append({mytitle:qsTr("Gather")})
         listModel.append({mytitle:qsTr("Guide")})
         listModel.append({mytitle:qsTr("System")})
@@ -250,6 +251,15 @@ Item {
                     width: 150
                     height: parent.height
                     spacing: 5
+                    Connections {
+                        target: toolChange
+                        onFocusChanged: {
+                            input.inputFocus = false
+                            input2.inputFocus = false
+                        }
+
+                    }
+
                     MiniKeyNumInput {
                         id: input
                         width: 150
@@ -257,7 +267,7 @@ Item {
                         inputWidth: 150
                         inputText: mylimit
                         visible: lineItem.listIndex == 4 ? false : true
-                        inputFocus: toolChange.myfocus
+//                        inputFocus: toolChange.myfocus
                         onInputFocusChanged: {
                             if (input.inputFocus) {
                                 bIsEditLimit1 = true
@@ -281,16 +291,16 @@ Item {
                         inputWidth: 150
                         inputText: mylimit1
                         visible: lineItem.listIndex == 4 ? false : true
-                        inputFocus: toolChange.myfocus
+//                        inputFocus: toolChange.myfocus
                         onInputFocusChanged: {
-                            if (input.inputFocus) {
+                            if (input2.inputFocus) {
                                 bIsEditLimit1 = false
                                 toolChange.select = index
                                 backGround.visible = true
                                 backGround.opacity = 0.5
                                 keyNum.visible = true
                                 keyNum.titleText = qsTr("Counter Limit")
-                                keyNum.currentValue = input.inputText
+                                keyNum.currentValue = input2.inputText
                                 keyNum.minvalue = minLimit1 //"0"
                                 keyNum.maxvalue = maxLimit1 //"10000"
 
@@ -362,7 +372,7 @@ Item {
                         state: mystate1
                         visible: lineItem.listIndex == 4 ? false : true
                         onStateChanged: {
-                            hmiAdaptor.maintenanceCount80PercentAlarm(mytitle, myswitch.state)
+                            hmiAdaptor.maintenanceCount80PercentAlarm(mytitle, "switch1")
                         }
                     }
                     Switch2 {
@@ -374,7 +384,7 @@ Item {
                         state: mystate2
                         visible: lineItem.listIndex == 4 ? false : true
                         onStateChanged: {
-                            hmiAdaptor.maintenanceCount80PercentAlarm(mytitle, myswitch.state)
+                            hmiAdaptor.maintenanceCount80PercentAlarm(mytitle, "switch2")
                         }
                     }
                 }
@@ -391,7 +401,7 @@ Item {
                         state: mystate3
                         visible: lineItem.listIndex == 4 ? false : true
                         onStateChanged: {
-                            hmiAdaptor.maintenanceCount80PercentAlarm(mytitle, myswitch.state)
+                            hmiAdaptor.maintenanceCount80PercentAlarm(mytitle, "switch3")
                         }
                     }
                     Switch2 {
@@ -403,7 +413,7 @@ Item {
                         state: mystate4
                         visible: lineItem.listIndex == 4 ? false : true
                         onStateChanged: {
-                            hmiAdaptor.maintenanceCount80PercentAlarm(mytitle, myswitch.state)
+                            hmiAdaptor.maintenanceCount80PercentAlarm(mytitle, "switch4")
                         }
                     }
                 }
@@ -475,12 +485,15 @@ Item {
             if (index == 15) {
                 clickDone(keyNum.inputText)
                 hmiAdaptor.maintenanceCountSetLimit(listModel.get(toolChange.select).mytitle, keyNum.inputText)
-                if (bIsEditLimit1)
+                if (bIsEditLimit1) {
                     listModel.set(toolChange.select,{"mylimit":keyNum.inputText})
-                else
+                }
+                else {
                     listModel.set(toolChange.select,{"mylimit1":keyNum.inputText})
+                }
 
-                toolChange.myfocus = false
+                toolChange.focusChanged()
+//                toolChange.myfocus = false
                 backGround.visible = false
                 backGround.opacity = 0
                 keyNum.visible = false
@@ -488,7 +501,8 @@ Item {
                 keyNum.tempValue = ""
             } else if (index == 11) {
                 backGround.visible = false
-                toolChange.myfocus = false
+//                toolChange.myfocus = false
+                toolChange.focusChanged()
                 backGround.opacity = 0
                 keyNum.visible = false
                 keyNum.inputText = ""

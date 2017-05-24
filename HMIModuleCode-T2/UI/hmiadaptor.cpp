@@ -220,28 +220,28 @@ QString HmiAdaptor::maintenanceCountGetValue(int code, int index)
             value = maintenanceCount->CurrentMaintenanceCounter.HornEnergyLimit.Minimum;
             break;
         case 11:
-            bResult = maintenanceCount->CurrentMaintenanceCounter.Horn80PercentAlarm;
+            bResult = maintenanceCount->CurrentMaintenanceCounter.HornCounter80PercentAlarm;
             if(bResult == true)
                 value = "left";
             else
                 value = "right";
             break;
         case 12:
-            bResult = maintenanceCount->CurrentMaintenanceCounter.Horn80PercentAlarm;
+            bResult = maintenanceCount->CurrentMaintenanceCounter.HornEnergy80PercentAlarm;
             if(bResult == true)
                 value = "left";
             else
                 value = "right";
             break;
         case 13:
-            bResult = maintenanceCount->CurrentMaintenanceCounter.Horn100PercentLock;
+            bResult = maintenanceCount->CurrentMaintenanceCounter.HornCounter100PercentLock;
             if(bResult == true)
                 value = "left";
             else
                 value = "right";
             break;
         case 14:
-            bResult = maintenanceCount->CurrentMaintenanceCounter.Horn100PercentLock;
+            bResult = maintenanceCount->CurrentMaintenanceCounter.HornEnergy100PercentLock;
             if(bResult == true)
                 value = "left";
             else
@@ -285,28 +285,28 @@ QString HmiAdaptor::maintenanceCountGetValue(int code, int index)
             value = maintenanceCount->CurrentMaintenanceCounter.AnvilEnergyLimit.Minimum;
             break;
         case 11:
-            bResult = maintenanceCount->CurrentMaintenanceCounter.Anvil80PercentAlarm;
+            bResult = maintenanceCount->CurrentMaintenanceCounter.AnvilCounter80PercentAlarm;
             if(bResult == true)
                 value = "left";
             else
                 value = "right";
             break;
         case 12:
-            bResult = maintenanceCount->CurrentMaintenanceCounter.Anvil80PercentAlarm;
+            bResult = maintenanceCount->CurrentMaintenanceCounter.AnvilEnergy80PercentAlarm;
             if(bResult == true)
                 value = "left";
             else
                 value = "right";
             break;
         case 13:
-            bResult = maintenanceCount->CurrentMaintenanceCounter.Anvil100PercentLock;
+            bResult = maintenanceCount->CurrentMaintenanceCounter.AnvilCounter100PercentLock;
             if(bResult == true)
                 value = "left";
             else
                 value = "right";
             break;
         case 14:
-            bResult = maintenanceCount->CurrentMaintenanceCounter.Anvil100PercentLock;
+            bResult = maintenanceCount->CurrentMaintenanceCounter.AnvilEnergy100PercentLock;
             if(bResult == true)
                 value = "left";
             else
@@ -350,28 +350,28 @@ QString HmiAdaptor::maintenanceCountGetValue(int code, int index)
             value = maintenanceCount->CurrentMaintenanceCounter.GatherEnergyLimit.Minimum;
             break;
         case 11:
-            bResult = maintenanceCount->CurrentMaintenanceCounter.Gather80PercentAlarm;
+            bResult = maintenanceCount->CurrentMaintenanceCounter.GatherCounter80PercentAlarm;
             if(bResult == true)
                 value = "left";
             else
                 value = "right";
             break;
         case 12:
-            bResult = maintenanceCount->CurrentMaintenanceCounter.Gather80PercentAlarm;
+            bResult = maintenanceCount->CurrentMaintenanceCounter.GatherEnergy80PercentAlarm;
             if(bResult == true)
                 value = "left";
             else
                 value = "right";
             break;
         case 13:
-            bResult = maintenanceCount->CurrentMaintenanceCounter.Gather100PercentLock;
+            bResult = maintenanceCount->CurrentMaintenanceCounter.GatherCounter100PercentLock;
             if(bResult == true)
                 value = "left";
             else
                 value = "right";
             break;
         case 14:
-            bResult = maintenanceCount->CurrentMaintenanceCounter.Gather100PercentLock;
+            bResult = maintenanceCount->CurrentMaintenanceCounter.GatherEnergy100PercentLock;
             if(bResult == true)
                 value = "left";
             else
@@ -415,28 +415,28 @@ QString HmiAdaptor::maintenanceCountGetValue(int code, int index)
             value = maintenanceCount->CurrentMaintenanceCounter.GuideEnergyLimit.Minimum;
             break;
         case 11:
-            bResult = maintenanceCount->CurrentMaintenanceCounter.Guide80PercentAlarm;
+            bResult = maintenanceCount->CurrentMaintenanceCounter.GuideCounter80PercentAlarm;
             if(bResult == true)
                 value = "left";
             else
                 value = "right";
             break;
         case 12:
-            bResult = maintenanceCount->CurrentMaintenanceCounter.Guide80PercentAlarm;
+            bResult = maintenanceCount->CurrentMaintenanceCounter.GuideEnergy80PercentAlarm;
             if(bResult == true)
                 value = "left";
             else
                 value = "right";
             break;
         case 13:
-            bResult = maintenanceCount->CurrentMaintenanceCounter.Guide100PercentLock;
+            bResult = maintenanceCount->CurrentMaintenanceCounter.GuideCounter100PercentLock;
             if(bResult == true)
                 value = "left";
             else
                 value = "right";
             break;
         case 14:
-            bResult = maintenanceCount->CurrentMaintenanceCounter.Guide100PercentLock;
+            bResult = maintenanceCount->CurrentMaintenanceCounter.GuideEnergy100PercentLock;
             if(bResult == true)
                 value = "left";
             else
@@ -575,13 +575,14 @@ QString HmiAdaptor::getSoftVerson(int index)
 //listModel.append({mytitle:"Actuator"})
 void HmiAdaptor::maintenanceCountReset(QString code)
 {
+    qDebug() << code;
     if (code == "Horn")
         maintenanceCount->_execute(MaintenanceLogElement::HORN_COUNT_RESET);
-    else if (code == "AnvilTip")
+    else if (code == "Anvil")
         maintenanceCount->_execute(MaintenanceLogElement::ANVIL_COUNT_RESET);
     else if (code == "Gather")
         maintenanceCount->_execute(MaintenanceLogElement::GATHER_COUNT_RESET);
-    else if (code == "AnvilGuide")
+    else if (code == "Guide")
         maintenanceCount->_execute(MaintenanceLogElement::GUIDE_COUNT_RESET);
 }
 
@@ -592,7 +593,7 @@ void HmiAdaptor::maintenanceCountSetLimit(QString code, QString value)
         maintenanceCount->CurrentMaintenanceCounter.HornCounterLimit.Current = value;
         maintenanceCount->_execute(MaintenanceLogElement::HORN_COUNT_LIMIT);
     }
-    else if (code == "AnvilTip")
+    else if (code == "Anvil")
     {
         maintenanceCount->CurrentMaintenanceCounter.AnvilCounterLimit.Current = value;
         maintenanceCount->_execute(MaintenanceLogElement::ANVIL_COUNT_LIMIT);
@@ -602,7 +603,7 @@ void HmiAdaptor::maintenanceCountSetLimit(QString code, QString value)
         maintenanceCount->CurrentMaintenanceCounter.GatherCounterLimit.Current = value;
         maintenanceCount->_execute(MaintenanceLogElement::GATHER_COUNT_LIMIT);
     }
-    else if (code == "AnvilGuide")
+    else if (code == "Guide")
     {
         maintenanceCount->CurrentMaintenanceCounter.GuideCounterLimit.Current = value;
         maintenanceCount->_execute(MaintenanceLogElement::GUIDE_COUNT_LIMIT);
@@ -611,16 +612,52 @@ void HmiAdaptor::maintenanceCountSetLimit(QString code, QString value)
 
 void HmiAdaptor::maintenanceCount80PercentAlarm(QString code, QString value)
 {
-//    qDebug()<<"80%alarm code"<<code<<"value"<<value;
+//    listModel.append({mytitle:qsTr("Horn")})
+//    listModel.append({mytitle:qsTr("Anvil")})
+//    listModel.append({mytitle:qsTr("Gather")})
+//    listModel.append({mytitle:qsTr("Guide")})
     UNUSED(value);
-    if (code == "Horn")
-        maintenanceCount->_execute(MaintenanceLogElement::HORN_COUNT_80PERCENT_ALARM);
-    else if (code == "AnvilTip")
-        maintenanceCount->_execute(MaintenanceLogElement::ANVIL_COUNT_80PERCENT_ALARM);
-    else if (code == "Gather")
-        maintenanceCount->_execute(MaintenanceLogElement::GATHER_COUNT_80PERCENT_ALARM);
-    else if (code == "AnvilGuide")
-        maintenanceCount->_execute(MaintenanceLogElement::GUIDE_COUNT_80PERCENT_ALARM);
+    if (code == "Horn") {
+        if (value == "switch1")
+            maintenanceCount->_execute(MaintenanceLogElement::HORN_COUNT_80PERCENT_ALARM);
+        else if (value == "switch2")
+            maintenanceCount->_execute(MaintenanceLogElement::HORN_ENERGY_80PERCENT_ALARM);
+        else if (value == "switch3")
+            maintenanceCount->_execute(MaintenanceLogElement::HORN_COUNT_100PERCENT_LOCK);
+        else if (value == "switch4")
+            maintenanceCount->_execute(MaintenanceLogElement::HORN_ENERGY_100PERCENT_LOCK);
+    }
+    else if (code == "Anvil") {
+        if (value == "switch1")
+            maintenanceCount->_execute(MaintenanceLogElement::ANVIL_COUNT_80PERCENT_ALARM);
+        else if (value == "switch2")
+            maintenanceCount->_execute(MaintenanceLogElement::ANVIL_ENERGY_80PERCENT_ALARM);
+        else if (value == "switch3")
+            maintenanceCount->_execute(MaintenanceLogElement::HORN_COUNT_100PERCENT_LOCK);
+        else if (value == "switch4")
+            maintenanceCount->_execute(MaintenanceLogElement::HORN_ENERGY_100PERCENT_LOCK);
+    }
+    else if (code == "Gather") {
+        if (value == "switch1")
+            maintenanceCount->_execute(MaintenanceLogElement::GATHER_COUNT_80PERCENT_ALARM);
+        else if (value == "switch2")
+            maintenanceCount->_execute(MaintenanceLogElement::GATHER_ENERGY_80PERCENT_ALARM);
+        else if (value == "switch3")
+            maintenanceCount->_execute(MaintenanceLogElement::GATHER_COUNT_100PERCENT_LOCK);
+        else if (value == "switch4")
+            maintenanceCount->_execute(MaintenanceLogElement::GATHER_ENERGY_100PERCENT_LOCK);
+    }
+    else if (code == "Guide") {
+        if (value == "switch1")
+            maintenanceCount->_execute(MaintenanceLogElement::GUIDE_COUNT_80PERCENT_ALARM);
+        else if (value == "switch2")
+            maintenanceCount->_execute(MaintenanceLogElement::GUIDE_ENERGY_80PERCENT_ALARM);
+        else if (value == "switch3")
+            maintenanceCount->_execute(MaintenanceLogElement::GUIDE_COUNT_100PERCENT_LOCK);
+        else if (value == "switch4")
+            maintenanceCount->_execute(MaintenanceLogElement::GUIDE_ENERGY_100PERCENT_LOCK);
+
+    }
 }
 
 void HmiAdaptor::maintenanceStart(int page)
