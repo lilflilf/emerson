@@ -13,7 +13,6 @@ import QtQuick.Window 2.2
 
 MouseArea {
     id: button
-
     height: Screen.height * 0.08
     implicitWidth: labelItemLoader.implicitWidth + implicitHorizontalPadding
     implicitHeight: labelItemLoader.implicitHeight + implicitVerticalPadding

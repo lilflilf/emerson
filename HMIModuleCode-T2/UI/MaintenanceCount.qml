@@ -16,7 +16,9 @@ import QtQuick.Dialogs 1.2
 Item {
     id: toolChange
     property int select: -1
-    property bool myfocus: false
+//    property bool myfocus: true
+    property bool bIsEditLimit1: false
+    signal focusChanged()
     width: Screen.width*0.7
     height: Screen.height*0.6
     signal clickDone(var value)
@@ -31,24 +33,31 @@ Item {
     {
         listModel.clear()
         listModel.append({mytitle:qsTr("Horn")})
-        listModel.append({mytitle:qsTr("AnvilTip")})
+        listModel.append({mytitle:qsTr("Anvil")})
         listModel.append({mytitle:qsTr("Gather")})
-        listModel.append({mytitle:qsTr("HornGuide")})
-        listModel.append({mytitle:qsTr("Converter")})
-        listModel.append({mytitle:qsTr("Actuator")})
+        listModel.append({mytitle:qsTr("Guide")})
+        listModel.append({mytitle:qsTr("System")})
+//        listModel.append({mytitle:qsTr("Actuator")})
 
         for (var i = 0; i < 5; i++)
         {
             listModel.set(i,{"imageSourece":hmiAdaptor.maintenanceCountGetImage(i),
-                             "mylimit"     :hmiAdaptor.maintenanceCountGetValue(i,2),
-//                              "mylimit"     :hmiAdaptor.maintenanceCountGetValue(i,2),
+                              "mynum"   :hmiAdaptor.maintenanceCountGetValue(i,1),
+                              "mycurrent"   :hmiAdaptor.maintenanceCountGetValue(i,2),
+                              "mycurrent1"   :hmiAdaptor.maintenanceCountGetValue(i,3),
+                             "mylimit"     :hmiAdaptor.maintenanceCountGetValue(i,4),
+                             "mylimit1"     :hmiAdaptor.maintenanceCountGetValue(i,5),
 
-                             "mycurrent"   :hmiAdaptor.maintenanceCountGetValue(i,3),
-                             "createDate"  :hmiAdaptor.maintenanceCountGetValue(i,4),
-                             "maxLimit"    :hmiAdaptor.maintenanceCountGetValue(i,5),
-                             "minLimit"    :hmiAdaptor.maintenanceCountGetValue(i,6),
+                             "createDate"  :hmiAdaptor.maintenanceCountGetValue(i,6),
+                             "maxLimit"    :hmiAdaptor.maintenanceCountGetValue(i,7),
+                             "minLimit"    :hmiAdaptor.maintenanceCountGetValue(i,8),
+                              "maxLimit1"    :hmiAdaptor.maintenanceCountGetValue(i,9),
+                              "minLimit1"    :hmiAdaptor.maintenanceCountGetValue(i,10),
                              "myreset"     :qsTr("Reset"),
-                             "mystate"     :hmiAdaptor.maintenanceCountGetValue(i,7)})
+                              "mystate1"     :hmiAdaptor.maintenanceCountGetValue(i,11),
+                              "mystate2"     :hmiAdaptor.maintenanceCountGetValue(i,12),
+                              "mystate3"     :hmiAdaptor.maintenanceCountGetValue(i,13),
+                             "mystate4"     :hmiAdaptor.maintenanceCountGetValue(i,14)})
         }
     }
 
@@ -179,6 +188,14 @@ Item {
                     width: 160
                     height: 60
                     source:  imageSourece //"file:///c:/ToolChangeImage/group2/wiredemo.jpg"
+                    Text {
+                        text: mynum
+                        anchors.top: parent.bottom
+                        font.pointSize: 14
+                        font.family: "arial"
+                        color: "white"
+                        anchors.horizontalCenter: parent.horizontalCenter
+                    }
                 }
                 Column {
                     width: 150
@@ -210,7 +227,7 @@ Item {
                         id: currentCount2
                         width: 150
                         height: 50
-                        text: mycurrent
+                        text: mycurrent1
                         color: "white"
                         font.family: "arial"
                         font.pointSize: 14
@@ -234,6 +251,15 @@ Item {
                     width: 150
                     height: parent.height
                     spacing: 5
+                    Connections {
+                        target: toolChange
+                        onFocusChanged: {
+                            input.inputFocus = false
+                            input2.inputFocus = false
+                        }
+
+                    }
+
                     MiniKeyNumInput {
                         id: input
                         width: 150
@@ -241,9 +267,10 @@ Item {
                         inputWidth: 150
                         inputText: mylimit
                         visible: lineItem.listIndex == 4 ? false : true
-                        inputFocus: toolChange.myfocus
+//                        inputFocus: toolChange.myfocus
                         onInputFocusChanged: {
                             if (input.inputFocus) {
+                                bIsEditLimit1 = true
                                 toolChange.select = index
                                 backGround.visible = true
                                 backGround.opacity = 0.5
@@ -262,19 +289,20 @@ Item {
                         height: 50
     //                    inputHeight: 79
                         inputWidth: 150
-                        inputText: mylimit
+                        inputText: mylimit1
                         visible: lineItem.listIndex == 4 ? false : true
-                        inputFocus: toolChange.myfocus
+//                        inputFocus: toolChange.myfocus
                         onInputFocusChanged: {
-                            if (input.inputFocus) {
+                            if (input2.inputFocus) {
+                                bIsEditLimit1 = false
                                 toolChange.select = index
                                 backGround.visible = true
                                 backGround.opacity = 0.5
                                 keyNum.visible = true
                                 keyNum.titleText = qsTr("Counter Limit")
-                                keyNum.currentValue = input.inputText
-                                keyNum.minvalue = minLimit //"0"
-                                keyNum.maxvalue = maxLimit //"10000"
+                                keyNum.currentValue = input2.inputText
+                                keyNum.minvalue = minLimit1 //"0"
+                                keyNum.maxvalue = maxLimit1 //"10000"
 
                             }
                         }
@@ -307,17 +335,17 @@ Item {
                             //                        currentCount.text = hmiAdaptor.maintenanceCountGetValue(listIndex,3)
                         }
                     }
-                    CButton {
+                    Item {
                         width: 150
                         height: 50
-                        text: myreset
+//                        text: myreset
                         visible: lineItem.listIndex == 4 ? false : true
-                        onClicked: {
-                            hmiAdaptor.maintenanceCountReset(mytitle)
-                            hmiAdaptor.maintenanceCountExecute("_Recall")
-                            initPage()
-    //                        currentCount.text = hmiAdaptor.maintenanceCountGetValue(listIndex,3)
-                        }
+//                        onClicked: {
+//                            hmiAdaptor.maintenanceCountReset(mytitle)
+//                            hmiAdaptor.maintenanceCountExecute("_Recall")
+//                            initPage()
+//    //                        currentCount.text = hmiAdaptor.maintenanceCountGetValue(listIndex,3)
+//                        }
                     }
                 }
                 Text {
@@ -341,10 +369,10 @@ Item {
                         textLeft: qsTr("On")
                         textRight: qsTr("Off")
                         clip: true
-                        state: mystate
+                        state: mystate1
                         visible: lineItem.listIndex == 4 ? false : true
                         onStateChanged: {
-                            hmiAdaptor.maintenanceCount80PercentAlarm(mytitle, myswitch.state)
+                            hmiAdaptor.maintenanceCount80PercentAlarm(mytitle, "switch1")
                         }
                     }
                     Switch2 {
@@ -353,10 +381,10 @@ Item {
                         textLeft: qsTr("On")
                         textRight: qsTr("Off")
                         clip: true
-                        state: mystate
+                        state: mystate2
                         visible: lineItem.listIndex == 4 ? false : true
                         onStateChanged: {
-                            hmiAdaptor.maintenanceCount80PercentAlarm(mytitle, myswitch.state)
+                            hmiAdaptor.maintenanceCount80PercentAlarm(mytitle, "switch2")
                         }
                     }
                 }
@@ -370,10 +398,10 @@ Item {
                         textLeft: qsTr("On")
                         textRight: qsTr("Off")
                         clip: true
-                        state: mystate
+                        state: mystate3
                         visible: lineItem.listIndex == 4 ? false : true
                         onStateChanged: {
-                            hmiAdaptor.maintenanceCount80PercentAlarm(mytitle, myswitch.state)
+                            hmiAdaptor.maintenanceCount80PercentAlarm(mytitle, "switch3")
                         }
                     }
                     Switch2 {
@@ -382,10 +410,10 @@ Item {
                         textLeft: qsTr("On")
                         textRight: qsTr("Off")
                         clip: true
-                        state: mystate
+                        state: mystate4
                         visible: lineItem.listIndex == 4 ? false : true
                         onStateChanged: {
-                            hmiAdaptor.maintenanceCount80PercentAlarm(mytitle, myswitch.state)
+                            hmiAdaptor.maintenanceCount80PercentAlarm(mytitle, "switch4")
                         }
                     }
                 }
@@ -457,8 +485,15 @@ Item {
             if (index == 15) {
                 clickDone(keyNum.inputText)
                 hmiAdaptor.maintenanceCountSetLimit(listModel.get(toolChange.select).mytitle, keyNum.inputText)
-                listModel.set(toolChange.select,{"mylimit":keyNum.inputText})
-                toolChange.myfocus = false
+                if (bIsEditLimit1) {
+                    listModel.set(toolChange.select,{"mylimit":keyNum.inputText})
+                }
+                else {
+                    listModel.set(toolChange.select,{"mylimit1":keyNum.inputText})
+                }
+
+                toolChange.focusChanged()
+//                toolChange.myfocus = false
                 backGround.visible = false
                 backGround.opacity = 0
                 keyNum.visible = false
@@ -466,7 +501,8 @@ Item {
                 keyNum.tempValue = ""
             } else if (index == 11) {
                 backGround.visible = false
-                toolChange.myfocus = false
+//                toolChange.myfocus = false
+                toolChange.focusChanged()
                 backGround.opacity = 0
                 keyNum.visible = false
                 keyNum.inputText = ""
