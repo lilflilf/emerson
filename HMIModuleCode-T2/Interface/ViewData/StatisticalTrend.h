@@ -49,6 +49,8 @@ private:
                                   unsigned int time_from, unsigned int time_to);
     bool GetCurrentWeldResultOneByOne(QMap<int, QString>* ResultIndex);
     bool GetStatisticsParameter();
+    QString StatisticsHeaderString(QUALITYTYPE QualityItem);
+    QString StatisticsRecordString(StatisticsParameter StatisticsStruct);
 public:
     QList<struct WeldActualParameter> CurrentWeldParameterList;
     struct StatisticsParameter CurrentStatisticsParameter[4];

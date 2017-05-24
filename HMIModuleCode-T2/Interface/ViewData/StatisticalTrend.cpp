@@ -262,11 +262,47 @@ void StatisticalTrend::_apply(int SpliceID, QString SpliceName,
     emit _ProcessFinished(bResult);
 }
 
+QString StatisticalTrend::StatisticsHeaderString(QUALITYTYPE QualityItem)
+{
+    QString TempStr = "\t" + QObject::tr("SampleSize") + "\t" +
+            QObject::tr("Mean") + "\t" + QObject::tr("Median") + "\t" +
+            QObject::tr("Sigma") + "\t" + QObject::tr("CPK");
+    QString HeaderStr;
+    switch(QualityItem)
+    {
+    case QUALITYTIME:
+        HeaderStr = QObject::tr("Statistics Time") + TempStr;
+        break;
+    case QUALITYPOWER:
+        HeaderStr = QObject::tr("Statistics Peak Power") + TempStr;
+        break;
+    case QUALITYPREHEIGHT:
+        HeaderStr = QObject::tr("Statistics Pre-Height") + TempStr;
+        break;
+    case QUALITYPOSTHEIGHT:
+        HeaderStr = QObject::tr("Statistics Post Height") + TempStr;
+        break;
+    default:
+        HeaderStr.clear();
+        break;
+    }
+    return HeaderStr;
+}
+
+QString StatisticalTrend::StatisticsRecordString(StatisticsParameter StatisticsStruct)
+{
+    QString RecordStr = "\t\t" + StatisticsStruct.SampleSize + "\t" +
+            StatisticsStruct.Mean + "\t" + StatisticsStruct.Median + "\t" +
+            StatisticsStruct.Sigma + "\t" + StatisticsStruct.Cpk;
+    return RecordStr;
+}
+
 bool StatisticalTrend::ExportData(QString fileUrl)
 {
     Statistics* _Statistics = Statistics::Instance();
     QString fileSource;
     bool bResult = false;
+    int i = 0;
     fileSource = fileUrl;
     bResult = fileSource.contains("file:///");
     if(bResult == false)
@@ -279,15 +315,21 @@ bool StatisticalTrend::ExportData(QString fileUrl)
     QDateTime TimeLabel = QDateTime::currentDateTime();
     QString TimeStr = TimeLabel.toString("yyyy/MM/dd hh:mm:ss");
     QString TitleStr = "Weld Data Statistical Analysis " + TimeStr;
-    QString HeadStr = _Statistics->HeaderString();
+    QString HeaderStr = _Statistics->HeaderString();
+    if(RetrievedWeldResultList.isEmpty() == true)
+        return false;
     QTextStream out(&csvFile);
     out << TitleStr << '\n'
-        << HeadStr << '\n';
-    for(int i = 0; i < RetrievedWeldResultList.size(); i++)
+        << HeaderStr << '\n';
+    for(i = 0; i < RetrievedWeldResultList.size(); i++)
     {
         out << RetrievedWeldResultList[i] << '\n';
     }
-
+    for(i = QUALITYTIME; i <= QUALITYPOSTHEIGHT; i++)
+    {
+        out << StatisticsHeaderString((QUALITYTYPE)i) << '\n'
+            << StatisticsRecordString(CurrentStatisticsParameter[i]) << '\n';
+    }
     csvFile.close();
     return true;
 }

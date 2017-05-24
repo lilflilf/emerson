@@ -616,7 +616,6 @@ void HmiAdaptor::maintenanceCount80PercentAlarm(QString code, QString value)
 //    listModel.append({mytitle:qsTr("Anvil")})
 //    listModel.append({mytitle:qsTr("Gather")})
 //    listModel.append({mytitle:qsTr("Guide")})
-    return;
     UNUSED(value);
     if (code == "Horn") {
         if (value == "switch1")
