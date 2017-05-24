@@ -2,6 +2,7 @@
 #include "Modules/M2010.h"
 #include "Modules/M102IA.h"
 #include "Modules/typedef.h"
+#include "Modules/UtilityClass.h"
 #include "Interface/Interface.h"
 #include "Interface/Maintenance/MaintenanceLog.h"
 #include "DataBase/DBMaintenanceLogTable.h"
@@ -483,11 +484,13 @@ void AdvancedMaintenance::RunSonics100UnPressed()
     SonicsOnFlag = false;
 }
 
-void AdvancedMaintenance::AmplitudeSetText(int iAmplitude)
+void AdvancedMaintenance::AmplitudeSetText(QString AmplitudeStr)
 {
     M102IA* _M102IA = M102IA::Instance();
     M2010* _M2010 = M2010::Instance();
     InterfaceClass* _Interface = InterfaceClass::Instance();
+    UtilityClass* _Utility = UtilityClass::Instance();
+    int iAmplitude = (int)_Utility->StringToFormatedData(DINDefaultAmplitude, AmplitudeStr);
     _Interface->StatusData.Soft_Settings.Horn_Calibrate = iAmplitude;
     _M2010->ReceiveFlags.HORNamplitude = false;
     _M102IA->SendIACommand(IAComSetHornCalibAmplitude, iAmplitude);
@@ -495,23 +498,29 @@ void AdvancedMaintenance::AmplitudeSetText(int iAmplitude)
     _Interface->StatusData.WriteStatusDataToQSetting();
 }
 
-void AdvancedMaintenance::PowerSetText(int iPower)
+void AdvancedMaintenance::PowerSetText(QString PowerStr)
 {
     M102IA* _M102IA = M102IA::Instance();
     M2010* _M2010 = M2010::Instance();
+    UtilityClass* _Utility = UtilityClass::Instance();
     InterfaceClass* _Interface = InterfaceClass::Instance();
+    int iPower = (int)_Utility->StringToFormatedData(DINPowerSupply, PowerStr);
     _Interface->StatusData.Soft_Settings.SonicGenWatts = iPower;
+    _Utility->Maxpower = (float)(1.2 * _Interface->StatusData.Soft_Settings.SonicGenWatts);
+    _Utility->InitializeTextData();
     _M2010->ReceiveFlags.POWERrating = false;
     _M102IA->SendIACommand(IAComSetGenPower, iPower);
     _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.POWERrating);
     _Interface->StatusData.WriteStatusDataToQSetting();
 }
 
-void AdvancedMaintenance::TunePointText(int iTunePointHz)
+void AdvancedMaintenance::TunePointText(QString TunePointHzStr)
 {
     M102IA* _M102IA = M102IA::Instance();
     M2010* _M2010 = M2010::Instance();
     InterfaceClass* _Interface = InterfaceClass::Instance();
+    UtilityClass* _Utility = UtilityClass::Instance();
+    int iTunePointHz = (int)_Utility->StringToFormatedData(DINTuneFrequence, TunePointHzStr);
     _Interface->StatusData.Soft_Settings.TunePoint = iTunePointHz;
     _M2010->ReceiveFlags.TunePointData = false;
     _M102IA->SendIACommand(IAComSetTunePoint, iTunePointHz);
@@ -519,14 +528,56 @@ void AdvancedMaintenance::TunePointText(int iTunePointHz)
     _Interface->StatusData.WriteStatusDataToQSetting();
 }
 
-void AdvancedMaintenance::FrequencyOffsetText(int iFrequencyHz)
+void AdvancedMaintenance::FrequencyOffsetText(QString FrequencyHzStr)
 {
     M102IA* _M102IA = M102IA::Instance();
     M2010* _M2010 = M2010::Instance();
     InterfaceClass* _Interface = InterfaceClass::Instance();
+    UtilityClass* _Utility = UtilityClass::Instance();
+    int iFrequencyHz = (int)_Utility->StringToFormatedData(DINFreqOffset, FrequencyHzStr);
     _Interface->StatusData.Soft_Settings.FrequencyOffset = iFrequencyHz;
     _M2010->ReceiveFlags.FreqOffsetData = false;
-    _M102IA->SendIACommand(IAComSetFrequencyOffset, iFrequencyHz);
+    _M102IA->SendIACommand(IAComSetFrequencyOffset, (iFrequencyHz + 500));
     _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.FreqOffsetData);
     _Interface->StatusData.WriteStatusDataToQSetting();
+}
+
+void AdvancedMaintenance::RecallAdvancedParameter()
+{
+    InterfaceClass* _Interface = InterfaceClass::Instance();
+    UtilityClass* _Utility = UtilityClass::Instance();
+
+    AdvParameter[AMPLITUDE].Current =
+            _Utility->FormatedDataToString(DINDefaultAmplitude,
+            _Interface->StatusData.Soft_Settings.Horn_Calibrate);
+    AdvParameter[AMPLITUDE].Maximum = _Utility->FormatedDataToString(DINDefaultAmplitude,
+                                    _Utility->txtData[DINDefaultAmplitude].max);
+    AdvParameter[AMPLITUDE].Minimum = _Utility->FormatedDataToString(DINDefaultAmplitude,
+                                    _Utility->txtData[DINDefaultAmplitude].min);
+
+    AdvParameter[POWER].Current =
+            _Utility->FormatedDataToString(DINPowerSupply,
+            _Interface->StatusData.Soft_Settings.SonicGenWatts);
+    AdvParameter[POWER].Maximum = _Utility->FormatedDataToString(DINPowerSupply,
+                                _Utility->txtData[DINPowerSupply].max);
+    AdvParameter[POWER].Minimum = _Utility->FormatedDataToString(DINPowerSupply,
+                                _Utility->txtData[DINPowerSupply].min);
+
+    AdvParameter[TUNEPOINT].Current =
+            _Utility->FormatedDataToString(DINTuneFrequence,
+            _Interface->StatusData.Soft_Settings.TunePoint);
+    AdvParameter[TUNEPOINT].Maximum = _Utility->FormatedDataToString(DINTuneFrequence,
+                                    _Utility->txtData[DINTuneFrequence].max);
+    AdvParameter[TUNEPOINT].Minimum = _Utility->FormatedDataToString(DINTuneFrequence,
+                                    _Utility->txtData[DINTuneFrequence].min);
+
+
+    AdvParameter[FREQOFFSET].Current =
+            _Utility->FormatedDataToString(DINFreqOffset,
+            _Interface->StatusData.Soft_Settings.FrequencyOffset);
+    AdvParameter[FREQOFFSET].Maximum = _Utility->FormatedDataToString(DINFreqOffset,
+                                    _Utility->txtData[DINFreqOffset].max);
+    AdvParameter[FREQOFFSET].Minimum = _Utility->FormatedDataToString(DINFreqOffset,
+                                    _Utility->txtData[DINFreqOffset].min);
+
 }

@@ -59,6 +59,11 @@ bool CSVWireData::ExportData(int ID, QString fileUrl)
     return true;
 }
 
+bool CSVWireData::ExportData(QList<int> IDList, QString fileUrl)
+{
+    return true;
+}
+
 QString CSVWireData::GetExportString(int ID)
 {
     DBWireTable* _WireDB = DBWireTable::Instance();

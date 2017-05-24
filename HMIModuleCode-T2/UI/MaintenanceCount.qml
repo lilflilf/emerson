@@ -61,7 +61,10 @@ Item {
                               "mystate3"     :hmiAdaptor.maintenanceCountGetValue(i,13),
                              "mystate4"     :hmiAdaptor.maintenanceCountGetValue(i,14)})
         }
+        listView.model = null
+        listView.model = listModel
         editing = false
+
     }
 
     ListModel {

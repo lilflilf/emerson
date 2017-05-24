@@ -471,6 +471,7 @@ void UtilityClass::InitializeTextData()
 //    SetTextData(DINPowerMs, 0, MINPOWER,
 //                _Interface->StatusData.Soft_Settings.SonicGenWatts, 100, 1, "%dW");
     SetTextData(DINPowerMs, 0, MINPOWER, Maxpower, 100, 1, "%dW");
+    SetTextData(DINPowerSupply, 0, MINPOWERSUPPLY, MAXPOWERSUPPLY, 100, 1, "%dw");
     if(_Interface->StatusData.Soft_Settings.Length2Unit == BRANSON_INI_STRUCT::ToMM)
     {
         SetTextData(DINActPreHgt, 0, MINHEIGHT, MAXHEIGHT, 2, (float)0.01, "%.2fmm");
@@ -545,7 +546,7 @@ void UtilityClass::InitializeTextData()
     SetTextData(DINGatherCountLimit, 0, MINGATHERCOUNTLIMIT, MAXGATHERCOUNTLIMIT, 1, 1, "%d");
     SetTextData(DINGatherEnergyLimit, 0, MINGATHERENERGYLIMIT, MAXGATHERENERGYLIMIT, 1, 1, "%.1fKJ");
     SetTextData(DINGuideCountLimit, 0, MINGUIDECOUNTLIMIT, MAXGUIDECOUNTLIMIT, 1, 1, "%d");
-    SetTextData(DINGuideEnergyLimit, 0, MINGUIDEENERGYLIMIT, MAXGUIDEENERGYLIMIT, 1, 1, ".1fKJ");
+    SetTextData(DINGuideEnergyLimit, 0, MINGUIDEENERGYLIMIT, MAXGUIDEENERGYLIMIT, 1, 1, "%.1fKJ");
     SetTextData(DINConverterLimit, 0, MINCONVERTERLIMIT, MAXCONVERTERLIMIT, 1, 1, "%d");
     SetTextData(DINPercentTeachMode, 0, MINPERCENTTEACHMODE, MAXPERCENTTEACHMODE, 1, 1, "%d%");
     SetTextData(DINSigmaTeachMode, 0, MINSIGMATEACHMODE, MAXSIGMATEACHMODE, 1, 1, "%d");
@@ -557,6 +558,8 @@ void UtilityClass::InitializeTextData()
     str = QString("%d%1%2").arg(QString(QChar(0x03BC))).arg("m");
     SetTextData(DINDefaultAmplitude, 0, MINAMPLITUDE, MAXAMPLITUDE, 1, 1, str);//"%dμm"
     SetTextData(DINTeachModeQuantity, 0, MINTEACHMODEQUANTITY, MAXTEACHMODEQUANTITY,1, 1, "%d");
+    SetTextData(DINTuneFrequence, 0, MINTUNEFREQUENCE, MAXTUNEFREQUENCE, 100, 1, "%dHz");
+    SetTextData(DINFreqOffset, 0, MINFREQOFFSET, MAXFREQOFFSET, 100, 1, "%dHz");
 }
 
 void UtilityClass::SetTextData(ScreenShowDataType TypeIndex,int Data,int min, int max,

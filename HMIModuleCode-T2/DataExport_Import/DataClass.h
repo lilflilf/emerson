@@ -6,6 +6,7 @@ class DataClass
 {
 public:
     virtual bool ExportData(int ID, QString fileUrl) = 0;
+    virtual bool ExportData(QList<int> IDList, QString fileUrl) = 0;
     virtual QString GetExportString(int ID) = 0;
     virtual int ImportData(QString StrValue) = 0;
 };

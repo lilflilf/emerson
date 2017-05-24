@@ -469,7 +469,7 @@ void M10INI::Init_StatusData()
     _Interface->DefaultStatusData.CurrentCountMaintenanceLimits[1] = 15001;
     _Interface->DefaultStatusData.CurrentCountMaintenanceLimits[2] = 25111;
     _Interface->DefaultStatusData.CurrentCountMaintenanceLimits[3] = 35222;
-    _Interface->DefaultStatusData.CurrentCountMaintenanceLimits[5] = 53098086;
+    _Interface->DefaultStatusData.CurrentCountMaintenanceLimits[4] = 53098086;
 
     _Interface->DefaultStatusData.CurrentEnergyMaintenanceLimits[0] = 100000;
     _Interface->DefaultStatusData.CurrentEnergyMaintenanceLimits[1] = 100000;

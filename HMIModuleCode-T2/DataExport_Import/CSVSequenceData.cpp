@@ -77,6 +77,11 @@ bool CSVSequenceData::ExportData(int ID, QString fileUrl)
     return true;
 }
 
+bool CSVSequenceData::ExportData(QList<int> IDList, QString fileUrl)
+{
+    return true;
+}
+
 QString CSVSequenceData::GetExportString(int ID)
 {
     DBSequenceTable* _SequenceDB = DBSequenceTable::Instance();

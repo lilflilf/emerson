@@ -970,6 +970,7 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         break;
     case IASigFrequencyOffset:
          _Interface->StatusData.Soft_Settings.FrequencyOffset = MakeHexWordNumber(HexString.mid(9, 4));
+         _Interface->StatusData.Soft_Settings.FrequencyOffset -= 500;
         _M2010->ReceiveFlags.FreqOffsetData = true;
         break;
     case IASigActuatorVer:

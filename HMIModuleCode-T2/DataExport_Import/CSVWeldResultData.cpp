@@ -64,6 +64,53 @@ bool CSVWeldResultData::ExportData(int ID, QString fileUrl)
     return true;
 }
 
+bool CSVWeldResultData::ExportData(QList<int> IDList, QString fileUrl)
+{
+    DBWeldResultTable* _WeldResultDB = DBWeldResultTable::Instance();
+    DBPresetTable* _PresetDB = DBPresetTable::Instance();
+    Statistics* _Statistics = Statistics::Instance();
+    QString RowStr;
+    QStringList ResultList;
+    QString HeadStr = "";
+    QString fileSource;
+    WeldResultElement WeldResultObj;
+    PresetElement PresetObj;
+    bool bResult = false;
+    ResultList.clear();
+    for(int i = 0; i < IDList.size(); i++)
+    {
+        bResult = _WeldResultDB->QueryOneRecordWithGraph(IDList[i], &WeldResultObj);
+        if(bResult == false)
+            continue;
+        bResult = _PresetDB->QueryOneRecordFromTable(WeldResultObj.CurrentSplice.PartID,
+                                                                   &PresetObj);
+        if(bResult == false)
+            continue;
+        RowStr = _Statistics->HistoryEvent(&WeldResultObj, &PresetObj);
+        ResultList.push_back(RowStr);
+    }
+    HeadStr = _Statistics->HeaderString();
+    fileSource = fileUrl;
+    bResult = fileSource.contains("file:///");
+    if(bResult == false)
+        return bResult;
+    fileSource = fileSource.mid(8);
+    QFile csvFile(fileSource);
+    bResult = csvFile.open(QIODevice::Text | QIODevice::ReadWrite | QIODevice::Truncate);
+    if(bResult == false)
+        return bResult;
+
+    QTextStream out(&csvFile);
+    out << "Weld Result Data" << '\n'
+        << HeadStr << '\n';
+    for(int i = 0; i < ResultList.size(); i++)
+    {
+        out << ResultList[i] << '\n';
+    }
+    csvFile.close();
+    return true;
+}
+
 QString CSVWeldResultData::GetExportString(int ID)
 {
     UNUSED(ID);
