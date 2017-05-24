@@ -79,6 +79,11 @@ bool CSVHarnessData::ExportData(int ID, QString fileUrl)
     return true;
 }
 
+bool CSVHarnessData::ExportData(QList<int> IDList, QString fileUrl)
+{
+    return true;
+}
+
 QString CSVHarnessData::GetExportString(int ID)
 {
     DBHarnessTable* _HarnessDB = DBHarnessTable::Instance();

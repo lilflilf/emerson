@@ -33,6 +33,7 @@ private:
     void ParseHarnessJOSN(QString HarnessJOSN);
 public:
     virtual bool ExportData(int ID, QString fileUrl);
+    virtual bool ExportData(QList<int> IDList, QString fileUrl);
     virtual QString GetExportString(int ID);
     virtual int ImportData(QString StrValue);
 public:

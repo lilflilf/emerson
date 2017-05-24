@@ -80,6 +80,11 @@ bool CSVPresetData::ExportData(int ID, QString fileUrl)
     return true;
 }
 
+bool CSVPresetData::ExportData(QList<int> IDList, QString fileUrl)
+{
+    return true;
+}
+
 QString CSVPresetData::GetExportString(int ID)
 {
     DBPresetTable* _PresetDB = DBPresetTable::Instance();

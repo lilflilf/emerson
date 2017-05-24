@@ -2,6 +2,7 @@
 #define ADVANCEDMAINTENANCE_H
 
 #include "Maintenance.h"
+#include "Interface/definition.h"
 #include <QTimer>
 
 /* Output:  bit31,  bit30, bit29, bit28
@@ -64,6 +65,14 @@ public:
         CONVERTERCOOLINGCLICK,
         TOOLINGCOOLINGCLICK,
     };
+    enum ADVANCEDPARAMETER
+    {
+        AMPLITUDE,
+        POWER,
+        TUNEPOINT,
+        FREQOFFSET,
+    };
+
 private:
     static bool GatherTest;
     static bool AnvilTest;
@@ -75,8 +84,11 @@ private:
     static unsigned long PreviousIO;
     static QTimer *Timer;
     static bool SonicsOnFlag;
+
+
 public:
     static bool HornTest;
+    struct BRANSONDATA AdvParameter[4];
 private:
     static void UpdateAnvilArm();
     static void UpdateAnvil();
@@ -108,10 +120,11 @@ public:
     void RunSonicsUnPressed();
     void RunSonics100Pressed();
     void RunSonics100UnPressed();
-    void AmplitudeSetText(int iAmplitude);
-    void PowerSetText(int iPower);
-    void TunePointText(int iTunePointHz);
-    void FrequencyOffsetText(int iFrequencyHz);
+    void AmplitudeSetText(QString AmplitudeStr);
+    void PowerSetText(QString PowerStr);
+    void TunePointText(QString TunePointHzStr);
+    void FrequencyOffsetText(QString FrequencyHzStr);
+    void RecallAdvancedParameter();
 
 public:
     explicit AdvancedMaintenance();

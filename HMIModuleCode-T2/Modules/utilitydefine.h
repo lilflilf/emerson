@@ -11,6 +11,8 @@
 #define MINAMPLITUDE     1
 #define MINTIME          0
 #define MINPOWER         0
+#define MINPOWERSUPPLY   100
+
 #define MINPREHEIGHT     0
 #define MINHEIGHT        0
 #define MINTRIGPRESSURE  MINWELDPRESSURE
@@ -34,6 +36,7 @@
 #define MAXWELDPRESSURE  800                //PSI * 10
 #define MAXAMPLITUDE     150                //microns
 #define MAXTIME          500               //Seconds * 100
+#define MAXPOWERSUPPLY   6000
 #define MAXSTEPTIME      5000               //Seconds * 1000
 #define MINSTEPENERGY    0                  //Joules
 
@@ -93,6 +96,10 @@
 #define MAXSEQUENCEQUANTITY   500
 #define MINTEACHMODEQUANTITY  1
 #define MAXTEACHMODEQUANTITY  50
+#define MINTUNEFREQUENCE      19450
+#define MAXTUNEFREQUENCE      20450
+#define MINFREQOFFSET         -500
+#define MAXFREQOFFSET         500
 
 //Used by the program to consistently change from PSI to BAR
 #define PRESS2BARFACTOR  (0.1 / 14.5)
@@ -117,6 +124,7 @@ enum ScreenShowDataType{
     DINActPower,
     DINPowerPl,
     DINPowerMs,
+    DINPowerSupply,
     DINActPreHgt,
     DINPre_HgtPl,
     DINPre_HgtMs,
@@ -181,6 +189,8 @@ enum ScreenShowDataType{
     DINSequenceQuantity,
     DINDefaultAmplitude,
     DINTeachModeQuantity,
+    DINTuneFrequence,
+    DINFreqOffset,
     DIN_end,
 };
 
