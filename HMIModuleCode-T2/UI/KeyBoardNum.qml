@@ -184,8 +184,6 @@ Item {
 
         Keys.enabled: true
         Keys.onPressed: {
-            console.log("ffffffffffffffffffffffffffffffff",event.key)
-
             if (event.key == Qt.Key_Backspace) {
                 var TempSTring = ""
                 for (var i = 0; i < tempValue.length-1;i++) {

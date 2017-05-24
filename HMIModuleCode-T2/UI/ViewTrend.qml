@@ -522,7 +522,7 @@ Item {
         spacing: 30
         Repeater {
             id: selectRepeater
-            model : [qsTr("Time"),qsTr("Pre-Height"),qsTr("Post-Hight"),qsTr("Peak Power")]
+            model : [qsTr("Time"),qsTr("Peak Power"),qsTr("Pre-Height"),qsTr("Post-Height")]
             CButton {
                 id: timeButton
                 property alias bIsCheck: weldModelCheck.checked

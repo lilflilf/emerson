@@ -17,6 +17,8 @@ import Qt.labs.folderlistmodel 2.1
 
 Item {
     id: toolChange
+    property bool bIsList: false
+    property var listIndex: -1
     width: Screen.width*0.7
     height: Screen.height*0.6
 
@@ -193,6 +195,16 @@ Item {
         }
 
     }
+
+    Rectangle {
+        id: tempLine
+        height: parent.height
+        width: 1
+        color: "white"
+        anchors.left: buttonCoumn.right
+        anchors.leftMargin: 10
+    }
+
     ListModel {
         id: listModel
         Component.onCompleted: {
@@ -311,9 +323,22 @@ Item {
                 anchors.verticalCenter: parent.verticalCenter
             }
             Recsetting {
+                id: recsetting1
                 anchors.right: parent.right
                 width: (rowButton2.width-20)/4
                 height: Screen.height * 0.08
+                //                centervalue:
+                onMouseAreaClick: {
+                    bIsList = false
+                    backGround.visible = true
+                    backGround.opacity = 0.5
+                    keyNum.visible = true
+                    keyNum.titleText = amplitude.text
+                    keyNum.currentValue = recsetting1.centervalue
+                    keyNum.minvalue = "1"
+                    keyNum.maxvalue = "12"
+                }
+
             }
         }
 
@@ -325,26 +350,120 @@ Item {
             }
         }
     }
+    Text {
+        text: qsTr("Power Supply and Frequency Setting")
+        font.family: "arial"
+        font.pixelSize: 18
+        color: "white"
+        anchors.bottom: testSetting.top
+        anchors.bottomMargin: 30
+        anchors.left: powerText.left
+    }
 
     Grid {
         id: testSetting
         anchors.horizontalCenter: rowButton3.horizontalCenter
-        anchors.top: rowButton2.bottom
-        rowSpacing: 20
-        columnSpacing: (rowButton3.width - 20) / 2 - 240
+        anchors.bottom: buttonCoumn.bottom
+        rowSpacing: 30
+        columnSpacing: 60
         columns: 2
         rows: 2
+        anchors.left: powerText.left
+        anchors.right: progressBar.right
         Repeater {
             anchors.right: parent.right
             model: listModel
-            delegate: Recsetting {
-                width: 250 //(rowButton3.width-20)/3
-                height: 130 //(testSetting.height-20)/3
-                headTitle: titleHead
-                centervalue: value
+            delegate: Item {
+                width: testSetting.width / 2 - 60 //(rowButton3.width-20)/3
+                height: 60 //(testSetting.height-20)/3
+                Text {
+                    text: titleHead
+                    font.family: "arial"
+                    font.pixelSize: 16
+                    color: "white"
+                    anchors.verticalCenter: parent.verticalCenter
+                    visible: index == 1 ? false : true
+                }
+                Recsetting {
+                    width: (rowButton2.width-20)/4
+                    height: 60 //(testSetting.height-20)/3
+                    centervalue: value
+                    anchors.right: parent.right
+                    visible: index == 1 ? false : true
+                    onMouseAreaClick: {
+                        bIsList = true
+                        listIndex = index
+                        backGround.visible = true
+                        backGround.opacity = 0.5
+                        keyNum.titleText = titleHead
+                        keyNum.visible = true
+                        keyNum.currentValue = value
+                        keyNum.minvalue = "1W"
+                        keyNum.maxvalue = "12W"
+
+                    }
+                }
             }
         }
     }
+
+    Rectangle {
+        id: backGround
+        anchors.fill: parent
+        color: "black"
+        opacity: 0.7
+        visible: false //content.bIsEdit ? true : false
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+//                if (templateModel.count == 0 && template2.visible && temPlateDialog.visible == false) {
+//                    backGround.visible = false
+//                    backGround.opacity = 0
+//                    template2.visible = false
+//                }
+            }
+        }
+    }
+
+    KeyBoardNum {
+        id: keyNum
+        anchors.centerIn: parent
+        width: 962
+        height: 526
+        visible: false
+        titleText: ""
+        maxvalue: "4"
+        minvalue: "1"
+        currentValue: "4"
+        onCurrentClickIndex: {
+            if (index == 15) {
+                if (hmiAdaptor.comepareCurrentValue(keyNum.minvalue,keyNum.maxvalue,keyNum.inputText)) {
+                    if (bIsList) {
+                        listModel.set(listIndex,{"value":keyNum.inputText})
+                    }
+                    else {
+                        recsetting1.centervalue = keyNum.inputText
+                    }
+                    backGround.visible = false
+                    backGround.opacity = 0
+                    keyNum.visible = false
+                    keyNum.inputText = ""
+                    keyNum.tempValue = ""
+                }
+            } else if (index == 11) {
+                backGround.visible = false
+                backGround.opacity = 0
+                keyNum.visible = false
+                keyNum.inputText = ""
+                keyNum.tempValue = ""
+            }
+        }
+        onInputTextChanged: {
+            if (keyNum.inputText != "") {
+            }
+        }
+    }
+
 //    Row {
 //        id: rowButton
 //        anchors.bottom: parent.bottom

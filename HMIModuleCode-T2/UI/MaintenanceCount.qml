@@ -186,8 +186,11 @@ Item {
                     font.pointSize: 14
                     verticalAlignment: Qt.AlignVCenter
                     horizontalAlignment: Qt.AlignHCenter
+                    anchors.verticalCenter: image.verticalCenter
+                    anchors.verticalCenterOffset: 22
                 }
                 Image {
+                    id: image
                     width: 160
                     height: 60
                     source:  imageSourece //"file:///c:/ToolChangeImage/group2/wiredemo.jpg"
@@ -197,13 +200,28 @@ Item {
                         font.pointSize: 14
                         font.family: "arial"
                         color: "white"
+                        height: 45
                         anchors.horizontalCenter: parent.horizontalCenter
                     }
+                }
+
+                Text {
+                    width: 150
+                    height: 50
+                    text: mycurrent
+                    color: "white"
+                    font.family: "arial"
+                    font.pointSize: 14
+                    verticalAlignment: Qt.AlignVCenter
+                    horizontalAlignment: Qt.AlignHCenter
+                    anchors.verticalCenter: resetButton.verticalCenter
+                    visible: lineItem.listIndex == 4 ? true : false
                 }
                 Column {
                     width: 150
                     height: parent.height
                     spacing: 5
+                    visible: lineItem.listIndex == 4 ? false : true
                     Text {
                         id: currentCount
                         width: 150
@@ -236,6 +254,7 @@ Item {
                         font.pointSize: 14
                         verticalAlignment: Qt.AlignVCenter
                         horizontalAlignment: Qt.AlignHCenter
+                        visible: lineItem.listIndex == 4 ? false : true
                         Text {
                             width: 5
                             height: 50
@@ -251,6 +270,7 @@ Item {
                 }
 
                 Column {
+                    id: keyColumn
                     width: 150
                     height: parent.height
                     spacing: 5
@@ -321,36 +341,52 @@ Item {
                     font.pointSize: 14
                     verticalAlignment: Qt.AlignVCenter
                     horizontalAlignment: Qt.AlignHCenter
+                    anchors.verticalCenter: resetButton.verticalCenter
                 }
-                Column {
+                CButton {
+                    id: resetButton
                     width: 150
-                    height: parent.height
-                    spacing: 5
-                    CButton {
-                        width: 150
-                        height: 50
-                        text: myreset
-                        visible: lineItem.listIndex == 4 ? false : true
-                        onClicked: {
-                            hmiAdaptor.maintenanceCountReset(mytitle)
-                            hmiAdaptor.maintenanceCountExecute("_Recall")
-                            initPage()
-                            //                        currentCount.text = hmiAdaptor.maintenanceCountGetValue(listIndex,3)
-                        }
+                    height: 50
+                    text: myreset
+                    visible: lineItem.listIndex == 4 ? false : true
+                    anchors.verticalCenter: keyColumn.verticalCenter
+                    anchors.verticalCenterOffset: 15
+                    onClicked: {
+                        hmiAdaptor.maintenanceCountReset(mytitle)
+                        hmiAdaptor.maintenanceCountExecute("_Recall")
+                        initPage()
+                        //                        currentCount.text = hmiAdaptor.maintenanceCountGetValue(listIndex,3)
                     }
-                    Item {
-                        width: 150
-                        height: 50
+                }
+//                Column {
+//                    width: 150
+//                    height: parent.height
+//                    spacing: 5
+//                    CButton {
+//                        width: 150
+//                        height: 50
 //                        text: myreset
-                        visible: lineItem.listIndex == 4 ? false : true
+//                        visible: lineItem.listIndex == 4 ? false : true
 //                        onClicked: {
 //                            hmiAdaptor.maintenanceCountReset(mytitle)
 //                            hmiAdaptor.maintenanceCountExecute("_Recall")
 //                            initPage()
-//    //                        currentCount.text = hmiAdaptor.maintenanceCountGetValue(listIndex,3)
+//                            //                        currentCount.text = hmiAdaptor.maintenanceCountGetValue(listIndex,3)
 //                        }
-                    }
-                }
+//                    }
+//                    Item {
+//                        width: 150
+//                        height: 50
+////                        text: myreset
+//                        visible: lineItem.listIndex == 4 ? false : true
+////                        onClicked: {
+////                            hmiAdaptor.maintenanceCountReset(mytitle)
+////                            hmiAdaptor.maintenanceCountExecute("_Recall")
+////                            initPage()
+////    //                        currentCount.text = hmiAdaptor.maintenanceCountGetValue(listIndex,3)
+////                        }
+//                    }
+//                }
                 Text {
                     width: 150
                     height: 79
