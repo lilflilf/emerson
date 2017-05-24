@@ -18,6 +18,7 @@ Item {
     property int select: -1
 //    property bool myfocus: true
     property bool bIsEditLimit1: false
+    property bool editing: false
     signal focusChanged()
     width: Screen.width*0.7
     height: Screen.height*0.6
@@ -31,6 +32,7 @@ Item {
 
     function initPage()
     {
+        editing = true
         listModel.clear()
         listModel.append({mytitle:qsTr("Horn")})
         listModel.append({mytitle:qsTr("Anvil")})
@@ -59,6 +61,7 @@ Item {
                               "mystate3"     :hmiAdaptor.maintenanceCountGetValue(i,13),
                              "mystate4"     :hmiAdaptor.maintenanceCountGetValue(i,14)})
         }
+        editing = false
     }
 
     ListModel {
@@ -372,7 +375,8 @@ Item {
                         state: mystate1
                         visible: lineItem.listIndex == 4 ? false : true
                         onStateChanged: {
-                            hmiAdaptor.maintenanceCount80PercentAlarm(mytitle, "switch1")
+                            if (!editing)
+                                hmiAdaptor.maintenanceCount80PercentAlarm(mytitle, "switch1")
                         }
                     }
                     Switch2 {
@@ -384,7 +388,8 @@ Item {
                         state: mystate2
                         visible: lineItem.listIndex == 4 ? false : true
                         onStateChanged: {
-                            hmiAdaptor.maintenanceCount80PercentAlarm(mytitle, "switch2")
+                            if (!editing)
+                                hmiAdaptor.maintenanceCount80PercentAlarm(mytitle, "switch2")
                         }
                     }
                 }
@@ -401,7 +406,8 @@ Item {
                         state: mystate3
                         visible: lineItem.listIndex == 4 ? false : true
                         onStateChanged: {
-                            hmiAdaptor.maintenanceCount80PercentAlarm(mytitle, "switch3")
+                            if (!editing)
+                                hmiAdaptor.maintenanceCount80PercentAlarm(mytitle, "switch3")
                         }
                     }
                     Switch2 {
@@ -413,7 +419,8 @@ Item {
                         state: mystate4
                         visible: lineItem.listIndex == 4 ? false : true
                         onStateChanged: {
-                            hmiAdaptor.maintenanceCount80PercentAlarm(mytitle, "switch4")
+                            if (!editing)
+                                hmiAdaptor.maintenanceCount80PercentAlarm(mytitle, "switch4")
                         }
                     }
                 }
