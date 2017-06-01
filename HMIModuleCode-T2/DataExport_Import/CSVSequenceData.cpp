@@ -79,6 +79,8 @@ bool CSVSequenceData::ExportData(int ID, QString fileUrl)
 
 bool CSVSequenceData::ExportData(QList<int> IDList, QString fileUrl)
 {
+    UNUSED(IDList);
+    UNUSED(fileUrl);
     return true;
 }
 

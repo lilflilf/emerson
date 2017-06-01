@@ -101,7 +101,10 @@ bool CSVWeldResultData::ExportData(QList<int> IDList, QString fileUrl)
         return bResult;
 
     QTextStream out(&csvFile);
-    out << "Weld Result Data" << '\n'
+    QDateTime TimeLabel = QDateTime::currentDateTime();
+    QString TimeStr = TimeLabel.toString("yyyy/MM/dd hh:mm:ss");
+    QString TitleStr = "Weld Result Data " + TimeStr;
+    out << TitleStr << '\n'
         << HeadStr << '\n';
     for(int i = 0; i < ResultList.size(); i++)
     {

@@ -78,7 +78,9 @@ SOURCES += main.cpp \
     DataExport_Import/CSVPresetData.cpp \
     DataExport_Import/CSVHarnessData.cpp \
     DataExport_Import/CSVSequenceData.cpp \
-    DataExport_Import/CSVWeldResultData.cpp
+    DataExport_Import/CSVWeldResultData.cpp \
+    DataExport_Import/CSVMaintenanceLogData.cpp \
+    DataExport_Import/CSVAlarmLogData.cpp
 
 
 
@@ -160,7 +162,9 @@ HEADERS += \
     DataExport_Import/CSVWireData.h \
     DataExport_Import/CSVHarnessData.h \
     DataExport_Import/CSVSequenceData.h \
-    DataExport_Import/CSVWeldResultData.h
+    DataExport_Import/CSVWeldResultData.h \
+    DataExport_Import/CSVMaintenanceLogData.h \
+    DataExport_Import/CSVAlarmLogData.h
 
 DISTFILES += \
 #    UI/displayChinese_zh_CN.qm \

@@ -705,7 +705,7 @@ QString VariantToString::AlarmLevelToString(QString AlarmType)
     else if(AlarmType == QObject::tr("E-Stop"))
         str = QObject::tr("High-level");
     else
-        str = QObject::tr("None-level");
+        str = QObject::tr("Low-level");
     return str;
 }
 
