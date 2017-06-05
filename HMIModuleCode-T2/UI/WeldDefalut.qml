@@ -29,7 +29,7 @@ Item {
         repeaterModel2.append({"headTitle":qsTr("Foot Pedal Abort"),"leftText":qsTr("off"),"righttext":qsTr("on"),"switchState":hmiAdaptor.weldDefaultsGetSwitch("Foot Pedal Abort")})
         repeaterModel2.append({"headTitle":qsTr("Seek"),"leftText":qsTr("off"),"righttext":qsTr("on"),"switchState":hmiAdaptor.weldDefaultsGetSwitch("Foot Pedal Abort")})
         repeaterModel2.append({"headTitle":qsTr("Cooling"),"leftText":qsTr("off"),"righttext":qsTr("on"),"switchState":hmiAdaptor.weldDefaultsGetSwitch("Cooling")})
-        repeaterModel2.append({"headTitle":qsTr("Lock on Alarm"),"leftText":qsTr("off"),"righttext":qsTr("on"),"switchState":hmiAdaptor.weldDefaultsGetSwitch("Cooling")})
+//        repeaterModel2.append({"headTitle":qsTr("Lock on Alarm"),"leftText":qsTr("off"),"righttext":qsTr("on"),"switchState":hmiAdaptor.weldDefaultsGetSwitch("Cooling")})
 
         graphModel.append({"graphText":"1MS","isSelect":hmiAdaptor.weldDefaultsGetSwitch("Graph Data Sampling 1ms")})
         graphModel.append({"graphText":"5MS","isSelect":hmiAdaptor.weldDefaultsGetSwitch("Graph Data Sampling 5ms")})
@@ -590,7 +590,7 @@ Item {
                 anchors.fill: parent
                 buttontext: "psi"
                 bIsCheck: true
-                exclusiveGroup: crossSectionRowMos
+                exclusiveGroup: pressureRowMos
                 onBIsCheckChanged: {
                 }
             }
@@ -602,7 +602,7 @@ Item {
                 anchors.fill: parent
                 buttontext: "bar"
                 bIsCheck: false
-                exclusiveGroup: crossSectionRowMos
+                exclusiveGroup: pressureRowMos
                 onBIsCheckChanged: {
                 }
             }
@@ -637,7 +637,7 @@ Item {
                 anchors.fill: parent
                 buttontext: "mm"
                 bIsCheck: true
-                exclusiveGroup: crossSectionRowMos
+                exclusiveGroup: lengthRowMos
                 onBIsCheckChanged: {
                 }
             }
@@ -649,7 +649,7 @@ Item {
                 anchors.fill: parent
                 buttontext: "inch"
                 bIsCheck: false
-                exclusiveGroup: crossSectionRowMos
+                exclusiveGroup: lengthRowMos
                 onBIsCheckChanged: {
                 }
             }
