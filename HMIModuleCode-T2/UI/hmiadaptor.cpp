@@ -1015,7 +1015,7 @@ bool HmiAdaptor::weldDefaultsGetSwitch(QString index)
     else if (index == "Cooling Tooling")
         reb = weldDefaults->CurrentWeldSettings.CoolingForTooling;
     else if (index == "Unit Conversion")
-        reb = weldDefaults->CurrentWeldSettings.Imperical2Metric;
+        reb = weldDefaults->CurrentWeldSettings.Square2Unit;
     else if (index == "Graph Data Sampling 1ms")
         reb = weldDefaults->CurrentWeldSettings.SampleRatio == WeldResultElement::SampleWith1ms ? true : false;
     else if (index == "Graph Data Sampling 5ms")
@@ -1078,7 +1078,7 @@ bool HmiAdaptor::weldDefaultsSetValue(QList<bool> boolList, QStringList strList,
         weldDefaults->CurrentWeldSettings.CurrentCoolingMode = Status_Data::OFF;
     else if (boolList[3] && !boolList[4])
         weldDefaults->CurrentWeldSettings.CurrentCoolingMode = Status_Data::OFF;
-    weldDefaults->CurrentWeldSettings.Imperical2Metric = boolList[6];
+    weldDefaults->CurrentWeldSettings.Square2Unit = (BRANSON_INI_STRUCT::SQUAREUNIT)boolList[6];
 
     weldDefaults->CurrentWeldSettings.WeldSettingFormula[EnergyR1].Range.Current = strList[0];
     weldDefaults->CurrentWeldSettings.WeldSettingFormula[EnergyR1].Offset.Current = strList[1];

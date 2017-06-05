@@ -5,6 +5,9 @@
 
 class CSVMaintenanceLogData : public DataClass
 {
+private:
+    QString HeaderString();
+    QString MaintenanceLogEvent(void* MaintenanceLogObj);
 public:
     virtual bool ExportData(int ID, QString fileUrl);
     virtual bool ExportData(QList<int> IDList, QString fileUrl);

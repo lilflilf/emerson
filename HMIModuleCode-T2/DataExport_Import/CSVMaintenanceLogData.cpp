@@ -2,6 +2,7 @@
 #include "Modules/typedef.h"
 #include "DataBase/DBMaintenanceLogTable.h"
 #include "Interface/Maintenance/MaintenanceLog.h"
+#include <QFile>
 CSVMaintenanceLogData* CSVMaintenanceLogData::_instance = NULL;
 CSVMaintenanceLogData* CSVMaintenanceLogData::Instance()
 {
@@ -41,10 +42,10 @@ QString CSVMaintenanceLogData::MaintenanceLogEvent(void* MaintenanceLogObj)
 {
     QString sLogEvent;
     QDateTime TimeLabel = QDateTime::fromTime_t(((MaintenanceLogElement*)MaintenanceLogObj)->CreatedDate);
-    QString Str = TimeLabel.toString("yyyy/MM/dd;hh:mm:ss");
-    QStringList TimeLabelList = Str.split(";");
-    sLogEvent = TimeLabelList[0] + "\t";
-    sLogEvent += TimeLabelList[1] + "\t";
+    QString sDate = TimeLabel.toString("yyyy/MM/dd");
+    QString sTime = TimeLabel.toString("hh:mm:ss");
+    sLogEvent = sDate + "\t";
+    sLogEvent += sTime + "\t";
     QString MaintenanceType = ((MaintenanceLogElement*)MaintenanceLogObj)->MaintenanceType;
     sLogEvent += MaintenanceType + "\t";
     sLogEvent += ((MaintenanceLogElement*)MaintenanceLogObj)->MaintenanceMsg;

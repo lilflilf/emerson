@@ -57,7 +57,7 @@ bool PermissionSetting::_Recall()
     InterfaceClass* _interface = InterfaceClass::Instance();
     CurrentPermissionList.clear();
     FiveLevelIdentifier.clear();
-    for(int i = 0; i < 5; i++)
+    for(int i = 0; i < PERMISSIONLEVEL; i++)
         FiveLevelIdentifier.insert(i,_interface->StatusData.PasswordData[i].Identifier);
     struct PermissionSettingForScreen tmpStruct;
     for(int i = 0; i < _interface->StatusData.CurrentFunIndex.size();i++)
@@ -65,37 +65,33 @@ bool PermissionSetting::_Recall()
         unsigned int FunIndex = _interface->StatusData.CurrentFunIndex.at(i);
         tmpStruct.Identifier = AllFunctionNameList.at(FunIndex);
         unsigned long Comparison = (0x01 << FunIndex);
-        if((_interface->StatusData.PasswordData[0].PWPermissions & Comparison) ==
+        if((_interface->StatusData.PasswordData[OperatorElement::PHYKEY].PWPermissions & Comparison) ==
                 Comparison)
             tmpStruct.PhyKey = true;
         else
             tmpStruct.PhyKey = false;
-        if((_interface->StatusData.PasswordData[1].PWPermissions & Comparison) ==
+        if((_interface->StatusData.PasswordData[OperatorElement::LEVEL1].PWPermissions & Comparison) ==
                 Comparison)
             tmpStruct.Level1 = true;
         else
             tmpStruct.Level1 = false;
-        if((_interface->StatusData.PasswordData[2].PWPermissions & Comparison) ==
+        if((_interface->StatusData.PasswordData[OperatorElement::LEVEL2].PWPermissions & Comparison) ==
                 Comparison)
             tmpStruct.Level2 = true;
         else
             tmpStruct.Level2 = false;
-        if((_interface->StatusData.PasswordData[3].PWPermissions & Comparison) ==
+        if((_interface->StatusData.PasswordData[OperatorElement::LEVEL3].PWPermissions & Comparison) ==
                 Comparison)
             tmpStruct.Level3 = true;
         else
             tmpStruct.Level3 = false;
-        if((_interface->StatusData.PasswordData[4].PWPermissions & Comparison) ==
+        if((_interface->StatusData.PasswordData[OperatorElement::LEVEL4].PWPermissions & Comparison) ==
                 Comparison)
             tmpStruct.Level4 = true;
         else
             tmpStruct.Level4 = false;
         CurrentPermissionList.insert(i,tmpStruct);
     }
-//    for(int i = 0; i< CurrentPermissionList.size();i++)
-//    {
-//        qDebug() << "xxxxxxxxxxxxx " << CurrentPermissionList.at(i).Level1 << CurrentPermissionList.at(i).Level2 <<CurrentPermissionList.at(i).Level3 << CurrentPermissionList.at(i).Level4;
-//    }
     return true;
 }
 
@@ -105,7 +101,7 @@ bool PermissionSetting::_Set()
 //    if(CurrentPermissionList.empty() == true)
 //        return false;
     _interface->StatusData.CurrentFunIndex.clear();
-    for(int i = 0; i < 5; i++)
+    for(int i = 0; i < PERMISSIONLEVEL; i++)
     {
         _interface->StatusData.PasswordData[i].Identifier
                 = FiveLevelIdentifier.at(i);
@@ -117,41 +113,39 @@ bool PermissionSetting::_Set()
         _interface->StatusData.CurrentFunIndex.insert(i, FunIndex);
         unsigned long Comparison = (0x01 << FunIndex);
         if(CurrentPermissionList.at(i).PhyKey == true)
-            _interface->StatusData.PasswordData[0].PWPermissions
+            _interface->StatusData.PasswordData[OperatorElement::PHYKEY].PWPermissions
                     |= Comparison;
         else
-            _interface->StatusData.PasswordData[0].PWPermissions
+            _interface->StatusData.PasswordData[OperatorElement::PHYKEY].PWPermissions
                     &= ~Comparison;
         if(CurrentPermissionList.at(i).Level1 == true)
-            _interface->StatusData.PasswordData[1].PWPermissions
+            _interface->StatusData.PasswordData[OperatorElement::LEVEL1].PWPermissions
                     |= Comparison;
         else
-            _interface->StatusData.PasswordData[1].PWPermissions
+            _interface->StatusData.PasswordData[OperatorElement::LEVEL1].PWPermissions
                     &= ~Comparison;
         if(CurrentPermissionList.at(i).Level2 == true)
-            _interface->StatusData.PasswordData[2].PWPermissions
+            _interface->StatusData.PasswordData[OperatorElement::LEVEL2].PWPermissions
                     |= Comparison;
         else
-            _interface->StatusData.PasswordData[2].PWPermissions
+            _interface->StatusData.PasswordData[OperatorElement::LEVEL2].PWPermissions
                     &= ~Comparison;
         if(CurrentPermissionList.at(i).Level3 == true)
-            _interface->StatusData.PasswordData[3].PWPermissions
+            _interface->StatusData.PasswordData[OperatorElement::LEVEL3].PWPermissions
                     |= Comparison;
         else
-            _interface->StatusData.PasswordData[3].PWPermissions
+            _interface->StatusData.PasswordData[OperatorElement::LEVEL3].PWPermissions
                     &= ~Comparison;
         if(CurrentPermissionList.at(i).Level4 == true)
-            _interface->StatusData.PasswordData[4].PWPermissions
+            _interface->StatusData.PasswordData[OperatorElement::LEVEL4].PWPermissions
                     |= Comparison;
         else
-            _interface->StatusData.PasswordData[4].PWPermissions
+            _interface->StatusData.PasswordData[OperatorElement::LEVEL4].PWPermissions
                     &= ~Comparison;
-
-        qDebug()<<_interface->StatusData.PasswordData[1].PWPermissions<<
-                  _interface->StatusData.PasswordData[2].PWPermissions<<
-                  _interface->StatusData.PasswordData[3].PWPermissions<<
-                  _interface->StatusData.PasswordData[4].PWPermissions;
-
+//        qDebug()<<_interface->StatusData.PasswordData[1].PWPermissions<<
+//                  _interface->StatusData.PasswordData[2].PWPermissions<<
+//                  _interface->StatusData.PasswordData[3].PWPermissions<<
+//                  _interface->StatusData.PasswordData[4].PWPermissions;
 
     }
     _interface->StatusData.WriteStatusDataToQSetting();

@@ -5,6 +5,7 @@
 #include "Interface/AlarmElement.h"
 #include "Interface/PresetElement.h"
 #include "Interface/VariantToString.h"
+#include <QFile>
 CSVAlarmLogData* CSVAlarmLogData::_instance = NULL;
 CSVAlarmLogData* CSVAlarmLogData::Instance()
 {
@@ -48,10 +49,10 @@ QString CSVAlarmLogData::AlarmLogEvent(void* AlarmLogObj)
     PresetElement PresetObj;
     QString sLogEvent;
     QDateTime TimeLabel = QDateTime::fromTime_t(((AlarmElement*) AlarmLogObj)->CreatedDate);
-    QString Str = TimeLabel.toString("yyyy/MM/dd;hh:mm:ss");
-    QStringList TimeLabelList = Str.split(";");
-    sLogEvent = TimeLabelList[0] + "\t";
-    sLogEvent += TimeLabelList[1] + "\t";
+    QString sDate = TimeLabel.toString("yyyy/MM/dd");
+    QString sTime = TimeLabel.toString("hh:mm:ss");
+    sLogEvent = sDate + "\t";
+    sLogEvent += sTime + "\t";
     QString AlarmType = ((AlarmElement*)AlarmLogObj)->AlarmType;
     sLogEvent += AlarmType + "\t";
     sLogEvent += _Var2Str->AlarmLevelToString(AlarmType);
