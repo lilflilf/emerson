@@ -59,6 +59,7 @@ public:
     bool _Recall();
     bool _Set();
     void _Default();
+    static void InitializeSystem(void*);
 public:
     explicit PermissionSetting(QObject *parent = 0);
 

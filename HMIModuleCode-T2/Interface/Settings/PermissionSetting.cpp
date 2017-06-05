@@ -1,6 +1,8 @@
 #include "PermissionSetting.h"
 #include "Interface/Interface.h"
-#include <QDebug>
+#include "Modules/M102IA.h"
+#include "Modules/M2010.h"
+#include "Modules/typedef.h"
 #include <QtMath>
 QStringList PermissionSetting::AllFunctionNameList;
 QStringList PermissionSetting::FiveLevelIdentifier;
@@ -37,16 +39,29 @@ PermissionSetting::PermissionSetting(QObject *parent) : QObject(parent)
     AllFunctionNameList.insert(i++, QObject::tr("Lock On Alarm"));       //Bit 25
 }
 
+void PermissionSetting::InitializeSystem(void* _Obj)
+{
+    M102IA* _M102IA = M102IA::Instance();
+    M2010* _M2010 = M2010::Instance();
+    InterfaceClass* _Interface = InterfaceClass::Instance();
+    UNUSED(_Obj);
+    _M2010->ReceiveFlags.IAFOUNDGOOD = false;
+    _M102IA->SendIACommand(IAComClearBBR, 'F');
+    _M102IA->WaitForResponseAfterSent(DELAY15SEC, &_M2010->ReceiveFlags.IAFOUNDGOOD);
+    _Interface->StatusData = _Interface->DefaultStatusData;
+    _Interface->StatusData.WriteStatusDataToQSetting();
+}
+
 void PermissionSetting::InitializeFRAM()
 {
-//    BransonMessageBox tmpMsgBox;
-//    tmpMsgBox.MsgPrompt = QObject::tr("Currently, there is no New Wire Splicer Controller Online\n "
-//                                      "Do you want to work offline?");
-//    tmpMsgBox.MsgTitle = QObject::tr("Information");
-//    tmpMsgBox.TipsMode = (OKCancel + Information);
-//    tmpMsgBox.func_ptr = MODstart::OfflineInitialization;
-//    tmpMsgBox._Object = this;
-//    _Interface->cMsgBox(&tmpMsgBox);
+    BransonMessageBox tmpMsgBox;
+    InterfaceClass* _Interface = InterfaceClass::Instance();
+    tmpMsgBox.MsgPrompt = QObject::tr("Are you sure you want to Initialize the system?");
+    tmpMsgBox.MsgTitle = QObject::tr("Information");
+    tmpMsgBox.TipsMode = (OKCancel + Information);
+    tmpMsgBox.func_ptr = PermissionSetting::InitializeSystem;
+    tmpMsgBox._Object = this;
+    _Interface->cMsgBox(&tmpMsgBox);
 }
 
 void PermissionSetting::_Default()
