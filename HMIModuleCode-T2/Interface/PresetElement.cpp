@@ -33,7 +33,13 @@ PresetElement::PresetElement()
     WeldSettings.AdvanceSetting.ABDelay = 0;
     WeldSettings.AdvanceSetting.ABDur = 0;
     WeldSettings.AdvanceSetting.AntiSideOption.AntiSideMode = false;
+    WeldSettings.AdvanceSetting.AntiSideOption.AntiSideSpliceTime = 0;
     WeldSettings.AdvanceSetting.CutOffOption.CutOff = false;
+    WeldSettings.AdvanceSetting.CutOffOption.CutOffSpliceTime = 0;
+    WeldSettings.AdvanceSetting.CutOffOption.Cutter4HeightAlarm = false;
+    WeldSettings.AdvanceSetting.CutOffOption.Cutter4PowerAlarm = false;
+    WeldSettings.AdvanceSetting.CutOffOption.Cutter4PreHeightAlarm = false;
+    WeldSettings.AdvanceSetting.CutOffOption.Cutter4TimeAlarm = false;
     WeldSettings.AdvanceSetting.HoldTime = 0;
     WeldSettings.AdvanceSetting.OffsetOption.MeasuredHeight = 0;
     WeldSettings.AdvanceSetting.OffsetOption.MeasuredWidth = 0;
