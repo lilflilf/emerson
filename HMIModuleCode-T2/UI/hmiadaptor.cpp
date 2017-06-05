@@ -176,6 +176,11 @@ void HmiAdaptor::advancedMaintenanceExecute(int code)
     advanceMaintenance->_execute(code);
 }
 
+void HmiAdaptor::advancedMaintenanceRecall()
+{
+    advanceMaintenance->RecallAdvancedParameter();
+}
+
 void HmiAdaptor::maintenanceCountExecute(QString code)
 {
     if (code == "_Recall")
@@ -716,6 +721,21 @@ void HmiAdaptor::maintenanceReset()
     advanceMaintenance->Reset();
 }
 
+QString HmiAdaptor::getAdvancedMaintenanceValue(int index, QString key)
+{
+    if (key == "current")
+        return advanceMaintenance->AdvParameter[index].Current;
+    else if (key == "max")
+        return advanceMaintenance->AdvParameter[index].Maximum;
+    else if (key == "min")
+        return advanceMaintenance->AdvParameter[index].Minimum;
+}
+
+void HmiAdaptor::setAdvancedMaintenanceValue(int index, QString value)
+{
+    advanceMaintenance->AdvParameter[index].Current = value;
+}
+
 
 bool HmiAdaptor::login(QString passwd)
 {
@@ -1078,7 +1098,7 @@ bool HmiAdaptor::weldDefaultsSetValue(QList<bool> boolList, QStringList strList,
         weldDefaults->CurrentWeldSettings.CurrentCoolingMode = Status_Data::OFF;
     else if (boolList[3] && !boolList[4])
         weldDefaults->CurrentWeldSettings.CurrentCoolingMode = Status_Data::OFF;
-    weldDefaults->CurrentWeldSettings.Imperical2Metric = boolList[6];
+//    weldDefaults->CurrentWeldSettings.Imperical2Metric = boolList[6];
 
     weldDefaults->CurrentWeldSettings.WeldSettingFormula[EnergyR1].Range.Current = strList[0];
     weldDefaults->CurrentWeldSettings.WeldSettingFormula[EnergyR1].Offset.Current = strList[1];
@@ -1400,11 +1420,13 @@ bool HmiAdaptor::comepareCurrentValue(QString minValue, QString maxValue, QStrin
     QString minNum = getStringValue(minValue);
     QString maxNum = getStringValue(maxValue);
     QString theValue = getStringValue(value);
+    bool reb;
     if (theValue.toFloat(&ok) >= minNum.toFloat(&ok) && theValue.toFloat(&ok) <= maxNum.toFloat(&ok)) {
-        return true;
+        reb = true;
     } else {
-        return false;
+        reb = false;
     }
+    return reb;
 }
 
 int HmiAdaptor::timeChangeToInt(QString time)

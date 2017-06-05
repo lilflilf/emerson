@@ -278,6 +278,7 @@ Window {
 //            contentLoader.source = "qrc:/UI/ToolChange.qml"
             break;
         case 6:
+            hmiAdaptor.advancedMaintenanceRecall()
             headBar.titleText = qsTr("Advanced Maintenance")
             stackview.push("qrc:/UI/AdvancedMaintenance.qml")
 
