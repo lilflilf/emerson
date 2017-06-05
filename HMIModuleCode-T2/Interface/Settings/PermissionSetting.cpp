@@ -39,7 +39,14 @@ PermissionSetting::PermissionSetting(QObject *parent) : QObject(parent)
 
 void PermissionSetting::InitializeFRAM()
 {
-    HMI_PRINT;
+//    BransonMessageBox tmpMsgBox;
+//    tmpMsgBox.MsgPrompt = QObject::tr("Currently, there is no New Wire Splicer Controller Online\n "
+//                                      "Do you want to work offline?");
+//    tmpMsgBox.MsgTitle = QObject::tr("Information");
+//    tmpMsgBox.TipsMode = (OKCancel + Information);
+//    tmpMsgBox.func_ptr = MODstart::OfflineInitialization;
+//    tmpMsgBox._Object = this;
+//    _Interface->cMsgBox(&tmpMsgBox);
 }
 
 void PermissionSetting::_Default()

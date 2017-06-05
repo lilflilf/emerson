@@ -5,8 +5,10 @@
 #include "Interface/Definition.h"
 
 const QString FormulaIdentifer[] = {
-    QObject::tr("Offset + (AREA X Multiplier)"),
-    QObject::tr("sqrt(AREA) X Multiplier"),
+    QObject::tr("Energy = Offset + (Cross Section X Multiplier)"),
+    QObject::tr("Width = sqrt(Cross Section) X Multiplier"),
+    QObject::tr("Pressure = Offset + (Cross Section X Multiplier)"),
+    QObject::tr("Amplitude = Offset + (Cross Section X Multiplier)"),
 };
 
 struct WeldSettingFormulaStruct
