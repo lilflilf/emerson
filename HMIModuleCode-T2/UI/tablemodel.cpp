@@ -948,13 +948,13 @@ QString SplicesModel::getStructValue(QString valueKey, QString valueType)
     else if (valueKey == "ActualHeight") {
         if (valueType == "current")
             ResultStr =
-                    variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.OffsetOption.MeasuredHeight).Current;
+                    variantToString->MeasureHeightToString(presetElement.WeldSettings.AdvanceSetting.OffsetOption.MeasuredHeight).Current;
         else if (valueType == "max")
             ResultStr =
-                    variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.OffsetOption.MeasuredHeight).Maximum;
+                    variantToString->MeasureHeightToString(presetElement.WeldSettings.AdvanceSetting.OffsetOption.MeasuredHeight).Maximum;
         else if (valueType == "min")
             ResultStr =
-                    variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.OffsetOption.MeasuredHeight).Minimum;
+                    variantToString->MeasureHeightToString(presetElement.WeldSettings.AdvanceSetting.OffsetOption.MeasuredHeight).Minimum;
     }
     else if (valueKey == "DisplayedWidth") {
         if (valueType == "current")
@@ -970,35 +970,35 @@ QString SplicesModel::getStructValue(QString valueKey, QString valueType)
     else if (valueKey == "DisplayedHeight") {
         if (valueType == "current")
             ResultStr =
-                    variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.OffsetOption.DisplayHeight).Current;
+                    variantToString->MeasureHeightToString(presetElement.WeldSettings.AdvanceSetting.OffsetOption.DisplayHeight).Current;
         else if (valueType == "max")
             ResultStr =
-                    variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.OffsetOption.DisplayHeight).Maximum;
+                    variantToString->MeasureHeightToString(presetElement.WeldSettings.AdvanceSetting.OffsetOption.DisplayHeight).Maximum;
         else if (valueType == "min")
             ResultStr =
-                    variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.OffsetOption.DisplayHeight).Minimum;
+                    variantToString->MeasureHeightToString(presetElement.WeldSettings.AdvanceSetting.OffsetOption.DisplayHeight).Minimum;
     }
     else if (valueKey == "Unload Time") {
         if (valueType == "current")
             ResultStr =
-                    variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.AntiSideOption.AntiSideSpliceTime).Current;
+                    variantToString->AntiSideSpliceTimeToString(presetElement.WeldSettings.AdvanceSetting.AntiSideOption.AntiSideSpliceTime).Current;
         else if (valueType == "max")
             ResultStr =
-                    variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.AntiSideOption.AntiSideSpliceTime).Maximum;
+                    variantToString->AntiSideSpliceTimeToString(presetElement.WeldSettings.AdvanceSetting.AntiSideOption.AntiSideSpliceTime).Maximum;
         else if (valueType == "min")
             ResultStr =
-                    variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.AntiSideOption.AntiSideSpliceTime).Minimum;
+                    variantToString->AntiSideSpliceTimeToString(presetElement.WeldSettings.AdvanceSetting.AntiSideOption.AntiSideSpliceTime).Minimum;
     }
     else if (valueKey == "Load Time") {
         if (valueType == "current")
             ResultStr =
-                    variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.CutOffOption.CutOffSpliceTime).Current;
+                    variantToString->CutOffSpliceTimeToString(presetElement.WeldSettings.AdvanceSetting.CutOffOption.CutOffSpliceTime).Current;
         else if (valueType == "max")
             ResultStr =
-                    variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.CutOffOption.CutOffSpliceTime).Maximum;
+                    variantToString->CutOffSpliceTimeToString(presetElement.WeldSettings.AdvanceSetting.CutOffOption.CutOffSpliceTime).Maximum;
         else if (valueType == "min")
             ResultStr =
-                    variantToString->MeasureWidthToString(presetElement.WeldSettings.AdvanceSetting.CutOffOption.CutOffSpliceTime).Minimum;
+                    variantToString->CutOffSpliceTimeToString(presetElement.WeldSettings.AdvanceSetting.CutOffOption.CutOffSpliceTime).Minimum;
     }
     else if (valueKey == "Anti-Side") {
         if (presetElement.WeldSettings.AdvanceSetting.AntiSideOption.AntiSideMode)

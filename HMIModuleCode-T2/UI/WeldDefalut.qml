@@ -516,33 +516,152 @@ Item {
         color: "white"
     }
 
-//    Row {
-//        id: crossSectionRow
-//        anchors.top: graph.bottom
-//        anchors.left: parent.left
-//        anchors.leftMargin: 20
-//        width: 700 //(parent.width-40)/3
-//        height: 50
-//        spacing: 20
-//        Item {
-//                width: 640/4 //parent.width/2-10
-//                height: 50 //parent.height/2-10
-//                MyRadioButton {
-//                    anchors.fill: parent
-//                    buttontext: graphText
-//                    bIsCheck: isSelect
-//                    exclusiveGroup: mos
-//                    onBIsCheckChanged: {
-//                        graphModel.set(index,{"isSelect":bIsCheck})
-//                    }
-//                }
-//            }
-//        }
+    ExclusiveGroup {
+        id: crossSectionRowMos;
+    }
+    Row {
+        id: crossSectionRow
+        anchors.top: display.bottom
+        anchors.left: parent.left
+        anchors.leftMargin: 20
+        width: 700
+        height: 50
+        spacing: 20
+        Text {
+            color: "white"
+            font.family: "arial"
+            font.pointSize: 14
+            text: qsTr("Cross Section")
+            height: 50
+            width: 640/4
+            verticalAlignment: Qt.AlignVCenter
+        }
+        Item {
+            width: 640/4
+            height: 50
+            MyRadioButton {
+                anchors.fill: parent
+                buttontext: "mm"
+                bIsCheck: true
+                exclusiveGroup: crossSectionRowMos
+                onBIsCheckChanged: {
+                }
+            }
+        }
+        Item {
+            width: 640/4
+            height: 50
+            MyRadioButton {
+                anchors.fill: parent
+                buttontext: "AWG"
+                bIsCheck: false
+                exclusiveGroup: crossSectionRowMos
+                onBIsCheckChanged: {
+                }
+            }
+        }
+    }
+
+    ExclusiveGroup {
+        id: pressureRowMos;
+    }
+    Row {
+        id: pressureRow
+        anchors.top: crossSectionRow.bottom
+        anchors.topMargin: 10
+        anchors.left: parent.left
+        anchors.leftMargin: 20
+        width: 700
+        height: 50
+        spacing: 20
+        Text {
+            color: "white"
+            font.family: "arial"
+            font.pointSize: 14
+            text: qsTr("Pressure")
+            height: 50
+            width: 640/4
+            verticalAlignment: Qt.AlignVCenter
+        }
+        Item {
+            width: 640/4
+            height: 50
+            MyRadioButton {
+                anchors.fill: parent
+                buttontext: "psi"
+                bIsCheck: true
+                exclusiveGroup: crossSectionRowMos
+                onBIsCheckChanged: {
+                }
+            }
+        }
+        Item {
+            width: 640/4
+            height: 50
+            MyRadioButton {
+                anchors.fill: parent
+                buttontext: "bar"
+                bIsCheck: false
+                exclusiveGroup: crossSectionRowMos
+                onBIsCheckChanged: {
+                }
+            }
+        }
+    }
+
+    ExclusiveGroup {
+        id: lengthRowMos;
+    }
+    Row {
+        id: lengthRow
+        anchors.top: pressureRow.bottom
+        anchors.topMargin: 10
+        anchors.left: parent.left
+        anchors.leftMargin: 20
+        width: 700
+        height: 50
+        spacing: 20
+        Text {
+            color: "white"
+            font.family: "arial"
+            font.pointSize: 14
+            text: qsTr("Length")
+            height: 50
+            width: 640/4
+            verticalAlignment: Qt.AlignVCenter
+        }
+        Item {
+            width: 640/4
+            height: 50
+            MyRadioButton {
+                anchors.fill: parent
+                buttontext: "mm"
+                bIsCheck: true
+                exclusiveGroup: crossSectionRowMos
+                onBIsCheckChanged: {
+                }
+            }
+        }
+        Item {
+            width: 640/4
+            height: 50
+            MyRadioButton {
+                anchors.fill: parent
+                buttontext: "inch"
+                bIsCheck: false
+                exclusiveGroup: crossSectionRowMos
+                onBIsCheckChanged: {
+                }
+            }
+        }
+    }
 
 
 
     Rectangle {
         anchors.top: parent.top
+        anchors.topMargin: 15
+        anchors.bottomMargin: 15
         anchors.bottom: parent.bottom
         width: 2
         color: "white"
@@ -677,7 +796,7 @@ Item {
                 if (radio1.bIsCheck) {
                     rec.anchors.leftMargin = 0
                     formulaSetting.myModel = formulaModel
-                    //                    checkText.text = formulaModel.get(0).identifier
+                    centerTips.myText = formulaModel.get(0).identifier
                 }
             }
         }
@@ -730,14 +849,14 @@ Item {
         anchors.right: parent.right
         anchors.rightMargin: 20
         height: 40
-        border.color: "#0079c1"
+        border.color: Qt.rgba(0,0,0,0) //"#0079c1"
         border.width: 2
         color: Qt.rgba(0,0,0,0)
         property alias myText: checkText.text
         Text {
             id: checkText
             anchors.fill: parent
-            horizontalAlignment: Qt.AlignHCenter
+//            horizontalAlignment: Qt.AlignHCenter
             verticalAlignment: Qt.AlignVCenter
             font.family: "arial"
             font.pixelSize: 20
