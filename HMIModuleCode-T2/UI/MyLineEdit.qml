@@ -25,6 +25,8 @@ Item {
     property alias defaultTextSize: defaultText.font.pointSize
     property alias inputText: textInput.text
     property bool inputFocus: false
+
+    property alias inputMethodHints: textInput.inputMethodHints
     signal textChange(int text)
     onInputFocusChanged: {
         if (inputFocus == false) {

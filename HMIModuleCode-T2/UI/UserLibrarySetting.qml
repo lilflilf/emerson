@@ -410,6 +410,7 @@ Item {
             font.pixelSize: 24
             color: "white"
             text: qsTr("Password")
+
         }
         MyLineEdit {
             id: passwordInput
@@ -423,6 +424,8 @@ Item {
             inputWidth: 290
             inputHeight: 36
             horizontalAlignment: Qt.AlignHCenter
+            inputMethodHints: Qt.ImhDigitsOnly
+
         }
         Text {
             id: permission
