@@ -437,7 +437,7 @@ Item {
         text: qsTr("Default")
         textColor: "white"
         onClicked: {
-            permissionsettingExecute("_Init")
+            hmiAdaptor.permissionsettingExecute("_Init")
             initPage()
         }
     }

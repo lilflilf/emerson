@@ -44,83 +44,105 @@ Item {
 
         list = hmiAdaptor.weldDefaultsGetValue(0)
         checkText.text = list[9]
-        formulaModel.append({"formulaHead":qsTr("Range"),"maxValue":list[0],"currenValue":list[1],"minValue":list[2],"identifier":list[9]})  //"formulaValue":"0.00mm²"
-        formulaModel.append({"formulaHead":"","maxValue":"","currenValue":list[2],"minValue":""})
+        formulaModel.append({"formulaHead":qsTr("From"),"maxValue":list[0],"currenValue":list[1],"minValue":list[2],"identifier":list[9]})  //"formulaValue":"0.00mm²"
+        formulaModel.append({"formulaHead":qsTr("To"),"maxValue":"","currenValue":list[2],"minValue":""})
         formulaModel.append({"formulaHead":qsTr("Offset"),"maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
         formulaModel.append({"formulaHead":qsTr("Multiplier"),"maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
 
         list = hmiAdaptor.weldDefaultsGetValue(1)
-        formulaModel.append({"formulaHead":qsTr("Range"),"maxValue":list[0],"currenValue":list[1],"minValue":list[2]})
+        formulaModel.append({"formulaHead":qsTr("From"),"maxValue":list[0],"currenValue":list[1],"minValue":list[2]})
         formulaModel.set(1,{"currenValue":hmiAdaptor.weldDefaultsGetNum(list[1])})
-        formulaModel.append({"formulaHead":"","maxValue":"","currenValue":list[1],"minValue":""})
+        formulaModel.append({"formulaHead":qsTr("To"),"maxValue":"","currenValue":list[1],"minValue":""})
         formulaModel.append({"formulaHead":qsTr("Offset"),"maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
         formulaModel.append({"formulaHead":qsTr("Multiplier"),"maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
 
         list = hmiAdaptor.weldDefaultsGetValue(2)
-        formulaModel.append({"formulaHead":qsTr("Range"),"maxValue":list[0],"currenValue":list[1],"minValue":list[2]})
+        formulaModel.append({"formulaHead":qsTr("From"),"maxValue":list[0],"currenValue":list[1],"minValue":list[2]})
         formulaModel.set(5,{"currenValue":hmiAdaptor.weldDefaultsGetNum(list[1])})
-        formulaModel.append({"formulaHead":"","maxValue":"","currenValue":list[0],"minValue":""})
+        formulaModel.append({"formulaHead":qsTr("To"),"maxValue":"","currenValue":list[0],"minValue":""})
         formulaModel.append({"formulaHead":qsTr("Offset"),"maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
         formulaModel.append({"formulaHead":qsTr("Multiplier"),"maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
-
-        formulaModel.append({"formulaHead":qsTr("Range"),"maxValue":list[0],"currenValue":list[1],"minValue":list[2]})
-        formulaModel.set(5,{"currenValue":hmiAdaptor.weldDefaultsGetNum(list[1])})
-        formulaModel.append({"formulaHead":"","maxValue":"","currenValue":list[0],"minValue":""})
-        formulaModel.append({"formulaHead":qsTr("Offset"),"maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
-        formulaModel.append({"formulaHead":qsTr("Multiplier"),"maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
-
 
         list = hmiAdaptor.weldDefaultsGetValue(3)
-        widthModel.append({"formulaHead":qsTr("Range"),"maxValue":list[0],"currenValue":list[1],"minValue":list[2],"identifier":list[9]})
-        widthModel.append({"formulaHead":"","maxValue":"","currenValue":list[2],"minValue":""})
-        widthModel.append({"formulaHead":qsTr("Offset"),"maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
-        widthModel.append({"formulaHead":qsTr("Multiplier"),"maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
+        formulaModel.append({"formulaHead":qsTr("From"),"maxValue":list[0],"currenValue":list[1],"minValue":list[2]})
+        formulaModel.set(9,{"currenValue":hmiAdaptor.weldDefaultsGetNum(list[1])})
+        formulaModel.append({"formulaHead":qsTr("To"),"maxValue":"","currenValue":list[0],"minValue":""})
+        formulaModel.append({"formulaHead":qsTr("Offset"),"maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
+        formulaModel.append({"formulaHead":qsTr("Multiplier"),"maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
+
+
         list = hmiAdaptor.weldDefaultsGetValue(4)
-        widthModel.append({"formulaHead":qsTr("Range"),"maxValue":list[0],"currenValue":list[1],"minValue":list[2]})
-        widthModel.set(1,{"currenValue":hmiAdaptor.weldDefaultsGetNum(list[1])})
-        widthModel.append({"formulaHead":"","maxValue":"","currenValue":list[1],"minValue":""})
+        widthModel.append({"formulaHead":qsTr("From"),"maxValue":list[0],"currenValue":list[1],"minValue":list[2],"identifier":list[9]})
+        widthModel.append({"formulaHead":qsTr("To"),"maxValue":"","currenValue":list[2],"minValue":""})
         widthModel.append({"formulaHead":qsTr("Offset"),"maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
         widthModel.append({"formulaHead":qsTr("Multiplier"),"maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
         list = hmiAdaptor.weldDefaultsGetValue(5)
-        widthModel.append({"formulaHead":qsTr("Range"),"maxValue":list[0],"currenValue":list[1],"minValue":list[2]})
+        widthModel.append({"formulaHead":qsTr("From"),"maxValue":list[0],"currenValue":list[1],"minValue":list[2]})
+        widthModel.set(1,{"currenValue":hmiAdaptor.weldDefaultsGetNum(list[1])})
+        widthModel.append({"formulaHead":qsTr("To"),"maxValue":"","currenValue":list[1],"minValue":""})
+        widthModel.append({"formulaHead":qsTr("Offset"),"maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
+        widthModel.append({"formulaHead":qsTr("Multiplier"),"maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
+        list = hmiAdaptor.weldDefaultsGetValue(6)
+        widthModel.append({"formulaHead":qsTr("From"),"maxValue":list[0],"currenValue":list[1],"minValue":list[2]})
         widthModel.set(5,{"currenValue":hmiAdaptor.weldDefaultsGetNum(list[1])})
-        widthModel.append({"formulaHead":"","maxValue":"","currenValue":list[0],"minValue":""})
+        widthModel.append({"formulaHead":qsTr("To"),"maxValue":"","currenValue":list[0],"minValue":""})
+        widthModel.append({"formulaHead":qsTr("Offset"),"maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
+        widthModel.append({"formulaHead":qsTr("Multiplier"),"maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
+        list = hmiAdaptor.weldDefaultsGetValue(7)
+        widthModel.append({"formulaHead":qsTr("From"),"maxValue":list[0],"currenValue":list[1],"minValue":list[2]})
+        widthModel.set(9,{"currenValue":hmiAdaptor.weldDefaultsGetNum(list[1])})
+        widthModel.append({"formulaHead":qsTr("To"),"maxValue":"","currenValue":list[0],"minValue":""})
         widthModel.append({"formulaHead":qsTr("Offset"),"maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
         widthModel.append({"formulaHead":qsTr("Multiplier"),"maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
 
-        list = hmiAdaptor.weldDefaultsGetValue(6)
-        pressureModel.append({"formulaHead":qsTr("Range"),"maxValue":list[0],"currenValue":list[1],"minValue":list[2],"identifier":list[9]})
-        pressureModel.append({"formulaHead":"","maxValue":"","currenValue":list[1],"minValue":""})
-        pressureModel.append({"formulaHead":qsTr("Offset"),"maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
-        pressureModel.append({"formulaHead":qsTr("Multiplier"),"maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
-        list = hmiAdaptor.weldDefaultsGetValue(7)
-        pressureModel.append({"formulaHead":qsTr("Range"),"maxValue":list[0],"currenValue":list[1],"minValue":list[2]})
-        pressureModel.set(1,{"currenValue":hmiAdaptor.weldDefaultsGetNum(list[1])})
-        pressureModel.append({"formulaHead":"","maxValue":"","currenValue":list[1],"minValue":""})
-        pressureModel.append({"formulaHead":qsTr("Offset"),"maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
-        pressureModel.append({"formulaHead":qsTr("Multiplier"),"maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
+
+
         list = hmiAdaptor.weldDefaultsGetValue(8)
-        pressureModel.append({"formulaHead":qsTr("Range"),"maxValue":list[0],"currenValue":list[1],"minValue":list[2]})
+        pressureModel.append({"formulaHead":qsTr("From"),"maxValue":list[0],"currenValue":list[1],"minValue":list[2],"identifier":list[9]})
+        pressureModel.append({"formulaHead":qsTr("To"),"maxValue":"","currenValue":list[1],"minValue":""})
+        pressureModel.append({"formulaHead":qsTr("Offset"),"maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
+        pressureModel.append({"formulaHead":qsTr("Multiplier"),"maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
+        list = hmiAdaptor.weldDefaultsGetValue(9)
+        pressureModel.append({"formulaHead":qsTr("From"),"maxValue":list[0],"currenValue":list[1],"minValue":list[2]})
+        pressureModel.set(1,{"currenValue":hmiAdaptor.weldDefaultsGetNum(list[1])})
+        pressureModel.append({"formulaHead":qsTr("To"),"maxValue":"","currenValue":list[1],"minValue":""})
+        pressureModel.append({"formulaHead":qsTr("Offset"),"maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
+        pressureModel.append({"formulaHead":qsTr("Multiplier"),"maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
+        list = hmiAdaptor.weldDefaultsGetValue(10)
+        pressureModel.append({"formulaHead":qsTr("From"),"maxValue":list[0],"currenValue":list[1],"minValue":list[2]})
         pressureModel.set(5,{"currenValue":hmiAdaptor.weldDefaultsGetNum(list[1])})
-        pressureModel.append({"formulaHead":"","maxValue":"","currenValue":list[0],"minValue":""})
+        pressureModel.append({"formulaHead":qsTr("To"),"maxValue":"","currenValue":list[0],"minValue":""})
+        pressureModel.append({"formulaHead":qsTr("Offset"),"maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
+        pressureModel.append({"formulaHead":qsTr("Multiplier"),"maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
+        list = hmiAdaptor.weldDefaultsGetValue(11)
+        pressureModel.append({"formulaHead":qsTr("From"),"maxValue":list[0],"currenValue":list[1],"minValue":list[2]})
+        pressureModel.set(9,{"currenValue":hmiAdaptor.weldDefaultsGetNum(list[1])})
+        pressureModel.append({"formulaHead":qsTr("To"),"maxValue":"","currenValue":list[0],"minValue":""})
         pressureModel.append({"formulaHead":qsTr("Offset"),"maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
         pressureModel.append({"formulaHead":qsTr("Multiplier"),"maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
 
-        list = hmiAdaptor.weldDefaultsGetValue(9)
-        amplitudeModel.append({"formulaHead":qsTr("Range"),"maxValue":list[0],"currenValue":list[1],"minValue":list[2],"identifier":list[9]})
-        amplitudeModel.append({"formulaHead":"","maxValue":"","currenValue":list[1],"minValue":""})
+
+        list = hmiAdaptor.weldDefaultsGetValue(12)
+        amplitudeModel.append({"formulaHead":qsTr("From"),"maxValue":list[0],"currenValue":list[1],"minValue":list[2],"identifier":list[9]})
+        amplitudeModel.append({"formulaHead":qsTr("To"),"maxValue":"","currenValue":list[1],"minValue":""})
         amplitudeModel.append({"formulaHead":qsTr("Offset"),"maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
         amplitudeModel.append({"formulaHead":qsTr("Multiplier"),"maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
-        list = hmiAdaptor.weldDefaultsGetValue(10)
-        amplitudeModel.append({"formulaHead":qsTr("Range"),"maxValue":list[0],"currenValue":list[1],"minValue":list[2]})
+        list = hmiAdaptor.weldDefaultsGetValue(13)
+        amplitudeModel.append({"formulaHead":qsTr("From"),"maxValue":list[0],"currenValue":list[1],"minValue":list[2]})
         amplitudeModel.set(1,{"currenValue":hmiAdaptor.weldDefaultsGetNum(list[1])})
-        amplitudeModel.append({"formulaHead":"","maxValue":"","currenValue":list[1],"minValue":""})
+        amplitudeModel.append({"formulaHead":qsTr("To"),"maxValue":"","currenValue":list[1],"minValue":""})
         amplitudeModel.append({"formulaHead":qsTr("Offset"),"maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
         amplitudeModel.append({"formulaHead":qsTr("Multiplier"),"maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
-        list = hmiAdaptor.weldDefaultsGetValue(11)
-        amplitudeModel.append({"formulaHead":qsTr("Range"),"maxValue":list[0],"currenValue":list[1],"minValue":list[2]})
+        list = hmiAdaptor.weldDefaultsGetValue(14)
+        amplitudeModel.append({"formulaHead":qsTr("From"),"maxValue":list[0],"currenValue":list[1],"minValue":list[2]})
         amplitudeModel.set(5,{"currenValue":hmiAdaptor.weldDefaultsGetNum(list[1])})
-        amplitudeModel.append({"formulaHead":"","maxValue":"","currenValue":list[0],"minValue":""})
+        amplitudeModel.append({"formulaHead":qsTr("To"),"maxValue":"","currenValue":list[0],"minValue":""})
+        amplitudeModel.append({"formulaHead":qsTr("Offset"),"maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
+        amplitudeModel.append({"formulaHead":qsTr("Multiplier"),"maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
+        list = hmiAdaptor.weldDefaultsGetValue(15)
+        amplitudeModel.append({"formulaHead":qsTr("From"),"maxValue":list[0],"currenValue":list[1],"minValue":list[2]})
+        amplitudeModel.set(9,{"currenValue":hmiAdaptor.weldDefaultsGetNum(list[1])})
+        amplitudeModel.append({"formulaHead":qsTr("To"),"maxValue":"","currenValue":list[0],"minValue":""})
         amplitudeModel.append({"formulaHead":qsTr("Offset"),"maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
         amplitudeModel.append({"formulaHead":qsTr("Multiplier"),"maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
 
@@ -494,9 +516,152 @@ Item {
         color: "white"
     }
 
+    ExclusiveGroup {
+        id: crossSectionRowMos;
+    }
+    Row {
+        id: crossSectionRow
+        anchors.top: display.bottom
+        anchors.left: parent.left
+        anchors.leftMargin: 20
+        width: 700
+        height: 50
+        spacing: 20
+        Text {
+            color: "white"
+            font.family: "arial"
+            font.pointSize: 14
+            text: qsTr("Cross Section")
+            height: 50
+            width: 640/4
+            verticalAlignment: Qt.AlignVCenter
+        }
+        Item {
+            width: 640/4
+            height: 50
+            MyRadioButton {
+                anchors.fill: parent
+                buttontext: "mm"
+                bIsCheck: true
+                exclusiveGroup: crossSectionRowMos
+                onBIsCheckChanged: {
+                }
+            }
+        }
+        Item {
+            width: 640/4
+            height: 50
+            MyRadioButton {
+                anchors.fill: parent
+                buttontext: "AWG"
+                bIsCheck: false
+                exclusiveGroup: crossSectionRowMos
+                onBIsCheckChanged: {
+                }
+            }
+        }
+    }
+
+    ExclusiveGroup {
+        id: pressureRowMos;
+    }
+    Row {
+        id: pressureRow
+        anchors.top: crossSectionRow.bottom
+        anchors.topMargin: 10
+        anchors.left: parent.left
+        anchors.leftMargin: 20
+        width: 700
+        height: 50
+        spacing: 20
+        Text {
+            color: "white"
+            font.family: "arial"
+            font.pointSize: 14
+            text: qsTr("Pressure")
+            height: 50
+            width: 640/4
+            verticalAlignment: Qt.AlignVCenter
+        }
+        Item {
+            width: 640/4
+            height: 50
+            MyRadioButton {
+                anchors.fill: parent
+                buttontext: "psi"
+                bIsCheck: true
+                exclusiveGroup: crossSectionRowMos
+                onBIsCheckChanged: {
+                }
+            }
+        }
+        Item {
+            width: 640/4
+            height: 50
+            MyRadioButton {
+                anchors.fill: parent
+                buttontext: "bar"
+                bIsCheck: false
+                exclusiveGroup: crossSectionRowMos
+                onBIsCheckChanged: {
+                }
+            }
+        }
+    }
+
+    ExclusiveGroup {
+        id: lengthRowMos;
+    }
+    Row {
+        id: lengthRow
+        anchors.top: pressureRow.bottom
+        anchors.topMargin: 10
+        anchors.left: parent.left
+        anchors.leftMargin: 20
+        width: 700
+        height: 50
+        spacing: 20
+        Text {
+            color: "white"
+            font.family: "arial"
+            font.pointSize: 14
+            text: qsTr("Length")
+            height: 50
+            width: 640/4
+            verticalAlignment: Qt.AlignVCenter
+        }
+        Item {
+            width: 640/4
+            height: 50
+            MyRadioButton {
+                anchors.fill: parent
+                buttontext: "mm"
+                bIsCheck: true
+                exclusiveGroup: crossSectionRowMos
+                onBIsCheckChanged: {
+                }
+            }
+        }
+        Item {
+            width: 640/4
+            height: 50
+            MyRadioButton {
+                anchors.fill: parent
+                buttontext: "inch"
+                bIsCheck: false
+                exclusiveGroup: crossSectionRowMos
+                onBIsCheckChanged: {
+                }
+            }
+        }
+    }
+
+
 
     Rectangle {
         anchors.top: parent.top
+        anchors.topMargin: 15
+        anchors.bottomMargin: 15
         anchors.bottom: parent.bottom
         width: 2
         color: "white"
@@ -530,7 +695,8 @@ Item {
 
     Grid {
         id: formulaSetting
-        anchors.top: centerTips.bottom
+        anchors.top: rec.bottom
+//        anchors.topMargin: 20
         anchors.bottom: okButton.top
         anchors.bottomMargin: 20
         anchors.right: parent.right
@@ -538,37 +704,73 @@ Item {
         width: radioButton.width
         columns: 4
         rows: 4
-        spacing: 10
+        columnSpacing: 10
+        rowSpacing: 10
         property alias myModel: gridRepeater.model
         property int selectIndex: -1
         Repeater {
             id: gridRepeater
             model: formulaModel
-            delegate: Recsetting {
+            delegate: Item {
                 width: (radioButton.width-30)/4
                 height: (formulaSetting.height-20)/4
-                headTitle: formulaHead
-                centervalue: currenValue
-                Component.onCompleted: {
-                    if (index == 1 || index == 5 || index == 9) {
-                        localbordercolor = Qt.rgba(0,0,0,0)
-                        bgvisable = false
-                    }
+                property alias localbordercolor: recset.localbordercolor
+                Text {
+                    id: gridTitle
+                    text: formulaHead
+                    height: 40
+                    width: (radioButton.width-30)/4
+                    color: "white"
+                    font.family: "arial"
+                    font.pointSize: 14
+                    verticalAlignment: Qt.AlignBottom
+                    anchors.left: parent.left
+                    anchors.leftMargin: 5
                 }
-                onMouseAreaClick: {
-                    if (index == 1 || index == 5 || index == 9) {
-                        localbordercolor = Qt.rgba(0,0,0,0)
-                        bgvisable = false
-                    } else {
-                        localbordercolor = "#05f91c"
+                Text {
+                    id: lineTip
+                    text: qsTr("Cross Section Range")
+                    height: 40
+                    width: (radioButton.width-30)/4
+                    color: "white"
+                    font.family: "arial"
+                    font.pointSize: 14
+                    verticalAlignment: Qt.AlignTop
+                    visible: false
+                }
+                Recsetting {
+                    id: recset
+                    anchors.top: gridTitle.bottom
+                    width: (radioButton.width-30)/4
+                    height: (formulaSetting.height-20)/4 - 40
+                    //                headTitle: formulaHead
+                    centervalue: currenValue
+                    Component.onCompleted: {
+                        if (index == 1 || index == 5 || index == 9 || index == 13) {
+                            localbordercolor = Qt.rgba(0,0,0,0)
+                            bgvisable = false
+                        }
+                        if (index == 0 || index == 4 || index == 8 || index == 12) {
+                            lineTip.visible = true
+                            lineTip.text = qsTr("Cross Section Range ") + (index / 4 + 1)
+                        }
+
                     }
-                    formulaSetting.selectIndex = index
-                    keyNum.titleText = gridRepeater.model.get(index).formulaHead
-                    keyNum.maxvalue = gridRepeater.model.get(index).maxValue
-                    keyNum.currentValue = gridRepeater.model.get(index).currenValue
-                    keyNum.minvalue = gridRepeater.model.get(index).minValue
-                    keyNum.visible = true
-                    backGround.visible = true
+                    onMouseAreaClick: {
+                        if (index == 1 || index == 5 || index == 9) {
+                            localbordercolor = Qt.rgba(0,0,0,0)
+                            bgvisable = false
+                        } else {
+                            localbordercolor = "#05f91c"
+                        }
+                        formulaSetting.selectIndex = index
+                        keyNum.titleText = gridRepeater.model.get(index).formulaHead
+                        keyNum.maxvalue = gridRepeater.model.get(index).maxValue
+                        keyNum.currentValue = gridRepeater.model.get(index).currenValue
+                        keyNum.minvalue = gridRepeater.model.get(index).minValue
+                        keyNum.visible = true
+                        backGround.visible = true
+                    }
                 }
             }
         }
@@ -576,7 +778,7 @@ Item {
 
     Row {
         id: radioButton
-        anchors.top: formula.bottom
+        anchors.top: centerTips.bottom
         anchors.topMargin: 10
         anchors.left: formula.left
         anchors.right: parent.right
@@ -594,7 +796,7 @@ Item {
                 if (radio1.bIsCheck) {
                     rec.anchors.leftMargin = 0
                     formulaSetting.myModel = formulaModel
-                    //                    checkText.text = formulaModel.get(0).identifier
+                    centerTips.myText = formulaModel.get(0).identifier
                 }
             }
         }
@@ -642,19 +844,19 @@ Item {
 
     Rectangle {
         id: centerTips
-        anchors.top: rec.bottom
+        anchors.top: formula.bottom
         anchors.left: formula.left
         anchors.right: parent.right
         anchors.rightMargin: 20
         height: 40
-        border.color: "#0079c1"
+        border.color: Qt.rgba(0,0,0,0) //"#0079c1"
         border.width: 2
         color: Qt.rgba(0,0,0,0)
         property alias myText: checkText.text
         Text {
             id: checkText
             anchors.fill: parent
-            horizontalAlignment: Qt.AlignHCenter
+//            horizontalAlignment: Qt.AlignHCenter
             verticalAlignment: Qt.AlignVCenter
             font.family: "arial"
             font.pixelSize: 20
