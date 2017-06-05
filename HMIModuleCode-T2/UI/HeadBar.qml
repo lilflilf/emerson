@@ -20,6 +20,8 @@ Item {
     id: headBar
     property alias titleText: title.text
     property var selectIndex: 0
+    property alias keyVisible: keyButton.visible
+    property alias cutterVisible: cutterButton.visible
     width: Screen.width
     height: 97//Screen.height * 0.07
     property alias backColor: headBack.color
@@ -593,6 +595,44 @@ Item {
                 background.opacity = 0.5
                 alarmlog.visible = true
                 hmiAdaptor.setAlarmModelList(true)
+            }
+        }
+    }
+    Image {
+        id: keyButton
+        anchors.right: alarmButton.left
+        anchors.rightMargin: 20
+        z: 14
+        source: "qrc:/images/images/keybutton.png"
+        anchors.verticalCenter: parent.verticalCenter
+        height: 80
+        width: 80
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+//                background.visible = true
+//                background.opacity = 0.5
+//                alarmlog.visible = true
+//                hmiAdaptor.setAlarmModelList(true)
+            }
+        }
+    }
+    Image {
+        id: cutterButton
+        anchors.right: keyButton.left
+        anchors.rightMargin: 20
+        z: 14
+        source: "qrc:/images/images/cutterbutton.png"
+        anchors.verticalCenter: parent.verticalCenter
+        height: 80
+        width: 80
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+//                background.visible = true
+//                background.opacity = 0.5
+//                alarmlog.visible = true
+//                hmiAdaptor.setAlarmModelList(true)
             }
         }
     }

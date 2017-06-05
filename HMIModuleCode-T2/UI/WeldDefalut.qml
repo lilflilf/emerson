@@ -20,12 +20,16 @@ Item {
         pressureModel.clear()
         amplitudeModel.clear()
         repeaterModel.clear()
+        repeaterModel2.clear()
+
         mos.current = null
 
         repeaterModel.append({"headTitle":qsTr("Width Encoder"),"leftText":qsTr("off"),"righttext":qsTr("on"),"switchState":hmiAdaptor.weldDefaultsGetSwitch("Width Encoder")})
         repeaterModel.append({"headTitle":qsTr("Height Encoder"),"leftText":qsTr("off"),"righttext":qsTr("on"),"switchState":hmiAdaptor.weldDefaultsGetSwitch("Height Encoder")})
-        repeaterModel.append({"headTitle":qsTr("Foot Pedal Abort"),"leftText":qsTr("off"),"righttext":qsTr("on"),"switchState":hmiAdaptor.weldDefaultsGetSwitch("Foot Pedal Abort")})
-        repeaterModel.append({"headTitle":qsTr("Cooling"),"leftText":qsTr("off"),"righttext":qsTr("on"),"switchState":hmiAdaptor.weldDefaultsGetSwitch("Cooling")})
+        repeaterModel2.append({"headTitle":qsTr("Foot Pedal Abort"),"leftText":qsTr("off"),"righttext":qsTr("on"),"switchState":hmiAdaptor.weldDefaultsGetSwitch("Foot Pedal Abort")})
+        repeaterModel2.append({"headTitle":qsTr("Seek"),"leftText":qsTr("off"),"righttext":qsTr("on"),"switchState":hmiAdaptor.weldDefaultsGetSwitch("Foot Pedal Abort")})
+        repeaterModel2.append({"headTitle":qsTr("Cooling"),"leftText":qsTr("off"),"righttext":qsTr("on"),"switchState":hmiAdaptor.weldDefaultsGetSwitch("Cooling")})
+        repeaterModel2.append({"headTitle":qsTr("Lock on Alarm"),"leftText":qsTr("off"),"righttext":qsTr("on"),"switchState":hmiAdaptor.weldDefaultsGetSwitch("Cooling")})
 
         graphModel.append({"graphText":"1MS","isSelect":hmiAdaptor.weldDefaultsGetSwitch("Graph Data Sampling 1ms")})
         graphModel.append({"graphText":"5MS","isSelect":hmiAdaptor.weldDefaultsGetSwitch("Graph Data Sampling 5ms")})
@@ -58,6 +62,13 @@ Item {
         formulaModel.append({"formulaHead":"","maxValue":"","currenValue":list[0],"minValue":""})
         formulaModel.append({"formulaHead":qsTr("Offset"),"maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
         formulaModel.append({"formulaHead":qsTr("Multiplier"),"maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
+
+        formulaModel.append({"formulaHead":qsTr("Range"),"maxValue":list[0],"currenValue":list[1],"minValue":list[2]})
+        formulaModel.set(5,{"currenValue":hmiAdaptor.weldDefaultsGetNum(list[1])})
+        formulaModel.append({"formulaHead":"","maxValue":"","currenValue":list[0],"minValue":""})
+        formulaModel.append({"formulaHead":qsTr("Offset"),"maxValue":list[3],"currenValue":list[4],"minValue":list[5]})
+        formulaModel.append({"formulaHead":qsTr("Multiplier"),"maxValue":list[6],"currenValue":list[7],"minValue":list[8]})
+
 
         list = hmiAdaptor.weldDefaultsGetValue(3)
         widthModel.append({"formulaHead":qsTr("Range"),"maxValue":list[0],"currenValue":list[1],"minValue":list[2],"identifier":list[9]})
@@ -115,7 +126,7 @@ Item {
 
         cooling1.centervalue = hmiAdaptor.weldDefaultsGetValue(-1)[1]
         cooling2.centervalue = hmiAdaptor.weldDefaultsGetValue(-1)[4]
-        awg.state = hmiAdaptor.weldDefaultsGetSwitch("Unit Conversion") ? "right" : "left"
+//        awg.state = hmiAdaptor.weldDefaultsGetSwitch("Unit Conversion") ? "right" : "left"
     }
 
     Image {
@@ -150,21 +161,33 @@ Item {
     ListModel {
         id: repeaterModel
     }
+    ListModel {
+        id: repeaterModel2
+    }
+    ListModel {
+        id: crossSectionDisplayModel
+    }
+    ListModel {
+        id: pressureDisplayModel
+    }
+    ListModel {
+        id: lengthDisplayModel
+    }
 
-    Column {
+    Row {
         id: column1
         anchors.top: parent.top
         anchors.topMargin: 10
         anchors.left: parent.left
         anchors.leftMargin: 20
-        width: (parent.width-40)/3
-        height: 230
+        width: 700
+        height: 50
         spacing: 10
         Repeater {
             id: columnRepeater
             model: repeaterModel
             delegate: Item {
-                width: column1.width
+                width: column1.width / 2
                 height: 50
                 Text {
                     anchors.verticalCenter: parent.verticalCenter
@@ -176,7 +199,7 @@ Item {
                 Switch2 {
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
-                    width: parent.width/2+40
+                    width: 150
                     textLeft: leftText
                     textRight: righttext
                     state: switchState ? "right" : "left"
@@ -197,14 +220,63 @@ Item {
             }
         }
     }
+    Grid {
+        id: column2
+        anchors.top: column1.bottom
+        anchors.topMargin: 10
+        anchors.left: parent.left
+        anchors.leftMargin: 20
+        width: 350
+        height: 110
+        spacing: 10
+        rows: 2
+        columns: 2
+        Repeater {
+            id: columnRepeater2
+            model: repeaterModel2
+            delegate: Item {
+                width: column2.width
+                height: 50
+                Text {
+                    anchors.verticalCenter: parent.verticalCenter
+                    font.family: "arial"
+                    font.pixelSize: 20
+                    color: "white"
+                    text: headTitle
+                }
+                Switch2 {
+                    anchors.right: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
+                    width: 150
+                    textLeft: leftText
+                    textRight: righttext
+                    state: switchState ? "right" : "left"
+                    clip: true
+                    onStateChanged: {
+                        if (index == 2 && state == "left")
+                            coolingItem.visible = false
+                        else if (index == 2 && state == "right")
+                            coolingItem.visible = true
+
+                        if (state == "right")
+                            repeaterModel2.set(index,{"switchState":true})
+                        else
+                            repeaterModel2.set(index,{"switchState":false})
+
+                    }
+                }
+            }
+        }
+    }
+
     Item {
         id: coolingItem
-        anchors.top: column1.bottom
+        anchors.top: column2.bottom
         anchors.topMargin: 20
         anchors.left: parent.left
         anchors.leftMargin: 20
-        width: (parent.width-40)/3
-        height: 180
+        width: 700
+        height: 110
         onVisibleChanged: {
             if (visible)
             {
@@ -213,126 +285,169 @@ Item {
 
             }
         }
-
-        Text {
-            id: coolingsecText
-            font.family: "arial"
-            font.pixelSize: 20
-            color: "white"
-            text: qsTr("cooling(1sec/100J)")
-        }
-        Switch2 {
-            id: coolingsec
-            anchors.right: parent.right
-            anchors.verticalCenter: coolingsecText.verticalCenter
-            width: 200
+        Item {
+            id: item1
+            width: 350
             height: 50
-            textLeft: qsTr("off")
-            textRight: qsTr("on")
-            state: hmiAdaptor.weldDefaultsGetSwitch("cooling(1sec/100J)") ? "right" : "left"
-            clip: true
-            onStateChanged: {
-                if (coolingsec.state == "right")
-                    cooling1.bgvisable = false
-                else if (coolingsec.state == "left")
-                    cooling1.bgvisable = true
+            Text {
+                id: coolingsecText
+                font.family: "arial"
+                font.pixelSize: 20
+                color: "white"
+                text: qsTr("cooling(1sec/100J)")
+            }
+            Switch2 {
+                id: coolingsec
+                anchors.right: parent.right
+                anchors.verticalCenter: coolingsecText.verticalCenter
+                width: 150
+                height: 50
+                textLeft: qsTr("off")
+                textRight: qsTr("on")
+                state: hmiAdaptor.weldDefaultsGetSwitch("cooling(1sec/100J)") ? "right" : "left"
+                clip: true
+                onStateChanged: {
+                    if (coolingsec.state == "right")
+                        cooling1.bgvisable = false
+                    else if (coolingsec.state == "left")
+                        cooling1.bgvisable = true
+                }
             }
         }
-        Text {
-            id: coolingToolingText
-            anchors.top: coolingsec.bottom
-            anchors.topMargin: 20
-            font.family: "arial"
-            font.pixelSize: 20
-            color: "white"
-            text: qsTr("Cooling Tooling")
-        }
-        Switch2 {
-            id: coolingTooling
-            anchors.right: parent.right
-            anchors.verticalCenter: coolingToolingText.verticalCenter
-            width: 200
+
+        Item {
+            id: item2
+            width: 350
             height: 50
-            textLeft: qsTr("off")
-            textRight: qsTr("on")
-            state: hmiAdaptor.weldDefaultsGetSwitch("Cooling Tooling") ? "right" : "left"
-            clip: true
+            anchors.bottom: parent.bottom
+            Text {
+                id: coolingToolingText
+                font.family: "arial"
+                font.pixelSize: 20
+                color: "white"
+                text: qsTr("Cooling Tooling")
+            }
+            Switch2 {
+                id: coolingTooling
+                anchors.right: parent.right
+                anchors.verticalCenter: coolingToolingText.verticalCenter
+                width: 150
+                height: 50
+                textLeft: qsTr("off")
+                textRight: qsTr("on")
+                state: hmiAdaptor.weldDefaultsGetSwitch("Cooling Tooling") ? "right" : "left"
+                clip: true
+            }
         }
-        Recsetting {
-            id: cooling1
-            anchors.top: coolingTooling.bottom
-            anchors.topMargin: 10
-            anchors.left: parent.left
-            anchors.leftMargin: 20
-            width: (parent.width-40)/2
-            height: 80
-            headTitle: qsTr("Cooling Duration")
-            onMouseAreaClick: {
-                if (cooling1.bgvisable) {
+
+        Item {
+            id: item3
+            width: 350
+            height: 50
+            anchors.top: parent.top
+            anchors.right: parent.right
+            Text {
+                id: durationTitle
+                anchors.left: parent.left
+                anchors.leftMargin: 10
+                anchors.topMargin: 20
+                font.family: "arial"
+                font.pixelSize: 20
+                color: "white"
+                text: qsTr("Duration")
+            }
+            Recsetting {
+                id: cooling1
+                anchors.verticalCenter: durationTitle.verticalCenter
+                anchors.right: parent.right
+                width: 150
+                height: 50
+    //            headTitle: qsTr("Cooling Duration")
+                onMouseAreaClick: {
+                    if (cooling1.bgvisable) {
+                        localbordercolor = "#05f91c"
+                        keyNum.titleText = cooling1.headTitle
+                        keyNum.maxvalue = coolingList[0] //hmiAdaptor.weldDefaultsGetValue(-1)[0]
+                        keyNum.currentValue = coolingList[1] //hmiAdaptor.weldDefaultsGetValue(-1)[1]
+                        keyNum.minvalue = coolingList[2] //hmiAdaptor.weldDefaultsGetValue(-1)[2]
+                        keyNum.visible = true
+                        backGround.visible = true
+                    }
+                }
+            }
+        }
+
+        Item {
+            id: item4
+            width: 350
+            height: 50
+            anchors.bottom: parent.bottom
+            anchors.right: parent.right
+            Text {
+                id: delayTitle
+                anchors.left: parent.left
+                anchors.leftMargin: 10
+                anchors.topMargin: 20
+                font.family: "arial"
+                font.pixelSize: 20
+                color: "white"
+                text: qsTr("Delay")
+            }
+            Recsetting {
+                id: cooling2
+                anchors.verticalCenter: delayTitle.verticalCenter
+                anchors.right: parent.right
+                width: 150
+                height: 50
+                //            headTitle: qsTr("Cooling Delay")
+                onMouseAreaClick: {
                     localbordercolor = "#05f91c"
-                    keyNum.titleText = cooling1.headTitle
-                    keyNum.maxvalue = coolingList[0] //hmiAdaptor.weldDefaultsGetValue(-1)[0]
-                    keyNum.currentValue = coolingList[1] //hmiAdaptor.weldDefaultsGetValue(-1)[1]
-                    keyNum.minvalue = coolingList[2] //hmiAdaptor.weldDefaultsGetValue(-1)[2]
+                    keyNum.titleText = cooling2.headTitle
+                    keyNum.maxvalue = coolingList[3]
+                    keyNum.currentValue = coolingList[4]
+                    keyNum.minvalue = coolingList[5]
                     keyNum.visible = true
                     backGround.visible = true
                 }
             }
         }
-        Recsetting {
-            id: cooling2
-            anchors.top: coolingTooling.bottom
-            anchors.topMargin: 10
-            anchors.right: parent.right
-            width: (parent.width-40)/2
-            height: 80
-            headTitle: qsTr("Cooling Delay")
-            onMouseAreaClick: {
-                localbordercolor = "#05f91c"
-                keyNum.titleText = cooling2.headTitle
-                keyNum.maxvalue = coolingList[3]
-                keyNum.currentValue = coolingList[4]
-                keyNum.minvalue = coolingList[5]
-                keyNum.visible = true
-                backGround.visible = true
-            }
-        }
     }
-    Text {
-        id: conversion
-        anchors.top: coolingItem.bottom
-        anchors.topMargin: 10
-        anchors.left: parent.left
-        anchors.leftMargin: 20
-        font.family: "arial"
-        font.pixelSize: 20
-        color: "white"
-        text: qsTr("Unit Conversion")
-    }
-    Text {
-        id: conversion2
-        anchors.top: conversion.bottom
-        anchors.left: parent.left
-        anchors.leftMargin: 20
-        font.family: "arial"
-        font.pixelSize: 16
-        color: "white"
-        text: qsTr("-AWG/mm²\n-Psi/Bar\n-Inch/mm")
-    }
-    Switch2 {
-        id: awg
-        anchors.right: coolingItem.right
-        anchors.top: conversion.bottom
-        width: (parent.width-40)/6+40
-        height: 50
-        textRight: qsTr("Imperial")
-        textLeft: qsTr("Metric")
-        state: hmiAdaptor.weldDefaultsGetSwitch("Unit Conversion") ? "right" : "left"
-        clip: true
-    }
+//    Text {
+//        id: conversion
+//        anchors.top: coolingItem.bottom
+//        anchors.topMargin: 10
+//        anchors.left: parent.left
+//        anchors.leftMargin: 20
+//        font.family: "arial"
+//        font.pixelSize: 20
+//        color: "white"
+//        text: qsTr("Unit Conversion")
+//    }
+//    Text {
+//        id: conversion2
+//        anchors.top: conversion.bottom
+//        anchors.left: parent.left
+//        anchors.leftMargin: 20
+//        font.family: "arial"
+//        font.pixelSize: 16
+//        color: "white"
+//        text: qsTr("-AWG/mm²\n-Psi/Bar\n-Inch/mm")
+//    }
+//    Switch2 {
+//        id: awg
+//        anchors.right: coolingItem.right
+//        anchors.top: conversion.bottom
+//        width: (parent.width-40)/6+40
+//        height: 50
+//        textRight: qsTr("Imperial")
+//        textLeft: qsTr("Metric")
+//        state: hmiAdaptor.weldDefaultsGetSwitch("Unit Conversion") ? "right" : "left"
+//        clip: true
+//    }
+
     Text {
         id: graph
-        anchors.top: conversion2.bottom
+        anchors.top: coolingItem.bottom
         anchors.topMargin: 20
         anchors.left: parent.left
         anchors.leftMargin: 20
@@ -341,21 +456,19 @@ Item {
         color: "white"
         text: qsTr("Graph Data Sampling")
     }
-    Grid {
+    Row {
+        id: graphRow
         anchors.top: graph.bottom
         anchors.left: parent.left
         anchors.leftMargin: 20
-        width: (parent.width-40)/3
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 20
+        width: 700 //(parent.width-40)/3
+        height: 50
         spacing: 20
-        columns: 2
-        rows: 2
         Repeater {
             model: graphModel
             delegate: Item {
-                width: parent.width/2-10
-                height: parent.height/2-10
+                width: 640/4 //parent.width/2-10
+                height: 50 //parent.height/2-10
                 MyRadioButton {
                     anchors.fill: parent
                     buttontext: graphText
@@ -368,6 +481,29 @@ Item {
             }
         }
     }
+
+    Text {
+        id: display
+        text: qsTr("Display")
+        anchors.left: parent.left
+        anchors.leftMargin: 20
+        anchors.top: graphRow.bottom
+        anchors.topMargin: 40
+        font.family: "arial"
+        font.pixelSize: 20
+        color: "white"
+    }
+
+
+    Rectangle {
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        width: 2
+        color: "white"
+        anchors.left: column1.right
+        anchors.leftMargin: 25
+    }
+
     Text {
         id: formula
         anchors.left: column1.right
@@ -401,7 +537,7 @@ Item {
         anchors.rightMargin: 20
         width: radioButton.width
         columns: 4
-        rows: 3
+        rows: 4
         spacing: 10
         property alias myModel: gridRepeater.model
         property int selectIndex: -1
@@ -410,7 +546,7 @@ Item {
             model: formulaModel
             delegate: Recsetting {
                 width: (radioButton.width-30)/4
-                height: (formulaSetting.height-20)/3
+                height: (formulaSetting.height-20)/4
                 headTitle: formulaHead
                 centervalue: currenValue
                 Component.onCompleted: {
@@ -550,7 +686,7 @@ Item {
             }
             boolArray.push(coolingsec.state == "right")
             boolArray.push(coolingTooling.state == "right")
-            boolArray.push(awg.state == "right")
+//            boolArray.push(awg.state == "right")
 
             for (i = 0;i < formulaModel.count;i++ )
             {

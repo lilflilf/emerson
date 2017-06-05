@@ -39,7 +39,7 @@ Item {
             listModel.append({"iconsource":"qrc:/images/images/key9.png","value":"9"})
             listModel.append({"iconsource":"qrc:/images/images/keyc.png","value":""})
             listModel.append({"iconsource":"qrc:/images/images/key0.png","value":"0"})
-            listModel.append({"iconsource":"qrc:/images/images/keydel.png","value":"."})
+            listModel.append({"iconsource":"qrc:/images/images/keyok.png","value":"."})
 //            listModel.append({"iconsource":"","value":"OK"})
 
         }

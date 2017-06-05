@@ -208,10 +208,16 @@ Item {
     ListModel {
         id: listModel
         Component.onCompleted: {
-            listModel.append({"titleHead":qsTr("Power Supply"),"value":"4000W"})
+            listModel.append({"titleHead":qsTr("Power Supply"),"value":hmiAdaptor.getAdvancedMaintenanceValue(1,"current"),
+                             "maxValue":hmiAdaptor.getAdvancedMaintenanceValue(1,"max"),
+                             "minValue":hmiAdaptor.getAdvancedMaintenanceValue(1,"min")})
             listModel.append({"titleHead":qsTr("Calibrated Amplitude"),"value":"72μm"})
-            listModel.append({"titleHead":qsTr("Tune Point"),"value":"40%"})
-            listModel.append({"titleHead":qsTr("Frequency Offset"),"value":"50%"})
+            listModel.append({"titleHead":qsTr("Tune Point"),"value":hmiAdaptor.getAdvancedMaintenanceValue(2,"current"),
+                                 "maxValue":hmiAdaptor.getAdvancedMaintenanceValue(2,"max"),
+                                 "minValue":hmiAdaptor.getAdvancedMaintenanceValue(2,"min")})
+            listModel.append({"titleHead":qsTr("Frequency Offset"),"value":hmiAdaptor.getAdvancedMaintenanceValue(3,"current"),
+                                 "maxValue":hmiAdaptor.getAdvancedMaintenanceValue(3,"max"),
+                                 "minValue":hmiAdaptor.getAdvancedMaintenanceValue(3,"min")})
         }
     }
 
@@ -327,7 +333,7 @@ Item {
                 anchors.right: parent.right
                 width: (rowButton2.width-20)/4
                 height: Screen.height * 0.08
-                //                centervalue:
+                centervalue: hmiAdaptor.getAdvancedMaintenanceValue(0,"current")
                 onMouseAreaClick: {
                     bIsList = false
                     backGround.visible = true
@@ -335,8 +341,8 @@ Item {
                     keyNum.visible = true
                     keyNum.titleText = amplitude.text
                     keyNum.currentValue = recsetting1.centervalue
-                    keyNum.minvalue = "1"
-                    keyNum.maxvalue = "12"
+                    keyNum.minvalue = hmiAdaptor.getAdvancedMaintenanceValue(0,"min")
+                    keyNum.maxvalue = hmiAdaptor.getAdvancedMaintenanceValue(0,"max")
                 }
 
             }
@@ -362,7 +368,7 @@ Item {
 
     Grid {
         id: testSetting
-        anchors.horizontalCenter: rowButton3.horizontalCenter
+//        anchors.horizontalCenter: rowButton3.horizontalCenter
         anchors.bottom: buttonCoumn.bottom
         rowSpacing: 30
         columnSpacing: 60
@@ -398,8 +404,8 @@ Item {
                         keyNum.titleText = titleHead
                         keyNum.visible = true
                         keyNum.currentValue = value
-                        keyNum.minvalue = "1W"
-                        keyNum.maxvalue = "12W"
+                        keyNum.minvalue = minValue
+                        keyNum.maxvalue = maxValue
 
                     }
                 }
@@ -440,9 +446,14 @@ Item {
                 if (hmiAdaptor.comepareCurrentValue(keyNum.minvalue,keyNum.maxvalue,keyNum.inputText)) {
                     if (bIsList) {
                         listModel.set(listIndex,{"value":keyNum.inputText})
+                        if (listIndex == 0)
+                            hmiAdaptor.setAdvancedMaintenanceValue(1,keyNum.inputText)
+                        else
+                            hmiAdaptor.setAdvancedMaintenanceValue(listIndex,keyNum.inputText)
                     }
                     else {
                         recsetting1.centervalue = keyNum.inputText
+                        hmiAdaptor.setAdvancedMaintenanceValue(0,keyNum.inputText)
                     }
                     backGround.visible = false
                     backGround.opacity = 0

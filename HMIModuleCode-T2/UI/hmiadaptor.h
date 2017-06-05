@@ -63,6 +63,7 @@ public:
     Q_INVOKABLE void quit();
     Q_INVOKABLE void openFileDialog();
     Q_INVOKABLE void advancedMaintenanceExecute(int code);
+    Q_INVOKABLE void advancedMaintenanceRecall();
     Q_INVOKABLE void maintenanceCountExecute(QString code);
     Q_INVOKABLE QString maintenanceCountGetValue(int code, int index);
     Q_INVOKABLE QString maintenanceCountGetImage(int index);
@@ -72,6 +73,8 @@ public:
     Q_INVOKABLE void maintenanceStart(int page);
     Q_INVOKABLE void maintenanceStop(int page);
     Q_INVOKABLE void maintenanceReset();
+    Q_INVOKABLE QString getAdvancedMaintenanceValue(int index, QString key);
+    Q_INVOKABLE void setAdvancedMaintenanceValue(int index, QString value);
     Q_INVOKABLE QString getMaintenanceVerson(int index);
     Q_INVOKABLE QString getSoftVerson(int index);
     Q_INVOKABLE bool login(QString passwd);

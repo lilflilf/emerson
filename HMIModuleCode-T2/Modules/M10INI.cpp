@@ -378,8 +378,8 @@ void M10INI::Init_StatusData()
     _Interface->DefaultStatusData.Soft_Settings.WeldFormula = WeldFormulaAmtechStandard;
     _Interface->DefaultStatusData.Soft_Settings.RunCount = 10;
     _Interface->DefaultStatusData.Soft_Settings.Teach_Mode = TEACHMODESETTING::SIGMA;
-    _Interface->DefaultStatusData.Soft_Settings.TunePoint = 40;
-    _Interface->DefaultStatusData.Soft_Settings.FrequencyOffset = 50;
+    _Interface->DefaultStatusData.Soft_Settings.TunePoint = 19950;
+    _Interface->DefaultStatusData.Soft_Settings.FrequencyOffset = 0;
 
     _Interface->DefaultStatusData.Cust_Data.cust_qual_range[TIME_PLRG_STD] = 40;
     _Interface->DefaultStatusData.Cust_Data.cust_qual_range[TIME_MSRG_STD] = 40;

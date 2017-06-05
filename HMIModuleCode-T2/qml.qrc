@@ -188,5 +188,8 @@
         <file>images/alarm1.png</file>
         <file>images/error1.png</file>
         <file>images/information1.png</file>
+        <file>images/keyok.png</file>
+        <file>images/cutterbutton.png</file>
+        <file>images/keybutton.png</file>
     </qresource>
 </RCC>
