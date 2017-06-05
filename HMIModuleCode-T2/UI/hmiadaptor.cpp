@@ -1871,10 +1871,10 @@ QVariant HmiAdaptor::getWorkValue(QString workKey)
 
 QString HmiAdaptor::getUserManualPath()
 {
-    //url: ("file:///d:\\Special Double Hit Mode functionality for Delphi Ground Terminal Welder II.html");
+    //url: ("file:///d:\\User Manual.html");
 
     QString path = QCoreApplication::applicationDirPath();
-    path = "file:///" + path + "/usermanual/Special Double Hit Mode functionality for Delphi Ground Terminal Welder II.html";
+    path = "file:///" + path + "/usermanual/User Manual.html";
     qDebug() << "path =================" <<path;
     return path;
 }

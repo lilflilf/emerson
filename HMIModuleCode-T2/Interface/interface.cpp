@@ -44,7 +44,7 @@ void InterfaceClass::CheckBransonFolder()
         objDriveSystem.mkdir("c:\\BransonData\\Library\\");
         objDriveSystem.mkdir("c:\\BransonData\\Modular Production\\");
         objDriveSystem.mkdir("c:\\BransonData\\History\\");
-        objDriveSystem.mkdir("c:\\BransonData\\ToolChangeImage\\");
+//        objDriveSystem.mkdir("c:\\BransonData\\ToolChangeImage\\");
         objDriveSystem.mkdir("c:\\BransonData\\History\\Graph\\");
     }else{
         if (objDriveSystem.exists("c:\\BransonData\\History\\") == false)
@@ -69,8 +69,8 @@ void InterfaceClass::CheckBransonFolder()
             if(objDriveSystem.exists("c:\\BransonData\\Modular Production\\SpliceImage\\") == false)
                 objDriveSystem.mkdir("c:\\BransonData\\Modular Production\\SpliceImage\\");
         }
-        if(objDriveSystem.exists("c:\\BransonData\\ToolChangeImage\\") == false)
-            objDriveSystem.mkdir("c:\\BransonData\\ToolChangeImage\\");
+//        if(objDriveSystem.exists("c:\\BransonData\\ToolChangeImage\\") == false)
+//            objDriveSystem.mkdir("c:\\BransonData\\ToolChangeImage\\");
 
     }
 
