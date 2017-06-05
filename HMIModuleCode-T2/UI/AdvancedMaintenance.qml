@@ -198,11 +198,14 @@ Item {
 
     Rectangle {
         id: tempLine
-        height: parent.height
         width: 1
         color: "white"
         anchors.left: buttonCoumn.right
         anchors.leftMargin: 10
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        anchors.topMargin: 15
+        anchors.bottomMargin: 15
     }
 
     ListModel {
@@ -292,9 +295,9 @@ Item {
         anchors.top: progressBar.bottom
         anchors.topMargin: 20
         anchors.right: progressBar.right
-        anchors.rightMargin: 50
+//        anchors.rightMargin: 50
         anchors.left: progressBar.left
-        anchors.leftMargin: 50
+//        anchors.leftMargin: 50
         spacing: 20
         CButton {
             id: test1
@@ -324,7 +327,7 @@ Item {
                 id: amplitude
                 text: qsTr("Amplitude")
                 font.family: "arial"
-                font.pixelSize: 16
+                font.pixelSize: 20
                 color: "white"
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -359,7 +362,7 @@ Item {
     Text {
         text: qsTr("Power Supply and Frequency Setting")
         font.family: "arial"
-        font.pixelSize: 18
+        font.pixelSize: 20
         color: "white"
         anchors.bottom: testSetting.top
         anchors.bottomMargin: 30
@@ -385,7 +388,7 @@ Item {
                 Text {
                     text: titleHead
                     font.family: "arial"
-                    font.pixelSize: 16
+                    font.pixelSize: 20
                     color: "white"
                     anchors.verticalCenter: parent.verticalCenter
                     visible: index == 1 ? false : true
