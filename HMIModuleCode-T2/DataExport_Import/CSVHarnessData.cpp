@@ -81,6 +81,8 @@ bool CSVHarnessData::ExportData(int ID, QString fileUrl)
 
 bool CSVHarnessData::ExportData(QList<int> IDList, QString fileUrl)
 {
+    UNUSED(IDList);
+    UNUSED(fileUrl);
     return true;
 }
 

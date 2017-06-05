@@ -124,30 +124,56 @@ void WeldDefaults::_Default()
     _Interface->StatusData.CurrentCoolingMode =
             _Interface->DefaultStatusData.CurrentCoolingMode;
     if(CoolingMode != _Interface->StatusData.CurrentCoolingMode)
+    {
+        _M10INI->TempSysConfig.CoolingMode =
+                _Interface->StatusData.CurrentCoolingMode;
         CoolingChange = true;
+    }
 
     unsigned short CoolingTooling = _M10INI->TempSysConfig.CoolingTooling;
     _Interface->StatusData.CurrentCoolingTooling =
             _Interface->DefaultStatusData.CurrentCoolingTooling;
     if(CoolingTooling != (unsigned short)_Interface->StatusData.CurrentCoolingTooling)
+    {
+        _M10INI->TempSysConfig.CoolingTooling =
+                (unsigned short)_Interface->StatusData.CurrentCoolingTooling;
         CoolingChange = true;
+    }
 
     unsigned short CoolingDur = _M10INI->TempSysConfig.CoolingDur;
     _Interface->StatusData.CurrentCoolingDur =
             _Interface->DefaultStatusData.CurrentCoolingDur;
     if(CoolingDur != _Interface->StatusData.CurrentCoolingDur)
+    {
+        _M10INI->TempSysConfig.CoolingDur =
+                _Interface->StatusData.CurrentCoolingDur;
         CoolingChange = true;
+    }
 
     unsigned short CoolingDel = _M10INI->TempSysConfig.CoolingDel;
     _Interface->StatusData.CurrentCoolingDel =
             _Interface->DefaultStatusData.CurrentCoolingDel;
     if(CoolingDel != _Interface->StatusData.CurrentCoolingDel)
+    {
+        _M10INI->TempSysConfig.CoolingDel =
+                _Interface->StatusData.CurrentCoolingDel;
         CoolingChange = true;
+    }
     if(CoolingChange == true)
     {
         _M2010->ReceiveFlags.CoolingTypeData = false;
         _M102IA->SendIACommand(IAComSetCooling, 0);
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.CoolingTypeData);
+    }
+
+    unsigned short LockonAlarm = _M10INI->TempSysConfig.LockAlarm;
+    _Interface->StatusData.LockonAlarm = _Interface->DefaultStatusData.LockonAlarm;
+    if(LockonAlarm != _Interface->StatusData.LockonAlarm)
+    {
+        _M10INI->TempSysConfig.LockAlarm = _Interface->StatusData.LockonAlarm;
+        _M2010->ReceiveFlags.LockOnAlarmData = false;
+        _M102IA->SendIACommand(IAComSetLockonAlarm, _M10INI->TempSysConfig.LockAlarm);
+        _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.LockOnAlarmData);
     }
 
     _Interface->StatusData.KeepDailyHistory =
@@ -180,11 +206,46 @@ bool WeldDefaults::_Recall()
     M2010* _M2010 = M2010::Instance();
     M102IA* _M102IA = M102IA::Instance();
     M10INI* _M10INI = M10INI::Instance();
-    if(_Interface->StatusData.Soft_Settings.Pressure2Unit ==
-            BRANSON_INI_STRUCT::ToPSI)
-        CurrentWeldSettings.Imperical2Metric = false;
-    else
-        CurrentWeldSettings.Imperical2Metric = true;
+    switch(_Interface->StatusData.Soft_Settings.Pressure2Unit)
+    {
+    case BRANSON_INI_STRUCT::ToPSI:
+        CurrentWeldSettings.Pressure2Unit = BRANSON_INI_STRUCT::ToPSI;
+        break;
+    case BRANSON_INI_STRUCT::ToBar:
+        CurrentWeldSettings.Pressure2Unit = BRANSON_INI_STRUCT::ToBar;
+        break;
+    case BRANSON_INI_STRUCT::TokPa:
+        CurrentWeldSettings.Pressure2Unit = BRANSON_INI_STRUCT::TokPa;
+        break;
+    default:
+        CurrentWeldSettings.Pressure2Unit = BRANSON_INI_STRUCT::ToPSI;
+        break;
+    }
+    switch(_Interface->StatusData.Soft_Settings.Square2Unit)
+    {
+    case BRANSON_INI_STRUCT::ToSqrMM:
+        CurrentWeldSettings.Square2Unit = BRANSON_INI_STRUCT::ToSqrMM;
+        break;
+    case BRANSON_INI_STRUCT::ToAWG:
+        CurrentWeldSettings.Square2Unit = BRANSON_INI_STRUCT::ToAWG;
+        break;
+    default:
+        CurrentWeldSettings.Square2Unit = BRANSON_INI_STRUCT::ToSqrMM;
+        break;
+    }
+    switch(_Interface->StatusData.Soft_Settings.Length2Unit)
+    {
+    case BRANSON_INI_STRUCT::ToMM:
+        CurrentWeldSettings.Length2Unit = BRANSON_INI_STRUCT::ToMM;
+        break;
+    case BRANSON_INI_STRUCT::ToINCH:
+        CurrentWeldSettings.Length2Unit = BRANSON_INI_STRUCT::ToINCH;
+        break;
+    default:
+        CurrentWeldSettings.Length2Unit = BRANSON_INI_STRUCT::ToMM;
+        break;
+    }
+
     _Utility->InitializeTextData();
 
     _M2010->ReceiveFlags.MachineFlagsData = false;
@@ -271,6 +332,14 @@ bool WeldDefaults::_Recall()
     CurrentWeldSettings.CurrentCoolingDel.Minimum =
             _Utility->FormatedDataToString(DINCoolDel, MINCOOLDEL);
 
+    _M2010->ReceiveFlags.LockOnAlarmData = false;
+    _M102IA->IACommand(IAComGetLockonAlarm);
+    _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.LockOnAlarmData);
+    if(_M2010->ReceiveFlags.LockOnAlarmData == true)
+    {
+        _M10INI->TempSysConfig.LockAlarm = _Interface->StatusData.LockonAlarm;
+        CurrentWeldSettings.LockOnAlarm = (bool)_Interface->StatusData.LockonAlarm;
+    }
     _Interface->StatusData.KeepDailyHistory = true;
     CurrentWeldSettings.SampleRatio =
             _Interface->StatusData.GraphSampleRatio;
@@ -408,16 +477,44 @@ bool WeldDefaults::_Set()
     M10INI* _M10INI = M10INI::Instance();
     M102IA* _M102IA = M102IA::Instance();
     M2010* _M2010 = M2010::Instance();
-    if(CurrentWeldSettings.Imperical2Metric == true)
+    switch(CurrentWeldSettings.Pressure2Unit)
     {
-        _Interface->StatusData.Soft_Settings.Square2Unit = BRANSON_INI_STRUCT::ToSqrMM;
-        _Interface->StatusData.Soft_Settings.Length2Unit = BRANSON_INI_STRUCT::ToMM;
-        _Interface->StatusData.Soft_Settings.Pressure2Unit = BRANSON_INI_STRUCT::ToBar;
-    }else
-    {
-        _Interface->StatusData.Soft_Settings.Square2Unit = BRANSON_INI_STRUCT::ToAWG;
-        _Interface->StatusData.Soft_Settings.Length2Unit = BRANSON_INI_STRUCT::ToINCH;
+    case BRANSON_INI_STRUCT::ToPSI:
         _Interface->StatusData.Soft_Settings.Pressure2Unit = BRANSON_INI_STRUCT::ToPSI;
+        break;
+    case BRANSON_INI_STRUCT::ToBar:
+        _Interface->StatusData.Soft_Settings.Pressure2Unit = BRANSON_INI_STRUCT::ToBar;
+        break;
+    case BRANSON_INI_STRUCT::TokPa:
+        _Interface->StatusData.Soft_Settings.Pressure2Unit = BRANSON_INI_STRUCT::TokPa;
+        break;
+    default:
+        _Interface->StatusData.Soft_Settings.Pressure2Unit = BRANSON_INI_STRUCT::ToPSI;
+        break;
+    }
+    switch(CurrentWeldSettings.Length2Unit)
+    {
+    case BRANSON_INI_STRUCT::ToMM:
+        _Interface->StatusData.Soft_Settings.Length2Unit = BRANSON_INI_STRUCT::ToMM;
+        break;
+    case BRANSON_INI_STRUCT::ToINCH:
+        _Interface->StatusData.Soft_Settings.Length2Unit = BRANSON_INI_STRUCT::ToINCH;
+        break;
+    default:
+        _Interface->StatusData.Soft_Settings.Length2Unit = BRANSON_INI_STRUCT::ToMM;
+        break;
+    }
+    switch(CurrentWeldSettings.Square2Unit)
+    {
+    case BRANSON_INI_STRUCT::ToSqrMM:
+        _Interface->StatusData.Soft_Settings.Square2Unit = BRANSON_INI_STRUCT::ToSqrMM;
+        break;
+    case BRANSON_INI_STRUCT::ToAWG:
+        _Interface->StatusData.Soft_Settings.Square2Unit = BRANSON_INI_STRUCT::ToAWG;
+        break;
+    default:
+        _Interface->StatusData.Soft_Settings.Square2Unit = BRANSON_INI_STRUCT::ToSqrMM;
+        break;
     }
     _Utility->InitializeTextData();
 
@@ -543,6 +640,15 @@ bool WeldDefaults::_Set()
         _M2010->ReceiveFlags.CoolingTypeData = false;
         _M102IA->SendIACommand(IAComSetCooling, 0);
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.CoolingTypeData);
+    }
+
+    unsigned short LockonAlarm = _M10INI->TempSysConfig.LockAlarm;
+    if(((bool)LockonAlarm) != CurrentWeldSettings.LockOnAlarm)
+    {
+        _M10INI->TempSysConfig.LockAlarm = (unsigned short)CurrentWeldSettings.LockOnAlarm;
+        _Interface->StatusData.LockonAlarm = _M10INI->TempSysConfig.LockAlarm;
+        _M2010->ReceiveFlags.LockOnAlarmData = false;
+        _M102IA->SendIACommand(IAComSetLockonAlarm, _M10INI->TempSysConfig.LockAlarm);
     }
 
     _Interface->StatusData.KeepDailyHistory = true;

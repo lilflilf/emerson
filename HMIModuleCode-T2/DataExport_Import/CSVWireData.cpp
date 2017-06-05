@@ -61,6 +61,8 @@ bool CSVWireData::ExportData(int ID, QString fileUrl)
 
 bool CSVWireData::ExportData(QList<int> IDList, QString fileUrl)
 {
+    UNUSED(IDList);
+    UNUSED(fileUrl);
     return true;
 }
 

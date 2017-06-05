@@ -82,6 +82,8 @@ bool CSVPresetData::ExportData(int ID, QString fileUrl)
 
 bool CSVPresetData::ExportData(QList<int> IDList, QString fileUrl)
 {
+    UNUSED(IDList);
+    UNUSED(fileUrl);
     return true;
 }
 

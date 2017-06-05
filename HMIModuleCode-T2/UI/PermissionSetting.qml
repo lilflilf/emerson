@@ -434,7 +434,7 @@ Item {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 20
         width: 300
-        text: qsTr("Initial Fram")
+        text: qsTr("Default")
         textColor: "white"
         onClicked: {
             permissionsettingExecute("_Init")
