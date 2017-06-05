@@ -444,7 +444,7 @@ bool WeldDefaults::_Recall()
             CurrentWeldSettings.WeldSettingFormula[i].Multiplier.Maximum = str;
             str = _Utility->FormatedDataToString(DINFormulaPressureMult, (float)Minmm2PressMult);
             CurrentWeldSettings.WeldSettingFormula[i].Multiplier.Minimum = str;
-            CurrentWeldSettings.WeldSettingFormula[i].Identifier = FormulaIdentifer[0];
+            CurrentWeldSettings.WeldSettingFormula[i].Identifier = FormulaIdentifer[2];
             break;
         case AmplitudeR1:
         case AmplitudeR2:
@@ -463,7 +463,7 @@ bool WeldDefaults::_Recall()
             str = _Utility->FormatedDataToString(DINFormulaAmplitudeMult, (float)Minmm2AmplitudeMult);
             CurrentWeldSettings.WeldSettingFormula[i].Multiplier.Minimum = str;
 
-            CurrentWeldSettings.WeldSettingFormula[i].Identifier = FormulaIdentifer[0];
+            CurrentWeldSettings.WeldSettingFormula[i].Identifier = FormulaIdentifer[3];
             break;
         }
     }
