@@ -2404,8 +2404,26 @@ QVariant OperatorModel::data(const QModelIndex &index, int role) const
             if ((int)myOperator.PermissionLevel == 0)
                 value = "Key";
             else
-                value = QVariant::fromValue(permissionSetting->FiveLevelIdentifier.at(myOperator.PermissionLevel-1));
-
+            {
+                switch(myOperator.PermissionLevel)
+                {
+                case OperatorElement::LEVEL1:
+                case OperatorElement::LEVEL2:
+                case OperatorElement::LEVEL3:
+                case OperatorElement::LEVEL4:
+                    value = QVariant::fromValue(permissionSetting->FiveLevelIdentifier.at(myOperator.PermissionLevel-1));
+                    break;
+                case OperatorElement::INITIAL:
+                    value = "Initial";
+                    break;
+                case OperatorElement::BRANSON:
+                    value = "Branson";
+                    break;
+                default:
+                    value = "None";
+                    break;
+                }
+            }
         }
     }
     return value;
