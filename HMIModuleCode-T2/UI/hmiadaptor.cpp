@@ -1212,6 +1212,12 @@ bool HmiAdaptor::weldDefaultsGetValue2(int index, int checkIndex)
     }
 }
 
+bool HmiAdaptor::weldDefaultFormulaUpdate()
+{
+    weldDefaults->FormulaUpdate();
+    return true;
+}
+
 bool HmiAdaptor::dataCommunicationExecute(QString code)
 {
     if (code == "_Recall")
