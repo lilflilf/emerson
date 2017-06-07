@@ -13,8 +13,10 @@
 #include <QDesktopWidget>
 #include <QTimer>
 #include <QCoreApplication>
+
 HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
 {
+
 
     interfaceClass = InterfaceClass::Instance();
     workOrderModel = new WorkOrderModel(this);
@@ -1151,6 +1153,42 @@ bool HmiAdaptor::weldDefaultsSetValue(QList<bool> boolList, QStringList strList,
     return true;
 }
 
+bool HmiAdaptor::weldDefaultsSetValue2(int index, int checkIndex)
+{
+    if (index == 0)
+        weldDefaults->CurrentWeldSettings.Pressure2Unit = (BRANSON_INI_STRUCT::PRESSUREUNIT)checkIndex;
+    else if (index == 1)
+        weldDefaults->CurrentWeldSettings.Square2Unit = (BRANSON_INI_STRUCT::SQUAREUNIT)checkIndex;
+    else if (index == 2)
+        weldDefaults->CurrentWeldSettings.Length2Unit = (BRANSON_INI_STRUCT::LENGTHUNIT)checkIndex;
+    return true;
+}
+
+bool HmiAdaptor::weldDefaultsGetValue2(int index, int checkIndex)
+{
+    if (index == 0)
+    {
+        if (checkIndex == 0)
+            return weldDefaults->CurrentWeldSettings.Pressure2Unit == BRANSON_INI_STRUCT::PRESSUREUNIT::ToPSI;
+        else if (checkIndex == 1)
+            return weldDefaults->CurrentWeldSettings.Pressure2Unit == BRANSON_INI_STRUCT::PRESSUREUNIT::ToBar;
+    }
+    else if (index == 1)
+    {
+        if (checkIndex == 0)
+            return weldDefaults->CurrentWeldSettings.Pressure2Unit == BRANSON_INI_STRUCT::SQUAREUNIT::ToAWG;
+        else if (checkIndex == 1)
+            return weldDefaults->CurrentWeldSettings.Pressure2Unit == BRANSON_INI_STRUCT::SQUAREUNIT::ToSqrMM;
+    }
+    else if (index == 2)
+    {
+        if (checkIndex == 0)
+            return weldDefaults->CurrentWeldSettings.Pressure2Unit == BRANSON_INI_STRUCT::LENGTHUNIT::ToINCH;
+        else if (checkIndex == 1)
+            return weldDefaults->CurrentWeldSettings.Pressure2Unit == BRANSON_INI_STRUCT::LENGTHUNIT::ToMM;
+    }
+}
+
 bool HmiAdaptor::dataCommunicationExecute(QString code)
 {
     if (code == "_Recall")
@@ -1871,11 +1909,17 @@ QVariant HmiAdaptor::getWorkValue(QString workKey)
 
 QString HmiAdaptor::getUserManualPath()
 {
-    //url: ("file:///d:\\User Manual.html");
+    //url: ("file:///d:\\Special Double Hit Mode functionality for Delphi Ground Terminal Welder II.html");
 
     QString path = QCoreApplication::applicationDirPath();
-    path = "file:///" + path + "/usermanual/User Manual.html";
-    qDebug() << "path =================" <<path;
+    path = "file:///" + path + "/usermanual/Special Double Hit Mode functionality for Delphi Ground Terminal Welder II.html";
+    return path;
+}
+
+QString HmiAdaptor::getApplicationDirPathPath()
+{
+    QString path = QCoreApplication::applicationDirPath();
+//    path = "file:///" + path + "/usermanual/Special Double Hit Mode functionality for Delphi Ground Terminal Welder II.html";
     return path;
 }
 

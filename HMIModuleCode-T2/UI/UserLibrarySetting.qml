@@ -441,22 +441,21 @@ Item {
             id: mos
         }
 
-        MyRadioButton {
-            id: keyRadio
-            anchors.left: permission.right
-            anchors.leftMargin: 10
-            anchors.verticalCenter: permission.verticalCenter
-            width: 300
-            height: 40
-            exclusiveGroup: mos
-            buttontext: fourLevelIdentifier[0]
-        }
+//        MyRadioButton {
+//            id: keyRadio
+//            anchors.left: permission.right
+//            anchors.leftMargin: 10
+//            anchors.verticalCenter: permission.verticalCenter
+//            width: 300
+//            height: 40
+//            exclusiveGroup: mos
+//            buttontext: fourLevelIdentifier[0]
+//        }
         MyRadioButton {
             id: administratorRadio
             anchors.left: permission.right
             anchors.leftMargin: 10
-            anchors.top: keyRadio.bottom
-            anchors.topMargin: 4
+            anchors.verticalCenter: permission.verticalCenter
             width: 300
             height: 40
             bIsCheck: true
@@ -536,8 +535,6 @@ Item {
                     level = 3
                 } else if (openRadio.bIsCheck) {
                     level = 4
-                } else if (keyRadio.bIsCheck) {
-                    level = 0
                 }
 
                 if (operatorDialog.bIsEdit) {
