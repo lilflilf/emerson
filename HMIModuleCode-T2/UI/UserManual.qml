@@ -4,7 +4,8 @@ import QtQuick.Layouts 1.0
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.1
 import QtQuick.Dialogs 1.2
-import QtWebView 1.1
+//import QtWebView 1.1
+import QtWebEngine 1.3
 
 Item {
     id: userManual
@@ -45,9 +46,14 @@ Item {
             anchors.top: searchValue.top
             anchors.left: searchValue.right
             anchors.leftMargin: 10
+            onClicked: {
+                searchValue.inputFocus = false
+
+            }
         }
 
         Row {
+            id: row
             spacing: 10
             anchors.top: searchValue.bottom
             anchors.topMargin: 5
@@ -58,78 +64,37 @@ Item {
                 width: (parent.width - 20) / 2
                 height: 60
                 text: qsTr("Previous")
+                onClicked: {
+                    searchValue.inputFocus = false
+                    var str = "window.find('" + searchValue .inputText + "', false, true);"
+                    webVieW.runJavaScript(str, function(result) { console.log(result); });
+                }
             }
             CButton {
                 width: (parent.width - 20) / 2
                 height: 60
                 text: qsTr("Next")
                 onClicked: {
-//                    webVieW.runJavaScript("document.title", function(result) { console.log(result); });
-                    webVieW.runJavaScript("document.head.value", function(result) { console.log(result); });
-
+                    searchValue.inputFocus = false
+                    var str = "window.find('" + searchValue .inputText + "', false, false);"
+                    webVieW.runJavaScript(str, function(result) { console.log(result); });
                 }
             }
         }
+
+        WebEngineView {
+            id: web1
+            anchors.top: row.bottom
+            anchors.left: leftArea.left
+            anchors.right: leftArea.right
+            anchors.bottom: parent.bottom
+//            url: hmiAdaptor.getUserManualPath()
+            url: ("file:///d:\\mytest.html");
+    //        url: ("https://www.baidu.com/")
+        }
     }
 
-    function findIt() {
-         if (document.getElementById("searchstr").value != "")
-             findInPage(document.getElementById("searchstr").value);
-    }
-
-
-    function findInPage(str) {
-    var txt, i, found;
-
-    if (str == "")
-         return false;
-
-    if (DOM)
-    {
-         win.find(str, false, true);
-         return true;
-    }
-
-    if (NS4) {
-         if (!win.find(str))
-             while(win.find(str, false, true))
-                 n++;
-         else
-             n++;
-
-         if (n == 0)
-             alert("未找到指定内容.");
-    }
-
-    if (IE4) {
-         txt = win.document.body.createTextRange();
-
-         for (i = 0; i <= n && (found = txt.findText(str)) != false; i++) {
-             txt.moveStart("character", 1);
-             txt.moveEnd("textedit");
-         }
-
-    if (found) {
-         txt.moveStart("character", -1);
-         txt.findText(str);
-         txt.select();
-         txt.scrollIntoView();
-         n++;
-    }
-    else {
-         if (n > 0) {
-             n = 0;
-             findInPage(str);
-         }
-         else
-             alert("未找到指定内容.");
-         }
-    }
-
-    return false;
-    }
-
-    WebView {
+    WebEngineView {
         id: webVieW;
         anchors.top: parent.top
         anchors.left: leftArea.right
@@ -138,5 +103,6 @@ Item {
         url: hmiAdaptor.getUserManualPath()
 //        url: ("file:///d:\\Special Double Hit Mode functionality for Delphi Ground Terminal Welder II.html");
 //        url: ("https://www.baidu.com/")
+
     }
 }

@@ -460,8 +460,9 @@ Item {
                 height: 34
                 anchors.top: itemColor.bottom
                 anchors.topMargin: 10
-                property alias color: stripeBack.color
+                property var color: "" //stripeBack.color
                 property var stripeType: -1
+                property alias wireColor: stripeBack.color
 //                onColorChanged: {
 //                    if(detailIsChang)
 //                        return
@@ -487,7 +488,7 @@ Item {
                     id: stripeBack
                     width: 100
                     height: 34
-                    color: "green"
+                    color: itemColor.color
                     anchors.right: parent.right
                     anchors.rightMargin: 130
                     MouseArea {
@@ -497,14 +498,14 @@ Item {
                         }
                     }
                     Rectangle {
-                        color: "black"
+                        color: itemStripe.color //"black"
                         height: 5
                         width: parent.width
                         anchors.verticalCenter: parent.verticalCenter
                         visible: itemStripe.stripeType == 0 ? true : false
                     }
                     Rectangle {
-                        color: "black"
+                        color: itemStripe.color //"black"
                         height: 5
                         width: parent.width
                         anchors.centerIn: parent
@@ -512,7 +513,7 @@ Item {
                         visible: itemStripe.stripeType == 1 ? true : false
                     }
                     Rectangle {
-                        color: "black"
+                        color: itemStripe.color //"black"
                         width: 5
                         height: parent.height
                         anchors.horizontalCenter: parent.horizontalCenter
@@ -765,7 +766,7 @@ Item {
                             backGround.opacity = 0.5
                             keyNum.visible = true
                             keyNum.titleText = labelGauge.text
-                            keyNum.currentValue = wireModel.getStructValue2("Gauge","current") //"1.12mm"
+                            keyNum.currentValue = edit2.inputText //wireModel.getStructValue2("Gauge","current") //"1.12mm"
                             keyNum.minvalue = wireModel.getStructValue2("Gauge","min") //"1.00mm"
                             keyNum.maxvalue = wireModel.getStructValue2("Gauge","max") //"10.99mm"
                         }
@@ -1174,7 +1175,6 @@ Item {
                     else if (bottomRadio.checked)
                         positionside = 2;
 
-                    console.log("fffffffffffffffffffffff",spliceDetailsItem.selectWireAWG,spliceDetailsItem.selectWireGauge)
                     wireModel.insertValueToTable("insert",wireName.inputText,-1,hmiAdaptor.getCurrentOperatorId(),rectcolor.color,itemStripe.color,itemStripe.stripeType, spliceDetailsItem.selectWireGauge, spliceDetailsItem.selectWireAWG,edit2.inputText,wireType,side,verside,positionside,typeDirection.currentText)
 
 //                    if (spliceDetailsItem.selectWireId == -1)

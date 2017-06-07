@@ -35,6 +35,19 @@ Item {
     signal gaugeChanged(var type, var value)
     signal wireDetailHide()
 
+
+    function colorReverse(OldColorValue){
+        OldColorValue="0x"+OldColorValue.replace(/#/g,"");
+        var str
+//                var str = "000000"+(0xFFFFFF-OldColorValue).toString(16);
+//                str = "#" + str.substring(str.length-6,str.length);
+        if (0xFFF000 > OldColorValue)
+            str = "#ffffff"
+        else
+            str = "#000000"
+        return str
+    }
+
     function clear()
     {
         listModelLeft.clear()
@@ -1034,7 +1047,7 @@ Item {
             Rectangle {
                 id: leftLine
                 width: leftItem.position == "leftList" ? index % 2 && index < (listModelLeft.count - 10) * 2 ? myLineLength + 150 : myLineLength : 200
-                height: 6
+                height: linetext < 1 ? 1 : linetext
                 anchors.right: parent.right
                 anchors.verticalCenter: leftRec.verticalCenter
             }
@@ -1045,8 +1058,21 @@ Item {
                 color: leftItem.position == "leftList" ? mycolor : ""
                 anchors.right: leftLine.left
                 anchors.verticalCenter: parent.verticalCenter
+                Rectangle {
+                    id: tripecolor
+                    height: 5
+                    width: stripeType == 2 ? parent.height : parent.width
+                    anchors.verticalCenter: parent.verticalCenter
+                    color: stripeColor
+                    visible: stripeType == 3 ? false : true
+                    rotation: stripeType == 0 ? 0 : stripeType == 1 ? 30 : stripeType == 2 ? 90 : 0
+                    clip: false
+                }
                 MouseArea {
-                    anchors.fill: parent
+//                    anchors.fill: parent
+                    anchors.right: leftRec.right
+                    height: leftRec.height
+                    width: 120
                     onClicked: {
                         radioButtonLeft.checked = !radioButtonLeft.checked
 
@@ -1090,25 +1116,34 @@ Item {
                         }
                         else if (leftItem.position == "leftList" && !radioButtonLeft.checked)
                         {
+                            detail.selectIndex = -1
                             listModelLeft.set(index,{"isCheck":radioButtonLeft.checked})
                         }
                     }
                 }
+            }
+            Rectangle {
+                id: leftRect2
+                width: 60
+                height: leftItem.position == "leftList" ? listModelLeft.count <= 5 ? detail.height * 0.1 : 20 :  detail.height * 0.1
+                color: mycolor //"white"
+                anchors.right: leftRec.left
+                anchors.verticalCenter: parent.verticalCenter
                 Text {
                     id: mytextLeft
                     anchors.centerIn: parent
                     text: leftItem.position == "leftList" ? linetext : ""
                     font.family: "arial"
                     font.pointSize: 16
-                    color: "white"
+                    color: colorReverse(mycolor)
                     clip: true
                 }
             }
             Text {
                 id: myWireNameLeft
-                width: leftRec.width * 3
-                anchors.right: leftRec.left
-                anchors.verticalCenter: leftRec.verticalCenter
+                width: leftRect2.width * 3
+                anchors.right: leftRect2.left
+                anchors.verticalCenter: leftRect2.verticalCenter
                 horizontalAlignment: Qt.AlignRight
 
                 anchors.rightMargin: 8
@@ -1131,12 +1166,15 @@ Item {
             }
             Rectangle {
                 id: nameLeft
-                width: leftRec.width + 5
+                width: leftRec.width + leftRect2.width + 5
                 height: leftRec.height + 5
                 color: Qt.rgba(0,0,0,0)
                 border.color: "white"
                 border.width: 1
-                anchors.centerIn: leftRec
+//                anchors.centerIn: leftRec
+                anchors.right: leftRec.right
+                anchors.rightMargin: -2
+                anchors.verticalCenter: leftRec.verticalCenter
                 visible: radioButtonLeft.checked ? true : false
             }
         }
@@ -1159,13 +1197,12 @@ Item {
             property var myWireId: -1
             property var myModuleType: ""
             id: rightItem
-
             width: 300
             height: rightItem.position == "rightList" ? listModelRight.count <= 5 ? detail.height * 0.1 + 10 : 30 : 30//(listModelRight.count > 5 && listModelRight.count <= 10) ? 30 : index < (listModelRight.count - 10) * 2 ? 15 : 30 : 30
             Rectangle {
                 id: rightLine
                 width: 200 //rightItem.position == "rightList" ? index % 2 && index < (listModelRight.count - 10) * 2 ? myLineLength + 150 : myLineLength : 200
-                height: 6
+                height: linetext < 1 ? 1 : linetext// > 5 ? 12 : 6
                 anchors.left: parent.left
                 anchors.verticalCenter: rightRec.verticalCenter
             }
@@ -1176,8 +1213,23 @@ Item {
                 color: mycolor
                 anchors.left: rightLine.right
                 anchors.verticalCenter: parent.verticalCenter
+                Rectangle {
+                    id: tripecolor
+                    height: 5
+                    width: stripeType == 2 ? parent.height : parent.width
+                    anchors.verticalCenter: parent.verticalCenter
+                    color: stripeColor
+                    visible: stripeType == 3 ? false : true
+                    rotation: stripeType == 0 ? 0 : stripeType == 1 ? 30 : stripeType == 2 ? 90 : 0
+                    clip: false
+                }
+
                 MouseArea {
-                    anchors.fill: parent
+                    id: clickArea
+//                    anchors.fill: parent
+                    anchors.left: rightRec.left
+                    width: 120
+                    height: rightRec.height
                     onClicked: {
                         radioButton.checked = !radioButton.checked
                         if (rightItem.position != "rightList" && radioButton.checked)
@@ -1219,25 +1271,33 @@ Item {
                         }
                         else if (rightItem.position == "rightList" && !radioButton.checked)
                         {
+                            detail.selectIndex = -1
                             listModelRight.set(index,{"isCheck":radioButton.checked})
                         }
                     }
                 }
+            }
+            Rectangle {
+                id: rightRect2
+                width: 60
+                height: rightItem.position == "rightList" ? listModelRight.count <= 5 ? detail.height * 0.1 : 20 :  detail.height * 0.1
+                color: mycolor //"white"
+                anchors.left: rightRec.right
+                anchors.verticalCenter: parent.verticalCenter
                 Text {
                     id: mytext
                     anchors.centerIn: parent
                     text: linetext
                     font.family: "arial"
                     font.pointSize: 16
-                    color: "white"
+                    color: colorReverse(mycolor) //mycolor  //"black"
                 }
-
             }
             Text {
                 id: myWireNameRight
-                width: rightRec.width * 3
-                anchors.left: rightRec.right
-                anchors.verticalCenter: rightRec.verticalCenter
+                width: rightRect2.width * 3
+                anchors.left: rightRect2.right
+                anchors.verticalCenter: rightRect2.verticalCenter
                 anchors.leftMargin: 8
                 font.family: "arial"
                 font.pointSize: 16
@@ -1256,12 +1316,15 @@ Item {
             }
             Rectangle {
                 id: name
-                width: rightRec.width + 5
+                width: rightRec.width + rightRect2.width + 5
                 height: rightRec.height + 5
                 color: Qt.rgba(0,0,0,0)
                 border.color: "white"
                 border.width: 1
-                anchors.centerIn: rightRec
+//                anchors.centerIn: rightRec
+                anchors.left: rightRec.left
+                anchors.leftMargin: -2
+                anchors.verticalCenter: rightRec.verticalCenter
                 visible: radioButton.checked == true ? true : false
             }
         }

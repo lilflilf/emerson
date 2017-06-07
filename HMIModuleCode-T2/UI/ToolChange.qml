@@ -13,9 +13,12 @@ Item {
 
     property color hightlightColor: "#d0d0d0"     // 高亮行背景色
     property var fileFilter : ["*.qml"]           // 文件过滤器
-    property string initFolder: "file:///c:/BransonData/ToolChangeImage"             // 初始目录
+//    property string initFolder: "file:///c:/BransonData/ToolChangeImage"             // 初始目录
     property string rootFolder : '../'            // 限制根目录，不可再往上查找
-    property string initFolder2: "file:///c:/BransonData/ToolChangeImage/group1"             // 初始目录
+//    property string initFolder2: "file:///c:/BransonData/ToolChangeImage/group1"             // 初始目录
+
+    property string initFolder: "file:///" + hmiAdaptor.getApplicationDirPathPath() + "/ToolChangeImage"
+    property string initFolder2: "file:///" + hmiAdaptor.getApplicationDirPathPath() + "/ToolChangeImage/group1"             // 初始目录
 
     property var dirCount: dirModel.count
     property var fileCount: fileModel.count

@@ -6,8 +6,8 @@ WireElement::WireElement()
     WireID = -1;
     CreatedDate = 0;
     OperatorID = -1;
-    Color = "pink";
-    Stripe.Color = "pink";
+    Color = "#FFC0CB";
+    Stripe.Color = "#FFC0CB";
     Stripe.TypeOfStripe = STRIPE::Horizontal;
     Gauge = 10;
     GaugeAWG = 37;

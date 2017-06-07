@@ -117,6 +117,8 @@ public:
     Q_INVOKABLE QStringList weldDefaultsGetValue(FormulaRange index);
     Q_INVOKABLE QString weldDefaultsGetNum(QString index);
     Q_INVOKABLE bool weldDefaultsSetValue(QList<bool> boolList, QStringList strList, int sampleIndex, QString coolingDur, QString coolingDel);
+    Q_INVOKABLE bool weldDefaultsSetValue2(int index,int checkIndex);
+    Q_INVOKABLE bool weldDefaultsGetValue2(int index,int checkIndex);
 
 
     /********DataCommunication func**************/
@@ -159,6 +161,7 @@ public:
     Q_INVOKABLE void setWorkValue(QString key, QString value);
     Q_INVOKABLE QVariant getWorkValue(QString workKey);
     Q_INVOKABLE QString getUserManualPath();
+    Q_INVOKABLE QString getApplicationDirPathPath();
 
     BransonMessageBox bransonMessageBox;
     InterfaceClass *interfaceClass;

@@ -22,6 +22,7 @@ Item {
     property string maxvalue: "0"
     property string tempValue: ""
     property alias timeRun: timer.running
+    property alias validator: newvalue.validator
     signal currentClickIndex(int index)
     width: parent.width
     height: parent.height
@@ -112,15 +113,27 @@ Item {
         border.width: 1
         border.color: "#0079C1"
         color: Qt.rgba(0,0,0,0)
-        Text {
+//        Text {
+//            id: newvalue
+//            anchors.centerIn: parent
+//            horizontalAlignment: Qt.AlignHCenter
+//            font.family: "arial"
+//            font.pixelSize: 21
+//            elide: Text.ElideRight
+//            color: "white"
+//            text: inputText
+//        }
+        TextInput {
             id: newvalue
             anchors.centerIn: parent
             horizontalAlignment: Qt.AlignHCenter
             font.family: "arial"
             font.pixelSize: 21
-            elide: Text.ElideRight
             color: "white"
             text: inputText
+            validator: RegExpValidator {
+                regExp: /^(([1-9]+)|([0-9]+\.[0-9]{1,2}))$/
+            }
         }
     }
     Text {
@@ -184,6 +197,7 @@ Item {
 
         Keys.enabled: true
         Keys.onPressed: {
+            newvalue.focus = true
             if (event.key == Qt.Key_Backspace) {
                 var TempSTring = ""
                 for (var i = 0; i < tempValue.length-1;i++) {
@@ -208,6 +222,8 @@ Item {
             }
             else if (event.key == Qt.Key_Return)
             {
+                if (newvalue.text == "")
+                    return;
                 currentClickIndex(15)
             }
             else if (event.key == Qt.Key_Escape)
@@ -249,6 +265,8 @@ Item {
                             tempValue = ""
                             currentClickIndex(11)
                         } else if (index == 15) {
+                            if (newvalue.text == "")
+                                return;
                             currentClickIndex(index)
                         } else {
                             tempValue += listModel.get(index).value
