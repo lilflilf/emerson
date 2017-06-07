@@ -25,7 +25,6 @@ struct WeldSettingForScreen
     bool HeightEncoder;
     bool FootPedalAbort;
     bool Seek;
-    bool LockOnAlarm;
     Status_Data::CoolingMode CurrentCoolingMode;
     bool CoolingForTooling;
     struct BRANSONDATA CurrentCoolingDur;

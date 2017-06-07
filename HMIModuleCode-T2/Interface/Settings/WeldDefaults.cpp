@@ -332,14 +332,6 @@ bool WeldDefaults::_Recall()
     CurrentWeldSettings.CurrentCoolingDel.Minimum =
             _Utility->FormatedDataToString(DINCoolDel, MINCOOLDEL);
 
-    _M2010->ReceiveFlags.LockOnAlarmData = false;
-    _M102IA->IACommand(IAComGetLockonAlarm);
-    _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.LockOnAlarmData);
-    if(_M2010->ReceiveFlags.LockOnAlarmData == true)
-    {
-        _M10INI->TempSysConfig.LockAlarm = _Interface->StatusData.LockonAlarm;
-        CurrentWeldSettings.LockOnAlarm = (bool)_Interface->StatusData.LockonAlarm;
-    }
     _Interface->StatusData.KeepDailyHistory = true;
     CurrentWeldSettings.SampleRatio =
             _Interface->StatusData.GraphSampleRatio;
@@ -383,7 +375,18 @@ bool WeldDefaults::_Recall()
             area = _Interface->StatusData.WeldSettings4Build[i-1].MinRange;
             str = _Utility->FormatedDataToString(DINFormulaArea, float(area + 0.02));
             CurrentWeldSettings.WeldSettingFormula[i].Range.Minimum = str;
-            str = _Utility->FormatedDataToString(DINFormulaArea, MAXFORMULAAREA);
+            area = _Interface->StatusData.WeldSettings4Build[i].MaxRange;
+            str = _Utility->FormatedDataToString(DINFormulaArea, (float)(area - 0.01));
+            CurrentWeldSettings.WeldSettingFormula[i].Range.Maximum = str;
+            break;
+        case EnergyR4:
+        case WidthR4:
+        case PressureR4:
+        case AmplitudeR4:
+            area = _Interface->StatusData.WeldSettings4Build[i - 1].MinRange;
+            str = _Utility->FormatedDataToString(DINFormulaArea, float(area + 0.02));
+            CurrentWeldSettings.WeldSettingFormula[i].Range.Minimum = str;
+            str = _Utility->FormatedDataToString(DINFormulaArea,MAXFORMULAAREA);
             CurrentWeldSettings.WeldSettingFormula[i].Range.Maximum = str;
             break;
         }
@@ -394,6 +397,7 @@ bool WeldDefaults::_Recall()
         case EnergyR1:
         case EnergyR2:
         case EnergyR3:
+        case EnergyR4:
             str = _Utility->FormatedDataToString(DINFormulaEnergyOffset, offset);
             CurrentWeldSettings.WeldSettingFormula[i].Offset.Current = str;
             str = _Utility->FormatedDataToString(DINFormulaEnergyOffset, Maxmm2EnergyOffset);
@@ -412,6 +416,7 @@ bool WeldDefaults::_Recall()
         case WidthR1:
         case WidthR2:
         case WidthR3:
+        case WidthR4:
             str = _Utility->FormatedDataToString(DINFormulaWidthOffset, offset);
             CurrentWeldSettings.WeldSettingFormula[i].Offset.Current = str;
             str = _Utility->FormatedDataToString(DINFormulaWidthOffset, 0);
@@ -431,6 +436,7 @@ bool WeldDefaults::_Recall()
         case PressureR1:
         case PressureR2:
         case PressureR3:
+        case PressureR4:
             str = _Utility->FormatedDataToString(DINFormulaPressureOffset, offset);
             CurrentWeldSettings.WeldSettingFormula[i].Offset.Current = str;
             str = _Utility->FormatedDataToString(DINFormulaPressureOffset, Maxmm2PressOffset);
@@ -449,6 +455,7 @@ bool WeldDefaults::_Recall()
         case AmplitudeR1:
         case AmplitudeR2:
         case AmplitudeR3:
+        case AmplitudeR4:
             str = _Utility->FormatedDataToString(DINFormulaAmplitudeOffset, offset);
             CurrentWeldSettings.WeldSettingFormula[i].Offset.Current = str;
             str = _Utility->FormatedDataToString(DINFormulaAmplitudeOffset, Maxmm2AmplitudeOffset);
@@ -642,15 +649,6 @@ bool WeldDefaults::_Set()
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.CoolingTypeData);
     }
 
-    unsigned short LockonAlarm = _M10INI->TempSysConfig.LockAlarm;
-    if(((bool)LockonAlarm) != CurrentWeldSettings.LockOnAlarm)
-    {
-        _M10INI->TempSysConfig.LockAlarm = (unsigned short)CurrentWeldSettings.LockOnAlarm;
-        _Interface->StatusData.LockonAlarm = _M10INI->TempSysConfig.LockAlarm;
-        _M2010->ReceiveFlags.LockOnAlarmData = false;
-        _M102IA->SendIACommand(IAComSetLockonAlarm, _M10INI->TempSysConfig.LockAlarm);
-    }
-
     _Interface->StatusData.KeepDailyHistory = true;
     _Interface->StatusData.HistoryGraphData = true;
     _Interface->StatusData.GraphSampleRatio
@@ -662,35 +660,37 @@ bool WeldDefaults::_Set()
     {
         area = _Utility->StringToFormatedData(DINFormulaArea,
             CurrentWeldSettings.WeldSettingFormula[i].Range.Current);
-        _Interface->StatusData.WeldSettings4Build[i].MinRange = area;
         switch(i)
         {
+        case EnergyR1:
+        case WidthR1:
+        case PressureR1:
+        case AmplitudeR1:
+            _Interface->StatusData.WeldSettings4Build[i + 1].MinRange
+                    = area;
+            break;
         case EnergyR2:
         case WidthR2:
         case PressureR2:
         case AmplitudeR2:
             _Interface->StatusData.WeldSettings4Build[i-1].MaxRange
                     = area - 0.01;
+            _Interface->StatusData.WeldSettings4Build[i + 1].MinRange
+                    = area;
             break;
         case EnergyR3:
-            _Interface->StatusData.WeldSettings4Build[i-1].MaxRange
-                    = area - 0.01;
-            _Interface->StatusData.WeldSettings4Build[i].MaxRange
-                    = MAXFORMULAAREA;
-            break;
         case WidthR3:
+        case PressureR3:
+        case AmplitudeR3:
             _Interface->StatusData.WeldSettings4Build[i-1].MaxRange
                     = area - 0.01;
             _Interface->StatusData.WeldSettings4Build[i].MaxRange
-                    = MAXFORMULAAREA;
+                    = area;
             break;
-        case PressureR3:
-            _Interface->StatusData.WeldSettings4Build[i-1].MaxRange
-                    = area - 0.01;
-            _Interface->StatusData.WeldSettings4Build[PressureR3].MaxRange
-                    = MAXFORMULAAREA;
-            break;
-        case AmplitudeR3:
+        case EnergyR4:
+        case WidthR4:
+        case PressureR4:
+        case AmplitudeR4:
             _Interface->StatusData.WeldSettings4Build[i-1].MaxRange
                     = area - 0.01;
             _Interface->StatusData.WeldSettings4Build[i].MaxRange
@@ -702,6 +702,7 @@ bool WeldDefaults::_Set()
         case EnergyR1:
         case EnergyR2:
         case EnergyR3:
+        case EnergyR4:
             offset = _Utility->StringToFormatedData(DINFormulaEnergyOffset,
                 CurrentWeldSettings.WeldSettingFormula[i].Offset.Current);
             multiplier = _Utility->StringToFormatedData(DINFormulaEnergyMult,
@@ -710,6 +711,7 @@ bool WeldDefaults::_Set()
         case WidthR1:
         case WidthR2:
         case WidthR3:
+        case WidthR4:
             offset = _Utility->StringToFormatedData(DINFormulaWidthOffset,
                  CurrentWeldSettings.WeldSettingFormula[i].Offset.Current);
             multiplier = _Utility->StringToFormatedData(DINFormulaWidthMult,
@@ -718,6 +720,7 @@ bool WeldDefaults::_Set()
         case PressureR1:
         case PressureR2:
         case PressureR3:
+        case PressureR4:
             offset = _Utility->StringToFormatedData(DINFormulaPressureOffset,
                  CurrentWeldSettings.WeldSettingFormula[i].Offset.Current);
             multiplier = _Utility->StringToFormatedData(DINFormulaPressureMult,
@@ -726,6 +729,7 @@ bool WeldDefaults::_Set()
         case AmplitudeR1:
         case AmplitudeR2:
         case AmplitudeR3:
+        case AmplitudeR4:
             offset = _Utility->StringToFormatedData(DINFormulaAmplitudeOffset,
                  CurrentWeldSettings.WeldSettingFormula[i].Offset.Current);
             multiplier = _Utility->StringToFormatedData(DINFormulaAmplitudeMult,

@@ -65,7 +65,9 @@
 #define MinRange2                 7
 #define MaxRange2                 14.99
 #define MinRange3                 15
-#define MaxRange3                 40
+#define MaxRange3                 19.99
+#define MinRange4                 20
+#define MaxRange4                 40
 
 #define AdminUsername        QObject::tr("ADMIN")
 #define TechUsername         QObject::tr("TECH")

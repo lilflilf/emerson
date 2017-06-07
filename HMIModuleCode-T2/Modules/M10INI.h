@@ -50,7 +50,10 @@ using namespace std;
 #define MinRange2                 7
 #define MaxRange2                 14.99
 #define MinRange3                 15
-#define MaxRange3                 40
+#define MaxRange3                 19.99
+#define MinRange4                 20
+#define MaxRange4                 40
+
 
 #define WattsFactor               0.057;
 #define DefAutoGetNextDelay       3   //3/10 Second
