@@ -1004,8 +1004,9 @@ bool HmiAdaptor::weldDefaultsExecute(QString code)
     else if (code == "_Set") {
         return weldDefaults->_Set();
     }
-    else if (code == "_Default")
+    else if (code == "_Default"){
         weldDefaults->_Default();
+    }
     return true;
 }
 
@@ -1596,25 +1597,36 @@ QList<int> HmiAdaptor::getStatisticalTrendDataList(int index)
     return statisticalTrend->RawQualityWindowList[index];
 }
 
-QStringList HmiAdaptor::getWeldActualParameterDataList(int index)
+QStringList HmiAdaptor::getWeldActualParameterDataList(int index, int type)
 {
     QStringList list;
     if (statisticalTrend->CurrentWeldParameterList.count() == 0) {
         return list;
     }
-    list.append(statisticalTrend->CurrentWeldParameterList[index].CrossSection);
-    list.append(statisticalTrend->CurrentWeldParameterList[index].Time);
-    list.append(statisticalTrend->CurrentWeldParameterList[index].Energy);
-    list.append(statisticalTrend->CurrentWeldParameterList[index].PeakPower);
-    list.append(statisticalTrend->CurrentWeldParameterList[index].WeldPressure);
-    list.append(statisticalTrend->CurrentWeldParameterList[index].PreHeight);
-    list.append(statisticalTrend->CurrentWeldParameterList[index].TriggerPressure);
-    list.append(statisticalTrend->CurrentWeldParameterList[index].PostHeight);
-    list.append(statisticalTrend->CurrentWeldParameterList[index].Amplitude);
-    list.append(statisticalTrend->CurrentWeldParameterList[index].HarnessName);
-    list.append(statisticalTrend->CurrentWeldParameterList[index].SequenceName);
-    list.append(statisticalTrend->CurrentWeldParameterList[index].Width);
-    list.append(statisticalTrend->CurrentWeldParameterList[index].DateCreated);
+    if (type == 0)
+    {
+        list.append(statisticalTrend->CurrentWeldParameterList[index].CrossSection);
+        list.append(statisticalTrend->CurrentWeldParameterList[index].Time);
+        list.append(statisticalTrend->CurrentWeldParameterList[index].Energy);
+        list.append(statisticalTrend->CurrentWeldParameterList[index].PeakPower);
+        list.append(statisticalTrend->CurrentWeldParameterList[index].WeldPressure);
+        list.append(statisticalTrend->CurrentWeldParameterList[index].PreHeight);
+        list.append(statisticalTrend->CurrentWeldParameterList[index].TriggerPressure);
+        list.append(statisticalTrend->CurrentWeldParameterList[index].PostHeight);
+        list.append(statisticalTrend->CurrentWeldParameterList[index].Amplitude);
+        list.append("");
+
+        list.append(statisticalTrend->CurrentWeldParameterList[index].Width);
+        list.append("");
+
+    }
+    else if (type == 1)
+    {
+        list.append(statisticalTrend->CurrentWeldParameterList[index].HarnessName);
+        list.append(statisticalTrend->CurrentWeldParameterList[index].SequenceName);
+        list.append(statisticalTrend->CurrentWeldParameterList[index].DateCreated);
+
+    }
     return list;
 }
 
