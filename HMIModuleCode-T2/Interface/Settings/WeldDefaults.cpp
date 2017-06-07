@@ -668,6 +668,7 @@ bool WeldDefaults::_Set()
         case AmplitudeR1:
             _Interface->StatusData.WeldSettings4Build[i + 1].MinRange
                     = area;
+            qDebug()<<"R1" << area;
             break;
         case EnergyR2:
         case WidthR2:
@@ -677,6 +678,7 @@ bool WeldDefaults::_Set()
                     = area - 0.01;
             _Interface->StatusData.WeldSettings4Build[i + 1].MinRange
                     = area;
+            qDebug()<<"R2"<< area;
             break;
         case EnergyR3:
         case WidthR3:
@@ -686,6 +688,7 @@ bool WeldDefaults::_Set()
                     = area - 0.01;
             _Interface->StatusData.WeldSettings4Build[i].MaxRange
                     = area;
+            qDebug()<<"R3"<<area;
             break;
         case EnergyR4:
         case WidthR4:
@@ -695,6 +698,7 @@ bool WeldDefaults::_Set()
                     = area - 0.01;
             _Interface->StatusData.WeldSettings4Build[i].MaxRange
                     = MAXFORMULAAREA;
+            qDebug()<<"R4"<<area;
             break;
         }
         switch (i)
