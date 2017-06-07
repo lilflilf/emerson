@@ -1049,7 +1049,7 @@ bool HmiAdaptor::weldDefaultsGetSwitch(QString index)
     return reb;
 }
 
-QStringList HmiAdaptor::weldDefaultsGetValue(HmiAdaptor::FormulaRange index)
+QStringList HmiAdaptor::weldDefaultsGetValue(int index)
 {
     QStringList list;
     if (index == -1 ) {
@@ -1061,6 +1061,7 @@ QStringList HmiAdaptor::weldDefaultsGetValue(HmiAdaptor::FormulaRange index)
              << weldDefaults->CurrentWeldSettings.CurrentCoolingDel.Minimum;
         return list;
     }
+
     list << weldDefaults->CurrentWeldSettings.WeldSettingFormula[index].Range.Maximum
          << weldDefaults->CurrentWeldSettings.WeldSettingFormula[index].Range.Current
          << weldDefaults->CurrentWeldSettings.WeldSettingFormula[index].Range.Minimum
@@ -1170,6 +1171,7 @@ bool HmiAdaptor::weldDefaultsSetValue(QList<bool> boolList, QStringList strList,
     weldDefaults->CurrentWeldSettings.WeldSettingFormula[AmplitudeR4].Range.Current = strList[45];
     weldDefaults->CurrentWeldSettings.WeldSettingFormula[AmplitudeR4].Offset.Current = strList[46];
     weldDefaults->CurrentWeldSettings.WeldSettingFormula[AmplitudeR4].Multiplier.Current = strList[47];
+
     return true;
 }
 

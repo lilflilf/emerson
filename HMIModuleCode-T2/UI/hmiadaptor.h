@@ -30,25 +30,7 @@ class HmiAdaptor : public QObject
 {
     Q_OBJECT
 
-    Q_ENUMS(FormulaRange)
 public:
-    enum FormulaRange
-    {
-        EnergyR1,
-        EnergyR2,
-        EnergyR3,
-        WidthR1,
-        WidthR2,
-        WidthR3,
-        PressureR1,
-        PressureR2,
-        PressureR3,
-        AmplitudeR1,
-        AmplitudeR2,
-        AmplitudeR3,
-        FormulaRangSize,
-    };
-
 
     explicit HmiAdaptor(QObject *parent = 0);
     ~HmiAdaptor();
@@ -114,7 +96,7 @@ public:
     /********weldDefaults func**************/
     Q_INVOKABLE bool weldDefaultsExecute(QString code);
     Q_INVOKABLE bool weldDefaultsGetSwitch(QString index);
-    Q_INVOKABLE QStringList weldDefaultsGetValue(FormulaRange index);
+    Q_INVOKABLE QStringList weldDefaultsGetValue(int index);
     Q_INVOKABLE QString weldDefaultsGetNum(QString index);
     Q_INVOKABLE bool weldDefaultsSetValue(QList<bool> boolList, QStringList strList, int sampleIndex, QString coolingDur, QString coolingDel);
     Q_INVOKABLE bool weldDefaultsSetValue2(int index,int checkIndex);
