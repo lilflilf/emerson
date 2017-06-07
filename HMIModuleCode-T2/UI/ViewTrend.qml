@@ -324,13 +324,13 @@ Item {
                         spliceModel.editNew(spliceId)
                         viewTrend.redMax = spliceModel.getRawData("Time+")
                         viewTrend.redMin = spliceModel.getRawData("Time-")
-                        viewTrend.yellowMax = hmiAdaptor.controlLimitProcess("Time+",datalist,viewTrend.redMax,viewTrend.redMin)
-                        viewTrend.yellowMin = hmiAdaptor.controlLimitProcess("Time-",datalist,viewTrend.redMax,viewTrend.redMin)
+//                        viewTrend.yellowMax = hmiAdaptor.controlLimitProcess("Time+",datalist,viewTrend.redMax,viewTrend.redMin)
+//                        viewTrend.yellowMin = hmiAdaptor.controlLimitProcess("Time-",datalist,viewTrend.redMax,viewTrend.redMin)
 
                         qualityListViewTwo.model = 0
                         qualityListViewTwo.model = datalist.length
                         selectRepeater.itemAt(0).bIsCheck = true
-                        weldActualLsit = hmiAdaptor.getWeldActualParameterDataList(0)
+                        weldActualLsit = hmiAdaptor.getWeldActualParameterDataList(0,0)
                         for (var i = 0; i < leftTextModel.count; i++) {
                              if (weldActualLsit.length == 0) {
                                  leftTextModel.set(i,{myvalue:""})
@@ -341,6 +341,11 @@ Item {
                         statisticsList = hmiAdaptor.getCurrentStatisticsParameterList(0)
                         for (var j = 0; j < rightTextModel.count; j++) {
                             rightTextModel.set(j,{myvalue:statisticsList[j]})
+                        }
+
+                        statisticsList = hmiAdaptor.getWeldActualParameterDataList(0,1)
+                        for (var m = 0; m < leftTextModel2.count; m++) {
+                            leftTextModel2.set(m,{myvalue:statisticsList[m]})
                         }
                     }
                 }
@@ -368,22 +373,22 @@ Item {
             width: parent.width
             height: 2
         }
-        Line {
-            id: yellowMaxLine
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: parent.height * 0.8
-            lineColor: "yellow"
-            width: parent.width
-            height: 2
-        }
-        Line {
-            id: yellowMinLine
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: parent.height * 0.2
-            lineColor: "yellow"
-            width: parent.width
-            height: 2
-        }
+//        Line {
+//            id: yellowMaxLine
+//            anchors.bottom: parent.bottom
+//            anchors.bottomMargin: parent.height * 0.8
+//            lineColor: "yellow"
+//            width: parent.width
+//            height: 2
+//        }
+//        Line {
+//            id: yellowMinLine
+//            anchors.bottom: parent.bottom
+//            anchors.bottomMargin: parent.height * 0.2
+//            lineColor: "yellow"
+//            width: parent.width
+//            height: 2
+//        }
         Line {
             anchors.bottom: parent.bottom
             anchors.bottomMargin: parent.height * 0.1
@@ -398,22 +403,22 @@ Item {
             lineColor: "green"
         }
     }
-    onYellowMaxChanged: {
-        var margin = fiveLine.height * 0.1 + (yellowMax - redMin)/(redMax - redMin) * fiveLine.height * 0.8
-        if (margin < 0)
-            margin = 0
-        else if (margin > Screen.height * 0.32)
-            margin = Screen.height * 0.32
-        yellowMaxLine.anchors.bottomMargin = margin
-    }
-    onYellowMinChanged: {
-        var margin = fiveLine.height * 0.1 + (yellowMin - redMin)/(redMax - redMin) * fiveLine.height * 0.8
-        if (margin < 0)
-            margin = 0
-        else if (margin > Screen.height * 0.32)
-            margin = Screen.height * 0.32
-        yellowMinLine.anchors.bottomMargin = margin
-    }
+//    onYellowMaxChanged: {
+//        var margin = fiveLine.height * 0.1 + (yellowMax - redMin)/(redMax - redMin) * fiveLine.height * 0.8
+//        if (margin < 0)
+//            margin = 0
+//        else if (margin > Screen.height * 0.32)
+//            margin = Screen.height * 0.32
+//        yellowMaxLine.anchors.bottomMargin = margin
+//    }
+//    onYellowMinChanged: {
+//        var margin = fiveLine.height * 0.1 + (yellowMin - redMin)/(redMax - redMin) * fiveLine.height * 0.8
+//        if (margin < 0)
+//            margin = 0
+//        else if (margin > Screen.height * 0.32)
+//            margin = Screen.height * 0.32
+//        yellowMinLine.anchors.bottomMargin = margin
+//    }
 
     ListView {
         id: qualityListViewTwo
@@ -459,13 +464,18 @@ Item {
                 scrollLine.x = button.x/(scrollbar.width-50)*qualityListViewTwo.width
                 qualityListViewTwo.currentIndex = scrollLine.x*qualityListViewTwo.contentWidth/qualityListViewTwo.width/8
                 if ((scrollLine.x/8).toFixed(0) >= datalist.length) {
-                    weldActualLsit = hmiAdaptor.getWeldActualParameterDataList(datalist.length-1)
+                    weldActualLsit = hmiAdaptor.getWeldActualParameterDataList(datalist.length-1, 0)
                 } else {
-                    weldActualLsit = hmiAdaptor.getWeldActualParameterDataList((scrollLine.x/8).toFixed(0))
+                    weldActualLsit = hmiAdaptor.getWeldActualParameterDataList((scrollLine.x/8).toFixed(0), 0)
                 }
 
                 for (var i = 0; i < leftTextModel.count; i++) {
                     leftTextModel.set(i,{myvalue:weldActualLsit[i]})
+                }
+
+                statisticsList = hmiAdaptor.getWeldActualParameterDataList(0,1)
+                for (var m = 0; m < leftTextModel2.count; m++) {
+                    leftTextModel2.set(m,{myvalue:statisticsList[m]})
                 }
             }
         }
@@ -555,38 +565,42 @@ Item {
                     if (index == 0) {
                         viewTrend.redMax = spliceModel.getRawData("Time+")
                         viewTrend.redMin = spliceModel.getRawData("Time-")
-                        viewTrend.yellowMax = hmiAdaptor.controlLimitProcess("Time+",datalist,viewTrend.redMax,viewTrend.redMin)
-                        viewTrend.yellowMin = hmiAdaptor.controlLimitProcess("Time-",datalist,viewTrend.redMax,viewTrend.redMin)
+//                        viewTrend.yellowMax = hmiAdaptor.controlLimitProcess("Time+",datalist,viewTrend.redMax,viewTrend.redMin)
+//                        viewTrend.yellowMin = hmiAdaptor.controlLimitProcess("Time-",datalist,viewTrend.redMax,viewTrend.redMin)
                     }
                     else if (index == 1) {
                         viewTrend.redMax = spliceModel.getRawData("Power+")
                         viewTrend.redMin = spliceModel.getRawData("Power-")
-                        viewTrend.yellowMax = hmiAdaptor.controlLimitProcess("Power+",datalist,viewTrend.redMax,viewTrend.redMin)
-                        viewTrend.yellowMin = hmiAdaptor.controlLimitProcess("Power-",datalist,viewTrend.redMax,viewTrend.redMin)
+//                        viewTrend.yellowMax = hmiAdaptor.controlLimitProcess("Power+",datalist,viewTrend.redMax,viewTrend.redMin)
+//                        viewTrend.yellowMin = hmiAdaptor.controlLimitProcess("Power-",datalist,viewTrend.redMax,viewTrend.redMin)
                     }
                     else if (index == 2) {
                         viewTrend.redMax = spliceModel.getRawData("Pre-Height+")
                         viewTrend.redMin = spliceModel.getRawData("Pre-Height-")
-                        viewTrend.yellowMax = hmiAdaptor.controlLimitProcess("Pre-Height+",datalist,viewTrend.redMax,viewTrend.redMin)
-                        viewTrend.yellowMin = hmiAdaptor.controlLimitProcess("Pre-Height-",datalist,viewTrend.redMax,viewTrend.redMin)
+//                        viewTrend.yellowMax = hmiAdaptor.controlLimitProcess("Pre-Height+",datalist,viewTrend.redMax,viewTrend.redMin)
+//                        viewTrend.yellowMin = hmiAdaptor.controlLimitProcess("Pre-Height-",datalist,viewTrend.redMax,viewTrend.redMin)
                     }
                     else if (index == 3) {
                         viewTrend.redMax = spliceModel.getRawData("Post-Height+")
                         viewTrend.redMin = spliceModel.getRawData("Post-Height-")
-                        viewTrend.yellowMax = hmiAdaptor.controlLimitProcess("Post-Height+",datalist,viewTrend.redMax,viewTrend.redMin)
-                        viewTrend.yellowMin = hmiAdaptor.controlLimitProcess("Post-Height-",datalist,viewTrend.redMax,viewTrend.redMin)
+//                        viewTrend.yellowMax = hmiAdaptor.controlLimitProcess("Post-Height+",datalist,viewTrend.redMax,viewTrend.redMin)
+//                        viewTrend.yellowMin = hmiAdaptor.controlLimitProcess("Post-Height-",datalist,viewTrend.redMax,viewTrend.redMin)
                     }
 
                     qualityListViewTwo.model = 0
                     qualityListViewTwo.model = datalist.length
                     button.x = 0
-                    weldActualLsit = hmiAdaptor.getWeldActualParameterDataList(0)
+                    weldActualLsit = hmiAdaptor.getWeldActualParameterDataList(0,0)
                     for (var i = 0; i < leftTextModel.count; i++) {
                         leftTextModel.set(i,{myvalue:weldActualLsit[i]})
                     }
                     statisticsList = hmiAdaptor.getCurrentStatisticsParameterList(index)
                     for (var j = 0; j < rightTextModel.count; j++) {
                         rightTextModel.set(j,{myvalue:statisticsList[j]})
+                    }
+                    statisticsList = hmiAdaptor.getWeldActualParameterDataList(0, 1)
+                    for (var m = 0; m < leftTextModel2.count; m++) {
+                        leftTextModel2.set(m,{myvalue:statisticsList[m]})
                     }
                 }
             }
@@ -669,10 +683,20 @@ Item {
             leftTextModel.append({"mytitle":qsTr("Trigger Pressure:"),"myvalue":""})
             leftTextModel.append({"mytitle":qsTr("Post-Heigh:"),"myvalue":""})
             leftTextModel.append({"mytitle":qsTr("Amplitude:"),"myvalue":""})
-            leftTextModel.append({"mytitle":qsTr("Part Name:"),"myvalue":""})
+//            leftTextModel.append({"mytitle":qsTr("Part Name:"),"myvalue":""})
+            leftTextModel.append({"mytitle":qsTr(""),"myvalue":""})
+
             leftTextModel.append({"mytitle":qsTr("Width:"),"myvalue":""})
-            leftTextModel.append({"mytitle":qsTr("Date Created:"),"myvalue":""})
-            leftTextModel.append({"mytitle":qsTr("Work Order Name:"),"myvalue":""})
+//            leftTextModel.append({"mytitle":qsTr("Date Created:"),"myvalue":""})
+            leftTextModel.append({"mytitle":qsTr(""),"myvalue":""})
+        }
+    }
+    ListModel {
+        id: leftTextModel2
+        Component.onCompleted: {
+            leftTextModel2.append({"mytitle":qsTr("Sequence Name:"),"myvalue":""})
+            leftTextModel2.append({"mytitle":qsTr("Harness Name:"),"myvalue":""})
+            leftTextModel2.append({"mytitle":qsTr("Date Created:"),"myvalue":"",})
         }
     }
 
@@ -714,6 +738,33 @@ Item {
 //                    width: qualityListViewTwo.width / 8
 //                    text: myvalue2
 //                }
+            }
+        }
+    }
+    Column {
+        id: columnLeft2
+        spacing: 5
+        anchors.left: leftTextList.left
+        anchors.top: leftTextList.bottom
+        anchors.topMargin: 5
+        Repeater {
+            model: leftTextModel2
+            delegate: Row {
+                spacing: 5
+                Text {
+                    font.family: "arial"
+                    font.pointSize: 16
+                    color: "white"
+                    width: qualityListViewTwo.width / 8 + 60
+                    text: mytitle
+                }
+                Text {
+                    font.family: "arial"
+                    font.pointSize: 16
+                    color: "white"
+                    width: qualityListViewTwo.width / 8
+                    text: myvalue
+                }
             }
         }
     }

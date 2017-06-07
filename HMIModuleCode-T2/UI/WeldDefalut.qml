@@ -966,7 +966,7 @@ Item {
         text: qsTr("Defalut Setting")
         textColor: "white"
         onClicked: {
-            hmiAdaptor.weldDefaultsExecute("_Defalut")
+            hmiAdaptor.weldDefaultsExecute("_Default")
             hmiAdaptor.weldDefaultsExecute("_Recall")
             for (var i = 0 ;i < graphModel.count; i++)
             {
