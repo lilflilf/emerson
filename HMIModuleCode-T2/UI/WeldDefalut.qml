@@ -910,22 +910,22 @@ Item {
 
             for (i = 0;i < formulaModel.count;i++ )
             {
-                if (i != 1 && i != 5 && i != 9 && i != 9)
+                if (i != 1 && i != 5 && i != 9 && i != 13)
                     stringArray.push(formulaModel.get(i).currenValue)
             }
             for (i = 0;i < widthModel.count;i++ )
             {
-                if (i != 1 && i != 5 && i != 9 && i != 9)
+                if (i != 1 && i != 5 && i != 9 && i != 13)
                     stringArray.push(widthModel.get(i).currenValue)
             }
             for (i = 0;i < pressureModel.count;i++ )
             {
-                if (i != 1 && i != 5 && i != 9 && i != 9)
+                if (i != 1 && i != 5 && i != 9 && i != 13)
                     stringArray.push(pressureModel.get(i).currenValue)
             }
             for (i = 0;i < amplitudeModel.count;i++ )
             {
-                if (i != 1 && i != 5 && i != 9 && i != 9)
+                if (i != 1 && i != 5 && i != 9 && i != 13)
                     stringArray.push(amplitudeModel.get(i).currenValue)
             }
             for (i = 0;i < graphModel.count;i++ )
