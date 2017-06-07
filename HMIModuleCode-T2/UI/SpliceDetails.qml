@@ -884,6 +884,7 @@ Item {
                 topRight.item.myAwg = selectWireAWG
                 topRight.item.myWireType = selectWireType
                 topRight.item.myStripeColor = selectWireStripeColor
+
                 topRight.item.myStripeType = selectWireStripeType
                 topRight.item.myWireId = selectWireId
                 topRight.item.myModuleType = selectModuleType
@@ -1037,7 +1038,7 @@ Item {
             property var myGauge: 10
             property var myAwg: 37
             property var myWireType: 1
-            property var myStripeColor: ""
+            property var myStripeColor: tripecolor.color //""
             property var myStripeType: -1
             property var myWireId: -1
             property var myModuleType: ""
@@ -1047,7 +1048,7 @@ Item {
             Rectangle {
                 id: leftLine
                 width: leftItem.position == "leftList" ? index % 2 && index < (listModelLeft.count - 10) * 2 ? myLineLength + 150 : myLineLength : 200
-                height: linetext < 1 ? 1 : linetext
+                height: myText < 1 ? 1 : myText
                 anchors.right: parent.right
                 anchors.verticalCenter: leftRec.verticalCenter
             }
@@ -1061,11 +1062,11 @@ Item {
                 Rectangle {
                     id: tripecolor
                     height: 5
-                    width: stripeType == 2 ? parent.height : parent.width
+                    width: leftItem.position == "leftList" ? (stripeType == 2 ? parent.height : parent.width) : (myStripeType == 2 ? parent.height : parent.width)
                     anchors.verticalCenter: parent.verticalCenter
-                    color: stripeColor
-                    visible: stripeType == 3 ? false : true
-                    rotation: stripeType == 0 ? 0 : stripeType == 1 ? 30 : stripeType == 2 ? 90 : 0
+                    color: leftItem.position == "leftList" ? stripeColor : myStripeColor
+                    visible: leftItem.position == "leftList" ? (stripeType == 3 ? false : true) : (myStripeType == 3 ? false : true)
+                    rotation: leftItem.position == "leftList" ? (stripeType == 0 ? 0 : stripeType == 1 ? 30 : stripeType == 2 ? 90 : 0) : (myStripeType == 0 ? 0 : myStripeType == 1 ? 30 : myStripeType == 2 ? 90 : 0)
                     clip: false
                 }
                 MouseArea {
@@ -1126,7 +1127,7 @@ Item {
                 id: leftRect2
                 width: 60
                 height: leftItem.position == "leftList" ? listModelLeft.count <= 5 ? detail.height * 0.1 : 20 :  detail.height * 0.1
-                color: mycolor //"white"
+                color: leftRec.color //"white"
                 anchors.right: leftRec.left
                 anchors.verticalCenter: parent.verticalCenter
                 Text {
@@ -1192,7 +1193,7 @@ Item {
             property var myGauge: 10
             property var myAwg: 37
             property var myWireType: 1 // wireTypeText.text
-            property var myStripeColor:  "" // stripeColor.color
+            property var myStripeColor:  tripecolor.color //"" // stripeColor.color
             property var myStripeType: -1
             property var myWireId: -1
             property var myModuleType: ""
@@ -1202,7 +1203,7 @@ Item {
             Rectangle {
                 id: rightLine
                 width: 200 //rightItem.position == "rightList" ? index % 2 && index < (listModelRight.count - 10) * 2 ? myLineLength + 150 : myLineLength : 200
-                height: linetext < 1 ? 1 : linetext// > 5 ? 12 : 6
+                height: myText < 1 ? 1 : myText// > 5 ? 12 : 6
                 anchors.left: parent.left
                 anchors.verticalCenter: rightRec.verticalCenter
             }
@@ -1216,11 +1217,11 @@ Item {
                 Rectangle {
                     id: tripecolor
                     height: 5
-                    width: stripeType == 2 ? parent.height : parent.width
+                    width: rightItem.position == "rightList" ? (stripeType == 2 ? parent.height : parent.width) : (myStripeType == 2 ? parent.height : parent.width)
                     anchors.verticalCenter: parent.verticalCenter
-                    color: stripeColor
-                    visible: stripeType == 3 ? false : true
-                    rotation: stripeType == 0 ? 0 : stripeType == 1 ? 30 : stripeType == 2 ? 90 : 0
+                    color: rightItem.position == "rightList" ? stripeColor : myStripeColor
+                    visible: rightItem.position == "rightList" ? (stripeType == 3 ? false : true) : (myStripeType == 3 ? false : true)
+                    rotation: rightItem.position == "rightList" ? (stripeType == 0 ? 0 : stripeType == 1 ? 30 : stripeType == 2 ? 90 : 0) : (myStripeType == 0 ? 0 : myStripeType == 1 ? 30 : myStripeType == 2 ? 90 : 0)
                     clip: false
                 }
 
@@ -1281,7 +1282,7 @@ Item {
                 id: rightRect2
                 width: 60
                 height: rightItem.position == "rightList" ? listModelRight.count <= 5 ? detail.height * 0.1 : 20 :  detail.height * 0.1
-                color: mycolor //"white"
+                color: rightRec.color //"white"
                 anchors.left: rightRec.right
                 anchors.verticalCenter: parent.verticalCenter
                 Text {

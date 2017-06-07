@@ -770,9 +770,10 @@ Item {
 
                     }
                     onMouseAreaClick: {
-                        if (index == 1 || index == 5 || index == 9) {
+                        if (index == 1 || index == 5 || index == 9 || index == 13) {
                             localbordercolor = Qt.rgba(0,0,0,0)
                             bgvisable = false
+                            return
                         } else {
                             localbordercolor = "#05f91c"
                         }
@@ -899,28 +900,32 @@ Item {
             {
                 boolArray.push(repeaterModel.get(i).switchState)
             }
+            for (i = 0;i < repeaterModel2.count;i++ )
+            {
+                boolArray.push(repeaterModel2.get(i).switchState)
+            }
             boolArray.push(coolingsec.state == "right")
             boolArray.push(coolingTooling.state == "right")
 //            boolArray.push(awg.state == "right")
 
             for (i = 0;i < formulaModel.count;i++ )
             {
-                if (i != 1 && i != 5 && i != 9)
+                if (i != 1 && i != 5 && i != 9 && i != 9)
                     stringArray.push(formulaModel.get(i).currenValue)
             }
             for (i = 0;i < widthModel.count;i++ )
             {
-                if (i != 1 && i != 5 && i != 9)
+                if (i != 1 && i != 5 && i != 9 && i != 9)
                     stringArray.push(widthModel.get(i).currenValue)
             }
             for (i = 0;i < pressureModel.count;i++ )
             {
-                if (i != 1 && i != 5 && i != 9)
+                if (i != 1 && i != 5 && i != 9 && i != 9)
                     stringArray.push(pressureModel.get(i).currenValue)
             }
             for (i = 0;i < amplitudeModel.count;i++ )
             {
-                if (i != 1 && i != 5 && i != 9)
+                if (i != 1 && i != 5 && i != 9 && i != 9)
                     stringArray.push(amplitudeModel.get(i).currenValue)
             }
             for (i = 0;i < graphModel.count;i++ )
