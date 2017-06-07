@@ -38,25 +38,30 @@ struct WeldSettingForScreen
 
 };
 
-struct WeldSettingInfo
+struct FormulaRangeRef
 {
-    float MultRatio;
-    float MultMin;
-    float MultMax;
-    QString MultFormat;
-    float OffsetRatio;
-    float OffsetMin;
-    float OffsetMax;
-    QString OffsetFormat;
+    float MinimumRange;
+    float MaximumRange;
 };
 
 class WeldDefaults : public QObject
 {
     Q_OBJECT
+public:
+    enum RANGE_ITEM
+    {
+        RANGE1,
+        RANGE2,
+        RANGE3,
+        RANGE4,
+    };
+
 private:
-    struct WeldSettingInfo WeldSettingsInfo[4];
+    struct FormulaRangeRef FormulaRangesRef[4];
 private:
     void InitWeldSettings();
+    void StatusData2FormulaRangeRef();
+    void FormulaRangeRef2StatusData();
 public:
     struct WeldSettingForScreen CurrentWeldSettings;
 public:

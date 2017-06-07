@@ -517,7 +517,7 @@ void UtilityClass::InitializeTextData()
     SetTextData(DINCoolDel, 0, MINCOOLDEL, MAXCOOLDEL, 1, (float)0.01, "%.2fs");
     SetTextData(DINFormulaArea, 0, MINFORMULAAREA, MAXFORMULAAREA, 1, 1, QString("%.2fmm").append(QChar(0xB2)));//"%.2fmm²"
     SetTextData(DINFormulaEnergyOffset, 0, Minmm2EnergyOffset, Maxmm2EnergyOffset, 1, 1, "%.2fJ");
-    SetTextData(DINFormulaEnergyMult, 0, Minmm2EnergyMult, Maxmm2EnergyMult, 1, 1, "%.2fJ" );
+    SetTextData(DINFormulaEnergyMult, 0, Minmm2EnergyMult, Maxmm2EnergyMult, 1, 1, "%.2f" );
     SetTextData(DINFormulaWidthOffset, 0, 0, 0, 1, 1, "%dmm");
     SetTextData(DINFormulaWidthMult, 0, Minmm2WidthAreaRatio, Maxmm2WidthAreaRatio, 1, 1, "%.2f");
     if (_Interface->StatusData.Soft_Settings.Pressure2Unit == BRANSON_INI_STRUCT::ToBar)
