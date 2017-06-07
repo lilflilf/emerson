@@ -541,7 +541,7 @@ Item {
             height: 50
             MyRadioButton {
                 anchors.fill: parent
-                buttontext: "mm"
+                buttontext: "mm²"
                 bIsCheck: hmiAdaptor.weldDefaultsGetValue2(1,0)
                 exclusiveGroup: crossSectionRowMos
                 onBIsCheckChanged: {
@@ -643,6 +643,20 @@ Item {
             height: 50
             MyRadioButton {
                 anchors.fill: parent
+                buttontext: "mm"
+                bIsCheck: hmiAdaptor.weldDefaultsGetValue2(2,1)
+                exclusiveGroup: lengthRowMos
+                onBIsCheckChanged: {
+                    if (bIsCheck)
+                        hmiAdaptor.weldDefaultsSetValue2(2,1)
+                }
+            }
+        }
+        Item {
+            width: 640/4
+            height: 50
+            MyRadioButton {
+                anchors.fill: parent
                 buttontext: "inch"
                 bIsCheck: hmiAdaptor.weldDefaultsGetValue2(2,0)
                 exclusiveGroup: lengthRowMos
@@ -651,20 +665,6 @@ Item {
                         hmiAdaptor.weldDefaultsSetValue2(2,0)
                 }
 
-            }
-        }
-        Item {
-            width: 640/4
-            height: 50
-            MyRadioButton {
-                anchors.fill: parent
-                buttontext: "mm"
-                bIsCheck: hmiAdaptor.weldDefaultsGetValue2(2,1)
-                exclusiveGroup: lengthRowMos
-                onBIsCheckChanged: {
-                    if (bIsCheck)
-                        hmiAdaptor.weldDefaultsSetValue2(2,1)
-                }
             }
         }
     }
@@ -939,6 +939,8 @@ Item {
 
             hmiAdaptor.weldDefaultsSetValue(boolArray, stringArray, sampIndex, cooling1.centervalue,cooling2.centervalue)
             hmiAdaptor.weldDefaultsExecute("_Set")
+            hmiAdaptor.weldDefaultsExecute("_Recall")
+            initPage()
         }
     }
     CButton {
