@@ -10,6 +10,8 @@ private:
     static QString DatabaseDir;
 private:
     QSqlDatabase OperatorDBObj;
+private:
+    bool InitializeUserInfo();
 public:
     virtual bool CreateNewTable();
     virtual int InsertRecordIntoTable(void* _obj);

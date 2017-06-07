@@ -2,6 +2,7 @@
 #include "Interface/Settings/OperatorLibrary.h"
 #include "Modules/typedef.h"
 #include <QDebug>
+#include "Interface/Settings/OperatorLibrary.h"
 
 DBOperatorTable* DBOperatorTable::_instance = NULL;
 QString DBOperatorTable::OperatorDBFile = "Operator.db";
@@ -40,12 +41,19 @@ DBOperatorTable* DBOperatorTable::Instance()
 
 DBOperatorTable::DBOperatorTable()
 {
+    bool bResult = false;
     OperatorDBObj = QSqlDatabase::addDatabase("QSQLITE", "OperatorDBObjConnect");
     OperatorDBObj.setDatabaseName(DatabaseDir + OperatorDBFile);
     if(OperatorDBObj.open())
     {
         if(!OperatorDBObj.tables().contains("Operator"))
-            CreateNewTable();
+        {
+            bResult = CreateNewTable();
+            if(bResult == true)
+            {
+                InitializeUserInfo();
+            }
+        }
     }
     OperatorDBObj.close();
 }
@@ -53,6 +61,32 @@ DBOperatorTable::DBOperatorTable()
 DBOperatorTable::~DBOperatorTable()
 {
     OperatorDBObj.close();
+}
+
+bool DBOperatorTable::InitializeUserInfo()
+{
+    int bResult = ERROR;
+    OperatorElement OperatorObj;
+    OperatorObj.OperatorName = "BRANSON";
+    OperatorObj.Password = "218114191514";
+    OperatorObj.PermissionLevel = OperatorElement::BRANSON;
+    QDateTime TimeLabel = QDateTime::fromString("2017/06/06 12:38:00");
+    OperatorObj.CreatedDate = TimeLabel.toTime_t();
+    OperatorObj.WhoCreatedNewID = -1;
+    bResult = InsertRecordIntoTable(&OperatorObj);
+    if(bResult == ERROR)
+        return false;
+    OperatorObj.OperatorName = "DEFAULT";
+    OperatorObj.Password = "0000";
+    OperatorObj.PermissionLevel = OperatorElement::INITIAL;
+    TimeLabel = QDateTime::fromString("2017/06/06 12:38:00");
+    OperatorObj.CreatedDate = TimeLabel.toTime_t();
+    OperatorObj.WhoCreatedNewID = -1;
+    bResult = InsertRecordIntoTable(&OperatorObj);
+    if(bResult == ERROR)
+        return false;
+    else
+        return true;
 }
 
 void DBOperatorTable::SwitchDBObject(bool IsModularProduction)
