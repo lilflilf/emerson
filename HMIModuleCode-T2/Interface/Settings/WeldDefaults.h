@@ -68,6 +68,7 @@ public:
     bool _Recall();
     bool _Set();
     void _Default();
+    void FormulaUpdate();
 public:
     explicit WeldDefaults(QObject *parent = 0);
 

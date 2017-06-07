@@ -73,6 +73,150 @@ void WeldDefaults::FormulaRangeRef2StatusData()
     }
 }
 
+void WeldDefaults::FormulaUpdate()
+{
+    float area = 0;
+    float offset = 0;
+    float multiplier = 0;
+    QString str;
+    InterfaceClass* _Interface = InterfaceClass::Instance();
+    UtilityClass* _Utility = UtilityClass::Instance();
+    for(int i = EnergyR1; i < FormulaRangSize; i++)
+    {
+        area = _Interface->StatusData.WeldSettings4Build[i].MinRange;
+        str = _Utility->FormatedDataToString(DINFormulaArea,area);
+        CurrentWeldSettings.WeldSettingFormula[i].Range.Current = str;
+        switch (i)
+        {
+        case EnergyR1:
+        case WidthR1:
+        case PressureR1:
+        case AmplitudeR1:
+            str = _Utility->FormatedDataToString(DINFormulaArea,MINFORMULAAREA);
+            CurrentWeldSettings.WeldSettingFormula[i].Range.Minimum = str;
+            area = _Interface->StatusData.WeldSettings4Build[i].MaxRange;
+            str = _Utility->FormatedDataToString(DINFormulaArea, (float)(area - 0.01));
+            CurrentWeldSettings.WeldSettingFormula[i].Range.Maximum = str;
+            break;
+        case EnergyR2:
+        case WidthR2:
+        case PressureR2:
+        case AmplitudeR2:
+            area = _Interface->StatusData.WeldSettings4Build[i-1].MinRange;
+            str = _Utility->FormatedDataToString(DINFormulaArea, (float)(area + 0.02));
+            CurrentWeldSettings.WeldSettingFormula[i].Range.Minimum = str;
+            area = _Interface->StatusData.WeldSettings4Build[i].MaxRange;
+            str = _Utility->FormatedDataToString(DINFormulaArea, (float)(area - 0.01));
+            CurrentWeldSettings.WeldSettingFormula[i].Range.Maximum = str;
+            break;
+        case EnergyR3:
+        case WidthR3:
+        case PressureR3:
+        case AmplitudeR3:
+            area = _Interface->StatusData.WeldSettings4Build[i-1].MinRange;
+            str = _Utility->FormatedDataToString(DINFormulaArea, float(area + 0.02));
+            CurrentWeldSettings.WeldSettingFormula[i].Range.Minimum = str;
+            area = _Interface->StatusData.WeldSettings4Build[i].MaxRange;
+            str = _Utility->FormatedDataToString(DINFormulaArea, (float)(area - 0.01));
+            CurrentWeldSettings.WeldSettingFormula[i].Range.Maximum = str;
+            break;
+        case EnergyR4:
+        case WidthR4:
+        case PressureR4:
+        case AmplitudeR4:
+            area = _Interface->StatusData.WeldSettings4Build[i - 1].MinRange;
+            str = _Utility->FormatedDataToString(DINFormulaArea, float(area + 0.02));
+            CurrentWeldSettings.WeldSettingFormula[i].Range.Minimum = str;
+            str = _Utility->FormatedDataToString(DINFormulaArea,MAXFORMULAAREA);
+            CurrentWeldSettings.WeldSettingFormula[i].Range.Maximum = str;
+            break;
+        }
+        offset = _Interface->StatusData.WeldSettings4Build[i].Offset;
+        multiplier = _Interface->StatusData.WeldSettings4Build[i].Multplier ;
+        switch (i)
+        {
+        case EnergyR1:
+        case EnergyR2:
+        case EnergyR3:
+        case EnergyR4:
+            str = _Utility->FormatedDataToString(DINFormulaEnergyOffset, offset);
+            CurrentWeldSettings.WeldSettingFormula[i].Offset.Current = str;
+            str = _Utility->FormatedDataToString(DINFormulaEnergyOffset, Maxmm2EnergyOffset);
+            CurrentWeldSettings.WeldSettingFormula[i].Offset.Maximum = str;
+            str = _Utility->FormatedDataToString(DINFormulaEnergyOffset, Minmm2EnergyOffset);
+            CurrentWeldSettings.WeldSettingFormula[i].Offset.Minimum = str;
+
+            str = _Utility->FormatedDataToString(DINFormulaEnergyMult, multiplier);
+            CurrentWeldSettings.WeldSettingFormula[i].Multiplier.Current = str;
+            str = _Utility->FormatedDataToString(DINFormulaEnergyMult, Maxmm2EnergyMult);
+            CurrentWeldSettings.WeldSettingFormula[i].Multiplier.Maximum = str;
+            str = _Utility->FormatedDataToString(DINFormulaEnergyMult, Minmm2EnergyMult);
+            CurrentWeldSettings.WeldSettingFormula[i].Multiplier.Minimum = str;
+            CurrentWeldSettings.WeldSettingFormula[i].Identifier = FormulaIdentifer[0];
+            break;
+        case WidthR1:
+        case WidthR2:
+        case WidthR3:
+        case WidthR4:
+            str = _Utility->FormatedDataToString(DINFormulaWidthOffset, offset);
+            CurrentWeldSettings.WeldSettingFormula[i].Offset.Current = str;
+            str = _Utility->FormatedDataToString(DINFormulaWidthOffset, 0);
+            CurrentWeldSettings.WeldSettingFormula[i].Offset.Maximum = str;
+            str = _Utility->FormatedDataToString(DINFormulaWidthOffset, 0);
+            CurrentWeldSettings.WeldSettingFormula[i].Offset.Minimum = str;
+
+            str = _Utility->FormatedDataToString(DINFormulaWidthMult, multiplier);
+            CurrentWeldSettings.WeldSettingFormula[i].Multiplier.Current = str;
+            str = _Utility->FormatedDataToString(DINFormulaWidthMult, Maxmm2WidthAreaRatio);
+            CurrentWeldSettings.WeldSettingFormula[i].Multiplier.Maximum = str;
+            str = _Utility->FormatedDataToString(DINFormulaEnergyMult, (float)Minmm2WidthAreaRatio);
+            CurrentWeldSettings.WeldSettingFormula[i].Multiplier.Minimum = str;
+
+            CurrentWeldSettings.WeldSettingFormula[i].Identifier = FormulaIdentifer[1];
+            break;
+        case PressureR1:
+        case PressureR2:
+        case PressureR3:
+        case PressureR4:
+            str = _Utility->FormatedDataToString(DINFormulaPressureOffset, offset);
+            CurrentWeldSettings.WeldSettingFormula[i].Offset.Current = str;
+            str = _Utility->FormatedDataToString(DINFormulaPressureOffset, Maxmm2PressOffset);
+            CurrentWeldSettings.WeldSettingFormula[i].Offset.Maximum = str;
+            str = _Utility->FormatedDataToString(DINFormulaPressureOffset, Minmm2PressOffset);
+            CurrentWeldSettings.WeldSettingFormula[i].Offset.Minimum = str;
+
+            str = _Utility->FormatedDataToString(DINFormulaPressureMult, multiplier);
+            CurrentWeldSettings.WeldSettingFormula[i].Multiplier.Current = str;
+            str = _Utility->FormatedDataToString(DINFormulaPressureMult, Maxmm2PressMult);
+            CurrentWeldSettings.WeldSettingFormula[i].Multiplier.Maximum = str;
+            str = _Utility->FormatedDataToString(DINFormulaPressureMult, (float)Minmm2PressMult);
+            CurrentWeldSettings.WeldSettingFormula[i].Multiplier.Minimum = str;
+            CurrentWeldSettings.WeldSettingFormula[i].Identifier = FormulaIdentifer[2];
+            break;
+        case AmplitudeR1:
+        case AmplitudeR2:
+        case AmplitudeR3:
+        case AmplitudeR4:
+            str = _Utility->FormatedDataToString(DINFormulaAmplitudeOffset, offset);
+            CurrentWeldSettings.WeldSettingFormula[i].Offset.Current = str;
+            str = _Utility->FormatedDataToString(DINFormulaAmplitudeOffset, Maxmm2AmplitudeOffset);
+            CurrentWeldSettings.WeldSettingFormula[i].Offset.Maximum = str;
+            str = _Utility->FormatedDataToString(DINFormulaAmplitudeOffset, Minmm2AmplitudeOffset);
+            CurrentWeldSettings.WeldSettingFormula[i].Offset.Minimum = str;
+
+            str = _Utility->FormatedDataToString(DINFormulaAmplitudeMult, multiplier);
+            CurrentWeldSettings.WeldSettingFormula[i].Multiplier.Current = str;
+            str = _Utility->FormatedDataToString(DINFormulaAmplitudeMult, Maxmm2AmplitudeMult);
+            CurrentWeldSettings.WeldSettingFormula[i].Multiplier.Maximum = str;
+            str = _Utility->FormatedDataToString(DINFormulaAmplitudeMult, (float)Minmm2AmplitudeMult);
+            CurrentWeldSettings.WeldSettingFormula[i].Multiplier.Minimum = str;
+
+            CurrentWeldSettings.WeldSettingFormula[i].Identifier = FormulaIdentifer[3];
+            break;
+        }
+    }
+}
+
 void WeldDefaults::_Default()
 {
     InterfaceClass* _Interface = InterfaceClass::Instance();
