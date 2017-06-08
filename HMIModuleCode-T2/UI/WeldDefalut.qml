@@ -151,6 +151,35 @@ Item {
 //        awg.state = hmiAdaptor.weldDefaultsGetSwitch("Unit Conversion") ? "right" : "left"
     }
 
+    function weldDefaultUpdate()
+    {
+        var stringArray = new Array();
+        for (i = 0;i < formulaModel.count;i++ )
+        {
+            if (i != 1 && i != 5 && i != 9 && i != 13)
+                stringArray.push(formulaModel.get(i).currenValue)
+        }
+        for (i = 0;i < widthModel.count;i++ )
+        {
+            if (i != 1 && i != 5 && i != 9 && i != 13)
+                stringArray.push(widthModel.get(i).currenValue)
+        }
+        for (i = 0;i < pressureModel.count;i++ )
+        {
+            if (i != 1 && i != 5 && i != 9 && i != 13)
+                stringArray.push(pressureModel.get(i).currenValue)
+        }
+        for (i = 0;i < amplitudeModel.count;i++ )
+        {
+            if (i != 1 && i != 5 && i != 9 && i != 13)
+                stringArray.push(amplitudeModel.get(i).currenValue)
+        }
+        hmiAdaptor.weldDefaultsSetValue3(stringArray)
+        hmiAdaptor.weldDefaultFormulaUpdate()
+        initPage()
+
+    }
+
     Image {
         anchors.fill: parent
         source: "qrc:/images/images/bg.png"
@@ -1014,7 +1043,8 @@ Item {
                     } else {
                         gridRepeater.itemAt(formulaSetting.selectIndex).localbordercolor = "#0079c1"
                         gridRepeater.model.set(formulaSetting.selectIndex,{"currenValue":keyNum.inputText})
-                        hmiAdaptor.weldDefaultFormulaUpdate()
+
+                        weldDefaultUpdate()
                     }
                     backGround.visible = false
                     keyNum.visible = false
@@ -1047,7 +1077,7 @@ Item {
             } else {
                 if (keyNum.inputText != "") {
                     gridRepeater.model.set(formulaSetting.selectIndex,{"currenValue":keyNum.inputText})
-                    hmiAdaptor.weldDefaultFormulaUpdate()
+                    weldDefaultUpdate()
                 }
             }
         }

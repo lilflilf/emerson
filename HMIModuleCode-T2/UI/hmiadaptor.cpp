@@ -1212,6 +1212,75 @@ bool HmiAdaptor::weldDefaultsGetValue2(int index, int checkIndex)
     }
 }
 
+bool HmiAdaptor::weldDefaultsSetValue3(QStringList strList)
+{
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[EnergyR1].Range.Current = strList[0];
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[EnergyR1].Offset.Current = strList[1];
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[EnergyR1].Multiplier.Current = strList[2];
+
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[EnergyR2].Range.Current = strList[3];
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[EnergyR2].Offset.Current = strList[4];
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[EnergyR2].Multiplier.Current = strList[5];
+
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[EnergyR3].Range.Current = strList[6];
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[EnergyR3].Offset.Current = strList[7];
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[EnergyR3].Multiplier.Current = strList[8];
+
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[EnergyR4].Range.Current = strList[9];
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[EnergyR4].Offset.Current = strList[10];
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[EnergyR4].Multiplier.Current = strList[11];
+
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[WidthR1].Range.Current = strList[12];
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[WidthR1].Offset.Current = strList[13];
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[WidthR1].Multiplier.Current = strList[14];
+
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[WidthR2].Range.Current = strList[15];
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[WidthR2].Offset.Current = strList[16];
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[WidthR2].Multiplier.Current = strList[17];
+
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[WidthR3].Range.Current = strList[18];
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[WidthR3].Offset.Current = strList[19];
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[WidthR3].Multiplier.Current = strList[20];
+
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[WidthR4].Range.Current = strList[21];
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[WidthR4].Offset.Current = strList[22];
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[WidthR4].Multiplier.Current = strList[23];
+
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[PressureR1].Range.Current = strList[24];
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[PressureR1].Offset.Current = strList[25];
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[PressureR1].Multiplier.Current = strList[26];
+
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[PressureR2].Range.Current = strList[27];
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[PressureR2].Offset.Current = strList[28];
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[PressureR2].Multiplier.Current = strList[29];
+
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[PressureR3].Range.Current = strList[30];
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[PressureR3].Offset.Current = strList[31];
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[PressureR3].Multiplier.Current = strList[32];
+
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[PressureR4].Range.Current = strList[33];
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[PressureR4].Offset.Current = strList[34];
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[PressureR4].Multiplier.Current = strList[35];
+
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[AmplitudeR1].Range.Current = strList[36];
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[AmplitudeR1].Offset.Current = strList[37];
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[AmplitudeR1].Multiplier.Current = strList[38];
+
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[AmplitudeR2].Range.Current = strList[39];
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[AmplitudeR2].Offset.Current = strList[40];
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[AmplitudeR2].Multiplier.Current = strList[41];
+
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[AmplitudeR3].Range.Current = strList[42];
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[AmplitudeR3].Offset.Current = strList[43];
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[AmplitudeR3].Multiplier.Current = strList[44];
+
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[AmplitudeR4].Range.Current = strList[45];
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[AmplitudeR4].Offset.Current = strList[46];
+    weldDefaults->CurrentWeldSettings.WeldSettingFormula[AmplitudeR4].Multiplier.Current = strList[47];
+
+    return true;
+}
+
 bool HmiAdaptor::weldDefaultFormulaUpdate()
 {
     weldDefaults->FormulaUpdate();
