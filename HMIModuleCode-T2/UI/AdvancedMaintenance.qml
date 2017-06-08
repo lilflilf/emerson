@@ -360,6 +360,7 @@ Item {
         }
     }
     Text {
+        id: tipText
         text: qsTr("Power Supply and Frequency Setting")
         font.family: "arial"
         font.pixelSize: 20
@@ -367,6 +368,7 @@ Item {
         anchors.bottom: testSetting.top
         anchors.bottomMargin: 30
         anchors.left: powerText.left
+        visible: hmiAdaptor.getCurrentOperatorName() == "BRANSON" ? true : false
     }
 
     Grid {
@@ -379,6 +381,7 @@ Item {
         rows: 2
         anchors.left: powerText.left
         anchors.right: progressBar.right
+        visible: tipText.visible
         Repeater {
             anchors.right: parent.right
             model: listModel

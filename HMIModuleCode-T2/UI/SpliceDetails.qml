@@ -1006,6 +1006,7 @@ Item {
             height: 40
             visible: false
             onClicked: {
+                wireModel.createNew()
                 addWire()
             }
         }
@@ -1142,17 +1143,18 @@ Item {
             }
             Text {
                 id: myWireNameLeft
-                width: leftRect2.width * 3
+//                width: leftRect2.width * 3
+                anchors.left: leftItem.left
                 anchors.right: leftRect2.left
                 anchors.verticalCenter: leftRect2.verticalCenter
                 horizontalAlignment: Qt.AlignRight
-
                 anchors.rightMargin: 8
                 font.family: "arial"
                 font.pointSize: 16
                 color: "white"
                 text: wireName
                 clip: true
+                wrapMode: Text.WordWrap
             }
 
             RadioButton {
