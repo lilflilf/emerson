@@ -101,6 +101,7 @@ Item {
             showFlag = 3
             selectSplice(spliceModel.getStructValue("SpliceId",""))
             counterString = "SPLICE COUNTER:"
+            workName.visible = false
         }
         else if (flag == 2) {
             spliceList = partModel.getSpliceList(hmiAdaptor.getWorkFlow("WorkId"))
@@ -133,10 +134,6 @@ Item {
         }
 
         hmiAdaptor.operateProcessExec("Start")
-
-
-
-
 
 
 

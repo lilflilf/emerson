@@ -467,9 +467,11 @@ Window {
                 bIsPhysicalKey = true
                 headBar.backColor = "#f79428"
                 statusBar.backColor = "#fac834"
+                headBar.keyVisible = true
             }
             else
             {
+                headBar.keyVisible = false
                 bIsPhysicalKey = false
                 headBar.backColor = "#0079c1"
                 statusBar.backColor = "#004b8d"

@@ -107,6 +107,7 @@ Item {
 
     function editSplice(editWireList)
     {
+        creatWire.bIsEditSplice = true
         var list = new Array
         list = editWireList
         for (var i = 0; i < list.length;i++)
@@ -1660,6 +1661,7 @@ Item {
                     return
                 if (crossSection == false && bIsEditSplice == false)
                 {
+                    spliceModel.setStructValue("Total Cross",spliceDetailsTip2.text)
                     spliceModel.calculateSpliceData()
                     initSettings()
                 }

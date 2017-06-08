@@ -607,6 +607,7 @@ Item {
         anchors.verticalCenter: parent.verticalCenter
         height: 80
         width: 80
+        visible: false
         MouseArea {
             anchors.fill: parent
             onClicked: {

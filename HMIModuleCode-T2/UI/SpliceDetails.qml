@@ -1143,18 +1143,21 @@ Item {
             }
             Text {
                 id: myWireNameLeft
-//                width: leftRect2.width * 3
+//                width:  leftItem.left //leftRect2.width * 3
+                height: leftRect2.height + 8
                 anchors.left: leftItem.left
                 anchors.right: leftRect2.left
                 anchors.verticalCenter: leftRect2.verticalCenter
                 horizontalAlignment: Qt.AlignRight
-                anchors.rightMargin: 8
+                anchors.rightMargin: 5
                 font.family: "arial"
-                font.pointSize: 16
+                font.pixelSize: myWireNameLeft.text.length > 10 ? leftRect2.height > 40 ? 16 : leftRect2.height / 2 : 16
                 color: "white"
                 text: wireName
                 clip: true
-                wrapMode: Text.WordWrap
+                wrapMode: Text.WrapAnywhere
+//                lineHeightMode: Text.FixedHeight
+//                lineHeight: myWireNameLeft.text.length > 10 ? 10.0 : 20.0
             }
 
             RadioButton {
@@ -1200,7 +1203,7 @@ Item {
             property var myWireId: -1
             property var myModuleType: ""
             id: rightItem
-            width: 300
+            width: middle.width / 2 + 40 //300
             height: rightItem.position == "rightList" ? listModelRight.count <= 5 ? detail.height * 0.1 + 10 : 30 : 30//(listModelRight.count > 5 && listModelRight.count <= 10) ? 30 : index < (listModelRight.count - 10) * 2 ? 15 : 30 : 30
             Rectangle {
                 id: rightLine
@@ -1282,7 +1285,7 @@ Item {
             }
             Rectangle {
                 id: rightRect2
-                width: 60
+                width: 55
                 height: rightItem.position == "rightList" ? listModelRight.count <= 5 ? detail.height * 0.1 : 20 :  detail.height * 0.1
                 color: rightRec.color //"white"
                 anchors.left: rightRec.right
@@ -1298,15 +1301,21 @@ Item {
             }
             Text {
                 id: myWireNameRight
-                width: rightRect2.width * 3
+//                width: rightRect2.width * 3
+                height: rightRect2.height + 8
                 anchors.left: rightRect2.right
+                anchors.right: rightItem.right
                 anchors.verticalCenter: rightRect2.verticalCenter
-                anchors.leftMargin: 8
+                horizontalAlignment: Qt.AlignLeft
+                anchors.leftMargin: 5
                 font.family: "arial"
-                font.pointSize: 16
+                font.pixelSize: myWireNameRight.text.length > 10 ? rightRect2.height > 40 ? 16 :  rightRect2.height / 2 : 16
                 color: "white"
                 text: wireName
                 clip: true
+                wrapMode: Text.WrapAnywhere
+//                lineHeightMode: Text.FixedHeight
+//                lineHeight: myWireNameRight.text.length > 10 ? (10.0) : (40.0)
             }
             RadioButton {
                 id: radioButton
