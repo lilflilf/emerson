@@ -97,6 +97,7 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
 
     permissionSetting = new PermissionSetting(this);
     weldDefaults = new WeldDefaults(this);
+
     dataCommunication = new DataCommunication;
 
     connect(calibration,SIGNAL(WidthCalibrationFinish(bool)),this,SIGNAL(widthCalibrationFinish(bool)));
@@ -1199,16 +1200,16 @@ bool HmiAdaptor::weldDefaultsGetValue2(int index, int checkIndex)
     else if (index == 1)
     {
         if (checkIndex == 0)
-            return weldDefaults->CurrentWeldSettings.Pressure2Unit == BRANSON_INI_STRUCT::SQUAREUNIT::ToAWG;
+            return weldDefaults->CurrentWeldSettings.Square2Unit == BRANSON_INI_STRUCT::SQUAREUNIT::ToSqrMM;
         else if (checkIndex == 1)
-            return weldDefaults->CurrentWeldSettings.Pressure2Unit == BRANSON_INI_STRUCT::SQUAREUNIT::ToSqrMM;
+            return weldDefaults->CurrentWeldSettings.Square2Unit == BRANSON_INI_STRUCT::SQUAREUNIT::ToAWG;
     }
     else if (index == 2)
     {
         if (checkIndex == 0)
-            return weldDefaults->CurrentWeldSettings.Pressure2Unit == BRANSON_INI_STRUCT::LENGTHUNIT::ToINCH;
+            return weldDefaults->CurrentWeldSettings.Length2Unit == BRANSON_INI_STRUCT::LENGTHUNIT::ToMM;
         else if (checkIndex == 1)
-            return weldDefaults->CurrentWeldSettings.Pressure2Unit == BRANSON_INI_STRUCT::LENGTHUNIT::ToMM;
+            return weldDefaults->CurrentWeldSettings.Length2Unit == BRANSON_INI_STRUCT::LENGTHUNIT::ToINCH;
     }
 }
 

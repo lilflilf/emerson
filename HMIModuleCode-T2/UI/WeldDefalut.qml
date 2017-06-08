@@ -23,6 +23,16 @@ Item {
         repeaterModel2.clear()
 
         mos.current = null
+        crossSectionRowMos.current = null
+        pressureRowMos.current = null
+        lengthRowMos.current = null
+
+        crossRadio1.bIsCheck = hmiAdaptor.weldDefaultsGetValue2(1,0)
+        crossRadio2.bIsCheck = hmiAdaptor.weldDefaultsGetValue2(1,1)
+        pressRadio1.bIsCheck = hmiAdaptor.weldDefaultsGetValue2(0,0)
+        pressRadio2.bIsCheck = hmiAdaptor.weldDefaultsGetValue2(0,1)
+        lengthRadio1.bIsCheck = hmiAdaptor.weldDefaultsGetValue2(2,0)
+        lengthRadio2.bIsCheck = hmiAdaptor.weldDefaultsGetValue2(2,1)
 
         repeaterModel.append({"headTitle":qsTr("Width Encoder"),"leftText":qsTr("off"),"righttext":qsTr("on"),"switchState":hmiAdaptor.weldDefaultsGetSwitch("Width Encoder")})
         repeaterModel.append({"headTitle":qsTr("Height Encoder"),"leftText":qsTr("off"),"righttext":qsTr("on"),"switchState":hmiAdaptor.weldDefaultsGetSwitch("Height Encoder")})
@@ -570,13 +580,14 @@ Item {
             width: 640/4
             height: 50
             MyRadioButton {
+                id: crossRadio1
                 anchors.fill: parent
                 buttontext: "mm²"
                 bIsCheck: hmiAdaptor.weldDefaultsGetValue2(1,0)
                 exclusiveGroup: crossSectionRowMos
                 onBIsCheckChanged: {
-                    if (bIsCheck)
-                        hmiAdaptor.weldDefaultsSetValue2(1,0)
+                    if (crossRadio1.bIsCheck)
+                        hmiAdaptor.weldDefaultsSetValue2(1,1)
                 }
             }
         }
@@ -584,13 +595,14 @@ Item {
             width: 640/4
             height: 50
             MyRadioButton {
+                id: crossRadio2
                 anchors.fill: parent
                 buttontext: "AWG"
                 bIsCheck: hmiAdaptor.weldDefaultsGetValue2(1,1)
                 exclusiveGroup: crossSectionRowMos
                 onBIsCheckChanged: {
-                    if (bIsCheck)
-                        hmiAdaptor.weldDefaultsSetValue2(1,1)
+                    if (crossRadio2.bIsCheck)
+                        hmiAdaptor.weldDefaultsSetValue2(1,0)
                 }
             }
         }
@@ -621,12 +633,13 @@ Item {
             width: 640/4
             height: 50
             MyRadioButton {
+                id: pressRadio1
                 anchors.fill: parent
                 buttontext: "psi"
                 bIsCheck: hmiAdaptor.weldDefaultsGetValue2(0,0)
                 exclusiveGroup: pressureRowMos
                 onBIsCheckChanged: {
-                    if (bIsCheck)
+                    if (pressRadio1.bIsCheck)
                         hmiAdaptor.weldDefaultsSetValue2(0,0)
                 }
             }
@@ -635,12 +648,13 @@ Item {
             width: 640/4
             height: 50
             MyRadioButton {
+                id: pressRadio2
                 anchors.fill: parent
                 buttontext: "bar"
                 bIsCheck: hmiAdaptor.weldDefaultsGetValue2(0,1)
                 exclusiveGroup: pressureRowMos
                 onBIsCheckChanged: {
-                    if (bIsCheck)
+                    if (pressRadio2.bIsCheck)
                         hmiAdaptor.weldDefaultsSetValue2(0,1)
                 }
             }
@@ -672,12 +686,13 @@ Item {
             width: 640/4
             height: 50
             MyRadioButton {
+                id: lengthRadio1
                 anchors.fill: parent
                 buttontext: "mm"
-                bIsCheck: hmiAdaptor.weldDefaultsGetValue2(2,1)
+                bIsCheck: hmiAdaptor.weldDefaultsGetValue2(2,0)
                 exclusiveGroup: lengthRowMos
                 onBIsCheckChanged: {
-                    if (bIsCheck)
+                    if (lengthRadio1.bIsCheck)
                         hmiAdaptor.weldDefaultsSetValue2(2,1)
                 }
             }
@@ -686,12 +701,13 @@ Item {
             width: 640/4
             height: 50
             MyRadioButton {
+                id: lengthRadio2
                 anchors.fill: parent
                 buttontext: "inch"
-                bIsCheck: hmiAdaptor.weldDefaultsGetValue2(2,0)
+                bIsCheck: hmiAdaptor.weldDefaultsGetValue2(2,1)
                 exclusiveGroup: lengthRowMos
                 onBIsCheckChanged: {
-                    if (bIsCheck)
+                    if (lengthRadio2.bIsCheck)
                         hmiAdaptor.weldDefaultsSetValue2(2,0)
                 }
 
