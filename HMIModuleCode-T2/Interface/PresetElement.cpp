@@ -226,6 +226,9 @@ bool PresetElement::CalculateSpliceData()
     else if((Area >= _Interface->StatusData.WeldSettings4Build[2].MinRange) &&
         (Area <= _Interface->StatusData.WeldSettings4Build[2].MaxRange))
         Index = 2;
+    else if((Area >= _Interface->StatusData.WeldSettings4Build[3].MinRange) &&
+        (Area <= _Interface->StatusData.WeldSettings4Build[3].MaxRange))
+        Index = 3;
     else
     {
         Index = -1;

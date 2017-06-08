@@ -30,11 +30,11 @@ bool StringToVariant::GaugeToInt(QString strGauge, int &GaugeAWG, int &GaugeMM)
                     = _Interface->StatusData.AWGToAreaTable.find(GaugeAWG);
             GaugeMM = at.value();
             bResult = true;
-        }/*else
-            GaugeMM = -1;*/
+        }else
+            GaugeMM = 0;
     }else if(strGauge.contains("mm²") == true)
     {
-//        GaugeAWG = -1;
+        GaugeAWG = 0;
         GaugeMM = (int)_Utility->StringToFormatedData(DINGauge, strGauge);
         bResult = true;
     }
