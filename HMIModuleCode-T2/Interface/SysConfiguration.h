@@ -394,6 +394,14 @@ public:
         SLIHeight = 3,
         SLI_Size = 4,
     };
+    enum RANGE_ITEM
+    {
+        RANGENONE = -1,
+        RANGE1,
+        RANGE2,
+        RANGE3,
+        RANGE4,
+    };
 public:
     int RevCode;
     QString CreatedDate;

@@ -45,29 +45,29 @@ void WeldDefaults::FormulaRangeRef2StatusData()
         case WidthR1:
         case PressureR1:
         case AmplitudeR1:
-            _Interface->StatusData.WeldSettings4Build[i].MinRange = FormulaRangesRef[RANGE1].MinimumRange;
-            _Interface->StatusData.WeldSettings4Build[i].MaxRange = FormulaRangesRef[RANGE1].MaximumRange;
+            _Interface->StatusData.WeldSettings4Build[i].MinRange = FormulaRangesRef[Status_Data::RANGE1].MinimumRange;
+            _Interface->StatusData.WeldSettings4Build[i].MaxRange = FormulaRangesRef[Status_Data::RANGE1].MaximumRange;
             break;
         case EnergyR2:
         case WidthR2:
         case PressureR2:
         case AmplitudeR2:
-            _Interface->StatusData.WeldSettings4Build[i].MinRange = FormulaRangesRef[RANGE2].MinimumRange;
-            _Interface->StatusData.WeldSettings4Build[i].MaxRange = FormulaRangesRef[RANGE2].MaximumRange;
+            _Interface->StatusData.WeldSettings4Build[i].MinRange = FormulaRangesRef[Status_Data::RANGE2].MinimumRange;
+            _Interface->StatusData.WeldSettings4Build[i].MaxRange = FormulaRangesRef[Status_Data::RANGE2].MaximumRange;
             break;
         case EnergyR3:
         case WidthR3:
         case PressureR3:
         case AmplitudeR3:
-            _Interface->StatusData.WeldSettings4Build[i].MinRange = FormulaRangesRef[RANGE3].MinimumRange;
-            _Interface->StatusData.WeldSettings4Build[i].MaxRange = FormulaRangesRef[RANGE3].MaximumRange;
+            _Interface->StatusData.WeldSettings4Build[i].MinRange = FormulaRangesRef[Status_Data::RANGE3].MinimumRange;
+            _Interface->StatusData.WeldSettings4Build[i].MaxRange = FormulaRangesRef[Status_Data::RANGE3].MaximumRange;
             break;
         case EnergyR4:
         case WidthR4:
         case PressureR4:
         case AmplitudeR4:
-            _Interface->StatusData.WeldSettings4Build[i].MinRange = FormulaRangesRef[RANGE4].MinimumRange;
-            _Interface->StatusData.WeldSettings4Build[i].MaxRange = FormulaRangesRef[RANGE4].MaximumRange;
+            _Interface->StatusData.WeldSettings4Build[i].MinRange = FormulaRangesRef[Status_Data::RANGE4].MinimumRange;
+            _Interface->StatusData.WeldSettings4Build[i].MaxRange = FormulaRangesRef[Status_Data::RANGE4].MaximumRange;
             break;
         }
     }
@@ -95,7 +95,7 @@ void WeldDefaults::FormulaUpdate()
         case AmplitudeR1:
             if(area != _Interface->StatusData.WeldSettings4Build[i].MinRange)
             {
-                FormulaRangesRef[RANGE1].MinimumRange = area;
+                FormulaRangesRef[Status_Data::RANGE1].MinimumRange = area;
             }
             break;
         case EnergyR2:
@@ -104,11 +104,11 @@ void WeldDefaults::FormulaUpdate()
         case AmplitudeR2:
             if(area != _Interface->StatusData.WeldSettings4Build[i].MinRange)
             {
-                FormulaRangesRef[RANGE2].MinimumRange = area;
+                FormulaRangesRef[Status_Data::RANGE2].MinimumRange = area;
             }
             if((area - 0.01) != _Interface->StatusData.WeldSettings4Build[i-1].MaxRange)
             {
-                FormulaRangesRef[RANGE1].MaximumRange = area - 0.01;
+                FormulaRangesRef[Status_Data::RANGE1].MaximumRange = area - 0.01;
             }
             break;
         case EnergyR3:
@@ -117,11 +117,11 @@ void WeldDefaults::FormulaUpdate()
         case AmplitudeR3:
             if(area != _Interface->StatusData.WeldSettings4Build[i].MinRange)
             {
-                FormulaRangesRef[RANGE3].MinimumRange = area;
+                FormulaRangesRef[Status_Data::RANGE3].MinimumRange = area;
             }
             if((area - 0.01) != _Interface->StatusData.WeldSettings4Build[i-1].MaxRange)
             {
-                FormulaRangesRef[RANGE2].MaximumRange = area - 0.01;
+                FormulaRangesRef[Status_Data::RANGE2].MaximumRange = area - 0.01;
             }
             break;
         case EnergyR4:
@@ -130,11 +130,11 @@ void WeldDefaults::FormulaUpdate()
         case AmplitudeR4:
             if(area != _Interface->StatusData.WeldSettings4Build[i].MinRange)
             {
-                FormulaRangesRef[RANGE4].MinimumRange = area;
+                FormulaRangesRef[Status_Data::RANGE4].MinimumRange = area;
             }
             if((area - 0.01) != _Interface->StatusData.WeldSettings4Build[i-1].MaxRange)
             {
-                FormulaRangesRef[RANGE3].MaximumRange = area - 0.01;
+                FormulaRangesRef[Status_Data::RANGE3].MaximumRange = area - 0.01;
             }
             break;
         }
@@ -918,7 +918,7 @@ bool WeldDefaults::_Set()
         case AmplitudeR1:
             if(area != _Interface->StatusData.WeldSettings4Build[i].MinRange)
             {
-                FormulaRangesRef[RANGE1].MinimumRange = area;
+                FormulaRangesRef[Status_Data::RANGE1].MinimumRange = area;
             }
             break;
         case EnergyR2:
@@ -927,11 +927,11 @@ bool WeldDefaults::_Set()
         case AmplitudeR2:
             if(area != _Interface->StatusData.WeldSettings4Build[i].MinRange)
             {
-                FormulaRangesRef[RANGE2].MinimumRange = area;
+                FormulaRangesRef[Status_Data::RANGE2].MinimumRange = area;
             }
             if((area - 0.01) != _Interface->StatusData.WeldSettings4Build[i-1].MaxRange)
             {
-                FormulaRangesRef[RANGE1].MaximumRange = area - 0.01;
+                FormulaRangesRef[Status_Data::RANGE1].MaximumRange = area - 0.01;
             }
             break;
         case EnergyR3:
@@ -940,11 +940,11 @@ bool WeldDefaults::_Set()
         case AmplitudeR3:
             if(area != _Interface->StatusData.WeldSettings4Build[i].MinRange)
             {
-                FormulaRangesRef[RANGE3].MinimumRange = area;
+                FormulaRangesRef[Status_Data::RANGE3].MinimumRange = area;
             }
             if((area - 0.01) != _Interface->StatusData.WeldSettings4Build[i-1].MaxRange)
             {
-                FormulaRangesRef[RANGE2].MaximumRange = area - 0.01;
+                FormulaRangesRef[Status_Data::RANGE2].MaximumRange = area - 0.01;
             }
             break;
         case EnergyR4:
@@ -953,11 +953,11 @@ bool WeldDefaults::_Set()
         case AmplitudeR4:
             if(area != _Interface->StatusData.WeldSettings4Build[i].MinRange)
             {
-                FormulaRangesRef[RANGE4].MinimumRange = area;
+                FormulaRangesRef[Status_Data::RANGE4].MinimumRange = area;
             }
             if((area - 0.01) != _Interface->StatusData.WeldSettings4Build[i-1].MaxRange)
             {
-                FormulaRangesRef[RANGE3].MaximumRange = area - 0.01;
+                FormulaRangesRef[Status_Data::RANGE3].MaximumRange = area - 0.01;
             }
             break;
         }

@@ -31,15 +31,14 @@ struct BRANSONDATA VariantToString::GaugeToString(int Gauge, int GaugeAWG)
                             _Utility->txtData[DINGaugeAWG].max);
             tmpData.Minimum = _Utility->FormatedDataToString(DINGaugeAWG,
                             _Utility->txtData[DINGaugeAWG].min);
+            return tmpData;
         }
-    }else
-    {
-        tmpData.Current = _Utility->FormatedDataToString(DINGauge, Gauge);
-        tmpData.Maximum = _Utility->FormatedDataToString(DINGauge,
-                        _Utility->txtData[DINGauge].max);
-        tmpData.Minimum = _Utility->FormatedDataToString(DINGauge,
-                        _Utility->txtData[DINGauge].min);
     }
+    tmpData.Current = _Utility->FormatedDataToString(DINGauge, Gauge);
+    tmpData.Maximum = _Utility->FormatedDataToString(DINGauge,
+                    _Utility->txtData[DINGauge].max);
+    tmpData.Minimum = _Utility->FormatedDataToString(DINGauge,
+                    _Utility->txtData[DINGauge].min);
     return tmpData;
 }
 

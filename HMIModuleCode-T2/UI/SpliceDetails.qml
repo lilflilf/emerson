@@ -1006,6 +1006,7 @@ Item {
             height: 40
             visible: false
             onClicked: {
+                wireModel.createNew()
                 addWire()
             }
         }

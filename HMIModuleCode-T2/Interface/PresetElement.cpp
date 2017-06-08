@@ -216,22 +216,22 @@ bool PresetElement::CalculateSpliceData()
     int TempMaxWidth;
     bool bResult = true;
     float Area = (float)CrossSection/100;
-    unsigned int Index = -1;
-    if ((Area >= _Interface->StatusData.WeldSettings4Build[0].MinRange) &&
-        (Area <= _Interface->StatusData.WeldSettings4Build[0].MaxRange))
-        Index = 0;
-    else if((Area >= _Interface->StatusData.WeldSettings4Build[1].MinRange) &&
-        (Area <= _Interface->StatusData.WeldSettings4Build[1].MaxRange))
-        Index = 1;
-    else if((Area >= _Interface->StatusData.WeldSettings4Build[2].MinRange) &&
-        (Area <= _Interface->StatusData.WeldSettings4Build[2].MaxRange))
-        Index = 2;
-    else if((Area >= _Interface->StatusData.WeldSettings4Build[3].MinRange) &&
-        (Area <= _Interface->StatusData.WeldSettings4Build[3].MaxRange))
-        Index = 3;
+    unsigned int Index = Status_Data::RANGENONE;
+    if ((Area >= _Interface->StatusData.WeldSettings4Build[Status_Data::RANGE1].MinRange) &&
+        (Area <= _Interface->StatusData.WeldSettings4Build[Status_Data::RANGE1].MaxRange))
+        Index = Status_Data::RANGE1;
+    else if((Area >= _Interface->StatusData.WeldSettings4Build[Status_Data::RANGE2].MinRange) &&
+        (Area <= _Interface->StatusData.WeldSettings4Build[Status_Data::RANGE2].MaxRange))
+        Index = Status_Data::RANGE2;
+    else if((Area >= _Interface->StatusData.WeldSettings4Build[Status_Data::RANGE3].MinRange) &&
+        (Area <= _Interface->StatusData.WeldSettings4Build[Status_Data::RANGE3].MaxRange))
+        Index = Status_Data::RANGE3;
+    else if((Area >= _Interface->StatusData.WeldSettings4Build[Status_Data::RANGE4].MinRange) &&
+        (Area <= _Interface->StatusData.WeldSettings4Build[Status_Data::RANGE4].MaxRange))
+        Index = Status_Data::RANGE4;
     else
     {
-        Index = -1;
+        Index = Status_Data::RANGENONE;
         bResult = false;
 
     }
@@ -259,7 +259,7 @@ bool PresetElement::CalculateSpliceData()
         double SqrtArea = sqrt(Area);
         WeldSettings.BasicSetting.Width =
             (int)(100 * SqrtArea *
-                  _Interface->StatusData.WeldSettings4Build[3 + Index].Multplier);
+                  _Interface->StatusData.WeldSettings4Build[WidthR1 + Index].Multplier);
         if (WeldSettings.BasicSetting.Width < MINWIDTH)
             WeldSettings.BasicSetting.Width = MINWIDTH;
         if ((_Interface->StatusData.MachineType != ACT2032) &&
@@ -270,8 +270,8 @@ bool PresetElement::CalculateSpliceData()
         if (WeldSettings.BasicSetting.Width > TempMaxWidth)
             WeldSettings.BasicSetting.Width = TempMaxWidth;
 
-        float Pressure = Area * _Interface->StatusData.WeldSettings4Build[6 + Index].Multplier +
-                _Interface->StatusData.WeldSettings4Build[6 + Index].Offset;
+        float Pressure = Area * _Interface->StatusData.WeldSettings4Build[PressureR1 + Index].Multplier +
+                _Interface->StatusData.WeldSettings4Build[PressureR1 + Index].Offset;
         WeldSettings.BasicSetting.Pressure = (int)(10 * Pressure);
         if (WeldSettings.BasicSetting.Pressure < MINWELDPRESSURE)
             WeldSettings.BasicSetting.Pressure = MINWELDPRESSURE;
@@ -285,8 +285,8 @@ bool PresetElement::CalculateSpliceData()
             WeldSettings.BasicSetting.TrigPres = MAXTRIGPRESSURE;
 
         WeldSettings.BasicSetting.Amplitude =
-                (int)(Area * _Interface->StatusData.WeldSettings4Build[9 + Index].Multplier +
-                _Interface->StatusData.WeldSettings4Build[9 + Index].Offset);
+                (int)(Area * _Interface->StatusData.WeldSettings4Build[AmplitudeR1 + Index].Multplier +
+                _Interface->StatusData.WeldSettings4Build[AmplitudeR1 + Index].Offset);
         if (WeldSettings.BasicSetting.Amplitude < MINAMPLITUDE)
             WeldSettings.BasicSetting.Amplitude = MINAMPLITUDE;
         if (WeldSettings.BasicSetting.Amplitude > _Interface->StatusData.Soft_Settings.Horn_Calibrate)

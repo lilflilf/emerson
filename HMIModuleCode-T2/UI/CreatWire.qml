@@ -106,6 +106,7 @@ Item {
 
     function editSplice(editWireList)
     {
+        creatWire.bIsEditSplice = true
         var list = new Array
         list = editWireList
         for (var i = 0; i < list.length;i++)
@@ -1912,8 +1913,6 @@ Item {
                 spliceModel.setStructValue("CutterPeakPower",cutterModel.get(1).switchState == "left" ? true : false)
                 spliceModel.setStructValue("CutterPreHeight",cutterModel.get(2).switchState == "left" ? true : false)
                 spliceModel.setStructValue("CutterPostHeight",cutterModel.get(3).switchState == "left" ? true : false)
-
-
 
                 var spliceId = spliceModel.saveSplice(creatWire.bIsEditSplice)
                 wireModel.updateSpliceIdToWire(list, spliceId)

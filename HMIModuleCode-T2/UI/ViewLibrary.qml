@@ -247,6 +247,7 @@ Item {
                             headRepeater.model = wireTitleModel
                             viewLib.count = wireTitleModel.count
                             button2.x = 0
+                            wireModel.setTemplateModelList()
                             listView.model = wireModel
                         }
                         else {
