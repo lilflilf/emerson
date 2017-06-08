@@ -3439,8 +3439,6 @@ int WireModel::insertValueToTable(QString type,QString wireName,int wireId,int o
     else if (moduleType == "JIS")
         insertWire.TypeOfModule = WireElement::ModuleType::JIS;
 
-    qDebug() << "000000000000000000000000000000" << moduleType;
-
     if (type == "insert"){
         insertWireId = m_wireAdaptor->InsertRecordIntoTable(&insertWire);
         setModelList();
@@ -3497,8 +3495,11 @@ void WireModel::addFromLibrary(int wireId)
 QVariant WireModel::getStructValue(QString key)
 {
     QHash<QString, QVariant> WireModelHash;
-    WireModelHash.insert("Gauge",wireElement.Gauge);
-    WireModelHash.insert("AWG",wireElement.GaugeAWG);
+    int awg,gauge;
+    QString value = variantToString->GaugeToString(wireElement.Gauge, wireElement.GaugeAWG).Current;
+    stringToVariant->GaugeToInt(value,awg,gauge);
+    WireModelHash.insert("Gauge",gauge);
+    WireModelHash.insert("AWG",awg);
     int metalType;
     if (wireElement.TypeOfWire == 0) {
         metalType = 0;
