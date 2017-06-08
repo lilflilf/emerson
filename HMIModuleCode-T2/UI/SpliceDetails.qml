@@ -1035,7 +1035,7 @@ Item {
             property var position: "leftList"
             property alias isCheck: radioButtonLeft.checked
             property alias myWireName: myWireNameLeft.text
-            property var myGauge: 10
+            property var myGauge: gauge//10
             property var myAwg: 37
             property var myWireType: 1
             property var myStripeColor: tripecolor.color //""
@@ -1048,7 +1048,7 @@ Item {
             Rectangle {
                 id: leftLine
                 width: leftItem.position == "leftList" ? index % 2 && index < (listModelLeft.count - 10) * 2 ? myLineLength + 150 : myLineLength : 200
-                height: myText < 1 ? 1 : myText
+                height: myGauge / 100 < 1 ? 1 : myGauge / 100
                 anchors.right: parent.right
                 anchors.verticalCenter: leftRec.verticalCenter
             }
@@ -1190,7 +1190,7 @@ Item {
             property var position: "rightList"
             property alias isCheck: radioButton.checked
             property alias myWireName: myWireNameRight.text
-            property var myGauge: 10
+            property var myGauge: gauge //10
             property var myAwg: 37
             property var myWireType: 1 // wireTypeText.text
             property var myStripeColor:  tripecolor.color //"" // stripeColor.color
@@ -1203,7 +1203,7 @@ Item {
             Rectangle {
                 id: rightLine
                 width: 200 //rightItem.position == "rightList" ? index % 2 && index < (listModelRight.count - 10) * 2 ? myLineLength + 150 : myLineLength : 200
-                height: myText < 1 ? 1 : myText// > 5 ? 12 : 6
+                height: myGauge / 100 < 1 ? 1 : myGauge / 100 // > 5 ? 12 : 6
                 anchors.left: parent.left
                 anchors.verticalCenter: rightRec.verticalCenter
             }
