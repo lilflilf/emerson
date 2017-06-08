@@ -154,6 +154,7 @@ Item {
     function weldDefaultUpdate()
     {
         var stringArray = new Array();
+        var i;
         for (i = 0;i < formulaModel.count;i++ )
         {
             if (i != 1 && i != 5 && i != 9 && i != 13)

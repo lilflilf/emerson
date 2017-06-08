@@ -208,9 +208,27 @@ Item {
             }
             else if (event.key >= Qt.Key_0 && event.key <= Qt.Key_9)
             {
+
                 tempValue += event.key - 48
+                inputText = tempValue + hmiAdaptor.getStringUnit(keyBoardnum.minvalue)
+
+//                if (hmiAdaptor.keyNumStringMatch(keyBoardnum.minvalue,keyBoardnum.maxvalue,keyBoardnum.tempValue)) {
+//                    inputText = tempValue + hmiAdaptor.getStringUnit(keyBoardnum.minvalue)
+//                } else {
+//                    timer.running = true
+//                    var Temp = ""
+//                    for (var j = 0; j < tempValue.length-1;j++) {
+//                        Temp += tempValue.charAt(j)
+//                    }
+//                    tempValue = Temp
+//                }
+            }
+            else if (event.key == Qt.Key_Return)
+            {
+                if (newvalue.text == "")
+                    return;
                 if (hmiAdaptor.keyNumStringMatch(keyBoardnum.minvalue,keyBoardnum.maxvalue,keyBoardnum.tempValue)) {
-                    inputText = tempValue + hmiAdaptor.getStringUnit(keyBoardnum.minvalue)
+                    currentClickIndex(15)
                 } else {
                     timer.running = true
                     var Temp = ""
@@ -219,12 +237,6 @@ Item {
                     }
                     tempValue = Temp
                 }
-            }
-            else if (event.key == Qt.Key_Return)
-            {
-                if (newvalue.text == "")
-                    return;
-                currentClickIndex(15)
             }
             else if (event.key == Qt.Key_Escape)
             {
@@ -267,11 +279,9 @@ Item {
                         } else if (index == 15) {
                             if (newvalue.text == "")
                                 return;
-                            currentClickIndex(index)
-                        } else {
-                            tempValue += listModel.get(index).value
+
                             if (hmiAdaptor.keyNumStringMatch(keyBoardnum.minvalue,keyBoardnum.maxvalue,keyBoardnum.tempValue)) {
-                                inputText = tempValue + hmiAdaptor.getStringUnit(keyBoardnum.minvalue)
+                                currentClickIndex(index)
                             } else {
                                 timer.running = true
                                 var Temp = ""
@@ -280,6 +290,20 @@ Item {
                                 }
                                 tempValue = Temp
                             }
+                        } else {
+                            tempValue += listModel.get(index).value
+                            inputText = tempValue + hmiAdaptor.getStringUnit(keyBoardnum.minvalue)
+
+//                            if (hmiAdaptor.keyNumStringMatch(keyBoardnum.minvalue,keyBoardnum.maxvalue,keyBoardnum.tempValue)) {
+//                                inputText = tempValue + hmiAdaptor.getStringUnit(keyBoardnum.minvalue)
+//                            } else {
+//                                timer.running = true
+//                                var Temp = ""
+//                                for (var j = 0; j < tempValue.length-1;j++) {
+//                                    Temp += tempValue.charAt(j)
+//                                }
+//                                tempValue = Temp
+//                            }
                         }
                     }
                 }
