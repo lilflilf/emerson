@@ -2379,6 +2379,15 @@ QVariant OperatorModel::data(const QModelIndex &index, int role) const
         UNUSED(rowId);
         QMap<int,QString>::iterator it; //遍历map
         int i = 0;
+        OperatorElement myOperator;
+        for ( it = operators->begin(); it != operators->end(); ++it ) {
+            m_operatorAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myOperator);
+            if (myOperator.PermissionLevel == OperatorElement::BRANSON)
+            {
+                operators->remove(it.key());
+                break;
+            }
+        }
         for ( it = operators->begin(); it != operators->end(); ++it ) {
             if (i == index.row()){
                 rowId = it.key();
@@ -2388,7 +2397,6 @@ QVariant OperatorModel::data(const QModelIndex &index, int role) const
                 i++;
             }
         }
-        OperatorElement myOperator;
         m_operatorAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myOperator);
         if (columnIdx == 0)
             value = QVariant::fromValue(myOperator.OperatorID);

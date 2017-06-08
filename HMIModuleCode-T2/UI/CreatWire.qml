@@ -52,12 +52,13 @@ Item {
             editSplice(list)
             mainRoot.bIsEditSplice = false
 
-            firstComeIn = false
         }
         if (mainRoot.bIsTest)
         {
             countDown.start()
         }
+        firstComeIn = false
+
     }
 
     Component.onDestruction: {
@@ -1653,6 +1654,7 @@ Item {
             color: "white"
             opacity: 0.5
             onTextChanged: {
+
                 if (firstComeIn)
                     return
                 if (crossSection)

@@ -755,11 +755,11 @@ bool HmiAdaptor::login(QString passwd)
         if (isLog)
             interfaceClass->CurrentOperator = myOperator;
     }
-    else
-    {
-        if (passwd == "0000")
-            isLog = true;
-    }
+//    else
+//    {
+//        if (passwd == "0000")
+//            isLog = true;
+//    }
 
     return isLog;
 }
