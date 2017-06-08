@@ -81,6 +81,108 @@ void WeldDefaults::FormulaUpdate()
     QString str;
     InterfaceClass* _Interface = InterfaceClass::Instance();
     UtilityClass* _Utility = UtilityClass::Instance();
+
+    StatusData2FormulaRangeRef();
+    for(int i = EnergyR1; i < FormulaRangSize; i++)
+    {
+        area = _Utility->StringToFormatedData(DINFormulaArea,
+            CurrentWeldSettings.WeldSettingFormula[i].Range.Current);
+        switch(i)
+        {
+        case EnergyR1:
+        case WidthR1:
+        case PressureR1:
+        case AmplitudeR1:
+            if(area != _Interface->StatusData.WeldSettings4Build[i].MinRange)
+            {
+                FormulaRangesRef[RANGE1].MinimumRange = area;
+            }
+            break;
+        case EnergyR2:
+        case WidthR2:
+        case PressureR2:
+        case AmplitudeR2:
+            if(area != _Interface->StatusData.WeldSettings4Build[i].MinRange)
+            {
+                FormulaRangesRef[RANGE2].MinimumRange = area;
+            }
+            if((area - 0.01) != _Interface->StatusData.WeldSettings4Build[i-1].MaxRange)
+            {
+                FormulaRangesRef[RANGE1].MaximumRange = area - 0.01;
+            }
+            break;
+        case EnergyR3:
+        case WidthR3:
+        case PressureR3:
+        case AmplitudeR3:
+            if(area != _Interface->StatusData.WeldSettings4Build[i].MinRange)
+            {
+                FormulaRangesRef[RANGE3].MinimumRange = area;
+            }
+            if((area - 0.01) != _Interface->StatusData.WeldSettings4Build[i-1].MaxRange)
+            {
+                FormulaRangesRef[RANGE2].MaximumRange = area - 0.01;
+            }
+            break;
+        case EnergyR4:
+        case WidthR4:
+        case PressureR4:
+        case AmplitudeR4:
+            if(area != _Interface->StatusData.WeldSettings4Build[i].MinRange)
+            {
+                FormulaRangesRef[RANGE4].MinimumRange = area;
+            }
+            if((area - 0.01) != _Interface->StatusData.WeldSettings4Build[i-1].MaxRange)
+            {
+                FormulaRangesRef[RANGE3].MaximumRange = area - 0.01;
+            }
+            break;
+        }
+        switch (i)
+        {
+        case EnergyR1:
+        case EnergyR2:
+        case EnergyR3:
+        case EnergyR4:
+            offset = _Utility->StringToFormatedData(DINFormulaEnergyOffset,
+                CurrentWeldSettings.WeldSettingFormula[i].Offset.Current);
+            multiplier = _Utility->StringToFormatedData(DINFormulaEnergyMult,
+                CurrentWeldSettings.WeldSettingFormula[i].Multiplier.Current);
+            break;
+        case WidthR1:
+        case WidthR2:
+        case WidthR3:
+        case WidthR4:
+            offset = _Utility->StringToFormatedData(DINFormulaWidthOffset,
+                 CurrentWeldSettings.WeldSettingFormula[i].Offset.Current);
+            multiplier = _Utility->StringToFormatedData(DINFormulaWidthMult,
+                 CurrentWeldSettings.WeldSettingFormula[i].Multiplier.Current);
+            break;
+        case PressureR1:
+        case PressureR2:
+        case PressureR3:
+        case PressureR4:
+            offset = _Utility->StringToFormatedData(DINFormulaPressureOffset,
+                 CurrentWeldSettings.WeldSettingFormula[i].Offset.Current);
+            multiplier = _Utility->StringToFormatedData(DINFormulaPressureMult,
+                 CurrentWeldSettings.WeldSettingFormula[i].Multiplier.Current);
+            break;
+        case AmplitudeR1:
+        case AmplitudeR2:
+        case AmplitudeR3:
+        case AmplitudeR4:
+            offset = _Utility->StringToFormatedData(DINFormulaAmplitudeOffset,
+                 CurrentWeldSettings.WeldSettingFormula[i].Offset.Current);
+            multiplier = _Utility->StringToFormatedData(DINFormulaAmplitudeMult,
+                 CurrentWeldSettings.WeldSettingFormula[i].Multiplier.Current);
+            break;
+        }
+        _Interface->StatusData.WeldSettings4Build[i].Offset = offset;
+        _Interface->StatusData.WeldSettings4Build[i].Multplier = multiplier;
+
+    }
+    FormulaRangeRef2StatusData();
+
     for(int i = EnergyR1; i < FormulaRangSize; i++)
     {
         area = _Interface->StatusData.WeldSettings4Build[i].MinRange;
