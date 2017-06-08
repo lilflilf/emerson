@@ -56,7 +56,7 @@
 #define MINWIREAREA      10
 #define MAXWIREAREA      4000                 //* 100
 #define MINWIREAREA_AWG  5
-#define MAXWIREAREA_AWG  37
+#define MAXWIREAREA_AWG  27
 #define MINWIREREF       0.1
 #define MAXWIREREF       40
 #define DEFWIREAREA      10

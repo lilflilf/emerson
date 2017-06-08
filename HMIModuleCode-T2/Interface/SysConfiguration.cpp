@@ -180,6 +180,14 @@ bool Status_Data::ReadStatusDataFromQSetting()
     CreatedDate = settings.value("CreatedDate").value<QString>();
     OperatorName = settings.value("OperatorName").value<QString>();
 
+    settings.beginGroup("AWG2AreaTable");
+    for(int i = 0; i< 40; i++)
+    {
+        AWGToAreaTable.insert(i + 1,
+            settings.value(QString::number(i+1,10) + "AWG").value<int>());
+    }
+    settings.endGroup();
+
     settings.beginGroup("Soft_Settings");
     int i_tmp = settings.value("Lang_Support").value<int>();
     Soft_Settings.Lang_Support = (enum LangSupport)i_tmp;
@@ -363,6 +371,16 @@ void Status_Data::WriteStatusDataToQSetting()
     settings.setValue("RevCode", RevCode);
     settings.setValue("CreatedDate", CreatedDate);
     settings.setValue("OperatorName", OperatorName);
+
+    settings.beginGroup("AWG2AreaTable");
+    QString AWGStr;
+    QMap<int, int>::const_iterator iterator = AWGToAreaTable.constBegin();
+    while (iterator != AWGToAreaTable.constEnd()) {
+        AWGStr = QString::number(iterator.key(),10) + "AWG";
+        settings.setValue(AWGStr, iterator.value());
+        ++iterator;
+    }
+    settings.endGroup();
 
     settings.beginGroup("Soft_Settings");
     settings.setValue("Lang_Support", Soft_Settings.Lang_Support);

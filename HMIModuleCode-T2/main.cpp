@@ -64,7 +64,6 @@ int main(int argc, char *argv[])
 
     M10INI *pM10INI = M10INI::Instance();
     pM10INI->CheckBransonFolder();
-    pM10INI->Init_AWGToMMTable();
     pM10INI->Get_INI_File();
 
     HmiAdaptor *hmiAdaptor = new HmiAdaptor();

@@ -10,7 +10,7 @@ WireElement::WireElement()
     Stripe.Color = "#FFC0CB";
     Stripe.TypeOfStripe = STRIPE::Horizontal;
     Gauge = 10;
-    GaugeAWG = 37;
+    GaugeAWG = 27;
     TypeOfWire = Copper;
     TypeOfModule = NA;
     Side = Right;

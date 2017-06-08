@@ -258,69 +258,43 @@ void M10INI::SetDefaultPassword(Status_Data* _DataStruct)
 
 void M10INI::SetAWGToMMTable(Status_Data* _DataStruct)
 {
-    QString sPathName = ConfigFilesPath + AWG2MM_TABLE_FILE;
-    QSettings settings(sPathName, QSettings::IniFormat);
-    settings.beginGroup("AWG2AreaTable");
-    for(int i = 0; i< 40; i++)
-    {
-        _DataStruct->AWGToAreaTable.insert(i + 1,
-            settings.value(QString::number(i+1,10) + "AWG").value<int>());
-//        qDebug()<<"i: "<<(i+1)<<QString::number(i+1,10) + "AWG"
-//                << settings.value(QString::number(i+1,10) + "AWG").value<int>();
-    }
-
-    settings.endGroup();
-}
-
-void M10INI::Init_AWGToMMTable()
-{
-    QString sPathName = ConfigFilesPath + AWG2MM_TABLE_FILE;
-
-    //Check if file exists, if not, create it.
-    QDir dir;
-    if (dir.exists(sPathName) == false)
-    {
-        QSettings settings(sPathName, QSettings::IniFormat);
-        settings.beginGroup("AWG2AreaTable");
-        settings.setValue("1AWG", "4241");
-        settings.setValue("2AWG", "3363");
-        settings.setValue("3AWG", "2665");
-        settings.setValue("4AWG", "2115");
-        settings.setValue("5AWG", "1677");
-        settings.setValue("6AWG", "1330");
-        settings.setValue("7AWG", "1055");
-        settings.setValue("8AWG", "837");
-        settings.setValue("9AWG", "663");
-        settings.setValue("10AWG", "526");
-        settings.setValue("11AWG", "417");
-        settings.setValue("12AWG", "331");
-        settings.setValue("13AWG", "262");
-        settings.setValue("14AWG", "208");
-        settings.setValue("15AWG", "165");
-        settings.setValue("16AWG", "131");
-        settings.setValue("17AWG", "104");
-        settings.setValue("18AWG", "82");
-        settings.setValue("19AWG", "65");
-        settings.setValue("20AWG", "52");
-        settings.setValue("21AWG", "41");
-        settings.setValue("22AWG", "33");
-        settings.setValue("23AWG", "26");
-        settings.setValue("24AWG", "20");
-        settings.setValue("25AWG", "16");
-        settings.setValue("26AWG", "13");
-        settings.setValue("27AWG", "10");
-        settings.setValue("28AWG", "8");
-        settings.setValue("29AWG", "7");
-        settings.setValue("30AWG", "5");
-        settings.setValue("31AWG", "4");
-        settings.setValue("32AWG", "3");
-        settings.setValue("33AWG", "2");
-        settings.setValue("34AWG", "2");
-        settings.setValue("35AWG", "1");
-        settings.setValue("36AWG", "1");
-        settings.setValue("37AWG", "1");
-        settings.endGroup();
-    }
+    _DataStruct->AWGToAreaTable.insert(1/*1AWG*/, 4241);
+    _DataStruct->AWGToAreaTable.insert(2/*2AWG*/, 3363);
+    _DataStruct->AWGToAreaTable.insert(3/*3AWG*/, 2665);
+    _DataStruct->AWGToAreaTable.insert(4/*4AWG*/, 2115);
+    _DataStruct->AWGToAreaTable.insert(5/*5AWG*/, 1677);
+    _DataStruct->AWGToAreaTable.insert(6/*6AWG*/, 1330);
+    _DataStruct->AWGToAreaTable.insert(7/*7AWG*/, 1055);
+    _DataStruct->AWGToAreaTable.insert(8/*8AWG*/, 837);
+    _DataStruct->AWGToAreaTable.insert(9/*9AWG*/, 663);
+    _DataStruct->AWGToAreaTable.insert(10/*10AWG*/, 526);
+    _DataStruct->AWGToAreaTable.insert(11/*11AWG*/, 417);
+    _DataStruct->AWGToAreaTable.insert(12/*12AWG*/, 331);
+    _DataStruct->AWGToAreaTable.insert(13/*13AWG*/, 262);
+    _DataStruct->AWGToAreaTable.insert(14/*14AWG*/, 208);
+    _DataStruct->AWGToAreaTable.insert(15/*15AWG*/, 165);
+    _DataStruct->AWGToAreaTable.insert(16/*16AWG*/, 131);
+    _DataStruct->AWGToAreaTable.insert(17/*17AWG*/, 104);
+    _DataStruct->AWGToAreaTable.insert(18/*18AWG*/, 82);
+    _DataStruct->AWGToAreaTable.insert(19/*19AWG*/, 65);
+    _DataStruct->AWGToAreaTable.insert(20/*20AWG*/, 52);
+    _DataStruct->AWGToAreaTable.insert(21/*21AWG*/, 41);
+    _DataStruct->AWGToAreaTable.insert(22/*22AWG*/, 33);
+    _DataStruct->AWGToAreaTable.insert(23/*23AWG*/, 26);
+    _DataStruct->AWGToAreaTable.insert(24/*24AWG*/, 20);
+    _DataStruct->AWGToAreaTable.insert(25/*25AWG*/, 16);
+    _DataStruct->AWGToAreaTable.insert(26/*26AWG*/, 13);
+    _DataStruct->AWGToAreaTable.insert(27/*27AWG*/, 10);
+    _DataStruct->AWGToAreaTable.insert(28/*28AWG*/, 8);
+    _DataStruct->AWGToAreaTable.insert(29/*29AWG*/, 7);
+    _DataStruct->AWGToAreaTable.insert(30/*30AWG*/, 5);
+    _DataStruct->AWGToAreaTable.insert(31/*31AWG*/, 4);
+    _DataStruct->AWGToAreaTable.insert(32/*32AWG*/, 3);
+    _DataStruct->AWGToAreaTable.insert(33/*33AWG*/, 2);
+    _DataStruct->AWGToAreaTable.insert(34/*34AWG*/, 2);
+    _DataStruct->AWGToAreaTable.insert(35/*35AWG*/, 1);
+    _DataStruct->AWGToAreaTable.insert(36/*36AWG*/, 1);
+    _DataStruct->AWGToAreaTable.insert(37/*37AWG*/, 1);
 }
 
 void M10INI::SetShrinkTubeDefaults(Status_Data* _DataStruct)

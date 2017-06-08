@@ -38,7 +38,6 @@ public:
     bool UpdateInfoWithController();
     static void OfflineInitialization(void*);
 private:
-    void CheckAWGAreaTable();
     void CheckVersionFile(VersionList CurrVersions);
 public:
     static MODstart* Instance();

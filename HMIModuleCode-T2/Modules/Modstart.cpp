@@ -489,12 +489,6 @@ void MODstart::CheckVersionFile(VersionList CurrVersions)
     }
 }
 
-void MODstart::CheckAWGAreaTable()
-{
-    M10INI* _M10INI = M10INI::Instance();
-    _M10INI->Init_AWGToMMTable();
-}
-
 //This funciton only for the Offline Initialization in case of the controller is not detected
 void MODstart::OfflineInitialization(void* ptr)
 {
