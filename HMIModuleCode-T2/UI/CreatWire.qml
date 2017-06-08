@@ -1917,8 +1917,6 @@ Item {
                 spliceModel.setStructValue("CutterPreHeight",cutterModel.get(2).switchState == "left" ? true : false)
                 spliceModel.setStructValue("CutterPostHeight",cutterModel.get(3).switchState == "left" ? true : false)
 
-
-
                 var spliceId = spliceModel.saveSplice(creatWire.bIsEditSplice)
                 wireModel.updateSpliceIdToWire(list, spliceId)
                 if(creatWire.bIsFromLib)

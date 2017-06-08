@@ -47,15 +47,6 @@ struct FormulaRangeRef
 class WeldDefaults : public QObject
 {
     Q_OBJECT
-public:
-    enum RANGE_ITEM
-    {
-        RANGE1,
-        RANGE2,
-        RANGE3,
-        RANGE4,
-    };
-
 private:
     struct FormulaRangeRef FormulaRangesRef[4];
 private:

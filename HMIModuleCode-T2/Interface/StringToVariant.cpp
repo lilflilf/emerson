@@ -34,7 +34,7 @@ bool StringToVariant::GaugeToInt(QString strGauge, int &GaugeAWG, int &GaugeMM)
             GaugeMM = 0;
     }else if(strGauge.contains("mm²") == true)
     {
-        GaugeAWG = 0;
+        GaugeAWG = -1;
         GaugeMM = (int)_Utility->StringToFormatedData(DINGauge, strGauge);
         bResult = true;
     }
