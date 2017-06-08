@@ -1014,6 +1014,7 @@ Item {
                     } else {
                         gridRepeater.itemAt(formulaSetting.selectIndex).localbordercolor = "#0079c1"
                         gridRepeater.model.set(formulaSetting.selectIndex,{"currenValue":keyNum.inputText})
+                        hmiAdaptor.weldDefaultFormulaUpdate()
                     }
                     backGround.visible = false
                     keyNum.visible = false
@@ -1046,6 +1047,7 @@ Item {
             } else {
                 if (keyNum.inputText != "") {
                     gridRepeater.model.set(formulaSetting.selectIndex,{"currenValue":keyNum.inputText})
+                    hmiAdaptor.weldDefaultFormulaUpdate()
                 }
             }
         }
