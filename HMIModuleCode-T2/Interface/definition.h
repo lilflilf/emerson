@@ -23,8 +23,8 @@ public:
     enum StripeType{
         Horizontal,
         Slash,
-        OneVertical,
-        TwoVertical,
+        Vertical,
+        None,
     };
     enum StripeType TypeOfStripe;
     QString Color;

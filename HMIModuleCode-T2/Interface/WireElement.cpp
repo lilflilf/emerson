@@ -8,7 +8,7 @@ WireElement::WireElement()
     OperatorID = -1;
     Color = "#FFC0CB";
     Stripe.Color = "#FFC0CB";
-    Stripe.TypeOfStripe = STRIPE::Horizontal;
+    Stripe.TypeOfStripe = STRIPE::None;
     Gauge = 10;
     GaugeAWG = 27;
     TypeOfWire = Copper;
