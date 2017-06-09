@@ -382,6 +382,7 @@ Item {
         anchors.left: operateTitle.left
         anchors.topMargin: 15
         centerVisable: false
+        bIsOperate: true
     }
 
     Text {

@@ -12,6 +12,7 @@ Item {
     property alias centerVisable: centerButton.visible
     property alias topLeft: topLeft
 
+    property bool bIsOperate: false
     property var selectColor: ""
     property var selectText: ""
     property var selectDirection: ""
@@ -1162,7 +1163,10 @@ Item {
                 horizontalAlignment: Qt.AlignRight
                 anchors.rightMargin: 5
                 font.family: "arial"
-                font.pixelSize: myWireNameLeft.text.length > 10 ? 10 : 16 //leftRect2.height > 40 ? 16 : leftRect2.height / 2 : 16
+                font.pixelSize: bIsOperate ? (myWireNameLeft.text.length > 15 ? 8 :
+                                myWireNameLeft.text.length > 10 ? 10 :
+                                myWireNameLeft.text.length > 4 ? 14 : 16) :
+                               (myWireNameLeft.text.length > 10 ? 10 : 16)
                 color: "white"
                 text: wireName
                 clip: true
@@ -1330,7 +1334,10 @@ Item {
                 horizontalAlignment: Qt.AlignLeft
                 anchors.leftMargin: 5
                 font.family: "arial"
-                font.pixelSize: myWireNameRight.text.length > 10 ? 10 : 16 //rightRect2.height > 40 ? 16 :  rightRect2.height / 2 : 16
+                font.pixelSize: bIsOperate ? (myWireNameRight.text.length > 15 ? 8 :
+                                myWireNameRight.text.length > 10 ? 10 :
+                                myWireNameRight.text.length > 4 ? 14 : 16) :
+                                (myWireNameRight.text.length > 10 ? 10 : 16)
                 color: "white"
                 text: wireName
                 clip: true
