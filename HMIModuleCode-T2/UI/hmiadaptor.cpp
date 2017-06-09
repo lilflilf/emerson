@@ -867,7 +867,8 @@ QString HmiAdaptor::copyFileToPath(QString source)
     bool reb;
     if (source.contains("file:///"))
         source = source.mid(8);
-    QString toPath = TOPATH + QDateTime::currentDateTime().toString("yyMMddhhmmss") + ".png";
+    QString type = source.right(4);
+    QString toPath = TOPATH + QDateTime::currentDateTime().toString("yyMMddhhmmss") + type;
     reb = QFile::copy(source,toPath);
     if (reb)
         return toPath;

@@ -11,7 +11,7 @@ FileDialog {
     signal signalChoseFile(var fileName)
     title: qsTr("Please choose a file")
     folder: shortcuts.home
-    nameFilters: [ "Image files (*.jpg *.png)", "All files (*)" ]
+    nameFilters: [ "Image files (*.jpg *.png *.bmp)", "All files (*)" ]
     onAccepted: {
         console.log("You chose: " + fileDialog.fileUrls)
         signalChoseFile(fileDialog.fileUrls)
