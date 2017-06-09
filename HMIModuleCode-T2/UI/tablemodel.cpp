@@ -872,35 +872,35 @@ QString SplicesModel::getStructValue(QString valueKey, QString valueType)
     }
     else if (valueKey == "Step-Time") {
         if (valueType == "current")
-            ResultStr = variantToString->PreHeightPlusToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.TimeToStep).Current;
+            ResultStr = variantToString->StepTimeToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.TimeToStep).Current;
         else if (valueType == "max")
-            ResultStr = variantToString->PreHeightPlusToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.TimeToStep).Maximum;
+            ResultStr = variantToString->StepTimeToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.TimeToStep).Maximum;
         else if (valueType == "min")
-            ResultStr = variantToString->PreHeightPlusToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.TimeToStep).Minimum;
+            ResultStr = variantToString->StepTimeToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.TimeToStep).Minimum;
     }
     else if (valueKey == "Step-Power") {
         if (valueType == "current")
-            ResultStr = variantToString->PreHeightPlusToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.PowerToStep).Current;
+            ResultStr = variantToString->StepPowerToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.PowerToStep).Current;
         else if (valueType == "max")
-            ResultStr = variantToString->PreHeightPlusToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.PowerToStep).Maximum;
+            ResultStr = variantToString->StepPowerToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.PowerToStep).Maximum;
         else if (valueType == "min")
-            ResultStr = variantToString->PreHeightPlusToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.PowerToStep).Minimum;
+            ResultStr = variantToString->StepPowerToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.PowerToStep).Minimum;
     }
     else if (valueKey == "Amplitude A") {
         if (valueType == "current")
-            ResultStr = variantToString->PreHeightPlusToString(presetElement.WeldSettings.BasicSetting.Amplitude).Current;
+            ResultStr = variantToString->Amplitude2ToString(presetElement.WeldSettings.BasicSetting.Amplitude).Current;
         else if (valueType == "max")
-            ResultStr = variantToString->PreHeightPlusToString(presetElement.WeldSettings.BasicSetting.Amplitude).Maximum;
+            ResultStr = variantToString->Amplitude2ToString(presetElement.WeldSettings.BasicSetting.Amplitude).Maximum;
         else if (valueType == "min")
-            ResultStr = variantToString->PreHeightPlusToString(presetElement.WeldSettings.BasicSetting.Amplitude).Minimum;
+            ResultStr = variantToString->Amplitude2ToString(presetElement.WeldSettings.BasicSetting.Amplitude).Minimum;
     }
     else if (valueKey == "Amplitude B") {
         if (valueType == "current")
-            ResultStr = variantToString->PreHeightPlusToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.Amplitude2).Current;
+            ResultStr = variantToString->Amplitude2ToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.Amplitude2).Current;
         else if (valueType == "max")
-            ResultStr = variantToString->PreHeightPlusToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.Amplitude2).Maximum;
+            ResultStr = variantToString->Amplitude2ToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.Amplitude2).Maximum;
         else if (valueType == "min")
-            ResultStr = variantToString->PreHeightPlusToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.Amplitude2).Minimum;
+            ResultStr = variantToString->Amplitude2ToString(presetElement.WeldSettings.AdvanceSetting.StepWeld.Amplitude2).Minimum;
     }
     else if (valueKey == "Pre Burst") {
         if (valueType == "current")

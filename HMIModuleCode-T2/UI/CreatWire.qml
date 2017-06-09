@@ -1719,10 +1719,15 @@ Item {
                 if (visible)
                     spliceImage.source = spliceModel.getStructValue("PicPath","") == " " ? "qrc:/images/images/bg.png" : spliceModel.getStructValue("PicPath","")
             }
+            Image {
+                anchors.fill: parent
+                source: "qrc:/images/images/bg.png"
+            }
 
             Image {
                 id: spliceImage
                 anchors.fill: parent
+//                source: "file:///C:/BransonData/Library/SpliceImage/Seed8.BMP"
 //                source: spliceModel.getStructValue("PicPath","") == " " ? "qrc:/images/images/bg.png" : spliceModel.getStructValue("PicPath","")
             }
             Text {
