@@ -1070,7 +1070,7 @@ Item {
                 Rectangle {
                     id: tripecolor
                     height: 5
-                    width: leftItem.position == "leftList" ? (stripeType == 2 ? parent.height : parent.width) : (myStripeType == 2 ? parent.height : parent.width)
+                    width: leftItem.position == "leftList" ? (stripeType == 2 ? parent.height : listModelLeft.count <= 5 ? parent.width : parent.width - 30) : (myStripeType == 2 ? parent.height : parent.width)
                     anchors.verticalCenter: parent.verticalCenter
                     color: leftItem.position == "leftList" ? stripeColor : myStripeColor
                     visible: leftItem.position == "leftList" ? (stripeType == 3 ? false : true) : (myStripeType == 3 ? false : true)
@@ -1239,16 +1239,15 @@ Item {
                 onColorChanged: {
                     mytext.color = colorReverse(rightRec.color.toString())
                 }
-
                 Rectangle {
                     id: tripecolor
                     height: 5
-                    width: rightItem.position == "rightList" ? (stripeType == 2 ? parent.height : parent.width) : (myStripeType == 2 ? parent.height : parent.width)
+                    width: rightItem.position == "rightList" ? (stripeType == 2 ? parent.height : listModelRight.count <= 5 ? parent.width : parent.width - 30) : (myStripeType == 2 ? parent.height : parent.width)
                     anchors.verticalCenter: parent.verticalCenter
                     color: rightItem.position == "rightList" ? stripeColor : myStripeColor
                     visible: rightItem.position == "rightList" ? (stripeType == 3 ? false : true) : (myStripeType == 3 ? false : true)
                     rotation: rightItem.position == "rightList" ? (stripeType == 0 ? 0 : stripeType == 1 ? 30 : stripeType == 2 ? 90 : 0) : (myStripeType == 0 ? 0 : myStripeType == 1 ? 30 : myStripeType == 2 ? 90 : 0)
-                    clip: false
+                    clip: true
                 }
 
                 MouseArea {

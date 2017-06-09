@@ -71,9 +71,21 @@ Item {
             clip: true
             inputSize: 20
             inputColor: "white"
-            inputText: fourLevelIdentifier[0]
+//            inputText: fourLevelIdentifier[0]
             enabled: false
+            Image {
+                anchors.centerIn: parent
+                source: "qrc:/images/images/keybutton.png"
+            }
         }
+
+//        Item {
+//            id: key
+//            anchors.verticalCenter: parent.verticalCenter
+//            width: (parent.width-40)/6
+//            height: Screen.height * 0.08
+
+//        }
 
         MyLineEdit {
             id: levelText1

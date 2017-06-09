@@ -77,7 +77,7 @@ Item {
                 width: 80
                 height: parent.height
                 onClicked: {
-                    contArea.visible = true
+                    contArea.visible = !contArea.visible
                 }
             }
         }
