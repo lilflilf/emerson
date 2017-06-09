@@ -3455,14 +3455,14 @@ int WireModel::insertValueToTable(QString type,QString wireName,int wireId,int o
     else if (type == "update") {
         WireElement wireTemp;
         m_wireAdaptor->QueryOneRecordFromTable(wireId,&wireTemp);
-        qDebug()<<"insertValueToTable"<<insertWire.SpliceID<<wireTemp.SpliceID<<wireId;
         if (wireTemp == insertWire) {
             return wireId;
         }
         else
         {
             insertWire.SpliceID = wireTemp.SpliceID;
-            if (m_wireAdaptor->UpdateRecordIntoTable(&insertWire)) {
+            bool reb = m_wireAdaptor->UpdateRecordIntoTable(&insertWire);
+            if (reb) {
                 setTemplateModelList();
                 return wireId;
             }

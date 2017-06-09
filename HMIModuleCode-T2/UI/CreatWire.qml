@@ -255,7 +255,6 @@ Item {
                         totalGauge+= value
                     else if (type == "sub")
                         totalGauge-= value
-                    console.log("ffffffffffffff",spliceDetailsTip2.text,spliceModel.getString("CrossSection",totalGauge))
                     if (spliceDetailsTip2.text != spliceModel.getString("CrossSection",totalGauge))
                         spliceDetailsTip2.text = spliceModel.getString("CrossSection",totalGauge)
                 }

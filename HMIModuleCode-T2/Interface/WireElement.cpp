@@ -44,6 +44,8 @@ bool WireElement::operator==(const WireElement &WireObject)
     bool bResult = false;
     if(this->OperatorID != WireObject.OperatorID)
         return bResult;
+    if(this->WireName != WireObject.WireName)
+        return bResult;
     if(this->Color != WireObject.Color)
         return bResult;
     if(this->Stripe.Color != WireObject.Stripe.Color)

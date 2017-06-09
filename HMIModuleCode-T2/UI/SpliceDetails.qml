@@ -36,12 +36,13 @@ Item {
     signal wireDetailHide()
     signal noWireSelected(bool noWire)
 
-    function colorReverse(OldColorValue){
-        OldColorValue="0x"+OldColorValue.replace(/#/g,"");
+    function colorReverse(oldColorValue){
+        var string = oldColorValue;
+        string="0x"+string.replace(/#/g,"");
         var str
 //                var str = "000000"+(0xFFFFFF-OldColorValue).toString(16);
 //                str = "#" + str.substring(str.length-6,str.length);
-        if (0xFFF000 > OldColorValue)
+        if (0xFFF000 > string)
             str = "#ffffff"
         else
             str = "#000000"
@@ -1062,6 +1063,9 @@ Item {
                 color: leftItem.position == "leftList" ? mycolor : ""
                 anchors.right: leftLine.left
                 anchors.verticalCenter: parent.verticalCenter
+                onColorChanged: {
+                    mytextLeft.color = colorReverse(leftRec.color.toString())
+                }
                 Rectangle {
                     id: tripecolor
                     height: 5
@@ -1071,6 +1075,7 @@ Item {
                     visible: leftItem.position == "leftList" ? (stripeType == 3 ? false : true) : (myStripeType == 3 ? false : true)
                     rotation: leftItem.position == "leftList" ? (stripeType == 0 ? 0 : stripeType == 1 ? 30 : stripeType == 2 ? 90 : 0) : (myStripeType == 0 ? 0 : myStripeType == 1 ? 30 : myStripeType == 2 ? 90 : 0)
                     clip: false
+
                 }
                 MouseArea {
 //                    anchors.fill: parent
@@ -1227,6 +1232,10 @@ Item {
                 color: mycolor
                 anchors.left: rightLine.right
                 anchors.verticalCenter: parent.verticalCenter
+                onColorChanged: {
+                    mytext.color = colorReverse(rightRec.color.toString())
+                }
+
                 Rectangle {
                     id: tripecolor
                     height: 5
@@ -1308,7 +1317,7 @@ Item {
                     text: linetext
                     font.family: "arial"
                     font.pointSize: 16
-                    color: colorReverse(mycolor) //mycolor  //"black"
+                    color: colorReverse(mycolor)
                 }
             }
             Text {

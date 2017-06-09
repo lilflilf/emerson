@@ -479,7 +479,6 @@ Item {
                             for (var i = 0; i < listModel.count; i++) {
                                 sequenceModel.setSpliceData(i,listModel.get(i).SpliceId,listModel.get(i).SpliceName,listModel.get(i).qty)
                             }
-                            console.log("ffffffffffffff",bIsEdit)
                             if (bIsEdit)
                                 sequenceModel.updateRecordIntoTable(hmiAdaptor.getEditPartId(),edit6.inputText, hmiAdaptor.getCurrentOperatorId())
                             else
