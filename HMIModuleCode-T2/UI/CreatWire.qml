@@ -255,7 +255,9 @@ Item {
                         totalGauge+= value
                     else if (type == "sub")
                         totalGauge-= value
-                    spliceDetailsTip2.text = spliceModel.getString("CrossSection",totalGauge)
+                    console.log("ffffffffffffff",spliceDetailsTip2.text,spliceModel.getString("CrossSection",totalGauge))
+                    if (spliceDetailsTip2.text != spliceModel.getString("CrossSection",totalGauge))
+                        spliceDetailsTip2.text = spliceModel.getString("CrossSection",totalGauge)
                 }
                 onWireDetailHide: {
                     forground.visible = true
@@ -1659,7 +1661,7 @@ Item {
                     return
                 if (crossSection)
                     return
-                if (crossSection == false && bIsEditSplice == false)
+                if (crossSection == false ) // && bIsEditSplice == false
                 {
                     spliceModel.setStructValue("Total Cross",spliceDetailsTip2.text)
                     spliceModel.calculateSpliceData()
@@ -2195,7 +2197,6 @@ Item {
                     }
                 }
             }
-
 
             ListModel {
                 id: cutterModel

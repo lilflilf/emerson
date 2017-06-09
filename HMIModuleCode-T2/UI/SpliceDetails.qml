@@ -498,6 +498,8 @@ Item {
     }
 
     onSelectWireGaugeChanged: {
+        if (isSafe)
+            return
         gaugeChanged("add",selectWireGauge)
         if (selectPosition == "topRight") {
             gaugeChanged("sub",topRight.item.myGauge)
