@@ -34,7 +34,7 @@ Item {
     signal changing(var bIsChang)
     signal gaugeChanged(var type, var value)
     signal wireDetailHide()
-
+    signal noWireSelected(bool noWire)
 
     function colorReverse(OldColorValue){
         OldColorValue="0x"+OldColorValue.replace(/#/g,"");
@@ -1123,6 +1123,10 @@ Item {
                             detail.selectIndex = -1
                             listModelLeft.set(index,{"isCheck":radioButtonLeft.checked})
                         }
+                        if (!radioButtonLeft.checked)
+                        {
+                            noWireSelected(true)
+                        }
                     }
                 }
             }
@@ -1153,11 +1157,13 @@ Item {
                 horizontalAlignment: Qt.AlignRight
                 anchors.rightMargin: 5
                 font.family: "arial"
-                font.pixelSize: myWireNameLeft.text.length > 10 ? leftRect2.height > 40 ? 16 : leftRect2.height / 2 : 16
+                font.pixelSize: myWireNameLeft.text.length > 10 ? 10 : 16 //leftRect2.height > 40 ? 16 : leftRect2.height / 2 : 16
                 color: "white"
                 text: wireName
                 clip: true
                 wrapMode: Text.WrapAnywhere
+                verticalAlignment: Qt.AlignVCenter
+
 //                lineHeightMode: Text.FixedHeight
 //                lineHeight: myWireNameLeft.text.length > 10 ? 10.0 : 20.0
             }
@@ -1282,6 +1288,10 @@ Item {
                             detail.selectIndex = -1
                             listModelRight.set(index,{"isCheck":radioButton.checked})
                         }
+                        if (!radioButton.checked)
+                        {
+                            noWireSelected(true)
+                        }
                     }
                 }
             }
@@ -1311,11 +1321,12 @@ Item {
                 horizontalAlignment: Qt.AlignLeft
                 anchors.leftMargin: 5
                 font.family: "arial"
-                font.pixelSize: myWireNameRight.text.length > 10 ? rightRect2.height > 40 ? 16 :  rightRect2.height / 2 : 16
+                font.pixelSize: myWireNameRight.text.length > 10 ? 10 : 16 //rightRect2.height > 40 ? 16 :  rightRect2.height / 2 : 16
                 color: "white"
                 text: wireName
                 clip: true
                 wrapMode: Text.WrapAnywhere
+                verticalAlignment: Qt.AlignVCenter
 //                lineHeightMode: Text.FixedHeight
 //                lineHeight: myWireNameRight.text.length > 10 ? (10.0) : (40.0)
             }

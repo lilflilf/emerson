@@ -286,6 +286,9 @@ Item {
                     font.family: "arial"
                     font.pointSize: 16
                 }
+                MouseArea {
+                    anchors.fill: parent
+                }
             }
 
             MyLineEdit {
@@ -1704,6 +1707,9 @@ Item {
             anchors.right: parent.right
             anchors.rightMargin: 20
             centerVisable: true
+            onNoWireSelected: {
+                forground.visible = noWire
+            }
         }
 
         Item {
