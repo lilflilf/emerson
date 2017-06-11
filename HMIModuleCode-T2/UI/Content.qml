@@ -1745,6 +1745,8 @@ Item {
         target: spliceList
         onChangeNumRecVisable: {
             changeNumRec.visible = isVisable
+            if (isVisable)
+                mouseBack.visible = true
             changeNumRec.anchors.topMargin = y
         }
         onCurrentQty: {
@@ -1757,6 +1759,17 @@ Item {
             keyNum.currentValue = count
             keyNum.minvalue = "1"
             keyNum.maxvalue = "20"
+        }
+    }
+
+    MouseArea {
+        id: mouseBack
+        anchors.fill: parent
+        propagateComposedEvents: true
+        onClicked: {
+            mouse.accepted = false
+            changeNumRec.visible = false
+            mouseBack.visible = false
         }
     }
 
