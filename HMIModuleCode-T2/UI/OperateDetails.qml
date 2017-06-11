@@ -29,6 +29,8 @@ Item {
                 if (operateDetail.cycleCount == operateDetail.qliantity && operateDetail.qliantity != -1) {
                     cdialog.visible = true
                     hmiAdaptor.operateProcessExec("Stop")
+                    hmiAdaptor.setWorkFlow(3,0);
+
                     return
                 }
                 spliceLocation.setTreeModelOver()
@@ -50,6 +52,8 @@ Item {
                     if (progressBar.current == progressBar.total) {
                         cdialog.visible = true
                         hmiAdaptor.operateProcessExec("Stop")
+                        hmiAdaptor.setWorkFlow(3,0);
+
                         return
                     }
                     progressBar.current++
@@ -60,6 +64,7 @@ Item {
                 else if (progressBar2.value < progressBar2.maximum) {
                     progressBar2.value = progressBar2.value + 1
                     partCount2.text = qsTr(counterString) + progressBar2.value + "/" + qliantity;
+                    hmiAdaptor.setWorkValue("PartCount",progressBar2.value)
                 }
             }
             else if (workMode == 0)
@@ -70,10 +75,13 @@ Item {
                 if (progressBar2.value < progressBar2.maximum - 1) {
                     progressBar2.value = progressBar2.value + 1
                     partCount2.text = qsTr(counterString) + progressBar2.value + "/" + qliantity;
+                    hmiAdaptor.setWorkValue("PartCount",progressBar2.value)
                 }
                 else {
                     cdialog.visible = true
                     hmiAdaptor.operateProcessExec("Stop")
+                    hmiAdaptor.setWorkFlow(3,0);
+
                     return
                 }
             }
@@ -104,6 +112,7 @@ Item {
             workName.visible = false
         }
         else if (flag == 2) {
+            mainRoot.headTitle = "Operate Harness"
             spliceList = partModel.getSpliceList(hmiAdaptor.getWorkFlow("WorkId"))
             if (partModel.getPartOnlineOrOffLine()) {
                 showFlag = 1
@@ -124,6 +133,7 @@ Item {
             workName.text = qsTr("Harness Name: ") + partModel.getPartName(hmiAdaptor.getWorkFlow("WorkId"))
         }
         else if (flag == 1) {
+            mainRoot.headTitle = "Operate Sequence"
             progressBar.width = 550
             spliceList = sequenceModel.getSpliceList(hmiAdaptor.getWorkFlow("WorkId"))
             showFlag = 2
@@ -582,21 +592,27 @@ Item {
         font.family: "arial"
         text: qsTr(counterString) + "0/" + qliantity
         color: "white"
-        Connections {
-            target: progressBar
-            onCycleDone: {
-                if (workMode == 2) {
-                    cycleCount++
-                    if (cycleCount > qliantity)
-                        return
-                    selectSplice(spliceList[0])
-                    partCount2.text = qsTr(counterString) + cycleCount + "/" + qliantity;
-                    progressBar2.value = cycleCount
-                }
-                else if (workMode == 1)
-                {
 
-                }
+    }
+    Connections {
+        target: progressBar
+        onCycleDone: {
+            if (workMode == 2) {
+                cycleCount++
+                if (cycleCount > qliantity)
+                    return
+                selectSplice(spliceList[0])
+                partCount2.text = qsTr(counterString) + cycleCount + "/" + qliantity;
+                progressBar2.value = cycleCount
+            }
+            else if (workMode == 1)
+            {
+                cycleCount++
+                if (cycleCount > qliantity)
+                    return
+                selectSplice(spliceList[0])
+                partCount2.text = qsTr(counterString) + cycleCount + "/" + qliantity;
+                progressBar2.value = cycleCount
             }
         }
     }
@@ -726,6 +742,8 @@ Item {
             if (operateDetail.cycleCount == operateDetail.qliantity) {
                 cdialog.visible = true
                 hmiAdaptor.operateProcessExec("Stop")
+                hmiAdaptor.setWorkFlow(3,0);
+
                 return
             }
             progressBar.jumpToNext()

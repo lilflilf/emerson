@@ -19,13 +19,13 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
 
 
     interfaceClass = InterfaceClass::Instance();
-    workOrderModel = new WorkOrderModel(this);
+//    workOrderModel = new WorkOrderModel(this);
     operateProcess = MakeWeldProcess::Instance();
 
     QStringList list;
-    list << "WorkOrderId" << "WorkOrderName" << "DateCreated" << "PART" << "QUANTITY";
-    workOrderModel->setRoles(list);
-    workOrderModel->setModelList();
+//    list << "WorkOrderId" << "WorkOrderName" << "DateCreated" << "PART" << "QUANTITY";
+//    workOrderModel->setRoles(list);
+//    workOrderModel->setModelList();
 
     harnessModel = new PartModel(this);
     list.clear();
@@ -1595,8 +1595,9 @@ void HmiAdaptor::operateProcessExec(QString type)
     qDebug() << "operateProcessExec" << type;
     if (type == "Start")
         operateProcess->_start();
-    else if (type == "Stop")
+    else if (type == "Stop") {
         operateProcess->_stop();
+    }
     else if (type == "Execute")
         operateProcess->_execute();
 }
@@ -1959,37 +1960,58 @@ void HmiAdaptor::setWorkFlow(int workMode, int workId)
     interfaceClass->CurrentWorkOrder.WorkOrderMode = (WorkOrderElement::WORKORDERMODE)workMode;
     if (workMode == 0)
     {
-        interfaceClass->CurrentWorkOrder.CurrentPartIndex.PartID = workId;
-        interfaceClass->CurrentWorkOrder.CurrentPartIndex.PartName = spliceModel->getSpliceName(workId);
+        interfaceClass->CurrentWorkOrder.WorkOrderID = workId;
+        interfaceClass->CurrentWorkOrder.WorkOrderName = spliceModel->getSpliceName(workId);
         spliceModel->editNew(workId);
+        interfaceClass->CurrentWorkOrder.CurrentSpliceIndex = 0;
     }
     else if (workMode == 1)
     {
-        interfaceClass->CurrentWorkOrder.CurrentPartIndex.PartID = workId;
-        interfaceClass->CurrentWorkOrder.CurrentPartIndex.PartName = sequenceModel->getSequenceName(workId);
+        interfaceClass->CurrentWorkOrder.WorkOrderID = workId;
+        interfaceClass->CurrentWorkOrder.WorkOrderName = sequenceModel->getSequenceName(workId);
         sequenceModel->editNew(workId);
     }
     else if (workMode == 2)
     {
-        interfaceClass->CurrentWorkOrder.CurrentPartIndex.PartID = workId;
-        interfaceClass->CurrentWorkOrder.CurrentPartIndex.PartName = harnessModel->getPartName(workId);
+        interfaceClass->CurrentWorkOrder.WorkOrderID = workId;
+        interfaceClass->CurrentWorkOrder.WorkOrderName = harnessModel->getPartName(workId);
         harnessModel->editNew(workId);
     }
+    interfaceClass->CurrentWorkOrder.WriteWorkOrderToQSetting();
     qDebug() << "setWorkFlow" << workMode << workId;
-
 
 }
 
 QVariant HmiAdaptor::getWorkFlow(QString workKey)
 {
     QVariant value;
-    if (workKey == "WorkMode")
+    if (workKey == "WorkMode") {
         value = (int)interfaceClass->CurrentWorkOrder.WorkOrderMode;
-    else if (workKey == "WorkId")
-        value = (int)interfaceClass->CurrentWorkOrder.CurrentPartIndex.PartID;
-    else if ((workKey) == "WorkIndex")
+        if (value == 0)
+            spliceModel->editNew(interfaceClass->CurrentWorkOrder.WorkOrderID);
+        else if (value == 1) {
+            sequenceModel->editNew(interfaceClass->CurrentWorkOrder.WorkOrderID);
+            spliceModel->editNew(interfaceClass->CurrentWorkOrder.CurrentPartIndex.PartID);
+        }
+        else if (value == 2) {
+            harnessModel->editNew(interfaceClass->CurrentWorkOrder.WorkOrderID);
+            spliceModel->editNew(interfaceClass->CurrentWorkOrder.CurrentPartIndex.PartID);
+        }
+    }
+    else if (workKey == "WorkId") {
+        value = (int)interfaceClass->CurrentWorkOrder.WorkOrderID;
+    }
+    else if ((workKey) == "WorkIndex") {
         value = (int)interfaceClass->CurrentWorkOrder.CurrentSpliceIndex;
+    }
+    qDebug() << "getWorkFlow" << workKey << value;
+
     return value;
+}
+
+void HmiAdaptor::readWorkFlow()
+{
+    interfaceClass->CurrentWorkOrder.ReadWorkOrderFromQSetting();
 }
 
 void HmiAdaptor::setWorkValue(QString key, QString value)
@@ -2004,6 +2026,10 @@ void HmiAdaptor::setWorkValue(QString key, QString value)
             interfaceClass->CurrentWorkOrder.BatchSize = value.toInt(&ok,10);
         }
     }
+    else if (key == "PartCount")
+    {
+        interfaceClass->CurrentWorkOrder.CurrentPartCount = value.toInt(&ok,10);
+    }
 }
 
 QVariant HmiAdaptor::getWorkValue(QString workKey)
@@ -2014,6 +2040,10 @@ QVariant HmiAdaptor::getWorkValue(QString workKey)
             value = -1;
         else
             value = interfaceClass->CurrentWorkOrder.BatchSize;
+    }
+    else if (workKey == "PartCount")
+    {
+        value = interfaceClass->CurrentWorkOrder.CurrentPartCount;
     }
     return value;
 }

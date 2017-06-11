@@ -296,7 +296,6 @@ Item {
             else if (listView.model == partModel )
             {
                 harnessSetting.visible = true
-//                hmiAdaptor.setWorkFlow(2,operate.selectWorkId)
             }
 
 
