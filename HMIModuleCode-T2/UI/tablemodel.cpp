@@ -42,13 +42,13 @@ QVariant WorkOrderModel::data(const QModelIndex &index, int role) const
             value = QVariant::fromValue(myWorkOrder.WorkOrderName);
         else if (columnIdx == 2)
             value = QVariant::fromValue(myWorkOrder.CreatedDate);
-        else if (columnIdx == 3)
-        {
-            QString temp = "";
-            if (myWorkOrder.PartList.count() > 0)
-                temp = myWorkOrder.PartList.begin().value();
-            value = QVariant::fromValue(temp);
-        }
+//        else if (columnIdx == 3)
+//        {
+//            QString temp = "";
+//            if (myWorkOrder.PartList.count() > 0)
+//                temp = myWorkOrder.PartList.begin().value();
+//            value = QVariant::fromValue(temp);
+//        }
         else if (columnIdx == 4)
             value = QVariant::fromValue(myWorkOrder.BatchSize);
     }
@@ -129,10 +129,10 @@ bool WorkOrderModel::updateRecordIntoTable(int workId,QString oldWorkName, QStri
     WorkOrderElement tempWorkOrder;
 //    m_workOrderAdaptor->QueryOneRecordFromTable(workId, oldWorkName,&tempWorkOrder);
     tempWorkOrder.WorkOrderName = workName;
-    if (partName != tempWorkOrder.PartList.begin().value()) {
-        tempWorkOrder.PartList.remove(tempWorkOrder.PartList.begin().key());
-        tempWorkOrder.PartList.insert(partId, partName);
-    }
+//    if (partName != tempWorkOrder.PartList.begin().value()) {
+//        tempWorkOrder.PartList.remove(tempWorkOrder.PartList.begin().key());
+//        tempWorkOrder.PartList.insert(partId, partName);
+//    }
     tempWorkOrder.BatchSize = count;
 //    m_workOrderAdaptor->UpdateRecordIntoTable(&tempWorkOrder);
     setModelList();
@@ -144,8 +144,8 @@ bool WorkOrderModel::insertRecordIntoTable(QString workName, int partId, QString
     WorkOrderElement tempWorkOrder;
     tempWorkOrder.WorkOrderName = workName;
     tempWorkOrder.BatchSize = count;
-    tempWorkOrder.PartList.insert(partId,partName);
-    qDebug() << "insertRecordIntoTable"<<tempWorkOrder.PartList.count();
+//    tempWorkOrder.PartList.insert(partId,partName);
+//    qDebug() << "insertRecordIntoTable"<<tempWorkOrder.PartList.count();
 //    m_workOrderAdaptor->InsertRecordIntoTable(&tempWorkOrder);
     setModelList();
     return true;
@@ -181,7 +181,8 @@ int WorkOrderModel::getPartId(int index)
     }
     WorkOrderElement myWorkOrder;
 //    m_workOrderAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myWorkOrder);
-    return myWorkOrder.PartList.begin().key();
+//    return myWorkOrder.PartList.begin().key();
+    return 0;
 }
 
 QList<int> WorkOrderModel::getSpliceList()
@@ -234,10 +235,10 @@ QVariant WorkOrderModel::getValue(int index, QString key)
     WorkOrderModelHash.insert("WorkOrderId",myWorkOrder.WorkOrderID);
     WorkOrderModelHash.insert("WorkOrderName",myWorkOrder.WorkOrderName);
     WorkOrderModelHash.insert("DateCreated",myWorkOrder.CreatedDate);
-    QString temp = "";
-    if (myWorkOrder.PartList.count() > 0)
-        temp = myWorkOrder.PartList.begin().value();
-    WorkOrderModelHash.insert("PART",temp);
+//    QString temp = "";
+//    if (myWorkOrder.PartList.count() > 0)
+//        temp = myWorkOrder.PartList.begin().value();
+//    WorkOrderModelHash.insert("PART",temp);
     WorkOrderModelHash.insert("QUANTITY",myWorkOrder.BatchSize);
     if (key == "") {
         return WorkOrderModelHash;

@@ -12,10 +12,10 @@ WorkOrderElement::WorkOrderElement()
     WorkOrderName.clear();
     CreatedDate.clear();
     OperatorID = -1;
-    PartList.clear();
-    CurrentSpliceIndex = -1;
-    BatchSize = -1;
-    CurrentPartCount = -1;
+//    PartList.clear();
+    CurrentSpliceIndex = 0;
+    BatchSize = 0;
+//    CurrentPartCount = -1;
     MissPartList.clear();
     CurrentPartIndex.PartID = -1;
     CurrentPartIndex.PartName.clear();
@@ -24,7 +24,7 @@ WorkOrderElement::WorkOrderElement()
 
 WorkOrderElement::~WorkOrderElement()
 {
-    PartList.clear();
+//    PartList.clear();
     MissPartList.clear();
 }
 
@@ -37,20 +37,20 @@ WorkOrderElement WorkOrderElement::operator=(const WorkOrderElement &WorkOrderOb
     this->WorkOrderName = WorkOrderObject.WorkOrderName;
     this->CreatedDate = WorkOrderObject.CreatedDate;
     this->OperatorID = WorkOrderObject.OperatorID;
-    QMap<int, QString>::const_iterator i = WorkOrderObject.PartList.constBegin();
-    while(i != WorkOrderObject.PartList.constEnd())
-    {
-        this->PartList.insert(i.key(),i.value());
-        ++i;
-    }
+//    QMap<int, QString>::const_iterator i = WorkOrderObject.PartList.constBegin();
+//    while(i != WorkOrderObject.PartList.constEnd())
+//    {
+//        this->PartList.insert(i.key(),i.value());
+//        ++i;
+//    }
     this->CurrentSpliceIndex = WorkOrderObject.CurrentSpliceIndex;
     this->BatchSize = WorkOrderObject.BatchSize;
-    this->CurrentPartCount = WorkOrderObject.CurrentPartCount;
-    i = WorkOrderObject.MissPartList.constBegin();
-    while(i != WorkOrderObject.MissPartList.constEnd())
+//    this->CurrentPartCount = WorkOrderObject.CurrentPartCount;
+    QMap<int, QString>::const_iterator iterator = WorkOrderObject.MissPartList.constBegin();
+    while(iterator != WorkOrderObject.MissPartList.constEnd())
     {
-        this->MissPartList.insert(i.key(),i.value());
-        ++i;
+        this->MissPartList.insert(iterator.key(),iterator.value());
+        ++iterator;
     }
     this->CurrentPartIndex.PartID = WorkOrderObject.CurrentPartIndex.PartID;
     this->CurrentPartIndex.PartName = WorkOrderObject.CurrentPartIndex.PartName;
@@ -76,7 +76,7 @@ void WorkOrderElement::WriteWorkOrderToQSetting()
     settings.setValue("IsConstrainedFlag", IsConstrainedFlag);
     settings.setValue("BatchSize", BatchSize);
     settings.setValue("TeachMode", Teach_Mode);
-    settings.setValue("CurrentPartCount", CurrentPartCount);
+//    settings.setValue("CurrentPartCount", CurrentPartCount);
 
     settings.beginGroup("CurrentPartIndex");
     settings.setValue("PartID", CurrentPartIndex.PartID);
@@ -90,11 +90,11 @@ void WorkOrderElement::WriteWorkOrderToQSetting()
     settings.setValue("MissPartList", Str);
     settings.endGroup();
 
-    settings.beginGroup("CurrentPartList");
-    Str.clear();
-    _Utility->MapJsonToString(&PartList, Str);
-    settings.setValue("PartList", Str);
-    settings.endGroup();
+//    settings.beginGroup("CurrentPartList");
+//    Str.clear();
+//    _Utility->MapJsonToString(&PartList, Str);
+//    settings.setValue("PartList", Str);
+//    settings.endGroup();
     settings.endGroup();
 }
 
@@ -120,7 +120,7 @@ bool WorkOrderElement::ReadWorkOrderFromQSetting()
     IsConstrainedFlag = settings.value("IsConstrainedFlag").value<bool>();
     BatchSize = settings.value("BatchSize").value<int>();
     Teach_Mode = (TEACHMODESETTING::TEACH_MODE_TYPE)settings.value("TeachMode").value<int>();
-    CurrentPartCount = settings.value("CurrentPartCount").value<int>();
+//    CurrentPartCount = settings.value("CurrentPartCount").value<int>();
 
     settings.beginGroup("CurrentPartIndex");
     CurrentPartIndex.PartID = settings.value("PartID").value<int>();
@@ -133,10 +133,10 @@ bool WorkOrderElement::ReadWorkOrderFromQSetting()
     _Utility->StringJsonToMap(Str, &MissPartList);
     settings.endGroup();
 
-    settings.beginGroup("CurrentPartList");
-    Str = settings.value("PartList").value<QString>();
-    _Utility->StringJsonToMap(Str,&PartList);
-    settings.endGroup();
+//    settings.beginGroup("CurrentPartList");
+//    Str = settings.value("PartList").value<QString>();
+//    _Utility->StringJsonToMap(Str,&PartList);
+//    settings.endGroup();
 
     settings.endGroup();
     return true;
