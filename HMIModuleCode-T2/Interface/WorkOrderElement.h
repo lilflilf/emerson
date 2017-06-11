@@ -23,10 +23,10 @@ public:
     bool IsConstrainedFlag;//only for splice or harness
     int BatchSize; //only for splice or Harness
     TEACHMODESETTING::TEACH_MODE_TYPE Teach_Mode;
-    int CurrentPartCount;//only for current cycle count
-    struct PartIndex CurrentPartIndex;
-    QMap<int, QString> MissPartList;//harness
-    QMap<int, QString> PartList;
+//    int CurrentPartCount;//only for current cycle count
+    struct PartIndex CurrentPartIndex; //only for current splice Information
+    QMap<int, QString> MissPartList;//harness & Sequence
+//    QMap<int, QString> PartList;
 
 public:
     WorkOrderElement operator=(const WorkOrderElement &WorkOrderObject);
