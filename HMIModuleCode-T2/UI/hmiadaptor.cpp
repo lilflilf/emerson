@@ -506,7 +506,7 @@ QString HmiAdaptor::maintenanceCountGetImage(int index)
         source = "qrc:/images/images/Gather_Tip.JPG";
         break;
     case 3:
-        source = "qrc:/images/images/Booster.JPG";
+        source = "qrc:/images/images/Anvil_Guide.JPG";
         break;
     case 4:
         source = "qrc:/images/images/Converter.JPG";
