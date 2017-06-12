@@ -1977,6 +1977,18 @@ void HmiAdaptor::setWorkFlow(int workMode, int workId)
         interfaceClass->CurrentWorkOrder.WorkOrderName = harnessModel->getPartName(workId);
         harnessModel->editNew(workId);
     }
+    else if (workMode == 3)
+    {
+        interfaceClass->CurrentWorkOrder.WorkOrderID = -1;
+        interfaceClass->CurrentWorkOrder.WorkOrderName.clear();
+        interfaceClass->CurrentWorkOrder.CreatedDate.clear();
+        interfaceClass->CurrentWorkOrder.OperatorID = -1;
+        interfaceClass->CurrentWorkOrder.CurrentSpliceIndex = 0;
+        interfaceClass->CurrentWorkOrder.BatchSize = 0;
+        interfaceClass->CurrentWorkOrder.MissPartList.clear();
+        interfaceClass->CurrentWorkOrder.CurrentPartIndex.PartID = 0;
+        interfaceClass->CurrentWorkOrder.CurrentPartIndex.PartName.clear();
+    }
     interfaceClass->CurrentWorkOrder.WriteWorkOrderToQSetting();
     qDebug() << "setWorkFlow" << workMode << workId;
 
@@ -1991,11 +2003,18 @@ QVariant HmiAdaptor::getWorkFlow(QString workKey)
             spliceModel->editNew(interfaceClass->CurrentWorkOrder.WorkOrderID);
         else if (value == 1) {
             sequenceModel->editNew(interfaceClass->CurrentWorkOrder.WorkOrderID);
-            spliceModel->editNew(interfaceClass->CurrentWorkOrder.CurrentPartIndex.PartID);
+            if (interfaceClass->CurrentWorkOrder.CurrentPartIndex.PartID != 0)
+                spliceModel->editNew(interfaceClass->CurrentWorkOrder.CurrentPartIndex.PartID);
+            else
+                spliceModel->editNew(sequenceModel->getSpliceList().at(0));
         }
         else if (value == 2) {
             harnessModel->editNew(interfaceClass->CurrentWorkOrder.WorkOrderID);
-            spliceModel->editNew(interfaceClass->CurrentWorkOrder.CurrentPartIndex.PartID);
+            if (interfaceClass->CurrentWorkOrder.CurrentPartIndex.PartID != 0)
+                spliceModel->editNew(interfaceClass->CurrentWorkOrder.CurrentPartIndex.PartID);
+            else
+                spliceModel->editNew(harnessModel->getSpliceList().at(0));
+
         }
     }
     else if (workKey == "WorkId") {
@@ -2028,8 +2047,19 @@ void HmiAdaptor::setWorkValue(QString key, QString value)
     }
     else if (key == "PartCount")
     {
-        interfaceClass->CurrentWorkOrder.CurrentPartCount = value.toInt(&ok,10);
+        interfaceClass->CurrentWorkOrder.CurrentSpliceIndex = value.toInt(&ok,10);
     }
+    else if (key == "CurrentSplice")
+    {
+        interfaceClass->CurrentWorkOrder.CurrentPartIndex.PartID = value.toInt(&ok,10);
+    }
+    else if (key == "MissSplice")
+    {
+
+    }
+    interfaceClass->CurrentWorkOrder.WriteWorkOrderToQSetting();
+
+    qDebug() << "setWorkValue " << key << value;
 }
 
 QVariant HmiAdaptor::getWorkValue(QString workKey)
@@ -2043,9 +2073,34 @@ QVariant HmiAdaptor::getWorkValue(QString workKey)
     }
     else if (workKey == "PartCount")
     {
-        value = interfaceClass->CurrentWorkOrder.CurrentPartCount;
+        value = interfaceClass->CurrentWorkOrder.CurrentSpliceIndex;
     }
+    else if (workKey == "CurrentSplice")
+    {
+        value = interfaceClass->CurrentWorkOrder.CurrentPartIndex.PartID;
+        if (value == 0)
+            value = spliceModel->getStructValue("SpliceId","");
+    }
+    qDebug() << "getWorkValue" << workKey << value;
     return value;
+}
+
+QList<int> HmiAdaptor::getWorkMissList()
+{
+    QMap<int,QString>::iterator it; //遍历map
+    QList<int> list;
+    for ( it = interfaceClass->CurrentWorkOrder.MissPartList.begin(); it != interfaceClass->CurrentWorkOrder.MissPartList.end(); ++it ) {
+        list.append(it.key());
+    }
+    qDebug() << "getWorkMissList" << list;
+    return list;
+}
+
+void HmiAdaptor::setWorkMissList(int spliceId)
+{
+    qDebug() << "setWorkMissList" << spliceId;
+    interfaceClass->CurrentWorkOrder.MissPartList.insert(spliceId,spliceModel->getSpliceName(spliceId));
+    interfaceClass->CurrentWorkOrder.WriteWorkOrderToQSetting();
 }
 
 QString HmiAdaptor::getUserManualPath()
@@ -2062,6 +2117,11 @@ QString HmiAdaptor::getApplicationDirPathPath()
     QString path = QCoreApplication::applicationDirPath();
 //    path = "file:///" + path + "/usermanual/Special Double Hit Mode functionality for Delphi Ground Terminal Welder II.html";
     return path;
+}
+
+QString HmiAdaptor::getToolChangeFileName(QString filePath)
+{
+    return filePath.left(filePath.size()-4);
 }
 
 void HmiAdaptor::slotPhysicalKeySignal(bool &status)

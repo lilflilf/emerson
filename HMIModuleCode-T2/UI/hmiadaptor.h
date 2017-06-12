@@ -144,8 +144,13 @@ public:
 
     Q_INVOKABLE void setWorkValue(QString key, QString value);
     Q_INVOKABLE QVariant getWorkValue(QString workKey);
+    Q_INVOKABLE QList<int> getWorkMissList();
+    Q_INVOKABLE void setWorkMissList(int spliceId);
+
+
     Q_INVOKABLE QString getUserManualPath();
     Q_INVOKABLE QString getApplicationDirPathPath();
+    Q_INVOKABLE QString getToolChangeFileName(QString filePath);
 
     BransonMessageBox bransonMessageBox;
     InterfaceClass *interfaceClass;

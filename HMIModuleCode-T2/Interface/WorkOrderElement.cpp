@@ -17,7 +17,7 @@ WorkOrderElement::WorkOrderElement()
     BatchSize = 0;
 //    CurrentPartCount = -1;
     MissPartList.clear();
-    CurrentPartIndex.PartID = -1;
+    CurrentPartIndex.PartID = 0;
     CurrentPartIndex.PartName.clear();
     WorkOrderMode = WorkOrderElement::UNDEFINE;
 }

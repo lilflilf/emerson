@@ -56,6 +56,8 @@ Item {
         folder: toolChange.initFolder2
         showDirsFirst: false // true
         showDotAndDotDot: false //true
+//        sortReversed: true
+        sortField: FolderListModel.Name
     }
 
     Connections {
@@ -137,6 +139,12 @@ Item {
                             fileNameRepeater.model = null
                         }
                     }
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            currentDir = index
+                        }
+                    }
                 }
                 Column {
                     id: fileNameColumn
@@ -154,7 +162,7 @@ Item {
                             id: myFileName
                             width: listView.width
                             height: 30
-                            text: fileName
+                            text: hmiAdaptor.getToolChangeFileName(fileName)
                             color: "white"
                             font.pointSize: 14
                             font.family: "arial"
@@ -167,6 +175,12 @@ Item {
                                 }
                                 else {
                                     myFileName.color = "white"
+                                }
+                            }
+                            MouseArea {
+                                anchors.fill: parent
+                                onClicked: {
+                                    currentFile = index
                                 }
                             }
                         }

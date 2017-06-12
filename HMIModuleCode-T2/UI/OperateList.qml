@@ -286,6 +286,8 @@ Item {
 
             if (listView.model == sequenceModel)
             {
+                hmiAdaptor.setWorkFlow(3, 0)
+
                 hmiAdaptor.setWorkFlow(1,operate.selectWorkId)
                 mainRoot.checkNeedPassWd(-5)
                 if (listView.model == sequenceModel)
@@ -453,6 +455,8 @@ Item {
                 textColor: "white"
                 onClicked: {
                     harnessSetting.visible = false
+                    hmiAdaptor.setWorkFlow(3, 0)
+
                     hmiAdaptor.setWorkFlow(2,operate.selectWorkId)
 
                     if (splices.bIsCheck)

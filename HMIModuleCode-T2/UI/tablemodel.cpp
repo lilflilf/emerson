@@ -4045,12 +4045,14 @@ QList<int> SequenceModel::getSpliceList()
 
 int SequenceModel::getSpliceQty(int spliceId)
 {
+
     QMap<int,struct SEQUENCEATTRIBUTE>::iterator it; //遍历map
     int qty;
     for ( it = sequenceElement.SpliceList.begin(); it != sequenceElement.SpliceList.end(); ++it ) {
         if (it.value().SpliceID == spliceId)
             qty = it.value().Quantity;
     }
+    qDebug() << "getSpliceQty" << spliceId << qty;
     return qty;
 }
 

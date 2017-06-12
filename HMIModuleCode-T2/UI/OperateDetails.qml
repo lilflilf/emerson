@@ -6,6 +6,8 @@ import QtQuick.Window 2.2
 Item {
     id: operateDetail
     property var spliceList: new Array
+    property var missSpliceList: new Array
+
     property int showFlag: -1 /*1:inLine 2:offLine 3:signal*/
     property int cycleCount: 0
     property int qliantity: 0
@@ -81,7 +83,6 @@ Item {
                     cdialog.visible = true
                     hmiAdaptor.operateProcessExec("Stop")
                     hmiAdaptor.setWorkFlow(3,0);
-
                     return
                 }
             }
@@ -128,7 +129,31 @@ Item {
                     progressBar.width = 550
                 }
             }
-            selectSplice(spliceList[0])
+//            selectSplice(spliceList[0])
+
+            selectSplice(hmiAdaptor.getWorkValue("CurrentSplice"))
+            missSpliceList = hmiAdaptor.getWorkMissList()
+            var isMiss;
+            for (var i = 0; i < spliceList.length;i++)
+            {
+                isMiss = false
+                if (spliceList[i] == hmiAdaptor.getWorkValue("CurrentSplice") || hmiAdaptor.getWorkValue("CurrentSplice") == 0)
+                    break
+                for(var j = 0; j < missSpliceList.length;j++) {
+                    if (spliceList[i] == missSpliceList[j]) {
+                        progressBar.current++
+                        progressBar.jumpToNext()
+                        isMiss = true
+                        break
+                    }
+                }
+                if (!isMiss) {
+                    progressBar.current++
+                    progressBar.moveToNext()
+                }
+            }
+
+
             counterString = "HARNESS COUNTER"
             workName.text = qsTr("Harness Name: ") + partModel.getPartName(hmiAdaptor.getWorkFlow("WorkId"))
         }
@@ -138,9 +163,33 @@ Item {
             spliceList = sequenceModel.getSpliceList(hmiAdaptor.getWorkFlow("WorkId"))
             showFlag = 2
             operateDetail.maxCount = spliceList.length
-            selectSplice(spliceList[0])
-            counterString = "SEQUENCE COUNTER"
+            selectSplice(hmiAdaptor.getWorkValue("CurrentSplice"))
+            missSpliceList = hmiAdaptor.getWorkMissList()
+            for (var i2 = 0; i2 < spliceList.length;i2++)
+            {
+                isMiss = false
+                console.log("ccccccccccc",spliceList,hmiAdaptor.getWorkValue("CurrentSplice"))
+                if (spliceList[i2] == hmiAdaptor.getWorkValue("CurrentSplice") || hmiAdaptor.getWorkValue("CurrentSplice") == 0)
+                    break
+                for(var j2 = 0; j2 < missSpliceList.length;j2++) {
+                    if (spliceList[i2] == missSpliceList[j2]) {
+                        progressBar.current++
+                        progressBar.jumpToNext()
+                        isMiss = true
+                        break
+                    }
+                }
+                if (!isMiss) {
+                    progressBar.current++
+                    progressBar.moveToNext()
+                }
+            }
+
+
+//            selectSplice(spliceList[0])
+            counterString = "SPLICE COUNTER"
             workName.text = qsTr("Sequence Name: ") + sequenceModel.getSequenceName(hmiAdaptor.getWorkFlow("WorkId"))
+
         }
 
         hmiAdaptor.operateProcessExec("Start")
@@ -212,6 +261,7 @@ Item {
     function selectSplice(spliceId)
     {
         console.log("selectSplice",spliceId)
+        hmiAdaptor.setWorkValue("CurrentSplice",spliceId)
         spliceModel.editNew(spliceId)
         setData()
         var list = new Array
@@ -226,8 +276,10 @@ Item {
         }
         if (workMode == 1)
             qliantity = sequenceModel.getSpliceQty(spliceId)
-        else if (workMode == 2 || workMode == 0)
+        else if (workMode == 2 || workMode == 0) {
             qliantity = hmiAdaptor.getWorkValue("WorkCount")
+            cycleCount = hmiAdaptor.getWorkValue("PartCount")
+        }
         hmiAdaptor.setOperateProcess(spliceId, false)
         hmiAdaptor.operateProcessExec("Execute")
     }
@@ -590,7 +642,7 @@ Item {
         anchors.bottomMargin: 6
         font.pointSize: 13
         font.family: "arial"
-        text: qsTr(counterString) + "0/" + qliantity
+        text: qsTr(counterString) + hmiAdaptor.getWorkValue("PartCount") + "/" + qliantity
         color: "white"
 
     }
@@ -601,18 +653,21 @@ Item {
                 cycleCount++
                 if (cycleCount > qliantity)
                     return
-                selectSplice(spliceList[0])
                 partCount2.text = qsTr(counterString) + cycleCount + "/" + qliantity;
                 progressBar2.value = cycleCount
+                hmiAdaptor.setWorkValue("PartCount",progressBar2.value)
+                selectSplice(spliceList[0])
+
             }
             else if (workMode == 1)
             {
                 cycleCount++
                 if (cycleCount > qliantity)
                     return
-                selectSplice(spliceList[0])
                 partCount2.text = qsTr(counterString) + cycleCount + "/" + qliantity;
                 progressBar2.value = cycleCount
+                selectSplice(spliceList[0])
+
             }
         }
     }
@@ -628,7 +683,7 @@ Item {
         height: 10
         maximum: qliantity
         minimum: 0
-        value: 0
+        value: hmiAdaptor.getWorkValue("PartCount")
     }
     Text {
         id: workName
@@ -738,12 +793,12 @@ Item {
         clip: true
         visible: showFlag != 3 ? true : false
         onClicked: {
+            hmiAdaptor.setWorkMissList(spliceList[progressBar.current-1])
             progressBar.current++
             if (operateDetail.cycleCount == operateDetail.qliantity) {
                 cdialog.visible = true
                 hmiAdaptor.operateProcessExec("Stop")
                 hmiAdaptor.setWorkFlow(3,0);
-
                 return
             }
             progressBar.jumpToNext()
