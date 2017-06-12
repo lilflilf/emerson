@@ -19,7 +19,7 @@ WorkOrderElement::WorkOrderElement()
     MissPartList.clear();
     CurrentPartIndex.PartID = -1;
     CurrentPartIndex.PartName.clear();
-    WorkOrderMode = WorkOrderElement::SPLICE;
+    WorkOrderMode = WorkOrderElement::UNDEFINE;
 }
 
 WorkOrderElement::~WorkOrderElement()

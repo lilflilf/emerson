@@ -665,6 +665,7 @@ Item {
 
             if (index == 0)
             {
+                hmiAdaptor.setWorkFlow(0, spliceModel.getValue(selectIndx,"SpliceId"))
                 mainRoot.checkNeedPassWd(-5)
             }
             else if (index == 1)

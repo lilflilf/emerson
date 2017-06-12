@@ -533,6 +533,10 @@ Window {
             headBar.visible = true
             statusBar.visible = true
             welcome.source = ""
+            hmiAdaptor.readWorkFlow()
+            if (hmiAdaptor.getWorkFlow("WorkMode") != 3)
+                mainRoot.checkNeedPassWd(-5)
+
         }
     }
 }
