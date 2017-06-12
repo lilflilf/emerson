@@ -91,7 +91,7 @@ Item {
             anchors.right: leftArea.right
             anchors.bottom: parent.bottom
 //            url: hmiAdaptor.getUserManualPath()
-            url: ("file:///d:\\mytest.html");
+//            url: ("file:///d:\\mytest.html");
     //        url: ("https://www.baidu.com/")
         }
     }
