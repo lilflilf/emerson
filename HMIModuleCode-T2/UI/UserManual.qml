@@ -4,8 +4,8 @@ import QtQuick.Layouts 1.0
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.1
 import QtQuick.Dialogs 1.2
-//import QtWebView 1.1
-import QtWebEngine 1.3
+import QtWebView 1.1
+//import QtWebEngine 1.3
 
 Item {
     id: userManual
@@ -82,7 +82,9 @@ Item {
             }
         }
 
-        WebEngineView {
+//        WebEngineView {
+        WebView {
+
             id: web1
             anchors.top: row.bottom
             anchors.left: leftArea.left
@@ -95,7 +97,8 @@ Item {
     }
 
 
-    WebEngineView {
+//    WebEngineView {
+    WebView {
         id: webVieW;
         anchors.top: parent.top
         anchors.left: leftArea.right

@@ -16,12 +16,12 @@
 #include <QDateTime>
 #include <QDesktopWidget>
 #include <QtWebView/QtWebView>
-#include <QtWebEngine/QtWebEngine>
-#include <QtWebEngineWidgets>
-#include <QWebEngineHistory>
-#include <QWebEngineHistoryItem>
-#include <QWebEnginePage>
-#include <QWebEngineView>
+//#include <QtWebEngine/QtWebEngine>
+//#include <QtWebEngineWidgets>
+//#include <QWebEngineHistory>
+//#include <QWebEngineHistoryItem>
+//#include <QWebEnginePage>
+//#include <QWebEngineView>
 #if _MSC_VER >= 1600
 #pragma execution_character_set("utf-8")
 #endif
@@ -53,8 +53,8 @@ int main(int argc, char *argv[])
     qmlRegisterType<ALPaintedItem>("ALPaintedItem", 1, 0, "ALPaintedItem");
 
     QGuiApplication app(argc, argv);
-//    QtWebView::initialize();
-    QtWebEngine::initialize();
+    QtWebView::initialize();
+//    QtWebEngine::initialize();
     QString locale = QLocale::system().name();
     QTranslator translator;
 //    bool success = translator.load("displayChinese_zh_CN.qm");
