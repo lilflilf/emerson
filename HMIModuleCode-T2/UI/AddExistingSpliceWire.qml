@@ -60,7 +60,7 @@ Item {
             anchors.topMargin: 20
             anchors.left: parent.left
             anchors.leftMargin: 50
-            width: (parent.width-120)/5
+            width: (parent.width - 120) / 5
             color: "white"
             font.pixelSize: 18
             clip: true
@@ -179,7 +179,7 @@ Item {
                     anchors.left: headName.right
                     anchors.leftMargin: 10
                     elide: Text.ElideRight
-                    width: (parent.width-40)/5
+                    width: (parent.width - 40) / 5
                     text: (listModel == spliceModel) ? DateCreated : (listModel == wireModel) ? DateCreated : DateCreated
                     clip: true
                     color: "white"
