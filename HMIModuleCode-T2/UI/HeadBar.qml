@@ -656,45 +656,44 @@ Item {
             listModel.append({"row":"1","subNode":[]})
             listModel.append({"row":"2","subNode":[]})
             listModel.append({"row":"3","subNode":[]})
-//            listModel.append({"row":"4","subNode":[]})
+            listModel.append({"row":"4","subNode":[]})
 //            listModel.append({"row":"5","subNode":[]})
 //            listModel.append({"row":"6","subNode":[]})
-            listModel.get(0).subNode.append({"iconsource":"qrc:/images/images/Arabic.png","selectlanguage":"Arabic","backColor":"black","theopacity":"1"})
-            listModel.get(0).subNode.append({"iconsource":"qrc:/images/images/United-Arab-Emirates.png","selectlanguage":"Arabic","backColor":"black","theopacity":"1"})
+            listModel.get(0).subNode.append({"iconsource":"qrc:/images/images/us&English.png","selectlanguage":"EngLish","backColor":"black","theopacity":"1"})
+            listModel.get(0).subNode.append({"iconsource":"qrc:/images/images/Japanese.png","selectlanguage":"Japanese","backColor":"black","theopacity":"1"})
             listModel.get(0).subNode.append({"iconsource":"qrc:/images/images/chinese.png","selectlanguage":"Simplified Chinese","backColor":"black","theopacity":"1"})
             listModel.get(0).subNode.append({"iconsource":"qrc:/images/images/chinese.png","selectlanguage":"Traditional Chinese","backColor":"black","theopacity":"1"})
-            listModel.get(0).subNode.append({"iconsource":"qrc:/images/images/Czech.png","selectlanguage":"Czech","backColor":"black","theopacity":"1"})
-            listModel.get(0).subNode.append({"iconsource":"qrc:/images/images/dutch.png","selectlanguage":"Dutch","backColor":"black","theopacity":"1"})
-//            listModel.get(0).subNode.append({"iconsource":"qrc:/images/images/australia.png","selectlanguage":"EngLish","backColor":"black","theopacity":"1"})
-//            listModel.get(1).subNode.append({"iconsource":"qrc:/images/images/Canada.png","selectlanguage":"EngLish","backColor":"black","theopacity":"1"})
-//            listModel.get(1).subNode.append({"iconsource":"qrc:/images/images/Hindi.png","selectlanguage":"EngLish","backColor":"black","theopacity":"1"})
-//            listModel.get(1).subNode.append({"iconsource":"qrc:/images/images/English.png","selectlanguage":"EngLish","backColor":"black","theopacity":"1"})
-//            listModel.get(1).subNode.append({"iconsource":"qrc:/images/images/us.png","selectlanguage":"EngLish","backColor":"black","theopacity":"1"})
-            listModel.get(0).subNode.append({"iconsource":"qrc:/images/images/us&English.png","selectlanguage":"EngLish","backColor":"black","theopacity":"1"})
-//            listModel.get(1).subNode.append({"iconsource":"qrc:/images/images/Canada.png","selectlanguage":"French","backColor":"black","theopacity":"1"})
-            listModel.get(1).subNode.append({"iconsource":"qrc:/images/images/french.png","selectlanguage":"French","backColor":"black","theopacity":"1"})
-//            listModel.get(2).subNode.append({"iconsource":"qrc:/images/images/Canada&french.png","selectlanguage":"French","backColor":"black","theopacity":"1"})
+            listModel.get(0).subNode.append({"iconsource":"qrc:/images/images/Indonesian.png","selectlanguage":"Indonesian","backColor":"black","theopacity":"1"})
+            listModel.get(0).subNode.append({"iconsource":"qrc:/images/images/Spanish&Mexcio.png","selectlanguage":"Spanish","backColor":"black","theopacity":"1"})
+            listModel.get(0).subNode.append({"iconsource":"qrc:/images/images/Vietnam.png","selectlanguage":"Vietnam","backColor":"black","theopacity":"1"})
+
+            listModel.get(1).subNode.append({"iconsource":"qrc:/images/images/Turkish.png","selectlanguage":"Turkish","backColor":"black","theopacity":"1"})
+            listModel.get(1).subNode.append({"iconsource":"qrc:/images/images/Thai.png","selectlanguage":"Thai","backColor":"black","theopacity":"1"})
+            listModel.get(1).subNode.append({"iconsource":"qrc:/images/images/Portuguese&Brazil.png","selectlanguage":"Portuguese","backColor":"black","theopacity":"1"})
             listModel.get(1).subNode.append({"iconsource":"qrc:/images/images/German.png","selectlanguage":"German","backColor":"black","theopacity":"1"})
-            listModel.get(1).subNode.append({"iconsource":"qrc:/images/images/Hindi.png","selectlanguage":"Hindi","backColor":"black","theopacity":"1"})
-            listModel.get(1).subNode.append({"iconsource":"qrc:/images/images/Hungarian.png","selectlanguage":"Hungarian","backColor":"black","theopacity":"1"})
-            listModel.get(1).subNode.append({"iconsource":"qrc:/images/images/Indonesian.png","selectlanguage":"Indonesian","backColor":"black","theopacity":"1"})
-            listModel.get(1).subNode.append({"iconsource":"qrc:/images/images/Italian.png","selectlanguage":"Italian","backColor":"black","theopacity":"1"})
-            listModel.get(1).subNode.append({"iconsource":"qrc:/images/images/Japanese.png","selectlanguage":"Japanese","backColor":"black","theopacity":"1"})
+            listModel.get(1).subNode.append({"iconsource":"qrc:/images/images/french.png","selectlanguage":"French","backColor":"black","theopacity":"1"})
+            listModel.get(1).subNode.append({"iconsource":"qrc:/images/images/russian.png","selectlanguage":"Russian","backColor":"black","theopacity":"1"})
+            listModel.get(1).subNode.append({"iconsource":"qrc:/images/images/polish.png","selectlanguage":"Polish","backColor":"black","theopacity":"1"})
+
             listModel.get(2).subNode.append({"iconsource":"qrc:/images/images/Korean.png","selectlanguage":"Korean","backColor":"black","theopacity":"1"})
-            listModel.get(2).subNode.append({"iconsource":"qrc:/images/images/Malaysian.png","selectlanguage":"Malaysian","backColor":"black","theopacity":"1"})
-            listModel.get(2).subNode.append({"iconsource":"qrc:/images/images/polish.png","selectlanguage":"Polish","backColor":"black","theopacity":"1"})
+            listModel.get(2).subNode.append({"iconsource":"qrc:/images/images/Italian.png","selectlanguage":"Italian","backColor":"black","theopacity":"1"})
+            listModel.get(2).subNode.append({"iconsource":"qrc:/images/images/Slovak.png","selectlanguage":"Slovak","backColor":"black","theopacity":"1"})
+            listModel.get(2).subNode.append({"iconsource":"qrc:/images/images/Romanian.png","selectlanguage":"Romanian","backColor":"black","theopacity":"1"})
+            listModel.get(2).subNode.append({"iconsource":"qrc:/images/images/Hungarian.png","selectlanguage":"Hungarian","backColor":"black","theopacity":"1"})
+            listModel.get(2).subNode.append({"iconsource":"qrc:/images/images/dutch.png","selectlanguage":"Dutch","backColor":"black","theopacity":"1"})
+            listModel.get(2).subNode.append({"iconsource":"qrc:/images/images/Czech.png","selectlanguage":"Czech","backColor":"black","theopacity":"1"})
+
+            listModel.get(3).subNode.append({"iconsource":"qrc:/images/images/Malaysian.png","selectlanguage":"Malaysian","backColor":"black","theopacity":"1"})
+            listModel.get(3).subNode.append({"iconsource":"qrc:/images/images/Arabic.png","selectlanguage":"Arabic","backColor":"black","theopacity":"1"})
+            listModel.get(3).subNode.append({"iconsource":"qrc:/images/images/United-Arab-Emirates.png","selectlanguage":"Arabic","backColor":"black","theopacity":"1"})
+            listModel.get(3).subNode.append({"iconsource":"qrc:/images/images/Hindi.png","selectlanguage":"Hindi","backColor":"black","theopacity":"1"})
+
+//            listModel.get(1).subNode.append({"iconsource":"qrc:/images/images/Canada.png","selectlanguage":"French","backColor":"black","theopacity":"1"})
+//            listModel.get(2).subNode.append({"iconsource":"qrc:/images/images/Canada&french.png","selectlanguage":"French","backColor":"black","theopacity":"1"})
 //            listModel.get(3).subNode.append({"iconsource":"qrc:/images/images/Portuguese.png","selectlanguage":"Portuguese","backColor":"black","theopacity":"1"})
 //            listModel.get(3).subNode.append({"iconsource":"qrc:/images/images/Brazil.png","selectlanguage":"Portuguese","backColor":"black","theopacity":"1"})
-            listModel.get(2).subNode.append({"iconsource":"qrc:/images/images/Portuguese&Brazil.png","selectlanguage":"Portuguese","backColor":"black","theopacity":"1"})
-            listModel.get(2).subNode.append({"iconsource":"qrc:/images/images/Romanian.png","selectlanguage":"Romanian","backColor":"black","theopacity":"1"})
-            listModel.get(2).subNode.append({"iconsource":"qrc:/images/images/russian.png","selectlanguage":"Russian","backColor":"black","theopacity":"1"})
-            listModel.get(2).subNode.append({"iconsource":"qrc:/images/images/Slovak.png","selectlanguage":"Slovak","backColor":"black","theopacity":"1"})
 //            listModel.get(4).subNode.append({"iconsource":"qrc:/images/images/Spanish.png","selectlanguage":"Spanish","backColor":"black","theopacity":"1"})
 //            listModel.get(4).subNode.append({"iconsource":"qrc:/images/images/Mexcio.png","selectlanguage":"Spanish","backColor":"black","theopacity":"1"})
-            listModel.get(3).subNode.append({"iconsource":"qrc:/images/images/Spanish&Mexcio.png","selectlanguage":"Spanish","backColor":"black","theopacity":"1"})
-            listModel.get(3).subNode.append({"iconsource":"qrc:/images/images/Thai.png","selectlanguage":"Thai","backColor":"black","theopacity":"1"})
-            listModel.get(3).subNode.append({"iconsource":"qrc:/images/images/Turkish.png","selectlanguage":"Turkish","backColor":"black","theopacity":"1"})
-            listModel.get(3).subNode.append({"iconsource":"qrc:/images/images/Vietnam.png","selectlanguage":"Vietnam","backColor":"black","theopacity":"1"})
         }
     }
 
@@ -919,7 +918,9 @@ Item {
             text: qsTr("OK")
             onClicked: {
                 if (language.visible ) {
-                    languageButton.source = listModel.get(language.selectrow).subNode.get(language.selectColum).iconsource
+                    languageButton.source =
+                    listModel.get(language.selectrow).subNode.get(language.selectColum).iconsource
+                    console.log(language.selectrow + "languageButton.source: " + language.selectColum)
                 }
                 dialog.visible = false
                 background.visible = false

@@ -138,25 +138,6 @@ enum SCREEN_MODE{
     LockOnAlarm_SCREEN,
 };
 
-// Used to set the correct Language Version for the Software
-enum LangSupport{
-    NO_Lang = 0,
-    ENGLISH_lang,
-    FRENCH_Lang,
-    GERMAN_Lang,
-    HUNGARIAN_Lang,
-    PORTUGUESE_Lang,
-    SPANISH_Lang,
-    TURKISH_Lang,
-    ITALIAN_Lang,
-    CHINESE_Lang,
-    JAPANESE_Lang,
-    KOREAN_Lang,
-    END_Lang            //Add above this
-};
-
-
-
 enum WeldSetFormula{
     WeldFormulaAmtechStandard,
     WeldFormulaAmtechXL,
@@ -179,6 +160,36 @@ public:
     enum LENGTHUNIT{
         ToINCH,
         ToMM,
+    };
+    // Used to set the correct Language Version for the Software
+    enum LangSupport{
+        NO_Lang = -1,
+        ENGLISH_lang,     //0 English
+        JAPANESE_Lang,    //1 Japanese
+        SIMPCHINESE_Lang, //2 Simplifed chinese
+        TRADCHINESE_Lang, //3 Traditional chinese
+        INDONESIAN_Lang,  //4 Indonesian
+        SPANISH_Lang,     //5 Spanish
+        Vietnam_Lang,     //6 Vietnam
+        TURKISH_Lang,     //7 Turkish
+        Thai_Lang,        //8 Thai
+        PORTUGUESE_Lang,  //9 Portuguese
+        GERMAN_Lang,      //10 German
+        FRENCH_Lang,      //11 French
+        RUSSIAN_Lang,     //12 Russian
+        POLISH_Lang,      //13 Polish
+        KOREAN_Lang,      //14 Korean
+        ITALIAN_Lang,     //15 Italian
+        SLOVAK_Lang,      //16 Slovak
+        ROMANIAN_Lang,    //17 Romanian
+        HUNGARIAN_Lang,   //18 Hungarian
+        DUTCH_Lang,       //19 Dutch
+        CZECH_Lang,       //20 Czech
+        MALAYSIAN_Lang,   //21 Malaysian
+        ARABIC_Lang,      //22 Arabic
+        UnitedARAB_Lang,  //23 United-Arab-Emirates
+        HINDI_Lang,       //24 Hindi
+        END_Lang          //Add above this
     };
 
 public:

@@ -43,23 +43,24 @@ Item {
 
         for (var i = 0; i < 5; i++)
         {
-            listModel.set(i,{"imageSourece":hmiAdaptor.maintenanceCountGetImage(i),
-                              "mynum"   :hmiAdaptor.maintenanceCountGetValue(i,1),
-                              "mycurrent"   :hmiAdaptor.maintenanceCountGetValue(i,2),
-                              "mycurrent1"   :hmiAdaptor.maintenanceCountGetValue(i,3),
-                             "mylimit"     :hmiAdaptor.maintenanceCountGetValue(i,4),
-                             "mylimit1"     :hmiAdaptor.maintenanceCountGetValue(i,5),
+            listModel.set(i,{
+                "imageSourece"  :hmiAdaptor.maintenanceCountGetImage(i),
+                "mynum"         :hmiAdaptor.maintenanceCountGetValue(i,1),
+                "mycurrent"     :hmiAdaptor.maintenanceCountGetValue(i,2),
+                "mycurrent1"    :hmiAdaptor.maintenanceCountGetValue(i,3),
+                "mylimit"       :hmiAdaptor.maintenanceCountGetValue(i,4),
+                "mylimit1"      :hmiAdaptor.maintenanceCountGetValue(i,5),
 
-                             "createDate"  :hmiAdaptor.maintenanceCountGetValue(i,6),
-                             "maxLimit"    :hmiAdaptor.maintenanceCountGetValue(i,7),
-                             "minLimit"    :hmiAdaptor.maintenanceCountGetValue(i,8),
-                              "maxLimit1"    :hmiAdaptor.maintenanceCountGetValue(i,9),
-                              "minLimit1"    :hmiAdaptor.maintenanceCountGetValue(i,10),
-                             "myreset"     :qsTr("Reset"),
-                              "mystate1"     :hmiAdaptor.maintenanceCountGetValue(i,11),
-                              "mystate2"     :hmiAdaptor.maintenanceCountGetValue(i,12),
-                              "mystate3"     :hmiAdaptor.maintenanceCountGetValue(i,13),
-                             "mystate4"     :hmiAdaptor.maintenanceCountGetValue(i,14)})
+                "createDate"    :hmiAdaptor.maintenanceCountGetValue(i,6),
+                "maxLimit"      :hmiAdaptor.maintenanceCountGetValue(i,7),
+                "minLimit"      :hmiAdaptor.maintenanceCountGetValue(i,8),
+                "maxLimit1"     :hmiAdaptor.maintenanceCountGetValue(i,9),
+                "minLimit1"     :hmiAdaptor.maintenanceCountGetValue(i,10),
+                "myreset"       :qsTr("Reset"),
+                "mystate1"      :hmiAdaptor.maintenanceCountGetValue(i,11),
+                "mystate2"      :hmiAdaptor.maintenanceCountGetValue(i,12),
+                "mystate3"      :hmiAdaptor.maintenanceCountGetValue(i,13),
+                "mystate4"      :hmiAdaptor.maintenanceCountGetValue(i,14)})
         }
         listView.model = null
         listView.model = listModel
