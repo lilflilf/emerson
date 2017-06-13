@@ -716,8 +716,178 @@ Item {
     }
 
 
+    CButton {
+        width: okButton.width
+        height: okButton.height
+        anchors.right: column1.right
+        anchors.bottom: okButton.bottom
+        onClicked: {
+            itemCutter.visible = true
+        }
+    }
+    Item {
+        id: itemCutter
+        height: parent.height
+        anchors.left: parent.left
+        anchors.right: middLine.left
+        Image {
+            anchors.fill: parent
+            source: "qrc:/images/images/bg.png"
+        }
+        Text {
+            id: loadName2
+            anchors.top: cutteronoroff.bottom
+            anchors.topMargin: 10
+            anchors.left: cutteronoroff.left
+            anchors.leftMargin: 20
+//            width: loadName.width //(parent.width/2-40)/3
+//            height: loadName.height //thirdSwitch.height/3-6
+
+//            width: (parent.width-40)/3
+//            height: parent.height*0.06
+
+            verticalAlignment: Qt.AlignVCenter
+            font.pointSize: 16
+            font.family: "arial"
+            text: qsTr("Load:")
+            color: "white"
+            clip: true
+            visible: cutteronoroff.state == "left" ? true : false
+        }
+        MiniKeyNumInput {
+            id: loadValue2
+            visible: loadName2.visible
+            anchors.verticalCenter: loadName2.verticalCenter
+            anchors.left: loadName2.right
+            anchors.leftMargin: 150
+            width: 150
+//                horizontalAlignment: Qt.AlignHCenter
+            height: cutteronoroff.height
+            inputWidth: 150
+//                inputHeight: parent.height*0.12
+//                inputColor: "white"
+            clip: true
+            inputText: spliceModel.getStructValue("Load Time","current") //qsTr("0.00mm")
+            onInputFocusChanged: {
+//                if (loadValue2.inputFocus) {
+//                    backGround.visible = true
+//                    backGround.opacity = 0.5
+//                    keyNum.visible = true
+//                    keyNum.titleText = loadName2.text
+//                    keyNum.currentValue = loadValue2.inputText
+//                    keyNum.minvalue = spliceModel.getStructValue("Load Time","min")
+//                    keyNum.maxvalue = spliceModel.getStructValue("Load Time","max")
+//                }
+            }
+        }
+
+        Text {
+            id: cutterText
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.leftMargin: 24
+            anchors.topMargin: 10
+            verticalAlignment: Qt.AlignVCenter
+            text: qsTr("Cutter")
+            color: "white"
+            font.pointSize: 16
+            font.family: "arial"
+            height: parent.height * 0.1
+        }
+
+        Switch2 {
+            id: cutteronoroff
+            anchors.left: cutterText.right
+            anchors.leftMargin: 50
+            anchors.verticalCenter: cutterText.verticalCenter
+            width: 150
+            textLeft: qsTr("ON")
+            textRight: qsTr("OFF")
+            clip: true
+            state: spliceModel.getStructValue("Cut Off","current")
+            onStateChanged: {
+                if (cutteronoroff.state == "left"){
+                    cutterColumn.visible = true
+                    loadName2.visible = true
+                    loadValue2.visible = true
+                }
+                else {
+                    cutterColumn.visible = false
+                    loadName2.visible = false
+                    loadValue2.visible = false
+                }
+            }
+        }
+
+        ListModel {
+            id: cutterModel
+            Component.onCompleted: {
+                cutterModel.append({"headText":qsTr("Time"),"switchState":"left"})
+                cutterModel.append({"headText":qsTr("Peak Power"),"switchState":"left"})
+                cutterModel.append({"headText":qsTr("Pre-Height"),"switchState":"left"})
+                cutterModel.append({"headText":qsTr("Post-Height"),"switchState":"left"})
+            }
+        }
+
+        Column {
+            id: cutterColumn
+            anchors.top: loadValue2.bottom
+            anchors.topMargin: 8
+            anchors.left: cutteronoroff.left
+            width: 350
+            height: parent.height*0.46+30
+            clip: true
+            spacing: 8
+            visible: cutteronoroff.state == "left" ? true : false
+            Repeater {
+                model: cutterModel
+                delegate: Item {
+                    height: (cutterColumn.height-30)/4
+                    width: parent.width
+                    Text {
+                        id: cutterColumnName
+                        anchors.verticalCenter: parent.verticalCenter
+                        verticalAlignment: Qt.AlignVCenter
+                        anchors.left: parent.left
+                        anchors.leftMargin: 10
+                        width: parent.width/3
+                        font.pointSize: 16
+                        font.family: "arial"
+                        text: headText
+                        color: "white"
+                        clip: true
+                    }
+                    Switch2 {
+                        id: columnOnoroff
+                        anchors.verticalCenter: cutterColumnName.verticalCenter
+                        anchors.right: parent.right
+                        width: 150
+                        textLeft: qsTr("ON")
+                        textRight: qsTr("OFF")
+                        state: switchState
+                        clip: true
+                        onStateChanged: {
+                        }
+                    }
+                }
+            }
+        }
+
+        CButton {
+            width: okButton.width
+            height: okButton.height
+            anchors.left: parent.left
+            anchors.leftMargin: 20
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 16
+            onClicked: {
+                itemCutter.visible = false
+            }
+        }
+    }
 
     Rectangle {
+        id: middLine
         anchors.top: parent.top
         anchors.topMargin: 15
         anchors.bottomMargin: 15

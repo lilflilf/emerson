@@ -97,16 +97,16 @@ Item {
     }
 
 
-//    WebEngineView {
-////    WebView {
-//        id: webVieW;
-//        anchors.top: parent.top
-//        anchors.left: leftArea.right
-//        anchors.right: parent.right
-//        anchors.bottom: parent.bottom
+    WebEngineView {
+//    WebView {
+        id: webVieW;
+        anchors.top: parent.top
+        anchors.left: leftArea.right
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
 //        url: hmiAdaptor.getUserManualPath()
-////        url: ("file:///d:\\Special Double Hit Mode functionality for Delphi Ground Terminal Welder II.html");
-////        url: ("https://www.baidu.com/")
+        url: ("file:///c:\\mytest.html");
+//        url: ("https://www.baidu.com/")
 
-//    }
+    }
 }

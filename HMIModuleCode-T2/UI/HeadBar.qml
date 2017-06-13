@@ -656,7 +656,7 @@ Item {
             listModel.append({"row":"1","subNode":[]})
             listModel.append({"row":"2","subNode":[]})
             listModel.append({"row":"3","subNode":[]})
-//            listModel.append({"row":"4","subNode":[]})
+            listModel.append({"row":"4","subNode":[]})
 //            listModel.append({"row":"5","subNode":[]})
 //            listModel.append({"row":"6","subNode":[]})
             listModel.get(0).subNode.append({"iconsource":"qrc:/images/images/Arabic.png","selectlanguage":"Arabic","backColor":"black","theopacity":"1"})
