@@ -4,8 +4,8 @@ import QtQuick.Layouts 1.0
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.1
 import QtQuick.Dialogs 1.2
-import QtWebView 1.1
-//import QtWebEngine 1.3
+//import QtWebView 1.1
+import QtWebEngine 1.3
 
 Item {
     id: userManual
@@ -83,30 +83,30 @@ Item {
         }
 
 //        WebEngineView {
-        WebView {
+//        WebView {
 
-            id: web1
-            anchors.top: row.bottom
-            anchors.left: leftArea.left
-            anchors.right: leftArea.right
-            anchors.bottom: parent.bottom
-//            url: hmiAdaptor.getUserManualPath()
-            url: ("file:///d:\\mytest.html");
-    //        url: ("https://www.baidu.com/")
-        }
+//            id: web1
+//            anchors.top: row.bottom
+//            anchors.left: leftArea.left
+//            anchors.right: leftArea.right
+//            anchors.bottom: parent.bottom
+////            url: hmiAdaptor.getUserManualPath()
+////            url: ("file:///d:\\mytest.html");
+//    //        url: ("https://www.baidu.com/")
+//        }
     }
 
 
 //    WebEngineView {
-    WebView {
-        id: webVieW;
-        anchors.top: parent.top
-        anchors.left: leftArea.right
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        url: hmiAdaptor.getUserManualPath()
-//        url: ("file:///d:\\Special Double Hit Mode functionality for Delphi Ground Terminal Welder II.html");
-//        url: ("https://www.baidu.com/")
+////    WebView {
+//        id: webVieW;
+//        anchors.top: parent.top
+//        anchors.left: leftArea.right
+//        anchors.right: parent.right
+//        anchors.bottom: parent.bottom
+//        url: hmiAdaptor.getUserManualPath()
+////        url: ("file:///d:\\Special Double Hit Mode functionality for Delphi Ground Terminal Welder II.html");
+////        url: ("https://www.baidu.com/")
 
-    }
+//    }
 }

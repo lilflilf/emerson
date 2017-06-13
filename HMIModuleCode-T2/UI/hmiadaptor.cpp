@@ -2106,7 +2106,6 @@ void HmiAdaptor::setWorkMissList(int spliceId)
 QString HmiAdaptor::getUserManualPath()
 {
     //url: ("file:///d:\\Special Double Hit Mode functionality for Delphi Ground Terminal Welder II.html");
-
     QString path = QCoreApplication::applicationDirPath();
     path = "file:///" + path + "/usermanual/User Manual.html";
     return path;
