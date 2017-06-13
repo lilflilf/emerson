@@ -29,13 +29,15 @@ struct WeldSettingForScreen
     bool CoolingForTooling;
     struct BRANSONDATA CurrentCoolingDur;
     struct BRANSONDATA CurrentCoolingDel;
-//    bool Imperical2Metric; // true is Imperical, false is Metric
+
     BRANSON_INI_STRUCT::PRESSUREUNIT Pressure2Unit;
     BRANSON_INI_STRUCT::SQUAREUNIT Square2Unit;
     BRANSON_INI_STRUCT::LENGTHUNIT Length2Unit;
     WeldResultElement::SAMPLERATIO SampleRatio; //that for Post-Height & power graph data sampling
     struct WeldSettingFormulaStruct WeldSettingFormula[FormulaRangSize];
 
+    Cutter CutOffOption;
+    AntiSide AntiSideOption;
 };
 
 struct FormulaRangeRef

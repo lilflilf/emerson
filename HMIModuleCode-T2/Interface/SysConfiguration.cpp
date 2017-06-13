@@ -190,7 +190,7 @@ bool Status_Data::ReadStatusDataFromQSetting()
 
     settings.beginGroup("Soft_Settings");
     int i_tmp = settings.value("Lang_Support").value<int>();
-    Soft_Settings.Lang_Support = (enum LangSupport)i_tmp;
+    Soft_Settings.Lang_Support = (BRANSON_INI_STRUCT::LangSupport)i_tmp;
     Soft_Settings.Horn_Calibrate = settings.value("Horn_Calibrate").value<int>();
     Soft_Settings.AutoPreburst = settings.value("AutoPreburst").value<int>();
     Soft_Settings.SonicGenWatts = settings.value("SonicGenWatts").value<int>();
