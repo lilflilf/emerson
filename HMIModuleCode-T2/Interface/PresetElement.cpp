@@ -54,6 +54,7 @@ PresetElement::PresetElement()
     WeldSettings.AdvanceSetting.StepWeld.PowerToStep = 0;
     WeldSettings.AdvanceSetting.StepWeld.TimeToStep = 0;
     WeldSettings.AdvanceSetting.ShrinkTube.ShrinkOption = false;
+    WeldSettings.AdvanceSetting.ShrinkTube.ShrinkMutex = false;
     WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTemperature
             = 260; //_Interface->StatusData.ShrinkTubeDefaults.at(0).temp;
     WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime
@@ -180,6 +181,8 @@ PresetElement PresetElement::operator=(const PresetElement &PresetObject)
             = PresetObject.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTime;
     this->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID
             = PresetObject.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkTubeID;
+    this->WeldSettings.AdvanceSetting.ShrinkTube.ShrinkMutex
+            = PresetObject.WeldSettings.AdvanceSetting.ShrinkTube.ShrinkMutex;
     this->HashCode = PresetObject.HashCode;
     QMap<int,QString>::const_iterator i
             = PresetObject.WireIndex.constBegin();
