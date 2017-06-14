@@ -143,7 +143,12 @@ Status_Data &Status_Data::operator= (const Status_Data &StatusDataObj)
 
     this->GraphSampleRatio = StatusDataObj.GraphSampleRatio;
     this->GraphDataLen = StatusDataObj.GraphDataLen;
-    this->CutoffMode = StatusDataObj.CutoffMode;
+    this->CutOffOption.CutOff = StatusDataObj.CutOffOption.CutOff;
+    this->CutOffOption.CutOffSpliceTime = StatusDataObj.CutOffOption.CutOffSpliceTime;
+    this->CutOffOption.Cutter4HeightAlarm = StatusDataObj.CutOffOption.Cutter4HeightAlarm;
+    this->CutOffOption.Cutter4PowerAlarm = StatusDataObj.CutOffOption.Cutter4PowerAlarm;
+    this->CutOffOption.Cutter4PreHeightAlarm = StatusDataObj.CutOffOption.Cutter4PreHeightAlarm;
+    this->CutOffOption.Cutter4TimeAlarm = StatusDataObj.CutOffOption.Cutter4TimeAlarm;
     this->LockKeyFlag = StatusDataObj.LockKeyFlag;
     this->FootPedalFlag = StatusDataObj.FootPedalFlag;
     this->ServerPort = StatusDataObj.ServerPort;
@@ -205,7 +210,7 @@ bool Status_Data::ReadStatusDataFromQSetting()
     Soft_Settings.MinAmplitude = settings.value("MinAmplitude").value<int>();
     Soft_Settings.MinPressure = settings.value("MinPressure").value<int>();
     i_tmp = settings.value("WeldFormula").value<int>();
-    Soft_Settings.WeldFormula = (enum WeldSetFormula)i_tmp;
+    Soft_Settings.WeldFormula = (BRANSON_INI_STRUCT::WeldSetFormula)i_tmp;
     Soft_Settings.RunCount = settings.value("RunCount").value<int>();
     i_tmp = settings.value("Teach_Mode").value<int>();
     Soft_Settings.Teach_Mode = (TEACHMODESETTING::TEACH_MODE_TYPE)i_tmp;
@@ -341,7 +346,14 @@ bool Status_Data::ReadStatusDataFromQSetting()
     i_tmp = settings.value("GraphSampleRatio").value<int>();
     GraphSampleRatio = (WeldResultElement::SAMPLERATIO)i_tmp;
     GraphDataLen = settings.value("GraphDataLen").value<long>();
-    CutoffMode = settings.value("CutoffMode").value<int>();
+    settings.beginGroup("CutOffOption");
+    CutOffOption.CutOff = settings.value("CutOff").value<bool>();
+    CutOffOption.CutOffSpliceTime = settings.value("CutOffSpliceTime").value<int>();
+    CutOffOption.Cutter4HeightAlarm = settings.value("Cutter4HeightAlarm").value<bool>();
+    CutOffOption.Cutter4PowerAlarm = settings.value("Cutter4PowerAlarm").value<bool>();
+    CutOffOption.Cutter4PreHeightAlarm = settings.value("Cutter4PreHeightAlarm").value<bool>();
+    CutOffOption.Cutter4TimeAlarm = settings.value("Cutter4TimeAlarm").value<bool>();
+    settings.endGroup();
     LockKeyFlag = settings.value("LockKeyFlag").value<bool>();
     FootPedalFlag = settings.value("FootPedalFlag").value<bool>();
     ServerPort = settings.value("ServerPort").value<int>();
@@ -525,7 +537,14 @@ void Status_Data::WriteStatusDataToQSetting()
 
     settings.setValue("GraphSampleRatio", GraphSampleRatio);
     settings.setValue("GraphDataLen", GraphDataLen);
-    settings.setValue("CutoffMode", CutoffMode);
+    settings.beginGroup("CutOffOption");
+    settings.setValue("CutOff", CutOffOption.CutOff);
+    settings.setValue("CutOffSpliceTime", CutOffOption.CutOffSpliceTime);
+    settings.setValue("Cutter4HeightAlarm", CutOffOption.Cutter4HeightAlarm);
+    settings.setValue("Cutter4PowerAlarm", CutOffOption.Cutter4PowerAlarm);
+    settings.setValue("Cutter4PreHeightAlarm", CutOffOption.Cutter4PreHeightAlarm);
+    settings.setValue("Cutter4TimeAlarm", CutOffOption.Cutter4TimeAlarm);
+    settings.endGroup();
     settings.setValue("LockKeyFlag", LockKeyFlag);
     settings.setValue("FootPedalFlag", FootPedalFlag);
     settings.setValue("ServerPort", ServerPort);

@@ -267,7 +267,7 @@ void MODstart::Update_from_StatusData_for_commands()
     _M10INI->TempSysConfig.CoolingDel = _Interface->StatusData.CurrentCoolingDel;
 
     _M10INI->TempSysConfig.LockAlarm = _Interface->StatusData.LockonAlarm;
-    _M10INI->TempSysConfig.CutoffMode = _Interface->StatusData.CutoffMode;
+    _M10INI->TempSysConfig.CutoffMode = _Interface->StatusData.CutOffOption.CutOff;
     _M10INI->TempSysConfig.RunMode = _Interface->StatusData.RunMode.Word;
 
     _M10INI->TempMaintConfig.Amplitude = _Interface->StatusData.Soft_Settings.Horn_Calibrate;

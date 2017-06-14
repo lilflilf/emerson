@@ -143,13 +143,18 @@ struct System_Configuration{
    bool Shrink;
    int SequenceError;
    int DoubleClick;
-   unsigned short CoolingDur;
-   unsigned short CoolingDel;
-   unsigned short CoolingTooling;
-   unsigned short CoolingMode;
+   int CoolingDur;
+   int CoolingDel;
+   int CoolingTooling;
+   int CoolingMode;
    unsigned short Machineflags[4];
    int StartScreen;
    int CutoffMode;
+   int CutOffSpliceTime;
+   bool Cutter4TimeAlarm;
+   bool Cutter4PowerAlarm;
+   bool Cutter4PreHeightAlarm;
+   bool Cutter4HeightAlarm;
 };
 
 

@@ -390,7 +390,7 @@ void M10INI::Init_StatusData()
     _Interface->DefaultStatusData.Soft_Settings.PWWidth2Height = 0;
     _Interface->DefaultStatusData.Soft_Settings.MinAmplitude = MINAMPLITUDE;
     _Interface->DefaultStatusData.Soft_Settings.MinPressure = MINWELDPRESSURE;
-    _Interface->DefaultStatusData.Soft_Settings.WeldFormula = WeldFormulaAmtechStandard;
+    _Interface->DefaultStatusData.Soft_Settings.WeldFormula = BRANSON_INI_STRUCT::WeldFormulaAmtechStandard;
     _Interface->DefaultStatusData.Soft_Settings.RunCount = 10;
     _Interface->DefaultStatusData.Soft_Settings.Teach_Mode = TEACHMODESETTING::SIGMA;
     _Interface->DefaultStatusData.Soft_Settings.TunePoint = 19950;

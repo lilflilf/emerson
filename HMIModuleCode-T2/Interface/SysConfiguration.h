@@ -138,12 +138,6 @@ enum SCREEN_MODE{
     LockOnAlarm_SCREEN,
 };
 
-enum WeldSetFormula{
-    WeldFormulaAmtechStandard,
-    WeldFormulaAmtechXL,
-    WeldFormulaCustom,
-};
-
 //Structure for the Amtech.Bin (Software Settings File)
 class BRANSON_INI_STRUCT
 {
@@ -191,7 +185,11 @@ public:
         HINDI_Lang,       //24 Hindi
         END_Lang          //Add above this
     };
-
+    enum WeldSetFormula{
+        WeldFormulaAmtechStandard,
+        WeldFormulaAmtechXL,
+        WeldFormulaCustom,
+    };
 public:
     enum LangSupport Lang_Support;
     int Horn_Calibrate;
@@ -472,7 +470,7 @@ public:
     QString CurrentWrkStaID;
     QString CentralComputerID;
 
-    enum ACTUATORMODE ActuatorMode;
+    ACTUATORMODE ActuatorMode;
     QString ActuatorVersion;
     QString ActuatorPartNumber;
     QString ActuatorSerialNumber;
@@ -496,7 +494,7 @@ public:
     PasswordEntry ModularPassword[PASSCOUNT];
 
     int GraphDataLen;
-    int CutoffMode;
+    Cutter CutOffOption;
     bool LockKeyFlag;
     bool FootPedalFlag;
     QMap<int, QString> carTemplate;
