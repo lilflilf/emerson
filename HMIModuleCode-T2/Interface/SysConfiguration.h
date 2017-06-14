@@ -191,7 +191,7 @@ public:
         WeldFormulaCustom,
     };
 public:
-    enum LangSupport Lang_Support;
+    LangSupport Lang_Support;
     int Horn_Calibrate;
     int AutoPreburst;
     int SonicGenWatts;

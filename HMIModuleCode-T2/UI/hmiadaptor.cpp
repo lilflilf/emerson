@@ -2268,7 +2268,9 @@ QString HmiAdaptor::getToolChangeFileName(QString filePath)
 
 void HmiAdaptor::setLanguage(int row, int column)
 {
-
+    interfaceClass->StatusData.Soft_Settings.Lang_Support =
+            (BRANSON_INI_STRUCT::LangSupport) (row * 7 + column);
+    interfaceClass->StatusData.WriteStatusDataToQSetting();
 }
 
 void HmiAdaptor::slotPhysicalKeySignal(bool &status)
