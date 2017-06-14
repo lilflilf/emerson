@@ -31,6 +31,7 @@ Window {
     property bool bIsPhysicalKey: false
     property var initIndex: 0
     property alias headTitle: headBar.titleText
+    property alias cutterButtonVisible: headBar.cutterVisible
     /*0-- create
       1-- edit
       2-- Operate

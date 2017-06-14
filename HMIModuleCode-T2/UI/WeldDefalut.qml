@@ -1216,6 +1216,11 @@ Item {
             hmiAdaptor.weldDefaultsSetCutterNum("Load Time",loadValue2.inputText)
             hmiAdaptor.weldDefaultsSetCutterNum("Unload Time",loadValue.inputText)
             hmiAdaptor.weldDefaultsSetCutterNum("Cut Off",cutteronoroff.state)
+            if (cutteronoroff.state == "left")
+                mainRoot.cutterButtonVisible = true
+            else
+                mainRoot.cutterButtonVisible = false
+
             hmiAdaptor.weldDefaultsSetCutterNum("Anti-Side",onoroff.state)
 
             hmiAdaptor.weldDefaultsSetCutterNum("Time",cutterModel.get(0).switchState)
