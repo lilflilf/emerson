@@ -888,6 +888,17 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         break;
     case IASigCooling:
         _Interface->StatusData.CurrentCoolingDur = MakeHexWordNumber(HexString.mid(9, 4));
+        switch(_Interface->StatusData.CurrentCoolingDur)
+        {
+        case Status_Data::ENERGYMODE:
+            _Interface->StatusData.CurrentCoolingMode = Status_Data::ENERGYMODE;
+            break;
+        case Status_Data::OFF:
+            _Interface->StatusData.CurrentCoolingMode = Status_Data::OFF;
+        default:
+            _Interface->StatusData.CurrentCoolingMode = Status_Data::ON;
+        }
+
         _Interface->StatusData.CurrentCoolingDel = MakeHexWordNumber(HexString.mid(13, 4));
         _Interface->StatusData.CurrentCoolingTooling = MakeHexWordNumber(HexString.mid(17,4));
         _M2010->ReceiveFlags.CoolingTypeData = true;
@@ -965,7 +976,7 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         _M2010->ReceiveFlags.TunePointData = true;
         break;
     case IASigCutoff:
-        _Interface->StatusData.CutoffMode = MakeHexWordNumber(HexString.mid(9, 4));
+        _Interface->StatusData.CutOffOption.CutOff = MakeHexWordNumber(HexString.mid(9, 4));
         _M2010->ReceiveFlags.CutterResponseData = true;
         break;
     case IASigFrequencyOffset:

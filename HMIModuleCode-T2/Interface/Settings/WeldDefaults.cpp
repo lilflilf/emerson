@@ -326,6 +326,7 @@ void WeldDefaults::_Default()
     M10INI* _M10INI = M10INI::Instance();
     M2010* _M2010 = M2010::Instance();
     M102IA* _M102IA = M102IA::Instance();
+    bool bChange = false;
 
     _Interface->StatusData.Soft_Settings.Square2Unit =
             _Interface->DefaultStatusData.Soft_Settings.Square2Unit;
@@ -335,94 +336,96 @@ void WeldDefaults::_Default()
             _Interface->DefaultStatusData.Soft_Settings.Pressure2Unit;
 
     _Utility->InitializeTextData();
-
-    unsigned short Machineflags = _M10INI->TempSysConfig.Machineflags[0];
-    _Interface->StatusData.Machineflags.Flag.WdthEncoderOff =
-            _Interface->DefaultStatusData.Machineflags.Flag.WdthEncoderOff;
-    if(_Interface->StatusData.Machineflags.Flag.WdthEncoderOff == ON)
-        _M10INI->TempSysConfig.Machineflags[0] |= 0x4000;
-    else
-        _M10INI->TempSysConfig.Machineflags[0] &= ~0x4000;
-
-    _Interface->StatusData.Machineflags.Flag.HgtEncoderOff =
-            _Interface->DefaultStatusData.Machineflags.Flag.HgtEncoderOff;
-    if(_Interface->StatusData.Machineflags.Flag.HgtEncoderOff == ON)
-        _M10INI->TempSysConfig.Machineflags[0] |= 0x8000;
-    else
-        _M10INI->TempSysConfig.Machineflags[0] &= ~0x8000;
-
-    _Interface->StatusData.Machineflags.Flag.SeekOff =
-            _Interface->DefaultStatusData.Machineflags.Flag.SeekOff;
-    if(_Interface->StatusData.Machineflags.Flag.SeekOff == ON)
-        _M10INI->TempSysConfig.Machineflags[0] |= 0x1000;
-    else
-        _M10INI->TempSysConfig.Machineflags[0] &= ~0x1000;
-
-    if(Machineflags != _M10INI->TempSysConfig.Machineflags[0])
+/************************* Machineflags *********************************/
+    _M10INI->TempSysConfig.Machineflags[0] =
+            _Interface->DefaultStatusData.Machineflags.Word[0];
+    _Interface->StatusData.Machineflags.Word[0] =
+            _Interface->DefaultStatusData.Machineflags.Word[0];
+    _M2010->ReceiveFlags.MachineFlagsData = false;
+    _M102IA->IACommand(IAComGetMachineFlags);
+    _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.MachineFlagsData);
+    if(_M2010->ReceiveFlags.MachineFlagsData == true)
     {
+        if(_M10INI->TempSysConfig.Machineflags[0] != _Interface->StatusData.Machineflags.Word[0])
+            bChange = true;
+    }
+    if(bChange == true)
+    {
+        _Interface->StatusData.Machineflags.Word[0] =
+                _M10INI->TempSysConfig.Machineflags[0];
         _M2010->ReceiveFlags.MachineFlagsData = false;
         _M102IA->SendIACommand(IAComSetMachineFlags, 0);
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.MachineFlagsData);
     }
 
-    unsigned short RunMode = _M10INI->TempSysConfig.RunMode;
-    _Interface->StatusData.RunMode.ModeFlag.DefeatWeldAbort =
-            _Interface->DefaultStatusData.RunMode.ModeFlag.DefeatWeldAbort;
-    if(_Interface->StatusData.RunMode.ModeFlag.DefeatWeldAbort == ON)
-        _M10INI->TempSysConfig.RunMode &= ~0x1000;
-    else
-        _M10INI->TempSysConfig.RunMode |= 0x1000;
-    if(RunMode != _M10INI->TempSysConfig.RunMode)
+/********************************** RunMode ************************************/
+    _M10INI->TempSysConfig.RunMode =
+            _Interface->DefaultStatusData.RunMode.Word;
+    _Interface->StatusData.RunMode.Word =
+            _Interface->DefaultStatusData.RunMode.Word;
+
+    _M2010->ReceiveFlags.FootPadelDATA = false;
+    bChange = false;
+    _M102IA->IACommand(IAComGetRunModeNew);
+    _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.FootPadelDATA);
+    if(_M2010->ReceiveFlags.FootPadelDATA == true)
     {
+        if(_M10INI->TempSysConfig.RunMode != _Interface->StatusData.RunMode.Word)
+            bChange = true;
+    }
+    if(bChange == true)
+    {
+        _Interface->StatusData.RunMode.Word =
+                _M10INI->TempSysConfig.RunMode;
         _M2010->ReceiveFlags.FootPadelDATA = false;
         _M102IA->SendIACommand(IAComSetRunModeNew, _M10INI->TempSysConfig.RunMode);
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.FootPadelDATA);
     }
 
-    unsigned short CoolingMode = _M10INI->TempSysConfig.CoolingMode;
-    bool CoolingChange = false;
+/***************************** Cooling ************************************/
+    _M10INI->TempSysConfig.CoolingMode =
+            _Interface->DefaultStatusData.CurrentCoolingMode;
+    _M10INI->TempSysConfig.CoolingTooling =
+        _Interface->DefaultStatusData.CurrentCoolingTooling;
+    _M10INI->TempSysConfig.CoolingDur =
+        _Interface->DefaultStatusData.CurrentCoolingDur;
+    _M10INI->TempSysConfig.CoolingDel =
+        _Interface->StatusData.CurrentCoolingDel;
     _Interface->StatusData.CurrentCoolingMode =
             _Interface->DefaultStatusData.CurrentCoolingMode;
-    if(CoolingMode != _Interface->StatusData.CurrentCoolingMode)
-    {
-        _M10INI->TempSysConfig.CoolingMode =
-                _Interface->StatusData.CurrentCoolingMode;
-        CoolingChange = true;
-    }
-
-    unsigned short CoolingTooling = _M10INI->TempSysConfig.CoolingTooling;
     _Interface->StatusData.CurrentCoolingTooling =
             _Interface->DefaultStatusData.CurrentCoolingTooling;
-    if(CoolingTooling != (unsigned short)_Interface->StatusData.CurrentCoolingTooling)
-    {
-        _M10INI->TempSysConfig.CoolingTooling =
-                (unsigned short)_Interface->StatusData.CurrentCoolingTooling;
-        CoolingChange = true;
-    }
-
-    unsigned short CoolingDur = _M10INI->TempSysConfig.CoolingDur;
     _Interface->StatusData.CurrentCoolingDur =
             _Interface->DefaultStatusData.CurrentCoolingDur;
-    if(CoolingDur != _Interface->StatusData.CurrentCoolingDur)
-    {
-        _M10INI->TempSysConfig.CoolingDur =
-                _Interface->StatusData.CurrentCoolingDur;
-        CoolingChange = true;
-    }
-
-    unsigned short CoolingDel = _M10INI->TempSysConfig.CoolingDel;
     _Interface->StatusData.CurrentCoolingDel =
             _Interface->DefaultStatusData.CurrentCoolingDel;
-    if(CoolingDel != _Interface->StatusData.CurrentCoolingDel)
+    _M2010->ReceiveFlags.CoolingTypeData = false;
+    bChange = false;
+    _M102IA->IACommand(IAComGetCooling);
+    _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.CoolingTypeData);
+    if(_M2010->ReceiveFlags.CoolingTypeData == true)
     {
-        _M10INI->TempSysConfig.CoolingDel =
-                _Interface->StatusData.CurrentCoolingDel;
-        CoolingChange = true;
+        if(_M10INI->TempSysConfig.CoolingMode != _Interface->StatusData.CurrentCoolingMode)
+            bChange = true;
+        if(_M10INI->TempSysConfig.CoolingDur != _Interface->StatusData.CurrentCoolingDur)
+            bChange = true;
+        if(_M10INI->TempSysConfig.CoolingDel != _Interface->StatusData.CurrentCoolingDel)
+            bChange = true;
+        if(_M10INI->TempSysConfig.CoolingTooling != (unsigned short)_Interface->StatusData.CurrentCoolingTooling)
+            bChange = true;
     }
-    if(CoolingChange == true)
+    if(bChange == true)
     {
+        _Interface->StatusData.CurrentCoolingMode =
+                (Status_Data::CoolingMode)_M10INI->TempSysConfig.CoolingMode;
+        _Interface->StatusData.CurrentCoolingDur =
+                _M10INI->TempSysConfig.CoolingDur;
+        _Interface->StatusData.CurrentCoolingDel =
+                _M10INI->TempSysConfig.CoolingDel;
+        _Interface->StatusData.CurrentCoolingTooling =
+                _M10INI->TempSysConfig.CoolingTooling;
         _M2010->ReceiveFlags.CoolingTypeData = false;
-        _M102IA->SendIACommand(IAComSetCooling, 0);
+        _M102IA->IACommand(IAComSetCooling);
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.CoolingTypeData);
     }
 
@@ -445,18 +448,111 @@ void WeldDefaults::_Default()
                 _Interface->DefaultStatusData.WeldSettings4Build[i].Multplier;
 
     }
+/*******************************Anti-side******************************/
+    _M2010->TempActuatorInfo.CurrentAntisideSpliceTime =
+            _Interface->DefaultStatusData.AntisideSpliceTime;
+    _M2010->TempActuatorInfo.CurrentActuatorType =
+            _Interface->DefaultStatusData.MachineType;
+    _M2010->TempActuatorInfo.CurrentActuatorMode =
+            _Interface->DefaultStatusData.ActuatorMode;
+
+    _Interface->StatusData.AntisideSpliceTime =
+            _Interface->DefaultStatusData.AntisideSpliceTime;
+    _Interface->StatusData.MachineType =
+            _Interface->DefaultStatusData.MachineType;
+    _Interface->StatusData.ActuatorMode =
+            _Interface->DefaultStatusData.ActuatorMode;
+
+    _M2010->ReceiveFlags.ActuatorType = false;
+    bChange = false;
+    _M102IA->SendIACommand(IAComGetActuator, 0);
+    _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.ActuatorType);
+    if(_M2010->ReceiveFlags.ActuatorType == true)
+    {
+        if(_Interface->StatusData.AntisideSpliceTime != _M2010->TempActuatorInfo.CurrentAntisideSpliceTime)
+            bChange = true;
+        if(_Interface->StatusData.MachineType != _M2010->TempActuatorInfo.CurrentActuatorType)
+            bChange = true;
+        if(_Interface->StatusData.ActuatorMode != _M2010->TempActuatorInfo.CurrentActuatorMode)
+            bChange = true;
+    }
+    if(bChange == true)
+    {
+        _Interface->StatusData.AntisideSpliceTime =
+                _M2010->TempActuatorInfo.CurrentAntisideSpliceTime;
+        _Interface->StatusData.MachineType =
+                (ActuatorType)_M2010->TempActuatorInfo.CurrentActuatorType;
+        _Interface->StatusData.ActuatorMode =
+                (Status_Data::ACTUATORMODE)_M2010->TempActuatorInfo.CurrentActuatorMode;
+        _M2010->ReceiveFlags.ActuatorType = false;
+        _M102IA->SendIACommand(IAComSetActuator, 0);
+        _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.ActuatorType);
+    }
+/************************Cutter Option**************************************/
+    _M10INI->TempSysConfig.CutoffMode =
+            _Interface->DefaultStatusData.CutOffOption.CutOff;
+    _M10INI->TempSysConfig.CutOffSpliceTime =
+            _Interface->DefaultStatusData.CutOffOption.CutOffSpliceTime;
+    _M10INI->TempSysConfig.Cutter4HeightAlarm =
+            _Interface->DefaultStatusData.CutOffOption.Cutter4HeightAlarm;
+    _M10INI->TempSysConfig.Cutter4PowerAlarm =
+            _Interface->DefaultStatusData.CutOffOption.Cutter4PowerAlarm;
+    _M10INI->TempSysConfig.Cutter4PreHeightAlarm =
+            _Interface->DefaultStatusData.CutOffOption.Cutter4PreHeightAlarm;
+    _M10INI->TempSysConfig.Cutter4TimeAlarm =
+            _Interface->DefaultStatusData.CutOffOption.Cutter4TimeAlarm;
+    _Interface->StatusData.CutOffOption.CutOff =
+            _Interface->DefaultStatusData.CutOffOption.CutOff;
+    _Interface->StatusData.CutOffOption.CutOffSpliceTime =
+            _Interface->DefaultStatusData.CutOffOption.CutOffSpliceTime;
+    _Interface->StatusData.CutOffOption.Cutter4HeightAlarm =
+            _Interface->DefaultStatusData.CutOffOption.Cutter4HeightAlarm;
+    _Interface->StatusData.CutOffOption.Cutter4PowerAlarm =
+            _Interface->DefaultStatusData.CutOffOption.Cutter4PowerAlarm;
+    _Interface->StatusData.CutOffOption.Cutter4PreHeightAlarm =
+            _Interface->DefaultStatusData.CutOffOption.Cutter4PreHeightAlarm;
+    _Interface->StatusData.CutOffOption.Cutter4TimeAlarm =
+            _Interface->DefaultStatusData.CutOffOption.Cutter4TimeAlarm;
+
+    _M2010->ReceiveFlags.CutterResponseData = false;
+    bChange = false;
+    _M102IA->SendIACommand(IAComGetCutoff, 0);
+    _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.CutterResponseData);
+    if(_M2010->ReceiveFlags.CutterResponseData == true)
+    {
+        if(_M10INI->TempSysConfig.CutoffMode != (int)_Interface->StatusData.CutOffOption.CutOff)
+            bChange = true;
+        if(_M10INI->TempSysConfig.CutOffSpliceTime != _Interface->StatusData.CutOffOption.CutOffSpliceTime)
+            bChange = true;
+        if(_M10INI->TempSysConfig.Cutter4HeightAlarm != _Interface->StatusData.CutOffOption.Cutter4HeightAlarm)
+            bChange = true;
+        if(_M10INI->TempSysConfig.Cutter4PowerAlarm != _Interface->StatusData.CutOffOption.Cutter4PowerAlarm)
+            bChange = true;
+        if(_M10INI->TempSysConfig.Cutter4PreHeightAlarm != _Interface->StatusData.CutOffOption.Cutter4PreHeightAlarm)
+            bChange = true;
+        if(_M10INI->TempSysConfig.Cutter4TimeAlarm != _Interface->StatusData.CutOffOption.Cutter4TimeAlarm)
+            bChange = true;
+    }
+    if(bChange == true)
+    {
+        _Interface->StatusData.CutOffOption.CutOff = _M10INI->TempSysConfig.CutoffMode;
+        _Interface->StatusData.CutOffOption.CutOffSpliceTime = _M10INI->TempSysConfig.CutOffSpliceTime;
+        _Interface->StatusData.CutOffOption.Cutter4HeightAlarm = _M10INI->TempSysConfig.Cutter4HeightAlarm;
+        _Interface->StatusData.CutOffOption.Cutter4PowerAlarm = _M10INI->TempSysConfig.Cutter4PowerAlarm;
+        _Interface->StatusData.CutOffOption.Cutter4PreHeightAlarm = _M10INI->TempSysConfig.Cutter4PreHeightAlarm;
+        _Interface->StatusData.CutOffOption.Cutter4TimeAlarm = _M10INI->TempSysConfig.Cutter4TimeAlarm;
+        _M2010->ReceiveFlags.CutterResponseData = false;
+        _M102IA->SendIACommand(IAComSetCutoff, _M10INI->TempSysConfig.CutoffMode);
+        _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.CutterResponseData);
+    }
     qDebug()<<"Defult";
     _Interface->StatusData.WriteStatusDataToQSetting();
 }
 
 bool WeldDefaults::_Recall()
 {
-
     InterfaceClass* _Interface = InterfaceClass::Instance();
     UtilityClass* _Utility = UtilityClass::Instance();
-    M2010* _M2010 = M2010::Instance();
-    M102IA* _M102IA = M102IA::Instance();
-    M10INI* _M10INI = M10INI::Instance();
     switch(_Interface->StatusData.Soft_Settings.Pressure2Unit)
     {
     case BRANSON_INI_STRUCT::ToPSI:
@@ -499,28 +595,6 @@ bool WeldDefaults::_Recall()
 
     _Utility->InitializeTextData();
 
-    _M2010->ReceiveFlags.MachineFlagsData = false;
-    _M102IA->IACommand(IAComGetMachineFlags);
-    _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.MachineFlagsData);
-
-    if(_M2010->ReceiveFlags.MachineFlagsData == true)
-    {
-        if((_M10INI->TempSysConfig.Machineflags[0] & 0x1000) == 0x1000)
-            _Interface->StatusData.Machineflags.Flag.SeekOff = ON;
-        else
-            _Interface->StatusData.Machineflags.Flag.SeekOff = OFF;
-
-        if((_M10INI->TempSysConfig.Machineflags[0] & 0x4000) == 0x4000)
-            _Interface->StatusData.Machineflags.Flag.WdthEncoderOff = ON;
-        else
-            _Interface->StatusData.Machineflags.Flag.WdthEncoderOff = OFF;
-
-        if((_M10INI->TempSysConfig.Machineflags[0] & 0x8000) == 0x8000)
-            _Interface->StatusData.Machineflags.Flag.HgtEncoderOff = ON;
-        else
-            _Interface->StatusData.Machineflags.Flag.HgtEncoderOff = OFF;
-
-    }
     if(_Interface->StatusData.Machineflags.Flag.WdthEncoderOff == OFF)
         CurrentWeldSettings.WidthEncoder = true;
     else
@@ -534,48 +608,21 @@ bool WeldDefaults::_Recall()
     else
         CurrentWeldSettings.Seek = false;
 
-    _M2010->ReceiveFlags.FootPadelDATA = false;
-    _M102IA->IACommand(IAComGetRunModeNew);
-    _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.FootPadelDATA);
-    if(_M2010->ReceiveFlags.FootPadelDATA == true)
-    {
-        if((_M10INI->TempSysConfig.RunMode & 0x1000) == 0x1000)
-            _Interface->StatusData.RunMode.ModeFlag.DefeatWeldAbort = OFF;
-        else
-            _Interface->StatusData.RunMode.ModeFlag.DefeatWeldAbort = ON;
-    }
-    if(_Interface->StatusData.RunMode.ModeFlag.DefeatWeldAbort == 1)
+    if(_Interface->StatusData.RunMode.ModeFlag.DefeatWeldAbort == ON)
         CurrentWeldSettings.FootPedalAbort = true;
     else
         CurrentWeldSettings.FootPedalAbort = false;
-
-    _M2010->ReceiveFlags.CoolingTypeData = false;
-    _M102IA->IACommand(IAComGetCooling);
-    _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.CoolingTypeData);
-    if(_M2010->ReceiveFlags.CoolingTypeData == true)
-    {
-        _Interface->StatusData.CurrentCoolingMode =
-                (Status_Data::CoolingMode)_M10INI->TempSysConfig.CoolingMode;
-        _Interface->StatusData.CurrentCoolingTooling =
-                _M10INI->TempSysConfig.CoolingTooling;
-        _Interface->StatusData.CurrentCoolingDur =
-                _M10INI->TempSysConfig.CoolingDur;
-        _Interface->StatusData.CurrentCoolingDel =
-                _M10INI->TempSysConfig.CoolingDel;
-    }
 
     CurrentWeldSettings.CurrentCoolingMode =
             _Interface->StatusData.CurrentCoolingMode;
     CurrentWeldSettings.CoolingForTooling =
             _Interface->StatusData.CurrentCoolingTooling;
-
     CurrentWeldSettings.CurrentCoolingDur.Current =
             _Utility->FormatedDataToString(DINCoolDur, _Interface->StatusData.CurrentCoolingDur);
     CurrentWeldSettings.CurrentCoolingDur.Maximum =
             _Utility->FormatedDataToString(DINCoolDur, MAXCOOLDUR);
     CurrentWeldSettings.CurrentCoolingDur.Minimum =
             _Utility->FormatedDataToString(DINCoolDur, MINCOOLDUR);
-
     CurrentWeldSettings.CurrentCoolingDel.Current =
             _Utility->FormatedDataToString(DINCoolDel, _Interface->StatusData.CurrentCoolingDel);
     CurrentWeldSettings.CurrentCoolingDel.Maximum =
@@ -586,6 +633,27 @@ bool WeldDefaults::_Recall()
     _Interface->StatusData.KeepDailyHistory = true;
     CurrentWeldSettings.SampleRatio =
             _Interface->StatusData.GraphSampleRatio;
+
+    if(_Interface->StatusData.ActuatorMode == Status_Data::ANTISIDESPLICE)
+        CurrentWeldSettings.AntiSideOption.AntiSideMode = true;
+    else
+        CurrentWeldSettings.AntiSideOption.AntiSideMode = false;
+    CurrentWeldSettings.AntiSideOption.AntiSideSpliceTime =
+            _Interface->StatusData.AntisideSpliceTime;
+
+    CurrentWeldSettings.CutOffOption.CutOff =
+            _Interface->StatusData.CutOffOption.CutOff;
+    CurrentWeldSettings.CutOffOption.CutOffSpliceTime =
+            _Interface->StatusData.CutOffOption.CutOffSpliceTime;
+    CurrentWeldSettings.CutOffOption.Cutter4HeightAlarm =
+            _Interface->StatusData.CutOffOption.Cutter4HeightAlarm;
+    CurrentWeldSettings.CutOffOption.Cutter4PowerAlarm =
+            _Interface->StatusData.CutOffOption.Cutter4PowerAlarm;
+    CurrentWeldSettings.CutOffOption.Cutter4PreHeightAlarm =
+            _Interface->StatusData.CutOffOption.Cutter4PreHeightAlarm;
+    CurrentWeldSettings.CutOffOption.Cutter4TimeAlarm =
+            _Interface->StatusData.CutOffOption.Cutter4TimeAlarm;
+
 
     float area = 0;
     float offset = 0;
@@ -735,6 +803,7 @@ bool WeldDefaults::_Set()
     M10INI* _M10INI = M10INI::Instance();
     M102IA* _M102IA = M102IA::Instance();
     M2010* _M2010 = M2010::Instance();
+    bool bChange = false;
     switch(CurrentWeldSettings.Pressure2Unit)
     {
     case BRANSON_INI_STRUCT::ToPSI:
@@ -776,128 +845,193 @@ bool WeldDefaults::_Set()
     }
     _Utility->InitializeTextData();
 
-    unsigned short Machineflags = _M10INI->TempSysConfig.Machineflags[0];
+    _M10INI->TempSysConfig.Machineflags[0] =
+            _Interface->StatusData.Machineflags.Word[0];
     if(CurrentWeldSettings.WidthEncoder == true)
     {
         if(_Interface->StatusData.Machineflags.Flag.WdthEncoderOff == ON)
-        {
-            _M10INI->TempSysConfig.Machineflags[0] &= ~(0x4000);
-        }
-        _Interface->StatusData.Machineflags.Flag.WdthEncoderOff = OFF;
+            _Interface->StatusData.Machineflags.Flag.WdthEncoderOff = OFF;
     }
     else
     {
         if(_Interface->StatusData.Machineflags.Flag.WdthEncoderOff == OFF)
-        {
-            _M10INI->TempSysConfig.Machineflags[0] |= 0x4000;
-        }
-        _Interface->StatusData.Machineflags.Flag.WdthEncoderOff = ON;
+            _Interface->StatusData.Machineflags.Flag.WdthEncoderOff = ON;
     }
 
     if(CurrentWeldSettings.HeightEncoder == true)
     {
         if(_Interface->StatusData.Machineflags.Flag.HgtEncoderOff == ON)
-        {
-            _M10INI->TempSysConfig.Machineflags[0] &= ~(0x8000);
-        }
-        _Interface->StatusData.Machineflags.Flag.HgtEncoderOff = OFF;
+            _Interface->StatusData.Machineflags.Flag.HgtEncoderOff = OFF;
     }
     else
     {
         if(_Interface->StatusData.Machineflags.Flag.HgtEncoderOff == OFF)
-        {
-            _M10INI->TempSysConfig.Machineflags[0] |= 0x8000;
-        }
-        _Interface->StatusData.Machineflags.Flag.HgtEncoderOff = ON;
+            _Interface->StatusData.Machineflags.Flag.HgtEncoderOff = ON;
     }
 
     if(CurrentWeldSettings.Seek == true)
     {
         if(_Interface->StatusData.Machineflags.Flag.SeekOff == ON)
-        {
-            _M10INI->TempSysConfig.Machineflags[0] &= ~(0x1000);
-        }
-        _Interface->StatusData.Machineflags.Flag.SeekOff = OFF;
+            _Interface->StatusData.Machineflags.Flag.SeekOff = OFF;
     }else
     {
         if(_Interface->StatusData.Machineflags.Flag.SeekOff == OFF)
-        {
-            _M10INI->TempSysConfig.Machineflags[0] |= 0x1000;
-        }
-        _Interface->StatusData.Machineflags.Flag.SeekOff = ON;
+            _Interface->StatusData.Machineflags.Flag.SeekOff = ON;
     }
-    if(Machineflags != _M10INI->TempSysConfig.Machineflags[0])
+    if(_M10INI->TempSysConfig.Machineflags[0] != _Interface->StatusData.Machineflags.Word[0])
     {
+        _M10INI->TempSysConfig.Machineflags[0] =
+                _Interface->StatusData.Machineflags.Word[0];
         _M2010->ReceiveFlags.MachineFlagsData = false;
         _M102IA->SendIACommand(IAComSetMachineFlags, 0);
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.MachineFlagsData);
     }
 
-    unsigned short RunMode = _M10INI->TempSysConfig.RunMode;
+    _M10INI->TempSysConfig.RunMode = _Interface->StatusData.RunMode.Word;
     if(CurrentWeldSettings.FootPedalAbort == true)
     {
         if(_Interface->StatusData.RunMode.ModeFlag.DefeatWeldAbort == OFF)
-        {
-            _M10INI->TempSysConfig.RunMode &= ~0x1000;
-        }
-        _Interface->StatusData.RunMode.ModeFlag.DefeatWeldAbort = ON;
+            _Interface->StatusData.RunMode.ModeFlag.DefeatWeldAbort = ON;
     }
     else
     {
         if(_Interface->StatusData.RunMode.ModeFlag.DefeatWeldAbort == ON)
-        {
-            _M10INI->TempSysConfig.RunMode |= 0x1000;
-        }
-        _Interface->StatusData.RunMode.ModeFlag.DefeatWeldAbort = OFF;
+            _Interface->StatusData.RunMode.ModeFlag.DefeatWeldAbort = OFF;
     }
-    if(RunMode != _M10INI->TempSysConfig.RunMode)
+    if(_M10INI->TempSysConfig.RunMode != _Interface->StatusData.RunMode.Word)
     {
+        _M10INI->TempSysConfig.RunMode = _Interface->StatusData.RunMode.Word;
         _M2010->ReceiveFlags.FootPadelDATA = false;
         _M102IA->SendIACommand(IAComSetRunModeNew, _M10INI->TempSysConfig.RunMode);
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.FootPadelDATA);
     }
 
-    unsigned short CoolingMode = _M10INI->TempSysConfig.CoolingMode;
-    bool CoolingChange = false;
+    bChange = false;
+    _M10INI->TempSysConfig.CoolingMode = _Interface->StatusData.CurrentCoolingMode;
     _Interface->StatusData.CurrentCoolingMode =
             CurrentWeldSettings.CurrentCoolingMode;
-    _M10INI->TempSysConfig.CoolingMode = CurrentWeldSettings.CurrentCoolingMode;
-    if(CoolingMode != _M10INI->TempSysConfig.CoolingMode)
-        CoolingChange = true;
+    if(_M10INI->TempSysConfig.CoolingMode != _Interface->StatusData.CurrentCoolingMode)
+    {
+        _M10INI->TempSysConfig.CoolingMode = _Interface->StatusData.CurrentCoolingMode;
+        bChange = true;
+    }
 
-    unsigned short CoolingTooling = _M10INI->TempSysConfig.CoolingTooling;
+    _M10INI->TempSysConfig.CoolingTooling = _Interface->StatusData.CurrentCoolingTooling;
     _Interface->StatusData.CurrentCoolingTooling =
             CurrentWeldSettings.CoolingForTooling;
-    _M10INI->TempSysConfig.CoolingTooling = (int)CurrentWeldSettings.CoolingForTooling;
-    if(CoolingTooling != _M10INI->TempSysConfig.CoolingTooling)
-        CoolingChange = true;
+    if(_M10INI->TempSysConfig.CoolingTooling != (unsigned short)_Interface->StatusData.CurrentCoolingTooling)
+    {
+        _M10INI->TempSysConfig.CoolingTooling = (int)CurrentWeldSettings.CoolingForTooling;
+        bChange = true;
+    }
 
-    unsigned short CoolingDur = _M10INI->TempSysConfig.CoolingDur;
+    _M10INI->TempSysConfig.CoolingDur = _Interface->StatusData.CurrentCoolingDur;
     int tmpValue = _Utility->StringToFormatedData(DINCoolDur,
         CurrentWeldSettings.CurrentCoolingDur.Current);
     if(tmpValue != -1)
         _Interface->StatusData.CurrentCoolingDur = tmpValue;
     else
         _Interface->StatusData.CurrentCoolingDur = 0;
-    _M10INI->TempSysConfig.CoolingDur = _Interface->StatusData.CurrentCoolingDur;
-    if(CoolingDur != _M10INI->TempSysConfig.CoolingDur)
-        CoolingChange = true;
 
-    unsigned short CoolingDel = _M10INI->TempSysConfig.CoolingDel;
+    if(_M10INI->TempSysConfig.CoolingDur != _Interface->StatusData.CurrentCoolingDur)
+    {
+        _M10INI->TempSysConfig.CoolingDur = _Interface->StatusData.CurrentCoolingDur;
+        bChange = true;
+    }
+
+    _M10INI->TempSysConfig.CoolingDel = _Interface->StatusData.CurrentCoolingDel;
     tmpValue = _Utility->StringToFormatedData(DINCoolDel,
         CurrentWeldSettings.CurrentCoolingDel.Current);
     if(tmpValue != -1)
         _Interface->StatusData.CurrentCoolingDel = tmpValue;
     else
         _Interface->StatusData.CurrentCoolingDel = 0;
-    _M10INI->TempSysConfig.CoolingDel = _Interface->StatusData.CurrentCoolingDel;
-    if(CoolingDel != _M10INI->TempSysConfig.CoolingDel)
-        CoolingChange = true;
-    if(CoolingChange == true)
+    if(_M10INI->TempSysConfig.CoolingDel != _Interface->StatusData.CurrentCoolingDel)
+    {
+        _M10INI->TempSysConfig.CoolingDel = _Interface->StatusData.CurrentCoolingDel;
+        bChange = true;
+    }
+    if(bChange == true)
     {
         _M2010->ReceiveFlags.CoolingTypeData = false;
         _M102IA->SendIACommand(IAComSetCooling, 0);
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.CoolingTypeData);
+    }
+
+    bChange = false;
+    _M2010->TempActuatorInfo.CurrentActuatorMode = _Interface->StatusData.ActuatorMode;
+    if(CurrentWeldSettings.AntiSideOption.AntiSideMode)
+        _Interface->StatusData.ActuatorMode = Status_Data::ANTISIDESPLICE;
+    if(_M2010->TempActuatorInfo.CurrentActuatorMode != _Interface->StatusData.ActuatorMode)
+    {
+        _M2010->TempActuatorInfo.CurrentActuatorMode = _Interface->StatusData.ActuatorMode;
+        bChange = true;
+    }
+    _M2010->TempActuatorInfo.CurrentActuatorType = _Interface->StatusData.MachineType;
+    _M2010->TempActuatorInfo.CurrentAntisideSpliceTime =
+            _Interface->StatusData.AntisideSpliceTime;
+    _Interface->StatusData.AntisideSpliceTime = CurrentWeldSettings.AntiSideOption.AntiSideSpliceTime;
+    if(_M2010->TempActuatorInfo.CurrentAntisideSpliceTime != _Interface->StatusData.AntisideSpliceTime)
+    {
+        _M2010->TempActuatorInfo.CurrentAntisideSpliceTime =
+                _Interface->StatusData.AntisideSpliceTime;
+        bChange = true;
+    }
+    if(bChange == true)
+    {
+        _M2010->ReceiveFlags.ActuatorType = false;
+        _M102IA->SendIACommand(IAComSetActuator, 0);
+        _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.ActuatorType);
+    }
+
+    bChange = false;
+    _M10INI->TempSysConfig.CutoffMode = _Interface->StatusData.CutOffOption.CutOff;
+    _Interface->StatusData.CutOffOption.CutOff = CurrentWeldSettings.CutOffOption.CutOff;
+    if(_M10INI->TempSysConfig.CutoffMode != (int)_Interface->StatusData.CutOffOption.CutOff)
+    {
+        _M10INI->TempSysConfig.CutoffMode = _Interface->StatusData.CutOffOption.CutOff;
+        bChange = true;
+    }
+    _M10INI->TempSysConfig.CutOffSpliceTime = _Interface->StatusData.CutOffOption.CutOffSpliceTime;
+    _Interface->StatusData.CutOffOption.CutOffSpliceTime = CurrentWeldSettings.CutOffOption.CutOffSpliceTime;
+    if(_M10INI->TempSysConfig.CutOffSpliceTime != _Interface->StatusData.CutOffOption.CutOffSpliceTime)
+    {
+        _M10INI->TempSysConfig.CutOffSpliceTime = _Interface->StatusData.CutOffOption.CutOffSpliceTime;
+        bChange = true;
+    }
+    _M10INI->TempSysConfig.Cutter4HeightAlarm = _Interface->StatusData.CutOffOption.Cutter4HeightAlarm;
+    _Interface->StatusData.CutOffOption.Cutter4HeightAlarm = CurrentWeldSettings.CutOffOption.Cutter4HeightAlarm;
+    if(_M10INI->TempSysConfig.Cutter4HeightAlarm != _Interface->StatusData.CutOffOption.Cutter4HeightAlarm)
+    {
+        _M10INI->TempSysConfig.Cutter4HeightAlarm = _Interface->StatusData.CutOffOption.Cutter4HeightAlarm;
+        bChange = true;
+    }
+    _M10INI->TempSysConfig.Cutter4PowerAlarm = _Interface->StatusData.CutOffOption.Cutter4PowerAlarm;
+    _Interface->StatusData.CutOffOption.Cutter4PowerAlarm = CurrentWeldSettings.CutOffOption.Cutter4PowerAlarm;
+    if(_M10INI->TempSysConfig.Cutter4PowerAlarm != _Interface->StatusData.CutOffOption.Cutter4PowerAlarm)
+    {
+        _M10INI->TempSysConfig.Cutter4PowerAlarm = _Interface->StatusData.CutOffOption.Cutter4PowerAlarm;
+        bChange = true;
+    }
+    _M10INI->TempSysConfig.Cutter4PreHeightAlarm = _Interface->StatusData.CutOffOption.Cutter4PreHeightAlarm;
+    _Interface->StatusData.CutOffOption.Cutter4PreHeightAlarm = CurrentWeldSettings.CutOffOption.Cutter4PreHeightAlarm;
+    if(_M10INI->TempSysConfig.Cutter4PreHeightAlarm != _Interface->StatusData.CutOffOption.Cutter4PreHeightAlarm)
+    {
+        _M10INI->TempSysConfig.Cutter4PreHeightAlarm = _Interface->StatusData.CutOffOption.Cutter4PreHeightAlarm;
+        bChange = true;
+    }
+    _M10INI->TempSysConfig.Cutter4TimeAlarm = _Interface->StatusData.CutOffOption.Cutter4TimeAlarm;
+    _Interface->StatusData.CutOffOption.Cutter4TimeAlarm = CurrentWeldSettings.CutOffOption.Cutter4TimeAlarm;
+    if(_M10INI->TempSysConfig.Cutter4TimeAlarm != _Interface->StatusData.CutOffOption.Cutter4TimeAlarm)
+    {
+        _M10INI->TempSysConfig.Cutter4TimeAlarm = _Interface->StatusData.CutOffOption.Cutter4TimeAlarm;
+        bChange = true;
+    }
+    if(bChange == true)
+    {
+        _M2010->ReceiveFlags.CutterResponseData = false;
+        _M102IA->SendIACommand(IAComSetCutoff, _M10INI->TempSysConfig.CutoffMode);
+        _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.CutterResponseData);
     }
 
     _Interface->StatusData.KeepDailyHistory = true;
