@@ -126,6 +126,8 @@ Item {
                     topLeft.item.myStripeColor = wireModel.getStructValue2("StripeColor","")
                     topLeft.item.myStripeType = wireModel.getStructValue3("StripeType","")
                     topLeft.item.myWireId = wireModel.getStructValue("WireId")
+                    topLeft.item.myModuleType = wireModel.getStructValue("ModuleType")
+
                 }
                 else if (wireModel.getStructValue("WirePosition") == 1)
                 {
@@ -148,6 +150,8 @@ Item {
                     bottomLeft.item.myStripeColor = wireModel.getStructValue2("StripeColor","")
                     bottomLeft.item.myStripeType = wireModel.getStructValue3("StripeType","")
                     bottomLeft.item.myWireId = wireModel.getStructValue("WireId")
+                    bottomLeft.item.myModuleType = wireModel.getStructValue("ModuleType")
+
                 }
             }
             else if (wireModel.getStructValue("WireDirection") == 1)
@@ -170,6 +174,8 @@ Item {
                     topRight.item.myStripeColor = wireModel.getStructValue2("StripeColor","")
                     topRight.item.myStripeType = wireModel.getStructValue3("StripeType","")
                     topRight.item.myWireId = wireModel.getStructValue("WireId")
+                    topRight.item.myModuleType = wireModel.getStructValue("ModuleType")
+
                 }
                 else if (wireModel.getStructValue("WirePosition") == 1)
                 {
@@ -192,6 +198,8 @@ Item {
                     bottomRight.item.myStripeColor = wireModel.getStructValue2("StripeColor","")
                     bottomRight.item.myStripeType = wireModel.getStructValue3("StripeType","")
                     bottomRight.item.myWireId = wireModel.getStructValue("WireId")
+                    bottomRight.item.myModuleType = wireModel.getStructValue("ModuleType")
+
                 }
             }
 
@@ -566,7 +574,6 @@ Item {
             bottomLeft.item.myModuleType = selectModuleType
         }
         else if (selectPosition == "rightList") {
-            console.log("eeeeeeeeeeee",detail.selectModuleType)
             listModelRight.set(selectIndex,{"moduleType":detail.selectModuleType})
 
         }
@@ -1102,6 +1109,8 @@ Item {
                             detail.selectWireStripeType = leftItem.myStripeType
                             detail.selectWireId = leftItem.myWireId
                             detail.wireName = leftItem.myWireName
+                            detail.selectModuleType = leftItem.myModuleType
+
                             wireSelected(leftRec.color,"left",leftItem.position,wireModel.getStructValue4(leftItem.myGauge,leftItem.myAwg),myWireNameLeft.text,leftItem.myWireType,leftItem.myStripeColor.toString(),leftItem.myStripeType,leftItem.myModuleType)
                             changing(false)
 
@@ -1120,6 +1129,8 @@ Item {
                             detail.selectColor = listModelLeft.get(index).mycolor
                             detail.selectText = listModelLeft.get(index).linetext
                             detail.wireName = listModelLeft.get(index).wireName
+                            detail.selectModuleType = listModelLeft.get(index).moduleType
+
                             listModelLeft.set(index,{"isCheck":radioButtonLeft.checked})
                             detail.selectDirection = "left"
                             wireSelected(leftRec.color,"left",leftItem.position,wireModel.getStructValue4(listModelLeft.get(index).gauge,listModelLeft.get(index).gaugeawg),myWireNameLeft.text,listModelLeft.get(index).wireType,listModelLeft.get(index).stripeColor,listModelLeft.get(index).stripeType,listModelLeft.get(index).moduleType)
@@ -1274,7 +1285,6 @@ Item {
                             detail.selectWireId = rightItem.myWireId
                             detail.wireName = rightItem.myWireName
                             detail.selectModuleType = rightItem.myModuleType
-                            console.log("ttttttttttttttttt",rightItem.myModuleType)
                             wireSelected(rightRec.color,"right",rightItem.position,wireModel.getStructValue4(rightItem.myGauge,rightItem.myAwg),myWireNameRight.text,rightItem.myWireType,rightItem.myStripeColor.toString(),rightItem.myStripeType,rightItem.myModuleType)
                             detail.selectDirection = "right"
                             safeChange(false)
@@ -1295,7 +1305,7 @@ Item {
                             detail.selectColor = listModelRight.get(index).mycolor  //mycolor
                             detail.selectText = listModelRight.get(index).linetext
                             detail.wireName = listModelRight.get(index).wireName
-                            detail.selectModuleType = rightItem.myModuleType
+                            detail.selectModuleType = listModelRight.get(index).moduleType
                             listModelRight.set(index,{"isCheck":radioButton.checked})
                             detail.selectDirection = "right"
                             safeChange(false)
