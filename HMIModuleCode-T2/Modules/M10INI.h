@@ -1,13 +1,9 @@
 #ifndef M10INI_H
 #define M10INI_H
 
-#include <iostream>
-#include <string>
-#include <sstream>
-#include "stdio.h"
-#include "stdlib.h"
 #include "M10definitions.h"
 #include "Interface/SysConfiguration.h"
+#include <QTranslator>
 using namespace std;
 
 #define Minmm2EnergyMult          25
@@ -216,6 +212,7 @@ public:
     System_Configuration TempSysConfig;
     StoragePathsType StoragePaths;
     QString ConfigFilesPath;
+    QTranslator ObjTranslator;
 private:
     void InitNoNetworkStorage(StoragePathsType PathStruct);
     void SetSoftLimitDefaults(Status_Data* _DataStruct, bool EnableSoftLimits = false);
@@ -238,6 +235,7 @@ public:
     void Save_StatusData(bool WithUpdate = true);
     void HelpFileLoader();
     void CheckBransonFolder();
+    QTranslator* TranslationInitial();
 public:
     static M10INI* Instance();
 protected:

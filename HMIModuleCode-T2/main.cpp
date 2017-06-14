@@ -56,15 +56,17 @@ int main(int argc, char *argv[])
 //    QtWebView::initialize();
     QtWebEngine::initialize();
     QString locale = QLocale::system().name();
-    QTranslator translator;
-//    bool success = translator.load("displayChinese_zh_CN.qm");
-    translator.load("displayChinese_zh_CN.qm");
-    app.installTranslator(&translator);
-    QQmlApplicationEngine engine;
 
     M10INI *pM10INI = M10INI::Instance();
     pM10INI->CheckBransonFolder();
     pM10INI->Get_INI_File();
+    QTranslator* translator = pM10INI->TranslationInitial();
+    app.installTranslator(translator);
+    QQmlApplicationEngine engine;
+
+//    M10INI *pM10INI = M10INI::Instance();
+//    pM10INI->CheckBransonFolder();
+//    pM10INI->Get_INI_File();
 
     HmiAdaptor *hmiAdaptor = new HmiAdaptor();
     hmiAdaptor->taskBarHeight = y;
