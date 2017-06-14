@@ -813,10 +813,10 @@ Item {
         ListModel {
             id: cutterModel
             Component.onCompleted: {
-                cutterModel.append({"headText":qsTr("Time"),"switchState":"left"})
-                cutterModel.append({"headText":qsTr("Peak Power"),"switchState":"left"})
-                cutterModel.append({"headText":qsTr("Pre-Height"),"switchState":"left"})
-                cutterModel.append({"headText":qsTr("Post-Height"),"switchState":"left"})
+                cutterModel.append({"headText":qsTr("Time"),"switchState":hmiAdaptor.weldDefaultsGetCutterNum("Time","")})
+                cutterModel.append({"headText":qsTr("Peak Power"),"switchState":hmiAdaptor.weldDefaultsGetCutterNum("Peak Power","")})
+                cutterModel.append({"headText":qsTr("Pre-Height"),"switchState":hmiAdaptor.weldDefaultsGetCutterNum("Pre-Height","")})
+                cutterModel.append({"headText":qsTr("Post-Height"),"switchState":hmiAdaptor.weldDefaultsGetCutterNum("Post-Height","")})
             }
         }
 
@@ -857,6 +857,7 @@ Item {
                         state: switchState
                         clip: true
                         onStateChanged: {
+                            cutterModel.set(index,{"switchState":columnOnoroff.state})
                         }
                     }
                 }
@@ -1211,6 +1212,17 @@ Item {
                     break;
                 }
             }
+
+            hmiAdaptor.weldDefaultsSetCutterNum("Load Time",loadValue2.inputText)
+            hmiAdaptor.weldDefaultsSetCutterNum("Unload Time",loadValue.inputText)
+            hmiAdaptor.weldDefaultsSetCutterNum("Cut Off",cutteronoroff.state)
+            hmiAdaptor.weldDefaultsSetCutterNum("Anti-Side",onoroff.state)
+
+            hmiAdaptor.weldDefaultsSetCutterNum("Time",cutterModel.get(0).switchState)
+            hmiAdaptor.weldDefaultsSetCutterNum("Peak Power",cutterModel.get(1).switchState)
+            hmiAdaptor.weldDefaultsSetCutterNum("Pre-Height",cutterModel.get(2).switchState)
+            hmiAdaptor.weldDefaultsSetCutterNum("Post-Height",cutterModel.get(3).switchState)
+
 
 
             hmiAdaptor.weldDefaultsSetValue(boolArray, stringArray, sampIndex, cooling1.centervalue,cooling2.centervalue)

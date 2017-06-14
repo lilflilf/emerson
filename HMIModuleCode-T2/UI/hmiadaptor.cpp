@@ -13,6 +13,8 @@
 #include <QDesktopWidget>
 #include <QTimer>
 #include <QCoreApplication>
+#include <QProcess>
+#include <QDir>
 
 HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
 {
@@ -1295,31 +1297,129 @@ QString HmiAdaptor::weldDefaultsGetCutterNum(QString key, QString index)
     if (key == "Load Time")
     {
         if (index == "current")
-            value = "";
+            value = m_variantToString->CutOffSpliceTimeToString(weldDefaults->CurrentWeldSettings.CutOffOption.CutOffSpliceTime).Current;
         else if (index == "max")
-            value = "";
+            value = m_variantToString->CutOffSpliceTimeToString(weldDefaults->CurrentWeldSettings.CutOffOption.CutOffSpliceTime).Maximum;
         else if (index == "min")
-            value = "";
+            value = m_variantToString->CutOffSpliceTimeToString(weldDefaults->CurrentWeldSettings.CutOffOption.CutOffSpliceTime).Minimum;
     }
     else if (key == "Unload Time")
     {
         if (index == "current")
-            value = "";
+        {
+            value = m_variantToString->AntiSideSpliceTimeToString(weldDefaults->
+                    CurrentWeldSettings.AntiSideOption.AntiSideSpliceTime).Current;
+        }
         else if (index == "max")
-            value = "";
+        {
+            value = m_variantToString->AntiSideSpliceTimeToString(weldDefaults->
+                    CurrentWeldSettings.AntiSideOption.AntiSideSpliceTime).Maximum;
+        }
         else if (index == "min")
-            value = "";
+        {
+            value = m_variantToString->AntiSideSpliceTimeToString(weldDefaults->
+                    CurrentWeldSettings.AntiSideOption.AntiSideSpliceTime).Minimum;
+        }
     }
     else if (key == "Cut Off")
-        value = "";
+    {
+        if (weldDefaults->CurrentWeldSettings.CutOffOption.CutOff)
+            value = "left";
+        else
+            value = "right";
+    }
     else if (key == "Anti-Side")
-        value == "";
+    {
+        if (weldDefaults->CurrentWeldSettings.AntiSideOption.AntiSideMode)
+            value = "left";
+        else
+            value = "right";
+    }
+    else if (key == "Time")
+    {
+        if (weldDefaults->CurrentWeldSettings.CutOffOption.Cutter4TimeAlarm)
+            value = "left";
+        else
+            value = "right";
+    }
+    else if (key == "Peak Power")
+    {
+        if (weldDefaults->CurrentWeldSettings.CutOffOption.Cutter4PowerAlarm)
+            value = "left";
+        else
+            value = "right";
+    }
+    else if (key == "Pre-Height")
+    {
+        if (weldDefaults->CurrentWeldSettings.CutOffOption.Cutter4PreHeightAlarm)
+            value = "left";
+        else
+            value = "right";
+    }
+    else if (key == "Post-Height")
+    {
+        if (weldDefaults->CurrentWeldSettings.CutOffOption.Cutter4HeightAlarm)
+            value = "left";
+        else
+            value = "right";
+    }
     return value;
 }
 
 void HmiAdaptor::weldDefaultsSetCutterNum(QString key, QString index)
 {
-
+    if (key == "Load Time")
+    {
+        weldDefaults->CurrentWeldSettings.CutOffOption.CutOffSpliceTime =
+                m_stringToVariant->CutOffSpliceTimeToInt(index);
+    }
+    else if (key == "Unload Time")
+    {
+         weldDefaults->CurrentWeldSettings.AntiSideOption.AntiSideSpliceTime =
+                 m_stringToVariant->AntiSideSpliceTimeToInt(index);
+    }
+    else if (key == "Cut Off")
+    {
+        if (index == "left")
+            weldDefaults->CurrentWeldSettings.CutOffOption.CutOff = true;
+        else
+            weldDefaults->CurrentWeldSettings.CutOffOption.CutOff = false;
+    }
+    else if (key == "Anti-Side")
+    {
+        if (index == "left")
+            weldDefaults->CurrentWeldSettings.AntiSideOption.AntiSideMode = true;
+        else
+            weldDefaults->CurrentWeldSettings.AntiSideOption.AntiSideMode = false;
+    }
+    else if (key == "Time")
+    {
+        if (index == "left")
+            weldDefaults->CurrentWeldSettings.CutOffOption.Cutter4TimeAlarm = true;
+        else
+            weldDefaults->CurrentWeldSettings.CutOffOption.Cutter4TimeAlarm = false;
+    }
+    else if (key == "Peak Power")
+    {
+        if (index == "left")
+            weldDefaults->CurrentWeldSettings.CutOffOption.Cutter4PowerAlarm = true;
+        else
+            weldDefaults->CurrentWeldSettings.CutOffOption.Cutter4PowerAlarm = false;
+    }
+    else if (key == "Pre-Height")
+    {
+        if (index == "left")
+            weldDefaults->CurrentWeldSettings.CutOffOption.Cutter4PreHeightAlarm = true;
+        else
+            weldDefaults->CurrentWeldSettings.CutOffOption.Cutter4PreHeightAlarm = false;
+    }
+    else if (key == "Post-Height")
+    {
+        if (index == "left")
+            weldDefaults->CurrentWeldSettings.CutOffOption.Cutter4HeightAlarm = true;
+        else
+            weldDefaults->CurrentWeldSettings.CutOffOption.Cutter4HeightAlarm = false;
+    }
 }
 
 bool HmiAdaptor::dataCommunicationExecute(QString code)
@@ -1412,6 +1512,15 @@ void HmiAdaptor::slotWeldCycleCompleted(bool result)
 void HmiAdaptor::slotGetAlarmFlag()
 {
     emit alarmModel->signalShowFlag(true);
+}
+
+void HmiAdaptor::reboot()
+{
+    QString program = QCoreApplication::applicationFilePath();
+    QStringList arguments = QCoreApplication::arguments();
+    QString workingDirectory = QDir::currentPath();
+    QProcess::startDetached(program, arguments, workingDirectory);
+    QCoreApplication::exit();
 }
 
 void HmiAdaptor::slotEnableDialog(BransonMessageBox &MsgBox)

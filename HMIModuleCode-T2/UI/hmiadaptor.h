@@ -216,6 +216,8 @@ public slots:
     void slotDisableDialog(struct BransonMessageBox &MsgBox);
     void slotButtonState(const unsigned long status);
     void slotGetAlarmFlag();
+private:
+    void reboot();
 };
 
 #endif // HMIADAPTOR_H
