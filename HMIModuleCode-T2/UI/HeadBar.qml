@@ -921,6 +921,7 @@ Item {
                     languageButton.source =
                     listModel.get(language.selectrow).subNode.get(language.selectColum).iconsource
                     console.log(language.selectrow + "languageButton.source: " + language.selectColum)
+                    hmiAdaptor.setLanguage(language.selectrow,language.selectColum)
                 }
                 dialog.visible = false
                 background.visible = false

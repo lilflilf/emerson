@@ -551,6 +551,8 @@ Item {
     }
 
     onSelectModuleTypeChanged: {
+        if (isSafe)
+            return
         if (selectPosition == "topRight") {
             topRight.item.myModuleType = selectModuleType
         }
@@ -564,6 +566,7 @@ Item {
             bottomLeft.item.myModuleType = selectModuleType
         }
         else if (selectPosition == "rightList") {
+            console.log("eeeeeeeeeeee",detail.selectModuleType)
             listModelRight.set(selectIndex,{"moduleType":detail.selectModuleType})
 
         }
@@ -892,7 +895,6 @@ Item {
                 topRight.item.myStripeType = selectWireStripeType
                 topRight.item.myWireId = selectWireId
                 topRight.item.myModuleType = selectModuleType
-
                 topLeft.sourceComponent = null
 
             }
@@ -1271,6 +1273,8 @@ Item {
                             detail.selectWireStripeType = rightItem.myStripeType
                             detail.selectWireId = rightItem.myWireId
                             detail.wireName = rightItem.myWireName
+                            detail.selectModuleType = rightItem.myModuleType
+                            console.log("ttttttttttttttttt",rightItem.myModuleType)
                             wireSelected(rightRec.color,"right",rightItem.position,wireModel.getStructValue4(rightItem.myGauge,rightItem.myAwg),myWireNameRight.text,rightItem.myWireType,rightItem.myStripeColor.toString(),rightItem.myStripeType,rightItem.myModuleType)
                             detail.selectDirection = "right"
                             safeChange(false)
@@ -1291,6 +1295,7 @@ Item {
                             detail.selectColor = listModelRight.get(index).mycolor  //mycolor
                             detail.selectText = listModelRight.get(index).linetext
                             detail.wireName = listModelRight.get(index).wireName
+                            detail.selectModuleType = rightItem.myModuleType
                             listModelRight.set(index,{"isCheck":radioButton.checked})
                             detail.selectDirection = "right"
                             safeChange(false)

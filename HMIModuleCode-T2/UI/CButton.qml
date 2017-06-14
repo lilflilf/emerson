@@ -133,4 +133,3 @@ MouseArea {
         time.running = true
     }
 }
-

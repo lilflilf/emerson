@@ -104,6 +104,10 @@ public:
     Q_INVOKABLE bool weldDefaultsSetValue3(QStringList strList);
     Q_INVOKABLE bool weldDefaultFormulaUpdate();
 
+    Q_INVOKABLE QString weldDefaultsGetCutterNum(QString key, QString index);
+    Q_INVOKABLE void weldDefaultsSetCutterNum(QString key, QString index);
+
+
     /********DataCommunication func**************/
     Q_INVOKABLE bool dataCommunicationExecute(QString code);
     Q_INVOKABLE bool dataCommunicationGetSwitch(QString index);
@@ -151,6 +155,7 @@ public:
     Q_INVOKABLE QString getUserManualPath();
     Q_INVOKABLE QString getApplicationDirPathPath();
     Q_INVOKABLE QString getToolChangeFileName(QString filePath);
+    Q_INVOKABLE void setLanguage(int row, int column);
 
     BransonMessageBox bransonMessageBox;
     InterfaceClass *interfaceClass;

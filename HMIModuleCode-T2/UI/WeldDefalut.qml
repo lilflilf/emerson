@@ -736,20 +736,13 @@ Item {
         }
         Text {
             id: loadName2
-            anchors.top: cutteronoroff.bottom
+            anchors.top: cutterText.bottom
             anchors.topMargin: 10
-            anchors.left: cutteronoroff.left
-            anchors.leftMargin: 20
-//            width: loadName.width //(parent.width/2-40)/3
-//            height: loadName.height //thirdSwitch.height/3-6
-
-//            width: (parent.width-40)/3
-//            height: parent.height*0.06
-
+            anchors.left: cutterText.left
             verticalAlignment: Qt.AlignVCenter
             font.pointSize: 16
             font.family: "arial"
-            text: qsTr("Load:")
+            text: qsTr("Load")
             color: "white"
             clip: true
             visible: cutteronoroff.state == "left" ? true : false
@@ -758,26 +751,23 @@ Item {
             id: loadValue2
             visible: loadName2.visible
             anchors.verticalCenter: loadName2.verticalCenter
-            anchors.left: loadName2.right
-            anchors.leftMargin: 150
+//            anchors.left: cutteronoroff.left
+            anchors.right: cutterColumn.right
             width: 150
-//                horizontalAlignment: Qt.AlignHCenter
             height: cutteronoroff.height
             inputWidth: 150
-//                inputHeight: parent.height*0.12
-//                inputColor: "white"
             clip: true
-            inputText: spliceModel.getStructValue("Load Time","current") //qsTr("0.00mm")
+            inputText: hmiAdaptor.weldDefaultsGetCutterNum("Load Time","current") //qsTr("0.00mm")
             onInputFocusChanged: {
-//                if (loadValue2.inputFocus) {
-//                    backGround.visible = true
-//                    backGround.opacity = 0.5
-//                    keyNum.visible = true
-//                    keyNum.titleText = loadName2.text
-//                    keyNum.currentValue = loadValue2.inputText
-//                    keyNum.minvalue = spliceModel.getStructValue("Load Time","min")
-//                    keyNum.maxvalue = spliceModel.getStructValue("Load Time","max")
-//                }
+                if (loadValue2.inputFocus) {
+                    backGround.visible = true
+                    backGround.opacity = 0.5
+                    keyNum.visible = true
+                    keyNum.titleText = loadName2.text
+                    keyNum.currentValue = loadValue2.inputText
+                    keyNum.minvalue = hmiAdaptor.weldDefaultsGetCutterNum("Load Time","min")
+                    keyNum.maxvalue = hmiAdaptor.weldDefaultsGetCutterNum("Load Time","max")
+                }
             }
         }
 
@@ -797,14 +787,15 @@ Item {
 
         Switch2 {
             id: cutteronoroff
-            anchors.left: cutterText.right
-            anchors.leftMargin: 50
+//            anchors.left: cutterText.right
+//            anchors.leftMargin: 50
+            anchors.right: cutterColumn.right
             anchors.verticalCenter: cutterText.verticalCenter
             width: 150
             textLeft: qsTr("ON")
             textRight: qsTr("OFF")
             clip: true
-            state: spliceModel.getStructValue("Cut Off","current")
+            state: hmiAdaptor.weldDefaultsGetCutterNum("Cut Off","current")
             onStateChanged: {
                 if (cutteronoroff.state == "left"){
                     cutterColumn.visible = true
@@ -831,25 +822,24 @@ Item {
 
         Column {
             id: cutterColumn
-            anchors.top: loadValue2.bottom
-            anchors.topMargin: 8
-            anchors.left: cutteronoroff.left
+            anchors.top: loadName2.bottom
+            anchors.topMargin: 20
+            anchors.left: cutterText.left
             width: 350
             height: parent.height*0.46+30
             clip: true
-            spacing: 8
+            spacing: 10
             visible: cutteronoroff.state == "left" ? true : false
             Repeater {
                 model: cutterModel
                 delegate: Item {
-                    height: (cutterColumn.height-30)/4
+                    height: cutteronoroff.height //(cutterColumn.height-30)/4
                     width: parent.width
                     Text {
                         id: cutterColumnName
                         anchors.verticalCenter: parent.verticalCenter
                         verticalAlignment: Qt.AlignVCenter
                         anchors.left: parent.left
-                        anchors.leftMargin: 10
                         width: parent.width/3
                         font.pointSize: 16
                         font.family: "arial"
@@ -872,6 +862,76 @@ Item {
                 }
             }
         }
+
+            Text {
+                id: thirdSwitchName
+                anchors.left: cutterColumn.right
+                anchors.leftMargin: 24
+                anchors.verticalCenter: cutterText.verticalCenter
+                text: "Anti-Side"
+                verticalAlignment: Qt.AlignVCenter
+                color: "white"
+                font.pointSize: 16
+                font.family: "arial"
+                height: parent.height * 0.1
+            }
+            Switch2 {
+                id: onoroff
+                anchors.verticalCenter: thirdSwitchName.verticalCenter
+                anchors.left: thirdSwitchName.right
+                anchors.leftMargin: 100
+                width: 150
+                textLeft: qsTr("ON")
+                textRight: qsTr("OFF")
+                state: hmiAdaptor.weldDefaultsGetCutterNum("Anti-Side","current")
+                clip: true
+                onStateChanged: {
+//                    thirdSwitchModel.set(index,{"switchState":onoroff.state})
+                    if (onoroff.state == "left"){
+                        loadValue.visible = true
+                        loadName.visible = true
+                    }
+                    else {
+                        loadValue.visible = false
+                        loadName.visible = false
+                    }
+                }
+            }
+
+            Text {
+                id: loadName
+                anchors.top: thirdSwitchName.bottom
+                anchors.topMargin: 10
+                anchors.left: thirdSwitchName.left
+                verticalAlignment: Qt.AlignVCenter
+                font.pointSize: 16
+                font.family: "arial"
+                text: qsTr("Unload")
+                color: "white"
+                clip: true
+            }
+            MiniKeyNumInput {
+                id: loadValue
+                anchors.verticalCenter: loadName.verticalCenter
+                anchors.left: onoroff.left
+                width: 150
+                height: onoroff.height
+                inputWidth: 150
+                clip: true
+                inputText: hmiAdaptor.weldDefaultsGetCutterNum("Unload Time","current")  //qsTr("0.00mm")
+                onInputFocusChanged: {
+                    if (loadValue.inputFocus) {
+                        backGround.visible = true
+                        backGround.opacity = 0.5
+                        keyNum.visible = true
+                        keyNum.titleText = loadName.text
+                        keyNum.currentValue = loadValue.inputText
+                        keyNum.minvalue = hmiAdaptor.weldDefaultsGetCutterNum("Unload Time","min")
+                        keyNum.maxvalue = hmiAdaptor.weldDefaultsGetCutterNum("Unload Time","max")
+                    }
+                }
+            }
+
 
         CButton {
             width: okButton.width
@@ -1227,10 +1287,16 @@ Item {
                         coolingList[4] = keyNum.inputText
                         cooling2.localbordercolor = "#0079c1"
                         cooling2.myFocus = false
-                    } else {
+                    } else if (loadValue.inputFocus) {
+                        loadValue.inputText = keyNum.inputText
+                        loadValue.inputFocus = false
+                    } else if (loadValue2.inputFocus) {
+                        loadValue2.inputText = keyNum.inputText
+                        loadValue2.inputFocus = false
+                    }
+                    else {
                         gridRepeater.itemAt(formulaSetting.selectIndex).localbordercolor = "#0079c1"
                         gridRepeater.model.set(formulaSetting.selectIndex,{"currenValue":keyNum.inputText})
-
                         weldDefaultUpdate()
                     }
                     backGround.visible = false
@@ -1247,7 +1313,13 @@ Item {
                 } else if (cooling2.myFocus) {
                     cooling2.localbordercolor = "#0079c1"
                     cooling2.myFocus = false
-                } else {
+                } else if (loadValue2.inputFocus) {
+                    loadValue2.inputFocus = false
+                }
+                else if (loadValue.inputFocus) {
+                    loadValue.inputFocus = false
+                }
+                else {
                     gridRepeater.itemAt(formulaSetting.selectIndex).localbordercolor = "#0079c1"
                 }
                 backGround.visible = false
@@ -1259,9 +1331,17 @@ Item {
         onInputTextChanged: {
             if (cooling1.myFocus) {
                 cooling1.centervalue = keyNum.inputText
-            } else if (cooling2.myFocus) {
+            }
+            else if (cooling2.myFocus) {
                 cooling2.centervalue = keyNum.inputText
-            } else {
+            }
+            else if (loadValue.inputFocus) {
+                loadValue.inputFocus = keyNum.inputText
+            }
+            else if (loadValue2.inputFocus) {
+                loadValue2.inputFocus = keyNum.inputText
+            }
+            else {
                 if (keyNum.inputText != "") {
                     gridRepeater.model.set(formulaSetting.selectIndex,{"currenValue":keyNum.inputText})
                     weldDefaultUpdate()

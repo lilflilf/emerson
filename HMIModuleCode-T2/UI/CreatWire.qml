@@ -432,9 +432,7 @@ Item {
                             text: qsTr("OK")
                             textColor: "white"
                             onClicked: {
-                                if (pickColor == "")
-                                    return
-                                if (colorLoader.sourceComponent == colorPicker)
+                                if (colorLoader.sourceComponent == colorPicker && pickColor != "")
                                 {
                                     itemColor.color = pickColor
                                     spliceDetailsItem.selectColor = pickColor
@@ -442,14 +440,16 @@ Item {
                                 }
                                 else if (colorLoader.sourceComponent == stripePicker)
                                 {
-                                    if (colorLoader.item.radioCheck == -1)
+                                    if (colorLoader.item.radioCheck == -1 )
+                                        return
+
+                                    if (colorLoader.item.radioCheck != 3 && pickColor == "")
                                         return
 
                                     itemStripe.color = pickColor
                                     itemStripe.stripeType = colorLoader.item.radioCheck
                                     spliceDetailsItem.selectWireStripeColor = pickColor
                                     spliceDetailsItem.selectWireStripeType = colorLoader.item.radioCheck
-
                                     colorLoader.sourceComponent = null
 
                                 }
@@ -1917,17 +1917,17 @@ Item {
                 spliceModel.setStructValue("DisplayWidth",widthModel.get(0).textValue)
                 spliceModel.setStructValue("DisplayHeight",heightModel.get(0).textValue)
 
-                spliceModel.setStructValue("Unload Time",loadValue.inputText)
-                spliceModel.setStructValue("Load Time",loadValue2.inputText)
+//                spliceModel.setStructValue("Unload Time",loadValue.inputText)
+//                spliceModel.setStructValue("Load Time",loadValue2.inputText)
 
-                spliceModel.setStructValue("Anti-Side",thirdSwitchModel.get(0).switchState == "left" ? true : false)
-                spliceModel.setStructValue("Cut Off",cutteronoroff.state == "left" ? true : false)
-                spliceModel.setStructValue("Insulation",thirdSwitchModel.get(1).switchState == "left" ? true : false)
+//                spliceModel.setStructValue("Anti-Side",thirdSwitchModel.get(0).switchState == "left" ? true : false)
+//                spliceModel.setStructValue("Cut Off",cutteronoroff.state == "left" ? true : false)
+                spliceModel.setStructValue("Insulation",thirdSwitchModel.get(0).switchState == "left" ? true : false)
 
-                spliceModel.setStructValue("CutterTime",cutterModel.get(0).switchState == "left" ? true : false)
-                spliceModel.setStructValue("CutterPeakPower",cutterModel.get(1).switchState == "left" ? true : false)
-                spliceModel.setStructValue("CutterPreHeight",cutterModel.get(2).switchState == "left" ? true : false)
-                spliceModel.setStructValue("CutterPostHeight",cutterModel.get(3).switchState == "left" ? true : false)
+//                spliceModel.setStructValue("CutterTime",cutterModel.get(0).switchState == "left" ? true : false)
+//                spliceModel.setStructValue("CutterPeakPower",cutterModel.get(1).switchState == "left" ? true : false)
+//                spliceModel.setStructValue("CutterPreHeight",cutterModel.get(2).switchState == "left" ? true : false)
+//                spliceModel.setStructValue("CutterPostHeight",cutterModel.get(3).switchState == "left" ? true : false)
 
                 var spliceId = spliceModel.saveSplice(creatWire.bIsEditSplice)
                 wireModel.updateSpliceIdToWire(list, spliceId)
@@ -2172,97 +2172,99 @@ Item {
                     }
                 }
             }
-            Text {
-                id: cutterText
-                anchors.top: widthSettingText.top
-                anchors.left: widthSetting.right
-                verticalAlignment: Qt.AlignVCenter
-                text: qsTr("Cutter")
-                color: "white"
-                font.pointSize: 16
-                font.family: "arial"
-                height: parent.height * 0.1
-            }
+//            Text {
+//                id: cutterText
+//                anchors.top: widthSettingText.top
+//                anchors.left: widthSetting.right
+//                verticalAlignment: Qt.AlignVCenter
+//                text: qsTr("Cutter")
+//                color: "white"
+//                font.pointSize: 16
+//                font.family: "arial"
+//                height: parent.height * 0.1
+//                visible: false
+//            }
 
-            Switch2 {
-                id: cutteronoroff
-                anchors.top: widthSetting.top
-                anchors.left: cutterText.left
-                width: loadValue.width - 20
-                height: loadValue.height
-                textLeft: qsTr("ON")
-                textRight: qsTr("OFF")
-                clip: true
-                state: spliceModel.getStructValue("Cut Off","current")
-                onStateChanged: {
-                    if (cutteronoroff.state == "left"){
-                        cutterColumn.visible = true
-                        loadName2.visible = true
-                        loadValue2.visible = true
-                    }
-                    else {
-                        cutterColumn.visible = false
-                        loadName2.visible = false
-                        loadValue2.visible = false
-                    }
-                }
-            }
+//            Switch2 {
+//                id: cutteronoroff
+//                visible: false
+//                anchors.top: widthSetting.top
+//                anchors.left: cutterText.left
+//                width: loadValue.width - 20
+//                height: loadValue.height
+//                textLeft: qsTr("ON")
+//                textRight: qsTr("OFF")
+//                clip: true
+//                state: spliceModel.getStructValue("Cut Off","current")
+//                onStateChanged: {
+//                    if (cutteronoroff.state == "left"){
+//                        cutterColumn.visible = true
+//                        loadName2.visible = true
+//                        loadValue2.visible = true
+//                    }
+//                    else {
+//                        cutterColumn.visible = false
+//                        loadName2.visible = false
+//                        loadValue2.visible = false
+//                    }
+//                }
+//            }
 
-            ListModel {
-                id: cutterModel
-                Component.onCompleted: {
-                    cutterModel.append({"headText":qsTr("Time"),"switchState":"left"})
-                    cutterModel.append({"headText":qsTr("Peak Power"),"switchState":"left"})
-                    cutterModel.append({"headText":qsTr("Pre-Height"),"switchState":"left"})
-                    cutterModel.append({"headText":qsTr("Post-Height"),"switchState":"left"})
-                }
-            }
+//            ListModel {
+//                id: cutterModel
+//                Component.onCompleted: {
+//                    cutterModel.append({"headText":qsTr("Time"),"switchState":"left"})
+//                    cutterModel.append({"headText":qsTr("Peak Power"),"switchState":"left"})
+//                    cutterModel.append({"headText":qsTr("Pre-Height"),"switchState":"left"})
+//                    cutterModel.append({"headText":qsTr("Post-Height"),"switchState":"left"})
+//                }
+//            }
 
-            Column {
-                id: cutterColumn
-                anchors.top: loadValue2.bottom
-                anchors.topMargin: 8
-                anchors.left: cutteronoroff.left
-                width: (parent.width-40)/3
-                height: parent.height*0.46+30
-                clip: true
-                spacing: 8
-                visible: cutteronoroff.state == "left" ? true : false
-                Repeater {
-                    model: cutterModel
-                    delegate: Item {
-                        height: (cutterColumn.height-30)/4
-                        width: parent.width
-                        Text {
-                            id: cutterColumnName
-                            anchors.verticalCenter: parent.verticalCenter
-                            verticalAlignment: Qt.AlignVCenter
-                            anchors.left: parent.left
-                            anchors.leftMargin: 10
-                            width: parent.width/3
-                            font.pointSize: 16
-                            font.family: "arial"
-                            text: headText
-                            color: "white"
-                            clip: true
-                        }
-                        Switch2 {
-                            id: columnOnoroff
-                            anchors.verticalCenter: cutterColumnName.verticalCenter
-                            anchors.left: cutterColumnName.right
-                            anchors.leftMargin: 13
-                            width: loadValue.width - 20
-                            height: loadValue.height
-                            textLeft: qsTr("ON")
-                            textRight: qsTr("OFF")
-                            state: switchState
-                            clip: true
-                            onStateChanged: {
-                            }
-                        }
-                    }
-                }
-            }
+//            Column {
+//                id: cutterColumn
+//                anchors.top: loadValue2.bottom
+//                anchors.topMargin: 8
+//                anchors.left: cutteronoroff.left
+//                width: (parent.width-40)/3
+//                height: parent.height*0.46+30
+//                clip: true
+//                spacing: 8
+//                visible: cutteronoroff.state == "left" ? true : false
+//                Repeater {
+//                    model: cutterModel
+//                    delegate: Item {
+//                        height: (cutterColumn.height-30)/4
+//                        width: parent.width
+//                        Text {
+//                            id: cutterColumnName
+//                            anchors.verticalCenter: parent.verticalCenter
+//                            verticalAlignment: Qt.AlignVCenter
+//                            anchors.left: parent.left
+//                            anchors.leftMargin: 10
+//                            width: parent.width/3
+//                            font.pointSize: 16
+//                            font.family: "arial"
+//                            text: headText
+//                            color: "white"
+//                            clip: true
+//                        }
+//                        Switch2 {
+//                            id: columnOnoroff
+//                            anchors.verticalCenter: cutterColumnName.verticalCenter
+//                            anchors.left: cutterColumnName.right
+//                            anchors.leftMargin: 13
+//                            width: loadValue.width - 20
+//                            height: loadValue.height
+//                            textLeft: qsTr("ON")
+//                            textRight: qsTr("OFF")
+//                            state: switchState
+//                            clip: true
+//                            onStateChanged: {
+//                            }
+//                        }
+//                    }
+//                }
+//            }
 
 
             Text {
@@ -2435,7 +2437,7 @@ Item {
             ListModel {
                 id: thirdSwitchModel
                 Component.onCompleted: {
-                    thirdSwitchModel.append({"thirdSwitchText":qsTr("Anti-Side:"),"switchState":spliceModel.getStructValue("Anti-Side","current")})
+//                    thirdSwitchModel.append({"thirdSwitchText":qsTr("Anti-Side:"),"switchState":spliceModel.getStructValue("Anti-Side","current")})
 //                    thirdSwitchModel.append({"thirdSwitchText":qsTr("Cut Off:"),"switchState":spliceModel.getStructValue("Cut Off","current")})
                     thirdSwitchModel.append({"thirdSwitchText":qsTr("Insulation:"),"switchState":spliceModel.getStructValue("Insulation","current")})
                 }
@@ -2443,17 +2445,17 @@ Item {
             Column {
                 id: thirdSwitch
                 anchors.top: weldSetting.bottom
-                anchors.topMargin: -24
-                anchors.bottom: parent.bottom
+                anchors.topMargin: 0
+//                anchors.bottom: parent.bottom
                 anchors.left: weldSetting.left
-//                anchors.leftMargin: 20
-                width: (parent.width-40)/3
+                height: parent.height*0.12
+                width: (parent.width-40)/3 -25
                 spacing: 24
                 clip: true
                 Repeater {
                     model: thirdSwitchModel
                     delegate: Item {
-                        height: (thirdSwitch.height-12)/2
+                        height: thirdSwitch.height //(thirdSwitch.height-12)/2
                         width: parent.width
                         Text {
                             id: thirdSwitchName
@@ -2472,9 +2474,9 @@ Item {
                             id: onoroff
                             anchors.verticalCenter: thirdSwitchName.verticalCenter
                             anchors.left: thirdSwitchName.right
-                            anchors.leftMargin: 13
-                            width: loadValue.width - 20
-                            height: loadValue.height
+                            anchors.leftMargin: 20
+                            width: (rect2.width-40)/6 //rect2.width/4 - 60
+                            height: rect2.height * 0.12
                             textLeft: qsTr("ON")
                             textRight: qsTr("OFF")
                             state: switchState
@@ -2492,125 +2494,127 @@ Item {
                                         insulation.visible = false
                                     }
                                 }
-                                else if(thirdSwitchText == "Anti-Side:")
-                                {
-                                    if (onoroff.state == "left"){
-                                        loadValue.visible = true
-                                        loadName.visible = true
-                                    }
-                                    else {
-                                        loadValue.visible = false
-                                        loadName.visible = false
-                                    }
-                                }
+//                                else if(thirdSwitchText == "Anti-Side:")
+//                                {
+//                                    if (onoroff.state == "left"){
+//                                        loadValue.visible = true
+//                                        loadName.visible = true
+//                                    }
+//                                    else {
+//                                        loadValue.visible = false
+//                                        loadName.visible = false
+//                                    }
+//                                }
                             }
                         }
                     }
                 }
             }
-            Text {
-                id: loadName
-                anchors.top: thirdSwitch.top
-                anchors.topMargin: 100
-                anchors.left: weldSetting.left
-                anchors.leftMargin: 10
-                width: (parent.width/2-40)/3
-                height: parent.height*0.06
-                verticalAlignment: Qt.AlignVCenter
-                font.pointSize: 16
-                font.family: "arial"
-                text: qsTr("Unload:")
-                color: "white"
-                clip: true
-            }
-            MiniKeyNumInput {
-                id: loadValue
-                anchors.verticalCenter: loadName.verticalCenter
-                anchors.left: loadName.right
-                anchors.leftMargin: -30
-                width: parent.width/4 - 60
-//                horizontalAlignment: Qt.AlignHCenter
-                height: parent.height*0.12
-                inputWidth: parent.width/4-80
-//                inputHeight: parent.height*0.12
-//                inputColor: "white"
-                clip: true
-                inputText: spliceModel.getStructValue("Unload Time","current")  //qsTr("0.00mm")
-                onInputFocusChanged: {
-                    if (loadValue.inputFocus) {
-                        backGround.visible = true
-                        backGround.opacity = 0.5
-                        keyNum.visible = true
-                        keyNum.titleText = loadName.text
-                        keyNum.currentValue = loadValue.inputText
-                        keyNum.minvalue = spliceModel.getStructValue("Unload Time","min")
-                        keyNum.maxvalue = spliceModel.getStructValue("Unload Time","max")
-                    }
-                }
-            }
-            Text {
-                id: loadName2
-                anchors.top: cutteronoroff.bottom
-                anchors.topMargin: 32
-                anchors.left: cutteronoroff.left
-                anchors.leftMargin: 10
-                width: loadName.width //(parent.width/2-40)/3
-                height: loadName.height //thirdSwitch.height/3-6
-                verticalAlignment: Qt.AlignVCenter
-                font.pointSize: 16
-                font.family: "arial"
-                text: qsTr("Load:")
-                color: "white"
-                clip: true
-                visible: cutteronoroff.state == "left" ? true : false
-            }
-            MiniKeyNumInput {
-                id: loadValue2
-                visible: loadName2.visible
-                anchors.verticalCenter: loadName2.verticalCenter
-                anchors.left: loadName2.right
-                anchors.leftMargin: -15
-                width: parent.width/4-60
-//                horizontalAlignment: Qt.AlignHCenter
-                height: parent.height*0.12
-                inputWidth: parent.width/4-80
-//                inputHeight: parent.height*0.12
-//                inputColor: "white"
-                clip: true
-                inputText: spliceModel.getStructValue("Load Time","current") //qsTr("0.00mm")
-                onInputFocusChanged: {
-                    if (loadValue2.inputFocus) {
-                        backGround.visible = true
-                        backGround.opacity = 0.5
-                        keyNum.visible = true
-                        keyNum.titleText = loadName2.text
-                        keyNum.currentValue = loadValue2.inputText
-                        keyNum.minvalue = spliceModel.getStructValue("Load Time","min")
-                        keyNum.maxvalue = spliceModel.getStructValue("Load Time","max")
-                    }
-                }
-            }
-            Text {
-                id: instulationText
-                anchors.top: loadName2.bottom
-                anchors.topMargin: 6
-                anchors.left: loadName.left
-                width: (parent.width/2-40)/3
-                height: thirdSwitch.height/3-6
-                verticalAlignment: Qt.AlignVCenter
-                text: ""
-                color: "white"
-                font.pointSize: 16
-                font.family: "arial"
-            }
+//            Text {
+//                id: loadName
+//                anchors.top: thirdSwitch.top
+//                anchors.topMargin: 100
+//                anchors.left: weldSetting.left
+//                anchors.leftMargin: 10
+//                width: (parent.width/2-40)/3
+//                height: parent.height*0.06
+//                verticalAlignment: Qt.AlignVCenter
+//                font.pointSize: 16
+//                font.family: "arial"
+//                text: qsTr("Unload:")
+//                color: "white"
+//                clip: true
+//                visible: false
+//            }
+//            MiniKeyNumInput {
+//                id: loadValue
+//                visible: false
+//                anchors.verticalCenter: loadName.verticalCenter
+//                anchors.left: loadName.right
+//                anchors.leftMargin: -30
+//                width: parent.width/4 - 60
+////                horizontalAlignment: Qt.AlignHCenter
+//                height: parent.height*0.12
+//                inputWidth: parent.width/4-80
+////                inputHeight: parent.height*0.12
+////                inputColor: "white"
+//                clip: true
+//                inputText: spliceModel.getStructValue("Unload Time","current")  //qsTr("0.00mm")
+//                onInputFocusChanged: {
+//                    if (loadValue.inputFocus) {
+//                        backGround.visible = true
+//                        backGround.opacity = 0.5
+//                        keyNum.visible = true
+//                        keyNum.titleText = loadName.text
+//                        keyNum.currentValue = loadValue.inputText
+//                        keyNum.minvalue = spliceModel.getStructValue("Unload Time","min")
+//                        keyNum.maxvalue = spliceModel.getStructValue("Unload Time","max")
+//                    }
+//                }
+//            }
+//            Text {
+//                id: loadName2
+//                anchors.top: cutteronoroff.bottom
+//                anchors.topMargin: 32
+//                anchors.left: cutteronoroff.left
+//                anchors.leftMargin: 10
+//                width: loadName.width //(parent.width/2-40)/3
+//                height: loadName.height //thirdSwitch.height/3-6
+//                verticalAlignment: Qt.AlignVCenter
+//                font.pointSize: 16
+//                font.family: "arial"
+//                text: qsTr("Load:")
+//                color: "white"
+//                clip: true
+//                visible: cutteronoroff.state == "left" ? true : false
+//            }
+//            MiniKeyNumInput {
+//                id: loadValue2
+//                visible: loadName2.visible
+//                anchors.verticalCenter: loadName2.verticalCenter
+//                anchors.left: loadName2.right
+//                anchors.leftMargin: -15
+//                width: parent.width/4-60
+////                horizontalAlignment: Qt.AlignHCenter
+//                height: parent.height*0.12
+//                inputWidth: parent.width/4-80
+////                inputHeight: parent.height*0.12
+////                inputColor: "white"
+//                clip: true
+//                inputText: spliceModel.getStructValue("Load Time","current") //qsTr("0.00mm")
+//                onInputFocusChanged: {
+//                    if (loadValue2.inputFocus) {
+//                        backGround.visible = true
+//                        backGround.opacity = 0.5
+//                        keyNum.visible = true
+//                        keyNum.titleText = loadName2.text
+//                        keyNum.currentValue = loadValue2.inputText
+//                        keyNum.minvalue = spliceModel.getStructValue("Load Time","min")
+//                        keyNum.maxvalue = spliceModel.getStructValue("Load Time","max")
+//                    }
+//                }
+//            }
+//            Text {
+//                id: instulationText
+//                anchors.top: loadName2.bottom
+//                anchors.topMargin: 6
+//                anchors.left: loadName.left
+//                width: (parent.width/2-40)/3
+//                height: thirdSwitch.height/3-6
+//                verticalAlignment: Qt.AlignVCenter
+//                text: ""
+//                color: "white"
+//                font.pointSize: 16
+//                font.family: "arial"
+//            }
 
             CButton {
                 id: instulationButton
 //                anchors.verticalCenter: instulationText.verticalCenter
 //                anchors.verticalCenterOffset: 8
 //                anchors.left: instulationText.right
-                anchors.left: heightSetting.left
-                anchors.top: heightSetting.bottom
+                anchors.right: thirdSwitch.right
+                anchors.top: thirdSwitch.bottom
                 anchors.topMargin: 15
                 width: parent.width/4-20
                 height: parent.height*0.12 + 10
@@ -2666,17 +2670,17 @@ Item {
                     spliceModel.setProcessValue("DisplayWidth",widthModel.get(0).textValue)
                     spliceModel.setProcessValue("DisplayHeight",heightModel.get(0).textValue)
 
-                    spliceModel.setProcessValue("Unload Time",loadValue.inputText)
-                    spliceModel.setProcessValue("Load Time",loadValue2.inputText)
+//                    spliceModel.setProcessValue("Unload Time",loadValue.inputText)
+//                    spliceModel.setProcessValue("Load Time",loadValue2.inputText)
 
-                    spliceModel.setProcessValue("Anti-Side",thirdSwitchModel.get(0).switchState == "left" ? true : false)
-                    spliceModel.setProcessValue("Cut Off",cutteronoroff.state == "left" ? true : false)
-                    spliceModel.setProcessValue("Insulation",thirdSwitchModel.get(1).switchState == "left" ? true : false)
+//                    spliceModel.setProcessValue("Anti-Side",thirdSwitchModel.get(0).switchState == "left" ? true : false)
+//                    spliceModel.setProcessValue("Cut Off",cutteronoroff.state == "left" ? true : false)
+                    spliceModel.setProcessValue("Insulation",thirdSwitchModel.get(0).switchState == "left" ? true : false)
 
-                    spliceModel.setProcessValue("CutterTime",cutterModel.get(0).switchState == "left" ? true : false)
-                    spliceModel.setProcessValue("CutterPeakPower",cutterModel.get(1).switchState == "left" ? true : false)
-                    spliceModel.setProcessValue("CutterPreHeight",cutterModel.get(2).switchState == "left" ? true : false)
-                    spliceModel.setProcessValue("CutterPostHeight",cutterModel.get(3).switchState == "left" ? true : false)
+//                    spliceModel.setProcessValue("CutterTime",cutterModel.get(0).switchState == "left" ? true : false)
+//                    spliceModel.setProcessValue("CutterPeakPower",cutterModel.get(1).switchState == "left" ? true : false)
+//                    spliceModel.setProcessValue("CutterPreHeight",cutterModel.get(2).switchState == "left" ? true : false)
+//                    spliceModel.setProcessValue("CutterPostHeight",cutterModel.get(3).switchState == "left" ? true : false)
 
                     settingRightArea.visible = false
 

@@ -1289,6 +1289,39 @@ bool HmiAdaptor::weldDefaultFormulaUpdate()
     return true;
 }
 
+QString HmiAdaptor::weldDefaultsGetCutterNum(QString key, QString index)
+{
+    QString value;
+    if (key == "Load Time")
+    {
+        if (index == "current")
+            value = "";
+        else if (index == "max")
+            value = "";
+        else if (index == "min")
+            value = "";
+    }
+    else if (key == "Unload Time")
+    {
+        if (index == "current")
+            value = "";
+        else if (index == "max")
+            value = "";
+        else if (index == "min")
+            value = "";
+    }
+    else if (key == "Cut Off")
+        value = "";
+    else if (key == "Anti-Side")
+        value == "";
+    return value;
+}
+
+void HmiAdaptor::weldDefaultsSetCutterNum(QString key, QString index)
+{
+
+}
+
 bool HmiAdaptor::dataCommunicationExecute(QString code)
 {
     if (code == "_Recall")
@@ -2122,6 +2155,11 @@ QString HmiAdaptor::getApplicationDirPathPath()
 QString HmiAdaptor::getToolChangeFileName(QString filePath)
 {
     return filePath.left(filePath.size()-4);
+}
+
+void HmiAdaptor::setLanguage(int row, int column)
+{
+
 }
 
 void HmiAdaptor::slotPhysicalKeySignal(bool &status)
