@@ -200,3 +200,8 @@ void InterfaceClass::LockOnAlarm(OperatorElement::PASSWORDCONTROL ControlLevel)
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.LockOnAlarmData);
     }
 }
+
+void InterfaceClass::HotRestartSys(void *_Obj)
+{
+
+}

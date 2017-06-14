@@ -156,6 +156,7 @@ public:
     Q_INVOKABLE QString getApplicationDirPathPath();
     Q_INVOKABLE QString getToolChangeFileName(QString filePath);
     Q_INVOKABLE void setLanguage(int row, int column);
+    Q_INVOKABLE QString getLanguageImage();
 
     BransonMessageBox bransonMessageBox;
     InterfaceClass *interfaceClass;

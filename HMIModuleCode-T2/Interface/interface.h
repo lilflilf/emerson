@@ -57,6 +57,7 @@ public:
     void DispearMsgBox();
     void ShownAlarmSign();
     void LockOnAlarm(OperatorElement::PASSWORDCONTROL ControlLevel);
+    static void HotRestartSys(void* _Obj);
 private:
     void CheckBransonFolder();
 signals:

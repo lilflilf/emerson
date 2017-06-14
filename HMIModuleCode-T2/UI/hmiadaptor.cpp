@@ -2162,6 +2162,100 @@ void HmiAdaptor::setLanguage(int row, int column)
     interfaceClass->StatusData.Soft_Settings.Lang_Support =
             (BRANSON_INI_STRUCT::LangSupport) (row * 7 + column);
     interfaceClass->StatusData.WriteStatusDataToQSetting();
+    BransonMessageBox tmpMsgBox;
+    tmpMsgBox.MsgPrompt = QObject::tr("All the setting will be avaliable after the system restart.");
+    tmpMsgBox.MsgTitle = QObject::tr("Information");
+    tmpMsgBox.TipsMode = (OKOnly + Information);
+    tmpMsgBox.func_ptr = InterfaceClass::HotRestartSys;
+    tmpMsgBox._Object = interfaceClass;
+    interfaceClass->cMsgBox(&tmpMsgBox);
+}
+
+QString HmiAdaptor::getLanguageImage()
+{
+    QString source = "qrc:/images/images/us&English.png";
+    switch(interfaceClass->StatusData.Soft_Settings.Lang_Support)
+    {
+    case BRANSON_INI_STRUCT::ENGLISH_lang:    //0 English
+        source = "qrc:/images/images/us&English.png";
+        break;
+    case BRANSON_INI_STRUCT::JAPANESE_Lang:    //1 Japanese
+        source = "qrc:/images/images/Japanese.png";
+        break;
+    case BRANSON_INI_STRUCT::SIMPCHINESE_Lang: //2 Simplifed chinese
+        source = "qrc:/images/images/chinese.png";
+        break;
+    case BRANSON_INI_STRUCT::TRADCHINESE_Lang: //3 Traditional chinese
+        source = "qrc:/images/images/chinese.png";
+        break;
+    case BRANSON_INI_STRUCT::INDONESIAN_Lang:  //4 Indonesian
+        source = "qrc:/images/images/Indonesian.png";
+        break;
+    case BRANSON_INI_STRUCT::SPANISH_Lang:     //5 Spanish
+        source = "qrc:/images/images/Spanish&Mexcio.png";
+        break;
+    case BRANSON_INI_STRUCT::Vietnam_Lang:     //6 Vietnam
+        source = "qrc:/images/images/Vietnam.png";
+        break;
+    case BRANSON_INI_STRUCT::TURKISH_Lang:     //7 Turkish
+        source = "qrc:/images/images/Turkish.png";
+        break;
+    case BRANSON_INI_STRUCT::Thai_Lang:        //8 Thai
+        source = "qrc:/images/images/Thai.png";
+        break;
+    case BRANSON_INI_STRUCT::PORTUGUESE_Lang:  //9 Portuguese
+        source = "qrc:/images/images/Portuguese&Brazil.png";
+        break;
+    case BRANSON_INI_STRUCT::GERMAN_Lang:      //10 German
+        source = "qrc:/images/images/German.png";
+        break;
+    case BRANSON_INI_STRUCT::FRENCH_Lang:      //11 French
+        source = "qrc:/images/images/french.png";
+        break;
+    case BRANSON_INI_STRUCT::RUSSIAN_Lang:     //12 Russian
+        source = "qrc:/images/images/russian.png";
+        break;
+    case BRANSON_INI_STRUCT::POLISH_Lang:      //13 Polish
+        source = "qrc:/images/images/polish.png";
+        break;
+    case BRANSON_INI_STRUCT::KOREAN_Lang:      //14 Korean
+        source = "qrc:/images/images/Korean.png";
+        break;
+    case BRANSON_INI_STRUCT::ITALIAN_Lang:     //15 Italian
+        source = "qrc:/images/images/Italian.png";
+        break;
+    case BRANSON_INI_STRUCT::SLOVAK_Lang:      //16 Slovak
+        source = "qrc:/images/images/Slovak.png";
+        break;
+    case BRANSON_INI_STRUCT::ROMANIAN_Lang:    //17 Romanian
+        source = "qrc:/images/images/Romanian.png";
+        break;
+    case BRANSON_INI_STRUCT::HUNGARIAN_Lang:   //18 Hungarian
+        source = "qrc:/images/images/Hungarian.png";
+        break;
+    case BRANSON_INI_STRUCT::DUTCH_Lang:       //19 Dutch
+        source = "qrc:/images/images/dutch.png";
+        break;
+    case BRANSON_INI_STRUCT::CZECH_Lang:       //20 Czech
+        source = "qrc:/images/images/Czech.png";
+        break;
+    case BRANSON_INI_STRUCT::MALAYSIAN_Lang:   //21 Malaysian
+        source = "qrc:/images/images/Malaysian.png";
+        break;
+    case BRANSON_INI_STRUCT::ARABIC_Lang:      //22 Arabic
+        source = "qrc:/images/images/Arabic.png";
+        break;
+    case BRANSON_INI_STRUCT::UnitedARAB_Lang:  //23 United-Arab-Emirates
+        source = "qrc:/images/images/United-Arab-Emirates.png";
+        break;
+    case BRANSON_INI_STRUCT::HINDI_Lang:       //24 Hindi
+        source = "qrc:/images/images/Hindi.png";
+        break;
+    default:
+        source = "qrc:/images/images/us&English.png";
+        break;
+    }
+    return source;
 }
 
 void HmiAdaptor::slotPhysicalKeySignal(bool &status)

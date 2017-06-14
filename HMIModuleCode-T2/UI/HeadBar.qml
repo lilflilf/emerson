@@ -558,7 +558,8 @@ Item {
         anchors.right: helpButton.left
         anchors.rightMargin: 20
         z: 14
-        source: "qrc:/images/images/English.png"
+//        source: "qrc:/images/images/English.png"
+        source: hmiAdaptor.getLanguageImage()
         anchors.verticalCenter: parent.verticalCenter
         height: 80
         width: 80
