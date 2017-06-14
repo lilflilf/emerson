@@ -1458,15 +1458,15 @@ QStringList HmiAdaptor::dataCommunicationGetValue(QString index)
              << dataCommunication->CurrentDataCommunication.ServerPort.Current
              << dataCommunication->CurrentDataCommunication.ServerPort.Minimum;
     }
-//    else if (index == "shrinkData")
-//    {
-//        for (int i = 0; i < dataCommunication->CurrentDataCommunication.ShrinkTubeDefault.size();i++)
-//        {
-//            list << dataCommunication->CurrentDataCommunication.ShrinkTubeDefault.at(i).Name
-//                 << dataCommunication->CurrentDataCommunication.ShrinkTubeDefault.at(i).Temp
-//                 << dataCommunication->CurrentDataCommunication.ShrinkTubeDefault.at(i).Time;
-//        }
-//    }
+    else if (index == "shrinkData")
+    {
+        for (int i = 0; i < interfaceClass->StatusData.ShrinkTubeDefaults.size();i++)
+        {
+            list << interfaceClass->StatusData.ShrinkTubeDefaults.at(i).Name
+                 << m_variantToString->ShrinkTemperatureToString(interfaceClass->StatusData.ShrinkTubeDefaults.at(i).temp).Current
+                 << m_variantToString->ShrinkTimeToString(interfaceClass->StatusData.ShrinkTubeDefaults.at(i).Time).Current;
+        }
+    }
 //    else if (index == "shrinkLimit")
 //    {
 //        list << dataCommunication->CurrentDataCommunication.MaxmmTemp

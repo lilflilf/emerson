@@ -23,7 +23,7 @@ Item {
     function initPage()
     {
         shrinkModel.clear()
-        hmiAdaptor.dataCommunicationExecute("_Recall");
+//        hmiAdaptor.dataCommunicationExecute("_Recall");
         var list
         list = hmiAdaptor.dataCommunicationGetValue("shrinkData")
         if (list.length % 3 == 0)

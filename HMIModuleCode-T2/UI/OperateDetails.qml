@@ -168,7 +168,6 @@ Item {
             for (var i2 = 0; i2 < spliceList.length;i2++)
             {
                 isMiss = false
-                console.log("ccccccccccc",spliceList,hmiAdaptor.getWorkValue("CurrentSplice"))
                 if (spliceList[i2] == hmiAdaptor.getWorkValue("CurrentSplice") || hmiAdaptor.getWorkValue("CurrentSplice") == 0)
                     break
                 for(var j2 = 0; j2 < missSpliceList.length;j2++) {

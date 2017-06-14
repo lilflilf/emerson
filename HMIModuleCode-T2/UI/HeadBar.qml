@@ -637,6 +637,13 @@ Item {
 //                hmiAdaptor.setAlarmModelList(true)
             }
         }
+        Component.onCompleted: {
+            hmiAdaptor.weldDefaultsExecute("_Recall");
+            if (hmiAdaptor.weldDefaultsGetCutterNum("Cut Off","") == "left")
+                cutterButton.visible = true
+            else
+                cutterButton.visible = false
+        }
     }
 
     Rectangle {
