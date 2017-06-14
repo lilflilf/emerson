@@ -82,18 +82,18 @@ Item {
             }
         }
 
-//        WebEngineView {
+        WebEngineView {
 //        WebView {
 
-//            id: web1
-//            anchors.top: row.bottom
-//            anchors.left: leftArea.left
-//            anchors.right: leftArea.right
-//            anchors.bottom: parent.bottom
-////            url: hmiAdaptor.getUserManualPath()
-////            url: ("file:///d:\\mytest.html");
-//    //        url: ("https://www.baidu.com/")
-//        }
+            id: web1
+            anchors.top: row.bottom
+            anchors.left: leftArea.left
+            anchors.right: leftArea.right
+            anchors.bottom: parent.bottom
+            url: hmiAdaptor.getUserManualPath()
+//            url: ("file:///d:\\mytest.html");
+    //        url: ("https://www.baidu.com/")
+        }
     }
 
 
@@ -104,8 +104,8 @@ Item {
         anchors.left: leftArea.right
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-//        url: hmiAdaptor.getUserManualPath()
-        url: ("file:///c:\\mytest.html");
+        url: hmiAdaptor.getUserManualPath()
+//        url: ("file:///c:\\mytest.html");
 //        url: ("https://www.baidu.com/")
 
     }

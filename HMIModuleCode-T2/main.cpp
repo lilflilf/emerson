@@ -52,6 +52,7 @@ int main(int argc, char *argv[])
 
     qmlRegisterType<ALPaintedItem>("ALPaintedItem", 1, 0, "ALPaintedItem");
 
+    QGuiApplication::setAttribute(Qt::AA_UseOpenGLES);
     QGuiApplication app(argc, argv);
 //    QtWebView::initialize();
     QtWebEngine::initialize();
