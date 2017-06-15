@@ -203,6 +203,7 @@ void InterfaceClass::LockOnAlarm(OperatorElement::PASSWORDCONTROL ControlLevel)
 
 void InterfaceClass::HotRestartSys(void *_Obj)
 {
+    UNUSED(_Obj);
     QString program = QCoreApplication::applicationFilePath();
     QStringList arguments = QCoreApplication::arguments();
     QString workingDirectory = QDir::currentPath();

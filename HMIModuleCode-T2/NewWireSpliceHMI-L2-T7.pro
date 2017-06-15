@@ -13,9 +13,31 @@ static {
     QT += svg
     QTPLUGIN += qtvirtualkeyboardplugin
 }
-TRANSLATIONS = displayChinese_zh_CN.ts \
-               displayFrench_zh_CN.ts\
-               displayEnglish_zh_CN.ts
+TRANSLATIONS =  displayEnglish_zh_CN.ts \
+                displayJapanese_zh_CN.ts \
+                displaySimplifiedChinese_zh_CN.ts \
+                displayTraditionalChinese_zh_CN.ts \
+                displayIndonesian_zh_CN.ts \
+                displaySpanish_zh_CN.ts \
+                displayVietnam_zh_CN.ts \
+                displayTurkish_zh_CN.ts \
+                displayThai_zh_CN.ts \
+                displayPortuguese_zh_CN.ts \
+                displayGerman_zh_CN.ts \
+                displayFrench_zh_CN.ts \
+                displayRussian_zh_CN.ts \
+                displayPolish_zh_CN.ts \
+                displayKorean_zh_CN.ts \
+                displayItalian_zh_CN.ts \
+                displaySlovak_zh_CN.ts \
+                displayRomanian_zh_CN.ts \
+                displayHungarian_zh_CN.ts \
+                displayDutch_zh_CN.ts \
+                displayCzech_zh_CN.ts \
+                displayMalaysian_zh_CN.ts \
+                displayArabic_zh_CN.ts \
+                displayHindi_zh_CN.ts
+
 
 #lupdate_only{
 #    SOURCES += UI/*.qml

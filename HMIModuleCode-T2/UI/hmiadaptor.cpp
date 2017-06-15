@@ -1496,6 +1496,11 @@ bool HmiAdaptor::dataCommunicationSetValue(QList<bool> boolList, QStringList str
     return true;
 }
 
+void HmiAdaptor::dataCommunicationShrinkTubeTesting()
+{
+    dataCommunication->ShrinkTubeTesting();
+}
+
 void HmiAdaptor::slotWeldCycleCompleted(bool result)
 {
     qDebug() << "slotWeldCycleCompleted in hmiadaptor" << result;

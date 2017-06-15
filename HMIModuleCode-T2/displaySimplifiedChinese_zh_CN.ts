@@ -12,6 +12,75 @@
 <context>
     <name>QObject</name>
     <message>
+        <location filename="DataBase/DBHarnessTable.cpp" line="88"/>
+        <location filename="DataBase/DBPresetTable.cpp" line="208"/>
+        <location filename="DataBase/DBSequenceTable.cpp" line="80"/>
+        <location filename="DataBase/DBWireTable.cpp" line="74"/>
+        <location filename="Interface/MakeWeld/MakeWeldProcess.cpp" line="232"/>
+        <location filename="Interface/MakeWeld/MakeWeldProcess.cpp" line="325"/>
+        <location filename="Interface/MakeWeld/MakeWeldProcess.cpp" line="365"/>
+        <location filename="Interface/MakeWeld/MakeWeldProcess.cpp" line="402"/>
+        <location filename="Interface/MakeWeld/MakeWeldProcess.cpp" line="456"/>
+        <location filename="Modules/AlarmMessage.cpp" line="32"/>
+        <location filename="Modules/AlarmMessage.cpp" line="249"/>
+        <location filename="Modules/AlarmMessage.cpp" line="261"/>
+        <location filename="Modules/Modstart.cpp" line="368"/>
+        <location filename="Modules/Modstart.cpp" line="395"/>
+        <source>ERROR</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="DataBase/DBHarnessTable.cpp" line="89"/>
+        <location filename="DataBase/DBPresetTable.cpp" line="209"/>
+        <location filename="DataBase/DBSequenceTable.cpp" line="81"/>
+        <location filename="DataBase/DBWireTable.cpp" line="75"/>
+        <source>Please make sure All the production files has been in the Modular Production!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="DataExport_Import/CSVAlarmLogData.cpp" line="38"/>
+        <location filename="DataExport_Import/CSVMaintenanceLogData.cpp" line="35"/>
+        <location filename="Modules/Statistics.cpp" line="272"/>
+        <source>Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="DataExport_Import/CSVAlarmLogData.cpp" line="38"/>
+        <location filename="DataExport_Import/CSVMaintenanceLogData.cpp" line="35"/>
+        <location filename="Interface/VariantToString.cpp" line="477"/>
+        <location filename="Modules/Statistics.cpp" line="273"/>
+        <location filename="Modules/Statistics.cpp" line="283"/>
+        <source>Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="DataExport_Import/CSVAlarmLogData.cpp" line="39"/>
+        <source>Alarm/Error Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="DataExport_Import/CSVAlarmLogData.cpp" line="40"/>
+        <source>Alarm/Error Level</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="DataExport_Import/CSVAlarmLogData.cpp" line="41"/>
+        <location filename="DataExport_Import/CSVMaintenanceLogData.cpp" line="37"/>
+        <source>Message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="DataExport_Import/CSVAlarmLogData.cpp" line="41"/>
+        <location filename="Modules/Statistics.cpp" line="274"/>
+        <source>Splice Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="DataExport_Import/CSVMaintenanceLogData.cpp" line="36"/>
+        <source>Maintenance Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="Interface/Maintenance/AdvancedMaintenance.cpp" line="119"/>
         <source>Mask Must be down</source>
         <translation type="unfinished"></translation>
@@ -60,7 +129,7 @@
         <location filename="Modules/M10RunMode.cpp" line="333"/>
         <location filename="Modules/M10RunMode.cpp" line="349"/>
         <location filename="Modules/ShrinkTubeSerial.cpp" line="117"/>
-        <location filename="UI/hmiadaptor.cpp" line="2276"/>
+        <location filename="UI/hmiadaptor.cpp" line="2281"/>
         <source>Information</source>
         <translation type="unfinished"></translation>
     </message>
@@ -73,6 +142,46 @@
         <location filename="Interface/Maintenance/Calibration.cpp" line="176"/>
         <location filename="Interface/Maintenance/Calibration.cpp" line="189"/>
         <source>UnSuccessful! Try again...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="63"/>
+        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="78"/>
+        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="93"/>
+        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="108"/>
+        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="140"/>
+        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="155"/>
+        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="170"/>
+        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="185"/>
+        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="218"/>
+        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="233"/>
+        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="248"/>
+        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="263"/>
+        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="296"/>
+        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="311"/>
+        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="326"/>
+        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="341"/>
+        <source>OFF</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="69"/>
+        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="84"/>
+        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="99"/>
+        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="113"/>
+        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="146"/>
+        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="161"/>
+        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="176"/>
+        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="191"/>
+        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="224"/>
+        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="239"/>
+        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="254"/>
+        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="269"/>
+        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="302"/>
+        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="317"/>
+        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="332"/>
+        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="347"/>
+        <source>ON</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -249,6 +358,21 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="Interface/Maintenance/MaintenanceLog.h" line="46"/>
+        <source>Gather Counter Limit Change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Maintenance/MaintenanceLog.h" line="47"/>
+        <source>Gather Energy Limit Change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Maintenance/MaintenanceLog.h" line="48"/>
+        <source>Gather Counter Reset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="Interface/Maintenance/MaintenanceLog.h" line="49"/>
         <source>Gather Counter 80% Limit Alarm </source>
         <translation type="unfinished"></translation>
@@ -304,69 +428,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Interface/Maintenance/MaintenanceLog.h" line="46"/>
-        <source>Gather Counter Limit Change</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Interface/Maintenance/MaintenanceLog.h" line="47"/>
-        <source>Gather Energy Limit Change</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Interface/Maintenance/MaintenanceLog.h" line="48"/>
-        <source>Gather Counter Reset</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="DataBase/DBHarnessTable.cpp" line="88"/>
-        <location filename="DataBase/DBPresetTable.cpp" line="208"/>
-        <location filename="DataBase/DBSequenceTable.cpp" line="80"/>
-        <location filename="DataBase/DBWireTable.cpp" line="74"/>
-        <location filename="Interface/MakeWeld/MakeWeldProcess.cpp" line="232"/>
-        <location filename="Interface/MakeWeld/MakeWeldProcess.cpp" line="325"/>
-        <location filename="Interface/MakeWeld/MakeWeldProcess.cpp" line="365"/>
-        <location filename="Interface/MakeWeld/MakeWeldProcess.cpp" line="402"/>
-        <location filename="Interface/MakeWeld/MakeWeldProcess.cpp" line="456"/>
-        <location filename="Modules/AlarmMessage.cpp" line="32"/>
-        <location filename="Modules/AlarmMessage.cpp" line="249"/>
-        <location filename="Modules/AlarmMessage.cpp" line="261"/>
-        <location filename="Modules/Modstart.cpp" line="368"/>
-        <location filename="Modules/Modstart.cpp" line="395"/>
-        <source>ERROR</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="DataBase/DBHarnessTable.cpp" line="89"/>
-        <location filename="DataBase/DBPresetTable.cpp" line="209"/>
-        <location filename="DataBase/DBSequenceTable.cpp" line="81"/>
-        <location filename="DataBase/DBWireTable.cpp" line="75"/>
-        <source>Please make sure All the production files has been in the Modular Production!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="Interface/MakeWeld/MakeWeldProcess.cpp" line="233"/>
         <source>Can&apos;t get full Power &amp; Post Height Graph from controller!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Interface/Settings/PermissionSetting.cpp" line="23"/>
-        <source>Test</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Interface/Settings/PermissionSetting.cpp" line="24"/>
-        <source>Teach Mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Interface/Settings/PermissionSetting.cpp" line="26"/>
-        <source>Tool Change</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Interface/Settings/PermissionSetting.cpp" line="29"/>
-        <source>Maintenance Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -405,8 +468,33 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="Interface/Settings/PermissionSetting.cpp" line="21"/>
+        <source>Operate Sequence</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="Interface/Settings/PermissionSetting.cpp" line="22"/>
         <source>Operate Harness</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Settings/PermissionSetting.cpp" line="23"/>
+        <source>Test</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Settings/PermissionSetting.cpp" line="24"/>
+        <source>Teach Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Settings/PermissionSetting.cpp" line="26"/>
+        <source>Tool Change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Settings/PermissionSetting.cpp" line="29"/>
+        <source>Maintenance Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -465,6 +553,26 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="Interface/Settings/WeldDefaults.h" line="8"/>
+        <source>Energy = Offset + (Cross Section X Multiplier)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Settings/WeldDefaults.h" line="9"/>
+        <source>Width = sqrt(Cross Section) X Multiplier</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Settings/WeldDefaults.h" line="10"/>
+        <source>Pressure = Offset + (Cross Section X Multiplier)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Settings/WeldDefaults.h" line="11"/>
+        <source>Amplitude = Offset + (Cross Section X Multiplier)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="Interface/SysConfiguration.h" line="72"/>
         <location filename="Modules/M10definitions.h" line="142"/>
         <source>ADMIN</source>
@@ -482,56 +590,9 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Interface/Settings/WeldDefaults.h" line="8"/>
-        <source>Energy = Offset + (Cross Section X Multiplier)</source>
-        <oldsource>Offset + (AREA X Multiplier)</oldsource>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Interface/Settings/WeldDefaults.h" line="9"/>
-        <source>Width = sqrt(Cross Section) X Multiplier</source>
-        <oldsource>sqrt(AREA) X Multiplier</oldsource>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Interface/Settings/WeldDefaults.h" line="10"/>
-        <source>Pressure = Offset + (Cross Section X Multiplier)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Interface/Settings/WeldDefaults.h" line="11"/>
-        <source>Amplitude = Offset + (Cross Section X Multiplier)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="Interface/VariantToString.cpp" line="474"/>
         <location filename="Modules/Statistics.cpp" line="276"/>
         <source>Energy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="DataExport_Import/CSVAlarmLogData.cpp" line="38"/>
-        <location filename="DataExport_Import/CSVMaintenanceLogData.cpp" line="35"/>
-        <location filename="Interface/VariantToString.cpp" line="477"/>
-        <location filename="Modules/Statistics.cpp" line="273"/>
-        <location filename="Modules/Statistics.cpp" line="283"/>
-        <source>Time</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="DataExport_Import/CSVAlarmLogData.cpp" line="39"/>
-        <source>Alarm/Error Type</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="DataExport_Import/CSVAlarmLogData.cpp" line="40"/>
-        <source>Alarm/Error Level</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="DataExport_Import/CSVAlarmLogData.cpp" line="41"/>
-        <location filename="DataExport_Import/CSVMaintenanceLogData.cpp" line="37"/>
-        <source>Message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -689,6 +750,51 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="Interface/ViewData/StatisticalTrend.cpp" line="267"/>
+        <source>SampleSize</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/ViewData/StatisticalTrend.cpp" line="268"/>
+        <source>Mean</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/ViewData/StatisticalTrend.cpp" line="268"/>
+        <source>Median</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/ViewData/StatisticalTrend.cpp" line="269"/>
+        <source>Sigma</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/ViewData/StatisticalTrend.cpp" line="269"/>
+        <source>CPK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/ViewData/StatisticalTrend.cpp" line="274"/>
+        <source>Statistics Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/ViewData/StatisticalTrend.cpp" line="277"/>
+        <source>Statistics Peak Power</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/ViewData/StatisticalTrend.cpp" line="280"/>
+        <source>Statistics Pre-Height</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/ViewData/StatisticalTrend.cpp" line="283"/>
+        <source>Statistics Post Height</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="Modules/AlarmMessage.cpp" line="55"/>
         <source>WIDTH ERROR</source>
         <translation type="unfinished"></translation>
@@ -769,24 +875,29 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="Modules/BransonServer.cpp" line="90"/>
+        <source>Listen Fail</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Modules/BransonServer.cpp" line="114"/>
+        <source>HMI Daily Log </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="Modules/M102IA.cpp" line="1121"/>
         <source>Can&apos;t get Response from controller!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Modules/M10INI.cpp" line="354"/>
-        <source>Switch Key</source>
+        <location filename="Modules/M10INI.cpp" line="236"/>
+        <source>Physical Key</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="Modules/M10INI.cpp" line="239"/>
         <location filename="Modules/M10INI.cpp" line="357"/>
         <source>Level 1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Modules/M10INI.cpp" line="236"/>
-        <source>Physical Key</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -838,6 +949,41 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="Modules/M10INI.cpp" line="354"/>
+        <source>Switch Key</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Modules/M10RunMode.cpp" line="279"/>
+        <source>WARNING</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Modules/M10RunMode.cpp" line="280"/>
+        <source>Tool Cover Safety Alert!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Modules/M10RunMode.cpp" line="301"/>
+        <source>ALARM</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Modules/M10RunMode.cpp" line="302"/>
+        <source>EMERGENCY STOP ON!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Modules/M10RunMode.cpp" line="334"/>
+        <source>Physical key access!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Modules/M10RunMode.cpp" line="350"/>
+        <source>Only use Foot Pedal to Start!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="Modules/M10definitions.h" line="147"/>
         <source>-T5</source>
         <translation type="unfinished"></translation>
@@ -851,12 +997,13 @@
         <location filename="Modules/Modstart.cpp" line="70"/>
         <source>Currently, there is no New Wire Splicer Controller Online
  Do you want to work offline?</source>
-        <translation type="unfinished">actuellement, il n&apos;y a pas de nouvelle micro épisseur contrôleur online voulez - vous travailler hors ligne?</translation>
+        <translation type="unfinished">当前控制器不在线
+要工作在离线模式么?</translation>
     </message>
     <message>
         <location filename="Modules/Modstart.cpp" line="369"/>
         <source>CONTROLLER NOT ONLINE!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">控制器不在线！</translation>
     </message>
     <message>
         <location filename="Modules/Modstart.cpp" line="396"/>
@@ -879,6 +1026,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="Modules/ShrinkTubeSerial.cpp" line="116"/>
+        <source>Tube Shrinker has accepted data </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Modules/ShrinkTubeSerial.cpp" line="120"/>
+        <source>Tube Shrinker has rejected ddata.
+Please check and retry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Modules/ShrinkTubeSerial.cpp" line="122"/>
+        <source>Exclamation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="Modules/Statistics.cpp" line="269"/>
         <source>Width</source>
         <translation type="unfinished"></translation>
@@ -889,13 +1052,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DataExport_Import/CSVAlarmLogData.cpp" line="38"/>
-        <location filename="DataExport_Import/CSVMaintenanceLogData.cpp" line="35"/>
-        <location filename="Modules/Statistics.cpp" line="272"/>
-        <source>Date</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="Modules/Statistics.cpp" line="273"/>
         <source>Work Order Name</source>
         <translation type="unfinished"></translation>
@@ -903,12 +1059,6 @@
     <message>
         <location filename="Modules/Statistics.cpp" line="274"/>
         <source>Part Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="DataExport_Import/CSVAlarmLogData.cpp" line="41"/>
-        <location filename="Modules/Statistics.cpp" line="274"/>
-        <source>Splice Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1002,152 +1152,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Modules/BransonServer.cpp" line="90"/>
-        <source>Listen Fail</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Modules/BransonServer.cpp" line="114"/>
-        <source>HMI Daily Log </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Modules/M10RunMode.cpp" line="279"/>
-        <source>WARNING</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Modules/M10RunMode.cpp" line="280"/>
-        <source>Tool Cover Safety Alert!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Modules/M10RunMode.cpp" line="301"/>
-        <source>ALARM</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Modules/M10RunMode.cpp" line="302"/>
-        <source>EMERGENCY STOP ON!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Modules/M10RunMode.cpp" line="334"/>
-        <source>Physical key access!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Modules/M10RunMode.cpp" line="350"/>
-        <source>Only use Foot Pedal to Start!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="DataExport_Import/CSVMaintenanceLogData.cpp" line="36"/>
-        <source>Maintenance Type</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="63"/>
-        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="78"/>
-        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="93"/>
-        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="108"/>
-        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="140"/>
-        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="155"/>
-        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="170"/>
-        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="185"/>
-        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="218"/>
-        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="233"/>
-        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="248"/>
-        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="263"/>
-        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="296"/>
-        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="311"/>
-        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="326"/>
-        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="341"/>
-        <source>OFF</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="69"/>
-        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="84"/>
-        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="99"/>
-        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="113"/>
-        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="146"/>
-        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="161"/>
-        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="176"/>
-        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="191"/>
-        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="224"/>
-        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="239"/>
-        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="254"/>
-        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="269"/>
-        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="302"/>
-        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="317"/>
-        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="332"/>
-        <location filename="Interface/Maintenance/MaintenanceCounter.cpp" line="347"/>
-        <source>ON</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Interface/ViewData/StatisticalTrend.cpp" line="267"/>
-        <source>SampleSize</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Interface/ViewData/StatisticalTrend.cpp" line="268"/>
-        <source>Mean</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Interface/ViewData/StatisticalTrend.cpp" line="268"/>
-        <source>Median</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Interface/ViewData/StatisticalTrend.cpp" line="269"/>
-        <source>Sigma</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Interface/ViewData/StatisticalTrend.cpp" line="269"/>
-        <source>CPK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Interface/ViewData/StatisticalTrend.cpp" line="274"/>
-        <source>Statistics Time</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Interface/ViewData/StatisticalTrend.cpp" line="277"/>
-        <source>Statistics Peak Power</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Interface/ViewData/StatisticalTrend.cpp" line="280"/>
-        <source>Statistics Pre-Height</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Interface/ViewData/StatisticalTrend.cpp" line="283"/>
-        <source>Statistics Post Height</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Modules/ShrinkTubeSerial.cpp" line="116"/>
-        <source>Tube Shrinker has accepted data </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Modules/ShrinkTubeSerial.cpp" line="120"/>
-        <source>Tube Shrinker has rejected ddata.
-Please check and retry</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Modules/ShrinkTubeSerial.cpp" line="122"/>
-        <source>Exclamation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="UI/hmiadaptor.cpp" line="563"/>
         <source>Controller not online!</source>
         <translation type="unfinished"></translation>
@@ -1158,7 +1162,7 @@ Please check and retry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/hmiadaptor.cpp" line="2275"/>
+        <location filename="UI/hmiadaptor.cpp" line="2280"/>
         <source>All the setting will be avaliable after the system restart.</source>
         <translation type="unfinished"></translation>
     </message>
