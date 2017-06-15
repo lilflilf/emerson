@@ -256,30 +256,31 @@ Item {
         color: "white"
         text: qsTr("Server Port")
     }
-//    MiniKeyNumInput {
-//        id: serverPortEdit
-//        anchors.verticalCenter: serverPort.verticalCenter
-//        anchors.right: parent.right
-//        anchors.rightMargin: 24
-//        width: parent.width*0.3
-//        height: 50
-//        inputWidth: parent.width*0.3
-//        inputText: "0"
-//        onInputFocusChanged: {
-//            if (serverPortEdit.inputFocus) {
-//                backGround.visible = true
-//                keyNum.visible = true
-//                keyNum.titleText = serverPort.text
-//                keyNum.currentValue = serverPortEdit.inputText
-//                keyNum.minvalue = "0"
-//                keyNum.maxvalue = "65535"
-//            }
-//        }
-//    }
-
-    Rectangle {
+    MiniKeyNumInput {
         id: serverPortEdit
         anchors.verticalCenter: serverPort.verticalCenter
+        anchors.right: parent.right
+        anchors.rightMargin: 24
+        width: parent.width*0.3
+        height: 50
+        inputWidth: parent.width*0.3
+        inputText: "0"
+        onInputFocusChanged: {
+            if (serverPortEdit.inputFocus) {
+                backGround.visible = true
+                keyNum.visible = true
+                keyNum.titleText = serverPort.text
+                keyNum.currentValue = serverPortEdit.inputText
+                keyNum.minvalue = "0"
+                keyNum.maxvalue = "65535"
+            }
+        }
+    }
+
+    Rectangle {
+        id: ipConfig
+        anchors.top: serverPortEdit.bottom
+        anchors.topMargin: 24
         anchors.right: parent.right
         anchors.rightMargin: 24
         width: parent.width*0.3
@@ -287,7 +288,7 @@ Item {
         color: Qt.rgba(0,0,0,0)
         border.width: 2
         border.color: "#0079c1"
-        property alias inputText: portText.text
+        property alias text: portText.text
         Text {
             id: portText
             anchors.centerIn: parent
@@ -298,16 +299,16 @@ Item {
         }
     }
 
-    CButton {
-        id: ipConfig
-        anchors.top: serverPortEdit.bottom
-        anchors.topMargin: 24
-        anchors.right: parent.right
-        anchors.rightMargin: 24
-        width: parent.width*0.3
-        textColor: "white"
-        text: qsTr("IP Configuration")
-    }
+//    CButton {
+//        id: ipConfig
+//        anchors.top: serverPortEdit.bottom
+//        anchors.topMargin: 24
+//        anchors.right: parent.right
+//        anchors.rightMargin: 24
+//        width: parent.width*0.3
+//        textColor: "white"
+//        text: qsTr("IP Configuration")
+//    }
 
 //    CButton {
 //        id: pingButton
