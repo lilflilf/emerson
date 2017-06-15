@@ -51,7 +51,7 @@ MODstart::MODstart()
 
     App.Major    = "26";
     App.Minor    = "73";
-    App.Revision = "814-L2-T6";
+    App.Revision = "814-L2-T7";
 
     _Interface->FirstScreenComesUp = false;
     _MDefine->ModeChangeFlag = false;

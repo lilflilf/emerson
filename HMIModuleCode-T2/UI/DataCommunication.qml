@@ -218,6 +218,9 @@ Item {
         anchors.verticalCenter: shrinkText.verticalCenter
         text: qsTr("Shrink Tube Test")
         width: parent.width*0.3
+        onClicked: {
+            hmiAdaptor.dataCommunicationShrinkTubeTesting()
+        }
     }
     Text {
         id: ipsetText

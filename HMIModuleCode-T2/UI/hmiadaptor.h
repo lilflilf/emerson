@@ -113,7 +113,7 @@ public:
     Q_INVOKABLE bool dataCommunicationGetSwitch(QString index);
     Q_INVOKABLE QStringList dataCommunicationGetValue(QString index);
     Q_INVOKABLE bool dataCommunicationSetValue(QList<bool> boolList, QStringList strList, QString ip, QString port);
-
+    Q_INVOKABLE void dataCommunicationShrinkTubeTesting();
 
     Q_INVOKABLE void statisticalTrendApply(int SpliceID, QString SpliceName, unsigned int time_from, unsigned int time_to);
     Q_INVOKABLE QList<int> getStatisticalTrendDataList(int index);

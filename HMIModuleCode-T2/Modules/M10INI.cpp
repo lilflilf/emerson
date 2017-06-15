@@ -686,80 +686,104 @@ QTranslator* M10INI::TranslationInitial()
     {
     case BRANSON_INI_STRUCT::ENGLISH_lang:    //0 English
         qDebug()<<"English language";
+        ObjTranslator.load("language//displayEnglish_zh_CN.qm");
         break;
     case BRANSON_INI_STRUCT::JAPANESE_Lang:    //1 Japanese
         qDebug()<<"Janpanese language";
+        ObjTranslator.load("language//displayJapanese_zh_CN.qm");
         break;
     case BRANSON_INI_STRUCT::SIMPCHINESE_Lang: //2 Simplifed chinese
         qDebug()<<"Simplifed chinese language";
-        ObjTranslator.load("displayChinese_zh_CN.qm");
+        ObjTranslator.load("language//displaySimplifiedChinese_zh_CN.qm");
         break;
     case BRANSON_INI_STRUCT::TRADCHINESE_Lang: //3 Traditional chinese
         qDebug()<<"Traditional chinese language";
+        ObjTranslator.load("language//displayTraditionalChinese_zh_CN.qm");
         break;
     case BRANSON_INI_STRUCT::INDONESIAN_Lang:  //4 Indonesian
         qDebug()<<"Indonesian language";
+        ObjTranslator.load("language//displayIndonesian_zh_CN.qm");
         break;
     case BRANSON_INI_STRUCT::SPANISH_Lang:     //5 Spanish
         qDebug()<<"Spanish language";
+        ObjTranslator.load("language//displaySpanish_zh_CN.qm");
         break;
     case BRANSON_INI_STRUCT::Vietnam_Lang:     //6 Vietnam
         qDebug()<<"Vietnam language";
+        ObjTranslator.load("language//displayVietnam_zh_CN.qm");
         break;
     case BRANSON_INI_STRUCT::TURKISH_Lang:     //7 Turkish
         qDebug()<<"Turkish language";
+        ObjTranslator.load("language//displayTurkish_zh_CN.qm");
         break;
     case BRANSON_INI_STRUCT::Thai_Lang:        //8 Thai
         qDebug()<<"Thai language";
+        ObjTranslator.load("language//displayThai_zh_CN.qm");
         break;
     case BRANSON_INI_STRUCT::PORTUGUESE_Lang:  //9 Portuguese
         qDebug()<<"Portuguese language";
+        ObjTranslator.load("language//displayPortuguese_zh_CN.qm");
         break;
     case BRANSON_INI_STRUCT::GERMAN_Lang:      //10 German
         qDebug()<<"German language";
+        ObjTranslator.load("language//displayGerman_zh_CN.qm");
         break;
     case BRANSON_INI_STRUCT::FRENCH_Lang:      //11 French
         qDebug()<<"French language";
+        ObjTranslator.load("language//displayFrench_zh_CN.qm");
         break;
     case BRANSON_INI_STRUCT::RUSSIAN_Lang:     //12 Russian
         qDebug()<<"Russian language";
+        ObjTranslator.load("language//displayRussian_zh_CN.qm");
         break;
     case BRANSON_INI_STRUCT::POLISH_Lang:      //13 Polish
         qDebug()<<"Polish language";
+        ObjTranslator.load("language//displayPolish_zh_CN.qm");
         break;
     case BRANSON_INI_STRUCT::KOREAN_Lang:      //14 Korean
         qDebug()<<"Korean language";
+        ObjTranslator.load("language//displayKorean_zh_CN.qm");
         break;
     case BRANSON_INI_STRUCT::ITALIAN_Lang:     //15 Italian
         qDebug()<<"Italian language";
+        ObjTranslator.load("language//displayItalian_zh_CN.qm");
         break;
     case BRANSON_INI_STRUCT::SLOVAK_Lang:      //16 Slovak
         qDebug()<<"Slovak language";
+        ObjTranslator.load("language//displaySlovak_zh_CN.qm");
         break;
     case BRANSON_INI_STRUCT::ROMANIAN_Lang:    //17 Romanian
         qDebug()<<"Romanian language";
+        ObjTranslator.load("language//displayRomanian_zh_CN.qm");
         break;
     case BRANSON_INI_STRUCT::HUNGARIAN_Lang:   //18 Hungarian
         qDebug()<<"Hungarian language";
+        ObjTranslator.load("language//displayHungarian_zh_CN.qm");
         break;
     case BRANSON_INI_STRUCT::DUTCH_Lang:       //19 Dutch
         qDebug()<<"Dutch language";
+        ObjTranslator.load("language//displayDutch_zh_CN.qm");
         break;
     case BRANSON_INI_STRUCT::CZECH_Lang:       //20 Czech
         qDebug()<<"Czech language";
+        ObjTranslator.load("language//displayCzech_zh_CN.qm");
         break;
     case BRANSON_INI_STRUCT::MALAYSIAN_Lang:   //21 Malaysian
         qDebug()<<"Malaysian language";
+        ObjTranslator.load("language//displayMalaysian_zh_CN.qm");
         break;
     case BRANSON_INI_STRUCT::ARABIC_Lang:      //22 Arabic
     case BRANSON_INI_STRUCT::UnitedARAB_Lang:  //23 United-Arab-Emirates
         qDebug()<<"Arabic language";
+        ObjTranslator.load("language//displayArabic_zh_CN.qm");
         break;
     case BRANSON_INI_STRUCT::HINDI_Lang:       //24 Hindi
         qDebug()<<"Hindi language";
+        ObjTranslator.load("language//displayHindi_zh_CN.qm");
         break;
     default:
         qDebug()<<"English language";
+        ObjTranslator.load("language//displayEnglish_zh_CN.qm");
         break;
     }
     return &ObjTranslator;
