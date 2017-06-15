@@ -83,22 +83,19 @@ Item {
         }
 
         WebEngineView {
-//        WebView {
-
             id: web1
             anchors.top: row.bottom
             anchors.left: leftArea.left
             anchors.right: leftArea.right
             anchors.bottom: parent.bottom
-            url: hmiAdaptor.getUserManualPath()
-//            url: ("file:///d:\\mytest.html");
-    //        url: ("https://www.baidu.com/")
+//            url: hmiAdaptor.getUserManualPath()
+            url: ("file:///d:\\mytest.html");
+
         }
     }
 
 
     WebEngineView {
-//    WebView {
         id: webVieW;
         anchors.top: parent.top
         anchors.left: leftArea.right
@@ -106,7 +103,5 @@ Item {
         anchors.bottom: parent.bottom
         url: hmiAdaptor.getUserManualPath()
 //        url: ("file:///c:\\mytest.html");
-//        url: ("https://www.baidu.com/")
-
     }
 }

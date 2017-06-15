@@ -158,7 +158,20 @@ Item {
 
         cooling1.centervalue = hmiAdaptor.weldDefaultsGetValue(-1)[1]
         cooling2.centervalue = hmiAdaptor.weldDefaultsGetValue(-1)[4]
-//        awg.state = hmiAdaptor.weldDefaultsGetSwitch("Unit Conversion") ? "right" : "left"
+        coolingTooling.state = hmiAdaptor.weldDefaultsGetSwitch("Cooling Tooling") ? "right" : "left"
+        coolingsec.state = hmiAdaptor.weldDefaultsGetSwitch("cooling(1sec/100J)") ? "right" : "left"
+
+        //        awg.state = hmiAdaptor.weldDefaultsGetSwitch("Unit Conversion") ? "right" : "left"
+
+        loadValue2.inputText = hmiAdaptor.weldDefaultsGetCutterNum("Load Time","current")
+        cutteronoroff.state = hmiAdaptor.weldDefaultsGetCutterNum("Cut Off","current")
+        cutterModel.clear()
+        cutterModel.append({"headText":qsTr("Time"),"switchState":hmiAdaptor.weldDefaultsGetCutterNum("Time","")})
+        cutterModel.append({"headText":qsTr("Peak Power"),"switchState":hmiAdaptor.weldDefaultsGetCutterNum("Peak Power","")})
+        cutterModel.append({"headText":qsTr("Pre-Height"),"switchState":hmiAdaptor.weldDefaultsGetCutterNum("Pre-Height","")})
+        cutterModel.append({"headText":qsTr("Post-Height"),"switchState":hmiAdaptor.weldDefaultsGetCutterNum("Post-Height","")})
+        onoroff.state = hmiAdaptor.weldDefaultsGetCutterNum("Anti-Side","current")
+        loadValue.inputText = hmiAdaptor.weldDefaultsGetCutterNum("Unload Time","current")  //qsTr("0.00mm")
     }
 
     function weldDefaultUpdate()
@@ -801,6 +814,12 @@ Item {
                     cutterColumn.visible = true
                     loadName2.visible = true
                     loadValue2.visible = true
+                    for (var i = 0; i < cutterModel.count; i++)
+                    {
+                        cutterModel.set(i,{"switchState":"left"})
+                        cutterColumn.model = null
+                        cutterColumn.model = cutterModel
+                    }
                 }
                 else {
                     cutterColumn.visible = false
@@ -812,12 +831,6 @@ Item {
 
         ListModel {
             id: cutterModel
-            Component.onCompleted: {
-                cutterModel.append({"headText":qsTr("Time"),"switchState":hmiAdaptor.weldDefaultsGetCutterNum("Time","")})
-                cutterModel.append({"headText":qsTr("Peak Power"),"switchState":hmiAdaptor.weldDefaultsGetCutterNum("Peak Power","")})
-                cutterModel.append({"headText":qsTr("Pre-Height"),"switchState":hmiAdaptor.weldDefaultsGetCutterNum("Pre-Height","")})
-                cutterModel.append({"headText":qsTr("Post-Height"),"switchState":hmiAdaptor.weldDefaultsGetCutterNum("Post-Height","")})
-            }
         }
 
         Column {
@@ -830,7 +843,9 @@ Item {
             clip: true
             spacing: 10
             visible: cutteronoroff.state == "left" ? true : false
+            property alias model: repeater1.model
             Repeater {
+                id: repeater1
                 model: cutterModel
                 delegate: Item {
                     height: cutteronoroff.height //(cutterColumn.height-30)/4

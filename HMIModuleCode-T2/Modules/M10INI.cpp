@@ -692,7 +692,7 @@ QTranslator* M10INI::TranslationInitial()
         break;
     case BRANSON_INI_STRUCT::SIMPCHINESE_Lang: //2 Simplifed chinese
         qDebug()<<"Simplifed chinese language";
-        ObjTranslator.load("displayChinese_zh_CN.qm");
+        ObjTranslator.load("displaySimplifiedChinese_zh_CN.qm");
         break;
     case BRANSON_INI_STRUCT::TRADCHINESE_Lang: //3 Traditional chinese
         qDebug()<<"Traditional chinese language";
@@ -719,6 +719,7 @@ QTranslator* M10INI::TranslationInitial()
         qDebug()<<"German language";
         break;
     case BRANSON_INI_STRUCT::FRENCH_Lang:      //11 French
+        ObjTranslator.load("displayFrench_zh_CN.qm");
         qDebug()<<"French language";
         break;
     case BRANSON_INI_STRUCT::RUSSIAN_Lang:     //12 Russian

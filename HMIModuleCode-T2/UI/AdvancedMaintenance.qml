@@ -375,19 +375,19 @@ Item {
         id: testSetting
 //        anchors.horizontalCenter: rowButton3.horizontalCenter
         anchors.bottom: buttonCoumn.bottom
-        rowSpacing: 30
+        rowSpacing: 10
         columnSpacing: 60
         columns: 2
         rows: 2
         anchors.left: powerText.left
-        anchors.right: progressBar.right
+        anchors.right: progressBar2.right
         visible: tipText.visible
         Repeater {
             anchors.right: parent.right
             model: listModel
             delegate: Item {
-                width: testSetting.width / 2 - 60 //(rowButton3.width-20)/3
-                height: 60 //(testSetting.height-20)/3
+                width: testSetting.width / 2 - 30
+                height: 60
                 Text {
                     text: titleHead
                     font.family: "arial"
@@ -398,7 +398,7 @@ Item {
                 }
                 Recsetting {
                     width: (rowButton2.width-20)/4
-                    height: 60 //(testSetting.height-20)/3
+                    height: 60
                     centervalue: value
                     anchors.right: parent.right
                     visible: index == 1 ? false : true

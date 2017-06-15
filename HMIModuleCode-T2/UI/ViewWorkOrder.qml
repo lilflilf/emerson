@@ -401,7 +401,7 @@ Item {
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: 100
                 clip: true
-                model: workOrderModel
+                model: weldHistoryModel
                 delegate: Component {
                     id: seachComponent
                     Item {
@@ -551,6 +551,9 @@ Item {
         ExclusiveGroup {
             id: timeSelectGroup
         }
+
+
+////////////////////////
         MyCalendar {
             id: mycalendar1
             anchors.left: from.left
@@ -679,6 +682,7 @@ Item {
                 searchList.model = spliceModel
             }
         }
+
         Column {
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 10
@@ -705,7 +709,9 @@ Item {
                 text: qsTr("Back")
             }
         }
+
     }
+
     Image {
         anchors.centerIn: myCanvas
         width: myCanvas.width + 50

@@ -219,30 +219,30 @@ Item {
         text: qsTr("Shrink Tube Test")
         width: parent.width*0.3
     }
-    Text {
-        id: ipsetText
-        anchors.top: shrinkButton.bottom
-        anchors.topMargin: 24
-        anchors.right: ipsetButton.left
-        anchors.rightMargin: 10
-        font.family: "arial"
-        font.pixelSize: 20
-        height: 70
-        verticalAlignment: Qt.AlignVCenter
-        color: "white"
-        text: qsTr("Network(Ethernet)")
-    }
-    CButton {
-        id: ipsetButton
-        anchors.verticalCenter: ipsetText.verticalCenter
-        anchors.right: parent.right
-        anchors.rightMargin: 24
-        text: qsTr("Client IP Setting")
-        width: parent.width*0.3
-    }
+//    Text {
+//        id: ipsetText
+//        anchors.top: shrinkButton.bottom
+//        anchors.topMargin: 24
+//        anchors.right: ipsetButton.left
+//        anchors.rightMargin: 10
+//        font.family: "arial"
+//        font.pixelSize: 20
+//        height: 70
+//        verticalAlignment: Qt.AlignVCenter
+//        color: "white"
+//        text: qsTr("Network(Ethernet)")
+//    }
+//    CButton {
+//        id: ipsetButton
+//        anchors.verticalCenter: ipsetText.verticalCenter
+//        anchors.right: parent.right
+//        anchors.rightMargin: 24
+//        text: qsTr("Client IP Setting")
+//        width: parent.width*0.3
+//    }
     Text {
         id: serverPort
-        anchors.top: ipsetButton.bottom
+        anchors.top: shrinkButton.bottom
         anchors.topMargin: 24
         anchors.right: serverPortEdit.left
         anchors.rightMargin: 10
@@ -253,24 +253,45 @@ Item {
         color: "white"
         text: qsTr("Server Port")
     }
-    MiniKeyNumInput {
+//    MiniKeyNumInput {
+//        id: serverPortEdit
+//        anchors.verticalCenter: serverPort.verticalCenter
+//        anchors.right: parent.right
+//        anchors.rightMargin: 24
+//        width: parent.width*0.3
+//        height: 50
+//        inputWidth: parent.width*0.3
+//        inputText: "0"
+//        onInputFocusChanged: {
+//            if (serverPortEdit.inputFocus) {
+//                backGround.visible = true
+//                keyNum.visible = true
+//                keyNum.titleText = serverPort.text
+//                keyNum.currentValue = serverPortEdit.inputText
+//                keyNum.minvalue = "0"
+//                keyNum.maxvalue = "65535"
+//            }
+//        }
+//    }
+
+    Rectangle {
         id: serverPortEdit
         anchors.verticalCenter: serverPort.verticalCenter
         anchors.right: parent.right
         anchors.rightMargin: 24
         width: parent.width*0.3
         height: 50
-        inputWidth: parent.width*0.3
-        inputText: "0"
-        onInputFocusChanged: {
-            if (serverPortEdit.inputFocus) {
-                backGround.visible = true
-                keyNum.visible = true
-                keyNum.titleText = serverPort.text
-                keyNum.currentValue = serverPortEdit.inputText
-                keyNum.minvalue = "0"
-                keyNum.maxvalue = "65535"
-            }
+        color: Qt.rgba(0,0,0,0)
+        border.width: 2
+        border.color: "#0079c1"
+        property alias inputText: portText.text
+        Text {
+            id: portText
+            anchors.centerIn: parent
+            color: "white"
+            font.family: "arial"
+            font.pixelSize: 16
+            text: qsTr("")
         }
     }
 
@@ -285,15 +306,15 @@ Item {
         text: qsTr("IP Configuration")
     }
 
-    CButton {
-        id: pingButton
-        anchors.top: ipConfig.bottom
-        anchors.topMargin: 24
-        anchors.right: parent.right
-        anchors.rightMargin: 24
-        text: qsTr("Ping Test")
-        width: parent.width*0.3
-    }
+//    CButton {
+//        id: pingButton
+//        anchors.top: ipConfig.bottom
+//        anchors.topMargin: 24
+//        anchors.right: parent.right
+//        anchors.rightMargin: 24
+//        text: qsTr("Ping Test")
+//        width: parent.width*0.3
+//    }
     Rectangle {
         id: backGround
         anchors.fill: parent
