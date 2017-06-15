@@ -21,7 +21,7 @@
 #include <QMutex>
 #include "Interface/ViewData/StatisticalTrend.h"
 #include "Modules/M102IA.h"
-
+#include <QWebChannel>
 #define TOPATH "C:/BransonData/Library/SpliceImage/"
 
 //#define HMI_PRINT (qDebug() <<"HMI adapter:" << __FILE__ << __FUNCTION__ << __LINE__ << ": ")
@@ -34,6 +34,9 @@ public:
 
     explicit HmiAdaptor(QObject *parent = 0);
     ~HmiAdaptor();
+
+    Q_INVOKABLE void recvFromJs(QString indexId);
+
     Q_INVOKABLE void setTestSpliceId(int spliceId);
     Q_INVOKABLE int getTestSpliceId();
 
@@ -153,6 +156,7 @@ public:
 
 
     Q_INVOKABLE QString getUserManualPath();
+    Q_INVOKABLE QString getUserManualCatalog();
     Q_INVOKABLE QString getApplicationDirPathPath();
     Q_INVOKABLE QString getToolChangeFileName(QString filePath);
     Q_INVOKABLE void setLanguage(int row, int column);
@@ -209,6 +213,7 @@ signals:
 
     void signalPhysicalKeySignal(bool status);
     void signalPhysicalKeyMessage();
+    void signalRecvFromJs(QString indexId);
 public slots:
     void slotPhysicalKeySignal(bool &status);
     void slotWeldCycleCompleted(bool result);

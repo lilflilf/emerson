@@ -394,25 +394,26 @@ Item {
                     font.pixelSize: 20
                     color: "white"
                     anchors.verticalCenter: parent.verticalCenter
-                    visible: index == 1 ? false : true
+//                    visible: index == 1 ? false : true
                 }
                 Recsetting {
                     width: (rowButton2.width-20)/4
                     height: 60
                     centervalue: value
                     anchors.right: parent.right
-                    visible: index == 1 ? false : true
+                    bgvisable: index == 1 ? false : true
                     onMouseAreaClick: {
-                        bIsList = true
-                        listIndex = index
-                        backGround.visible = true
-                        backGround.opacity = 0.5
-                        keyNum.titleText = titleHead
-                        keyNum.visible = true
-                        keyNum.currentValue = value
-                        keyNum.minvalue = minValue
-                        keyNum.maxvalue = maxValue
-
+                        if (bgvisable) {
+                            bIsList = true
+                            listIndex = index
+                            backGround.visible = true
+                            backGround.opacity = 0.5
+                            keyNum.titleText = titleHead
+                            keyNum.visible = true
+                            keyNum.currentValue = value
+                            keyNum.minvalue = minValue
+                            keyNum.maxvalue = maxValue
+                        }
                     }
                 }
             }

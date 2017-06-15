@@ -15,11 +15,9 @@
 #include <QCoreApplication>
 #include <QProcess>
 #include <QDir>
-
+#include <QWebChannel>
 HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
 {
-
-
     interfaceClass = InterfaceClass::Instance();
 //    workOrderModel = new WorkOrderModel(this);
     operateProcess = MakeWeldProcess::Instance();
@@ -119,6 +117,11 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
 HmiAdaptor::~HmiAdaptor()
 {
 
+}
+
+void HmiAdaptor::recvFromJs(QString indexId)
+{
+    emit signalRecvFromJs(indexId);
 }
 
 void HmiAdaptor::setTestSpliceId(int spliceId)
@@ -2245,18 +2248,21 @@ QList<int> HmiAdaptor::getWorkMissList()
 
 void HmiAdaptor::setWorkMissList(int spliceId)
 {
-    qDebug() << "setWorkMissList" << spliceId;
     interfaceClass->CurrentWorkOrder.MissPartList.insert(spliceId,spliceModel->getSpliceName(spliceId));
     interfaceClass->CurrentWorkOrder.WriteWorkOrderToQSetting();
 }
 
 QString HmiAdaptor::getUserManualPath()
 {
-    //url: ("file:///d:\\Special Double Hit Mode functionality for Delphi Ground Terminal Welder II.html");
     QString path = QCoreApplication::applicationDirPath();
     path = "file:///" + path + "/usermanual/User Manual.html";
-    qDebug() << "mmmmmmmmmmmmmmm" << path;
     return path;
+}
+
+QString HmiAdaptor::getUserManualCatalog()
+{
+    return "file:///d:\\mytest.html";
+
 }
 
 QString HmiAdaptor::getApplicationDirPathPath()

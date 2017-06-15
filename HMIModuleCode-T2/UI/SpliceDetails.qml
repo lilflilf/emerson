@@ -1061,7 +1061,7 @@ Item {
 
             Rectangle {
                 id: leftLine
-                width: leftItem.position == "leftList" ? index % 2 && index < (listModelLeft.count - 10) * 2 ? myLineLength + 150 : myLineLength : 200
+                width: 150 //leftItem.position == "leftList" ? index % 2 && index < (listModelLeft.count - 10) * 2 ? myLineLength + 150 : myLineLength : 200
                 height: myGauge / 100 < 1 ? 1 : myGauge / 100
                 anchors.right: parent.right
                 anchors.verticalCenter: leftRec.verticalCenter
@@ -1237,7 +1237,7 @@ Item {
             height: rightItem.position == "rightList" ? listModelRight.count <= 5 ? detail.height * 0.1 + 10 : 30 : 30//(listModelRight.count > 5 && listModelRight.count <= 10) ? 30 : index < (listModelRight.count - 10) * 2 ? 15 : 30 : 30
             Rectangle {
                 id: rightLine
-                width: 200 //rightItem.position == "rightList" ? index % 2 && index < (listModelRight.count - 10) * 2 ? myLineLength + 150 : myLineLength : 200
+                width: 150 //rightItem.position == "rightList" ? index % 2 && index < (listModelRight.count - 10) * 2 ? myLineLength + 150 : myLineLength : 200
                 height: myGauge / 100 < 1 ? 1 : myGauge / 100 // > 5 ? 12 : 6
                 anchors.left: parent.left
                 anchors.verticalCenter: rightRec.verticalCenter

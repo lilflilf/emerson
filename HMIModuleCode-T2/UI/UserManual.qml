@@ -6,9 +6,25 @@ import QtQuick.Controls 1.1
 import QtQuick.Dialogs 1.2
 //import QtWebView 1.1
 import QtWebEngine 1.3
+import QtWebChannel 1.0
 
 Item {
     id: userManual
+    function jumpToHtml(myIndex)
+    {
+        var str;
+        str = 'location.href="#'+myIndex+'";';
+        webVieW.runJavaScript(str, function(result) { console.log(result); });
+
+    }
+
+    Connections {
+        target: hmiAdaptor
+        onSignalRecvFromJs: {
+            jumpToHtml(indexId)
+        }
+    }
+
     Rectangle {
         id: leftArea
         anchors.top: parent.top
@@ -32,25 +48,25 @@ Item {
             anchors.top: search.bottom
             anchors.topMargin: 5
             anchors.left: search.left
-            width: parent.width - 70
+            width: parent.width - 20
             height: 48
 
-            inputWidth: parent.width - 70
+            inputWidth: parent.width - 20
             inputHeight: 48
             inputColor: "#8295a0"
             borderColor: "#375566"
         }
-        CButton {
-            width: 48
-            height: 55
-            anchors.top: searchValue.top
-            anchors.left: searchValue.right
-            anchors.leftMargin: 10
-            onClicked: {
-                searchValue.inputFocus = false
+//        CButton {
+//            width: 48
+//            height: 55
+//            anchors.top: searchValue.top
+//            anchors.left: searchValue.right
+//            anchors.leftMargin: 10
+//            onClicked: {
+//                searchValue.inputFocus = false
 
-            }
-        }
+//            }
+//        }
 
         Row {
             id: row
@@ -77,8 +93,7 @@ Item {
                 onClicked: {
                     searchValue.inputFocus = false
                     var str = "window.find('" + searchValue .inputText + "', false, false);"
-//                    webVieW.runJavaScript(str, function(result) { console.log(result); });
-                    web1.runJavaScript("document.OnClick", function(result) { console.log("SW->Script Runs"); });
+                    webVieW.runJavaScript(str, function(result) { console.log(result); });
 
                 }
             }
@@ -90,15 +105,18 @@ Item {
             anchors.left: leftArea.left
             anchors.right: leftArea.right
             anchors.bottom: parent.bottom
-//            url: hmiAdaptor.getUserManualPath()
-            url: ("file:///d:\\mytest.html");
-
-            onNewViewRequested: {
-                console.log("cccccccccccccc")
+//            url: ("file:///d:\\mytest.html");
+            url: hmiAdaptor.getUserManualCatalog()
+            webChannel: webChannel
+        }
+        WebChannel {
+            id: webChannel
+            Component.onCompleted: {
+                webChannel.registerObject("myQml",hmiAdaptor)
             }
         }
-    }
 
+    }
 
     WebEngineView {
         id: webVieW;
@@ -107,6 +125,5 @@ Item {
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         url: hmiAdaptor.getUserManualPath()
-//        url: ("file:///c:\\mytest.html");
     }
 }
