@@ -2278,7 +2278,10 @@ QString HmiAdaptor::getUserManualPath()
 
 QString HmiAdaptor::getUserManualCatalog()
 {
-    return "file:///d:\\mytest.html";
+    QString path = QCoreApplication::applicationDirPath();
+    path = "file:///" + path + "/usermanual/Contents.html";
+//    return "file:///d:\\mytest.html";
+    return path;
 
 }
 
