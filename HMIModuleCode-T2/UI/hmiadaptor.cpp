@@ -741,7 +741,24 @@ QString HmiAdaptor::getAdvancedMaintenanceValue(int index, QString key)
 
 void HmiAdaptor::setAdvancedMaintenanceValue(int index, QString value)
 {
-    advanceMaintenance->AdvParameter[index].Current = value;
+//    advanceMaintenance->AdvParameter[index].Current = value;
+    switch(index)
+    {
+    case AdvancedMaintenance::AMPLITUDE:
+        advanceMaintenance->AmplitudeSetText(value);
+        break;
+    case AdvancedMaintenance::POWER:
+        advanceMaintenance->PowerSetText(value);
+        break;
+    case AdvancedMaintenance::TUNEPOINT:
+        advanceMaintenance->TunePointText(value);
+        break;
+    case AdvancedMaintenance::FREQOFFSET:
+        advanceMaintenance->FrequencyOffsetText(value);
+        break;
+    default:
+        break;
+    }
 }
 
 

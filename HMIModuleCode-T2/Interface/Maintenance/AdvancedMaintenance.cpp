@@ -25,14 +25,15 @@ AdvancedMaintenance::AdvancedMaintenance()
 {
 //    m_Thread = NULL;
     Timer = NULL;
+    Timer = new QTimer(this);
+    connect(Timer, SIGNAL(timeout()),this, SLOT(TimeoutEventSlot()));
+    Timer->setInterval(500);//500msecond
 }
 
 bool AdvancedMaintenance::_start()
 {
-    Timer = NULL;
-    Timer = new QTimer(this);
-    connect(Timer, SIGNAL(timeout()),this, SLOT(TimeoutEventSlot()));
-    Timer->setInterval(500);//500msecond
+    if(Timer->isActive() == true)
+        Timer->stop();
     Timer->start();
     return true;
 }
@@ -41,11 +42,6 @@ bool AdvancedMaintenance::_stop()
 {
     if(Timer->isActive() == true)
         Timer->stop();
-    if(Timer != NULL)
-    {
-        delete Timer;
-        Timer = NULL;
-    }
     return true;
 }
 

@@ -346,6 +346,7 @@ Item {
                     keyNum.currentValue = recsetting1.centervalue
                     keyNum.minvalue = hmiAdaptor.getAdvancedMaintenanceValue(0,"min")
                     keyNum.maxvalue = hmiAdaptor.getAdvancedMaintenanceValue(0,"max")
+                    console.log("Amplitude")
                 }
 
             }
