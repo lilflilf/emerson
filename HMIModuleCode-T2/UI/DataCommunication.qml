@@ -294,7 +294,7 @@ Item {
             anchors.centerIn: parent
             color: "white"
             font.family: "arial"
-            font.pixelSize: 16
+            font.pointSize: 16
             text: qsTr("")
         }
     }
