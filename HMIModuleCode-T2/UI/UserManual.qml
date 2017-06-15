@@ -77,7 +77,9 @@ Item {
                 onClicked: {
                     searchValue.inputFocus = false
                     var str = "window.find('" + searchValue .inputText + "', false, false);"
-                    webVieW.runJavaScript(str, function(result) { console.log(result); });
+//                    webVieW.runJavaScript(str, function(result) { console.log(result); });
+                    web1.runJavaScript("document.OnClick", function(result) { console.log("SW->Script Runs"); });
+
                 }
             }
         }
@@ -91,6 +93,9 @@ Item {
 //            url: hmiAdaptor.getUserManualPath()
             url: ("file:///d:\\mytest.html");
 
+            onNewViewRequested: {
+                console.log("cccccccccccccc")
+            }
         }
     }
 
