@@ -115,7 +115,7 @@ Item {
                         return;
                     }
                     topLeft.sourceComponent = left
-                    topLeft.item.lineLength = 200
+                    topLeft.item.lineLength = 150
                     topLeft.item.myColor = wireModel.getStructValue("WireColor")
                     topLeft.item.myText = hmiAdaptor.getStringValue(wireModel.getStructValue2("Gauge","current"))
                     topLeft.item.position = "topLeft"
@@ -139,7 +139,7 @@ Item {
                 else if (wireModel.getStructValue("WirePosition") == 2)
                 {
                     bottomLeft.sourceComponent = left
-                    bottomLeft.item.lineLength = 200
+                    bottomLeft.item.lineLength = 150
                     bottomLeft.item.myColor = wireModel.getStructValue("WireColor")
                     bottomLeft.item.myText = hmiAdaptor.getStringValue(wireModel.getStructValue2("Gauge","current"))
                     bottomLeft.item.position = "bottomLeft"
@@ -163,7 +163,7 @@ Item {
                         return;
                     }
                     topRight.sourceComponent = right
-                    topRight.item.lineLength = 200
+                    topRight.item.lineLength = 150
                     topRight.item.myColor = wireModel.getStructValue("WireColor")
                     topRight.item.myText = hmiAdaptor.getStringValue(wireModel.getStructValue2("Gauge","current"))
                     topRight.item.position = "topRight"
@@ -187,7 +187,7 @@ Item {
                 else if (wireModel.getStructValue("WirePosition") == 2)
                 {
                     bottomRight.sourceComponent = right
-                    bottomRight.item.lineLength = 200
+                    bottomRight.item.lineLength = 150
                     bottomRight.item.myColor = wireModel.getStructValue("WireColor")
                     bottomRight.item.myText = hmiAdaptor.getStringValue(wireModel.getStructValue2("Gauge","current"))
                     bottomRight.item.position = "bottomRight"
