@@ -214,7 +214,7 @@ Item {
             listModel.append({"titleHead":qsTr("Power Supply"),"value":hmiAdaptor.getAdvancedMaintenanceValue(1,"current"),
                              "maxValue":hmiAdaptor.getAdvancedMaintenanceValue(1,"max"),
                              "minValue":hmiAdaptor.getAdvancedMaintenanceValue(1,"min")})
-            listModel.append({"titleHead":qsTr("Frequency"),"value":"0HZ"})
+            listModel.append({"titleHead":qsTr("Frequency"),"value":"0Hz"})
             listModel.append({"titleHead":qsTr("Tune Point"),"value":hmiAdaptor.getAdvancedMaintenanceValue(2,"current"),
                                  "maxValue":hmiAdaptor.getAdvancedMaintenanceValue(2,"max"),
                                  "minValue":hmiAdaptor.getAdvancedMaintenanceValue(2,"min")})
