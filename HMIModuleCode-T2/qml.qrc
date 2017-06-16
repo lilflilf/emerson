@@ -192,5 +192,6 @@
         <file>images/keybutton.png</file>
         <file>images/keyok.png</file>
         <file>images/Anvil_Guide.JPG</file>
+        <file>images/Actuator.JPG</file>
     </qresource>
 </RCC>

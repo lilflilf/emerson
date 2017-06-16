@@ -82,7 +82,7 @@ private:
     static bool ConverterCoolingTest;
     static bool ToolingCoolingTest;
     static unsigned long PreviousIO;
-    static QTimer *Timer;
+    static QList<QTimer*> *_TimerList;
     static bool SonicsOnFlag;
 
 
@@ -130,7 +130,7 @@ public:
     explicit AdvancedMaintenance();
 signals:
     void IOstatusFeedbackSignal(const unsigned long &_status);
-    void CurrentPowerAndFrequencySignal(const int power, const int Frequency);
+    void CurrentPowerAndFrequencySignal(const int power, const QString Frequency);
 public slots:
     void TimeoutEventSlot();
 };

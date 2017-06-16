@@ -137,6 +137,8 @@ M102IA::M102IA(QObject *parent)
     EnergyAccumulator = 0;
     EnergyMaintenanceDue = 0;
     ADPower = -1;
+    ActualPower = 0;
+    ActualFrequency = 0;
 
     IAdataSignature.clear();
 
@@ -1069,12 +1071,12 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         emit AlarmStatusSignal(_M2010->ReceiveFlags.AlarmData);
         break;
     case IASigFrequency:
-        ADFrequency = MakeHexWordNumber(HexString.mid(9, 4));
+        ActualFrequency = MakeHexWordNumber(HexString.mid(9, 4));
         _M2010->ReceiveFlags.FrequencyData = true;
         break;
     case IASigPowerFrequency:
-        ADPower = MakeHexWordNumber(HexString.mid(9, 4));
-        ADFrequency = MakeHexWordNumber(HexString.mid(13, 4));
+        ActualPower = MakeHexWordNumber(HexString.mid(9, 4));
+        ActualFrequency = MakeHexWordNumber(HexString.mid(13, 4));
         _M2010->ReceiveFlags.PowerFreqData = true;
         break;
     default:

@@ -100,6 +100,8 @@
 #define MAXTUNEFREQUENCE      20450
 #define MINFREQOFFSET         -500
 #define MAXFREQOFFSET         500
+#define MINFREQUENCE          19450
+#define MAXFREQUENCE          20450
 
 //Used by the program to consistently change from PSI to BAR
 #define PRESS2BARFACTOR  (0.1 / 14.5)
@@ -191,6 +193,7 @@ enum ScreenShowDataType{
     DINTeachModeQuantity,
     DINTuneFrequence,
     DINFreqOffset,
+    DINActualFrequence,
     DIN_end,
 };
 

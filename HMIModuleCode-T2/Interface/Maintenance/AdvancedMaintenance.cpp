@@ -19,29 +19,38 @@ bool AdvancedMaintenance::Aux5Test = false;
 bool AdvancedMaintenance::ConverterCoolingTest = false;
 bool AdvancedMaintenance::ToolingCoolingTest = false;
 unsigned long AdvancedMaintenance::PreviousIO = 0;
-QTimer* AdvancedMaintenance::Timer = NULL;
 bool AdvancedMaintenance::SonicsOnFlag = false;
+QList<QTimer*> *AdvancedMaintenance::_TimerList = NULL;
 AdvancedMaintenance::AdvancedMaintenance()
 {
 //    m_Thread = NULL;
-    Timer = NULL;
-    Timer = new QTimer(this);
-    connect(Timer, SIGNAL(timeout()),this, SLOT(TimeoutEventSlot()));
-    Timer->setInterval(500);//500msecond
+    _TimerList = new QList<QTimer*>();
+    _TimerList->clear();
 }
 
 bool AdvancedMaintenance::_start()
 {
-    if(Timer->isActive() == true)
-        Timer->stop();
-    Timer->start();
+    QTimer *_Timer = new QTimer(this);
+    _TimerList->push_back(_Timer);
+//    _Timer->setObjectName("Test1");
+    connect(_Timer, SIGNAL(timeout()),this, SLOT(TimeoutEventSlot()));
+    _Timer->setInterval(500);//500msecond
+    if(_Timer->isActive() == true)
+        _Timer->stop();
+    _Timer->start();
     return true;
 }
 
 bool AdvancedMaintenance::_stop()
 {
-    if(Timer->isActive() == true)
-        Timer->stop();
+    QTimer *_Timer = NULL;
+    if(_TimerList->size() == 0)
+        return true;
+    _Timer = _TimerList->at(0);
+    if(_Timer->isActive() == true)
+        _Timer->stop();
+    delete _Timer;
+    _TimerList->pop_front();
     return true;
 }
 
@@ -272,9 +281,13 @@ void AdvancedMaintenance::ToolingCooling_click()
 
 void AdvancedMaintenance::TimeoutEventSlot()
 {
-    Timer->stop();
+//    sender()->objectName() == "test1"
+    QTimer *_Timer = (QTimer*)sender();
+    _Timer->stop();
     M102IA* _M102IA = M102IA::Instance();
     M2010* _M2010 = M2010::Instance();
+    UtilityClass* _Utiltiy = UtilityClass::Instance();
+    qDebug()<<"Timer Start";
     if(_M102IA->IOstatus.IO != PreviousIO)
     {
         PreviousIO = _M102IA->IOstatus.IO;
@@ -290,12 +303,16 @@ void AdvancedMaintenance::TimeoutEventSlot()
         emit IOstatusFeedbackSignal(PreviousIO);
     }else if(SonicsOnFlag == true)
     {
+        qDebug()<<"Timer";
         _M2010->ReceiveFlags.PowerFreqData = false;
         _M102IA->IACommand(IAComGetPowerFreq);
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.PowerFreqData);
-        emit CurrentPowerAndFrequencySignal(_M102IA->ADPower, _M102IA->ADFrequency);
+        _M102IA->ActualPower = 4000;
+        _M102IA->ActualFrequency = 19950;
+        QString FrequencyStr = _Utiltiy->FormatedDataToString(DINActualFrequence, _M102IA->ActualFrequency);
+        emit CurrentPowerAndFrequencySignal(_M102IA->ActualPower, FrequencyStr);
     }
-    Timer->start(500);//500 msecond
+    _Timer->start(500);//500 msecond
 }
 
 void AdvancedMaintenance::UpdateAnvil()
@@ -457,6 +474,7 @@ void AdvancedMaintenance::RunSonicsPressed()
     M102IA* _M102IA = M102IA::Instance();
     _M102IA->SendIACommand(IAComAuxMotion, DO_SONICS_ON);
     SonicsOnFlag = true;
+
 }
 
 void AdvancedMaintenance::RunSonicsUnPressed()
@@ -464,6 +482,7 @@ void AdvancedMaintenance::RunSonicsUnPressed()
     M102IA* _M102IA = M102IA::Instance();
     _M102IA->SendIACommand(IAComAuxMotion, DO_SONICS_OFF);
     SonicsOnFlag = false;
+
 }
 
 void AdvancedMaintenance::RunSonics100Pressed()

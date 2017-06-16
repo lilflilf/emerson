@@ -60,6 +60,12 @@ public:
     Q_INVOKABLE void maintenanceReset();
     Q_INVOKABLE QString getAdvancedMaintenanceValue(int index, QString key);
     Q_INVOKABLE void setAdvancedMaintenanceValue(int index, QString value);
+    Q_INVOKABLE int getAdvancedMaintenanceMaxPower();
+    Q_INVOKABLE void pressedAdvancedMaintenanceSonics();
+    Q_INVOKABLE void pressedAdvancedMaintenance100Sonics();
+    Q_INVOKABLE void releasedAdvancedMaintenanceSonics();
+    Q_INVOKABLE void releasedAdvancedMaintenance100Sonics();
+
     Q_INVOKABLE QString getMaintenanceVerson(int index);
     Q_INVOKABLE QString getSoftVerson(int index);
     Q_INVOKABLE bool login(QString passwd);
@@ -214,6 +220,7 @@ signals:
     void signalPhysicalKeySignal(bool status);
     void signalPhysicalKeyMessage();
     void signalRecvFromJs(QString indexId);
+    void signalAdvanceMaintenancePowerAndFrequency(const int power, const QString frequency);
 public slots:
     void slotPhysicalKeySignal(bool &status);
     void slotWeldCycleCompleted(bool result);
