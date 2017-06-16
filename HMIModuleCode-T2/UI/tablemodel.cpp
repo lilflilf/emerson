@@ -1853,6 +1853,19 @@ QString SplicesModel::getSpliceName(int spliceId)
         return "";
 }
 
+int SplicesModel::searchIndexByName(QString name)
+{
+    QMap<int,QString>::iterator it; //遍历map
+    int i = 0;
+    for ( it = splices->begin(); it != splices->end(); ++it ) {
+        if (name == it.value())
+            return i;
+        i++;
+
+    }
+    return -1;
+}
+
 QString SplicesModel::timePlusToString(int time)
 {
     return variantToString->TimePlusToString(time).Maximum;
@@ -2117,6 +2130,19 @@ QList<int> PartModel::getSpliceList()
         list.append(it.value().SpliceID);
     }
     return list;
+}
+
+int PartModel::searchIndexByName(QString name)
+{
+    QMap<int,QString>::iterator it; //遍历map
+    int i = 0;
+    for ( it = parts->begin(); it != parts->end(); ++it ) {
+        if (name == it.value())
+            return i;
+        i++;
+
+    }
+    return -1;
 }
 
 
@@ -3590,6 +3616,19 @@ QString WireModel::getStructValue4(int gauge, int awg)
     return variantToString->GaugeToString(gauge,awg).Current;
 }
 
+int WireModel::searchIndexByName(QString name)
+{
+    QMap<int,QString>::iterator it; //遍历map
+    int i = 0;
+    for ( it = wires->begin(); it != wires->end(); ++it ) {
+        if (name == it.value())
+            return i;
+        i++;
+
+    }
+    return -1;
+}
+
 bool WireModel::exportData(int wireId, QString fileUrl)
 {
     return m_WireDataObj->ExportData(wireId,fileUrl);
@@ -4096,6 +4135,19 @@ QList<int> SequenceModel::getCurrentSequenceOfSpliceId()
         idList.append(sequenceElement.SpliceList.value(sequenceElement.SpliceList.keys().at(i)).SpliceID);
     }
     return idList;
+}
+
+int SequenceModel::searchIndexByName(QString name)
+{
+    QMap<int,QString>::iterator it; //遍历map
+    int i = 0;
+    for ( it = sequences->begin(); it != sequences->end(); ++it ) {
+        if (name == it.value())
+            return i;
+        i++;
+
+    }
+    return -1;
 }
 
 QList<int> SequenceModel::getCurrentSequenceOfSpliceQty()

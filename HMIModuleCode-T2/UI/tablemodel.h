@@ -151,6 +151,7 @@ public slots:
     Q_INVOKABLE bool exportData(int spliceId, QString fileUrl);
     Q_INVOKABLE int importData(QString value);
     Q_INVOKABLE QString getSpliceName(int spliceId);
+    Q_INVOKABLE int searchIndexByName(QString name);
 
     QString timePlusToString(int time);
     QString timeMinusToString(int time);
@@ -224,6 +225,7 @@ public slots:
     Q_INVOKABLE int importData(QString filePath);
     Q_INVOKABLE QString getPartName(int partId);
 
+    Q_INVOKABLE int searchIndexByName(QString name);
     Q_INVOKABLE QList<int> getSpliceList();
    // int getCurrentIndex(QString info);
 
@@ -414,6 +416,7 @@ public slots:
     Q_INVOKABLE QString getStructValue2(QString key, QString type);
     Q_INVOKABLE int getStructValue3(QString key, QString value);
     Q_INVOKABLE QString getStructValue4(int gauge, int awg);
+    Q_INVOKABLE int searchIndexByName(QString name);
 
     Q_INVOKABLE bool exportData(int wireId, QString fileUrl);
     Q_INVOKABLE int importData(QString filePath);
@@ -498,6 +501,8 @@ public slots:
     Q_INVOKABLE QStringList getCurrentSequenceOfSpliceName();
     Q_INVOKABLE QList<int> getCurrentSequenceOfSpliceId();
     Q_INVOKABLE QList<int> getCurrentSequenceOfSpliceQty();
+    Q_INVOKABLE int searchIndexByName(QString name);
+
 //    Q_INVOKABLE void setWorkSequence(int sequenceId);
 
     Q_INVOKABLE int count();

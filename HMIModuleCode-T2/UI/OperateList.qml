@@ -7,7 +7,7 @@ import QtQuick.Dialogs 1.2
 
 Item {
     id: operate
-    property int selectIndx: -1
+    property int selectIndx: 0
     property int selectWorkId: -1
     property int setCheckIndex: -1
 
@@ -27,7 +27,33 @@ Item {
             nameText.text = qsTr("HARNESS NAME")
         }
     }
+    Text {
+        id: scanEdit
+        visible: false
+        width: 150
+        height: 60
+        Component.onCompleted: {
+            forceActiveFocus()
+        }
+        Keys.enabled: true
+        Keys.onReturnPressed: {
+            var myIndex
+            if (listView.model == sequenceModel)
+                myIndex = sequenceModel.searchIndexByName(scanEdit.text)
+            else
+                myIndex = partModel.searchIndexByName(scanEdit.text)
 
+            if (myIndex != -1)
+            {
+                selectIndx = myIndex
+                listView.currentIndex = myIndex
+            }
+            scanEdit.text = ""
+        }
+        Keys.onPressed: {
+            scanEdit.text = scanEdit.text + event.text
+        }
+    }
     Row {
         id: headTitle
         anchors.top: parent.top
@@ -108,6 +134,10 @@ Item {
         clip: true
         model: sequenceModel
         delegate: listDelegate
+        highlight: Rectangle { color: "black"; opacity: 0.3; radius: 5 }
+        focus: true
+        highlightResizeVelocity: 50000
+
     }
     Image {
         id: scrollUp
@@ -227,6 +257,7 @@ Item {
                     else if (listView.model == partModel )
                         operate.selectWorkId = PartId
                     selectCheck.checked = !selectCheck.checked
+                    listView.currentIndex = index
                 }
             }
             Rectangle {
@@ -239,10 +270,10 @@ Item {
                     exclusiveGroup: listviewPositionGroup
                     visible: false
                     onCheckedChanged: {
-                        if (checked)
-                            backGround.opacity = 0.3
-                        else
-                            backGround.opacity = 0
+//                        if (checked)
+//                            backGround.opacity = 0.3
+//                        else
+//                            backGround.opacity = 0
                     }
                 }
             }
@@ -288,7 +319,7 @@ Item {
             {
                 hmiAdaptor.setWorkFlow(3, 0)
 
-                hmiAdaptor.setWorkFlow(1,operate.selectWorkId)
+                hmiAdaptor.setWorkFlow(1, sequenceModel.getValue(selectIndx,"SequenceId"))
                 mainRoot.checkNeedPassWd(-5)
                 if (listView.model == sequenceModel)
                     mainRoot.headTitle = qsTr("Operate Sequence")
@@ -457,7 +488,7 @@ Item {
                     harnessSetting.visible = false
                     hmiAdaptor.setWorkFlow(3, 0)
 
-                    hmiAdaptor.setWorkFlow(2,operate.selectWorkId)
+                    hmiAdaptor.setWorkFlow(2,partModel.getValue(selectIndx),"PartId")
 
                     if (splices.bIsCheck)
                     {

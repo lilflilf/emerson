@@ -6,7 +6,7 @@ import QtQuick.Window 2.2
 
 Item {
     id: testSpliceLibrary
-    property int selectIndx: -1
+    property int selectIndx: 0
     property int setCheckIndex: -1
 
     property var testSpliceId: -1
@@ -70,6 +70,29 @@ Item {
             loader.source = ""
         }
     }
+    Text {
+        id: scanEdit
+        visible: false
+        width: 150
+        height: 60
+        Component.onCompleted: {
+            forceActiveFocus()
+        }
+        Keys.enabled: true
+        Keys.onReturnPressed: {
+            var spliceIndex = spliceModel.searchIndexByName(scanEdit.text)
+            if (spliceIndex != -1)
+            {
+                selectIndx = spliceIndex
+                listView.currentIndex = spliceIndex
+            }
+            scanEdit.text = ""
+        }
+        Keys.onPressed: {
+            scanEdit.text = scanEdit.text + event.text
+        }
+    }
+
     Row {
         id: headTitle
         anchors.left: parent.left
@@ -157,6 +180,10 @@ Item {
         clip: true
         model: spliceModel
         delegate: listDelegate
+        highlight: Rectangle { color: "black"; opacity: 0.3; radius: 5 }
+        focus: true
+        highlightResizeVelocity: 50000
+        highlightMoveVelocity: 800
     }
     Image {
         id: scrollUp
@@ -284,6 +311,7 @@ Item {
                         selectIndx = index
                         //listModel.set(index,{"opacityValue":"0.3"})
                     }
+                    listView.currentIndex = index
                     selectCheck.checked = !selectCheck.checked
 
                 }
@@ -298,10 +326,10 @@ Item {
                     exclusiveGroup: listviewPositionGroup
                     visible: false
                     onCheckedChanged: {
-                        if (checked)
-                            backGround.opacity = 0.3
-                        else
-                            backGround.opacity = 0
+//                        if (checked)
+//                            backGround.opacity = 0.3
+//                        else
+//                            backGround.opacity = 0
                     }
                 }
             }

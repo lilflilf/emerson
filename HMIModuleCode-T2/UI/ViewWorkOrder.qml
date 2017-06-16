@@ -415,7 +415,7 @@ Item {
                             font.pixelSize: 16
                             color: "white"
                             elide: Text.ElideRight
-                            text: searchList.model == partModel ? PartName : searchList.model == spliceModel ? SpliceName : name
+                            text: searchList.model == partModel ? HarnessName : searchList.model == spliceModel ? SpliceName : name
                         }
                         MouseArea {
                             anchors.fill: parent
@@ -514,7 +514,7 @@ Item {
             onClicked: {
                 searchArea.buttonIndex = 1
                 searchArea.visible = true
-                searchList.model = workOrderModel
+                searchList.model = weldHistoryModel
             }
         }
         Line {

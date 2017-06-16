@@ -7,7 +7,7 @@ import QtQuick.Dialogs 1.2
 
 Item {
     id: viewLib
-    property int selectIndx: -1
+    property int selectIndx: 0
     property int count: partTitleModel.count
     property int tempY: 0
     function shrinkGetValue(index1,index2)
@@ -44,7 +44,37 @@ Item {
             }
         }
     }
+    Text {
+        id: scanEdit
+        visible: false
+        width: 150
+        height: 60
+        Component.onCompleted: {
+            forceActiveFocus()
+        }
+        Keys.enabled: true
+        Keys.onReturnPressed: {
+            var myIndex
+            if (listView.model == sequenceModel)
+                myIndex = sequenceModel.searchIndexByName(scanEdit.text)
+            else if (listView.model == partModel)
+                myIndex = partModel.searchIndexByName(scanEdit.text)
+            else if (listView.model == spliceModel)
+                myIndex = spliceModel.searchIndexByName(scanEdit.text)
+            else if (listView.model == wireModel)
+                myIndex = wireModel.searchIndexByName(scanEdit.text)
 
+            if (myIndex != -1)
+            {
+                selectIndx = myIndex
+                listView.currentIndex = myIndex
+            }
+            scanEdit.text = ""
+        }
+        Keys.onPressed: {
+            scanEdit.text = scanEdit.text + event.text
+        }
+    }
     Rectangle {
         id: leftArea
         anchors.top: parent.top
@@ -528,8 +558,13 @@ Item {
         clip: true
         model: spliceModel
         delegate: listDelegate
-        highlightRangeMode: ListView.StrictlyEnforceRange
+        highlight: Rectangle { color: "black"; opacity: 0.3; radius: 5 }
+        focus: true
+        highlightResizeVelocity: 50000
 
+        onModelChanged: {
+            selectIndx = 0
+        }
     }
     Image {
         id: scrollLeft
@@ -707,6 +742,7 @@ Item {
                 onClicked: {
                     selectIndx = index
                     selectCheck.checked = !selectCheck.checked
+                    listView.currentIndex = index
                 }
             }
             Rectangle {
@@ -719,10 +755,10 @@ Item {
                     exclusiveGroup: listviewPositionGroup
                     visible: false
                     onCheckedChanged: {
-                        if (checked)
-                            backGround.opacity = 0.3
-                        else
-                            backGround.opacity = 0
+//                        if (checked)
+//                            backGround.opacity = 0.3
+//                        else
+//                            backGround.opacity = 0
                     }
                 }
             }

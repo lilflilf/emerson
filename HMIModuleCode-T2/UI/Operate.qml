@@ -7,7 +7,7 @@ import QtQuick.Dialogs 1.2
 
 Item {
     id: operate
-    property int selectIndx: -1
+    property int selectIndx: 0
     property int selectWorkId: -1
     property int setCheckIndex: -1
 
@@ -58,6 +58,28 @@ Item {
         onSignalChoseFile: {
             loader.source = ""
             hmiAdaptor.importData(fileName)
+        }
+    }
+    Text {
+        id: scanEdit
+        visible: false
+        width: 150
+        height: 60
+        Component.onCompleted: {
+            forceActiveFocus()
+        }
+        Keys.enabled: true
+        Keys.onReturnPressed: {
+            var spliceIndex = spliceModel.searchIndexByName(scanEdit.text)
+            if (spliceIndex != -1)
+            {
+                selectIndx = spliceIndex
+                listView.currentIndex = spliceIndex
+            }
+            scanEdit.text = ""
+        }
+        Keys.onPressed: {
+            scanEdit.text = scanEdit.text + event.text
         }
     }
     Row {
@@ -139,6 +161,10 @@ Item {
         clip: true
         model: spliceModel
         delegate: listDelegate
+        highlight: Rectangle { color: "black"; opacity: 0.3; radius: 5 }
+        focus: true
+        highlightResizeVelocity: 50000
+
     }
     Image {
         id: scrollUp
@@ -255,6 +281,7 @@ Item {
                     operate.selectIndx = index
                     operate.selectWorkId = SpliceId
                     selectCheck.checked = !selectCheck.checked
+                    listView.currentIndex = index
                 }
             }
             Rectangle {
@@ -267,10 +294,10 @@ Item {
                     exclusiveGroup: listviewPositionGroup
                     visible: false
                     onCheckedChanged: {
-                        if (checked)
-                            backGround.opacity = 0.3
-                        else
-                            backGround.opacity = 0
+//                        if (checked)
+//                            backGround.opacity = 0.3
+//                        else
+//                            backGround.opacity = 0
                     }
                 }
             }
