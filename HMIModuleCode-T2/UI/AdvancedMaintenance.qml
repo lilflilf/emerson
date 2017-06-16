@@ -22,11 +22,29 @@ Item {
     width: Screen.width*0.7
     height: Screen.height*0.6
 
+    property int powerfactor: -1
+
+    function initPage()
+    {
+        powerfactor = hmiAdaptor.getAdvancedMaintenanceMaxPower() / 10
+        progressBar2Model.clear()
+        for (var i = 0; i <= 10; i++)
+            progressBar2Model.append({"myText":(i * powerfactor)})
+    }
+
     Component.onCompleted: {
         hmiAdaptor.maintenanceStart(2);
     }
     Component.onDestruction: {
         hmiAdaptor.maintenanceStop(2);
+    }
+
+    Connections {
+        target: hmiAdaptor
+        onSignalAdvanceMaintenancePowerAndFrequency: {
+            progressBar.value = power / hmiAdaptor.getAdvancedMaintenanceMaxPower() * 100
+            listModel.set(1,{"value":frequency})
+        }
     }
 
     Connections {
@@ -247,14 +265,22 @@ Item {
         color: "white"
         text: qsTr("Power")
     }
+
+    ListModel {
+        id: progressBar2Model
+        Component.onCompleted: {
+            initPage()
+        }
+    }
+
     Row {
         id: progressBar2
         anchors.bottom: progressBar.top
         anchors.bottomMargin: 2
-        spacing: (progressBar.width-2*14)/13
+        spacing: (progressBar.width-2*14) / 10
         anchors.left: progressBar.left
         Repeater {
-            model: 14
+            model: progressBar2Model
             delegate: Item {
                 width: 2
                 height: 30
@@ -265,7 +291,7 @@ Item {
                     font.pixelSize: 10
                     font.family: "arial"
                     color: "white"
-                    text: index*10
+                    text: myText
                 }
                 Rectangle {
                     id: line
@@ -286,8 +312,8 @@ Item {
         anchors.right: parent.right
         anchors.rightMargin: 20
         maximum: 100
-        value: 50
-        minimum: 1
+        value: 0
+        minimum: 0
     }
 
     Row {
@@ -303,11 +329,15 @@ Item {
             id: test1
             text: qsTr("Run Sonics")
             width: (rowButton3.width -20)/2
+            onPressed: hmiAdaptor.pressedAdvancedMaintenanceSonics()
+            onReleased: hmiAdaptor.releasedAdvancedMaintenanceSonics()
         }
         CButton {
             id: test2
             text: qsTr("Run Sonics 100%")
             width: (rowButton3.width -20)/2
+            onPressed: hmiAdaptor.pressedAdvancedMaintenance100Sonics()
+            onReleased: hmiAdaptor.releasedAdvancedMaintenance100Sonics()
         }
     }
 
@@ -346,7 +376,6 @@ Item {
                     keyNum.currentValue = recsetting1.centervalue
                     keyNum.minvalue = hmiAdaptor.getAdvancedMaintenanceValue(0,"min")
                     keyNum.maxvalue = hmiAdaptor.getAdvancedMaintenanceValue(0,"max")
-                    console.log("Amplitude")
                 }
 
             }
@@ -454,14 +483,19 @@ Item {
                 if (hmiAdaptor.comepareCurrentValue(keyNum.minvalue,keyNum.maxvalue,keyNum.inputText)) {
                     if (bIsList) {
                         listModel.set(listIndex,{"value":keyNum.inputText})
-                        if (listIndex == 0)
+                        if (listIndex == 0) {
                             hmiAdaptor.setAdvancedMaintenanceValue(1,keyNum.inputText)
+                            initPage()
+                        }
                         else
+                        {
                             hmiAdaptor.setAdvancedMaintenanceValue(listIndex,keyNum.inputText)
+                        }
                     }
                     else {
                         recsetting1.centervalue = keyNum.inputText
                         hmiAdaptor.setAdvancedMaintenanceValue(0,keyNum.inputText)
+                        console.log("third 0")
                     }
                     backGround.visible = false
                     backGround.opacity = 0

@@ -381,7 +381,8 @@ public:
     double EnergyAccumulator;
     double EnergyMaintenanceDue;
     int ADPower;
-    int ADFrequency;
+    int ActualPower;     //Watt
+    int ActualFrequency; //Hz
 
     QString IAdataSignature;
 

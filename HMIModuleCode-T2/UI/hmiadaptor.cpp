@@ -92,6 +92,7 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
     m_variantToString = VariantToString::Instance();
     m_stringToVariant = StringToVariant::Instance();
     connect(advanceMaintenance, SIGNAL(IOstatusFeedbackSignal(ulong)),this,SLOT(slotButtonState(ulong)));
+    connect(advanceMaintenance, SIGNAL(CurrentPowerAndFrequencySignal(int,QString)), this, SIGNAL(signalAdvanceMaintenancePowerAndFrequency(int, QString)));
     connect(interfaceClass, SIGNAL(EnableErrorMessageSignal(BransonMessageBox&)), this, SLOT(slotEnableDialog(BransonMessageBox&)));
     connect(interfaceClass, SIGNAL(DisableErrorMessageSignal(BransonMessageBox&)), this, SLOT(slotDisableDialog(BransonMessageBox&)));
 
@@ -514,7 +515,7 @@ QString HmiAdaptor::maintenanceCountGetImage(int index)
         source = "qrc:/images/images/Anvil_Guide.JPG";
         break;
     case 4:
-        source = "qrc:/images/images/Converter.JPG";
+        source = "qrc:/images/images/Actuator.JPG";
         break;
     default:
         break;
@@ -731,12 +732,14 @@ void HmiAdaptor::maintenanceReset()
 
 QString HmiAdaptor::getAdvancedMaintenanceValue(int index, QString key)
 {
+    QString ValueStr;
     if (key == "current")
-        return advanceMaintenance->AdvParameter[index].Current;
+        ValueStr = advanceMaintenance->AdvParameter[index].Current;
     else if (key == "max")
-        return advanceMaintenance->AdvParameter[index].Maximum;
+        ValueStr = advanceMaintenance->AdvParameter[index].Maximum;
     else if (key == "min")
-        return advanceMaintenance->AdvParameter[index].Minimum;
+        ValueStr = advanceMaintenance->AdvParameter[index].Minimum;
+    return ValueStr;
 }
 
 void HmiAdaptor::setAdvancedMaintenanceValue(int index, QString value)
@@ -761,6 +764,31 @@ void HmiAdaptor::setAdvancedMaintenanceValue(int index, QString value)
     }
 }
 
+int HmiAdaptor::getAdvancedMaintenanceMaxPower()
+{
+    InterfaceClass* _Interface = InterfaceClass::Instance();
+    return (int)_Interface->StatusData.Soft_Settings.SonicGenWatts;
+}
+
+void HmiAdaptor::pressedAdvancedMaintenanceSonics()
+{
+    advanceMaintenance->RunSonicsPressed();
+}
+
+void HmiAdaptor::pressedAdvancedMaintenance100Sonics()
+{
+    advanceMaintenance->RunSonics100Pressed();
+}
+
+void HmiAdaptor::releasedAdvancedMaintenanceSonics()
+{
+    advanceMaintenance->RunSonicsUnPressed();
+}
+
+void HmiAdaptor::releasedAdvancedMaintenance100Sonics()
+{
+    advanceMaintenance->RunSonics100UnPressed();
+}
 
 bool HmiAdaptor::login(QString passwd)
 {
@@ -1213,27 +1241,59 @@ bool HmiAdaptor::weldDefaultsSetValue2(int index, int checkIndex)
 
 bool HmiAdaptor::weldDefaultsGetValue2(int index, int checkIndex)
 {
+    bool bResult = false;
     if (index == 0)
     {
         if (checkIndex == 0)
-            return weldDefaults->CurrentWeldSettings.Pressure2Unit == BRANSON_INI_STRUCT::PRESSUREUNIT::ToPSI;
+        {
+            if(weldDefaults->CurrentWeldSettings.Pressure2Unit == BRANSON_INI_STRUCT::PRESSUREUNIT::ToPSI)
+                bResult = true;
+            else
+                bResult = false;
+        }
         else if (checkIndex == 1)
-            return weldDefaults->CurrentWeldSettings.Pressure2Unit == BRANSON_INI_STRUCT::PRESSUREUNIT::ToBar;
+        {
+            if(weldDefaults->CurrentWeldSettings.Pressure2Unit == BRANSON_INI_STRUCT::PRESSUREUNIT::ToBar)
+                bResult = true;
+            else
+                bResult = false;
+        }
     }
     else if (index == 1)
     {
         if (checkIndex == 0)
-            return weldDefaults->CurrentWeldSettings.Square2Unit == BRANSON_INI_STRUCT::SQUAREUNIT::ToSqrMM;
+        {
+            if(weldDefaults->CurrentWeldSettings.Square2Unit == BRANSON_INI_STRUCT::SQUAREUNIT::ToSqrMM)
+                bResult = true;
+            else
+                bResult = false;
+        }
         else if (checkIndex == 1)
-            return weldDefaults->CurrentWeldSettings.Square2Unit == BRANSON_INI_STRUCT::SQUAREUNIT::ToAWG;
+        {
+            if(weldDefaults->CurrentWeldSettings.Square2Unit == BRANSON_INI_STRUCT::SQUAREUNIT::ToAWG)
+                bResult = true;
+            else
+                bResult = false;
+        }
     }
     else if (index == 2)
     {
         if (checkIndex == 0)
-            return weldDefaults->CurrentWeldSettings.Length2Unit == BRANSON_INI_STRUCT::LENGTHUNIT::ToMM;
+        {
+            if(weldDefaults->CurrentWeldSettings.Length2Unit == BRANSON_INI_STRUCT::LENGTHUNIT::ToMM)
+                bResult = true;
+            else
+                bResult = false;
+        }
         else if (checkIndex == 1)
-            return weldDefaults->CurrentWeldSettings.Length2Unit == BRANSON_INI_STRUCT::LENGTHUNIT::ToINCH;
+        {
+            if(weldDefaults->CurrentWeldSettings.Length2Unit == BRANSON_INI_STRUCT::LENGTHUNIT::ToINCH)
+                bResult = true;
+            else
+                bResult = false;
+        }
     }
+    return bResult;
 }
 
 bool HmiAdaptor::weldDefaultsSetValue3(QStringList strList)

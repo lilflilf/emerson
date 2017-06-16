@@ -560,6 +560,7 @@ void UtilityClass::InitializeTextData()
     SetTextData(DINTeachModeQuantity, 0, MINTEACHMODEQUANTITY, MAXTEACHMODEQUANTITY,1, 1, "%d");
     SetTextData(DINTuneFrequence, 0, MINTUNEFREQUENCE, MAXTUNEFREQUENCE, 100, 1, "%dHz");
     SetTextData(DINFreqOffset, 0, MINFREQOFFSET, MAXFREQOFFSET, 100, 1, "%dHz");
+    SetTextData(DINActualFrequence, 0, MINFREQUENCE, MAXFREQUENCE, 100, 1, "%dHz");
 }
 
 void UtilityClass::SetTextData(ScreenShowDataType TypeIndex,int Data,int min, int max,
