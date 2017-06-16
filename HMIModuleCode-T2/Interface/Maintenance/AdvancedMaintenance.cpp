@@ -34,7 +34,7 @@ bool AdvancedMaintenance::_start()
     _TimerList->push_back(_Timer);
 //    _Timer->setObjectName("Test1");
     connect(_Timer, SIGNAL(timeout()),this, SLOT(TimeoutEventSlot()));
-    _Timer->setInterval(500);//500msecond
+    _Timer->setInterval(DELAY500MSEC);//500msecond
     if(_Timer->isActive() == true)
         _Timer->stop();
     _Timer->start();
@@ -312,7 +312,7 @@ void AdvancedMaintenance::TimeoutEventSlot()
         QString FrequencyStr = _Utiltiy->FormatedDataToString(DINActualFrequence, _M102IA->ActualFrequency);
         emit CurrentPowerAndFrequencySignal(_M102IA->ActualPower, FrequencyStr);
     }
-    _Timer->start(500);//500 msecond
+    _Timer->start(DELAY500MSEC);//500 msecond
 }
 
 void AdvancedMaintenance::UpdateAnvil()

@@ -463,7 +463,7 @@ void M10INI::Init_StatusData()
     _Interface->DefaultStatusData.CycleCount = 0;
 
     _Interface->DefaultStatusData.RemoteGraphData = false;
-//    _Interface->StatusData.AntisideSpliceTime = DEFAULTUNLOADTIME; //Default Unload time should be 1.5s
+    _Interface->DefaultStatusData.AntisideSpliceTime = DEFAULTUNLOADTIME; //Default Unload time should be 1.5s
 
     for(int i = 0; i<= 7; i++)
     {
@@ -490,6 +490,13 @@ void M10INI::Init_StatusData()
     _Interface->DefaultStatusData.CurrentEnergyMaintenanceLimits[1] = 100000;
     _Interface->DefaultStatusData.CurrentEnergyMaintenanceLimits[2] = 100000;
     _Interface->DefaultStatusData.CurrentEnergyMaintenanceLimits[3] = 100000;
+
+    _Interface->DefaultStatusData.CutOffOption.CutOff = false;
+    _Interface->DefaultStatusData.CutOffOption.CutOffSpliceTime = 1000; //5s
+    _Interface->DefaultStatusData.CutOffOption.Cutter4HeightAlarm = false;
+    _Interface->DefaultStatusData.CutOffOption.Cutter4PowerAlarm = false;
+    _Interface->DefaultStatusData.CutOffOption.Cutter4PreHeightAlarm = false;
+    _Interface->DefaultStatusData.CutOffOption.Cutter4TimeAlarm = false;
 
     QDateTime tmp = QDateTime::fromString("10/20/2016","MM/dd/yyyy");
     _Interface->DefaultStatusData.MaintenanceDateStarted[0] = tmp.toTime_t();
