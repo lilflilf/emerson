@@ -540,7 +540,7 @@ Item {
                 background.visible = true
                 dialog.visible = true
                 helpTitle.visible = true
-                helpTitle.text = qsTr("Create Part:")
+//                helpTitle.text = qsTr("Create Part:")
                 helpValue.visible = true
                 okButton.visible = true
                 background.opacity = 0.5
@@ -853,20 +853,43 @@ Item {
             font.pixelSize: 24
             font.family: "arial"
             color: "white"
-            text: qsTr("Create Part:")
+            text: qsTr("")
         }
-        Text {
-            id: helpValue
-            visible: false
-            anchors.top: helpTitle.bottom
-            anchors.topMargin: 30
-            anchors.left: helpTitle.left
-            width: parent.width - 40
-            font.pixelSize: 20
-            font.family: "arial"
-            color: "white"
-            wrapMode: Text.WordWrap
-            text: qsTr("-Add New Splice: add new splice\n-Add Existing Splice: add existing splice from the splice library")
+        Column {
+            anchors.centerIn: parent
+            Text {
+                font.pixelSize: 20
+                font.family: "arial"
+                color: "white"
+                visible: helpValue.visible
+                text: qsTr("HMI Metal Welding Software\n")
+            }
+            Text {
+                id: helpValue
+                visible: false
+                font.pixelSize: 20
+                font.family: "arial"
+                color: "white"
+                text: qsTr("Branson Ultrasonics Corp.
+41 Eagle Road Danbury, CT 06810 USA
+T: 203-796-0400 F: 203-796-0363")
+            }
+            Text {
+                visible: helpValue.visible
+                font.pixelSize: 20
+                font.family: "arial"
+                text: '<html></style><a href="http://www.bransonultrasonics.com">www.bransonultrasonics.com</a></html>'
+                onLinkActivated: Qt.openUrlExternally(link)
+            }
+        }
+        Image {
+            anchors.right: parent.right
+            visible: helpValue.visible
+            source: "qrc:/images/images/logo1.png"
+            scale: 0.5
+            anchors.top: parent.top
+            anchors.topMargin: -height/4
+            anchors.rightMargin: -width/4
         }
         Column {
             id: personColumn
