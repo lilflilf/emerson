@@ -307,8 +307,8 @@ void AdvancedMaintenance::TimeoutEventSlot()
         _M2010->ReceiveFlags.PowerFreqData = false;
         _M102IA->IACommand(IAComGetPowerFreq);
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.PowerFreqData);
-        _M102IA->ActualPower = 4000;
-        _M102IA->ActualFrequency = 19950;
+//        _M102IA->ActualPower = 4000;
+//        _M102IA->ActualFrequency = 19950;
         QString FrequencyStr = _Utiltiy->FormatedDataToString(DINActualFrequence, _M102IA->ActualFrequency);
         emit CurrentPowerAndFrequencySignal(_M102IA->ActualPower, FrequencyStr);
     }
