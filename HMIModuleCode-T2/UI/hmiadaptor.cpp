@@ -2069,7 +2069,7 @@ void HmiAdaptor::importData(QString fileUrl)
     if (CSVList.size() > 1) {
         if (CSVList.at(0) == "WireData")
             wireModel->importData(CSVList[1]);
-        else if (CSVList.at(0) == "SpliceData") {
+        else if (CSVList.at(0) == "Preset Data") {
             importSplice(CSVList[1]);
         }
         else if (CSVList.at(0) == "PartData") {
@@ -2080,7 +2080,7 @@ void HmiAdaptor::importData(QString fileUrl)
             if (shrinkList.count() >= 2)
                 addInsulation(shrinkList[0],shrinkList[1],shrinkList[2]);
         }
-        else if (CSVList.at(0) == "WorkOrderData") {
+        else if (CSVList.at(0) == "Sequence Data") {
             importWorkOrder(CSVList[1]);
         }
     }
