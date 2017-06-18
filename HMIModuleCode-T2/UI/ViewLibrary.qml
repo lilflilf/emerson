@@ -879,15 +879,25 @@ Item {
         onSignalChoseFile: {
             fileLoader.source = ""
             if (wireRadio.checked && selectIndx != -1)
-                wireModel.exportData(wireModel.getValue(selectIndx,"WireId"),fileName)
+                hmiAdaptor.exportData("wire",wireModel.getValue(selectIndx,"WireId"),fileName)
             else if (spliceRadio.checked && selectIndx != -1)
-                spliceModel.exportData(spliceModel.getValue(selectIndx,"SpliceId"),fileName)
+                hmiAdaptor.exportData("splice",spliceModel.getValue(selectIndx,"SpliceId"),fileName)
             else if (partRadio.checked && selectIndx != -1)
-                partModel.exportData(partModel.getValue(selectIndx,"PartId"),fileName)
-            else if (shrinkRadio.checked && selectIndx != -1)
-                hmiAdaptor.exportShrink(shrinkModel.get(selectIndx).shrinkid,shrinkModel.get(selectIndx).temperature,shrinkModel.get(selectIndx).times,fileName)
+                hmiAdaptor.exportData("harness",partModel.getValue(selectIndx,"PartId"),fileName)
             else if (sequenceRadio.checked && selectIndx != -1)
-                sequenceModel.exportData(sequenceModel.getValue(selectIndx,"SequenceId"),fileName)
+                hmiAdaptor.exportData("sequence",sequenceModel.getValue(selectIndx,"SequenceId"),fileName)
+
+//            if (wireRadio.checked && selectIndx != -1)
+//                wireModel.exportData(wireModel.getValue(selectIndx,"WireId"),fileName)
+//            else if (spliceRadio.checked && selectIndx != -1)
+//                spliceModel.exportData(spliceModel.getValue(selectIndx,"SpliceId"),fileName)
+//            else if (partRadio.checked && selectIndx != -1)
+//                partModel.exportData(partModel.getValue(selectIndx,"PartId"),fileName)
+//            else if (shrinkRadio.checked && selectIndx != -1)
+//                hmiAdaptor.exportShrink(shrinkModel.get(selectIndx).shrinkid,shrinkModel.get(selectIndx).temperature,shrinkModel.get(selectIndx).times,fileName)
+//            else if (sequenceRadio.checked && selectIndx != -1)
+//                sequenceModel.exportData(sequenceModel.getValue(selectIndx,"SequenceId"),fileName)
+
         }
     }
     Connections {

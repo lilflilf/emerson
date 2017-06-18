@@ -45,7 +45,6 @@ Item {
             ListElement {key:qsTr("DateCreated")}
             ListElement {key:qsTr("OperateMode")}
             ListElement {key:qsTr("AlarmType")}
-
             ListElement {key:qsTr("CrossSection")}
             ListElement {key:qsTr("WeldMode")}
             ListElement {key:qsTr("Energy")}

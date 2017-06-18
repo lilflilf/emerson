@@ -82,7 +82,7 @@ public:
 
     Q_INVOKABLE int timeChangeToInt(QString time);
 
-    Q_INVOKABLE void setProcess();
+    Q_INVOKABLE void setProcess(QString operateMode);
     Q_INVOKABLE void setOperateProcess(int spliceId, bool isText);
     Q_INVOKABLE void operateProcessExec(QString type);
     Q_INVOKABLE int  controlLimitProcess(QString type,QList<int> list,int redMax,int redMin);
@@ -147,12 +147,15 @@ public:
     Q_INVOKABLE int importSequence(QString sequenceStr);
     Q_INVOKABLE int importWorkOrder(QString workOrderStr);
 
+    Q_INVOKABLE void exportData(QString type, int id, QString fileUrl);
+
+
     Q_INVOKABLE void addInsulation(QString insualtionId, QString temp, QString time);
     Q_INVOKABLE void exportShrink(QString insualtionId, QString temp, QString time, QString fileUrl);
     Q_INVOKABLE void removeShrink(int selectIndex);
     Q_INVOKABLE int stringToInt(QString temp);
 
-    Q_INVOKABLE void setWorkFlow(int workMode, int workId);
+    Q_INVOKABLE void setWorkFlow(int workMode, int workId, QString operateMode);
     Q_INVOKABLE QVariant getWorkFlow(QString workKey);
     Q_INVOKABLE void readWorkFlow();
 

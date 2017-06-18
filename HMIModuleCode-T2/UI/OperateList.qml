@@ -317,9 +317,9 @@ Item {
 
             if (listView.model == sequenceModel)
             {
-                hmiAdaptor.setWorkFlow(3, 0)
+                hmiAdaptor.setWorkFlow(3, 0,"")
 
-                hmiAdaptor.setWorkFlow(1, sequenceModel.getValue(selectIndx,"SequenceId"))
+                hmiAdaptor.setWorkFlow(1, sequenceModel.getValue(selectIndx,"SequenceId"),"Operate")
                 mainRoot.checkNeedPassWd(-5)
                 if (listView.model == sequenceModel)
                     mainRoot.headTitle = qsTr("Operate Sequence")
@@ -486,9 +486,9 @@ Item {
                 textColor: "white"
                 onClicked: {
                     harnessSetting.visible = false
-                    hmiAdaptor.setWorkFlow(3, 0)
+                    hmiAdaptor.setWorkFlow(3, 0,"")
 
-                    hmiAdaptor.setWorkFlow(2,partModel.getValue(selectIndx,"PartId"))
+                    hmiAdaptor.setWorkFlow(2,partModel.getValue(selectIndx,"PartId"),"Operate")
 
                     if (splices.bIsCheck)
                     {

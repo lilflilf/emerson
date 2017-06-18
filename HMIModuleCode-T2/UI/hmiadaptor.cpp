@@ -1802,9 +1802,10 @@ int HmiAdaptor::timeChangeToInt(QString time)
     return temptime.toTime_t();
 }
 
-void HmiAdaptor::setProcess()
+void HmiAdaptor::setProcess(QString operateMode)
 {
     operateProcess->CurrentSplice = spliceModel->processPresetElement;
+    setWorkFlow(0,spliceModel->processPresetElement.SpliceID,operateMode);
 }
 
 void HmiAdaptor::setOperateProcess(int spliceId, bool isText)
@@ -2149,6 +2150,19 @@ int HmiAdaptor::importWorkOrder(QString workOrderStr)
     return partId;
 }
 
+void HmiAdaptor::exportData(QString type, int id, QString fileUrl)
+{
+    if (type == "wire")
+        CSVWireData::Instance()->ExportData(id,fileUrl);
+    else if (type == "splice")
+        CSVPresetData::Instance()->ExportData(id,fileUrl);
+    else if (type == "sequence")
+        CSVSequenceData::Instance()->ExportData(id,fileUrl);
+    else if (type == "harness")
+        CSVHarnessData::Instance()->ExportData(id,fileUrl);
+
+}
+
 void HmiAdaptor::addInsulation(QString insualtionId, QString temp, QString time)
 {
     qDebug() << "addInsulation";
@@ -2195,13 +2209,14 @@ int HmiAdaptor::stringToInt(QString temp)
     return temp.toInt(&ok,10);
 }
 
-void HmiAdaptor::setWorkFlow(int workMode, int workId)
+void HmiAdaptor::setWorkFlow(int workMode, int workId, QString operateMode)
 {
     interfaceClass->CurrentWorkOrder.WorkOrderMode = (WorkOrderElement::WORKORDERMODE)workMode;
     if (workMode == 0)
     {
         interfaceClass->CurrentWorkOrder.WorkOrderID = workId;
         interfaceClass->CurrentWorkOrder.WorkOrderName = spliceModel->getSpliceName(workId);
+        interfaceClass->CurrentWorkOrder.OperateMode = operateMode;
         spliceModel->editNew(workId);
         interfaceClass->CurrentWorkOrder.CurrentSpliceIndex = 0;
     }
@@ -2209,16 +2224,19 @@ void HmiAdaptor::setWorkFlow(int workMode, int workId)
     {
         interfaceClass->CurrentWorkOrder.WorkOrderID = workId;
         interfaceClass->CurrentWorkOrder.WorkOrderName = sequenceModel->getSequenceName(workId);
+        interfaceClass->CurrentWorkOrder.OperateMode = operateMode;
         sequenceModel->editNew(workId);
     }
     else if (workMode == 2)
     {
         interfaceClass->CurrentWorkOrder.WorkOrderID = workId;
         interfaceClass->CurrentWorkOrder.WorkOrderName = harnessModel->getPartName(workId);
+        interfaceClass->CurrentWorkOrder.OperateMode = operateMode;
         harnessModel->editNew(workId);
     }
     else if (workMode == 3)
     {
+        interfaceClass->CurrentWorkOrder.OperateMode = "";
         interfaceClass->CurrentWorkOrder.WorkOrderID = -1;
         interfaceClass->CurrentWorkOrder.WorkOrderName.clear();
         interfaceClass->CurrentWorkOrder.CreatedDate.clear();

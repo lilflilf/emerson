@@ -32,7 +32,7 @@ Item {
                 if (operateDetail.cycleCount == operateDetail.qliantity && operateDetail.qliantity != -1) {
                     cdialog.visible = true
                     hmiAdaptor.operateProcessExec("Stop")
-                    hmiAdaptor.setWorkFlow(3,0);
+                    hmiAdaptor.setWorkFlow(3,0,"");
 
                     return
                 }
@@ -55,7 +55,7 @@ Item {
                     if (progressBar.current == progressBar.total) {
                         cdialog.visible = true
                         hmiAdaptor.operateProcessExec("Stop")
-                        hmiAdaptor.setWorkFlow(3,0);
+                        hmiAdaptor.setWorkFlow(3,0,"");
 
                         return
                     }
@@ -83,7 +83,7 @@ Item {
                 else {
                     cdialog.visible = true
                     hmiAdaptor.operateProcessExec("Stop")
-                    hmiAdaptor.setWorkFlow(3,0);
+                    hmiAdaptor.setWorkFlow(3,0,"");
                     return
                 }
             }
@@ -805,7 +805,7 @@ Item {
             if (operateDetail.cycleCount == operateDetail.qliantity) {
                 cdialog.visible = true
                 hmiAdaptor.operateProcessExec("Stop")
-                hmiAdaptor.setWorkFlow(3,0);
+                hmiAdaptor.setWorkFlow(3,0,"");
                 return
             }
             progressBar.jumpToNext()

@@ -231,9 +231,9 @@ Item {
             text: qsTr("Start")
             textColor: "white"
             onClicked: {
-                hmiAdaptor.setWorkFlow(3, 0)
+                hmiAdaptor.setWorkFlow(3, 0,"")
 
-                hmiAdaptor.setWorkFlow(0,spliceModel.getStructValue("SpliceId",""))
+                hmiAdaptor.setWorkFlow(0,spliceModel.getStructValue("SpliceId",""),"Test")
 
                 if (unButton.bIsCheck) {
                     spliceModel.setTeachModeValue("TestModel","false","","")

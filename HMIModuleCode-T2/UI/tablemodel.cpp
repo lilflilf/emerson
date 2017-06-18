@@ -3049,29 +3049,30 @@ QVariant WeldHistoryModel::data(const QModelIndex &index, int role) const
         if (columnIdx == 0)
             value = QVariant::fromValue(myHistory.WeldResultID);
         else if (columnIdx == 1)
-            value = QVariant::fromValue(myHistory.CurrentWorkOrder.WorkOrderName);
-        else if (columnIdx == 2)
-            value = QVariant::fromValue(myHistory.CurrentHarness.HarnessName);
-        else if (columnIdx == 3)
             value = QVariant::fromValue(myHistory.CurrentSplice.PartName);
+        else if (columnIdx == 2)
+            value = QVariant::fromValue(myHistory.CurrentSequence.SequenceName);
+        else if (columnIdx == 3)
+            value = QVariant::fromValue(myHistory.CurrentHarness.HarnessName);
         else if (columnIdx == 4)
             value = QVariant::fromValue(myHistory.OperatorName);
         else if (columnIdx == 5)
             value = QVariant::fromValue(QDateTime::fromTime_t(myHistory.CreatedDate).toString("MM/dd/yyyy hh:mm"));
         else if (columnIdx == 6)
+            value = QVariant::fromValue(myHistory.OperateMode);
+        else if (columnIdx == 7) {
+                    temp = variantToString->AlarmTypeToString((ALARMTYPE)myHistory.ActualResult.ActualAlarmflags);
+                    value = QVariant::fromValue(temp);
+        }
+        else if (columnIdx == 8)
             value = QVariant::fromValue(variantToString->CrossSectionToString(presetElement.CrossSection));
-        else if (columnIdx == 7)
+        else if (columnIdx == 9)
             value = QVariant::fromValue(variantToString->WeldModeToString(presetElement.WeldSettings.AdvanceSetting.WeldMode,presetElement.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode));
-        else if (columnIdx == 8) {
+        else if (columnIdx == 10) {
             temp = variantToString->EnergyToString(myHistory.ActualResult.ActualEnergy).Current;
             value = QVariant::fromValue(temp);
-        } else if (columnIdx == 9) {
-            temp = variantToString->AmplitudeToString(myHistory.ActualResult.ActualAmplitude).Current;
-            value = QVariant::fromValue(temp);
-        } else if (columnIdx == 10) {
-            temp = variantToString->WidthToString(myHistory.ActualResult.ActualWidth).Current;
-            value = QVariant::fromValue(temp);
-        } else if (columnIdx == 11) {
+        }
+        else if (columnIdx == 11) {
             temp = variantToString->TriggerPressureToString(myHistory.ActualResult.ActualTPressure).Current;
             value = QVariant::fromValue(temp);
         } else if (columnIdx == 12) {
@@ -3079,48 +3080,52 @@ QVariant WeldHistoryModel::data(const QModelIndex &index, int role) const
             value = QVariant::fromValue(temp);
         }
         else if (columnIdx == 13) {
-            temp = variantToString->Time_PlusToString(presetElement.WeldSettings.QualitySetting.Time.Plus);
+            temp = variantToString->AmplitudeToString(myHistory.ActualResult.ActualAmplitude).Current;
             value = QVariant::fromValue(temp);
         } else if (columnIdx == 14) {
-            temp = variantToString->Time_MinusToString(presetElement.WeldSettings.QualitySetting.Time.Minus);
+            temp = variantToString->WidthToString(myHistory.ActualResult.ActualWidth).Current;
             value = QVariant::fromValue(temp);
-        } else if (columnIdx == 15) {
-            temp = variantToString->ActualTimeToString(myHistory.ActualResult.ActualTime);
+        }
+        else if (columnIdx == 15) {
+            temp = variantToString->Time_PlusToString(presetElement.WeldSettings.QualitySetting.Time.Plus);
             value = QVariant::fromValue(temp);
         } else if (columnIdx == 16) {
-            temp = variantToString->Power_PlusToString(presetElement.WeldSettings.QualitySetting.Power.Plus);
+            temp = variantToString->Time_MinusToString(presetElement.WeldSettings.QualitySetting.Time.Minus);
             value = QVariant::fromValue(temp);
         } else if (columnIdx == 17) {
-            temp = variantToString->Power_MinusToString(presetElement.WeldSettings.QualitySetting.Power.Minus);
+            temp = variantToString->ActualTimeToString(myHistory.ActualResult.ActualTime);
             value = QVariant::fromValue(temp);
         } else if (columnIdx == 18) {
-            temp = variantToString->ActualPowerToString(myHistory.ActualResult.ActualPeakPower);
+            temp = variantToString->Power_PlusToString(presetElement.WeldSettings.QualitySetting.Power.Plus);
             value = QVariant::fromValue(temp);
         } else if (columnIdx == 19) {
-            temp = variantToString->PreHeight_PlusToString(presetElement.WeldSettings.QualitySetting.Preheight.Plus);
+            temp = variantToString->Power_MinusToString(presetElement.WeldSettings.QualitySetting.Power.Minus);
             value = QVariant::fromValue(temp);
         } else if (columnIdx == 20) {
-            temp = variantToString->PreHeight_MinusToString(presetElement.WeldSettings.QualitySetting.Preheight.Minus);
-            value = QVariant::fromValue(myHistory.ActualResult.ActualPreheight);
+            temp = variantToString->ActualPowerToString(myHistory.ActualResult.ActualPeakPower);
+            value = QVariant::fromValue(temp);
         } else if (columnIdx == 21) {
-            temp = variantToString->ActualPreHeightToString(myHistory.ActualResult.ActualPreheight);
+            temp = variantToString->PreHeight_PlusToString(presetElement.WeldSettings.QualitySetting.Preheight.Plus);
             value = QVariant::fromValue(temp);
         } else if (columnIdx == 22) {
+            temp = variantToString->PreHeight_MinusToString(presetElement.WeldSettings.QualitySetting.Preheight.Minus);
+            value = QVariant::fromValue(myHistory.ActualResult.ActualPreheight);
+        } else if (columnIdx == 23) {
+            temp = variantToString->ActualPreHeightToString(myHistory.ActualResult.ActualPreheight);
+            value = QVariant::fromValue(temp);
+        } else if (columnIdx == 24) {
             temp = variantToString->Height_PlusToString(presetElement.WeldSettings.QualitySetting.Height.Plus);
             value = QVariant::fromValue(temp);
-        } else if (columnIdx == 23) {
+        } else if (columnIdx == 25) {
             temp = variantToString->Height_MinusToString(presetElement.WeldSettings.QualitySetting.Height.Minus);
             value = QVariant::fromValue(myHistory.ActualResult.ActualPostheight);
-        } else if (columnIdx == 24) {
+        } else if (columnIdx == 26) {
             temp = variantToString->ActualHeightToString(myHistory.ActualResult.ActualPostheight);
             value = QVariant::fromValue(temp);
-        } else if (columnIdx == 25) {
-            temp = variantToString->AlarmTypeToString((ALARMTYPE)myHistory.ActualResult.ActualAlarmflags);
-            value = QVariant::fromValue(temp);
-        } else if (columnIdx == 26) {
+        } else if (columnIdx == 27) {
             temp = variantToString->SampleRatioToString(myHistory.SampleRatio);
             value = QVariant::fromValue(temp);
-        } else if (columnIdx == 27) {
+        } else if (columnIdx == 28) {
             temp = "GraphData";
             value = QVariant::fromValue(temp);
         }
@@ -3246,10 +3251,11 @@ QVariant WeldHistoryModel::getValue(int index, QString key)
     }
     QHash<QString, QVariant> WeldHistoryModelHash;
     WeldHistoryModelHash.insert("WeldHistoryId",myHistory.WeldResultID);
-    WeldHistoryModelHash.insert("WorkOrderName",myHistory.CurrentWorkOrder.WorkOrderName);
-    WeldHistoryModelHash.insert("PartName",myHistory.CurrentHarness.HarnessName);
     WeldHistoryModelHash.insert("SpliceName",myHistory.CurrentSplice.PartName);
+    WeldHistoryModelHash.insert("SequenceName",myHistory.CurrentSequence.SequenceName);
+    WeldHistoryModelHash.insert("HarnessName",myHistory.CurrentHarness.HarnessName);
     WeldHistoryModelHash.insert("OperatorName",myHistory.OperatorName);
+    WeldHistoryModelHash.insert("OperateMode",myHistory.OperateMode);
     WeldHistoryModelHash.insert("DateCreated",QDateTime::fromTime_t(myHistory.CreatedDate).toString("MM/dd/yyyy hh:mm"));
     WeldHistoryModelHash.insert("CrossSection",variantToString->CrossSectionToString(presetElement.CrossSection)); //contain in splice
     WeldHistoryModelHash.insert("WeldMode",variantToString->WeldModeToString(presetElement.WeldSettings.AdvanceSetting.WeldMode,presetElement.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode));     //contain in splice

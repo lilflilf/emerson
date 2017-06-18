@@ -144,7 +144,10 @@ Item {
     function freshProcess()
     {
         setProcessData()
-        hmiAdaptor.setProcess()
+        if (bIsEditSplice)
+            hmiAdaptor.setProcess("Edit")
+        else
+            hmiAdaptor.setProcess("Create")
         hmiAdaptor.operateProcessExec("Execute")
         hmiAdaptor.operateProcessExec("Start")
     }
@@ -1517,7 +1520,10 @@ Item {
                 addWire.visible = false
                 bottomButton.visible = true
                 setProcessData()
-                hmiAdaptor.setProcess()
+                if (bIsEditSplice)
+                    hmiAdaptor.setProcess("Edit")
+                else
+                    hmiAdaptor.setProcess("Create")
                 hmiAdaptor.operateProcessExec("Execute")
                 hmiAdaptor.operateProcessExec("Start")
             }
