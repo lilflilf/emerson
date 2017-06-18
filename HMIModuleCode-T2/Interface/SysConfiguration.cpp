@@ -32,6 +32,7 @@ Status_Data &Status_Data::operator= (const Status_Data &StatusDataObj)
     this->Soft_Settings.ToolCoverIgnore = StatusDataObj.Soft_Settings.ToolCoverIgnore;
     this->Soft_Settings.Pressure2Unit = StatusDataObj.Soft_Settings.Pressure2Unit;
     this->Soft_Settings.Square2Unit = StatusDataObj.Soft_Settings.Square2Unit;
+    this->Soft_Settings.Length2Unit = StatusDataObj.Soft_Settings.Length2Unit;
     this->Soft_Settings.PWWidth2Height = StatusDataObj.Soft_Settings.PWWidth2Height;
     this->Soft_Settings.MinAmplitude = StatusDataObj.Soft_Settings.MinAmplitude;
     this->Soft_Settings.MinPressure = StatusDataObj.Soft_Settings.MinPressure;

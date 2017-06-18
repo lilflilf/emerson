@@ -14,6 +14,7 @@ Item {
     property int maxCount: partModel.getCurrentPartSpliceCount()
     property int workMode: 0
     property var counterString: "PART COUNTER"
+    property alias qualityCount: progressBar2.value
     Rectangle {
         anchors.fill: parent
         color: "#626465"
@@ -71,10 +72,10 @@ Item {
             }
             else if (workMode == 0)
             {
-                if (qliantity == -1)
-                    return
+//                if (qliantity == -1)
+//                    return
                 setData()
-                if (progressBar2.value < progressBar2.maximum - 1) {
+                if (progressBar2.value < progressBar2.maximum - 1 || progressBar2.maximum == -1) {
                     progressBar2.value = progressBar2.value + 1
                     partCount2.text = qsTr(counterString) + progressBar2.value + "/" + qliantity;
                     hmiAdaptor.setWorkValue("PartCount",progressBar2.value)
@@ -111,6 +112,7 @@ Item {
             selectSplice(spliceModel.getStructValue("SpliceId",""))
             counterString = "SPLICE COUNTER:"
             workName.visible = false
+            partTask.visible = false
         }
         else if (flag == 2) {
             mainRoot.headTitle = "Operate Harness"
@@ -241,10 +243,16 @@ Item {
         qualityWindow.postModel = alarmModel.getPointList("Post-Height",spliceModel.getStructValue("SpliceName",""),spliceModel.getHashCode())
         qualityWindow.qualityModel.clear()
         if (qualityWindow.timeModel.length > 0) {
-            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Time+"),"redMin":spliceModel.getRawData("Time-"),"yellowMax":hmiAdaptor.controlLimitProcess("Time+",qualityWindow.timeModel,spliceModel.getRawData("Time+"),spliceModel.getRawData("Time-")),"yellowMin":hmiAdaptor.controlLimitProcess("Time-",qualityWindow.timeModel,spliceModel.getRawData("Time+"),spliceModel.getRawData("Time-")),"current":qualityWindow.timeModel[qualityWindow.timeModel.length - 1],"currentText":spliceModel.actualTimeToString(qualityWindow.timeModel[qualityWindow.timeModel.length - 1])})
-            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Power+"),"redMin":spliceModel.getRawData("Power-"),"yellowMax":hmiAdaptor.controlLimitProcess("Power+",qualityWindow.powerModel,spliceModel.getRawData("Power+"),spliceModel.getRawData("Power-")),"yellowMin":hmiAdaptor.controlLimitProcess("Power-",qualityWindow.powerModel,spliceModel.getRawData("Power+"),spliceModel.getRawData("Power-")),"current":qualityWindow.powerModel[qualityWindow.powerModel.length - 1],"currentText":spliceModel.actualPowerToString(qualityWindow.powerModel[qualityWindow.powerModel.length - 1])})
-            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Pre-Height+"),"redMin":spliceModel.getRawData("Pre-Height-"),"yellowMax":hmiAdaptor.controlLimitProcess("Time+",qualityWindow.preModel,spliceModel.getRawData("Pre-Height+"),spliceModel.getRawData("Pre-Height-")),"yellowMin":hmiAdaptor.controlLimitProcess("Pre-Height-",qualityWindow.preModel,spliceModel.getRawData("Pre-Height+"),spliceModel.getRawData("Pre-Height-")),"current":qualityWindow.preModel[qualityWindow.preModel.length - 1],"currentText":spliceModel.actualPreHeightToString(qualityWindow.preModel[qualityWindow.preModel.length - 1])})
-            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Post-Height+"),"redMin":spliceModel.getRawData("Post-Height-"),"yellowMax":hmiAdaptor.controlLimitProcess("Time+",qualityWindow.postModel,spliceModel.getRawData("Post-Height+"),spliceModel.getRawData("Post-Height-")),"yellowMin":hmiAdaptor.controlLimitProcess("Post-Height-",qualityWindow.postModel,spliceModel.getRawData("Post-Height+"),spliceModel.getRawData("Post-Height-")),"current":qualityWindow.postModel[qualityWindow.postModel.length - 1],"currentText":spliceModel.actualHeightToString(qualityWindow.postModel[qualityWindow.postModel.length - 1])})
+//            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Time+"),"redMin":spliceModel.getRawData("Time-"),"yellowMax":hmiAdaptor.controlLimitProcess("Time+",qualityWindow.timeModel,spliceModel.getRawData("Time+"),spliceModel.getRawData("Time-")),"yellowMin":hmiAdaptor.controlLimitProcess("Time-",qualityWindow.timeModel,spliceModel.getRawData("Time+"),spliceModel.getRawData("Time-")),"current":qualityWindow.timeModel[qualityWindow.timeModel.length - 1],"currentText":spliceModel.actualTimeToString(qualityWindow.timeModel[qualityWindow.timeModel.length - 1])})
+//            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Power+"),"redMin":spliceModel.getRawData("Power-"),"yellowMax":hmiAdaptor.controlLimitProcess("Power+",qualityWindow.powerModel,spliceModel.getRawData("Power+"),spliceModel.getRawData("Power-")),"yellowMin":hmiAdaptor.controlLimitProcess("Power-",qualityWindow.powerModel,spliceModel.getRawData("Power+"),spliceModel.getRawData("Power-")),"current":qualityWindow.powerModel[qualityWindow.powerModel.length - 1],"currentText":spliceModel.actualPowerToString(qualityWindow.powerModel[qualityWindow.powerModel.length - 1])})
+//            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Pre-Height+"),"redMin":spliceModel.getRawData("Pre-Height-"),"yellowMax":hmiAdaptor.controlLimitProcess("Time+",qualityWindow.preModel,spliceModel.getRawData("Pre-Height+"),spliceModel.getRawData("Pre-Height-")),"yellowMin":hmiAdaptor.controlLimitProcess("Pre-Height-",qualityWindow.preModel,spliceModel.getRawData("Pre-Height+"),spliceModel.getRawData("Pre-Height-")),"current":qualityWindow.preModel[qualityWindow.preModel.length - 1],"currentText":spliceModel.actualPreHeightToString(qualityWindow.preModel[qualityWindow.preModel.length - 1])})
+//            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Post-Height+"),"redMin":spliceModel.getRawData("Post-Height-"),"yellowMax":hmiAdaptor.controlLimitProcess("Time+",qualityWindow.postModel,spliceModel.getRawData("Post-Height+"),spliceModel.getRawData("Post-Height-")),"yellowMin":hmiAdaptor.controlLimitProcess("Post-Height-",qualityWindow.postModel,spliceModel.getRawData("Post-Height+"),spliceModel.getRawData("Post-Height-")),"current":qualityWindow.postModel[qualityWindow.postModel.length - 1],"currentText":spliceModel.actualHeightToString(qualityWindow.postModel[qualityWindow.postModel.length - 1])})
+
+            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Time+"),"redMin":spliceModel.getRawData("Time-"),"yellowMax":-1,"yellowMin":-1,"current":qualityWindow.timeModel[qualityWindow.timeModel.length - 1],"currentText":spliceModel.actualTimeToString(qualityWindow.timeModel[qualityWindow.timeModel.length - 1])})
+            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Power+"),"redMin":spliceModel.getRawData("Power-"),"yellowMax":-1,"yellowMin":-1,"current":qualityWindow.powerModel[qualityWindow.powerModel.length - 1],"currentText":spliceModel.actualPowerToString(qualityWindow.powerModel[qualityWindow.powerModel.length - 1])})
+            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Pre-Height+"),"redMin":spliceModel.getRawData("Pre-Height-"),"yellowMax":-1,"yellowMin":-1,"current":qualityWindow.preModel[qualityWindow.preModel.length - 1],"currentText":spliceModel.actualPreHeightToString(qualityWindow.preModel[qualityWindow.preModel.length - 1])})
+            qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Post-Height+"),"redMin":spliceModel.getRawData("Post-Height-"),"yellowMax":-1,"yellowMin":-1,"current":qualityWindow.postModel[qualityWindow.postModel.length - 1],"currentText":spliceModel.actualHeightToString(qualityWindow.postModel[qualityWindow.postModel.length - 1])})
+
         }
         else {
             qualityWindow.qualityModel.append({"redMax":spliceModel.getRawData("Time+"),"redMin":spliceModel.getRawData("Time-"),"yellowMax":-1,"yellowMin":-1,"current":-1,"currentText":"23"})
@@ -686,9 +694,9 @@ Item {
     }
     Text {
         id: workName
-        anchors.bottom: progresstracking.top
+        anchors.bottom: progresstracking2.top
         anchors.bottomMargin: 20
-        anchors.left: progresstracking.left
+        anchors.left: progresstracking2.left
         font.pointSize: 16
         font.family: "arial"
         text: qsTr("Harness Name:")
