@@ -333,7 +333,7 @@ Item {
                         viewTrend.limitMax = hmiAdaptor.getCurrentStatisticsParameterLimit("limitMax",0)
                         viewTrend.limitMin = hmiAdaptor.getCurrentStatisticsParameterLimit("limitMin",0)
 
-                        console.log("limit value:",viewTrend.redMax,viewTrend.redMin)
+                        console.log("limit value:",viewTrend.redMax,viewTrend.redMin,limitMax,limitMin,datalist[4])
 //                        viewTrend.yellowMax = hmiAdaptor.controlLimitProcess("Time+",datalist,viewTrend.redMax,viewTrend.redMin)
 //                        viewTrend.yellowMin = hmiAdaptor.controlLimitProcess("Time-",datalist,viewTrend.redMax,viewTrend.redMin)
 
@@ -370,16 +370,17 @@ Item {
         color: "#6d6e71"
         visible: qualityListViewTwo.visible
         Line {
-            anchors.top: parent.top
-            anchors.topMargin: parent.height / 2
+//            anchors.top: parent.top
+//            anchors.topMargin: parent.height / 2
+            anchors.verticalCenter: parent.verticalCenter
             lineColor: "white"
             width: parent.width
-            height: 2
+            height: 1
         }
         Line {
             id: redMaxLine
-            anchors.top: parent.top
-            anchors.topMargin: parent.height * 0.1
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: parent.height * 0.9
             lineColor: "red"
             width: parent.width
             height: 2
@@ -415,21 +416,29 @@ Item {
             lineColor: "green"
         }
     }
-    onRedMaxChanged: {
-        var margin = (redMax - limitMin)/(limitMax- limitMin) * fiveLine.height // * 0.8
-        if (margin < 0)
-            margin = 0
-        else if (margin > Screen.height * 0.32)
-            margin = Screen.height * 0.32
-        redMaxLine.anchors.bottomMargin = margin
-    }
-    onRedMinChanged: {
+//    onRedMaxChanged: {
+//        var margin = (redMax - limitMin)/(limitMax- limitMin) * fiveLine.height // * 0.8
+//        if (margin < 0)
+//            margin = 0
+//        else if (margin > Screen.height * 0.32)
+//            margin = Screen.height * 0.32
+//        redMaxLine.anchors.bottomMargin = margin
+//        console.log("fffffffffff",margin,Screen.height * 0.32)
+//    }
+    onLimitMinChanged: {
         var margin = (redMin - limitMin)/(limitMax - limitMin) * fiveLine.height // * 0.8
         if (margin < 0)
             margin = 0
         else if (margin > Screen.height * 0.32)
             margin = Screen.height * 0.32
         redMinLine.anchors.bottomMargin = margin
+
+        margin = (redMax - limitMin)/(limitMax- limitMin) * fiveLine.height // * 0.8
+        if (margin < 0)
+            margin = 0
+        else if (margin > Screen.height * 0.32)
+            margin = Screen.height * 0.32
+        redMaxLine.anchors.bottomMargin = margin
     }
 //    onYellowMaxChanged: {
 //        var margin = fiveLine.height * 0.1 + (yellowMax - redMin)/(redMax - redMin) * fiveLine.height * 0.8
@@ -537,12 +546,12 @@ Item {
                 height: 4
                 anchors.bottom: parent.bottom
                 Component.onCompleted: {
-                    var margin = (datalist[index]-redMin)/(redMax - redMin) * fiveLine.height // * 0.8 + fiveLine.height * 0.1
+                    var margin = (datalist[index]-limitMin)/(limitMax - limitMin) * fiveLine.height // * 0.8 + fiveLine.height * 0.1
                     if (margin < 0)
                         margin = 0
                     else if (margin > Screen.height * 0.32)
                         margin = Screen.height * 0.32
-                    point.anchors.bottomMargin = margin //hmiAdaptor.randPoint() + qualityListViewTwo.height / 2 - 20
+                    point.anchors.bottomMargin = margin - 2 //hmiAdaptor.randPoint() + qualityListViewTwo.height / 2 - 20
                 }
             }
         }

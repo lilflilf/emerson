@@ -1652,7 +1652,7 @@ Item {
             anchors.top: spliceDetails.bottom
             anchors.topMargin: 10
             anchors.left: spliceDetailsTips.right
-            text: "0mm"
+            text: "0mm²"
             font.pointSize: 12
             font.family: "arial"
             color: "white"

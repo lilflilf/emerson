@@ -114,12 +114,12 @@ void MakeWeldProcess::UpdateWeldResult()
     case WorkOrderElement::SEQUENCE:
         CurrentWeldResult.CurrentHarness.HarnessID = INVALID;
         CurrentWeldResult.CurrentHarness.HarnessName.clear();
-        CurrentWeldResult.CurrentSequence.SequenceID = CurrentNecessaryInfo.CurrentSequence.SequenceID;
-        CurrentWeldResult.CurrentSequence.SequenceName = CurrentNecessaryInfo.CurrentSequence.SequenceName;
+        CurrentWeldResult.CurrentSequence.SequenceID = _Interface->CurrentWorkOrder.WorkOrderID;
+        CurrentWeldResult.CurrentSequence.SequenceName = _Interface->CurrentWorkOrder.WorkOrderName;
         break;
     case WorkOrderElement::HARNESS:
-        CurrentWeldResult.CurrentHarness.HarnessID = CurrentNecessaryInfo.CurrentHarness.HarnessID;
-        CurrentWeldResult.CurrentHarness.HarnessName = CurrentNecessaryInfo.CurrentHarness.HarnessName;
+        CurrentWeldResult.CurrentHarness.HarnessID = _Interface->CurrentWorkOrder.WorkOrderID;
+        CurrentWeldResult.CurrentHarness.HarnessName = _Interface->CurrentWorkOrder.WorkOrderName;
         CurrentWeldResult.CurrentSequence.SequenceID = INVALID;
         CurrentWeldResult.CurrentSequence.SequenceName.clear();
         break;
