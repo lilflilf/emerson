@@ -333,6 +333,7 @@ Item {
                         viewTrend.limitMax = hmiAdaptor.getCurrentStatisticsParameterLimit("limitMax",0)
                         viewTrend.limitMin = hmiAdaptor.getCurrentStatisticsParameterLimit("limitMin",0)
 
+                        console.log("limit value:",viewTrend.redMax,viewTrend.redMin)
 //                        viewTrend.yellowMax = hmiAdaptor.controlLimitProcess("Time+",datalist,viewTrend.redMax,viewTrend.redMin)
 //                        viewTrend.yellowMin = hmiAdaptor.controlLimitProcess("Time-",datalist,viewTrend.redMax,viewTrend.redMin)
 

@@ -183,7 +183,7 @@ bool StatisticalTrend::GetStatisticsParameter()
         CurrentStatisticsParameter[i].SampleSize = QString::number(size, DECIMALISM);
 
         UCL = mean + 6 * sigma;
-        LCL = mean + 6 * sigma;
+        LCL = mean - 6 * sigma;
 
         switch(i)
         {
