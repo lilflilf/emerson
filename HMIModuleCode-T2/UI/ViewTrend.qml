@@ -868,11 +868,28 @@ Item {
         }
     }
 
+    Connections {
+        target: fileLoader.item
+        onSignalFileDialogCancel: {
+            fileLoader.source = ""
+        }
+        onSignalChoseFile: {
+            fileLoader.source = ""
+            hmiAdaptor.exportData("Static", -1 ,fileName)
+        }
+    }
+    Loader {
+        id: fileLoader
+        anchors.fill: parent
+    }
     CButton {
         anchors.bottom: parent.bottom
         anchors.right: selectButton.right
         width: 200
         text: qsTr("Export Data")
         iconSource: "qrc:/images/images/export.png"
+        onClicked: {
+            fileLoader.source = "qrc:/UI/MySaveFileDialog.qml"
+        }
     }
 }

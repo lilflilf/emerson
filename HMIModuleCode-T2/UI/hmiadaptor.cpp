@@ -2160,6 +2160,8 @@ void HmiAdaptor::exportData(QString type, int id, QString fileUrl)
         CSVSequenceData::Instance()->ExportData(id,fileUrl);
     else if (type == "harness")
         CSVHarnessData::Instance()->ExportData(id,fileUrl);
+    else if (type == "Static")
+        statisticalTrend->ExportData(fileUrl);
 
 }
 
