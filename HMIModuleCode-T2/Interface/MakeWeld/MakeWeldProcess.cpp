@@ -101,6 +101,7 @@ void MakeWeldProcess::UpdateWeldResult()
         CurrentWeldResult.ActualResult.ActualAmplitude2 = 0;
 
     CurrentWeldResult.OperatorName = _Interface->CurrentOperator.OperatorName;
+    CurrentWeldResult.OperateMode = _Interface->CurrentWorkOrder.OperateMode;
     CurrentWeldResult.CurrentWorkOrder.WorkOrderID = INVALID;
     CurrentWeldResult.CurrentWorkOrder.WorkOrderName.clear();
     switch(_Interface->CurrentWorkOrder.WorkOrderMode)

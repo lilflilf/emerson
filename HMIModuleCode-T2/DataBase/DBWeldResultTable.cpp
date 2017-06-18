@@ -17,7 +17,7 @@ const QString SQLSentence[] = {
     "OperatorName VARCHAR, CreatedDate VARCHAR, WorkOrderID INT, WorkOrderName VARCHAR, "
     "HarnessID INT, HarnessName VARCHAR, SequenceID INT, SequenceName VARCHAR, "
     "SpliceID INT, SpliceName VARCHAR, SpliceHash INT, "
-    "WeldCount INT, PartCount INT, ActualEnergy INT, ActualTPressure INT, "
+    "WeldCount INT, PartCount INT, OperateMode VARCHAR, ActualEnergy INT, ActualTPressure INT, "
     "ActualPressure INT, ActualAmplitude INT, ActualAmplitude2 INT, ActualWidth INT, "
     "ActualTime INT, ActualPeakPower INT, ActualPreheight INT, ActualPostheight INT, "
     "ActualAlarmFlags INT, SampleRatio INT, NoOfSamples INT, CurrentGraphDirectory VARCHAR)",
@@ -25,11 +25,11 @@ const QString SQLSentence[] = {
     "INSERT INTO WeldResultHistory ( "         /*1 Insert record into WeldResult Table*/
     "OperatorName, CreatedDate, WorkOrderID, WorkOrderName, HarnessID, "
     "HarnessName, SequenceID, SequenceName, SpliceID, SpliceName, SpliceHash, WeldCount, "
-    "PartCount, ActualEnergy, ActualTPressure, ActualPressure, ActualAmplitude, "
+    "PartCount, OperateMode, ActualEnergy, ActualTPressure, ActualPressure, ActualAmplitude, "
     "ActualAmplitude2, ActualWidth, ActualTime, ActualPeakPower, ActualPreheight, "
     "ActualPostheight, ActualAlarmFlags, SampleRatio, NoOfSamples, CurrentGraphDirectory) "
     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
-    "?, ?, ?, ?, ?)",
+    "?, ?, ?, ?, ?, ?)",
 
     "SELECT ID, OperatorName FROM WeldResultHistory",
                                                /*2 Query Entire WeldResult Table */
@@ -47,7 +47,7 @@ const QString SQLSentence[] = {
     "UPDATE WeldResultHistory SET "
     "OperatorName = ?, CreatedDate = ?, WorkOrderID = ?, WorkOrderName = ?, HarnessID = ?, "
     "HarnessName = ?, SequenceID = ?, SequenceName = ?, SpliceID = ?, SpliceName = ?, SpliceHash = ?, "
-    "WeldCount = ?, PartCount, ActualEnergy = ?, ActualTPressure = ?, "
+    "WeldCount = ?, PartCount = ?, OperateMode = ?, ActualEnergy = ?, ActualTPressure = ?, "
     "ActualPressure = ?, ActualAmplitude = ?, ActualAmplitude2 = ?, ActualWidth = ?, "
     "ActualTime = ?, ActualPeakPower = ?, ActualPreheight = ?, ActualPostheight = ?, "
     "ActualAlarmFlags = ?, SampleRatio = ?, NoOfSamples = ?, CurrentGraphDirectory = ?, "
@@ -175,6 +175,7 @@ int DBWeldResultTable::InsertRecordIntoTable(void *_obj)
         query.addBindValue(((WeldResultElement*)_obj)->CurrentSplice.PartHash);
         query.addBindValue(((WeldResultElement*)_obj)->WeldCount);
         query.addBindValue(((WeldResultElement*)_obj)->PartCount);
+        query.addBindValue(((WeldResultElement*)_obj)->OperateMode);
         query.addBindValue(((WeldResultElement*)_obj)->ActualResult.ActualEnergy);
         query.addBindValue(((WeldResultElement*)_obj)->ActualResult.ActualTPressure);
         query.addBindValue(((WeldResultElement*)_obj)->ActualResult.ActualPressure);
@@ -288,6 +289,7 @@ bool DBWeldResultTable::QueryOneRecordFromTable(int ID, QString OperatorName, vo
             = query.value("SpliceHash").toInt();
     ((WeldResultElement*)_obj)->WeldCount = query.value("WeldCount").toInt();
     ((WeldResultElement*)_obj)->PartCount = query.value("PartCount").toInt();
+    ((WeldResultElement*)_obj)->OperateMode = query.value("OperateMode").toString();
     ((WeldResultElement*)_obj)->ActualResult.ActualEnergy
             = query.value("ActualEnergy").toInt();
     ((WeldResultElement*)_obj)->ActualResult.ActualTPressure
@@ -372,6 +374,7 @@ bool DBWeldResultTable::QueryOneRecordFromTable(int ID, void *_obj)
             = query.value("SpliceHash").toInt();
     ((WeldResultElement*)_obj)->WeldCount = query.value("WeldCount").toInt();
     ((WeldResultElement*)_obj)->PartCount = query.value("PartCount").toInt();
+    ((WeldResultElement*)_obj)->OperateMode = query.value("OperateMode").toString();
     ((WeldResultElement*)_obj)->ActualResult.ActualEnergy
             = query.value("ActualEnergy").toInt();
     ((WeldResultElement*)_obj)->ActualResult.ActualTPressure
@@ -443,6 +446,7 @@ bool DBWeldResultTable::QueryOneRecordFromTable(int ID, QStringList &ResultStr)
     ResultStr.append(query.value("SpliceHash").toString());
     ResultStr.append(query.value("WeldCount").toString());
     ResultStr.append(query.value("PartCount").toString());
+    ResultStr.append(query.value("OperateMode").toString());
     ResultStr.append(query.value("ActualEnergy").toString());
     ResultStr.append(query.value("ActualTPressure").toString());
     ResultStr.append(query.value("ActualPressure").toString());
@@ -532,6 +536,7 @@ bool DBWeldResultTable::UpdateRecordIntoTable(void *_obj)
     query.addBindValue(((WeldResultElement*)_obj)->CurrentSplice.PartHash);
     query.addBindValue(((WeldResultElement*)_obj)->WeldCount);
     query.addBindValue(((WeldResultElement*)_obj)->PartCount);
+    query.addBindValue(((WeldResultElement*)_obj)->OperateMode);
     query.addBindValue(((WeldResultElement*)_obj)->ActualResult.ActualEnergy);
     query.addBindValue(((WeldResultElement*)_obj)->ActualResult.ActualTPressure);
     query.addBindValue(((WeldResultElement*)_obj)->ActualResult.ActualPressure);
@@ -1043,6 +1048,7 @@ bool DBWeldResultTable::QueryOneRecordWithGraph(int ID, QString OperatorName, vo
             = query.value("SpliceHash").toInt();
     ((WeldResultElement*)_obj)->WeldCount = query.value("WeldCount").toInt();
     ((WeldResultElement*)_obj)->PartCount = query.value("PartCount").toInt();
+    ((WeldResultElement*)_obj)->OperateMode = query.value("OperateMode").toString();
     ((WeldResultElement*)_obj)->ActualResult.ActualEnergy
             = query.value("ActualEnergy").toInt();
     ((WeldResultElement*)_obj)->ActualResult.ActualTPressure
@@ -1136,6 +1142,7 @@ bool DBWeldResultTable::QueryOneRecordWithGraph(int ID, void *_obj)
             = query.value("SpliceHash").toInt();
     ((WeldResultElement*)_obj)->WeldCount = query.value("WeldCount").toInt();
     ((WeldResultElement*)_obj)->PartCount = query.value("PartCount").toInt();
+    ((WeldResultElement*)_obj)->OperateMode = query.value("OperateMode").toString();
     ((WeldResultElement*)_obj)->ActualResult.ActualEnergy
             = query.value("ActualEnergy").toInt();
     ((WeldResultElement*)_obj)->ActualResult.ActualTPressure

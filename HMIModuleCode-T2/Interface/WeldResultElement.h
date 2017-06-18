@@ -22,6 +22,7 @@ public:
     struct PartIndex CurrentSplice;
     int WeldCount;//just for the test mode
     int PartCount;//just for the operate mode
+    QString OperateMode;
     struct WELDRESULT ActualResult;
     enum SAMPLERATIO SampleRatio;
     int NoOfSamples;

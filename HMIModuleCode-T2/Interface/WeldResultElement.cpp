@@ -16,6 +16,7 @@ WeldResultElement::WeldResultElement()
     CurrentSplice.PartName.clear();
     WeldCount = -1;
     PartCount = -1;
+    OperateMode.clear();
     ActualResult.ActualAlarmflags = -1;
     ActualResult.ActualAmplitude = -1;
     ActualResult.ActualAmplitude2 = -1;
@@ -58,6 +59,7 @@ WeldResultElement WeldResultElement::operator=(const WeldResultElement &WeldResu
     this->CurrentSplice.PartName = WeldResultObject.CurrentSplice.PartName;
     this->WeldCount = WeldResultObject.WeldCount;
     this->PartCount = WeldResultObject.PartCount;
+    this->OperateMode = WeldResultObject.OperateMode;
     this->ActualResult.ActualAlarmflags
             = WeldResultObject.ActualResult.ActualAlarmflags;
     this->ActualResult.ActualAmplitude = WeldResultObject.ActualResult.ActualAmplitude;

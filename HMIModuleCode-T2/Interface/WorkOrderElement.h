@@ -16,6 +16,7 @@ public:
     int RevCode;
     int WorkOrderID;
     QString WorkOrderName;
+    QString OperateMode;
     QString CreatedDate;
     int OperatorID;
     enum WORKORDERMODE WorkOrderMode;

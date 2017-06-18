@@ -10,6 +10,7 @@ WorkOrderElement::WorkOrderElement()
     RevCode = -1;
     WorkOrderID = -1;
     WorkOrderName.clear();
+    OperateMode.clear();
     CreatedDate.clear();
     OperatorID = -1;
 //    PartList.clear();
@@ -35,6 +36,7 @@ WorkOrderElement WorkOrderElement::operator=(const WorkOrderElement &WorkOrderOb
     this->RevCode = WorkOrderObject.RevCode;
     this->WorkOrderID = WorkOrderObject.WorkOrderID;
     this->WorkOrderName = WorkOrderObject.WorkOrderName;
+    this->OperateMode = WorkOrderObject.OperateMode;
     this->CreatedDate = WorkOrderObject.CreatedDate;
     this->OperatorID = WorkOrderObject.OperatorID;
 //    QMap<int, QString>::const_iterator i = WorkOrderObject.PartList.constBegin();
@@ -69,6 +71,7 @@ void WorkOrderElement::WriteWorkOrderToQSetting()
     settings.setValue("RevCode", RevCode);
     settings.setValue("WorkOrderID", WorkOrderID);
     settings.setValue("WorkOrderName", WorkOrderName);
+    settings.setValue("OperateMode", OperateMode);
     settings.setValue("CreatedDate", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
     settings.setValue("OperatorID", OperatorID);
     settings.setValue("WorkOrderMode", WorkOrderMode);
@@ -113,6 +116,7 @@ bool WorkOrderElement::ReadWorkOrderFromQSetting()
     RevCode = settings.value("RevCode").value<int>();
     WorkOrderID = settings.value("WorkOrderID").value<int>();
     WorkOrderName = settings.value("WorkOrderName").value<QString>();
+    OperateMode = settings.value("OperateMode").value<QString>();
     CreatedDate = settings.value("CreatedDate").value<QString>();
     OperatorID = settings.value("OperatorID").value<int>();
     WorkOrderMode = (WorkOrderElement::WORKORDERMODE)settings.value("WorkOrderMode").value<int>();
