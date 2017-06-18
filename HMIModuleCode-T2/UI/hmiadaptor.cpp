@@ -1930,7 +1930,6 @@ QStringList HmiAdaptor::getWeldActualParameterDataList(int index, int type)
         list.append(statisticalTrend->CurrentWeldParameterList[index].HarnessName);
         list.append(statisticalTrend->CurrentWeldParameterList[index].SequenceName);
         list.append(statisticalTrend->CurrentWeldParameterList[index].DateCreated);
-
     }
     return list;
 }
@@ -1944,6 +1943,14 @@ QStringList HmiAdaptor::getCurrentStatisticsParameterList(int index)
     list.append(statisticalTrend->CurrentStatisticsParameter[index].Sigma);
     list.append(statisticalTrend->CurrentStatisticsParameter[index].Cpk);
     return list;
+}
+
+int HmiAdaptor::getCurrentStatisticsParameterLimit(QString key, int index)
+{
+    if (key == "max")
+        return statisticalTrend->CurrentStatisticsParameter[index].UpperSpecLimit;
+    else if (key == "min")
+        return statisticalTrend->CurrentStatisticsParameter[index].LowerSpecLimit;
 }
 
 void HmiAdaptor::msgBoxClick(bool clickOK)

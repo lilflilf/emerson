@@ -128,6 +128,7 @@ public:
     Q_INVOKABLE QList<int> getStatisticalTrendDataList(int index);
     Q_INVOKABLE QStringList getWeldActualParameterDataList(int index, int type);
     Q_INVOKABLE QStringList getCurrentStatisticsParameterList(int index);
+    Q_INVOKABLE int getCurrentStatisticsParameterLimit(QString key, int index);
     Q_INVOKABLE QString getAmplitudeToString(int value, int TypeEnum);
     Q_INVOKABLE QString getDefaultAmplitudeToString(int value, int TypeEnum);
     Q_INVOKABLE QString getTestQuantity(int value, bool bIsMax);

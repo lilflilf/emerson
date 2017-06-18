@@ -1282,6 +1282,10 @@ Item {
             {
                 graphModel.set(i,{"isSelect":false})
             }
+            if (cutteronoroff.state == "left")
+                mainRoot.cutterButtonVisible = true
+            else
+                mainRoot.cutterButtonVisible = false
             initPage()
         }
     }

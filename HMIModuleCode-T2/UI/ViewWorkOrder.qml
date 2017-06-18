@@ -653,7 +653,7 @@ Item {
         }
         Text {
             id: title99
-            text: qsTr("Splice Number")
+            text: qsTr("Splice Name")
             font.family: "arial"
             color: "white"
             font.pointSize: 16

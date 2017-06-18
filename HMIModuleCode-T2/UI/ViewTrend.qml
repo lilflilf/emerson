@@ -322,8 +322,11 @@ Item {
                         datalist = hmiAdaptor.getStatisticalTrendDataList(0)
 
                         spliceModel.editNew(spliceId)
-                        viewTrend.redMax = spliceModel.getRawData("Time+")
-                        viewTrend.redMin = spliceModel.getRawData("Time-")
+//                        viewTrend.redMax = spliceModel.getRawData("Time+")
+//                        viewTrend.redMin = spliceModel.getRawData("Time-")
+                        viewTrend.redMax = hmiAdaptor.getCurrentStatisticsParameterLimit("max",0)
+                        viewTrend.redMin = hmiAdaptor.getCurrentStatisticsParameterLimit("min",0)
+
 //                        viewTrend.yellowMax = hmiAdaptor.controlLimitProcess("Time+",datalist,viewTrend.redMax,viewTrend.redMin)
 //                        viewTrend.yellowMin = hmiAdaptor.controlLimitProcess("Time-",datalist,viewTrend.redMax,viewTrend.redMin)
 
@@ -563,26 +566,36 @@ Item {
                     datalist = hmiAdaptor.getStatisticalTrendDataList(index)
 
                     if (index == 0) {
-                        viewTrend.redMax = spliceModel.getRawData("Time+")
-                        viewTrend.redMin = spliceModel.getRawData("Time-")
+//                        viewTrend.redMax = spliceModel.getRawData("Time+")
+//                        viewTrend.redMin = spliceModel.getRawData("Time-")
+                        viewTrend.redMax = hmiAdaptor.getCurrentStatisticsParameterLimit("max",0)
+                        viewTrend.redMin = hmiAdaptor.getCurrentStatisticsParameterLimit("min",0)
+
 //                        viewTrend.yellowMax = hmiAdaptor.controlLimitProcess("Time+",datalist,viewTrend.redMax,viewTrend.redMin)
 //                        viewTrend.yellowMin = hmiAdaptor.controlLimitProcess("Time-",datalist,viewTrend.redMax,viewTrend.redMin)
                     }
                     else if (index == 1) {
-                        viewTrend.redMax = spliceModel.getRawData("Power+")
-                        viewTrend.redMin = spliceModel.getRawData("Power-")
+                        viewTrend.redMax = hmiAdaptor.getCurrentStatisticsParameterLimit("max",1)
+                        viewTrend.redMin = hmiAdaptor.getCurrentStatisticsParameterLimit("min",1)
+
+//                        viewTrend.redMax = spliceModel.getRawData("Power+")
+//                        viewTrend.redMin = spliceModel.getRawData("Power-")
 //                        viewTrend.yellowMax = hmiAdaptor.controlLimitProcess("Power+",datalist,viewTrend.redMax,viewTrend.redMin)
 //                        viewTrend.yellowMin = hmiAdaptor.controlLimitProcess("Power-",datalist,viewTrend.redMax,viewTrend.redMin)
                     }
                     else if (index == 2) {
-                        viewTrend.redMax = spliceModel.getRawData("Pre-Height+")
-                        viewTrend.redMin = spliceModel.getRawData("Pre-Height-")
+                        viewTrend.redMax = hmiAdaptor.getCurrentStatisticsParameterLimit("max",2)
+                        viewTrend.redMin = hmiAdaptor.getCurrentStatisticsParameterLimit("min",2)
+//                        viewTrend.redMax = spliceModel.getRawData("Pre-Height+")
+//                        viewTrend.redMin = spliceModel.getRawData("Pre-Height-")
 //                        viewTrend.yellowMax = hmiAdaptor.controlLimitProcess("Pre-Height+",datalist,viewTrend.redMax,viewTrend.redMin)
 //                        viewTrend.yellowMin = hmiAdaptor.controlLimitProcess("Pre-Height-",datalist,viewTrend.redMax,viewTrend.redMin)
                     }
                     else if (index == 3) {
-                        viewTrend.redMax = spliceModel.getRawData("Post-Height+")
-                        viewTrend.redMin = spliceModel.getRawData("Post-Height-")
+                        viewTrend.redMax = hmiAdaptor.getCurrentStatisticsParameterLimit("max",3)
+                        viewTrend.redMin = hmiAdaptor.getCurrentStatisticsParameterLimit("min",3)
+//                        viewTrend.redMax = spliceModel.getRawData("Post-Height+")
+//                        viewTrend.redMin = spliceModel.getRawData("Post-Height-")
 //                        viewTrend.yellowMax = hmiAdaptor.controlLimitProcess("Post-Height+",datalist,viewTrend.redMax,viewTrend.redMin)
 //                        viewTrend.yellowMin = hmiAdaptor.controlLimitProcess("Post-Height-",datalist,viewTrend.redMax,viewTrend.redMin)
                     }
