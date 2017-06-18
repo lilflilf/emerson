@@ -607,7 +607,6 @@ bool WeldDefaults::_Recall()
         CurrentWeldSettings.Seek = true;
     else
         CurrentWeldSettings.Seek = false;
-    qDebug()<<"Seek:" <<CurrentWeldSettings.Seek;
 
     if(_Interface->StatusData.RunMode.ModeFlag.DefeatWeldAbort == OFF)
         CurrentWeldSettings.FootPedalAbort = true;

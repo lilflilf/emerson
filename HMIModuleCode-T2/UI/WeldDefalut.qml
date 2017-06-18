@@ -743,6 +743,7 @@ Item {
         height: parent.height
         anchors.left: parent.left
         anchors.right: middLine.left
+        visible: false
         Image {
             anchors.fill: parent
             source: "qrc:/images/images/bg.png"

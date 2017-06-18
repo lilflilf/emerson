@@ -488,7 +488,7 @@ Item {
                     harnessSetting.visible = false
                     hmiAdaptor.setWorkFlow(3, 0)
 
-                    hmiAdaptor.setWorkFlow(2,partModel.getValue(selectIndx),"PartId")
+                    hmiAdaptor.setWorkFlow(2,partModel.getValue(selectIndx,"PartId"))
 
                     if (splices.bIsCheck)
                     {

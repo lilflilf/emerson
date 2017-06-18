@@ -2913,13 +2913,15 @@ Item {
                 if (edit2.inputFocus) {
                     edit2.inputText = keyNum.inputText
                     edit2.inputFocus = false
-                } else if (loadValue2.inputFocus) {
-                    loadValue2.inputText = keyNum.inputText
-                    loadValue2.inputFocus = false
-                } else if (loadValue.inputFocus) {
-                    loadValue.inputText = keyNum.inputText
-                    loadValue.inputFocus = false
-                } else if (heightSetting.heightSetVisible) {
+                }
+//                else if (loadValue2.inputFocus) {
+//                    loadValue2.inputText = keyNum.inputText
+//                    loadValue2.inputFocus = false
+//                } else if (loadValue.inputFocus) {
+//                    loadValue.inputText = keyNum.inputText
+//                    loadValue.inputFocus = false
+//                }
+                else if (heightSetting.heightSetVisible) {
                     heightModel.set(creatWire.selectIndex,{"textValue":keyNum.inputText})
                     heightRepeater.itemAt(creatWire.selectIndex).myfocus = false
                     heightSetting.heightSetVisible = false
@@ -2967,11 +2969,13 @@ Item {
             } else if (index == 11) {
                 if (edit2.inputFocus) {
                     edit2.inputFocus = false
-                } else if (loadValue2.inputFocus) {
-                    loadValue2.inputFocus = false
-                } else if (loadValue.inputFocus) {
-                    loadValue.inputFocus = false
-                } else if (heightSetting.heightSetVisible) {
+                }
+//                else if (loadValue2.inputFocus) {
+//                    loadValue2.inputFocus = false
+//                } else if (loadValue.inputFocus) {
+//                    loadValue.inputFocus = false
+//                }
+                else if (heightSetting.heightSetVisible) {
                     heightRepeater.itemAt(creatWire.selectIndex).myfocus = false
                     heightSetting.heightSetVisible = false
                 } else if (widthSetting.widthSetVisible) {
@@ -3010,11 +3014,13 @@ Item {
             if (keyNum.inputText != "") {
                 if (edit2.inputFocus) {
                     edit2.inputText = keyNum.inputText
-                } else if (loadValue2.inputFocus) {
-                    loadValue2.inputText = keyNum.inputText
-                } else if (loadValue.inputFocus) {
-                    loadValue.inputText = keyNum.inputText
-                } else if (heightSetting.heightSetVisible) {
+                }
+//                else if (loadValue2.inputFocus) {
+//                    loadValue2.inputText = keyNum.inputText
+//                } else if (loadValue.inputFocus) {
+//                    loadValue.inputText = keyNum.inputText
+//                }
+                else if (heightSetting.heightSetVisible) {
                     heightModel.set(creatWire.selectIndex,{"textValue":keyNum.inputText})
                 } else if (widthSetting.widthSetVisible) {
                     widthModel.set(creatWire.selectIndex,{"textValue":keyNum.inputText})
