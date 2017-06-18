@@ -2072,7 +2072,7 @@ void HmiAdaptor::importData(QString fileUrl)
         else if (CSVList.at(0) == "Preset Data") {
             importSplice(CSVList[1]);
         }
-        else if (CSVList.at(0) == "PartData") {
+        else if (CSVList.at(0) == "Harness Data") {
             importHarness(CSVList[1]);
         }
         else if (CSVList.at(0) == "ShrinkData") {
