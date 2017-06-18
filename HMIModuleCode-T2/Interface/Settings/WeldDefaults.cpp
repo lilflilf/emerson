@@ -891,13 +891,13 @@ bool WeldDefaults::_Set()
     _M10INI->TempSysConfig.RunMode = _Interface->StatusData.RunMode.Word;
     if(CurrentWeldSettings.FootPedalAbort == true)
     {
-        if(_Interface->StatusData.RunMode.ModeFlag.DefeatWeldAbort == OFF)
-            _Interface->StatusData.RunMode.ModeFlag.DefeatWeldAbort = ON;
+        if(_Interface->StatusData.RunMode.ModeFlag.DefeatWeldAbort == ON)
+            _Interface->StatusData.RunMode.ModeFlag.DefeatWeldAbort = OFF;
     }
     else
     {
-        if(_Interface->StatusData.RunMode.ModeFlag.DefeatWeldAbort == ON)
-            _Interface->StatusData.RunMode.ModeFlag.DefeatWeldAbort = OFF;
+        if(_Interface->StatusData.RunMode.ModeFlag.DefeatWeldAbort == OFF)
+            _Interface->StatusData.RunMode.ModeFlag.DefeatWeldAbort = ON;
     }
     if(_M10INI->TempSysConfig.RunMode != _Interface->StatusData.RunMode.Word)
     {
