@@ -171,6 +171,11 @@ MODstart::MODstart()
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.MachineFlagsData);
 //        DEBUG_PRINT(_M2010->ReceiveFlags.MachineFlagsData);
 
+        _M2010->ReceiveFlags.CutterResponseData = false;
+        _M102IA->IACommand(IAComGetCutoff);
+        _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.CutterResponseData);
+//        DEBUG_PRINT(_M2010->ReceiveFlags.CutterResponseData);
+
         _M2010->ReceiveFlags.TunePointData = false;
         _M102IA->IACommand(IAComGetTunePoint);
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.TunePointData);
