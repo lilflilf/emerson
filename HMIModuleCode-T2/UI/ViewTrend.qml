@@ -12,6 +12,10 @@ Item {
     property var statisticsList: new Array()
     property var redMax: -1
     property var redMin: -1
+
+    property var limitMax: -1
+    property var limitMin: -1
+
     property var yellowMax: -1
     property var yellowMin: -1
     property var currentIndex: -1
@@ -326,6 +330,8 @@ Item {
 //                        viewTrend.redMin = spliceModel.getRawData("Time-")
                         viewTrend.redMax = hmiAdaptor.getCurrentStatisticsParameterLimit("max",0)
                         viewTrend.redMin = hmiAdaptor.getCurrentStatisticsParameterLimit("min",0)
+                        viewTrend.limitMax = hmiAdaptor.getCurrentStatisticsParameterLimit("limitMax",0)
+                        viewTrend.limitMin = hmiAdaptor.getCurrentStatisticsParameterLimit("limitMin",0)
 
 //                        viewTrend.yellowMax = hmiAdaptor.controlLimitProcess("Time+",datalist,viewTrend.redMax,viewTrend.redMin)
 //                        viewTrend.yellowMin = hmiAdaptor.controlLimitProcess("Time-",datalist,viewTrend.redMax,viewTrend.redMin)
@@ -370,6 +376,7 @@ Item {
             height: 2
         }
         Line {
+            id: redMaxLine
             anchors.top: parent.top
             anchors.topMargin: parent.height * 0.1
             lineColor: "red"
@@ -393,6 +400,7 @@ Item {
 //            height: 2
 //        }
         Line {
+            id: redMinLine
             anchors.bottom: parent.bottom
             anchors.bottomMargin: parent.height * 0.1
             lineColor: "red"
@@ -405,6 +413,22 @@ Item {
             height: parent.height
             lineColor: "green"
         }
+    }
+    onRedMaxChanged: {
+        var margin = (redMax - limitMin)/(limitMax- limitMin) * fiveLine.height // * 0.8
+        if (margin < 0)
+            margin = 0
+        else if (margin > Screen.height * 0.32)
+            margin = Screen.height * 0.32
+        redMaxLine.anchors.bottomMargin = margin
+    }
+    onRedMinChanged: {
+        var margin = (redMin - limitMin)/(limitMax - limitMin) * fiveLine.height // * 0.8
+        if (margin < 0)
+            margin = 0
+        else if (margin > Screen.height * 0.32)
+            margin = Screen.height * 0.32
+        redMinLine.anchors.bottomMargin = margin
     }
 //    onYellowMaxChanged: {
 //        var margin = fiveLine.height * 0.1 + (yellowMax - redMin)/(redMax - redMin) * fiveLine.height * 0.8
@@ -512,7 +536,7 @@ Item {
                 height: 4
                 anchors.bottom: parent.bottom
                 Component.onCompleted: {
-                    var margin = (datalist[index]-redMin)/(redMax - redMin) * fiveLine.height * 0.8 + fiveLine.height * 0.1
+                    var margin = (datalist[index]-redMin)/(redMax - redMin) * fiveLine.height // * 0.8 + fiveLine.height * 0.1
                     if (margin < 0)
                         margin = 0
                     else if (margin > Screen.height * 0.32)
@@ -570,14 +594,16 @@ Item {
 //                        viewTrend.redMin = spliceModel.getRawData("Time-")
                         viewTrend.redMax = hmiAdaptor.getCurrentStatisticsParameterLimit("max",0)
                         viewTrend.redMin = hmiAdaptor.getCurrentStatisticsParameterLimit("min",0)
-
+                        viewTrend.limitMax = hmiAdaptor.getCurrentStatisticsParameterLimit("limitMax",0)
+                        viewTrend.limitMin = hmiAdaptor.getCurrentStatisticsParameterLimit("limitMin",0)
 //                        viewTrend.yellowMax = hmiAdaptor.controlLimitProcess("Time+",datalist,viewTrend.redMax,viewTrend.redMin)
 //                        viewTrend.yellowMin = hmiAdaptor.controlLimitProcess("Time-",datalist,viewTrend.redMax,viewTrend.redMin)
                     }
                     else if (index == 1) {
                         viewTrend.redMax = hmiAdaptor.getCurrentStatisticsParameterLimit("max",1)
                         viewTrend.redMin = hmiAdaptor.getCurrentStatisticsParameterLimit("min",1)
-
+                        viewTrend.limitMax = hmiAdaptor.getCurrentStatisticsParameterLimit("limitMax",1)
+                        viewTrend.limitMin = hmiAdaptor.getCurrentStatisticsParameterLimit("limitMin",1)
 //                        viewTrend.redMax = spliceModel.getRawData("Power+")
 //                        viewTrend.redMin = spliceModel.getRawData("Power-")
 //                        viewTrend.yellowMax = hmiAdaptor.controlLimitProcess("Power+",datalist,viewTrend.redMax,viewTrend.redMin)
@@ -586,6 +612,8 @@ Item {
                     else if (index == 2) {
                         viewTrend.redMax = hmiAdaptor.getCurrentStatisticsParameterLimit("max",2)
                         viewTrend.redMin = hmiAdaptor.getCurrentStatisticsParameterLimit("min",2)
+                        viewTrend.limitMax = hmiAdaptor.getCurrentStatisticsParameterLimit("limitMax",2)
+                        viewTrend.limitMin = hmiAdaptor.getCurrentStatisticsParameterLimit("limitMin",2)
 //                        viewTrend.redMax = spliceModel.getRawData("Pre-Height+")
 //                        viewTrend.redMin = spliceModel.getRawData("Pre-Height-")
 //                        viewTrend.yellowMax = hmiAdaptor.controlLimitProcess("Pre-Height+",datalist,viewTrend.redMax,viewTrend.redMin)
@@ -594,6 +622,8 @@ Item {
                     else if (index == 3) {
                         viewTrend.redMax = hmiAdaptor.getCurrentStatisticsParameterLimit("max",3)
                         viewTrend.redMin = hmiAdaptor.getCurrentStatisticsParameterLimit("min",3)
+                        viewTrend.limitMax = hmiAdaptor.getCurrentStatisticsParameterLimit("limitMax",3)
+                        viewTrend.limitMin = hmiAdaptor.getCurrentStatisticsParameterLimit("limitMin",3)
 //                        viewTrend.redMax = spliceModel.getRawData("Post-Height+")
 //                        viewTrend.redMin = spliceModel.getRawData("Post-Height-")
 //                        viewTrend.yellowMax = hmiAdaptor.controlLimitProcess("Post-Height+",datalist,viewTrend.redMax,viewTrend.redMin)

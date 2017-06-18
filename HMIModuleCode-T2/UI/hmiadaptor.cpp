@@ -1953,6 +1953,10 @@ int HmiAdaptor::getCurrentStatisticsParameterLimit(QString key, int index)
         return statisticalTrend->CurrentStatisticsParameter[index].UpperSpecLimit;
     else if (key == "min")
         return statisticalTrend->CurrentStatisticsParameter[index].LowerSpecLimit;
+    else if (key == "limitMax")
+        return statisticalTrend->CurrentStatisticsParameter[index].UpperControlLimit;
+    else if (key == "limitMin")
+        return statisticalTrend->CurrentStatisticsParameter[index].LowerControlLimit;
 }
 
 void HmiAdaptor::msgBoxClick(bool clickOK)
