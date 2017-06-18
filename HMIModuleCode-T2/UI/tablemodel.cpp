@@ -3039,6 +3039,12 @@ QVariant WeldHistoryModel::data(const QModelIndex &index, int role) const
         m_spliceTable->QueryOneRecordFromTable(myHistory.CurrentSplice.PartID,myHistory.CurrentSplice.PartName,&presetElement);
         qDebug() << "m_spliceTable" << QDateTime::currentDateTime().toTime_t();
 
+//        list << "WeldHistoryId" << "SpliceName" << "SequenceName" << "HarnessName" << "OperatorName" << "DateCreated" << "OperateMode" << "Alarm"
+//             << "CrossSection" << "WeldMode" << "Energy" << "TriggerPressure" << "WeldPressure" << "Amplitude" << "Width"
+//             << "Time+" << "Timer-" << "Time" << "Power+" << "Power-" << "Power" << "Pre-Height+" << "Pre-Height-"
+//             << "Pre-Height" << "Height+" << "Height-" << "Height" << "SampleRatio" <<"GraphData";
+
+
         QString temp;
         if (columnIdx == 0)
             value = QVariant::fromValue(myHistory.WeldResultID);

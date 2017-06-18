@@ -38,18 +38,21 @@ Item {
         }
         ListModel {
             id: headModel
-            ListElement {key:qsTr("WorkOrderName")}
-            ListElement {key:qsTr("PartName")}
             ListElement {key:qsTr("SpliceName")}
+            ListElement {key:qsTr("SequenceName")}
+            ListElement {key:qsTr("HarnessName")}
             ListElement {key:qsTr("OperatorName")}
             ListElement {key:qsTr("DateCreated")}
+            ListElement {key:qsTr("OperateMode")}
+            ListElement {key:qsTr("AlarmType")}
+
             ListElement {key:qsTr("CrossSection")}
             ListElement {key:qsTr("WeldMode")}
             ListElement {key:qsTr("Energy")}
-            ListElement {key:qsTr("Amplitude")}
-            ListElement {key:qsTr("Width")}
             ListElement {key:qsTr("TriggerPressure")}
             ListElement {key:qsTr("Weld Pressure")}
+            ListElement {key:qsTr("Amplitude")}
+            ListElement {key:qsTr("Width")}
             ListElement {key:qsTr("Time+")}
             ListElement {key:qsTr("Timer-")}
             ListElement {key:qsTr("Time")}
@@ -62,7 +65,6 @@ Item {
             ListElement {key:qsTr("Height+")}
             ListElement {key:qsTr("Height-")}
             ListElement {key:qsTr("Height")}
-            ListElement {key:qsTr("AlarmType")}
             ListElement {key:qsTr("SampleRatio")}
             ListElement {key:qsTr("GraphData")}
 
@@ -84,7 +86,7 @@ Item {
                     text: key
                     clip: true
                     color: "white"
-                    font.pixelSize: 25
+                    font.pixelSize: 18
                     font.family: "arial"
                 }
                 model: headModel
@@ -262,7 +264,7 @@ Item {
                                 anchors.verticalCenter: parent.verticalCenter
                                 width: 200
                                 font.family: "arial"
-                                font.pixelSize: 20
+                                font.pixelSize: 14
                                 color: "white"
                                 clip: true
                                 visible: index != (headModel.count-1) ? true : false
@@ -401,7 +403,7 @@ Item {
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: 100
                 clip: true
-                model: weldHistoryModel
+                model: sequenceModel
                 delegate: Component {
                     id: seachComponent
                     Item {
@@ -415,7 +417,7 @@ Item {
                             font.pixelSize: 16
                             color: "white"
                             elide: Text.ElideRight
-                            text: searchList.model == partModel ? HarnessName : searchList.model == spliceModel ? SpliceName : name
+                            text: searchList.model == partModel ? HarnessName : searchList.model == spliceModel ? SpliceName : SequenceName
                         }
                         MouseArea {
                             anchors.fill: parent
@@ -488,7 +490,7 @@ Item {
         }
         Text {
             id: title2
-            text: qsTr("Work Order ID")
+            text: qsTr("Sequence Name")
             font.family: "arial"
             color: "white"
             font.pointSize: 16
@@ -514,29 +516,95 @@ Item {
             onClicked: {
                 searchArea.buttonIndex = 1
                 searchArea.visible = true
-                searchList.model = weldHistoryModel
+                searchList.model = sequenceModel
             }
         }
+
+        Text {
+            id: title3
+            text: qsTr("Harness Name")
+            font.family: "arial"
+            color: "white"
+            font.pointSize: 16
+            anchors.top: workOrderName.bottom
+            anchors.left: seach.left
+            anchors.topMargin: 10
+        }
+        CButton {
+            id: partName
+            anchors.left: title3.left
+            anchors.top: title3.bottom
+            width: 250
+            text: qsTr("All")
+            clip: true
+            height: mytimeSelect1.height
+            anchors.right: mytimeSelect2.right
+            backgroundComponent: Rectangle {
+                anchors.fill: parent
+                color: "black"
+                border.color: "#1987ab"
+                border.width: 2
+            }
+            onClicked: {
+                searchArea.buttonIndex = 2
+                searchArea.visible = true
+                searchList.model = partModel
+            }
+        }
+        Text {
+            id: title99
+            text: qsTr("Splice Name")
+            font.family: "arial"
+            color: "white"
+            font.pointSize: 16
+            anchors.top: partName.bottom
+            anchors.left: seach.left
+            anchors.topMargin: 15
+        }
+        CButton {
+            id: spliceName
+            anchors.left: title3.left
+            anchors.top: title99.bottom
+            width: 250
+            text: qsTr("All")
+            clip: true
+            height: mytimeSelect1.height
+            anchors.right: mytimeSelect2.right
+            backgroundComponent: Rectangle {
+                anchors.fill: parent
+                color: "black"
+                border.color: "#1987ab"
+                border.width: 2
+            }
+            onClicked: {
+                searchArea.buttonIndex = 3
+                searchArea.visible = true
+                searchList.model = spliceModel
+            }
+        }
+
         Line {
             id: line2
             anchors.left: parent.left
             anchors.leftMargin: 10
-            anchors.top: workOrderName.bottom
+            anchors.top: spliceName.bottom
             anchors.topMargin: 10
             width: parent.width-58
             lineColor: "#375566"
             height: 1
         }
+
+
         Text {
             id: date
             text: qsTr("Date and Time")
             font.family: "arial"
             color: "white"
             font.pointSize: 16
-            anchors.top: line2.bottom
+            anchors.top: spliceName.bottom
             anchors.left: parent.left
             anchors.leftMargin: 20
-            anchors.topMargin: 10
+            anchors.topMargin: 20
         }
         Text {
             id: from
@@ -552,8 +620,6 @@ Item {
             id: timeSelectGroup
         }
 
-
-////////////////////////
         MyCalendar {
             id: mycalendar1
             anchors.left: from.left
@@ -619,68 +685,6 @@ Item {
             width: parent.width-58
             lineColor: "#375566"
             height: 1
-        }
-        Text {
-            id: title3
-            text: qsTr("Part Number")
-            font.family: "arial"
-            color: "white"
-            font.pointSize: 16
-            anchors.top: line3.bottom
-            anchors.left: seach.left
-            anchors.topMargin: 10
-        }
-        CButton {
-            id: partName
-            anchors.left: title3.left
-            anchors.top: title3.bottom
-            width: 250
-            text: qsTr("All")
-            clip: true
-            height: mytimeSelect1.height
-            anchors.right: mytimeSelect2.right
-            backgroundComponent: Rectangle {
-                anchors.fill: parent
-                color: "black"
-                border.color: "#1987ab"
-                border.width: 2
-            }
-            onClicked: {
-                searchArea.buttonIndex = 2
-                searchArea.visible = true
-                searchList.model = partModel
-            }
-        }
-        Text {
-            id: title99
-            text: qsTr("Splice Name")
-            font.family: "arial"
-            color: "white"
-            font.pointSize: 16
-            anchors.top: partName.bottom
-            anchors.left: seach.left
-            anchors.topMargin: 15
-        }
-        CButton {
-            id: spliceName
-            anchors.left: title3.left
-            anchors.top: title99.bottom
-            width: 250
-            text: qsTr("All")
-            clip: true
-            height: mytimeSelect1.height
-            anchors.right: mytimeSelect2.right
-            backgroundComponent: Rectangle {
-                anchors.fill: parent
-                color: "black"
-                border.color: "#1987ab"
-                border.width: 2
-            }
-            onClicked: {
-                searchArea.buttonIndex = 3
-                searchArea.visible = true
-                searchList.model = spliceModel
-            }
         }
 
         Column {

@@ -49,10 +49,10 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
 
     weldHistoryModel = new WeldHistoryModel(this);
     list.clear();
-    list << "WeldHistoryId" << "WorkOrderName" << "PartName" << "SpliceName" << "OperatorName" << "DateCreated"
-         << "CrossSection" << "WeldMode" << "Energy" << "Amplitude" << "Width" << "TriggerPressure" << "WeldPressure"
+    list << "WeldHistoryId" << "SpliceName" << "SequenceName" << "HarnessName" << "OperatorName" << "DateCreated" << "OperateMode" << "Alarm"
+         << "CrossSection" << "WeldMode" << "Energy" << "TriggerPressure" << "WeldPressure" << "Amplitude" << "Width"
          << "Time+" << "Timer-" << "Time" << "Power+" << "Power-" << "Power" << "Pre-Height+" << "Pre-Height-"
-         << "Pre-Height" << "Height+" << "Height-" << "Height" << "Alarm" << "SampleRatio" <<"GraphData";
+         << "Pre-Height" << "Height+" << "Height-" << "Height" << "SampleRatio" <<"GraphData";
 
     weldHistoryModel->setRoles(list);
     weldHistoryModel->setModelList();
