@@ -414,27 +414,26 @@ bool MakeWeldProcess::_execute()
     _M102IA->SendIACommand(IAComSetAmplitude, CurrentSplice.WeldSettings.BasicSetting.Amplitude);
     _M102IA->SendIACommand(IAComSetPreburst, CurrentSplice.WeldSettings.AdvanceSetting.PreBurst);
 
-    _M2010->ReceiveFlags.ActuatorType = false;
-    if(CurrentSplice.WeldSettings.AdvanceSetting.AntiSideOption.AntiSideMode == true)
-    {
-        _M2010->TempActuatorInfo.CurrentActuatorMode = Status_Data::ANTISIDESPLICE;
-        _M2010->TempActuatorInfo.CurrentAntisideSpliceTime =
-                CurrentSplice.WeldSettings.AdvanceSetting.AntiSideOption.AntiSideSpliceTime;
-    }else{
-        _M2010->TempActuatorInfo.CurrentActuatorMode = Status_Data::ANTISIDESPLICEOFF;
-    }
-    _M2010->TempActuatorInfo.CurrentActuatorType =
-            _Interface->StatusData.MachineType;
-    _M102IA->SendIACommand(IAComSetActuator, 0);
-    _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.ActuatorType);
-//    DEBUG_PRINT(_M2010->TempActuatorInfo.CurrentActuatorMode);
+//    _M2010->ReceiveFlags.ActuatorType = false;
+//    if(CurrentSplice.WeldSettings.AdvanceSetting.AntiSideOption.AntiSideMode == true)
+//    {
+//        _M2010->TempActuatorInfo.CurrentActuatorMode = Status_Data::ANTISIDESPLICE;
+//        _M2010->TempActuatorInfo.CurrentAntisideSpliceTime =
+//                CurrentSplice.WeldSettings.AdvanceSetting.AntiSideOption.AntiSideSpliceTime;
+//    }else{
+//        _M2010->TempActuatorInfo.CurrentActuatorMode = Status_Data::ANTISIDESPLICEOFF;
+//    }
+//    _M2010->TempActuatorInfo.CurrentActuatorType =
+//            _Interface->StatusData.MachineType;
+//    _M102IA->SendIACommand(IAComSetActuator, 0);
+//    _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.ActuatorType);
 
-    _M2010->ReceiveFlags.CutterResponseData = false;
-    if(CurrentSplice.WeldSettings.AdvanceSetting.CutOffOption.CutOff == true)
-        _M102IA->SendIACommand(IAComSetCutoff, ON);
-    else
-        _M102IA->SendIACommand(IAComSetCutoff, OFF);
-    _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.CutterResponseData);
+//    _M2010->ReceiveFlags.CutterResponseData = false;
+//    if(CurrentSplice.WeldSettings.AdvanceSetting.CutOffOption.CutOff == true)
+//        _M102IA->SendIACommand(IAComSetCutoff, ON);
+//    else
+//        _M102IA->SendIACommand(IAComSetCutoff, OFF);
+//    _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.CutterResponseData);
 
     if(WeldCycleStatus == false)
     {

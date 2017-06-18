@@ -1069,6 +1069,8 @@ bool HmiAdaptor::weldDefaultsGetSwitch(QString index)
         reb = weldDefaults->CurrentWeldSettings.WidthEncoder;
     else if (index == "Height Encoder")
         reb = weldDefaults->CurrentWeldSettings.HeightEncoder;
+    else if (index == "Seek")
+        reb = weldDefaults->CurrentWeldSettings.Seek;
     else if (index == "Foot Pedal Abort")
         reb = weldDefaults->CurrentWeldSettings.FootPedalAbort;
     else if (index == "Cooling") {
