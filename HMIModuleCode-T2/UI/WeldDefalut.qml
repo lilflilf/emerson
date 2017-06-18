@@ -37,7 +37,7 @@ Item {
         repeaterModel.append({"headTitle":qsTr("Width Encoder"),"leftText":qsTr("off"),"righttext":qsTr("on"),"switchState":hmiAdaptor.weldDefaultsGetSwitch("Width Encoder")})
         repeaterModel.append({"headTitle":qsTr("Height Encoder"),"leftText":qsTr("off"),"righttext":qsTr("on"),"switchState":hmiAdaptor.weldDefaultsGetSwitch("Height Encoder")})
         repeaterModel2.append({"headTitle":qsTr("Foot Pedal Abort"),"leftText":qsTr("off"),"righttext":qsTr("on"),"switchState":hmiAdaptor.weldDefaultsGetSwitch("Foot Pedal Abort")})
-        repeaterModel2.append({"headTitle":qsTr("Seek"),"leftText":qsTr("off"),"righttext":qsTr("on"),"switchState":hmiAdaptor.weldDefaultsGetSwitch("Foot Pedal Abort")})
+        repeaterModel2.append({"headTitle":qsTr("Seek"),"leftText":qsTr("off"),"righttext":qsTr("on"),"switchState":hmiAdaptor.weldDefaultsGetSwitch("Seek")})
         repeaterModel2.append({"headTitle":qsTr("Cooling"),"leftText":qsTr("off"),"righttext":qsTr("on"),"switchState":hmiAdaptor.weldDefaultsGetSwitch("Cooling")})
 //        repeaterModel2.append({"headTitle":qsTr("Lock on Alarm"),"leftText":qsTr("off"),"righttext":qsTr("on"),"switchState":hmiAdaptor.weldDefaultsGetSwitch("Cooling")})
 
