@@ -2067,15 +2067,15 @@ void HmiAdaptor::importData(QString fileUrl)
         csvFile.close();
     }
     if (CSVList.size() > 1) {
-        if (CSVList.at(0) == "WireData")
-            wireModel->importData(CSVList[1]);
+        if (CSVList.at(0) == "Wire Data")
+            importWire(CSVList[1]);
         else if (CSVList.at(0) == "Preset Data") {
             importSplice(CSVList[1]);
         }
         else if (CSVList.at(0) == "Harness Data") {
             importHarness(CSVList[1]);
         }
-        else if (CSVList.at(0) == "ShrinkData") {
+        else if (CSVList.at(0) == "Shrink Data") {
             QStringList shrinkList = QString(CSVList.at(1)).split(",");
             if (shrinkList.count() >= 2)
                 addInsulation(shrinkList[0],shrinkList[1],shrinkList[2]);
@@ -2084,6 +2084,14 @@ void HmiAdaptor::importData(QString fileUrl)
             importWorkOrder(CSVList[1]);
         }
     }
+}
+
+int HmiAdaptor::importWire(QString wireStr)
+{
+    CSVWireData *_WireData = CSVWireData::Instance();
+    int wireId = _WireData->ImportData(wireStr);
+    wireModel->setModelList();
+    return wireId;
 }
 
 int HmiAdaptor::importSplice(QString spliceStr)
@@ -2152,17 +2160,27 @@ int HmiAdaptor::importWorkOrder(QString workOrderStr)
 
 void HmiAdaptor::exportData(QString type, int id, QString fileUrl)
 {
-    if (type == "wire")
+    if (type == "Wire")
         CSVWireData::Instance()->ExportData(id,fileUrl);
-    else if (type == "splice")
+    else if (type == "Splice")
         CSVPresetData::Instance()->ExportData(id,fileUrl);
-    else if (type == "sequence")
+    else if (type == "Sequence")
         CSVSequenceData::Instance()->ExportData(id,fileUrl);
-    else if (type == "harness")
+    else if (type == "Harness")
         CSVHarnessData::Instance()->ExportData(id,fileUrl);
     else if (type == "Static")
         statisticalTrend->ExportData(fileUrl);
 
+}
+
+void HmiAdaptor::exportDataList(QString type, QList<int> idList, QString fileUrl)
+{
+    if (type == "History")
+        CSVWeldResultData::Instance()->ExportData(idList, fileUrl);
+    else if (type == "Alarm")
+        CSVAlarmLogData::Instance()->ExportData(idList, fileUrl);
+    else if (type == "MaintenanceLog")
+        CSVMaintenanceLogData::Instance()->ExportData(idList, fileUrl);
 }
 
 void HmiAdaptor::addInsulation(QString insualtionId, QString temp, QString time)
