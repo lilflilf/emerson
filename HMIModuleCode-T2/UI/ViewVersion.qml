@@ -56,7 +56,7 @@ Item {
         font.family: "arial"
         font.pixelSize: 24
         color: "white"
-        text: qsTr("Power Supply Part Number:")
+        text: qsTr("Power Supply Part Number: ")+ hmiAdaptor.getSoftVerson(2)
     }
     Text {
         id: supplySerialNumber
@@ -66,7 +66,7 @@ Item {
         font.family: "arial"
         font.pixelSize: 24
         color: "white"
-        text: qsTr("Power Supply Serial Number:")
+        text: qsTr("Power Supply Serial Number: ") + hmiAdaptor.getSoftVerson(3)
     }
     Text {
         id: versionlNumber
