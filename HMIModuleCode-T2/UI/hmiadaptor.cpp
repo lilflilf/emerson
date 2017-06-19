@@ -2511,18 +2511,56 @@ QString HmiAdaptor::getLanguageImage()
 
 QString HmiAdaptor::dataProcessing(QString type, QString value)
 {
+    UtilityClass *unit = UtilityClass::Instance();
     QString str;
-    if (value == "Energy")
+    if (type == "Energy")
         str = m_variantToString->EnergyToString(m_stringToVariant->EnergyToInt(value)).Current;
-    else if (value == "T.P")
+    else if (type == "T.P")
         str = m_variantToString->TriggerPressureToString(m_stringToVariant->TriggerPressureToInt(value)).Current;
-    else if (value == "W.P")
+    else if (type == "W.P")
         str = m_variantToString->WeldPressureToString(m_stringToVariant->WeldPressureToInt(value)).Current;
-    else if (value == "Amplitude")
+    else if (type == "Amplitude")
         str = m_variantToString->AmplitudeToString(m_stringToVariant->AmplitudeToInt(value)).Current;
-    else if (value == "Width")
+    else if (type == "Width")
         str = m_variantToString->WidthToString(m_stringToVariant->WidthToInt(value)).Current;
-    qDebug() << "dataProcessing" << type << value << str;
+
+
+    else if (type == "Time-")
+        str = m_variantToString->TimeMinusToString(m_stringToVariant->TimeMinusToInt(value)).Current;
+    else if (type == "Time+")
+        str = m_variantToString->TimePlusToString(m_stringToVariant->TimePlusToInt(value)).Current;
+    else if (type == "Power-")
+        str = m_variantToString->PowerMinusToString(m_stringToVariant->PowerMinusToInt(value)).Current;
+    else if (type == "Power+")
+        str = m_variantToString->PowerPlusToString(m_stringToVariant->PowerPlusToInt(value)).Current;
+    else if (type == "Pre-Height-")
+        str = m_variantToString->PreHeightMinusToString(m_stringToVariant->PreHeightMinusToInt(value)).Current;
+    else if (type == "Pre-Height+")
+        str = m_variantToString->PreHeightPlusToString(m_stringToVariant->PreHeightPlusToInt(value)).Current;
+    else if (type == "Post-Height-")
+        str = m_variantToString->HeightMinusToString(m_stringToVariant->HeightMinusToInt(value)).Current;
+    else if (type == "Post-Height+")
+        str = m_variantToString->HeightPlusToString(m_stringToVariant->HeightPlusToInt(value)).Current;
+
+    else if (type == "FormulaArea")
+        str = unit->FormatedDataToString(DINFormulaArea, unit->StringToFormatedData(DINFormulaArea, value));
+    else if (type == "FormulaEnergyOffset")
+        str = unit->FormatedDataToString(DINFormulaEnergyOffset, unit->StringToFormatedData(DINFormulaEnergyOffset, value));
+    else if (type == "FormulaEnergyMult")
+        str = unit->FormatedDataToString(DINFormulaEnergyMult, unit->StringToFormatedData(DINFormulaEnergyMult, value));
+    else if (type == "FormulaWidthOffset")
+        str = unit->FormatedDataToString(DINFormulaWidthOffset, unit->StringToFormatedData(DINFormulaWidthOffset, value));
+    else if (type == "FormulaWidthMult")
+        str = unit->FormatedDataToString(DINFormulaWidthMult, unit->StringToFormatedData(DINFormulaWidthMult, value));
+    else if (type == "FormulaPressureOffset")
+        str = unit->FormatedDataToString(DINFormulaPressureOffset, unit->StringToFormatedData(DINFormulaPressureOffset, value));
+    else if (type == "FormulaPressureMult")
+        str = unit->FormatedDataToString(DINFormulaPressureMult, unit->StringToFormatedData(DINFormulaPressureMult, value));
+    else if (type == "FormulaAmplitudeOffset")
+        str = unit->FormatedDataToString(DINFormulaAmplitudeOffset, unit->StringToFormatedData(DINFormulaAmplitudeOffset, value));
+    else if (type == "FormulaAmplitudeMult")
+        str = unit->FormatedDataToString(DINFormulaAmplitudeMult, unit->StringToFormatedData(DINFormulaAmplitudeMult, value));
+
     return str;
 
 }

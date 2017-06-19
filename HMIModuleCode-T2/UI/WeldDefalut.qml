@@ -1060,6 +1060,13 @@ Item {
                             lineTip.visible = true
                             lineTip.text = qsTr("Cross Section Range ") + (index / 4 + 1)
                         }
+                        if (index == 2 || index == 6 || index == 10 || index == 14) {
+                            if (gridRepeater.model == widthModel)
+                            {
+                                localbordercolor = Qt.rgba(0,0,0,0)
+                                bgvisable = false
+                            }
+                        }
 
                     }
                     onMouseAreaClick: {
@@ -1332,8 +1339,40 @@ Item {
                         loadValue2.inputFocus = false
                     }
                     else {
+                        var tempString
+                        var arr = [0,4,8,12,1,5,9,13];
+                        var result = (formulaSetting.selectIndex in arr);
+                        if (result)
+                        {
+                            tempString = hmiAdaptor.dataProcessing("FormulaArea", keyNum.inputText)
+                        }
+                        else
+                        {
+                            if (formulaSetting.selectIndex in [2,6,10,14])
+                            {
+                                if (gridRepeater.model == formulaModel)
+                                    tempString = hmiAdaptor.dataProcessing("FormulaEnergyOffset", keyNum.inputText)
+                                else if (gridRepeater.model == widthModel)
+                                    tempString = hmiAdaptor.dataProcessing("FormulaWidthOffset", keyNum.inputText)
+                                else if (gridRepeater.model == pressureModel)
+                                    tempString = hmiAdaptor.dataProcessing("FormulaPressureOffset", keyNum.inputText)
+                                else if (gridRepeater.model == amplitudeModel)
+                                    tempString = hmiAdaptor.dataProcessing("FormulaAmplitudeOffset", keyNum.inputText)
+                            }
+                            else if (formulaSetting.selectIndex in [3,7,11,15])
+                            {
+                                if (gridRepeater.model == formulaModel)
+                                    tempString = hmiAdaptor.dataProcessing("FormulaEnergyMult", keyNum.inputText)
+                                else if (gridRepeater.model == widthModel)
+                                    tempString = hmiAdaptor.dataProcessing("FormulaWidthMult", keyNum.inputText)
+                                else if (gridRepeater.model == pressureModel)
+                                    tempString = hmiAdaptor.dataProcessing("FormulaPressureMult", keyNum.inputText)
+                                else if (gridRepeater.model == amplitudeModel)
+                                    tempString = hmiAdaptor.dataProcessing("FormulaAmplitudeMult", keyNum.inputText)
+                            }
+                        }
                         gridRepeater.itemAt(formulaSetting.selectIndex).localbordercolor = "#0079c1"
-                        gridRepeater.model.set(formulaSetting.selectIndex,{"currenValue":keyNum.inputText})
+                        gridRepeater.model.set(formulaSetting.selectIndex,{"currenValue":tempString})
                         weldDefaultUpdate()
                     }
                     backGround.visible = false

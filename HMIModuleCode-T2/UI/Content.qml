@@ -1357,16 +1357,19 @@ Item {
                 content.bIsEdit = true
                 selectPartUpdataPage(modelId,name)
             } else if (addExit.listModel == spliceModel) {
-                var bIsFind = false
-                for (var i = 0; i < listModel.count; i++) {
-                    if (listModel.get(i).SpliceName == name) {
-                        bIsFind = true;
-                        break;
-                    }
-                }
-                if (!bIsFind) {
-                    spliceList.listModel.append({"SpliceName":name,"stationColor":"white","station":"?","SpliceId":modelId,"qty":0})
-                }
+//                var bIsFind = false
+//                for (var i = 0; i < listModel.count; i++) {
+//                    if (listModel.get(i).SpliceName == name) {
+//                        bIsFind = true;
+//                        break;
+//                    }
+//                }
+//                if (!bIsFind) {
+//                    spliceList.listModel.append({"SpliceName":name,"stationColor":"white","station":"?","SpliceId":modelId,"qty":0})
+//                }
+
+                spliceList.listModel.append({"SpliceName":name,"stationColor":"white","station":"?","SpliceId":modelId,"qty":0})
+
             }
             else if (addExit.listModel == sequenceModel) {
                 content.bIsEdit = true

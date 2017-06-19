@@ -53,7 +53,7 @@ Item {
         height: spliceList.height
         clip: true
         delegate: spliceDelegate
-        highlightRangeMode: ListView.StrictlyEnforceRange
+//        highlightRangeMode: ListView.StrictlyEnforceRange
         onDragStarted: {
             changeNumRecVisable(0, false)
         }

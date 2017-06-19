@@ -2940,14 +2940,13 @@ Item {
                     keyNum.tempValue = ""
                     return
                 } else {
-//                    if (repeater.model == settingsModel)
-//                        crossSection = true
+                    var tempString;
+
                     if (creatWire.selectModel == 1)
                         crossSection = true
 
                     if (creatWire.selectModel == 1)
                     {
-                        var tempString;
                         if (creatWire.selectIndex == 0)
                             tempString = hmiAdaptor.dataProcessing("Energy", keyNum.inputText)
                         else if (creatWire.selectIndex == 1)
@@ -2956,7 +2955,7 @@ Item {
                             tempString = hmiAdaptor.dataProcessing("W.P", keyNum.inputText)
                         else if (creatWire.selectIndex == 3)
                             tempString = hmiAdaptor.dataProcessing("Amplitude", keyNum.inputText)
-                        else if (creatWire.selectIndex == 3)
+                        else if (creatWire.selectIndex == 4)
                             tempString = hmiAdaptor.dataProcessing("Width", keyNum.inputText)
 
                         repeater.model.set(creatWire.selectIndex,{"bottomText":tempString})
@@ -2965,7 +2964,23 @@ Item {
                     else if (creatWire.selectModel == 2)
                     {
 
-                        repeater2.model.set(creatWire.selectIndex,{"bottomText":keyNum.inputText})
+                        if (creatWire.selectIndex == 0)
+                            tempString = hmiAdaptor.dataProcessing("Time-", keyNum.inputText)
+                        else if (creatWire.selectIndex == 1)
+                            tempString = hmiAdaptor.dataProcessing("Time+", keyNum.inputText)
+                        else if (creatWire.selectIndex == 2)
+                            tempString = hmiAdaptor.dataProcessing("Power-", keyNum.inputText)
+                        else if (creatWire.selectIndex == 3)
+                            tempString = hmiAdaptor.dataProcessing("Power+", keyNum.inputText)
+                        else if (creatWire.selectIndex == 4)
+                            tempString = hmiAdaptor.dataProcessing("Pre-Height-", keyNum.inputText)
+                        else if (creatWire.selectIndex == 5)
+                            tempString = hmiAdaptor.dataProcessing("Pre-Height+", keyNum.inputText)
+                        else if (creatWire.selectIndex == 6)
+                            tempString = hmiAdaptor.dataProcessing("Post-Height-", keyNum.inputText)
+                        else if (creatWire.selectIndex == 7)
+                            tempString = hmiAdaptor.dataProcessing("Post-Height+", keyNum.inputText)
+                        repeater2.model.set(creatWire.selectIndex,{"bottomText":tempString})
                         repeater2.itemAt(creatWire.selectIndex).localbordercolor = "#0079c1"
                     }
                 }
@@ -3018,37 +3033,37 @@ Item {
                 keyNum.tempValue = ""
             }
         }
-        onInputTextChanged: {
-            if (keyNum.inputText != "") {
-                if (edit2.inputFocus) {
-                    edit2.inputText = keyNum.inputText
-                }
-//                else if (loadValue2.inputFocus) {
-//                    loadValue2.inputText = keyNum.inputText
-//                } else if (loadValue.inputFocus) {
-//                    loadValue.inputText = keyNum.inputText
+//        onInputTextChanged: {
+//            if (keyNum.inputText != "") {
+//                if (edit2.inputFocus) {
+//                    edit2.inputText = keyNum.inputText
 //                }
-                else if (heightSetting.heightSetVisible) {
-                    heightModel.set(creatWire.selectIndex,{"textValue":keyNum.inputText})
-                } else if (widthSetting.widthSetVisible) {
-                    widthModel.set(creatWire.selectIndex,{"textValue":keyNum.inputText})
-                } else if (weldSetting.weldSetVisible) {
-                    weldSettingModel.set(creatWire.selectIndex,{"textValue":keyNum.inputText})
-                } else if (stepTimeSet.visible) {
-                    stepRepeater.model.set(creatWire.selectIndex,{"centerText":keyNum.inputText})
-                } else {
-                    if (creatWire.selectModel == 1)
-                    {
-                        repeater.model.set(creatWire.selectIndex,{"bottomText":keyNum.inputText})
-                    }
-                    else if (creatWire.selectModel == 2)
-                    {
-                        repeater2.model.set(creatWire.selectIndex,{"bottomText":keyNum.inputText})
-                    }
-//                    repeater.model.set(creatWire.selectIndex,{"bottomText":keyNum.inputText})
-                }
-            }
-        }
+////                else if (loadValue2.inputFocus) {
+////                    loadValue2.inputText = keyNum.inputText
+////                } else if (loadValue.inputFocus) {
+////                    loadValue.inputText = keyNum.inputText
+////                }
+//                else if (heightSetting.heightSetVisible) {
+//                    heightModel.set(creatWire.selectIndex,{"textValue":keyNum.inputText})
+//                } else if (widthSetting.widthSetVisible) {
+//                    widthModel.set(creatWire.selectIndex,{"textValue":keyNum.inputText})
+//                } else if (weldSetting.weldSetVisible) {
+//                    weldSettingModel.set(creatWire.selectIndex,{"textValue":keyNum.inputText})
+//                } else if (stepTimeSet.visible) {
+//                    stepRepeater.model.set(creatWire.selectIndex,{"centerText":keyNum.inputText})
+//                } else {
+//                    if (creatWire.selectModel == 1)
+//                    {
+//                        repeater.model.set(creatWire.selectIndex,{"bottomText":keyNum.inputText})
+//                    }
+//                    else if (creatWire.selectModel == 2)
+//                    {
+//                        repeater2.model.set(creatWire.selectIndex,{"bottomText":keyNum.inputText})
+//                    }
+////                    repeater.model.set(creatWire.selectIndex,{"bottomText":keyNum.inputText})
+//                }
+//            }
+//        }
     }
 
     Image {
