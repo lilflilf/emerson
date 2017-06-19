@@ -838,7 +838,7 @@ Item {
                     return
                 }
                 if (partRadio.checked)
-                    partModel.removeValue(partModel.getValue(selectIndx,"PartId"),partModel.getValue(selectIndx,"PartName"))
+                    partModel.removeValue(partModel.getValue(selectIndx,"PartId"),partModel.getValue(selectIndx,"HarnessName"))
                 else if (spliceRadio.checked)
                     spliceModel.removeValue(spliceModel.getValue(selectIndx,"SpliceId"),spliceModel.getValue(selectIndx,"SpliceName"))
                 else if (wireRadio.checked)
