@@ -263,9 +263,7 @@ Item {
                             text: qsTr("OK")
                             textColor: "white"
                             onClicked: {
-                                if (pickColor == "")
-                                    return
-                                if (colorLoader.sourceComponent == colorPicker)
+                                if (colorLoader.sourceComponent == colorPicker && pickColor != "")
                                 {
                                     itemColor.color = pickColor
                                     spliceDetailsItem.selectColor = pickColor
@@ -273,14 +271,16 @@ Item {
                                 }
                                 else if (colorLoader.sourceComponent == stripePicker)
                                 {
-                                    if (colorLoader.item.radioCheck == -1)
+                                    if (colorLoader.item.radioCheck == -1 )
+                                        return
+
+                                    if (colorLoader.item.radioCheck != 3 && pickColor == "")
                                         return
 
                                     itemStripe.color = pickColor
                                     itemStripe.stripeType = colorLoader.item.radioCheck
                                     spliceDetailsItem.selectWireStripeColor = pickColor
                                     spliceDetailsItem.selectWireStripeType = colorLoader.item.radioCheck
-
                                     colorLoader.sourceComponent = null
 
                                 }
@@ -297,8 +297,12 @@ Item {
                 height: 34
                 anchors.top: itemColor.bottom
                 anchors.topMargin: 10
-                property alias color: stripeBack.color
+//                property alias color: stripeBack.color
+//                property var stripeType: -1
+
+                property var color: "" //stripeBack.color
                 property var stripeType: -1
+                property alias wireColor: stripeBack.color
 //                onColorChanged: {
 //                    if(detailIsChang)
 //                        return
@@ -324,7 +328,7 @@ Item {
                     id: stripeBack
                     width: 100
                     height: 34
-                    color: "green"
+                    color: itemColor.color
                     anchors.right: parent.right
                     anchors.rightMargin: 130
                     MouseArea {
@@ -334,14 +338,14 @@ Item {
                         }
                     }
                     Rectangle {
-                        color: "black"
+                        color: itemStripe.color
                         height: 5
                         width: parent.width
                         anchors.verticalCenter: parent.verticalCenter
                         visible: itemStripe.stripeType == 0 ? true : false
                     }
                     Rectangle {
-                        color: "black"
+                        color: itemStripe.color
                         height: 5
                         width: parent.width
                         anchors.centerIn: parent
@@ -349,7 +353,7 @@ Item {
                         visible: itemStripe.stripeType == 1 ? true : false
                     }
                     Rectangle {
-                        color: "black"
+                        color: itemStripe.color
                         width: 5
                         height: parent.height
                         anchors.horizontalCenter: parent.horizontalCenter

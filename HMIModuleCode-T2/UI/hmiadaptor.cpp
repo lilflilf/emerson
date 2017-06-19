@@ -1137,7 +1137,7 @@ QString HmiAdaptor::weldDefaultsGetNum(QString index)
     if (getStringValue(index).toFloat(&ok) < 0.01)
         return index;
     else
-        return QString("%1%2").arg(getStringValue(index).toFloat(&ok) - 0.01).arg(getStringUnit(index));
+        return QString("%1%2").arg(getStringValue(index).toFloat(&ok) - 0.00001).arg(getStringUnit(index));
 }
 
 bool HmiAdaptor::weldDefaultsSetValue(QList<bool> boolList, QStringList strList, int sampleIndex, QString coolingDur,QString coolingDel)

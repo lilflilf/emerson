@@ -3345,9 +3345,9 @@ QVariant WireModel::data(const QModelIndex &index, int role) const
             } else if (myWire.Stripe.TypeOfStripe == 1) {
                 temp = "Slash";
             } else if (myWire.Stripe.TypeOfStripe == 2) {
-                temp = "OneVertical";
+                temp = "Vertical";
             } else {
-                temp = "TwoVertical";
+                temp = "None";
             }
             value = QVariant::fromValue(temp);
         } else if (columnIdx == 6)
@@ -3442,7 +3442,6 @@ void WireModel::removeValue(int id, QString name)
     m_wireAdaptor->DeleteOneRecordFromTable(id,name);
     setModelList();
 }
-
 int WireModel::insertValueToTable(QString type,QString wireName,int wireId,int operatorId,QString color,QString stripeColor,int stripeType,int gauge, int awgGauge,int wireType,int side,int verside,int position,QString moduleType)
 {
 
@@ -3486,6 +3485,7 @@ int WireModel::insertValueToTable(QString type,QString wireName,int wireId,int o
     else if (moduleType == "JIS")
         insertWire.TypeOfModule = WireElement::ModuleType::JIS;
 
+    qDebug() << "tttttttttttttttttt" << moduleType;
     if (type == "insert"){
         insertWireId = m_wireAdaptor->InsertRecordIntoTable(&insertWire);
         setModelList();
@@ -3716,10 +3716,11 @@ QVariant WireModel::getValue(int index, QString key)
     } else if (myWire.Stripe.TypeOfStripe == 1) {
         temp = "Slash";
     } else if (myWire.Stripe.TypeOfStripe == 2) {
-        temp = "OneVertical";
+        temp = "Vertical";
     } else {
-        temp = "TwoVertical";
+        temp = "None";
     }
+
     WireModelHash.insert("StripeType",temp);
     WireModelHash.insert("StripeColor",myWire.Stripe.Color);
     WireModelHash.insert("Gauge",myWire.Gauge);
@@ -3937,8 +3938,7 @@ void SequenceModel::setModelList(unsigned int time_from, unsigned int time_to)
 {
     beginResetModel();
     sequences->clear();
-    if (m_sequenceAdaptor->QueryOnlyUseTime(time_from,time_to,sequences))
-        qDebug( )<< "SequenceModel " << sequences->count();
+    m_sequenceAdaptor->QueryOnlyUseTime(time_from,time_to,sequences);
     endResetModel();
 }
 

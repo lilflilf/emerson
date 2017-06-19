@@ -1184,7 +1184,7 @@ Item {
                     else if (bottomRadio.checked)
                         positionside = 2;
 
-                    wireModel.insertValueToTable("insert",wireName.inputText,-1,hmiAdaptor.getCurrentOperatorId(),rectcolor.color,itemStripe.color,itemStripe.stripeType, spliceDetailsItem.selectWireGauge, spliceDetailsItem.selectWireAWG,edit2.inputText,wireType,side,verside,positionside,typeDirection.currentText)
+                    wireModel.insertValueToTable("insert",wireName.inputText,-1,hmiAdaptor.getCurrentOperatorId(),rectcolor.color,itemStripe.color,itemStripe.stripeType, spliceDetailsItem.selectWireGauge, spliceDetailsItem.selectWireAWG,wireType,side,verside,positionside,typeDirection.currentText)
 
 //                    if (spliceDetailsItem.selectWireId == -1)
 //                    {
@@ -2919,15 +2919,7 @@ Item {
                 if (edit2.inputFocus) {
                     edit2.inputText = keyNum.inputText
                     edit2.inputFocus = false
-                }
-//                else if (loadValue2.inputFocus) {
-//                    loadValue2.inputText = keyNum.inputText
-//                    loadValue2.inputFocus = false
-//                } else if (loadValue.inputFocus) {
-//                    loadValue.inputText = keyNum.inputText
-//                    loadValue.inputFocus = false
-//                }
-                else if (heightSetting.heightSetVisible) {
+                } else if (heightSetting.heightSetVisible) {
                     heightModel.set(creatWire.selectIndex,{"textValue":keyNum.inputText})
                     heightRepeater.itemAt(creatWire.selectIndex).myfocus = false
                     heightSetting.heightSetVisible = false
