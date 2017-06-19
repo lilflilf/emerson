@@ -1074,7 +1074,16 @@ Item {
                             localbordercolor = Qt.rgba(0,0,0,0)
                             bgvisable = false
                             return
-                        } else {
+                        }
+                        else if (index == 2 || index == 6 || index == 10 || index == 14) {
+                            if (gridRepeater.model == widthModel)
+                            {
+                                localbordercolor = Qt.rgba(0,0,0,0)
+                                bgvisable = false
+                            }
+                            return
+                        }
+                        else {
                             localbordercolor = "#05f91c"
                         }
                         formulaSetting.selectIndex = index
@@ -1281,7 +1290,7 @@ Item {
         anchors.bottomMargin: 16
         width: (radioButton.width-40)/3
         height: 70
-        text: qsTr("Defalut Setting")
+        text: qsTr("Default Setting")
         textColor: "white"
         onClicked: {
             hmiAdaptor.weldDefaultsExecute("_Default")
@@ -1290,11 +1299,11 @@ Item {
             {
                 graphModel.set(i,{"isSelect":false})
             }
+            initPage()
             if (cutteronoroff.state == "left")
                 mainRoot.cutterButtonVisible = true
             else
                 mainRoot.cutterButtonVisible = false
-            initPage()
         }
     }
     Rectangle {
@@ -1323,23 +1332,30 @@ Item {
         onCurrentClickIndex: {
             if (index == 15) {
                 if (hmiAdaptor.comepareCurrentValue(keyNum.minvalue,keyNum.maxvalue,keyNum.inputText)) {
+                    var tempString
                     if (cooling1.myFocus) {
-                        coolingList[1] = keyNum.inputText
+                        tempString = hmiAdaptor.dataProcessing("CoolDur", keyNum.inputText)
+                        coolingList[1] = tempString
+                        cooling1.centervalue = tempString
+
                         cooling1.localbordercolor = "#0079c1"
                         cooling1.myFocus = false
                     } else if (cooling2.myFocus) {
-                        coolingList[4] = keyNum.inputText
+                        tempString = hmiAdaptor.dataProcessing("CoolDel", keyNum.inputText)
+                        cooling2.centervalue = tempString
+                        coolingList[4] = tempString
                         cooling2.localbordercolor = "#0079c1"
                         cooling2.myFocus = false
                     } else if (loadValue.inputFocus) {
-                        loadValue.inputText = keyNum.inputText
+                        tempString = hmiAdaptor.dataProcessing("UnLoad Time", keyNum.inputText)
+                        loadValue.inputText = tempString
                         loadValue.inputFocus = false
                     } else if (loadValue2.inputFocus) {
-                        loadValue2.inputText = keyNum.inputText
+                        tempString = hmiAdaptor.dataProcessing("Load Time", keyNum.inputText)
+                        loadValue2.inputText = tempString
                         loadValue2.inputFocus = false
                     }
                     else {
-                        var tempString
                         var arr = [0,4,8,12,1,5,9,13];
                         var result = (formulaSetting.selectIndex in arr);
                         if (result)
@@ -1404,25 +1420,25 @@ Item {
                 keyNum.tempValue = ""
             }
         }
-        onInputTextChanged: {
-            if (cooling1.myFocus) {
-                cooling1.centervalue = keyNum.inputText
-            }
-            else if (cooling2.myFocus) {
-                cooling2.centervalue = keyNum.inputText
-            }
-            else if (loadValue.inputFocus) {
-                loadValue.inputFocus = keyNum.inputText
-            }
-            else if (loadValue2.inputFocus) {
-                loadValue2.inputFocus = keyNum.inputText
-            }
-            else {
-                if (keyNum.inputText != "") {
-                    gridRepeater.model.set(formulaSetting.selectIndex,{"currenValue":keyNum.inputText})
-                    weldDefaultUpdate()
-                }
-            }
-        }
+//        onInputTextChanged: {
+//            if (cooling1.myFocus) {
+//                cooling1.centervalue = keyNum.inputText
+//            }
+//            else if (cooling2.myFocus) {
+//                cooling2.centervalue = keyNum.inputText
+//            }
+//            else if (loadValue.inputFocus) {
+//                loadValue.inputFocus = keyNum.inputText
+//            }
+//            else if (loadValue2.inputFocus) {
+//                loadValue2.inputFocus = keyNum.inputText
+//            }
+//            else {
+//                if (keyNum.inputText != "") {
+//                    gridRepeater.model.set(formulaSetting.selectIndex,{"currenValue":keyNum.inputText})
+//                    weldDefaultUpdate()
+//                }
+//            }
+//        }
     }
 }

@@ -1754,7 +1754,11 @@ int SplicesModel::saveSplice(bool bIsEdit)
     }
     else
     {
-        spliceId = m_spliceAdaptor->InsertRecordIntoTable(&presetElement);
+        for (int i = 0;i<1000;i++)
+        {
+            presetElement.SpliceName = QString("%1").arg(101+i);
+            spliceId = m_spliceAdaptor->InsertRecordIntoTable(&presetElement);
+        }
     }
     setModelList();
     return spliceId;
@@ -3440,7 +3444,7 @@ int WireModel::count()
 void WireModel::removeValue(int id, QString name)
 {
     m_wireAdaptor->DeleteOneRecordFromTable(id,name);
-    setModelList();
+    setTemplateModelList();
 }
 int WireModel::insertValueToTable(QString type,QString wireName,int wireId,int operatorId,QString color,QString stripeColor,int stripeType,int gauge, int awgGauge,int wireType,int side,int verside,int position,QString moduleType)
 {
@@ -3485,7 +3489,6 @@ int WireModel::insertValueToTable(QString type,QString wireName,int wireId,int o
     else if (moduleType == "JIS")
         insertWire.TypeOfModule = WireElement::ModuleType::JIS;
 
-    qDebug() << "tttttttttttttttttt" << moduleType;
     if (type == "insert"){
         insertWireId = m_wireAdaptor->InsertRecordIntoTable(&insertWire);
         setModelList();

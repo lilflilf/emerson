@@ -37,7 +37,7 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
     list.clear();
     list <<"WireId"<< "WireName" << "DateCreated" << "OperatorName" << "Color" << "StripeType" << "StripeColor" << "Gauge" << "MetalType" << "HorizontalLocation" << "VerticalLocation" << "VerticalPosition";
     wireModel->setRoles(list);
-    wireModel->setModelList();
+//    wireModel->setModelList();
     wireModel->setTemplateModelList();
 
 
@@ -1133,11 +1133,13 @@ QStringList HmiAdaptor::weldDefaultsGetValue(int index)
 QString HmiAdaptor::weldDefaultsGetNum(QString index)
 {
     bool ok;
-    QString temp;
     if (getStringValue(index).toFloat(&ok) < 0.01)
         return index;
     else
-        return QString("%1%2").arg(getStringValue(index).toFloat(&ok) - 0.00001).arg(getStringUnit(index));
+    {
+        QString str = QString("%1%2").arg(getStringValue(index).toFloat(&ok) - 0.01).arg(getStringUnit(index));
+        return dataProcessing("FormulaArea",str);
+    }
 }
 
 bool HmiAdaptor::weldDefaultsSetValue(QList<bool> boolList, QStringList strList, int sampleIndex, QString coolingDur,QString coolingDel)
@@ -2560,7 +2562,14 @@ QString HmiAdaptor::dataProcessing(QString type, QString value)
         str = unit->FormatedDataToString(DINFormulaAmplitudeOffset, unit->StringToFormatedData(DINFormulaAmplitudeOffset, value));
     else if (type == "FormulaAmplitudeMult")
         str = unit->FormatedDataToString(DINFormulaAmplitudeMult, unit->StringToFormatedData(DINFormulaAmplitudeMult, value));
-
+    else if (type == "CoolDur")
+        str = unit->FormatedDataToString(DINCoolDur, unit->StringToFormatedData(DINCoolDur, value));
+    else if (type == "CoolDel")
+        str = unit->FormatedDataToString(DINCoolDel, unit->StringToFormatedData(DINCoolDel, value));
+    else if (type == "Load Time")
+        str = m_variantToString->CutOffSpliceTimeToString(m_stringToVariant->CutOffSpliceTimeToInt(value)).Current;
+    else if (type == "UnLoad Time")
+        str = m_variantToString->AntiSideSpliceTimeToString(m_stringToVariant->AntiSideSpliceTimeToInt(value)).Current;
     return str;
 
 }

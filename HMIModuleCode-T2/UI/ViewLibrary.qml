@@ -561,7 +561,7 @@ Item {
         highlight: Rectangle { color: "black"; opacity: 0.3; radius: 5 }
         focus: true
         highlightResizeVelocity: 50000
-
+        highlightMoveVelocity: 50000
         onModelChanged: {
             selectIndx = 0
         }
@@ -706,7 +706,7 @@ Item {
                         color: "white"
                         clip: true
                         elide: Text.ElideRight
-                        text: listView.model.getValue(listIndex,headRepeater.model.get(index).title)//listView.model == shrinkModel ? shrinkGetValue(listIndex,index) : listView.model.getValue(listIndex,headRepeater.model.get(index).title)
+                        text: listView.model == shrinkModel ? shrinkGetValue(listIndex,index) : listView.model.getValue(listIndex,headRepeater.model.get(index).title)
                         MouseArea {
                             anchors.fill: parent
 //                            z:10
