@@ -401,26 +401,25 @@ void M102IA::SendIACommand(IACommands CommandNumber, int CommandData)
              Data[0] = 0;
         break;
         case IAComSetCooling:
-            length = 6;
+            length = 8;
             switch (_M10INI->TempSysConfig.CoolingMode)
             {
-                case Status_Data::ENERGYMODE:
-                   Data[0] = -1;
-                   Data[1] = _M10INI->TempSysConfig.CoolingDel;
-                   Data[2] = _M10INI->TempSysConfig.CoolingTooling;
+            case Status_Data::ENERGYMODE:
+                Data[0] = Status_Data::ENERGYMODE;
                 break;
-                case Status_Data::OFF:
-                   Data[0] = 0;
-                   Data[1] = _M10INI->TempSysConfig.CoolingDel;
-                   Data[2] = _M10INI->TempSysConfig.CoolingTooling;
+            case Status_Data::OFF:
+                Data[0] = Status_Data::OFF;
                 break;
-                default:
-                   Data[0] = _M10INI->TempSysConfig.CoolingDur;
-                   Data[1] = _M10INI->TempSysConfig.CoolingDel;
-                   Data[2] = _M10INI->TempSysConfig.CoolingTooling;
+            case Status_Data::ON:
+                Data[0] = Status_Data::ON;
                 break;
-
+            default:
+                Data[0] = Status_Data::ENERGYMODE;
+                break;
              }
+            Data[1] = _M10INI->TempSysConfig.CoolingDel;
+            Data[2] = _M10INI->TempSysConfig.CoolingDur;
+            Data[3] = _M10INI->TempSysConfig.CoolingTooling;
         break;
         case IAComGetCooling:
              length = 0;
@@ -891,22 +890,16 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         _M2010->ReceiveFlags.CalibrationDone = true;
         break;
     case IASigCooling:
-        _Interface->StatusData.CurrentCoolingDur = MakeHexWordNumber(HexString.mid(9, 4));
-        switch(_Interface->StatusData.CurrentCoolingDur)
-        {
-        case Status_Data::ENERGYMODE:
+        _Interface->StatusData.CurrentCoolingMode =
+                (Status_Data::CoolingMode)MakeHexWordNumber(HexString.mid(9, 4));
+        if(_Interface->StatusData.CurrentCoolingMode == 0xffff)
             _Interface->StatusData.CurrentCoolingMode = Status_Data::ENERGYMODE;
-            break;
-        case Status_Data::OFF:
-            _Interface->StatusData.CurrentCoolingMode = Status_Data::OFF;
-            break;
-        default:
-            _Interface->StatusData.CurrentCoolingMode = Status_Data::ON;
-            break;
-        }
-
-        _Interface->StatusData.CurrentCoolingDel = MakeHexWordNumber(HexString.mid(13, 4));
-        _Interface->StatusData.CurrentCoolingTooling = MakeHexWordNumber(HexString.mid(17,4));
+        _Interface->StatusData.CurrentCoolingDel =
+                MakeHexWordNumber(HexString.mid(13, 4));
+        _Interface->StatusData.CurrentCoolingDur =
+                MakeHexWordNumber(HexString.mid(17, 4));
+        _Interface->StatusData.CurrentCoolingTooling =
+                MakeHexWordNumber(HexString.mid(21,4));
         _M2010->ReceiveFlags.CoolingTypeData = true;
         break;
     case IASigHeightZero:
