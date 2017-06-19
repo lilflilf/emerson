@@ -291,7 +291,7 @@ QString StatisticalTrend::StatisticsHeaderString(QUALITYTYPE QualityItem)
 
 QString StatisticalTrend::StatisticsRecordString(StatisticsParameter StatisticsStruct)
 {
-    QString RecordStr = "\t\t" + StatisticsStruct.SampleSize + "\t" +
+    QString RecordStr = "\t" + StatisticsStruct.SampleSize + "\t" +
             StatisticsStruct.Mean + "\t" + StatisticsStruct.Median + "\t" +
             StatisticsStruct.Sigma + "\t" + StatisticsStruct.Cpk;
     return RecordStr;

@@ -2067,7 +2067,7 @@ void HmiAdaptor::importData(QString fileUrl)
         csvFile.close();
     }
     if (CSVList.size() > 1) {
-        if (CSVList.at(0) == "WireData")
+        if (CSVList.at(0) == "Wire Data")
             wireModel->importData(CSVList[1]);
         else if (CSVList.at(0) == "Preset Data") {
             importSplice(CSVList[1]);

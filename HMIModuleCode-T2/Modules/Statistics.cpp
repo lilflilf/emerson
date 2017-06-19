@@ -270,8 +270,8 @@ QString Statistics::HeaderString()
     else
         WidthString = "\t";
     sHeader = QObject::tr("Cycle count") + "\t" + QObject::tr("Date") + "\t" +
-            QObject::tr("Time") + "\t" + QObject::tr("Work Order Name") + "\t" +
-            QObject::tr("Part Name") + "\t" + QObject::tr("Splice Name") + "\t" +
+            QObject::tr("Time") + "\t" + QObject::tr("Sequence Name") + "\t" +
+            QObject::tr("Harness Name") + "\t" + QObject::tr("Splice Name") + "\t" +
             QObject::tr("Process Parameters") + "\t" +
             QObject::tr("Energy") + WidthString + QObject::tr("Trigger Pressure") + "\t" +
             QObject::tr("Pressure") + "\t" + QObject::tr("Amplitude") + "\t" +
@@ -356,29 +356,15 @@ QString Statistics::HistoryEvent(WeldResultElement *_WeldResult, PresetElement *
     QDateTime CurrentTime = QDateTime::currentDateTime();
     sDate = CurrentTime.toString("yyyy/MM/dd");
     sTime = CurrentTime.toString("hh:mm:ss");
-
+    QString CycleCountStr = QString::number(_Interface->StatusData.CycleCount, 10);
     if (sAlarms == "-")
-        sEvent = _Interface->StatusData.CycleCount + "\t" + sDate + "\t" + sTime;
+        sEvent = CycleCountStr + "\t" + sDate + "\t" + sTime;
     else
-        sEvent = _Interface->StatusData.CycleCount + "*\t" + sDate + "\t" + sTime;
+        sEvent = CycleCountStr + "*\t" + sDate + "\t" + sTime;
 
-    QString PartName;
-    switch(_Interface->CurrentWorkOrder.WorkOrderMode)
-    {
-    case WorkOrderElement::SPLICE:
-        PartName = "NONE";
-        break;
-    case WorkOrderElement::SEQUENCE:
-        PartName = _WeldResult->CurrentSequence.SequenceName;
-        break;
-    case WorkOrderElement::HARNESS:
-        PartName = _WeldResult->CurrentHarness.HarnessName;
-        break;
-    default:
-        PartName = "NONE";
-        break;
-    }
-    sEvent += "\t" + PartName + "\t" + _Splice->SpliceName;
+    QString SequenceName = _WeldResult->CurrentSequence.SequenceName;
+    QString HarnessName = _WeldResult->CurrentHarness.HarnessName;
+    sEvent += "\t" + SequenceName + "\t" + HarnessName + "\t" + _Splice->SpliceName;
     sEvent += "\t\t" + _Utility->FormatedDataToString(DINEnergy,
             _WeldResult->ActualResult.ActualEnergy);
     if(_M2010->Machine != Welder)
