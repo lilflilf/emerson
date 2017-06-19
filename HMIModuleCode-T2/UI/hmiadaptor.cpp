@@ -2579,6 +2579,7 @@ void HmiAdaptor::slotPhysicalKeySignal(bool &status)
     bIsPhysicalKey = interfaceClass->StatusData.PhysicalKeyMode;
     emit signalPhysicalKeySignal(status);
 }
+
 void HmiAdaptor::setAlarmModelList(bool bIsNeedReset)
 {
     alarmModel->setModelList(bIsNeedReset);
