@@ -142,12 +142,14 @@ public:
     Q_INVOKABLE void viewLibraryMoveSplice(int id, QString name);
 
     Q_INVOKABLE void importData(QString fileUrl);
+    Q_INVOKABLE int importWire(QString wireStr);
     Q_INVOKABLE int importSplice(QString spliceStr);
     Q_INVOKABLE int importHarness(QString harnessStr);
     Q_INVOKABLE int importSequence(QString sequenceStr);
     Q_INVOKABLE int importWorkOrder(QString workOrderStr);
 
     Q_INVOKABLE void exportData(QString type, int id, QString fileUrl);
+    Q_INVOKABLE void exportDataList(QString type, QList<int> idList, QString fileUrl);
 
 
     Q_INVOKABLE void addInsulation(QString insualtionId, QString temp, QString time);

@@ -9,7 +9,7 @@ Item {
     id: toolChange
     width: Screen.width*0.7
     height: Screen.height*0.6
-
+    property var idList: new Array()
     MyTimeSelect {
         id: newCalendar
         anchors.centerIn: parent
@@ -360,7 +360,7 @@ Item {
                 text: key
                 clip: true
                 color: "white"
-                font.pixelSize: 25
+                font.pixelSize: 18
                 font.family: "arial"
             }
             model: headModel
@@ -407,6 +407,9 @@ Item {
         anchors.rightMargin: 20
         text: qsTr("Export Data")
         iconSource: "qrc:/images/images/export.png"
+        onClicked: {
+            fileLoader.source = "qrc:/UI/MySaveFileDialog.qml"
+        }
     }
 
     ExclusiveGroup {
@@ -439,7 +442,7 @@ Item {
                         anchors.verticalCenter: parent.verticalCenter
                         width: 200
                         font.family: "arial"
-                        font.pixelSize: 20
+                        font.pixelSize: 14
                         color: "white"
                         clip: true
                         elide: Text.ElideRight
@@ -472,6 +475,13 @@ Item {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
+                    if (selectCheck.checked)
+                        idList.push(maintenanceLogModel.getValue(index,"MaintenanceLogId"))
+                    else {
+                        var count = idList.indexOf(maintenanceLogModel.getValue(index,"MaintenanceLogId"))
+                        if (count > -1)
+                            idList.splice(count, 1)
+                    }
                     selectCheck.checked = !selectCheck.checked
                 }
             }
@@ -493,5 +503,20 @@ Item {
                 }
             }
         }
+    }
+
+    Connections {
+        target: fileLoader.item
+        onSignalFileDialogCancel: {
+            fileLoader.source = ""
+        }
+        onSignalChoseFile: {
+            fileLoader.source = ""
+            hmiAdaptor.exportDataList("MaintenanceLog", idList ,fileName)
+        }
+    }
+    Loader {
+        id: fileLoader
+        anchors.fill: parent
     }
 }

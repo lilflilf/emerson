@@ -11,6 +11,7 @@ Item {
     width: Screen.width*0.7
     height: Screen.height*0.6
 
+    property var idList: new Array()
     MyTimeSelect {
         id: newCalendar
         anchors.centerIn: parent
@@ -222,6 +223,9 @@ Item {
             anchors.bottomMargin: 20
             text: qsTr("Export Data")
             iconSource: "qrc:/images/images/export.png"
+            onClicked: {
+                fileLoader.source = "qrc:/UI/MySaveFileDialog.qml"
+            }
         }
         ExclusiveGroup {
             id: listviewPositionGroup
@@ -278,6 +282,13 @@ Item {
                     width: parent.width -200
                     height: parent.height
                     onClicked: {
+                        if (selectCheck.checked)
+                            idList.push(weldHistoryModel.getValue(index,"WeldHistoryId"))
+                        else {
+                            var count = idList.indexOf(weldHistoryModel.getValue(index,"WeldHistoryId"))
+                            if (count > -1)
+                                idList.splice(count, 1)
+                        }
                         selectIndx = index
                         selectCheck.checked = !selectCheck.checked
                     }
@@ -733,5 +744,20 @@ Item {
         width: Screen.width * 0.43
         height: Screen.height * 0.5
         anchors.centerIn: parent
+    }
+
+    Connections {
+        target: fileLoader.item
+        onSignalFileDialogCancel: {
+            fileLoader.source = ""
+        }
+        onSignalChoseFile: {
+            fileLoader.source = ""
+            hmiAdaptor.exportDataList("History", idList ,fileName)
+        }
+    }
+    Loader {
+        id: fileLoader
+        anchors.fill: parent
     }
 }

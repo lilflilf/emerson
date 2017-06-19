@@ -9,6 +9,7 @@ Item {
     id: viewError
     width: Screen.width*0.7
     height: Screen.height*0.6
+    property var idList: new Array()
     Component.onCompleted: {
         hmiAdaptor.setAlarmModelList(false)
     }
@@ -43,6 +44,9 @@ Item {
         iconSource: "qrc:/images/images/export.png"
         anchors.bottomMargin: 10
         anchors.rightMargin: 20
+        onClicked: {
+            fileLoader.source = "qrc:/UI/MySaveFileDialog.qml"
+        }
     }
 
     Rectangle {
@@ -500,7 +504,7 @@ Item {
                 verticalAlignment: Qt.AlignVCenter
                 width: 200
                 font.family: "arial"
-                font.pixelSize: 25
+                font.pixelSize: 18
                 color: "white"
                 clip: true
                 text: title
@@ -559,7 +563,7 @@ Item {
                         anchors.verticalCenter: parent.verticalCenter
                         width: 200
                         font.family: "arial"
-                        font.pixelSize: 20
+                        font.pixelSize: 14
                         color: "white"
                         clip: true
                         elide: Text.ElideRight
@@ -570,6 +574,13 @@ Item {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
+                    if (selectCheck.checked)
+                        idList.push(alarmModel.getValue(index,"AlarmId"))
+                    else {
+                        var count = idList.indexOf(alarmModel.getValue(index,"AlarmId"))
+                        if (count > -1)
+                            idList.splice(count, 1)
+                    }
 //                    selectIndx = index
                     selectCheck.checked = !selectCheck.checked
                 }
@@ -592,6 +603,21 @@ Item {
                 }
             }
         }
+    }
+
+    Connections {
+        target: fileLoader.item
+        onSignalFileDialogCancel: {
+            fileLoader.source = ""
+        }
+        onSignalChoseFile: {
+            fileLoader.source = ""
+            hmiAdaptor.exportDataList("Alarm", idList ,fileName)
+        }
+    }
+    Loader {
+        id: fileLoader
+        anchors.fill: parent
     }
 }
 

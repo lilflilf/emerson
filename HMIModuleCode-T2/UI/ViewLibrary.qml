@@ -879,13 +879,15 @@ Item {
         onSignalChoseFile: {
             fileLoader.source = ""
             if (wireRadio.checked && selectIndx != -1)
-                hmiAdaptor.exportData("wire",wireModel.getValue(selectIndx,"WireId"),fileName)
+                hmiAdaptor.exportData("Wire",wireModel.getValue(selectIndx,"WireId"),fileName)
             else if (spliceRadio.checked && selectIndx != -1)
-                hmiAdaptor.exportData("splice",spliceModel.getValue(selectIndx,"SpliceId"),fileName)
+                hmiAdaptor.exportData("Splice",spliceModel.getValue(selectIndx,"SpliceId"),fileName)
             else if (partRadio.checked && selectIndx != -1)
-                hmiAdaptor.exportData("harness",partModel.getValue(selectIndx,"PartId"),fileName)
+                hmiAdaptor.exportData("Harness",partModel.getValue(selectIndx,"PartId"),fileName)
             else if (sequenceRadio.checked && selectIndx != -1)
-                hmiAdaptor.exportData("sequence",sequenceModel.getValue(selectIndx,"SequenceId"),fileName)
+                hmiAdaptor.exportData("Sequence",sequenceModel.getValue(selectIndx,"SequenceId"),fileName)
+            else if (shrinkRadio.checked && selectIndx != -1)
+                hmiAdaptor.exportData("Shrink",shrinkModel.get(selectIndx,shrinkid),fileName)
 
 //            if (wireRadio.checked && selectIndx != -1)
 //                wireModel.exportData(wireModel.getValue(selectIndx,"WireId"),fileName)

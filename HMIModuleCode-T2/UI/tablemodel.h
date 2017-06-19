@@ -33,6 +33,9 @@
 #include "DataExport_Import/CSVWireData.h"
 #include "DataExport_Import/CSVPresetData.h"
 #include "DataExport_Import/CSVHarnessData.h"
+#include "DataExport_Import/CSVWeldResultData.h"
+#include "DataExport_Import/CSVAlarmLogData.h"
+#include "DataExport_Import/CSVMaintenanceLogData.h"
 
 class WorkOrderModel : public QAbstractTableModel
 {
