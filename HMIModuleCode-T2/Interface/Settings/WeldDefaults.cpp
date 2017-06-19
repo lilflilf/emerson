@@ -916,6 +916,8 @@ bool WeldDefaults::_Set()
     _M2010->TempActuatorInfo.CurrentActuatorMode = _Interface->StatusData.ActuatorMode;
     if(CurrentWeldSettings.AntiSideOption.AntiSideMode)
         _Interface->StatusData.ActuatorMode = Status_Data::ANTISIDESPLICE;
+    else
+        _Interface->StatusData.ActuatorMode = Status_Data::ANTISIDESPLICEOFF;
     if(_M2010->TempActuatorInfo.CurrentActuatorMode != _Interface->StatusData.ActuatorMode)
     {
         _M2010->TempActuatorInfo.CurrentActuatorMode = _Interface->StatusData.ActuatorMode;
