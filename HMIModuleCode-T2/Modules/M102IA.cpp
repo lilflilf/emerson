@@ -869,6 +869,8 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
     case IASigActuator:
         _Interface->StatusData.MachineType = (enum ActuatorType)MakeHexWordNumber(HexString.mid(9, 4));
         _Interface->StatusData.ActuatorMode = (Status_Data::ACTUATORMODE)MakeHexWordNumber(HexString.mid(13, 4));
+        if(_Interface->StatusData.ActuatorMode == 0xffff)
+            _Interface->StatusData.ActuatorMode = Status_Data::ANTISIDESPLICEOFF;
         _Interface->StatusData.AntisideSpliceTime = MakeHexWordNumber(HexString.mid(17, 4));
         switch (_Interface->StatusData.MachineType)
         {
@@ -897,8 +899,10 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
             break;
         case Status_Data::OFF:
             _Interface->StatusData.CurrentCoolingMode = Status_Data::OFF;
+            break;
         default:
             _Interface->StatusData.CurrentCoolingMode = Status_Data::ON;
+            break;
         }
 
         _Interface->StatusData.CurrentCoolingDel = MakeHexWordNumber(HexString.mid(13, 4));

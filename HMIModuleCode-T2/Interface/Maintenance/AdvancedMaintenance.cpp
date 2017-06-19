@@ -287,7 +287,6 @@ void AdvancedMaintenance::TimeoutEventSlot()
     M102IA* _M102IA = M102IA::Instance();
     M2010* _M2010 = M2010::Instance();
     UtilityClass* _Utiltiy = UtilityClass::Instance();
-    qDebug()<<"Timer Start";
     if(_M102IA->IOstatus.IO != PreviousIO)
     {
         PreviousIO = _M102IA->IOstatus.IO;
@@ -303,7 +302,6 @@ void AdvancedMaintenance::TimeoutEventSlot()
         emit IOstatusFeedbackSignal(PreviousIO);
     }else if(SonicsOnFlag == true)
     {
-        qDebug()<<"Timer";
         _M2010->ReceiveFlags.PowerFreqData = false;
         _M102IA->IACommand(IAComGetPowerFreq);
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.PowerFreqData);
