@@ -174,6 +174,8 @@ public:
     Q_INVOKABLE void setLanguage(int row, int column);
     Q_INVOKABLE QString getLanguageImage();
 
+    Q_INVOKABLE QString dataProcessing(QString type, QString value);
+
     BransonMessageBox bransonMessageBox;
     InterfaceClass *interfaceClass;
     M102IA *m102ia;

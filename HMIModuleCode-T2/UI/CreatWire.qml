@@ -1365,6 +1365,7 @@ Item {
                                     keyNum.maxvalue = maxText
                                 }
                             }
+
                         }
                     }
                 }
@@ -2946,10 +2947,19 @@ Item {
 
                     if (creatWire.selectModel == 1)
                     {
-//                        var tempString;
-//                        if (creatWire.selectIndex == 0)
-//                            tempString = spliceModel.getValueString("Time",hmiAdaptor.getStringValue(keyNum.inputText))
-                        repeater.model.set(creatWire.selectIndex,{"bottomText":keyNum.inputText})
+                        var tempString;
+                        if (creatWire.selectIndex == 0)
+                            tempString = hmiAdaptor.dataProcessing("Energy", keyNum.inputText)
+                        else if (creatWire.selectIndex == 1)
+                            tempString = hmiAdaptor.dataProcessing("T.P", keyNum.inputText)
+                        else if (creatWire.selectIndex == 2)
+                            tempString = hmiAdaptor.dataProcessing("W.P", keyNum.inputText)
+                        else if (creatWire.selectIndex == 3)
+                            tempString = hmiAdaptor.dataProcessing("Amplitude", keyNum.inputText)
+                        else if (creatWire.selectIndex == 3)
+                            tempString = hmiAdaptor.dataProcessing("Width", keyNum.inputText)
+
+                        repeater.model.set(creatWire.selectIndex,{"bottomText":tempString})
                         repeater.itemAt(creatWire.selectIndex).localbordercolor = "#0079c1"
                     }
                     else if (creatWire.selectModel == 2)

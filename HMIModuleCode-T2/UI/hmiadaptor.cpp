@@ -2509,6 +2509,24 @@ QString HmiAdaptor::getLanguageImage()
     return source;
 }
 
+QString HmiAdaptor::dataProcessing(QString type, QString value)
+{
+    QString str;
+    if (value == "Energy")
+        str = m_variantToString->EnergyToString(m_stringToVariant->EnergyToInt(value)).Current;
+    else if (value == "T.P")
+        str = m_variantToString->TriggerPressureToString(m_stringToVariant->TriggerPressureToInt(value)).Current;
+    else if (value == "W.P")
+        str = m_variantToString->WeldPressureToString(m_stringToVariant->WeldPressureToInt(value)).Current;
+    else if (value == "Amplitude")
+        str = m_variantToString->AmplitudeToString(m_stringToVariant->AmplitudeToInt(value)).Current;
+    else if (value == "Width")
+        str = m_variantToString->WidthToString(m_stringToVariant->WidthToInt(value)).Current;
+    qDebug() << "dataProcessing" << type << value << str;
+    return str;
+
+}
+
 void HmiAdaptor::slotPhysicalKeySignal(bool &status)
 {
     bIsPhysicalKey = interfaceClass->StatusData.PhysicalKeyMode;
