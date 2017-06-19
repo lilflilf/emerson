@@ -52,7 +52,6 @@ int main(int argc, char *argv[])
     app.installTranslator(translator);
     QQmlApplicationEngine engine;
 
-
     HmiAdaptor *hmiAdaptor = new HmiAdaptor();
     hmiAdaptor->taskBarHeight = axisy;
     engine.rootContext()->setContextProperty("hmiAdaptor",hmiAdaptor);

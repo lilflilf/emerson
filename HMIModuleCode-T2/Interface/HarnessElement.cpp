@@ -9,10 +9,10 @@ HarnessElement::HarnessElement()
     OperatorID = -1;
     HarnessTypeSetting.BoardLayout.Columns = 1;
     HarnessTypeSetting.BoardLayout.Rows = 1;
-    HarnessTypeSetting.BoardLayout.MaxSplicesPerZone = -1;
+    HarnessTypeSetting.BoardLayout.MaxSplicesPerZone = 0;
     HarnessTypeSetting.ProcessMode = BASIC;
-    HarnessTypeSetting.WorkStations.MaxSplicesPerWorkstation = -1;
-    HarnessTypeSetting.WorkStations.TotalWorkstation = -1;
+    HarnessTypeSetting.WorkStations.MaxSplicesPerWorkstation = 0;
+    HarnessTypeSetting.WorkStations.TotalWorkstation = 0;
     SpliceList.clear();
     NoOfSplice = SpliceList.size();
 }

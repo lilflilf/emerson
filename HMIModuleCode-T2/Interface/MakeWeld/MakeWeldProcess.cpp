@@ -98,7 +98,9 @@ void MakeWeldProcess::UpdateWeldResult()
     CurrentWeldResult.ActualResult.ActualTPressure = _M102IA->IAactual.TPressure;
     CurrentWeldResult.ActualResult.ActualAlarmflags = _M102IA->IAactual.Alarmflags;
     if(CurrentSplice.WeldSettings.AdvanceSetting.StepWeld.StepWeldMode == STEPWELD::STEPDISABLE)
+    {
         CurrentWeldResult.ActualResult.ActualAmplitude2 = 0;
+    }
 
     CurrentWeldResult.OperatorName = _Interface->CurrentOperator.OperatorName;
     CurrentWeldResult.OperateMode = _Interface->CurrentWorkOrder.OperateMode;
