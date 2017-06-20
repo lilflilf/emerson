@@ -784,13 +784,13 @@ Item {
                 if (selectIndx < 0) {
                     return
                 }
-                if (partRadio.checked) {
+                if (partRadio.checked && partModel.count() > 0) {
                     hmiAdaptor.setEditPartId(partModel.getValue(selectIndx,"PartId"))
                     mainRoot.bIsEditHarness = true
                     mainRoot.checkNeedPassWd(0)
                     mainRoot.titleTextChanged(qsTr("Edit Harness"))
 //                    hmiAdaptor.viewLibraryMovePart(partModel.getValue(selectIndx,"PartId"),partModel.getValue(selectIndx,"PartName"))
-                } else if (spliceRadio.checked) {
+                } else if (spliceRadio.checked && spliceModel.count() > 0) {
                     hmiAdaptor.setTestSpliceId(spliceModel.getValue(selectIndx,"SpliceId"))
                     mainRoot.bIsEditSplice = true
                     spliceModel.editNew(spliceModel.getValue(selectIndx,"SpliceId"))
@@ -798,12 +798,13 @@ Item {
                     mainRoot.titleTextChanged(qsTr("Edit Splice"))
 
 //                    hmiAdaptor.viewLibraryMoveSplice(spliceModel.getValue(selectIndx,"SpliceId"),spliceModel.getValue(selectIndx,"SpliceName"))
-                } else if (wireRadio.checked) {
+                } else if (wireRadio.checked && wireModel.count() > 0) {
                     if (selectIndx < 0) {
                         return
                     }
                     hmiAdaptor.setEditWireId(wireModel.getValue(selectIndx,"WireId"));
                     mainRoot.checkNeedPassWd(19)
+                    mainRoot.titleTextChanged(qsTr("Edit Wire"))
 
                 } else if (shrinkRadio.checked){
                     if (selectIndx < 0) {
@@ -811,7 +812,7 @@ Item {
                     }
                     backGround.visible = true
                     dialog.visible = true
-                } else if (sequenceRadio.checked) {
+                } else if (sequenceRadio.checked && sequenceModel.count() > 0) {
 //                    mainRoot.checkNeedPassWd(1)
 
                     hmiAdaptor.setEditPartId(sequenceModel.getValue(selectIndx,"SequenceId"))

@@ -66,14 +66,17 @@ Window {
         var last = stackview.depth
         stackview.pop()
         signalStackViewPop()
-        if (last <= 1 )
+        if (last <= 1 ) {
             stackview.clear()
+            mainRoot.titleTextChanged(qsTr("Create"))
+        }
     }
 
     function clearStackView()
     {
         stackview.pop(null)
         stackview.clear();
+        mainRoot.titleTextChanged(qsTr("Create"))
     }
 
     function operateToEdit(spliceId)

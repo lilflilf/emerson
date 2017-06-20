@@ -386,6 +386,7 @@ Item {
                     backGround.visible = true
                     backGround.opacity = 0.7
                     addExit.visible = true
+                    addExit.listModel = null
                     addExit.listModel = spliceModel
 
                     addExit.titleName = qsTr("Add Existing Splice")

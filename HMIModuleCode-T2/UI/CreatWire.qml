@@ -62,6 +62,7 @@ Item {
     }
 
     Component.onDestruction: {
+        hmiAdaptor.setWorkFlow(3,0,"")
         hmiAdaptor.operateProcessExec("Stop")
     }
 
