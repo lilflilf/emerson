@@ -357,7 +357,7 @@ bool MakeWeldProcess::_stop()
     {
         m_pThread->setSuspendEnabled(true);
         m_pThread->setStopEnabled(true);
-        qDebug()<<"Thread stop"<<m_pThread->wait();
+        qDebug()<<"Weld Process stop"<<m_pThread->wait();
         delete m_pThread;
         m_pThread = NULL;
     }

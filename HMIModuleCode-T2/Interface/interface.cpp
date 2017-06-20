@@ -42,9 +42,9 @@ void InterfaceClass::CheckBransonFolder()
     {
         objDriveSystem.mkdir("c:\\BransonData\\"); //Creates a new directory or folder.
         objDriveSystem.mkdir("c:\\BransonData\\Library\\");
+        objDriveSystem.mkdir("c:\\BransonData\\Library\\SpliceImage\\");
         objDriveSystem.mkdir("c:\\BransonData\\Modular Production\\");
         objDriveSystem.mkdir("c:\\BransonData\\History\\");
-//        objDriveSystem.mkdir("c:\\BransonData\\ToolChangeImage\\");
         objDriveSystem.mkdir("c:\\BransonData\\History\\Graph\\");
     }else{
         if (objDriveSystem.exists("c:\\BransonData\\History\\") == false)
