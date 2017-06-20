@@ -904,7 +904,7 @@ Item {
                 Label {
                     id: labelLocation
                     color: "#8295a0"
-                    text: qsTr("LOCATION") //VERTICAL
+                    text: qsTr("Location") //VERTICAL
                     font.family: "arial"
                     font.pointSize: 14
                     anchors.right: parent.right

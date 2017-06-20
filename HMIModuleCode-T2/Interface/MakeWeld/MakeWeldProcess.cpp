@@ -413,6 +413,7 @@ bool MakeWeldProcess::_execute()
         return bResult;
 
     _M102IA->SetIAWidth();
+    DEBUG_PRINT("SetIAWidth");
     _M102IA->SendIACommand(IAComSetPressure, CurrentSplice.WeldSettings.BasicSetting.TrigPres);
     _M102IA->SendIACommand(IAComSetAmplitude, CurrentSplice.WeldSettings.BasicSetting.Amplitude);
     _M102IA->SendIACommand(IAComSetPreburst, CurrentSplice.WeldSettings.AdvanceSetting.PreBurst);
