@@ -653,7 +653,6 @@ double UtilityClass::StringToFormatedData(ScreenShowDataType TypeIndex, QString 
         i++;
     }
     ShownData.remove(i, ShownData.size() - i);
-
     double tmpValue = ShownData.toDouble();
     tmpValue /= txtData[TypeIndex].Factor;
     return tmpValue;

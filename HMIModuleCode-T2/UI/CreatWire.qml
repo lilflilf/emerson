@@ -500,6 +500,7 @@ Item {
                     color: itemColor.color
                     anchors.right: parent.right
                     anchors.rightMargin: 130
+                    clip: true
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
@@ -516,9 +517,9 @@ Item {
                     Rectangle {
                         color: itemStripe.color //"black"
                         height: 5
-                        width: parent.width
+                        width: parent.width + 10
                         anchors.centerIn: parent
-                        rotation: 17
+                        rotation: 22
                         visible: itemStripe.stripeType == 1 ? true : false
                     }
                     Rectangle {
@@ -664,24 +665,29 @@ Item {
 
                         }
                         Rectangle {
+                            id: rectRotation
                             width: 180
                             height: 80
                             border.width: 2
                             border.color: "black"
-                            Rectangle {
-                                color: "black"
-                                height: 15
-                                width: parent.width
-                                anchors.centerIn: parent
-                                rotation: 17
+                            Item {
+                                anchors.fill: parent
+                                clip: true
+                                Rectangle {
+                                    color: "black"
+                                    height: 15
+                                    width: parent.width + 15
+                                    anchors.centerIn: parent
+                                    rotation: 27
+                                }
                             }
                             Rectangle {
-                                width: parent.width + 10
-                                height: parent.height + 10
+                                width: rectRotation.width + 10
+                                height: rectRotation.height + 10
                                 color: Qt.rgba(0,0,0,0)
                                 border.color: "white"
                                 border.width: 2
-                                anchors.centerIn: parent
+                                anchors.centerIn: rectRotation
                                 visible: radioButton1.checked ? true : false
                             }
                             RadioButton {
@@ -698,6 +704,7 @@ Item {
                                 }
                             }
                         }
+
                         Rectangle {
                             width: 180
                             height: 80

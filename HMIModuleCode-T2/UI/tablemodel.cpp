@@ -1754,11 +1754,7 @@ int SplicesModel::saveSplice(bool bIsEdit)
     }
     else
     {
-        for (int i = 0;i<1000;i++)
-        {
-            presetElement.SpliceName = QString("%1").arg(101+i);
-            spliceId = m_spliceAdaptor->InsertRecordIntoTable(&presetElement);
-        }
+        spliceId = m_spliceAdaptor->InsertRecordIntoTable(&presetElement);
     }
     setModelList();
     return spliceId;

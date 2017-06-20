@@ -230,7 +230,7 @@ Item {
                         }
                         Rectangle {
                             id: centerWork
-//                            anchors.centerIn: parent
+                            anchors.centerIn: parent
                             width: 35
                             height: 35
                             radius: 35
@@ -246,14 +246,14 @@ Item {
                                 font.family: "arial"
                             }
 
-                            MouseArea {
-                                id: dragArea
-                                anchors.fill: parent
-                                drag.target: parent
-                                drag.axis: Drag.XAxis; drag.minimumX: 1; drag.maximumX: 200
-                                onClicked: {
-                                }
-                            }
+//                            MouseArea {
+//                                id: dragArea
+//                                anchors.fill: parent
+//                                drag.target: parent
+//                                drag.axis: Drag.XAxis; drag.minimumX: 1; drag.maximumX: 200
+//                                onClicked: {
+//                                }
+//                            }
                         }
                         ListModel {
                             id: testModel

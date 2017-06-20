@@ -63,12 +63,22 @@ int StringToVariant::WidthToInt(QString strWidth)
 
 int StringToVariant::TriggerPressureToInt(QString strTPressure)
 {
-    return (int)_Utility->StringToFormatedData(DINTriggerPressure, strTPressure);
+    int ret;
+    bool ok;
+    double red = _Utility->StringToFormatedData(DINTriggerPressure, strTPressure);
+    QString str = QString("%1").arg(red);
+    ret = str.toInt(&ok,10);
+    return ret;
 }
 
 int StringToVariant::WeldPressureToInt(QString strPressure)
 {
-    return (int)_Utility->StringToFormatedData(DINPressure, strPressure);
+    int ret;
+    bool ok;
+    double red = _Utility->StringToFormatedData(DINPressure, strPressure);
+    QString str = QString("%1").arg(red);
+    ret = str.toInt(&ok,10);
+    return ret;
 }
 
 int StringToVariant::TimePlusToInt(QString strTime)

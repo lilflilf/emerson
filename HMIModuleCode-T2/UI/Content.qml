@@ -863,6 +863,7 @@ Item {
             width: parent.width*0.26
             color: "#052a40"
             height: 43
+            visible: false
             Text {
                 id: name
                 anchors.left: parent.left
