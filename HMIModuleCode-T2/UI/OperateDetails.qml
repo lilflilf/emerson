@@ -275,6 +275,17 @@ Item {
         list = spliceModel.getWireIdList()
         spliceDetailsItem.clear()
         spliceName.text = spliceModel.getStructValue("SpliceName","")
+        totalcross.text = qsTr("Total Cross Section: ") + spliceModel.getStructValue("Cross Section","")
+        if (spliceModel.getStructValue("Insulation","") == "left")
+        {
+            spliceTips.visible = true
+            spliceTips.text = qsTr("Insulation: ")+ spliceModel.getStructValue("ShrinkId","") + " Temp:" +
+                    spliceModel.getStructValue("ShrinkTemp","") + " Time:" + spliceModel.getStructValue("ShrinkTime","")
+        }
+        else
+        {
+            spliceTips.visible = false
+        }
         spliceDetailsImage.source = spliceModel.getStructValue("PicPath","")
         for (var i = 0; i < list.length;i++)
         {
