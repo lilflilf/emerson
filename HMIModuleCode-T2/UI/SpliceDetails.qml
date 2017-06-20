@@ -1076,17 +1076,22 @@ Item {
                 onColorChanged: {
                     mytextLeft.color = colorReverse(leftRec.color.toString())
                 }
-                Rectangle {
-                    id: tripecolor
-                    height: 5
-                    width: leftItem.position == "leftList" ? (stripeType == 2 ? parent.height : listModelLeft.count <= 5 ? parent.width : parent.width - 30) : (myStripeType == 2 ? parent.height : parent.width)
-                    anchors.verticalCenter: parent.verticalCenter
-                    color: leftItem.position == "leftList" ? stripeColor : myStripeColor
-                    visible: leftItem.position == "leftList" ? (stripeType == 3 ? false : true) : (myStripeType == 3 ? false : true)
-                    rotation: leftItem.position == "leftList" ? (stripeType == 0 ? 0 : stripeType == 1 ? 30 : stripeType == 2 ? 90 : 0) : (myStripeType == 0 ? 0 : myStripeType == 1 ? 30 : myStripeType == 2 ? 90 : 0)
-                    clip: false
+                Item {
+                    anchors.fill: parent
+                    clip: true
+                    Rectangle {
+                        id: tripecolor
+                        height: 5
+                        width: 70 //leftItem.position == "leftList" ? (stripeType == 2 ? parent.height : listModelLeft.count <= 5 ? parent.width : parent.width - 30) : (myStripeType == 2 ? parent.height : parent.width)
+                        anchors.verticalCenter: parent.verticalCenter
+                        color: leftItem.position == "leftList" ? stripeColor : myStripeColor
+                        visible: leftItem.position == "leftList" ? (stripeType == 3 ? false : true) : (myStripeType == 3 ? false : true)
+                        rotation: leftItem.position == "leftList" ? (stripeType == 0 ? 0 : stripeType == 1 ? 45 : stripeType == 2 ? 90 : 0) : (myStripeType == 0 ? 0 : myStripeType == 1 ? 45 : myStripeType == 2 ? 90 : 0)
 
+                    }
                 }
+
+
                 MouseArea {
 //                    anchors.fill: parent
                     anchors.right: leftRec.right
