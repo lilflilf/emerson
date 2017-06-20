@@ -317,6 +317,7 @@ Item {
 
     function addWire()
     {
+        crossSection = true
         if (wireCount < 20 && listModelRight.count < 10) {
             listModelRight.append({"myLineLength":200,"mycolor":wireModel.getStructValue("WireColor"),"isCheck":false,"linetext":hmiAdaptor.getStringValue(wireModel.getStructValue2("Gauge","current")),
                 "wireName":" ","wireType":wireModel.getStructValue("WireType"),"gauge":wireModel.getStructValue("Gauge"),"gaugeawg":wireModel.getStructValue("AWG"),

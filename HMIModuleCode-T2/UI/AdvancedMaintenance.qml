@@ -450,6 +450,35 @@ Item {
         }
     }
 
+    Item {
+        anchors.top: testSetting.bottom
+        anchors.left: testSetting.left
+        anchors.topMargin: 10
+        width: testSetting.width / 2 - 30
+        height: 60
+        visible: tipText.visible
+        Text {
+            text: qsTr("Reliability")
+            font.family: "arial"
+            font.pixelSize: 20
+            color: "white"
+            anchors.verticalCenter: parent.verticalCenter
+            //                    visible: index == 1 ? false : true
+        }
+        Switch2 {
+            width: (rowButton2.width-20)/4
+            height: 60
+            anchors.right: parent.right
+            textLeft: qsTr("ON")
+            textRight: qsTr("OFF")
+            state: "right"
+            onStateChanged: {
+                hmiAdaptor.setAdvancedMaintenanceValue(1,keyNum.inputText)
+            }
+        }
+    }
+
+
     Rectangle {
         id: backGround
         anchors.fill: parent

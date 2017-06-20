@@ -1676,13 +1676,14 @@ Item {
 
                 if (firstComeIn)
                     return
-                if (crossSection)
-                    return
-                if (crossSection == false ) // && bIsEditSplice == false
+//                if (crossSection)
+//                    return
+                if (crossSection == true ) // && bIsEditSplice == false
                 {
                     spliceModel.setStructValue("Total Cross",spliceDetailsTip2.text)
                     spliceModel.calculateSpliceData()
                     initSettings()
+                    crossSection = false
                 }
             }
         }
@@ -2924,7 +2925,6 @@ Item {
         currentValue: "4"
         onCurrentClickIndex: {
             if (index == 15) {
-                freshProcess()
                 if (edit2.inputFocus) {
                     edit2.inputText = keyNum.inputText
                     edit2.inputFocus = false
@@ -2949,10 +2949,6 @@ Item {
                     return
                 } else {
                     var tempString;
-
-                    if (creatWire.selectModel == 1)
-                        crossSection = true
-
                     if (creatWire.selectModel == 1)
                     {
                         if (creatWire.selectIndex == 0)
@@ -2997,6 +2993,7 @@ Item {
                 keyNum.visible = false
                 keyNum.inputText = ""
                 keyNum.tempValue = ""
+                freshProcess()
             } else if (index == 11) {
                 if (edit2.inputFocus) {
                     edit2.inputFocus = false

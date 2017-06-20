@@ -34,12 +34,12 @@ Item {
         lengthRadio1.bIsCheck = hmiAdaptor.weldDefaultsGetValue2(2,0)
         lengthRadio2.bIsCheck = hmiAdaptor.weldDefaultsGetValue2(2,1)
 
-        repeaterModel.append({"headTitle":qsTr("Width Encoder"),"leftText":qsTr("off"),"righttext":qsTr("on"),"switchState":hmiAdaptor.weldDefaultsGetSwitch("Width Encoder")})
-        repeaterModel.append({"headTitle":qsTr("Height Encoder"),"leftText":qsTr("off"),"righttext":qsTr("on"),"switchState":hmiAdaptor.weldDefaultsGetSwitch("Height Encoder")})
-        repeaterModel2.append({"headTitle":qsTr("Foot Pedal Abort"),"leftText":qsTr("off"),"righttext":qsTr("on"),"switchState":hmiAdaptor.weldDefaultsGetSwitch("Foot Pedal Abort")})
-        repeaterModel2.append({"headTitle":qsTr("Seek"),"leftText":qsTr("off"),"righttext":qsTr("on"),"switchState":hmiAdaptor.weldDefaultsGetSwitch("Seek")})
-        repeaterModel2.append({"headTitle":qsTr("Cooling"),"leftText":qsTr("off"),"righttext":qsTr("on"),"switchState":hmiAdaptor.weldDefaultsGetSwitch("Cooling")})
-//        repeaterModel2.append({"headTitle":qsTr("Lock on Alarm"),"leftText":qsTr("off"),"righttext":qsTr("on"),"switchState":hmiAdaptor.weldDefaultsGetSwitch("Cooling")})
+        repeaterModel.append({"headTitle":qsTr("Width Encoder"),"leftText":qsTr("OFF"),"righttext":qsTr("ON"),"switchState":hmiAdaptor.weldDefaultsGetSwitch("Width Encoder")})
+        repeaterModel.append({"headTitle":qsTr("Height Encoder"),"leftText":qsTr("OFF"),"righttext":qsTr("ON"),"switchState":hmiAdaptor.weldDefaultsGetSwitch("Height Encoder")})
+        repeaterModel2.append({"headTitle":qsTr("Foot Pedal Abort"),"leftText":qsTr("OFF"),"righttext":qsTr("ON"),"switchState":hmiAdaptor.weldDefaultsGetSwitch("Foot Pedal Abort")})
+        repeaterModel2.append({"headTitle":qsTr("Seek"),"leftText":qsTr("OFF"),"righttext":qsTr("ON"),"switchState":hmiAdaptor.weldDefaultsGetSwitch("Seek")})
+        repeaterModel2.append({"headTitle":qsTr("Cooling"),"leftText":qsTr("OFF"),"righttext":qsTr("ON"),"switchState":hmiAdaptor.weldDefaultsGetSwitch("Cooling")})
+//        repeaterModel2.append({"headTitle":qsTr("Lock on Alarm"),"leftText":qsTr("OFF"),"righttext":qsTr("ON"),"switchState":hmiAdaptor.weldDefaultsGetSwitch("Cooling")})
 
         graphModel.append({"graphText":"1MS","isSelect":hmiAdaptor.weldDefaultsGetSwitch("Graph Data Sampling 1ms")})
         graphModel.append({"graphText":"5MS","isSelect":hmiAdaptor.weldDefaultsGetSwitch("Graph Data Sampling 5ms")})
@@ -377,8 +377,8 @@ Item {
                 anchors.verticalCenter: coolingsecText.verticalCenter
                 width: 150
                 height: 50
-                textLeft: qsTr("off")
-                textRight: qsTr("on")
+                textLeft: qsTr("OFF")
+                textRight: qsTr("ON")
                 state: hmiAdaptor.weldDefaultsGetSwitch("cooling(1sec/100J)") ? "right" : "left"
                 clip: true
                 onStateChanged: {
@@ -408,8 +408,8 @@ Item {
                 anchors.verticalCenter: coolingToolingText.verticalCenter
                 width: 150
                 height: 50
-                textLeft: qsTr("off")
-                textRight: qsTr("on")
+                textLeft: qsTr("OFF")
+                textRight: qsTr("ON")
                 state: hmiAdaptor.weldDefaultsGetSwitch("Cooling Tooling") ? "right" : "left"
                 clip: true
             }
