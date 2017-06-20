@@ -10,6 +10,7 @@ Item {
     property int selectIndx: 0
     property int count: partTitleModel.count
     property int tempY: 0
+
     function shrinkGetValue(index1,index2)
     {
         if (index2 == 0 )
@@ -679,6 +680,7 @@ Item {
     }
     Component {
         id: listDelegate
+
         Item {
             width: listView.width
             height: 50

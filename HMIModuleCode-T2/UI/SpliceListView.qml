@@ -30,7 +30,9 @@ Item {
         if (selectIndex <= 0 )
             return
         listModel.move(selectIndex,selectIndex-1,1)
-        splice.currentIndex = splice.currentIndex - 1
+        splice.currentIndex = selectIndex - 1
+        splice.positionViewAtIndex(selectIndex - 1,ListView.Center)
+
         selectIndex = selectIndex-1
         currentSelecte(selectIndex)
         changeNumRecVisable(spliceList.y + tempY * 48, true)
@@ -41,7 +43,9 @@ Item {
         if (listModel.count <= selectIndex)
             return
         listModel.move(selectIndex,selectIndex+1,1)
-        splice.currentIndex = splice.currentIndex + 1
+
+        splice.currentIndex = selectIndex + 1
+        splice.positionViewAtIndex(selectIndex + 1,ListView.Center)
         selectIndex = selectIndex+1
         currentSelecte(selectIndex)
         changeNumRecVisable(spliceList.y + tempY * 48, true)
@@ -53,7 +57,7 @@ Item {
         height: spliceList.height
         clip: true
         delegate: spliceDelegate
-//        highlightRangeMode: ListView.StrictlyEnforceRange
+//        highlightRangeMode: ListView.ApplyRange
         onDragStarted: {
             changeNumRecVisable(0, false)
         }
@@ -122,7 +126,7 @@ Item {
                     }
                     else {
                         currentSelecte(-1)
-                        changeNumRecVisable(spliceList.y + 48 * index, false)
+//                        changeNumRecVisable(spliceList.y + 48 * index, false)
                     }
                 }
             }
@@ -201,7 +205,7 @@ Item {
                 backgroundEnabled: false
                 iconSource: "qrc:/images/images/right.png" //"qrc:/images/images/close.png"
                 scale: 1.5
-                onClicked: {
+                onReleased: {
                     var temp = splice.mapFromItem(deleteButton,mouseX,mouseY)
                     tempY = temp.y / 48
                     select.checked = !select.checked
@@ -210,39 +214,14 @@ Item {
                         selectIndex = index
                         bIschange = true
                         changeNumRecVisable(spliceList.y + tempY * 48, true)
-
-//                        changeNumRecVisable(spliceList.y + 48 * index, true)
-
                     }
                     else {
                         bIschange = false
                         currentSelecte(-1)
                         changeNumRecVisable(spliceList.y + 48 * index, false)
                     }
-                    //                    listModel.remove(index)
-
                 }
             }
-//            Rectangle {
-//                id: changeNumRec
-//                z: 13
-//                visible: true
-//                width: 90
-//                height: 90
-//                anchors.left: deleteButton.right
-//                anchors.top: deleteButton.top
-//                CButton {
-//                    id: upbutton
-//                    width: 90
-//                    height: 40
-//                }
-//                CButton {
-//                    width: 90
-//                    height: 40
-//                    anchors.top: upbutton.bottom
-//                    anchors.topMargin: 10
-//                }
-//            }
 
             Rectangle {
                 id: background
@@ -257,6 +236,7 @@ Item {
                     id: select
                     visible: false
                     exclusiveGroup: checkGroup
+                    checked: false
                     onCheckedChanged: {
                         if (select.checked) {
                             background.opacity = 0.5

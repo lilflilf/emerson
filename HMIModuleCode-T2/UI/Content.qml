@@ -264,7 +264,7 @@ Item {
         var shrinkTemp = spliceModel.getStructValue("ShrinkTemp","")
         var shrinkTime = spliceModel.getStructValue("ShrinkTime","")
 
-        insulation.visible = true
+        insulation.visible = spliceModel.getStructValue("Insulation","") == "left" ? true : false;
         spliceDetailsTips.visible = true
         insulation.text = qsTr("  Insulation: ") + shrinkId + qsTr(" Temp:") + shrinkTemp + qsTr(" Time:") + shrinkTime
 
@@ -1771,7 +1771,7 @@ Item {
         id: mouseBack
         anchors.fill: parent
         propagateComposedEvents: true
-        onClicked: {
+        onPressed: {
             mouse.accepted = false
             changeNumRec.visible = false
             mouseBack.visible = false
@@ -1786,6 +1786,10 @@ Item {
         anchors.left: swipeView.right
         anchors.top: parent.top
         color: "#052a40"
+        MouseArea {
+            anchors.fill: parent
+        }
+
         CButton {
             id: upbutton
             width: 90
