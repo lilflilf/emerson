@@ -140,6 +140,8 @@ Item {
         settingsModel.append({"tipText":qsTr("W.P"),"topText":qsTr(""),"bottomText":spliceModel.getStructValue("Weld Pressure","current"),"maxText":spliceModel.getStructValue("Weld Pressure","max"),"minText":spliceModel.getStructValue("Weld Pressure","min")})
         settingsModel.append({"tipText":qsTr("Amplitude"),"topText":qsTr(""),"bottomText":spliceModel.getStructValue("Amplitude","current"),"maxText":spliceModel.getStructValue("Amplitude","max"),"minText":spliceModel.getStructValue("Amplitude","min")})
         settingsModel.append({"tipText":qsTr("Width"),"topText":qsTr(""),"bottomText":spliceModel.getStructValue("Width","current"),"maxText":spliceModel.getStructValue("Width","max"),"minText":spliceModel.getStructValue("Width","min")})
+        if (tabBar.currentIndex == 1)
+            freshProcess()
     }
     function freshProcess()
     {
@@ -184,6 +186,7 @@ Item {
         spliceModel.setProcessValue("ShrinkTemp",shrinkSet.shrinkTemp);
         spliceModel.setProcessValue("ShrinkTime",shrinkSet.shrinkTime);
         spliceModel.setProcessValue("ShrinkLock",shrinkSet.shrinkLock);
+
     }
 
     SwipeView {
@@ -1128,6 +1131,8 @@ Item {
                 anchors.right: save.left
                 anchors.rightMargin: 10
                 onClicked: {
+                    spliceDetailsItem.clear()
+                    edit1.inputText = ""
                     backGround.visible = true
                     backGround.opacity = 0.5
                     addWireLibrary.visible = true
@@ -1924,9 +1929,11 @@ Item {
                 wireModel.updateSpliceIdToWire(list, spliceId)
                 if(creatWire.bIsFromLib)
                     return
+
 //                if (spliceId != -1 && !creatWire.bIsEditSplice)
                  mainRoot.signalSaveSplice(spliceId,creatWire.bIsEditSplice)
                  mainRoot.popStackView()
+
             }
         }
     }
@@ -2968,6 +2975,7 @@ Item {
                 keyNum.inputText = ""
                 keyNum.tempValue = ""
                 freshProcess()
+
             } else if (index == 11) {
                 if (edit2.inputFocus) {
                     edit2.inputFocus = false

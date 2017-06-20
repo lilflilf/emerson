@@ -96,7 +96,7 @@ Item {
         }
         onSignalMantenaneceCount: {
             progressBar3.value = count
-            maintenance.text = qsTr("MAINTENANCE COUNTER") + count + "/" + hmiAdaptor.maintenanceCountGetValue(0,2)
+            maintenance.text = qsTr("MAINTENANCE COUNTER") + count + "/" + hmiAdaptor.operateGetMaintenanceCount(1)
         }
     }
 
@@ -834,7 +834,7 @@ Item {
         anchors.bottomMargin: 6
         font.pointSize: 13
         font.family: "arial"
-        text: qsTr("MAINTENANCE COUNTER") + hmiAdaptor.maintenanceCountGetValue(0,3) + "/" + hmiAdaptor.maintenanceCountGetValue(0,2)
+        text: qsTr("MAINTENANCE COUNTER") + hmiAdaptor.operateGetMaintenanceCount(0) + "/" + hmiAdaptor.operateGetMaintenanceCount(1)
         color: "white"
     }
     CProgressBar {
@@ -844,9 +844,9 @@ Item {
         anchors.left: showFlag != 1 ? offline.left : qualityWindow.left
         width: showFlag == 1 ? qualityWindow.width/2-20 : (showFlag == 2 ? qualityWindow.width : spliceDetailsItem.width)
         height: 10
-        maximum: hmiAdaptor.maintenanceCountGetValue(0,2)
+        maximum: hmiAdaptor.operateGetMaintenanceCount(1)
         minimum: 0
-        value: hmiAdaptor.maintenanceCountGetValue(0,3)
+        value: hmiAdaptor.operateGetMaintenanceCount(0)
     }
 
     CButton {

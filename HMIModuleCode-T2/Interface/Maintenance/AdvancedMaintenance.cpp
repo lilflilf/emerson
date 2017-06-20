@@ -509,6 +509,7 @@ void AdvancedMaintenance::AmplitudeSetText(QString AmplitudeStr)
     _M102IA->SendIACommand(IAComSetHornCalibAmplitude, iAmplitude);
     _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.HORNamplitude);
     _Interface->StatusData.WriteStatusDataToQSetting();
+    DEBUG_PRINT(_M2010->ReceiveFlags.HORNamplitude);
 }
 
 void AdvancedMaintenance::PowerSetText(QString PowerStr)
