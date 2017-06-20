@@ -159,6 +159,10 @@ Status_Data &Status_Data::operator= (const Status_Data &StatusDataObj)
     this->ActuatorPartNumber = StatusDataObj.ActuatorPartNumber;
     this->ActuatorSerialNumber = StatusDataObj.ActuatorSerialNumber;
     this->ActuatorVersion = StatusDataObj.ActuatorVersion;
+
+    this->PSPartNumber = StatusDataObj.PSPartNumber;
+    this->PSSerialNumber = StatusDataObj.PSSerialNumber;
+
     this->carTemplate.clear();
     QMap<int, QString>::const_iterator it;
     for ( it = StatusDataObj.carTemplate.begin(); it != StatusDataObj.carTemplate.end(); ++it )
@@ -365,6 +369,9 @@ bool Status_Data::ReadStatusDataFromQSetting()
     ActuatorSerialNumber = settings.value("ActuatorSerialNumber").value<QString>();
     ActuatorVersion = settings.value("ActuatorVersion").value<QString>();
 
+    PSPartNumber = settings.value("PSPartNumber").value<QString>();
+    PSSerialNumber = settings.value("PSSerialNumber").value<QString>();
+
     str = settings.value("carTemplate").value<QString>();
     _Utility->StringJsonToMap(str, &carTemplate);
 
@@ -555,6 +562,9 @@ void Status_Data::WriteStatusDataToQSetting()
     settings.setValue("ActuatorPartNumber", ActuatorPartNumber);
     settings.setValue("ActuatorSerialNumber", ActuatorSerialNumber);
     settings.setValue("ActuatorVersion", ActuatorVersion);
+
+    settings.setValue("PSPartNumber", PSPartNumber);
+    settings.setValue("PSSerialNumber", PSSerialNumber);
 
     _Utility->MapJsonToString(&carTemplate, str);
     settings.setValue("carTemplate", str);

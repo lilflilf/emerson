@@ -559,7 +559,10 @@ QString HmiAdaptor::getSoftVerson(int index)
         value = _Interface->StatusData.ActuatorSerialNumber;
         break;
     case 2:
+        value = _Interface->StatusData.PSPartNumber;
+        break;
     case 3:
+        value = _Interface->StatusData.PSSerialNumber;
         break;
     case 4:
         value = _Interface->CurrentVersions.ControllerVersion;
