@@ -39,10 +39,12 @@ Item {
     Connections {
         target: mainRoot
         onSignalStackViewPop: {
-            if (spliceRadio.checked) {
-                listView.model = null
-                listView.model = spliceModel
-            }
+            mainRoot.titleTextChanged(qsTr("Library"))
+
+//            if (spliceRadio.checked) {
+//                listView.model = null
+//                listView.model = spliceModel
+//            }
         }
     }
     Text {

@@ -498,7 +498,7 @@ public:
     bool LockKeyFlag;
     bool FootPedalFlag;
     QMap<int, QString> carTemplate;
-    int ReliablityMode;
+    bool ReliablityMode;
     bool PhysicalKeyMode;
 public:
     Status_Data();

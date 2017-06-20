@@ -498,6 +498,14 @@ QString HmiAdaptor::maintenanceCountGetValue(int code, int index)
     return value;
 }
 
+int HmiAdaptor::operateGetMaintenanceCount(int type)
+{
+    if (type == 0)
+        return interfaceClass->StatusData.CurrentCountMaintenanceLimits[0];
+    else if (type == 1)
+        return interfaceClass->StatusData.MaintenanceCountLimits[0];
+}
+
 QString HmiAdaptor::maintenanceCountGetImage(int index)
 {
     QString source = "";
@@ -797,7 +805,6 @@ bool HmiAdaptor::login(QString passwd)
 {
     OperatorElement myOperator;
     bool isLog = operatorModel->login(passwd, &myOperator);
-    qDebug() << isLog << (int)myOperator.PermissionLevel;
     if (isLog)
     {
         if (myOperator.PermissionLevel == OperatorElement::PHYKEY) {
@@ -808,11 +815,16 @@ bool HmiAdaptor::login(QString passwd)
         if (isLog)
             interfaceClass->CurrentOperator = myOperator;
     }
-//    else
-//    {
-//        if (passwd == "0000")
-//            isLog = true;
-//    }
+    else
+    {
+        BransonMessageBox tmpMsgBox;
+        tmpMsgBox.MsgPrompt = QObject::tr("There is not any appropriate user account for the requested!");
+        tmpMsgBox.MsgTitle = QObject::tr("Warning");
+        tmpMsgBox.TipsMode = (OKOnly + Exclamation);
+        tmpMsgBox.func_ptr = NULL;
+        tmpMsgBox._Object = NULL;
+        interfaceClass->cMsgBox(&tmpMsgBox);
+    }
 
     return isLog;
 }
@@ -1590,13 +1602,9 @@ void HmiAdaptor::dataCommunicationShrinkTubeTesting()
 
 void HmiAdaptor::slotWeldCycleCompleted(bool result)
 {
-    qDebug() << "slotWeldCycleCompleted in hmiadaptor" << result;
     if (result) {
         alarmModel->weldResultElement = operateProcess->CurrentWeldResult;
         emit signalWeldCycleCompleted(result);
-
-        //        maintenanceCountExecute("_Recall");
-//        int count = maintenanceCountGetValue(0,3).toInt();
         emit signalMantenaneceCount(interfaceClass->StatusData.CurrentCountMaintenanceLimits[0]);
     }
 }
