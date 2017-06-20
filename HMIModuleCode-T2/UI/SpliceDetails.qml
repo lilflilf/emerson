@@ -12,6 +12,7 @@ Item {
     property alias centerVisable: centerButton.visible
     property alias topLeft: topLeft
 
+    property bool centerFuncVisable: true
     property bool bIsOperate: false
     property var selectColor: ""
     property var selectText: ""
@@ -1020,8 +1021,10 @@ Item {
             height: 40
             visible: false
             onClicked: {
-                wireModel.createNew()
-                addWire()
+                if (centerFuncVisable) {
+                    wireModel.createNew()
+                    addWire()
+                }
             }
         }
         FileDialog {

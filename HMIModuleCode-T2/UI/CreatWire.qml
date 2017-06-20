@@ -140,7 +140,6 @@ Item {
         settingsModel.append({"tipText":qsTr("W.P"),"topText":qsTr(""),"bottomText":spliceModel.getStructValue("Weld Pressure","current"),"maxText":spliceModel.getStructValue("Weld Pressure","max"),"minText":spliceModel.getStructValue("Weld Pressure","min")})
         settingsModel.append({"tipText":qsTr("Amplitude"),"topText":qsTr(""),"bottomText":spliceModel.getStructValue("Amplitude","current"),"maxText":spliceModel.getStructValue("Amplitude","max"),"minText":spliceModel.getStructValue("Amplitude","min")})
         settingsModel.append({"tipText":qsTr("Width"),"topText":qsTr(""),"bottomText":spliceModel.getStructValue("Width","current"),"maxText":spliceModel.getStructValue("Width","max"),"minText":spliceModel.getStructValue("Width","min")})
-
     }
     function freshProcess()
     {
@@ -185,32 +184,6 @@ Item {
         spliceModel.setProcessValue("ShrinkTemp",shrinkSet.shrinkTemp);
         spliceModel.setProcessValue("ShrinkTime",shrinkSet.shrinkTime);
         spliceModel.setProcessValue("ShrinkLock",shrinkSet.shrinkLock);
-
-
-//        spliceModel.setProcessValue("WeldModel",weldListModel.model1)
-//        spliceModel.setProcessValue("StepModel",weldListModel.model2)
-//        spliceModel.setProcessValue("Pre Burst",weldSettingModel.get(0).textValue)
-//        spliceModel.setProcessValue("After Burst",weldSettingModel.get(1).textValue)
-//        spliceModel.setProcessValue("Squeeze Time",weldSettingModel.get(2).textValue)
-//        spliceModel.setProcessValue("Hold Time",weldSettingModel.get(3).textValue)
-
-//        spliceModel.setProcessValue("ActualWidth",widthModel.get(1).textValue)
-//        spliceModel.setProcessValue("ActualHeight",heightModel.get(1).textValue)
-//        spliceModel.setProcessValue("DisplayWidth",widthModel.get(0).textValue)
-//        spliceModel.setProcessValue("DisplayHeight",heightModel.get(0).textValue)
-
-//        spliceModel.setProcessValue("Unload Time",loadValue.inputText)
-//        spliceModel.setProcessValue("Load Time",loadValue2.inputText)
-
-//        spliceModel.setProcessValue("Anti-Side",thirdSwitchModel.get(0).switchState == "left" ? true : false)
-//        spliceModel.setProcessValue("Insulation",thirdSwitchModel.get(1).switchState == "left" ? true : false)
-//        spliceModel.setProcessValue("Cut Off",cutteronoroff.state == "left" ? true : false)
-
-//        spliceModel.setProcessValue("CutterTime",cutterModel.get(0).switchState == "left" ? true : false)
-//        spliceModel.setProcessValue("CutterPeakPower",cutterModel.get(1).switchState == "left" ? true : false)
-//        spliceModel.setProcessValue("CutterPreHeight",cutterModel.get(2).switchState == "left" ? true : false)
-//        spliceModel.setProcessValue("CutterPostHeight",cutterModel.get(3).switchState == "left" ? true : false)
-
     }
 
     SwipeView {
@@ -1516,6 +1489,7 @@ Item {
             console.log("currentIndex = ",currentIndex)
             if (currentIndex == 0)
             {
+                spliceDetailsItem.centerFuncVisable = true
                 wireLibrary.visible = true
                 wirelibrary.visible = true
                 addWire.visible = true
@@ -1524,6 +1498,7 @@ Item {
             }
             else if (currentIndex == 1)
             {
+                spliceDetailsItem.centerFuncVisable = false
                 wireLibrary.visible = false
                 wirelibrary.visible = false
                 addWire.visible = false
@@ -1951,7 +1926,6 @@ Item {
                     return
 //                if (spliceId != -1 && !creatWire.bIsEditSplice)
                  mainRoot.signalSaveSplice(spliceId,creatWire.bIsEditSplice)
-
                  mainRoot.popStackView()
             }
         }

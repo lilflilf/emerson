@@ -1508,7 +1508,7 @@ void SplicesModel::setStructValue(QString valueKey, QVariant value)
 
 void SplicesModel::setProcessValue(QString valueKey, QVariant value)
 {
-    qDebug() << valueKey << value;
+    qDebug() << "0000000000000000000" << valueKey << value;
     if (valueKey == "Energy") {
         processPresetElement.WeldSettings.BasicSetting.Energy = stringToVariant->EnergyToInt(value.toString());
     }
