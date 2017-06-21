@@ -931,7 +931,6 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
 //        _Interface->StatusData.CurrentCountMaintenanceLimits[2] = GetLongValue(HexString, 57);
 //        _Interface->StatusData.CurrentCountMaintenanceLimits[3] = GetLongValue(HexString, 65);
         _M2010->ReceiveFlags.MAINTENANCEcounters = true;
-//        Save_StatusData False
         break;
     case IASigDataCycleCntr:
         _Interface->StatusData.CycleCount = GetLongValue(HexString, 9);
