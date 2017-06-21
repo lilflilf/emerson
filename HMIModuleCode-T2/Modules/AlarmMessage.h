@@ -12,12 +12,14 @@ private:
 private:
     void RunModeMouseButton();
     void ShowText(int SpliceID);
+    void UpdateAlarmLog(QString AlarmStr, QString AlarmType, int SpliceID);
     static void ResetAnyAlarm(void* _obj);
+    static void GiveupAlarmReset(void* _obj);
 
 public:
     bool IsAlarmShown();
     void Initialization(int SpliceID);
-    void UpdateAlarmLog(QString AlarmStr, QString AlarmType, int SpliceID);
+    void ShowMaintenanceText(int SpliceID, QString AlarmMsg, enum ALARMTYPE alarmtype);
 public:
     static AlarmMessage* Instance();
 protected:

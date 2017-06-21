@@ -205,10 +205,43 @@ void AlarmMessage::ShowText(int SpliceID)
     tmpMsgBox.MsgTitle = QObject::tr("Alarm");
     tmpMsgBox.TipsMode = (RESETCancel | Alarm);
     tmpMsgBox.OKfunc_ptr = AlarmMessage::ResetAnyAlarm;
-    tmpMsgBox.Cancelfunc_ptr = NULL;
+    tmpMsgBox.Cancelfunc_ptr = AlarmMessage::GiveupAlarmReset;
     tmpMsgBox._Object = this;
     _Interface->cMsgBox(&tmpMsgBox);
     AlarmPresent = true;
+}
+
+
+void AlarmMessage::ShowMaintenanceText(int SpliceID, QString AlarmMsg, enum ALARMTYPE alarmtype)
+{
+    M102IA *_M102IA = M102IA::Instance();
+    InterfaceClass* _Interface = InterfaceClass::Instance();
+    VariantToString* _Var2Str = VariantToString::Instance();
+    AlarmPresent = false;
+    struct BransonMessageBox tmpMsgBox;
+    if(_M102IA->SendCommandSetRunMode(0) == false)
+    {
+        tmpMsgBox.MsgTitle = QObject::tr("ERROR");
+        tmpMsgBox.MsgPrompt = QObject::tr("Can't get any Response from controller!");
+        tmpMsgBox.TipsMode = Critical;
+        tmpMsgBox.OKfunc_ptr = NULL;
+        tmpMsgBox.Cancelfunc_ptr = NULL;
+        _Interface->cMsgBox(&tmpMsgBox);
+    }
+    else
+    {
+        mAlarmIDList.clear();
+        QString AlarmType = _Var2Str->AlarmTypeToString(alarmtype);
+        UpdateAlarmLog(AlarmMsg, AlarmType, SpliceID);
+        tmpMsgBox.MsgPrompt = AlarmMsg;
+        tmpMsgBox.MsgTitle = QObject::tr("Alarm");
+        tmpMsgBox.TipsMode = (RESETCancel | Alarm);
+        tmpMsgBox.OKfunc_ptr = AlarmMessage::ResetAnyAlarm;
+        tmpMsgBox.Cancelfunc_ptr = AlarmMessage::GiveupAlarmReset;
+        tmpMsgBox._Object = this;
+        _Interface->cMsgBox(&tmpMsgBox);
+        AlarmPresent = true;
+    }
 }
 
 void AlarmMessage::ResetAnyAlarm(void* _obj)
@@ -233,6 +266,13 @@ void AlarmMessage::ResetAnyAlarm(void* _obj)
         }
     }
     _Alarm->mAlarmIDList.clear();
+}
+
+void AlarmMessage::GiveupAlarmReset(void* _obj)
+{
+    UNUSED(_obj);
+    InterfaceClass* _Interface = InterfaceClass::Instance();
+    _Interface->ShownAlarmSign();
 }
 
 void AlarmMessage::RunModeMouseButton()
