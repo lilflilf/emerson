@@ -204,7 +204,8 @@ public:
     QMutex mutex;
     StatisticalTrend *statisticalTrend;
     int taskBarHeight;
-    void (*func_ptr)(void*);
+    void (*OKfunc_ptr)(void*);
+    void (*Canclefunc_ptr)(void*);
     int testSpliceId;
     int editWireId;
     int editPartId;

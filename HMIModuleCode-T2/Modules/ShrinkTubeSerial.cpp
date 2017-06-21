@@ -122,7 +122,8 @@ void ShrinkTubeSerial::comShrinkTubeReadEventSlot()
             tmpMsgBox.MsgTitle = QObject::tr("Exclamation");
             tmpMsgBox.TipsMode = (OKOnly + Exclamation);
         }
-        tmpMsgBox.func_ptr = NULL;
+        tmpMsgBox.OKfunc_ptr = NULL;
+        tmpMsgBox.Cancelfunc_ptr = NULL;
         tmpMsgBox._Object = NULL;
         _Interface->cMsgBox(&tmpMsgBox);
     }

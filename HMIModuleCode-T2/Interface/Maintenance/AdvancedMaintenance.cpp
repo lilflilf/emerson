@@ -124,7 +124,8 @@ void AdvancedMaintenance::AnvilArm_Click()
         tmpMsgBox.MsgPrompt = QObject::tr("Mask Must be down");
         tmpMsgBox.MsgTitle = QObject::tr("Warning");
         tmpMsgBox.TipsMode = Exclamation;
-        tmpMsgBox.func_ptr = NULL;
+        tmpMsgBox.OKfunc_ptr = NULL;
+        tmpMsgBox.Cancelfunc_ptr = NULL;
         _Interface->cMsgBox(&tmpMsgBox);
     }else if((HornTest == false) || (_M2010->M10Run.Horn_Close == false))
     {

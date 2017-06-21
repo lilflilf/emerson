@@ -208,7 +208,8 @@ bool DBPresetTable::OpenDBObject()
             tmpMsgBox.MsgTitle = QObject::tr("ERROR");
             tmpMsgBox.MsgPrompt = QObject::tr("Please make sure All the production files has been in the Modular Production!");
             tmpMsgBox.TipsMode = Critical;
-            tmpMsgBox.func_ptr = NULL;
+            tmpMsgBox.OKfunc_ptr = NULL;
+            tmpMsgBox.Cancelfunc_ptr = NULL;
             _Interface->cMsgBox(&tmpMsgBox);
             qDebug()<<"Send Alarm signal";
             return bResult;

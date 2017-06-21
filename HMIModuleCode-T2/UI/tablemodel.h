@@ -499,7 +499,7 @@ public slots:
     Q_INVOKABLE QVariant getValue(int index, QString key);
     Q_INVOKABLE void removeValue(int id, QString name);
     Q_INVOKABLE QList<int> getSpliceList();
-    Q_INVOKABLE int getSpliceQty(int spliceId);
+    Q_INVOKABLE int getSpliceQty(int spliceId, int index);
     Q_INVOKABLE void reSetSpliceCount(int spliceId, int qty);
 //    Q_INVOKABLE int getSequenceId(int index);
 

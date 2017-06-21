@@ -1120,7 +1120,8 @@ void M102IA::SendCommandData(int CommandData)
         tmpMsgBox.MsgTitle = QObject::tr("Warning");
         tmpMsgBox.MsgPrompt = QObject::tr("Can't get Response from controller!");
         tmpMsgBox.TipsMode = Exclamation;
-        tmpMsgBox.func_ptr = NULL;
+        tmpMsgBox.OKfunc_ptr = NULL;
+        tmpMsgBox.Cancelfunc_ptr = NULL;
         _Interface->cMsgBox(&tmpMsgBox);
     }
 }
@@ -1333,7 +1334,7 @@ void M102IA::CheckIAControl()
         if ((IOstatus.IO & 0x80000) != (LastIOstatus.IO & 0x80000))
         {
             LastIOstatus.IO = IOstatus.IO;
-            _M10runMode->LockAlertMsg(IOstatus.IO);
+//            _M10runMode->LockAlertMsg(IOstatus.IO);
         }
         //check IN0 for the footPedal
         if ((IOstatus.IO & 0x02) != (LastIOstatus.IO & 0x02))

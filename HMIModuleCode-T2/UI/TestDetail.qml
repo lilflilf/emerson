@@ -106,7 +106,7 @@ Item {
 
     Text {
         id: operateTitle
-        text: qsTr("Splice:")
+        text: qsTr("Splice: ")
         font.pointSize: 16
         font.family: "arial"
         color: "white"

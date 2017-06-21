@@ -44,7 +44,8 @@ bool Calibration::CloseSafetyGuard()
             tmpMsgBox.MsgTitle = QObject::tr("Warning");
             tmpMsgBox.MsgPrompt = QObject::tr("Can't get any Response from controller!");
             tmpMsgBox.TipsMode = Exclamation;
-            tmpMsgBox.func_ptr = NULL;
+            tmpMsgBox.OKfunc_ptr = NULL;
+            tmpMsgBox.Cancelfunc_ptr = NULL;
             _Interface->cMsgBox(&tmpMsgBox);
             bResult = false;
         }else{
@@ -53,7 +54,8 @@ bool Calibration::CloseSafetyGuard()
                 tmpMsgBox.MsgTitle = QObject::tr("Alarm");
                 tmpMsgBox.MsgPrompt = QObject::tr("Weld Safety Alarm!");
                 tmpMsgBox.TipsMode = Alarm;
-                tmpMsgBox.func_ptr = NULL;
+                tmpMsgBox.OKfunc_ptr = NULL;
+                tmpMsgBox.Cancelfunc_ptr = NULL;
                 _Interface->cMsgBox(&tmpMsgBox);
                 bResult = false;
                 MaintenanceLog.MaintenanceMsg =
@@ -163,7 +165,8 @@ void Calibration::HeightCalibration()
             tmpMsgBox.MsgTitle = QObject::tr("Information");
             tmpMsgBox.MsgPrompt = QObject::tr("Calibration Done");
             tmpMsgBox.TipsMode = Information;
-            tmpMsgBox.func_ptr = NULL;
+            tmpMsgBox.OKfunc_ptr = NULL;
+            tmpMsgBox.Cancelfunc_ptr = NULL;
             _Interface->cMsgBox(&tmpMsgBox);
             CalbCount = 1;
             bResult = true;
@@ -175,7 +178,8 @@ void Calibration::HeightCalibration()
             tmpMsgBox.MsgTitle = QObject::tr("Information");
             tmpMsgBox.MsgPrompt = QObject::tr("UnSuccessful! Try again...");
             tmpMsgBox.TipsMode = Information;
-            tmpMsgBox.func_ptr = NULL;
+            tmpMsgBox.OKfunc_ptr = NULL;
+            tmpMsgBox.Cancelfunc_ptr = NULL;
             _Interface->cMsgBox(&tmpMsgBox);
             CalbCount = 1;
             MaintenanceLog.MaintenanceMsg =
@@ -188,7 +192,8 @@ void Calibration::HeightCalibration()
         tmpMsgBox.MsgTitle = QObject::tr("Information");
         tmpMsgBox.MsgPrompt = QObject::tr("UnSuccessful! Try again...");
         tmpMsgBox.TipsMode = Information;
-        tmpMsgBox.func_ptr = NULL;
+        tmpMsgBox.OKfunc_ptr = NULL;
+        tmpMsgBox.Cancelfunc_ptr = NULL;
         _Interface->cMsgBox(&tmpMsgBox);
         CalbCount = 1;
         MaintenanceLog.MaintenanceMsg =

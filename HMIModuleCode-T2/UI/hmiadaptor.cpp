@@ -799,7 +799,8 @@ bool HmiAdaptor::login(QString passwd)
         tmpMsgBox.MsgPrompt = QObject::tr("There is not any appropriate user account for the requested!");
         tmpMsgBox.MsgTitle = QObject::tr("Warning");
         tmpMsgBox.TipsMode = (OKOnly + Exclamation);
-        tmpMsgBox.func_ptr = NULL;
+        tmpMsgBox.OKfunc_ptr = NULL;
+        tmpMsgBox.Cancelfunc_ptr = NULL;
         tmpMsgBox._Object = NULL;
         interfaceClass->cMsgBox(&tmpMsgBox);
     }
@@ -1580,6 +1581,7 @@ void HmiAdaptor::dataCommunicationShrinkTubeTesting()
 
 void HmiAdaptor::slotWeldCycleCompleted(bool result)
 {
+    qDebug() << " slotWeldCycleCompleted" << result;
     if (result) {
         alarmModel->weldResultElement = operateProcess->CurrentWeldResult;
         emit signalWeldCycleCompleted(result);
@@ -1604,7 +1606,8 @@ void HmiAdaptor::reboot()
 void HmiAdaptor::slotEnableDialog(BransonMessageBox &MsgBox)
 {
     bransonMessageBox = MsgBox;
-    this->func_ptr = bransonMessageBox.func_ptr;
+    this->OKfunc_ptr = bransonMessageBox.OKfunc_ptr;
+    this->Canclefunc_ptr = bransonMessageBox.Cancelfunc_ptr;
     bool okVisable = true;
     bool cancelVisable = false;
     QString okText = "OK";;
@@ -1953,9 +1956,9 @@ int HmiAdaptor::getCurrentStatisticsParameterLimit(QString key, int index)
 
 void HmiAdaptor::msgBoxClick(bool clickOK)
 {
-    if (clickOK && this->func_ptr != NULL && bransonMessageBox._Object != NULL) {
-        qDebug() << "msgBoxClick" << this->func_ptr << bransonMessageBox._Object;
-        this->func_ptr(bransonMessageBox._Object);
+    if (clickOK && this->OKfunc_ptr != NULL && bransonMessageBox._Object != NULL) {
+        qDebug() << "msgBoxClick" << this->OKfunc_ptr << bransonMessageBox._Object;
+        this->OKfunc_ptr(bransonMessageBox._Object);
     }
 }
 
@@ -2408,7 +2411,7 @@ void HmiAdaptor::setLanguage(int row, int column)
     tmpMsgBox.MsgPrompt = QObject::tr("All the setting will be avaliable after the system restart.");
     tmpMsgBox.MsgTitle = QObject::tr("Information");
     tmpMsgBox.TipsMode = (OKOnly + Information);
-    tmpMsgBox.func_ptr = InterfaceClass::HotRestartSys;
+    tmpMsgBox.OKfunc_ptr = InterfaceClass::HotRestartSys;
     tmpMsgBox._Object = interfaceClass;
     interfaceClass->cMsgBox(&tmpMsgBox);
 }

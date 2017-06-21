@@ -59,7 +59,8 @@ void PermissionSetting::InitializeFRAM()
     tmpMsgBox.MsgPrompt = QObject::tr("Are you sure you want to Initialize the system?");
     tmpMsgBox.MsgTitle = QObject::tr("Information");
     tmpMsgBox.TipsMode = (OKCancel + Information);
-    tmpMsgBox.func_ptr = PermissionSetting::InitializeSystem;
+    tmpMsgBox.OKfunc_ptr = PermissionSetting::InitializeSystem;
+    tmpMsgBox.Cancelfunc_ptr = NULL;
     tmpMsgBox._Object = this;
     _Interface->cMsgBox(&tmpMsgBox);
 }

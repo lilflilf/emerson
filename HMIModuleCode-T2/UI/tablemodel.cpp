@@ -1,5 +1,6 @@
 #include "tablemodel.h"
 #include "Modules/typedef.h"
+#include "Modules/UtilityClass.h"
 #include <QDebug>
 #include <QQmlPropertyMap>
 
@@ -1910,22 +1911,26 @@ QString SplicesModel::timeMinusToString(int time)
 
 QString SplicesModel::actualTimeToString(int ActualTime)
 {
-    return variantToString->ActualTimeToString(ActualTime);
+    UtilityClass* _Utility = UtilityClass::Instance();
+    return _Utility->FormatedDataToString(DINActTimeNoUnit, ActualTime);
 }
 
 QString SplicesModel::actualPowerToString(int ActualPower)
 {
-    return variantToString->ActualPowerToString(ActualPower);
+    UtilityClass* _Utility = UtilityClass::Instance();
+    return _Utility->FormatedDataToString(DINActPowerNoUnit, ActualPower);
 }
 
 QString SplicesModel::actualPreHeightToString(int ActualPreHeight)
 {
-    return variantToString->ActualPreHeightToString(ActualPreHeight);
+    UtilityClass* _Utility = UtilityClass::Instance();
+    return _Utility->FormatedDataToString(DINActPreHgtNoUnit, ActualPreHeight);
 }
 
 QString SplicesModel::actualHeightToString(int ActualHeight)
 {
-    return variantToString->ActualHeightToString(ActualHeight);
+    UtilityClass* _Utility = UtilityClass::Instance();
+    return _Utility->FormatedDataToString(DINActHgtNoUnit, ActualHeight);
 }
 
 void SplicesModel::updateSplice(PresetElement presetElement)
@@ -4133,16 +4138,19 @@ QList<int> SequenceModel::getSpliceList()
     return list;
 }
 
-int SequenceModel::getSpliceQty(int spliceId)
+int SequenceModel::getSpliceQty(int spliceId,int index)
 {
 
     QMap<int,struct SEQUENCEATTRIBUTE>::iterator it; //遍历map
     int qty;
-    for ( it = sequenceElement.SpliceList.begin(); it != sequenceElement.SpliceList.end(); ++it ) {
-        if (it.value().SpliceID == spliceId)
-            qty = it.value().Quantity;
-    }
-    qDebug() << "getSpliceQty" << spliceId << qty;
+    QList<int> list;
+    list = sequenceElement.SpliceList.keys();
+    qty = sequenceElement.SpliceList.value(list[index]).Quantity;
+//    for ( it = sequenceElement.SpliceList.begin(); it != sequenceElement.SpliceList.end(); ++it ) {
+//        if (it.value().SpliceID == spliceId)
+//            qty = it.value().Quantity;
+//    }
+    qDebug() << "getSpliceQty" << spliceId << qty << index;
     return qty;
 }
 

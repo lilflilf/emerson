@@ -464,9 +464,11 @@ void UtilityClass::InitializeTextData()
                 _Interface->StatusData.Soft_Settings.Horn_Calibrate, 1, 1, str);//"%dμm"
 
     SetTextData(DINActTime, 0, MINTIME, MAXTIME, 2, (float)0.01, "%.2fs");
+    SetTextData(DINActTimeNoUnit, 0, MINTIME, MAXTIME, 2, (float)0.01, "%.2f");
     SetTextData(DINTimePl, 0, MINTIME, MAXTIME, 2, (float)0.01, "%.2fs");
     SetTextData(DINTimeMs, 0, MINTIME, MAXTIME, 2, (float)0.01, "%.2fs");
     SetTextData(DINActPower, 0, MINPOWER, Maxpower, 100, 1, "%dW");
+    SetTextData(DINActPowerNoUnit, 0, MINPOWER, Maxpower, 100, 1, "%d");
     SetTextData(DINPowerPl, 0, MINPOWER, Maxpower, 100, 1, "%dW");
 //    SetTextData(DINPowerMs, 0, MINPOWER,
 //                _Interface->StatusData.Soft_Settings.SonicGenWatts, 100, 1, "%dW");
@@ -475,18 +477,22 @@ void UtilityClass::InitializeTextData()
     if(_Interface->StatusData.Soft_Settings.Length2Unit == BRANSON_INI_STRUCT::ToMM)
     {
         SetTextData(DINActPreHgt, 0, MINHEIGHT, MAXHEIGHT, 2, (float)0.01, "%.2fmm");
+        SetTextData(DINActPreHgtNoUnit, 0, MINHEIGHT, MAXHEIGHT, 2, (float)0.01, "%.2f");
         SetTextData(DINPre_HgtPl, 0, MINHEIGHT, MAXHEIGHT, 2, (float)0.01, "%.2fmm");
         SetTextData(DINPre_HgtMs, 0, MINHEIGHT, MAXHEIGHT, 2, (float)0.01, "%.2fmm");
         SetTextData(DINActHgt, 0, MINHEIGHT, MAXHEIGHT, 2, (float)0.01, "%.2fmm");
+        SetTextData(DINActHgtNoUnit, 0, MINHEIGHT, MAXHEIGHT, 2, (float)0.01, "%.2f");
         SetTextData(DINHeightPl, 0, MINHEIGHT, MAXHEIGHT, 2, (float)0.01, "%.2fmm");
         SetTextData(DINHeightMs, 0, MINHEIGHT, MAXHEIGHT, 2, (float)0.01, "%.2fmm");
     }
     else
     {
         SetTextData(DINActPreHgt, 0, MINHEIGHT, MAXHEIGHT, 2, (float)LENGTH2INCHFACTOR, "%.2fin");
+        SetTextData(DINActPreHgtNoUnit, 0, MINHEIGHT, MAXHEIGHT, 2, (float)LENGTH2INCHFACTOR, "%.2f");
         SetTextData(DINPre_HgtPl, 0, MINHEIGHT, MAXHEIGHT, 2, (float)LENGTH2INCHFACTOR, "%.2fin");
         SetTextData(DINPre_HgtMs, 0, MINHEIGHT, MAXHEIGHT, 2, (float)LENGTH2INCHFACTOR, "%.2fin");
         SetTextData(DINActHgt, 0, MINHEIGHT, MAXHEIGHT, 2, (float)LENGTH2INCHFACTOR, "%.2fin");
+        SetTextData(DINActHgtNoUnit, 0, MINHEIGHT, MAXHEIGHT, 2, (float)LENGTH2INCHFACTOR, "%.2f");
         SetTextData(DINHeightPl, 0, MINHEIGHT, MAXHEIGHT, 2, (float)LENGTH2INCHFACTOR, "%.2fin");
         SetTextData(DINHeightMs, 0, MINHEIGHT, MAXHEIGHT, 2, (float)LENGTH2INCHFACTOR, "%.2fin");
     }

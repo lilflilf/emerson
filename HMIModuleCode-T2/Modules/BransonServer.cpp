@@ -91,7 +91,8 @@ void BransonServer::OpenEthernetServer()
                     m_pTcpServer->errorString();
             tmpMsgBox.MsgTitle = QObject::tr("Information");
             tmpMsgBox.TipsMode = Information;
-            tmpMsgBox.func_ptr = NULL;
+            tmpMsgBox.OKfunc_ptr = NULL;
+            tmpMsgBox.Cancelfunc_ptr = NULL;
             tmpMsgBox._Object = NULL;
             _pInterface->cMsgBox(&tmpMsgBox);
 

@@ -71,7 +71,8 @@ MODstart::MODstart()
                                           "Do you want to work offline?");
         tmpMsgBox.MsgTitle = QObject::tr("Warning");
         tmpMsgBox.TipsMode = (OKCancel + OFF_ON_LINE + Exclamation);
-        tmpMsgBox.func_ptr = MODstart::OfflineInitialization;
+        tmpMsgBox.OKfunc_ptr = MODstart::OfflineInitialization;
+        tmpMsgBox.Cancelfunc_ptr = NULL;
         tmpMsgBox._Object = this;
         _Interface->cMsgBox(&tmpMsgBox);
     }
@@ -139,7 +140,7 @@ MODstart::MODstart()
         _M2010->ReceiveFlags.CycleCountData = false;
         _M102IA->IACommand(IAComGetCycleCntr);    //Always make this last, it terminates the watch loop
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.CycleCountData);
-//        DEBUG_PRINT(_M2010->ReceiveFlags.SonicHitsData);
+//        DEBUG_PRINT(_M2010->ReceiveFlags.CycleCountData);
 
         _M2010->ReceiveFlags.AlarmData = false;
         _M102IA->IACommand(IAComGetAlarmData);
@@ -373,7 +374,8 @@ int MODstart::CheckIOStatus()
         tmpMsgBox.MsgTitle = QObject::tr("ERROR");
         tmpMsgBox.MsgPrompt = QObject::tr("CONTROLLER NOT ONLINE!");
         tmpMsgBox.TipsMode = Critical;
-        tmpMsgBox.func_ptr = NULL;
+        tmpMsgBox.OKfunc_ptr = NULL;
+        tmpMsgBox.Cancelfunc_ptr = NULL;
         _Interface->cMsgBox(&tmpMsgBox);
         FeedbackResult = 1;
         return FeedbackResult;
@@ -400,7 +402,8 @@ int MODstart::CheckIOStatus()
         tmpMsgBox.MsgTitle = QObject::tr("ERROR");
         tmpMsgBox.MsgPrompt = QObject::tr("Check Line Pressure!");
         tmpMsgBox.TipsMode = Critical;
-        tmpMsgBox.func_ptr = NULL;
+        tmpMsgBox.OKfunc_ptr = NULL;
+        tmpMsgBox.Cancelfunc_ptr = NULL;
         _Interface->cMsgBox(&tmpMsgBox);
         FeedbackResult = 1;
     }
@@ -454,7 +457,8 @@ void MODstart::CheckVersionFile(VersionList CurrVersions)
         tmpMsgBox.MsgTitle = QObject::tr("Warning");
         tmpMsgBox.MsgPrompt = QObject::tr("VersaGraphix version has changed,check setup and calibration.");
         tmpMsgBox.TipsMode = Exclamation;
-        tmpMsgBox.func_ptr = NULL;
+        tmpMsgBox.OKfunc_ptr = NULL;\
+        tmpMsgBox.Cancelfunc_ptr = NULL;
         _Interface->cMsgBox(&tmpMsgBox);
     }
 
@@ -466,7 +470,8 @@ void MODstart::CheckVersionFile(VersionList CurrVersions)
         tmpMsgBox.MsgTitle = QObject::tr("Warning");
         tmpMsgBox.MsgPrompt = QObject::tr("Controller version has changed,check setup and calibration.");
         tmpMsgBox.TipsMode = Exclamation;
-        tmpMsgBox.func_ptr = NULL;
+        tmpMsgBox.OKfunc_ptr = NULL;
+        tmpMsgBox.Cancelfunc_ptr = NULL;
         _Interface->cMsgBox(&tmpMsgBox);
     }
 
@@ -478,7 +483,8 @@ void MODstart::CheckVersionFile(VersionList CurrVersions)
         tmpMsgBox.MsgTitle = QObject::tr("Warning");
         tmpMsgBox.MsgPrompt = QObject::tr("Actuator version has changed,check setup and calibration.");
         tmpMsgBox.TipsMode = Exclamation;
-        tmpMsgBox.func_ptr = NULL;
+        tmpMsgBox.OKfunc_ptr = NULL;
+        tmpMsgBox.Cancelfunc_ptr = NULL;
         _Interface->cMsgBox(&tmpMsgBox);
     }
 

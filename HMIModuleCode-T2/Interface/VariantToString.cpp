@@ -711,6 +711,14 @@ QString VariantToString::AlarmLevelToString(enum ALARMTYPE Alarmtype)
     case E_STOP:
     case IDCHIPERROR:
     case RAMERROR:
+    case HORN100PERCENTCOUNTALARM:
+    case ANVIL100PERCENTCOUNTALARM:
+    case GATHER100PERCENTCOUNTALARM:
+    case GUIDE100PERCENTCOUNTALARM:
+    case HORN100PERCENTENERGYALARM:
+    case ANVIL100PERCENTENERGYALARM:
+    case GATHER100PERCENTENERGYALARM:
+    case GUIDE100PERCENTENERGYALARM:
         str = QObject::tr("High-level");
         break;
     case TIMEALARM:
@@ -718,6 +726,14 @@ QString VariantToString::AlarmLevelToString(enum ALARMTYPE Alarmtype)
     case PREHEIGHTALARM:
     case HEIGHTALARM:
     case VOL24ERROR:
+    case HORN80PERCENTCOUNTALARM:
+    case ANVIL80PERCENTCOUNTALARM:
+    case GATHER80PERCENTCOUNTALARM:
+    case GUIDE80PERCENTCOUNTALARM:
+    case HORN80PERCENTENERGYALARM:
+    case ANVIL80PERCENTENERGYALARM:
+    case GATHER80PERCENTENERGYALARM:
+    case GUIDE80PERCENTENERGYALARM:
         str = QObject::tr("Mid-level");
         break;
     default:
@@ -740,6 +756,23 @@ QString VariantToString::AlarmLevelToString(QString AlarmType)
         str = QObject::tr("Mid-level");
     else if(AlarmType == QObject::tr("24V checking"))
         str = QObject::tr("Mid-level");
+    else if(AlarmType == QObject::tr("Horn count 80% alarm"))
+        str = QObject::tr("Mid-level");
+    else if(AlarmType == QObject::tr("Anvil count 80% alarm"))
+        str = QObject::tr("Mid-level");
+    else if(AlarmType == QObject::tr("Gather count 80% alarm"))
+        str = QObject::tr("Mid-level");
+    else if(AlarmType == QObject::tr("Guide count 80% alarm"))
+        str = QObject::tr("Mid-level");
+    else if(AlarmType == QObject::tr("Horn energy 80% alarm"))
+        str = QObject::tr("Mid-level");
+    else if(AlarmType == QObject::tr("Anvil energy 80% alarm"))
+        str = QObject::tr("Mid-level");
+    else if(AlarmType == QObject::tr("Gather energy 80% alarm"))
+        str = QObject::tr("Mid-level");
+    else if(AlarmType == QObject::tr("Guide energy 80% alarmm"))
+        str = QObject::tr("Mid-level");
+
     else if(AlarmType == QObject::tr("Overload"))
         str = QObject::tr("High-level");
     else if(AlarmType == QObject::tr("Motor error"))
@@ -751,6 +784,22 @@ QString VariantToString::AlarmLevelToString(QString AlarmType)
     else if(AlarmType == QObject::tr("Cutter error"))
         str = QObject::tr("High-level");
     else if(AlarmType == QObject::tr("E-Stop"))
+        str = QObject::tr("High-level");
+    else if(AlarmType == QObject::tr("Horn count 100% lock"))
+        str = QObject::tr("High-level");
+    else if(AlarmType == QObject::tr("Anvil count 100% lock"))
+        str = QObject::tr("High-level");
+    else if(AlarmType == QObject::tr("Gather count 100% lock"))
+        str = QObject::tr("High-level");
+    else if(AlarmType == QObject::tr("Guide count 100% lock"))
+        str = QObject::tr("High-level");
+    else if(AlarmType == QObject::tr("Horn energy 100% lock"))
+        str = QObject::tr("High-level");
+    else if(AlarmType == QObject::tr("Anvil energy 100% lock"))
+        str = QObject::tr("High-level");
+    else if(AlarmType == QObject::tr("Gather energy 100% lock"))
+        str = QObject::tr("High-level");
+    else if(AlarmType == QObject::tr("Guide energy 100% lock"))
         str = QObject::tr("High-level");
     else
         str = QObject::tr("Low-level");

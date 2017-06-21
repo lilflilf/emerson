@@ -16,37 +16,29 @@ ReadyStateMachine::ReadyStateMachine(QObject *parent) : QObject(parent)
 {
     m_pDaemonTmr = NULL;
     ReadyState = IDLE;
+    m_pDaemonTmr = new QTimer(this);
+    connect(m_pDaemonTmr, SIGNAL(timeout()),this, SLOT(TimeoutEventSlot()));
 }
 
 void ReadyStateMachine::_start()
 {
-    if(m_pDaemonTmr != NULL)
-    {
-        delete m_pDaemonTmr;
-        m_pDaemonTmr = NULL;
-    }
-    m_pDaemonTmr = new QTimer(this);
-    connect(m_pDaemonTmr, SIGNAL(timeout()),this, SLOT(TimeoutEventSlot()));
-    m_pDaemonTmr->setInterval(DELAY1SEC);//1second
-    m_pDaemonTmr->start();
+    if(m_pDaemonTmr->isActive() == true)
+        m_pDaemonTmr->stop();
+    m_pDaemonTmr->start(DELAY1SEC);
 }
 
 void ReadyStateMachine::_stop()
 {
-    if(m_pDaemonTmr != NULL)
-    {
-        if(m_pDaemonTmr->isActive() == true)
-            m_pDaemonTmr->stop();
-        delete m_pDaemonTmr;
-        m_pDaemonTmr = NULL;
-    }
+    if(m_pDaemonTmr->isActive() == true)
+        m_pDaemonTmr->stop();
 }
 
 void ReadyStateMachine::TimeoutEventSlot()
 {
     M102IA *_M102IA = M102IA::Instance();
     M2010  *_M2010  = M2010::Instance();
-    m_pDaemonTmr->stop();
+    if(m_pDaemonTmr->isActive() == true)
+        m_pDaemonTmr->stop();
     switch(ReadyState)
     {
     case READYON:
@@ -62,5 +54,8 @@ void ReadyStateMachine::TimeoutEventSlot()
     default:
         break;
     }
-    m_pDaemonTmr->start();
+    if (m_pDaemonTmr == NULL)
+        qDebug() << "m_pDaemonTmr == NULL";
+//    else
+        m_pDaemonTmr->start(DELAY1SEC);
 }
