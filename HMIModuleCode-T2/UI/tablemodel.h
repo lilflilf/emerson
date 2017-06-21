@@ -96,6 +96,7 @@ public:
     void setModelList(unsigned int time_from, unsigned int time_to);
     void setModelList();
 
+    QList<int> rowList;
     QStringList m_idList;
     DBPresetTable *m_spliceAdaptor;
     CSVPresetData *m_PresetDataObj;
@@ -114,7 +115,8 @@ public:
     QHash<int, QByteArray> roleNames() const;
 
     PresetElement presetElement;
-
+    PresetElement mySplice;
+    OperatorElement myOperator;
     VariantToString *variantToString;
     StringToVariant *stringToVariant;
 signals:
@@ -397,6 +399,9 @@ protected:
     WireElement wireElement;
     VariantToString *variantToString;
     StringToVariant *stringToVariant;
+
+    WireElement myWire;
+    OperatorElement myOperator;
 //signals:
 
 
