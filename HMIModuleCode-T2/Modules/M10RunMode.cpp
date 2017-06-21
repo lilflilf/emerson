@@ -7,6 +7,8 @@
 #include "ModRunSetup.h"
 #include "MODstart.h"
 #include "Interface/Interface.h"
+#include "Interface/Maintenance/MaintenanceCounter.h"
+#include "Interface/VariantToString.h"
 #include "AlarmMessage.h"
 #include "typedef.h"
 #include <QDateTime>
@@ -49,23 +51,162 @@ void M10runMode::Save_Data_Events()
     _Statistics->Splice_Stat.WriteSpliceStatToQSetting(StatFileFound);
 }
 
+bool M10runMode::CheckMaintenanceData()
+{
+    bool IsAvailable = true;
+    QString AlarmMsg;
+    AlarmMsg.clear();
+    QString AlarmType;
+    AlarmType.clear();
+    InterfaceClass* _Interface = InterfaceClass::Instance();
+    VariantToString* _Var2Str = VariantToString::Instance();
+    AlarmMessage* _AlarmMsg = AlarmMessage::Instance();
+    for(int item = MaintenanceCounter::ITEM_HORN;
+        item < MaintenanceCounter::ITEM_SYSTEM; item++)
+    {
+        if(_Interface->StatusData.Maintenance80PercentAlarm[item])
+        {
+            if(_Interface->StatusData.CurrentCountMaintenanceLimits[item] >=
+                    (_Interface->StatusData.MaintenanceCountLimits[item] * 0.8))
+            {
+                switch(item)
+                {
+                case MaintenanceCounter::ITEM_HORN:
+                    AlarmMsg = QObject::tr("More than Horn Count Limit 80%");
+                    AlarmType = _Var2Str->AlarmTypeToString(HORN80PERCENTCOUNTALARM);
+                    _AlarmMsg->UpdateAlarmLog(AlarmMsg, AlarmType, -1);
+                    break;
+                case MaintenanceCounter::ITEM_ANVIL:
+                    AlarmMsg = QObject::tr("More than Anvil Count Limit 80%");
+                    AlarmType = _Var2Str->AlarmTypeToString(ANVIL80PERCENTCOUNTALARM);
+                    _AlarmMsg->UpdateAlarmLog(AlarmMsg, AlarmType, -1);
+                    break;
+                case MaintenanceCounter::ITEM_GATHER:
+                    AlarmMsg = QObject::tr("More than Gather Count Limit 80%");
+                    AlarmType = _Var2Str->AlarmTypeToString(GATHER80PERCENTCOUNTALARM);
+                    _AlarmMsg->UpdateAlarmLog(AlarmMsg, AlarmType, -1);
+                    break;
+                case MaintenanceCounter::ITEM_GUIDE:
+                    AlarmMsg = QObject::tr("More than Guide Count Limit 80%");
+                    AlarmType = _Var2Str->AlarmTypeToString(GUIDE80PERCENTCOUNTALARM);
+                    _AlarmMsg->UpdateAlarmLog(AlarmMsg, AlarmType, -1);
+                    break;
+                default:
+                    break;
+                }
+            }
+            if(_Interface->StatusData.CurrentEnergyMaintenanceLimits[item] >=
+                    (_Interface->StatusData.MaintenanceEnergyLimits[item] * 0.8))
+            {
+                switch(item)
+                {
+                case MaintenanceCounter::ITEM_HORN:
+                    AlarmMsg = QObject::tr("More than Horn Energy Limit 80%");
+                    AlarmType = _Var2Str->AlarmTypeToString(HORN80PERCENTENERGYALARM);
+                    _AlarmMsg->UpdateAlarmLog(AlarmMsg, AlarmType, -1);
+                    break;
+                case MaintenanceCounter::ITEM_ANVIL:
+                    AlarmMsg = QObject::tr("More than Anvil Energy Limit 80%");
+                    AlarmType = _Var2Str->AlarmTypeToString(ANVIL80PERCENTENERGYALARM);
+                    _AlarmMsg->UpdateAlarmLog(AlarmMsg, AlarmType, -1);
+                    break;
+                case MaintenanceCounter::ITEM_GATHER:
+                    AlarmMsg = QObject::tr("More than Gather Energy Limit 80%");
+                    AlarmType = _Var2Str->AlarmTypeToString(GATHER80PERCENTENERGYALARM);
+                    _AlarmMsg->UpdateAlarmLog(AlarmMsg, AlarmType, -1);
+                    break;
+                case MaintenanceCounter::ITEM_GUIDE:
+                    AlarmMsg = QObject::tr("More than Guide Energy Limit 80%");
+                    AlarmType = _Var2Str->AlarmTypeToString(GUIDE80PERCENTENERGYALARM);
+                    _AlarmMsg->UpdateAlarmLog(AlarmMsg, AlarmType, -1);
+                    break;
+                }
+            }
+        }
+
+        if(_Interface->StatusData.Maintenance100PercentLock[item])
+        {
+            if(_Interface->StatusData.CurrentCountMaintenanceLimits[item] >=
+                    _Interface->StatusData.MaintenanceCountLimits[item])
+            {
+                IsAvailable = false;
+                switch(item)
+                {
+                case MaintenanceCounter::ITEM_HORN:
+                    AlarmMsg = QObject::tr("More than Horn Count Limit 100%");
+                    AlarmType = _Var2Str->AlarmTypeToString(HORN80PERCENTCOUNTALARM);
+                    _AlarmMsg->UpdateAlarmLog(AlarmMsg, AlarmType, -1);
+                    break;
+                case MaintenanceCounter::ITEM_ANVIL:
+                    AlarmMsg = QObject::tr("More than Anvil Count Limit 100%");
+                    AlarmType = _Var2Str->AlarmTypeToString(ANVIL80PERCENTCOUNTALARM);
+                    _AlarmMsg->UpdateAlarmLog(AlarmMsg, AlarmType, -1);
+                    break;
+                case MaintenanceCounter::ITEM_GATHER:
+                    AlarmMsg = QObject::tr("More than Gather Count Limit 100%");
+                    AlarmType = _Var2Str->AlarmTypeToString(GATHER80PERCENTCOUNTALARM);
+                    _AlarmMsg->UpdateAlarmLog(AlarmMsg, AlarmType, -1);
+                    break;
+                case MaintenanceCounter::ITEM_GUIDE:
+                    AlarmMsg = QObject::tr("More than Guide Count Limit 100%");
+                    AlarmType = _Var2Str->AlarmTypeToString(GUIDE80PERCENTCOUNTALARM);
+                    _AlarmMsg->UpdateAlarmLog(AlarmMsg, AlarmType, -1);
+                    break;
+                default:
+                    break;
+                }
+            }
+            if(_Interface->StatusData.CurrentEnergyMaintenanceLimits[item] >=
+                    _Interface->StatusData.MaintenanceEnergyLimits[item])
+            {
+                IsAvailable = false;
+                switch(item)
+                {
+                case MaintenanceCounter::ITEM_HORN:
+                    AlarmMsg = QObject::tr("More than Horn Energy Limit 100%");
+                    AlarmType = _Var2Str->AlarmTypeToString(HORN80PERCENTENERGYALARM);
+                    _AlarmMsg->UpdateAlarmLog(AlarmMsg, AlarmType, -1);
+                    break;
+                case MaintenanceCounter::ITEM_ANVIL:
+                    AlarmMsg = QObject::tr("More than Anvil Energy Limit 100%");
+                    AlarmType = _Var2Str->AlarmTypeToString(ANVIL80PERCENTENERGYALARM);
+                    _AlarmMsg->UpdateAlarmLog(AlarmMsg, AlarmType, -1);
+                    break;
+                case MaintenanceCounter::ITEM_GATHER:
+                    AlarmMsg = QObject::tr("More than Gather Energy Limit 100%");
+                    AlarmType = _Var2Str->AlarmTypeToString(GATHER80PERCENTENERGYALARM);
+                    _AlarmMsg->UpdateAlarmLog(AlarmMsg, AlarmType, -1);
+                    break;
+                case MaintenanceCounter::ITEM_GUIDE:
+                    AlarmMsg = QObject::tr("More than Guide Energy Limit 100%");
+                    AlarmType = _Var2Str->AlarmTypeToString(GUIDE80PERCENTENERGYALARM);
+                    _AlarmMsg->UpdateAlarmLog(AlarmMsg, AlarmType, -1);
+                    break;
+                }
+            }
+        }
+    }
+    return IsAvailable;
+}
+
 void M10runMode::UpdateMaintenanceData()
 {
-    M10INI *_M10INI = M10INI::Instance();
+//    M10INI *_M10INI = M10INI::Instance();
     M102IA *_M102IA = M102IA::Instance();
     InterfaceClass* _Interface = InterfaceClass::Instance();
     QDateTime TimeLabel = QDateTime::currentDateTime();
-    for(int i = 0; i < 8; i++)
+    for(int item = MaintenanceCounter::ITEM_HORN;
+        item <= MaintenanceCounter::ITEM_SYSTEM; item++)
     {
-        if((_Interface->StatusData.CurrentCountMaintenanceLimits[i] == 0) ||
-            (_Interface->StatusData.CurrentEnergyMaintenanceLimits[i] == 0))
+        if((_Interface->StatusData.CurrentCountMaintenanceLimits[item] == 0) ||
+            (_Interface->StatusData.CurrentEnergyMaintenanceLimits[item] == 0))
         {
-            _Interface->StatusData.MaintenanceDateStarted[i] = TimeLabel.toTime_t();
+            _Interface->StatusData.MaintenanceDateStarted[item] = TimeLabel.toTime_t();
         }
-        _Interface->StatusData.CurrentCountMaintenanceLimits[i]++;
-        _Interface->StatusData.CurrentEnergyMaintenanceLimits[i] += ((double)_M102IA->IAactual.Power / 1000);
+        _Interface->StatusData.CurrentCountMaintenanceLimits[item]++;
+        _Interface->StatusData.CurrentEnergyMaintenanceLimits[item] += ((double)_M102IA->IAactual.Energy / 1000);
     }
-    _M10INI->Save_StatusData(false);
+    _Interface->StatusData.WriteStatusDataToQSetting();
 }
 
 bool M10runMode::CheckForOverLoad(bool ShowAlarm)

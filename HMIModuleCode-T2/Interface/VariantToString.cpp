@@ -642,6 +642,55 @@ QString VariantToString::AlarmTypeToString(enum ALARMTYPE type)
     case E_STOP:
         str = QObject::tr("E-Stop");
         break;
+    case HORN80PERCENTCOUNTALARM:
+        str = QObject::tr("Horn count 80% alarm");
+        break;
+    case ANVIL80PERCENTCOUNTALARM:
+        str = QObject::tr("Anvil count 80% alarm");
+        break;
+    case GATHER80PERCENTCOUNTALARM:
+        str = QObject::tr("Gather count 80% alarm");
+        break;
+    case GUIDE80PERCENTCOUNTALARM:
+        str = QObject::tr("Guide count 80% alarm");
+        break;
+    case HORN80PERCENTENERGYALARM:
+        str = QObject::tr("Horn energy 80% alarm");
+        break;
+    case ANVIL80PERCENTENERGYALARM:
+        str = QObject::tr("Anvil energy 80% alarm");
+        break;
+    case GATHER80PERCENTENERGYALARM:
+        str = QObject::tr("Gather energy 80% alarm");
+        break;
+    case GUIDE80PERCENTENERGYALARM:
+        str = QObject::tr("Guide energy 80% alarm");
+        break;
+
+    case HORN100PERCENTCOUNTALARM:
+        str = QObject::tr("Horn count 100% lock");
+        break;
+    case ANVIL100PERCENTCOUNTALARM:
+        str = QObject::tr("Anvil count 100% lock");
+        break;
+    case GATHER100PERCENTCOUNTALARM:
+        str = QObject::tr("Gather count 100% lock");
+        break;
+    case GUIDE100PERCENTCOUNTALARM:
+        str = QObject::tr("Guide count 100% lock");
+        break;
+    case HORN100PERCENTENERGYALARM:
+        str = QObject::tr("Horn energy 100% lock");
+        break;
+    case ANVIL100PERCENTENERGYALARM:
+        str = QObject::tr("Anvil energy 100% lock");
+        break;
+    case GATHER100PERCENTENERGYALARM:
+        str = QObject::tr("Gather energy 100% lock");
+        break;
+    case GUIDE100PERCENTENERGYALARM:
+        str = QObject::tr("Guide energy 100% lock");
+        break;
     default:
         str.clear();
         break;
