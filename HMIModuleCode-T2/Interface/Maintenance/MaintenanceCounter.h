@@ -6,15 +6,6 @@
 class MaintenanceCounter : public Maintenance
 {
 private:
-    enum TOOLING
-    {
-        ITEM_HORN,
-        ITEM_ANVIL,
-        ITEM_GATHER,
-        ITEM_GUIDE,
-        ITEM_SYSTEM,
-    };
-
     enum TOOLINGCOUNTCHANGE
     {
         HORNCOUNTCHANGE,
@@ -61,6 +52,14 @@ private:
         GUIDENERGY100PERCENTLOCK = 7,
     };
 public:
+    enum TOOLING
+    {
+        ITEM_HORN,
+        ITEM_ANVIL,
+        ITEM_GATHER,
+        ITEM_GUIDE,
+        ITEM_SYSTEM,
+    };
     struct MaintenanceCounterForScreen
     {
         QString HornPartNumber;

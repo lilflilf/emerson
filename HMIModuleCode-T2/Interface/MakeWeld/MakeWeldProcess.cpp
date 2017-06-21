@@ -295,7 +295,10 @@ void MakeWeldProcess::WeldResultEventSlot(bool& bResult)
     Invalidweld = _M10runMode->CheckWeldData(CurrentSplice.SpliceID);
     //2. Update Maintenance Count
     if(Invalidweld == false)
+    {
         _M10runMode->UpdateMaintenanceData(); //Increment Maintenance Counters here
+        _M10runMode->CheckMaintenanceData();
+    }
     m_pThread->setStopEnabled(false);
     m_pThread->setSuspendEnabled(false);
     m_pThread->start();
@@ -323,6 +326,14 @@ bool MakeWeldProcess::_start()
     _Interface->FirstScreenComesUp = true;
     bool bResult = true;
     qDebug()<<"Make Weld Start";
+
+    if(_M10runMode->CheckMaintenanceData() == false)
+    {
+        m_pReadySM->ReadyState = ReadyStateMachine::READYOFF;
+        _M102IA->SendCommandSetRunMode(OFF);
+        return false;
+    }
+
     if(_M102IA->SendCommandSetRunMode(ON) == false)
     {
         tmpMsgBox.MsgTitle = QObject::tr("ERROR");
@@ -383,11 +394,20 @@ bool MakeWeldProcess::_execute()
     M102IA *_M102IA = M102IA::Instance();
     M2010  *_M2010  = M2010::Instance();
     InterfaceClass *_Interface = InterfaceClass::Instance();
+    M10runMode* _M10runMode = M10runMode::Instance();
     bool bResult = true;
     int Retries = 0;
     struct BransonMessageBox tmpMsgBox;
     PowerGraphReady = false;
     HeightGraphReady = false;
+
+    if(_M10runMode->CheckMaintenanceData() == false)
+    {
+        m_pReadySM->ReadyState = ReadyStateMachine::READYOFF;
+        _M102IA->SendCommandSetRunMode(OFF);
+        return false;
+    }
+
     UpdateIAFields();
     _M2010->ReceiveFlags.SYSTEMid = false;
     while(_M2010->ReceiveFlags.SYSTEMid == false)

@@ -136,9 +136,9 @@ MODstart::MODstart()
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.HORNamplitude);
 //        DEBUG_PRINT(_M2010->ReceiveFlags.HORNamplitude);
 
-        _M2010->ReceiveFlags.SonicHitsData = false;
-        _M102IA->IACommand(IAComSendSonicHits);    //Always make this last, it terminates the watch loop
-        _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.SonicHitsData);
+        _M2010->ReceiveFlags.CycleCountData = false;
+        _M102IA->IACommand(IAComGetCycleCntr);    //Always make this last, it terminates the watch loop
+        _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.CycleCountData);
 //        DEBUG_PRINT(_M2010->ReceiveFlags.SonicHitsData);
 
         _M2010->ReceiveFlags.AlarmData = false;

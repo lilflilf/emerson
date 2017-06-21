@@ -935,7 +935,8 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         break;
     case IASigDataCycleCntr:
         _Interface->StatusData.CycleCount = GetLongValue(HexString, 9);
-        _M10INI->Save_StatusData(false);
+        _Interface->StatusData.CurrentCountMaintenanceLimits[4] = GetLongValue(HexString, 17);
+        _M2010->ReceiveFlags.CycleCountData = true;
         break;
     case IASigReadPower:
         ADPower = MakeHexWordNumber(HexString.mid(9, 4));
