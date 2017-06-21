@@ -420,7 +420,8 @@ void M10runMode::SafetyAlertMsg(unsigned long IOStatus)
     tmpMsgBox.MsgTitle = QObject::tr("WARNING");
     tmpMsgBox.MsgPrompt = QObject::tr("Tool Cover Safety Alert!");
     tmpMsgBox.TipsMode = Exclamation;
-    tmpMsgBox.func_ptr = NULL;
+    tmpMsgBox.OKfunc_ptr = NULL;
+    tmpMsgBox.Cancelfunc_ptr = NULL;
     _Interface->cMsgBox(&tmpMsgBox);
 }
 
@@ -442,7 +443,8 @@ void M10runMode::Run_E_Stop_Screen(unsigned long LastIOStatus)
             tmpMsgBox.MsgTitle = QObject::tr("ALARM");
             tmpMsgBox.MsgPrompt = QObject::tr("EMERGENCY STOP ON!");
             tmpMsgBox.TipsMode = Alarm;
-            tmpMsgBox.func_ptr = NULL;
+            tmpMsgBox.OKfunc_ptr = NULL;
+            tmpMsgBox.Cancelfunc_ptr = NULL;
             _Interface->cMsgBox(&tmpMsgBox);
         }
         _M2010->M10Run.E_Stop_Signal = true;
@@ -474,7 +476,8 @@ void M10runMode::LockAlertMsg(unsigned long IOStatus)
         tmpMsgBox.MsgTitle = QObject::tr("Information");
         tmpMsgBox.MsgPrompt = QObject::tr("Physical key access!");
         tmpMsgBox.TipsMode = Information;
-        tmpMsgBox.func_ptr = NULL;
+        tmpMsgBox.OKfunc_ptr = NULL;
+        tmpMsgBox.Cancelfunc_ptr = NULL;
         _Interface->cMsgBox(&tmpMsgBox);
         _Interface->StatusData.LockKeyFlag = true;
     }else
@@ -490,7 +493,8 @@ void M10runMode::FootPedalMsg(unsigned long IOStatus)
         tmpMsgBox.MsgTitle = QObject::tr("Information");
         tmpMsgBox.MsgPrompt = QObject::tr("Only use Foot Pedal to Start!");
         tmpMsgBox.TipsMode = Information;
-        tmpMsgBox.func_ptr = NULL;
+        tmpMsgBox.OKfunc_ptr = NULL;
+        tmpMsgBox.Cancelfunc_ptr = NULL;
         _Interface->cMsgBox(&tmpMsgBox);
         _Interface->StatusData.FootPedalFlag = true;
     }else

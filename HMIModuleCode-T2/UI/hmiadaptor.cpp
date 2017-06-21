@@ -37,9 +37,7 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
     list.clear();
     list <<"WireId"<< "WireName" << "DateCreated" << "OperatorName" << "Color" << "StripeType" << "StripeColor" << "Gauge" << "MetalType" << "HorizontalLocation" << "VerticalLocation" << "VerticalPosition";
     wireModel->setRoles(list);
-//    wireModel->setModelList();
     wireModel->setTemplateModelList();
-
 
     operatorModel = new OperatorModel(this);
     list.clear();;
@@ -163,8 +161,6 @@ int HmiAdaptor::getEditPartId()
 
 void HmiAdaptor::quit()
 {
-//    int cx = GetSystemMetrics( SM_CXFULLSCREEN );
-//    int cy = GetSystemMetrics( SM_CYFULLSCREEN );
     int cx=GetSystemMetrics(SM_CXSCREEN);
     int cy=GetSystemMetrics(SM_CYSCREEN);
     RECT rc = {0,0,cx,cy-taskBarHeight};
@@ -579,7 +575,6 @@ QString HmiAdaptor::getSoftVerson(int index)
         break;
     case 5:
         value = _Interface->CurrentVersions.SoftwareVersion;
-        qDebug()<<"Software Version"<<value;
         break;
     case 6:
         value = _Interface->CurrentVersions.ActuatorVersion;
@@ -592,15 +587,8 @@ QString HmiAdaptor::getSoftVerson(int index)
     return value;
 }
 
-//listModel.append({mytitle:"Horn"})
-//listModel.append({mytitle:"AnvilTip"})
-//listModel.append({mytitle:"Gather"})
-//listModel.append({mytitle:"AnvilGuide"})
-//listModel.append({mytitle:"Converter"})
-//listModel.append({mytitle:"Actuator"})
 void HmiAdaptor::maintenanceCountReset(QString code)
 {
-    qDebug() << code;
     if (code == "Horn")
         maintenanceCount->_execute(MaintenanceLogElement::HORN_COUNT_RESET);
     else if (code == "Anvil")
@@ -637,10 +625,6 @@ void HmiAdaptor::maintenanceCountSetLimit(QString code, QString value)
 
 void HmiAdaptor::maintenanceCount80PercentAlarm(QString code, QString value)
 {
-//    listModel.append({mytitle:qsTr("Horn")})
-//    listModel.append({mytitle:qsTr("Anvil")})
-//    listModel.append({mytitle:qsTr("Gather")})
-//    listModel.append({mytitle:qsTr("Guide")})
     UNUSED(value);
     if (code == "Horn") {
         if (value == "switch1")
@@ -687,11 +671,6 @@ void HmiAdaptor::maintenanceCount80PercentAlarm(QString code, QString value)
 
 void HmiAdaptor::maintenanceStart(int page)
 {
-//    AdvancedMaintenance * advanceMaintenance;
-//    Calibration * calibration;
-//    MaintenanceCounter *maintenanceCount;
-//    MaintenanceLogElement *maintenanceLog;
-//    ToolChange *toolChange;
     switch (page) {
     case 0:
         calibration->_start();
@@ -755,7 +734,6 @@ QString HmiAdaptor::getAdvancedMaintenanceValue(int index, QString key)
 
 void HmiAdaptor::setAdvancedMaintenanceValue(int index, QString value)
 {
-//    advanceMaintenance->AdvParameter[index].Current = value;
     switch(index)
     {
     case AdvancedMaintenance::AMPLITUDE:
@@ -821,7 +799,8 @@ bool HmiAdaptor::login(QString passwd)
         tmpMsgBox.MsgPrompt = QObject::tr("There is not any appropriate user account for the requested!");
         tmpMsgBox.MsgTitle = QObject::tr("Warning");
         tmpMsgBox.TipsMode = (OKOnly + Exclamation);
-        tmpMsgBox.func_ptr = NULL;
+        tmpMsgBox.OKfunc_ptr = NULL;
+        tmpMsgBox.Cancelfunc_ptr = NULL;
         tmpMsgBox._Object = NULL;
         interfaceClass->cMsgBox(&tmpMsgBox);
     }
@@ -1602,6 +1581,7 @@ void HmiAdaptor::dataCommunicationShrinkTubeTesting()
 
 void HmiAdaptor::slotWeldCycleCompleted(bool result)
 {
+    qDebug() << " slotWeldCycleCompleted" << result;
     if (result) {
         alarmModel->weldResultElement = operateProcess->CurrentWeldResult;
         emit signalWeldCycleCompleted(result);
@@ -1626,7 +1606,8 @@ void HmiAdaptor::reboot()
 void HmiAdaptor::slotEnableDialog(BransonMessageBox &MsgBox)
 {
     bransonMessageBox = MsgBox;
-    this->func_ptr = bransonMessageBox.func_ptr;
+    this->OKfunc_ptr = bransonMessageBox.OKfunc_ptr;
+    this->Canclefunc_ptr = bransonMessageBox.Cancelfunc_ptr;
     bool okVisable = true;
     bool cancelVisable = false;
     QString okText = "OK";;
@@ -1742,16 +1723,17 @@ QString HmiAdaptor::getStringUnit(QString value)
 QString HmiAdaptor::getStringValue(QString value)
 {
     QString num;
+
     if (!value.isEmpty() && !value.isNull()) {
         for (int i = 0; i < value.length(); i++) {
             if ((value.at(i) >= '0' && value.at(i) <= '9') || value.at(i) == '.') {
                 num += value.at(i);
                 continue;
-            } else {
-                break;
             }
         }
     }
+    if (value.left(1) == "-")
+        num = "-" + num;
     return num;
 }
 
@@ -1974,9 +1956,9 @@ int HmiAdaptor::getCurrentStatisticsParameterLimit(QString key, int index)
 
 void HmiAdaptor::msgBoxClick(bool clickOK)
 {
-    if (clickOK && this->func_ptr != NULL && bransonMessageBox._Object != NULL) {
-        qDebug() << "msgBoxClick" << this->func_ptr << bransonMessageBox._Object;
-        this->func_ptr(bransonMessageBox._Object);
+    if (clickOK && this->OKfunc_ptr != NULL && bransonMessageBox._Object != NULL) {
+        qDebug() << "msgBoxClick" << this->OKfunc_ptr << bransonMessageBox._Object;
+        this->OKfunc_ptr(bransonMessageBox._Object);
     }
 }
 
@@ -2429,7 +2411,7 @@ void HmiAdaptor::setLanguage(int row, int column)
     tmpMsgBox.MsgPrompt = QObject::tr("All the setting will be avaliable after the system restart.");
     tmpMsgBox.MsgTitle = QObject::tr("Information");
     tmpMsgBox.TipsMode = (OKOnly + Information);
-    tmpMsgBox.func_ptr = InterfaceClass::HotRestartSys;
+    tmpMsgBox.OKfunc_ptr = InterfaceClass::HotRestartSys;
     tmpMsgBox._Object = interfaceClass;
     interfaceClass->cMsgBox(&tmpMsgBox);
 }

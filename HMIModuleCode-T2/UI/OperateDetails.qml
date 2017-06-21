@@ -7,6 +7,7 @@ Item {
     id: operateDetail
     property var spliceList: new Array
     property var missSpliceList: new Array
+    property var workIndex: -1
 
     property int showFlag: -1 /*1:inLine 2:offLine 3:signal*/
     property int cycleCount: 0
@@ -33,7 +34,6 @@ Item {
                     cdialog.visible = true
                     hmiAdaptor.operateProcessExec("Stop")
                     hmiAdaptor.setWorkFlow(3,0,"");
-
                     return
                 }
                 spliceLocation.setTreeModelOver()
@@ -61,6 +61,7 @@ Item {
                     }
                     progressBar.current++
                     progressBar.moveToNext()
+                    workIndex = progressBar.current - 1
                     selectSplice(spliceList[progressBar.current-1])
                     partCount2.text = qsTr(counterString) + progressBar2.value + "/" + qliantity;
                 }
@@ -96,7 +97,7 @@ Item {
         }
         onSignalMantenaneceCount: {
             progressBar3.value = count
-            maintenance.text = qsTr("MAINTENANCE COUNTER") + count + "/" + hmiAdaptor.operateGetMaintenanceCount(1)
+            maintenance.text = qsTr("MAINTENANCE COUNTER: ") + count + "/" + hmiAdaptor.operateGetMaintenanceCount(1)
         }
     }
 
@@ -110,7 +111,7 @@ Item {
             spliceList = spliceModel.getStructValue("SpliceId","")
             showFlag = 3
             selectSplice(spliceModel.getStructValue("SpliceId",""))
-            counterString = "SPLICE COUNTER:"
+            counterString = "SPLICE COUNTER: "
             workName.visible = false
             partTask.visible = false
         }
@@ -156,7 +157,7 @@ Item {
             }
 
 
-            counterString = "HARNESS COUNTER"
+            counterString = "HARNESS COUNTER: "
             workName.text = qsTr("Harness Name: ") + partModel.getPartName(hmiAdaptor.getWorkFlow("WorkId"))
         }
         else if (flag == 1) {
@@ -165,7 +166,7 @@ Item {
             spliceList = sequenceModel.getSpliceList(hmiAdaptor.getWorkFlow("WorkId"))
             showFlag = 2
             operateDetail.maxCount = spliceList.length
-            selectSplice(hmiAdaptor.getWorkValue("CurrentSplice"))
+
             missSpliceList = hmiAdaptor.getWorkMissList()
             for (var i2 = 0; i2 < spliceList.length;i2++)
             {
@@ -185,10 +186,10 @@ Item {
                     progressBar.moveToNext()
                 }
             }
+            workIndex = progressBar.current - 1
+            selectSplice(hmiAdaptor.getWorkValue("CurrentSplice"))
 
-
-//            selectSplice(spliceList[0])
-            counterString = "SPLICE COUNTER"
+            counterString = "SPLICE COUNTER: "
             workName.text = qsTr("Sequence Name: ") + sequenceModel.getSequenceName(hmiAdaptor.getWorkFlow("WorkId"))
 
         }
@@ -293,7 +294,7 @@ Item {
             spliceDetailsItem.addWireFromSplice()
         }
         if (workMode == 1)
-            qliantity = sequenceModel.getSpliceQty(spliceId)
+            qliantity = sequenceModel.getSpliceQty(spliceId,workIndex)
         else if (workMode == 2 || workMode == 0) {
             qliantity = hmiAdaptor.getWorkValue("WorkCount")
             cycleCount = hmiAdaptor.getWorkValue("PartCount")
@@ -403,7 +404,7 @@ Item {
 
     Text {
         id: operateTitle
-        text: qsTr("Splice:")
+        text: qsTr("Splice: ")
         font.pointSize: 16
         font.family: "arial"
         color: "white"
@@ -684,7 +685,9 @@ Item {
                     return
                 partCount2.text = qsTr(counterString) + cycleCount + "/" + qliantity;
                 progressBar2.value = cycleCount
+                workIndex = 0
                 selectSplice(spliceList[0])
+
 
             }
         }
@@ -776,6 +779,7 @@ Item {
             if (progressBar.current > 1) {
 				progressBar.current--
                 progressBar.jumpToAbove()
+                workIndex = progressBar.current - 1
                 selectSplice(spliceList[progressBar.current-1])
                 spliceLocation.setTreeModelBack(progressBar.current)
                 offline.setStusOffLineBack(progressBar.current)
@@ -820,6 +824,7 @@ Item {
                 return
             }
             progressBar.jumpToNext()
+            workIndex = progressBar.current - 1
             selectSplice(spliceList[progressBar.current-1])
             spliceLocation.setTreeModelOver(progressBar.current)
             offline.setSatusOffLineOver(progressBar.current)
@@ -834,7 +839,7 @@ Item {
         anchors.bottomMargin: 6
         font.pointSize: 13
         font.family: "arial"
-        text: qsTr("MAINTENANCE COUNTER") + hmiAdaptor.operateGetMaintenanceCount(0) + "/" + hmiAdaptor.operateGetMaintenanceCount(1)
+        text: qsTr("MAINTENANCE COUNTER: ") + hmiAdaptor.operateGetMaintenanceCount(0) + "/" + hmiAdaptor.operateGetMaintenanceCount(1)
         color: "white"
     }
     CProgressBar {
@@ -877,9 +882,9 @@ Item {
         visible: false
         onClicked: {
             if (progressBar.current-1 < 0)
-                operateToEdit(spliceList[0])
+                mainRoot.operateToEdit(spliceList[0])
             else
-                operateToEdit(spliceList[progressBar.current-1])
+                mainRoot.operateToEdit(spliceList[progressBar.current-1])
         }
     }
 
@@ -945,7 +950,10 @@ Item {
             textColor: "white"
             onClicked: {
                 progressBar2.value = 0
+                hmiAdaptor.setWorkValue("PartCount",0)
                 resetButton.text = qsTr("Reset") + "(" + progressBar2.value + ")"
+                partCount2.text = qsTr(counterString) + hmiAdaptor.getWorkValue("PartCount") + "/" + qliantity
+
             }
         }
 
@@ -1020,9 +1028,11 @@ Item {
                 text: qsTr("OK")
                 textColor: "white"
                 onClicked: {
+                    console.log("okkkkk",spliceCounterSetting.bIsEdit,defalut.text)
                     if (spliceCounterSetting.bIsEdit) {
                         progressBar2.maximum = defalut.text
                         operateDetail.qliantity = defalut.text
+                        partCount2.text = qsTr(counterString) + hmiAdaptor.getWorkValue("PartCount") + "/" + qliantity
                         if (workMode == 1)
                         {
                             if (progressBar.current-1 < 0)

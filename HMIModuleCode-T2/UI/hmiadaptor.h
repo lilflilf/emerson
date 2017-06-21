@@ -36,113 +36,109 @@ public:
     ~HmiAdaptor();
 
     Q_INVOKABLE void recvFromJs(QString indexId);
-
     Q_INVOKABLE void setTestSpliceId(int spliceId);
-    Q_INVOKABLE int getTestSpliceId();
-
+    Q_INVOKABLE int  getTestSpliceId();
     Q_INVOKABLE void setEditWireId(int wireId);
-    Q_INVOKABLE int getEditWireId();
+    Q_INVOKABLE int  getEditWireId();
     Q_INVOKABLE void setEditPartId(int partId);
-    Q_INVOKABLE int getEditPartId();
+    Q_INVOKABLE int  getEditPartId();
 
+    Q_INVOKABLE int operateGetMaintenanceCount(int type);
+    Q_INVOKABLE int getAdvancedMaintenanceMaxPower();
+    Q_INVOKABLE QString maintenanceCountGetImage(int index);
+    Q_INVOKABLE QString getAdvancedMaintenanceValue(int index, QString key);
+    Q_INVOKABLE QString maintenanceCountGetValue(int code, int index);
     Q_INVOKABLE void quit();
     Q_INVOKABLE void openFileDialog();
     Q_INVOKABLE void advancedMaintenanceExecute(int code);
     Q_INVOKABLE void advancedMaintenanceRecall();
     Q_INVOKABLE void maintenanceCountExecute(QString code);
-    Q_INVOKABLE QString maintenanceCountGetValue(int code, int index);
-    Q_INVOKABLE int operateGetMaintenanceCount(int type);
-    Q_INVOKABLE QString maintenanceCountGetImage(int index);
     Q_INVOKABLE void maintenanceCountReset(QString code);
     Q_INVOKABLE void maintenanceCountSetLimit(QString code, QString value);
     Q_INVOKABLE void maintenanceCount80PercentAlarm(QString code, QString value);
     Q_INVOKABLE void maintenanceStart(int page);
     Q_INVOKABLE void maintenanceStop(int page);
     Q_INVOKABLE void maintenanceReset();
-    Q_INVOKABLE QString getAdvancedMaintenanceValue(int index, QString key);
     Q_INVOKABLE void setAdvancedMaintenanceValue(int index, QString value);
-    Q_INVOKABLE int getAdvancedMaintenanceMaxPower();
     Q_INVOKABLE void pressedAdvancedMaintenanceSonics();
     Q_INVOKABLE void pressedAdvancedMaintenance100Sonics();
     Q_INVOKABLE void releasedAdvancedMaintenanceSonics();
     Q_INVOKABLE void releasedAdvancedMaintenance100Sonics();
 
+    Q_INVOKABLE QStringList getCarTempLate();
     Q_INVOKABLE QString getMaintenanceVerson(int index);
     Q_INVOKABLE QString getSoftVerson(int index);
-    Q_INVOKABLE bool login(QString passwd);
-    Q_INVOKABLE bool borrowLogin(QString passwd, QString pageName);
-    Q_INVOKABLE QStringList getCarTempLate();
-    Q_INVOKABLE void addCarTempLate(QString name);
-    Q_INVOKABLE void removeCarTemplate(QString name);
-    Q_INVOKABLE int getCurrentOperatorId();
     Q_INVOKABLE QString getCurrentOperatorName();
-    Q_INVOKABLE void calibrationMaintenanceExecute(int code);
-    Q_INVOKABLE void hornCalibrationComplete(QString AmplitudeStr);
-    Q_INVOKABLE int randPoint();
     Q_INVOKABLE QString copyFileToPath(QString source);
 
+    Q_INVOKABLE bool login(QString passwd);
+    Q_INVOKABLE bool borrowLogin(QString passwd, QString pageName);
+    Q_INVOKABLE void addCarTempLate(QString name);
+    Q_INVOKABLE void removeCarTemplate(QString name);
+    Q_INVOKABLE void calibrationMaintenanceExecute(int code);
+    Q_INVOKABLE void hornCalibrationComplete(QString AmplitudeStr);
+    Q_INVOKABLE int getCurrentOperatorId();
+    Q_INVOKABLE int randPoint();
     Q_INVOKABLE int timeChangeToInt(QString time);
+    Q_INVOKABLE int  controlLimitProcess(QString type,QList<int> list,int redMax,int redMin);
 
     Q_INVOKABLE void setProcess(QString operateMode);
     Q_INVOKABLE void setOperateProcess(int spliceId, bool isText);
     Q_INVOKABLE void operateProcessExec(QString type);
-    Q_INVOKABLE int  controlLimitProcess(QString type,QList<int> list,int redMax,int redMin);
     Q_INVOKABLE void teachModeProcess();
     Q_INVOKABLE void stopTeachMode();
 
 
     /********permissionsetting func**************/
-    Q_INVOKABLE bool permissionsettingExecute(QString code);
     Q_INVOKABLE QStringList permissionsettingGetValue(QString code);
+    Q_INVOKABLE QString getStringUnit(QString value);
+    Q_INVOKABLE QString getStringValue(QString value);
+    Q_INVOKABLE bool permissionsettingExecute(QString code);
     Q_INVOKABLE bool needPassWord(QString pageName);
     Q_INVOKABLE bool permissionsettingGetChecked(QString stringIndex, int level);
     Q_INVOKABLE bool permissionsettingSetValue(QString name, bool level1, bool level2, bool level3, bool level4, bool level5);
     Q_INVOKABLE bool permissionsettingSetFourValue(QStringList fourName);
     Q_INVOKABLE bool stringRegexMatch(QString exp, QString value);
     Q_INVOKABLE bool keyNumStringMatch(QString minValue, QString maxValue, QString value);
-    Q_INVOKABLE QString getStringUnit(QString value);
-    Q_INVOKABLE QString getStringValue(QString value);
     Q_INVOKABLE bool comepareCurrentValue(QString minValue, QString maxValue, QString value);
+
     /********weldDefaults func**************/
-    Q_INVOKABLE bool weldDefaultsExecute(QString code);
-    Q_INVOKABLE bool weldDefaultsGetSwitch(QString index);
     Q_INVOKABLE QStringList weldDefaultsGetValue(int index);
     Q_INVOKABLE QString weldDefaultsGetNum(QString index);
+    Q_INVOKABLE QString weldDefaultsGetCutterNum(QString key, QString index);
+    Q_INVOKABLE bool weldDefaultsExecute(QString code);
+    Q_INVOKABLE bool weldDefaultsGetSwitch(QString index);
     Q_INVOKABLE bool weldDefaultsSetValue(QList<bool> boolList, QStringList strList, int sampleIndex, QString coolingDur, QString coolingDel);
     Q_INVOKABLE bool weldDefaultsSetValue2(int index,int checkIndex);
     Q_INVOKABLE bool weldDefaultsGetValue2(int index,int checkIndex);
     Q_INVOKABLE bool weldDefaultsSetValue3(QStringList strList);
     Q_INVOKABLE bool weldDefaultFormulaUpdate();
-
-    Q_INVOKABLE QString weldDefaultsGetCutterNum(QString key, QString index);
     Q_INVOKABLE void weldDefaultsSetCutterNum(QString key, QString index);
 
-
     /********DataCommunication func**************/
-    Q_INVOKABLE bool dataCommunicationExecute(QString code);
-    Q_INVOKABLE bool dataCommunicationGetSwitch(QString index);
-    Q_INVOKABLE QStringList dataCommunicationGetValue(QString index);
-    Q_INVOKABLE bool dataCommunicationSetValue(QList<bool> boolList, QStringList strList, QString ip, QString port);
-    Q_INVOKABLE void dataCommunicationShrinkTubeTesting();
-
-    Q_INVOKABLE void statisticalTrendApply(int SpliceID, QString SpliceName, unsigned int time_from, unsigned int time_to);
     Q_INVOKABLE QList<int> getStatisticalTrendDataList(int index);
     Q_INVOKABLE QStringList getWeldActualParameterDataList(int index, int type);
     Q_INVOKABLE QStringList getCurrentStatisticsParameterList(int index);
-    Q_INVOKABLE int getCurrentStatisticsParameterLimit(QString key, int index);
+    Q_INVOKABLE QStringList dataCommunicationGetValue(QString index);
     Q_INVOKABLE QString getAmplitudeToString(int value, int TypeEnum);
     Q_INVOKABLE QString getDefaultAmplitudeToString(int value, int TypeEnum);
     Q_INVOKABLE QString getTestQuantity(int value, bool bIsMax);
     Q_INVOKABLE QString getShrinkTemperatureToString(int value, bool bIsMax);
     Q_INVOKABLE QString getShrinkTimeToString(int value, bool bIsMax);
 
+    Q_INVOKABLE bool dataCommunicationExecute(QString code);
+    Q_INVOKABLE bool dataCommunicationGetSwitch(QString index);
+    Q_INVOKABLE bool dataCommunicationSetValue(QList<bool> boolList, QStringList strList, QString ip, QString port);
+    Q_INVOKABLE void dataCommunicationShrinkTubeTesting();
+    Q_INVOKABLE void statisticalTrendApply(int SpliceID, QString SpliceName, unsigned int time_from, unsigned int time_to);
     Q_INVOKABLE void msgBoxClick(bool clickOK);
     Q_INVOKABLE void teachModeSaveSplice();
     Q_INVOKABLE void setAlarmModelList(bool bIsNeedReset);
     Q_INVOKABLE void viewLibraryMovePart(int id, QString name);
     Q_INVOKABLE void viewLibraryMoveSplice(int id, QString name);
-
     Q_INVOKABLE void importData(QString fileUrl);
+
+    Q_INVOKABLE int getCurrentStatisticsParameterLimit(QString key, int index);
     Q_INVOKABLE int importWire(QString wireStr);
     Q_INVOKABLE int importSplice(QString spliceStr);
     Q_INVOKABLE int importHarness(QString harnessStr);
@@ -151,8 +147,6 @@ public:
 
     Q_INVOKABLE void exportData(QString type, int id, QString fileUrl);
     Q_INVOKABLE void exportDataList(QString type, QList<int> idList, QString fileUrl);
-
-
     Q_INVOKABLE void addInsulation(QString insualtionId, QString temp, QString time);
     Q_INVOKABLE void exportShrink(QString insualtionId, QString temp, QString time, QString fileUrl);
     Q_INVOKABLE void removeShrink(int selectIndex);
@@ -210,7 +204,8 @@ public:
     QMutex mutex;
     StatisticalTrend *statisticalTrend;
     int taskBarHeight;
-    void (*func_ptr)(void*);
+    void (*OKfunc_ptr)(void*);
+    void (*Canclefunc_ptr)(void*);
     int testSpliceId;
     int editWireId;
     int editPartId;

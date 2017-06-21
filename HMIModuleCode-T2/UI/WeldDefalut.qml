@@ -734,6 +734,7 @@ Item {
         height: okButton.height
         anchors.right: column1.right
         anchors.bottom: okButton.bottom
+        iconSource: "qrc:/images/images/arrowRight.png"
         onClicked: {
             itemCutter.visible = true
         }
@@ -957,6 +958,7 @@ Item {
             anchors.leftMargin: 20
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 16
+            iconSource: "qrc:/images/images/arrowLeft.png"
             onClicked: {
                 itemCutter.visible = false
             }
@@ -1200,6 +1202,7 @@ Item {
         iconSource: "qrc:/images/images/OK.png"
         textColor: "white"
         onClicked: {
+            console.log(width,height)
             var i;
             var switchCount;
             var boolArray = new Array();
@@ -1329,6 +1332,7 @@ Item {
         maxvalue: "12"
         minvalue: "3"
         currentValue: "123"
+
         onCurrentClickIndex: {
             if (index == 15) {
                 if (hmiAdaptor.comepareCurrentValue(keyNum.minvalue,keyNum.maxvalue,keyNum.inputText)) {

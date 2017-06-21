@@ -235,7 +235,8 @@ void MakeWeldProcess::WeldCycleDaemonThread(void* _obj)
         tmpMsgBox.MsgTitle = QObject::tr("ERROR");
         tmpMsgBox.MsgPrompt = QObject::tr("Can't get full Power & Post Height Graph from controller!");
         tmpMsgBox.TipsMode = Critical;
-        tmpMsgBox.func_ptr = NULL;
+        tmpMsgBox.OKfunc_ptr = NULL;
+        tmpMsgBox.Cancelfunc_ptr = NULL;
         _Interface->cMsgBox(&tmpMsgBox);
         _ObjectPtr->WeldCycleStatus = false;
         _ObjectPtr->CurrentWeldResult.PowerGraph.clear();
@@ -245,32 +246,44 @@ void MakeWeldProcess::WeldCycleDaemonThread(void* _obj)
     else if(_ObjectPtr->CurrentStep == STEPTrd)
     {
         //2. Save the Weld result into the Database
-        int iResult =
-            _WeldResultDB->InsertRecordIntoTable(&_ObjectPtr->CurrentWeldResult);
-        qDebug()<<"Ordername"<<_ObjectPtr->CurrentWeldResult.CurrentWorkOrder.WorkOrderName;
-        _ObjectPtr->CurrentWeldResult.WeldResultID = iResult;
-//        _ObjectPtr->WeldCycleStatus = true;
-        //6. Shrink Tube
-        //7. Remote Data sending
-        if (_Interface->StatusData.NetworkingEnabled == true)
+        if(((_M102IA->IAactual.Alarmflags & BIT4) == BIT4) ||
+            ((_M102IA->IAactual.Alarmflags & BIT9) == BIT9) ||
+            ((_M102IA->IAactual.Alarmflags & BIT10) == BIT10))
         {
-            QString StrRecord =
-                    _Statistics->HistoryEvent(&_ObjectPtr->CurrentWeldResult, &_ObjectPtr->CurrentSplice);
-            BransonServer *_Server = BransonServer::Instance();
-            _Server->SendDataToClients(StrRecord);
-        }
-        if((_M102IA->IAactual.Alarmflags & BIT14) == BIT14)
-        {
-            _ObjectPtr->WeldCycleStatus = true;
-            _ObjectPtr->m_pReadySM->ReadyState = ReadyStateMachine::READYON;
-        }
-        else
             _ObjectPtr->WeldCycleStatus = false;
+            _ObjectPtr->m_pReadySM->ReadyState = ReadyStateMachine::READYON;
+        }else
+        {
+            int iResult =
+                _WeldResultDB->InsertRecordIntoTable(&_ObjectPtr->CurrentWeldResult);
+            qDebug()<<"Ordername"<<_ObjectPtr->CurrentWeldResult.CurrentWorkOrder.WorkOrderName;
+            _ObjectPtr->CurrentWeldResult.WeldResultID = iResult;
+    //        _ObjectPtr->WeldCycleStatus = true;
+            //6. Shrink Tube
+            //7. Remote Data sending
+            if (_Interface->StatusData.NetworkingEnabled == true)
+            {
+                QString StrRecord =
+                        _Statistics->HistoryEvent(&_ObjectPtr->CurrentWeldResult, &_ObjectPtr->CurrentSplice);
+                BransonServer *_Server = BransonServer::Instance();
+                _Server->SendDataToClients(StrRecord);
+            }
+            if((_M102IA->IAactual.Alarmflags & BIT14) == BIT14)
+            {
+                _ObjectPtr->WeldCycleStatus = true;
+                _ObjectPtr->m_pReadySM->ReadyState = ReadyStateMachine::READYON;
+            }
+            else
+            {
+                _ObjectPtr->WeldCycleStatus = true;
+                _ObjectPtr->m_pReadySM->ReadyState = ReadyStateMachine::READYOFF;
+            }
+        }
         StopThreadFlag = true;
     }
     if(StopThreadFlag == true)
     {
-        emit _ObjectPtr->WeldCycleCompleted(&_ObjectPtr->WeldCycleStatus);
+        emit _ObjectPtr->WeldCycleCompleted(_ObjectPtr->WeldCycleStatus);
         m_pThread->setStopEnabled(true);
         m_pThread->setSuspendEnabled(true);
         _M102IA->RawPowerDataGraph.GraphDataList.clear();
@@ -339,9 +352,11 @@ bool MakeWeldProcess::_start()
         tmpMsgBox.MsgTitle = QObject::tr("ERROR");
         tmpMsgBox.MsgPrompt = QObject::tr("Can't get any Response from controller!");
         tmpMsgBox.TipsMode = Critical;
-        tmpMsgBox.func_ptr = NULL;
+        tmpMsgBox.OKfunc_ptr = NULL;
+        tmpMsgBox.Cancelfunc_ptr = NULL;
         _Interface->cMsgBox(&tmpMsgBox);
         bResult = false;
+        DEBUG_PRINT("_M102IA->SendCommandSetRunMode(ON");
     }else{
         m_pThread = new ThreadClass(0, (void*)(MakeWeldProcess::WeldCycleDaemonThread), this);
         m_pThread->setStopEnabled(false);
@@ -379,10 +394,13 @@ bool MakeWeldProcess::_stop()
         tmpMsgBox.MsgTitle = QObject::tr("ERROR");
         tmpMsgBox.MsgPrompt = QObject::tr("Can't get any Response from controller!");
         tmpMsgBox.TipsMode = Critical;
-        tmpMsgBox.func_ptr = NULL;
+        tmpMsgBox.OKfunc_ptr = NULL;
+        tmpMsgBox.Cancelfunc_ptr = NULL;
         _Interface->cMsgBox(&tmpMsgBox);
         bResult = false;
+        DEBUG_PRINT("_M102IA->SendCommandSetRunMode(OFF");
     }
+    qDebug()<<"Weld Process end";
     return bResult;
 }
 
@@ -425,9 +443,11 @@ bool MakeWeldProcess::_execute()
         tmpMsgBox.MsgTitle = QObject::tr("ERROR");
         tmpMsgBox.MsgPrompt = QObject::tr("Can't get any Response from controller!");
         tmpMsgBox.TipsMode = Critical;
-        tmpMsgBox.func_ptr = NULL;
+        tmpMsgBox.OKfunc_ptr = NULL;
+        tmpMsgBox.Cancelfunc_ptr = NULL;
         _Interface->cMsgBox(&tmpMsgBox);
         bResult = false;
+        DEBUG_PRINT(_M2010->ReceiveFlags.SYSTEMid);
     }
     if(bResult == false)
         return bResult;
@@ -478,9 +498,11 @@ bool MakeWeldProcess::_execute()
         tmpMsgBox.MsgTitle = QObject::tr("ERROR");
         tmpMsgBox.MsgPrompt = QObject::tr("Can't get any Response from controller!");
         tmpMsgBox.TipsMode = Critical;
-        tmpMsgBox.func_ptr = NULL;
+        tmpMsgBox.OKfunc_ptr = NULL;
+        tmpMsgBox.Cancelfunc_ptr = NULL;
         _Interface->cMsgBox(&tmpMsgBox);
         bResult = false;
+        DEBUG_PRINT(_M2010->ReceiveFlags.HostReadyData);
     }
     return bResult;
 }

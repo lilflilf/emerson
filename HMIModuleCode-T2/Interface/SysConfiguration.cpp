@@ -316,11 +316,11 @@ bool Status_Data::ReadStatusDataFromQSetting()
         str = QString("MaintenanceCountLimits%1").arg(QString::number(i, 10));
         MaintenanceCountLimits[i] = settings.value(str).value<long>();
         str = QString("MaintenanceEnergyLimits%1").arg(QString::number(i, 10));
-        MaintenanceEnergyLimits[i] = settings.value(str).value<long>();
+        MaintenanceEnergyLimits[i] = settings.value(str).value<double>();
         str = QString("CurrentCountMaintenanceLimits%1").arg(QString::number(i, 10));
         CurrentCountMaintenanceLimits[i] = settings.value(str).value<long>();
         str = QString("CurrentEnergyMaintenanceLimits%1").arg(QString::number(i, 10));
-        CurrentEnergyMaintenanceLimits[i] = settings.value(str).value<long>();
+        CurrentEnergyMaintenanceLimits[i] = settings.value(str).value<double>();
         str = QString("MaintenanceDateStarted%1").arg(QString::number(i, 10));
         MaintenanceDateStarted[i] = settings.value(str).value<unsigned int>();
         str = QString("Maintenance80PercentAlarm%1").arg(QString::number(i, 10));

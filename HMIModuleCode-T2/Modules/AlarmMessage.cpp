@@ -32,7 +32,8 @@ void AlarmMessage::Initialization(int SpliceID)
         tmpMsgBox.MsgTitle = QObject::tr("ERROR");
         tmpMsgBox.MsgPrompt = QObject::tr("Can't get any Response from controller!");
         tmpMsgBox.TipsMode = Critical;
-        tmpMsgBox.func_ptr = NULL;
+        tmpMsgBox.OKfunc_ptr = NULL;
+        tmpMsgBox.Cancelfunc_ptr = NULL;
         _Interface->cMsgBox(&tmpMsgBox);
     }else{
         ShowText(SpliceID);
@@ -203,7 +204,8 @@ void AlarmMessage::ShowText(int SpliceID)
     tmpMsgBox.MsgPrompt = AlarmMsg;
     tmpMsgBox.MsgTitle = QObject::tr("Alarm");
     tmpMsgBox.TipsMode = (RESETCancel | Alarm);
-    tmpMsgBox.func_ptr = AlarmMessage::ResetAnyAlarm;
+    tmpMsgBox.OKfunc_ptr = AlarmMessage::ResetAnyAlarm;
+    tmpMsgBox.Cancelfunc_ptr = NULL;
     tmpMsgBox._Object = this;
     _Interface->cMsgBox(&tmpMsgBox);
     AlarmPresent = true;
@@ -249,7 +251,8 @@ void AlarmMessage::RunModeMouseButton()
         tmpMsgBox.MsgTitle = QObject::tr("ERROR");
         tmpMsgBox.MsgPrompt = QObject::tr("Can't get any Response from controller!");
         tmpMsgBox.TipsMode = Critical;
-        tmpMsgBox.func_ptr = NULL;
+        tmpMsgBox.OKfunc_ptr = NULL;
+        tmpMsgBox.Cancelfunc_ptr = NULL;
         _Interface->cMsgBox(&tmpMsgBox);
     }else
     {
@@ -261,7 +264,8 @@ void AlarmMessage::RunModeMouseButton()
             tmpMsgBox.MsgTitle = QObject::tr("ERROR");
             tmpMsgBox.MsgPrompt = QObject::tr("Can't get any Response from controller!");
             tmpMsgBox.TipsMode = Critical;
-            tmpMsgBox.func_ptr = NULL;
+            tmpMsgBox.OKfunc_ptr = NULL;
+            tmpMsgBox.Cancelfunc_ptr = NULL;
             _Interface->cMsgBox(&tmpMsgBox);
         }
     }

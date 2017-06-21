@@ -19,16 +19,16 @@ Item {
     property string componentMiddle: ""
     property string componenttype: ""
     property string componentCount: ""
-    property int selectCount: 0
-    property int selectIndex: -1
-    property alias listModel: listView.model
-    property bool bIsOnlyOne: false
+    property int    selectCount: 0
+    property int    selectIndex: -1
+    property alias  listModel: listView.model
+    property bool   bIsOnlyOne: false
+
     signal signalAddExistSelectClick(int modelId, string name)
     signal signalAddExistCancel()
     ListModel {
         id: selectList
     }
-
 
     function clearSelect()
     {

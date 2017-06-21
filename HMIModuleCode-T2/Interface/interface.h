@@ -32,7 +32,8 @@ struct BransonMessageBox{
     QString MsgPrompt;
     int TipsMode;
     void* _Object;
-    void (*func_ptr)(void*);
+    void (*OKfunc_ptr)(void*);
+    void (*Cancelfunc_ptr)(void*);
 };
 
 

@@ -112,7 +112,8 @@ void InterfaceClass::cMsgBox(struct BransonMessageBox* MsgBox)
     tmpMsgBox.MsgPrompt = MsgBox->MsgPrompt;
     tmpMsgBox.MsgTitle = MsgBox->MsgTitle;
     tmpMsgBox.TipsMode = MsgBox->TipsMode;
-    tmpMsgBox.func_ptr = MsgBox->func_ptr;
+    tmpMsgBox.OKfunc_ptr = MsgBox->OKfunc_ptr;
+    tmpMsgBox.Cancelfunc_ptr = MsgBox->Cancelfunc_ptr;
     tmpMsgBox._Object = MsgBox->_Object;
     emit EnableErrorMessageSignal(tmpMsgBox);
 }

@@ -43,7 +43,7 @@ private:
     bool PowerGraphReceive();
     static void WeldCycleDaemonThread(void*);
 signals:
-    void WeldCycleCompleted(const bool &_status);
+    void WeldCycleCompleted(const bool _status);
 public slots:
     void WeldResultEventSlot(bool &bResult);
     void HeightGraphEventSlot(bool &bResult);

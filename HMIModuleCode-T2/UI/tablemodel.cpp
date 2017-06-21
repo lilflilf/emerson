@@ -1,5 +1,6 @@
 #include "tablemodel.h"
 #include "Modules/typedef.h"
+#include "Modules/UtilityClass.h"
 #include <QDebug>
 #include <QQmlPropertyMap>
 
@@ -1864,6 +1865,40 @@ int SplicesModel::searchIndexByName(QString name)
     return -1;
 }
 
+int SplicesModel::copySplice(int spliceId)
+{
+    PresetElement  tempSplice;
+    bool ok;
+    if (m_spliceAdaptor->QueryOneRecordFromTable(spliceId,&tempSplice))
+    {
+        if (tempSplice.SpliceName.size() > 3) {
+            QString str = tempSplice.SpliceName.right(3);
+            QString type = str.left(1) + str.right(1);
+            if (type == "()")
+            {
+                str = str.mid(1,1);
+                QString name = tempSplice.SpliceName = tempSplice.SpliceName.left(tempSplice.SpliceName.size() - 3);
+                QString spliceName = name + QString("(%1)").arg(str.toInt(&ok,10)+1);
+
+                tempSplice.SpliceName = spliceName;
+
+            }
+            else
+                tempSplice.SpliceName = tempSplice.SpliceName+"(1)";
+        }
+        else
+            tempSplice.SpliceName = tempSplice.SpliceName+"(1)";
+
+        int ret = m_spliceAdaptor->InsertRecordIntoTable(&tempSplice);
+        setModelList();
+        return ret;
+
+    }
+    else
+        return -1;
+
+}
+
 QString SplicesModel::timePlusToString(int time)
 {
     return variantToString->TimePlusToString(time).Maximum;
@@ -1876,22 +1911,26 @@ QString SplicesModel::timeMinusToString(int time)
 
 QString SplicesModel::actualTimeToString(int ActualTime)
 {
-    return variantToString->ActualTimeToString(ActualTime);
+    UtilityClass* _Utility = UtilityClass::Instance();
+    return _Utility->FormatedDataToString(DINActTimeNoUnit, ActualTime);
 }
 
 QString SplicesModel::actualPowerToString(int ActualPower)
 {
-    return variantToString->ActualPowerToString(ActualPower);
+    UtilityClass* _Utility = UtilityClass::Instance();
+    return _Utility->FormatedDataToString(DINActPowerNoUnit, ActualPower);
 }
 
 QString SplicesModel::actualPreHeightToString(int ActualPreHeight)
 {
-    return variantToString->ActualPreHeightToString(ActualPreHeight);
+    UtilityClass* _Utility = UtilityClass::Instance();
+    return _Utility->FormatedDataToString(DINActPreHgtNoUnit, ActualPreHeight);
 }
 
 QString SplicesModel::actualHeightToString(int ActualHeight)
 {
-    return variantToString->ActualHeightToString(ActualHeight);
+    UtilityClass* _Utility = UtilityClass::Instance();
+    return _Utility->FormatedDataToString(DINActHgtNoUnit, ActualHeight);
 }
 
 void SplicesModel::updateSplice(PresetElement presetElement)
@@ -4099,16 +4138,19 @@ QList<int> SequenceModel::getSpliceList()
     return list;
 }
 
-int SequenceModel::getSpliceQty(int spliceId)
+int SequenceModel::getSpliceQty(int spliceId,int index)
 {
 
     QMap<int,struct SEQUENCEATTRIBUTE>::iterator it; //遍历map
     int qty;
-    for ( it = sequenceElement.SpliceList.begin(); it != sequenceElement.SpliceList.end(); ++it ) {
-        if (it.value().SpliceID == spliceId)
-            qty = it.value().Quantity;
-    }
-    qDebug() << "getSpliceQty" << spliceId << qty;
+    QList<int> list;
+    list = sequenceElement.SpliceList.keys();
+    qty = sequenceElement.SpliceList.value(list[index]).Quantity;
+//    for ( it = sequenceElement.SpliceList.begin(); it != sequenceElement.SpliceList.end(); ++it ) {
+//        if (it.value().SpliceID == spliceId)
+//            qty = it.value().Quantity;
+//    }
+    qDebug() << "getSpliceQty" << spliceId << qty << index;
     return qty;
 }
 
