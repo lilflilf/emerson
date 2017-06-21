@@ -21,7 +21,6 @@ QVariant WorkOrderModel::data(const QModelIndex &index, int role) const
     {
         int columnIdx = role - Qt::UserRole - 1;
         int rowId;
-        UNUSED(rowId);
         QMap<int,QString>::iterator it; //遍历map
         int i = 0;
         for ( it = workOrders->begin(); it != workOrders->end(); ++it ) {
@@ -277,7 +276,6 @@ QVariant SplicesModel::data(const QModelIndex &index, int role) const
     {
         int columnIdx = role - Qt::UserRole - 1;
         int rowId;
-        UNUSED(rowId);
         QMap<int,QString>::iterator it; //遍历map
         int i = 0;
         for ( it = splices->begin(); it != splices->end(); ++it ) {
@@ -369,7 +367,7 @@ void SplicesModel::setModelList(unsigned int time_from, unsigned int time_to)
     beginResetModel();
     splices->clear();
     if (m_spliceAdaptor->QueryOnlyUseTime(time_from,time_to,splices))
-        qDebug( )<< "setModelList SpliceModel" << splices->count();
+        rowList = splices->keys();
     endResetModel();
 }
 
@@ -378,7 +376,7 @@ void SplicesModel::setModelList()
     beginResetModel();
     splices->clear();
     if (m_spliceAdaptor->QueryEntireTable(splices))
-        qDebug( )<< "setModelList SpliceModel" << splices->count();
+        rowList = splices->keys();
     endResetModel();
 }
 
@@ -1938,25 +1936,28 @@ QHash<int, QByteArray> SplicesModel::roleNames() const
 
 QVariant SplicesModel::getValue(int index, QString key)
 {
-    QMap<int,QString>::iterator it; //遍历map
-    int i = 0;
-    int orderId;
-    UNUSED(orderId);
-    for ( it = splices->begin(); it != splices->end(); ++it ) {
-        if (i == index){
-            orderId = it.key();
-            break;
-        }
-        else {
-            i++;
-        }
-    }
+//    QMap<int,QString>::iterator it; //遍历map
+//    int i = 0;
+//    int orderId;
+//    for ( it = splices->begin(); it != splices->end(); ++it ) {
+//        if (i == index){
+//            orderId = it.key();
+//            break;
+//        }
+//        else {
+//            i++;
+//        }
+//    }
+//    splices[rowList[index]]
     //        list << "SpliceId" << "SpliceName" << "DateCreated" << "OperatorName" << "CrossSection" << "TotalWires" << "Verified" << "WeldMode" << "Energy" << "Amplitude"
     //             << "Width" << "TriggerPressure" << "WeldPressure" << "Time+" << "Time-" << "Power+" << "Power-" << "Pre-Height+" << "Pre-Height-" << "Height+" << "Height-" << "count";
-    PresetElement mySplice;
-    OperatorElement myOperator;
-    m_spliceAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&mySplice);
-    m_operatorAdaptor->QueryOneRecordFromTable(mySplice.OperatorID,&myOperator);
+//    PresetElement mySplice;
+//    OperatorElement myOperator;
+    if (mySplice.SpliceID != rowList[index])
+    {
+        m_spliceAdaptor->QueryOneRecordFromTable(rowList[index],splices->value(rowList[index]),&mySplice);
+        m_operatorAdaptor->QueryOneRecordFromTable(mySplice.OperatorID,&myOperator);
+    }
     QHash<QString, QVariant> SpliceModelHash;
     SpliceModelHash.insert("SpliceId",mySplice.SpliceID);
     SpliceModelHash.insert("SpliceName",mySplice.SpliceName);
@@ -3684,24 +3685,29 @@ QHash<int, QByteArray> WireModel::roleNames() const
 
 QVariant WireModel::getValue(int index, QString key)
 {
-    QMap<int,QString>::iterator it; //遍历map
-    int i = 0;
-    int orderId;
-    UNUSED(orderId);
-    for ( it = wires->begin(); it != wires->end(); ++it ) {
-        if (i == index){
-            orderId = it.key();
-            break;
-        }
-        else {
-            i++;
-        }
-    }
+//    QMap<int,QString>::iterator it; //遍历map
+//    int i = 0;
+//    int orderId;
+//    UNUSED(orderId);
+//    for ( it = wires->begin(); it != wires->end(); ++it ) {
+//        if (i == index){
+//            orderId = it.key();
+//            break;
+//        }
+//        else {
+//            i++;
+//        }
+//    }
 
-    WireElement myWire;
-    OperatorElement myOperator;
-    m_wireAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myWire);
-    m_operatorAdaptor->QueryOneRecordFromTable(myWire.OperatorID,&myOperator);
+//    WireElement myWire;
+//    OperatorElement myOperator;
+    QList<int> rowList;
+    rowList = wires->keys();
+    if (myWire.WireID != rowList[index])
+    {
+        m_wireAdaptor->QueryOneRecordFromTable(rowList[index],wires->value(rowList[index]),&myWire);
+        m_operatorAdaptor->QueryOneRecordFromTable(myWire.OperatorID,&myOperator);
+    }
     QString temp;
     //    list <<"WireId" << "WireName" << "DateCreated" << "OperatorName" << "Color" << "StripeType" << "StripeColor" << "Gauge" << "MetalType" << "HorizontalLocation" << "VerticalLocation" << "VerticalPosition";
     QHash<QString, QVariant> WireModelHash;
