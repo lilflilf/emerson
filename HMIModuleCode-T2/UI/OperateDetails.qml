@@ -33,7 +33,6 @@ Item {
                     cdialog.visible = true
                     hmiAdaptor.operateProcessExec("Stop")
                     hmiAdaptor.setWorkFlow(3,0,"");
-
                     return
                 }
                 spliceLocation.setTreeModelOver()
@@ -945,7 +944,10 @@ Item {
             textColor: "white"
             onClicked: {
                 progressBar2.value = 0
+                hmiAdaptor.setWorkValue("PartCount",0)
                 resetButton.text = qsTr("Reset") + "(" + progressBar2.value + ")"
+                partCount2.text = qsTr(counterString) + hmiAdaptor.getWorkValue("PartCount") + "/" + qliantity
+
             }
         }
 
@@ -1023,6 +1025,7 @@ Item {
                     if (spliceCounterSetting.bIsEdit) {
                         progressBar2.maximum = defalut.text
                         operateDetail.qliantity = defalut.text
+                        partCount2.text = qsTr(counterString) + hmiAdaptor.getWorkValue("PartCount") + "/" + qliantity
                         if (workMode == 1)
                         {
                             if (progressBar.current-1 < 0)

@@ -163,8 +163,8 @@ Item {
         delegate: listDelegate
         highlight: Rectangle { color: "black"; opacity: 0.3; radius: 5 }
         focus: true
-        highlightResizeVelocity: 50000
-
+        highlightResizeVelocity: 500000
+        highlightMoveVelocity: 500000
     }
     Image {
         id: scrollUp

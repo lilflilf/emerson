@@ -158,6 +158,8 @@ public slots:
     Q_INVOKABLE QString getSpliceName(int spliceId);
     Q_INVOKABLE int searchIndexByName(QString name);
 
+    Q_INVOKABLE int copySplice(int spliceId);
+
     QString timePlusToString(int time);
     QString timeMinusToString(int time);
     QString actualTimeToString(int ActualTime);

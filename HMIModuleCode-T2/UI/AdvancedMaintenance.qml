@@ -420,6 +420,8 @@ Item {
                     anchors.right: parent.right
                     bgvisable: index == 1 ? false : true
                     onMouseAreaClick: {
+                        if (index == 3)
+                            keyNum.addVisable = false
                         if (bgvisable) {
                             bIsList = true
                             listIndex = index
@@ -488,6 +490,10 @@ Item {
         maxvalue: "4"
         minvalue: "1"
         currentValue: "4"
+        onVisibleChanged: {
+            if (!keyNum.visible)
+                keyNum.addVisable = true
+        }
         onCurrentClickIndex: {
             if (index == 15) {
                 if (hmiAdaptor.comepareCurrentValue(keyNum.minvalue,keyNum.maxvalue,keyNum.inputText)) {

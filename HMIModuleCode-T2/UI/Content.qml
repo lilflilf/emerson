@@ -1362,9 +1362,14 @@ Item {
 //                        break;
 //                    }
 //                }
-//                if (!bIsFind) {
-//                    spliceList.listModel.append({"SpliceName":name,"stationColor":"white","station":"?","SpliceId":modelId,"qty":0})
+//                if (bIsFind) {
+//                    var ret = spliceModel.copySplice(modelId)
+//                    if (ret > 0)
+//                        spliceList.listModel.append({"SpliceName":spliceModel.getSpliceName(ret),"stationColor":"white","station":"?","SpliceId":ret,"qty":0})
 //                }
+//                else
+//                    spliceList.listModel.append({"SpliceName":name,"stationColor":"white","station":"?","SpliceId":modelId,"qty":0})
+
 
                 spliceList.listModel.append({"SpliceName":name,"stationColor":"white","station":"?","SpliceId":modelId,"qty":0})
 

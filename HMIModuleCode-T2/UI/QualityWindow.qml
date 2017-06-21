@@ -7,16 +7,18 @@ Item {
     id: qualityParent
     width: Screen.width * 0.43
     height: Screen.height *0.4
-    property var clickType: 0
-    property alias qualityModel: qualityModel
-    property var timeModel : new Array
-    property var powerModel: new Array
-    property var preModel: new Array
-    property var postModel: new Array
-    property var selectIndex: 0
-    property alias qualityListViewTwoModel: qualityListViewTwo.model
-    property var partCount: 0
+    property var  clickType: 0
+    property var  timeModel : new Array
+    property var  powerModel: new Array
+    property var  preModel: new Array
+    property var  postModel: new Array
+    property var  selectIndex: 0
+    property var  partCount: 0
     property bool bisTest: false
+
+    property alias qualityListViewTwoModel: qualityListViewTwo.model
+    property alias qualityModel: qualityModel
+
     function setData()
     {
         qualityListViewTwo.model = 0
@@ -344,7 +346,6 @@ Item {
         anchors.top: qualityListView.bottom
         anchors.topMargin: 45
         delegate: qualityListViewTwoDelegate
-//        model: 100
         layoutDirection: Qt.RightToLeft
         anchors.right: parent.right
         anchors.rightMargin: 20

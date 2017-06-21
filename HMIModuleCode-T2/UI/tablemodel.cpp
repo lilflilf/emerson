@@ -1864,6 +1864,40 @@ int SplicesModel::searchIndexByName(QString name)
     return -1;
 }
 
+int SplicesModel::copySplice(int spliceId)
+{
+    PresetElement  tempSplice;
+    bool ok;
+    if (m_spliceAdaptor->QueryOneRecordFromTable(spliceId,&tempSplice))
+    {
+        if (tempSplice.SpliceName.size() > 3) {
+            QString str = tempSplice.SpliceName.right(3);
+            QString type = str.left(1) + str.right(1);
+            if (type == "()")
+            {
+                str = str.mid(1,1);
+                QString name = tempSplice.SpliceName = tempSplice.SpliceName.left(tempSplice.SpliceName.size() - 3);
+                QString spliceName = name + QString("(%1)").arg(str.toInt(&ok,10)+1);
+
+                tempSplice.SpliceName = spliceName;
+
+            }
+            else
+                tempSplice.SpliceName = tempSplice.SpliceName+"(1)";
+        }
+        else
+            tempSplice.SpliceName = tempSplice.SpliceName+"(1)";
+
+        int ret = m_spliceAdaptor->InsertRecordIntoTable(&tempSplice);
+        setModelList();
+        return ret;
+
+    }
+    else
+        return -1;
+
+}
+
 QString SplicesModel::timePlusToString(int time)
 {
     return variantToString->TimePlusToString(time).Maximum;

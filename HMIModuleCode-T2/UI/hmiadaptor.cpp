@@ -1720,16 +1720,17 @@ QString HmiAdaptor::getStringUnit(QString value)
 QString HmiAdaptor::getStringValue(QString value)
 {
     QString num;
+
     if (!value.isEmpty() && !value.isNull()) {
         for (int i = 0; i < value.length(); i++) {
             if ((value.at(i) >= '0' && value.at(i) <= '9') || value.at(i) == '.') {
                 num += value.at(i);
                 continue;
-            } else {
-                break;
             }
         }
     }
+    if (value.left(1) == "-")
+        num = "-" + num;
     return num;
 }
 

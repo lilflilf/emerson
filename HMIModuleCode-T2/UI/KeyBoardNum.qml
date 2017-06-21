@@ -23,6 +23,7 @@ Item {
     property string tempValue: ""
     property alias timeRun: timer.running
     property alias validator: newvalue.validator
+    property bool addVisable: true
     signal currentClickIndex(int index)
     width: parent.width
     height: parent.height
@@ -171,7 +172,7 @@ Item {
             listModel.append({"iconsource":"qrc:/images/images/keyboard8.png","value":"8"})
             listModel.append({"iconsource":"qrc:/images/images/keyboard9.png","value":"9"})
             listModel.append({"iconsource":"qrc:/images/images/keyboardcancel.png","value":""})
-            listModel.append({"iconsource":"qrc:/images/images/keyBoardxing.png","value":"*"})
+            listModel.append({"iconsource":"qrc:/images/images/keyBoard+.png","value":"-"})
             listModel.append({"iconsource":"qrc:/images/images/keyboard0.png","value":"0"})
             listModel.append({"iconsource":"qrc:/images/images/keyboarddian.png","value":"."})
             listModel.append({"iconsource":"qrc:/images/images/keyboarddone.png","value":""})
@@ -204,13 +205,13 @@ Item {
                     TempSTring += tempValue.charAt(i)
                 }
                 tempValue = TempSTring
-                inputText = TempSTring + hmiAdaptor.getStringUnit(keyBoardnum.minvalue)
+                inputText = TempSTring + hmiAdaptor.getStringUnit(keyBoardnum.maxvalue)
             }
             else if (event.key >= Qt.Key_0 && event.key <= Qt.Key_9)
             {
 
                 tempValue += event.key - 48
-                inputText = tempValue + hmiAdaptor.getStringUnit(keyBoardnum.minvalue)
+                inputText = tempValue + hmiAdaptor.getStringUnit(keyBoardnum.maxvalue)
 
 //                if (hmiAdaptor.keyNumStringMatch(keyBoardnum.minvalue,keyBoardnum.maxvalue,keyBoardnum.tempValue)) {
 //                    inputText = tempValue + hmiAdaptor.getStringUnit(keyBoardnum.minvalue)
@@ -267,7 +268,7 @@ Item {
                                 TempSTring += tempValue.charAt(i)
                             }
                             tempValue = TempSTring
-                            inputText = TempSTring + hmiAdaptor.getStringUnit(keyBoardnum.minvalue)
+                            inputText = TempSTring + hmiAdaptor.getStringUnit(keyBoardnum.maxvalue)
                         } else if (index == 7) {
                             inputText = ""
                             tempValue = ""
@@ -288,11 +289,22 @@ Item {
                                 for (var j = 0; j < tempValue.length-1;j++) {
                                     Temp += tempValue.charAt(j)
                                 }
-                                tempValue = Temp
+//                                tempValue = Temp
                             }
-                        } else {
+                        } else if (index == 12) {
+                            if (tempValue.indexOf("-") >= 0)
+                                tempValue = tempValue.replace("-","")
+                            else
+                                tempValue = "-" + tempValue
+                            inputText = tempValue + hmiAdaptor.getStringUnit(keyBoardnum.maxvalue)
+
+                        }
+
+                        else {
+                            if (tempValue.length > 20)
+                                return
                             tempValue += listModel.get(index).value
-                            inputText = tempValue + hmiAdaptor.getStringUnit(keyBoardnum.minvalue)
+                            inputText = tempValue + hmiAdaptor.getStringUnit(keyBoardnum.maxvalue)
 
 //                            if (hmiAdaptor.keyNumStringMatch(keyBoardnum.minvalue,keyBoardnum.maxvalue,keyBoardnum.tempValue)) {
 //                                inputText = tempValue + hmiAdaptor.getStringUnit(keyBoardnum.minvalue)
@@ -306,7 +318,13 @@ Item {
 //                            }
                         }
                     }
+                    MouseArea {
+                        anchors.fill: parent
+                        visible: index == 12 ? true : false
+                        enabled: addVisable
+                    }
                 }
+
             }
         }
     }
