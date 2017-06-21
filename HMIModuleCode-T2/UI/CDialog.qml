@@ -22,8 +22,9 @@ Item {
     property alias centerText: title.text
     property alias msgTypeIco: msgType.source
     property alias titleText: headText.text
-    signal cliceTo(bool reb)
     property bool bisQuit: false
+
+    signal cliceTo(bool reb)
     Rectangle {
         id: backGround
         anchors.fill: parent

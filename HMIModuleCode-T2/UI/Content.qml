@@ -19,27 +19,29 @@ import QtQuick.Dialogs 1.2
 
 Item {
     id: content
+    width: Screen.width
+    height: Screen.height
+
+    property var selectSpliceId: -1
+    property var qtyIndex: -1
+    property int partId: -1
+    property int spliceId: -1
     property bool bIsBasic: true
     property bool bIsDrag: false
     property bool bIsEdit: false
     property bool bIsBoard: true
-    property int partId: -1
-    property int spliceId: -1
-    property string draColor: ""
     property bool bIsEditSplice: false
     property bool bIsFirst: false
+    property bool bIsSequence: false
+    property bool bIsHarness: false
+    property bool bIsEditQty: false
+    property string draColor: ""
+
     property variant arrayzone: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P"]
     property variant arrayColor: ["#ff6699","#ff0033","#33FFCC","#cc99ff","#cc0099","#930202","#99ccff","#f79428",
         "#0000cc","Olive","#ffff33","#ffcc00","#cc9909","#66ff00","#009900","#00cc66","#3366ff","#cc33cc","#cc9966","#9400D3"]
     signal titleTextChanged(var myTitleText)
-    property var selectSpliceId: -1
 
-    property bool bIsSequence: false
-    property bool bIsHarness: false
-    property bool bIsEditQty: false
-    property var qtyIndex: -1
-    width: Screen.width
-    height: Screen.height
     Component.onCompleted: {
         if (mainRoot.initIndex == 1)
             initSequence()
@@ -694,8 +696,6 @@ Item {
                 height: 50
                 inputWidth: edit4.width/2
                 tipsText: qsTr("Columns")
-//                regExp: RegExpValidator{regExp: /^[1-4]{1}$/}
-//                maxSize: 20
                 opacity: 0.7
                 inputText: partModel.getWorkStationColumns()
                 onInputFocusChanged: {
@@ -717,10 +717,6 @@ Item {
                     }
                     workStationcolor.getAllWorkstationColor(edit1.inputText)
                     workStationcolor.clearCurrentStationCount(edit1.inputText)
-//                    for (var i = 0; i< workModel.count; i++) {
-//                        workModel.get(i).workStation.destroy()
-//                    }
-//                    workModel.clear()
                 }
             }
             MiniKeyNumInput {

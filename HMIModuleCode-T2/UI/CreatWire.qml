@@ -23,21 +23,18 @@ Item {
 
     property var weldModel: -1
     property var stepModel: -1
-    property bool bIsFromLib: false
-    property bool firstComeIn: true
-    signal signalSaveSplice(var spliceId,var bIsEdit)
-    property bool crossSection: false
-    property int selectIndex: 0
-    property bool detailIsChang: true
-    property bool bIsStep: false
-    property string stepSetText: ""
-    property var totalGauge: 0
-    property bool bIsEditSplice: false
     property var selectModel: -1
     property var currentSpliceId: -1
-
-//    property variant colorArray: ["#ff6699","#ff0033","#33FFCC","#cc99ff","#cc0099","#930202","#99ccff","#f79428",
-//        "#0000cc","Olive","#ffff33","#ffcc00","#cc9909","#66ff00","#009900","#00cc66","#3366ff","#cc33cc","#cc9966","#9400D3"]
+    property var totalGauge: 0
+    property int selectIndex: 0
+    property bool bIsFromLib: false
+    property bool firstComeIn: true
+    property bool crossSection: false
+    property bool detailIsChang: true
+    property bool bIsStep: false
+    property bool bIsEditSplice: false
+    property string stepSetText: ""
+    signal signalSaveSplice(var spliceId,var bIsEdit)
 
     property variant colorArray: ["#000000","#7f7f7f","#880015","#ED1C24","#FF7F27","#FFF200","#22B14C","#00A2E8",
         "#3F48CC","#A349A4","#ffffff","#c3c3c3","#b97a57","#ffaec9","#ffc90e","#efe4b0","#b5e61d","#99d9ea","#7092be","#c8bfe7"]
@@ -45,7 +42,6 @@ Item {
     Component.onCompleted: {
         if (mainRoot.bIsEditSplice)
         {
-
             bIsEditSplice = true
             currentSpliceId = hmiAdaptor.getTestSpliceId()
             var list = spliceModel.getWireIdList()
@@ -128,18 +124,37 @@ Item {
     function initSettings()
     {
         settingsModel.clear();
-//        settingsModel.append({"topText":qsTr("Energy"),"bottomText":spliceModel.getStructValue("Energy","current"),"maxText":spliceModel.getStructValue("Energy","max"),"minText":spliceModel.getStructValue("Energy","min")})
-//        settingsModel.append({"topText":qsTr("Trigger Pressure"),"bottomText":spliceModel.getStructValue("Trigger Pressure","current"),"maxText":spliceModel.getStructValue("Trigger Pressure","max"),"minText":spliceModel.getStructValue("Trigger Pressure","min")})
-//        settingsModel.append({"topText":qsTr("Amplitude"),"bottomText":spliceModel.getStructValue("Amplitude","current"),"maxText":spliceModel.getStructValue("Amplitude","max"),"minText":spliceModel.getStructValue("Amplitude","min")})
-//        settingsModel.append({"topText":qsTr("Weld Pressure"),"bottomText":spliceModel.getStructValue("Weld Pressure","current"),"maxText":spliceModel.getStructValue("Weld Pressure","max"),"minText":spliceModel.getStructValue("Weld Pressure","min")})
-//        settingsModel.append({"topText":qsTr("Width"),"bottomText":spliceModel.getStructValue("Width","current"),"maxText":spliceModel.getStructValue("Width","max"),"minText":spliceModel.getStructValue("Width","min")})
 
-
-        settingsModel.append({"tipText":qsTr("Energy"),"topText":qsTr(""),"bottomText":spliceModel.getStructValue("Energy","current"),"maxText":spliceModel.getStructValue("Energy","max"),"minText":spliceModel.getStructValue("Energy","min")})
-        settingsModel.append({"tipText":qsTr("T.P"),"topText":qsTr(""),"bottomText":spliceModel.getStructValue("Trigger Pressure","current"),"maxText":spliceModel.getStructValue("Trigger Pressure","max"),"minText":spliceModel.getStructValue("Trigger Pressure","min")})
-        settingsModel.append({"tipText":qsTr("W.P"),"topText":qsTr(""),"bottomText":spliceModel.getStructValue("Weld Pressure","current"),"maxText":spliceModel.getStructValue("Weld Pressure","max"),"minText":spliceModel.getStructValue("Weld Pressure","min")})
-        settingsModel.append({"tipText":qsTr("Amplitude"),"topText":qsTr(""),"bottomText":spliceModel.getStructValue("Amplitude","current"),"maxText":spliceModel.getStructValue("Amplitude","max"),"minText":spliceModel.getStructValue("Amplitude","min")})
-        settingsModel.append({"tipText":qsTr("Width"),"topText":qsTr(""),"bottomText":spliceModel.getStructValue("Width","current"),"maxText":spliceModel.getStructValue("Width","max"),"minText":spliceModel.getStructValue("Width","min")})
+        settingsModel.append({"tipText":   qsTr("Energy"),
+                              "topText":   qsTr(""),
+                              "bottomText":spliceModel.getStructValue("Energy","current"),
+                              "maxText":   spliceModel.getStructValue("Energy","max"),
+                              "minText":   spliceModel.getStructValue("Energy","min")
+                             })
+        settingsModel.append({"tipText":   qsTr("T.P"),
+                              "topText":   qsTr(""),
+                              "bottomText":spliceModel.getStructValue("Trigger Pressure","current"),
+                              "maxText":   spliceModel.getStructValue("Trigger Pressure","max"),
+                              "minText":   spliceModel.getStructValue("Trigger Pressure","min")
+                             })
+        settingsModel.append({"tipText":   qsTr("W.P"),
+                              "topText":   qsTr(""),
+                              "bottomText":spliceModel.getStructValue("Weld Pressure","current"),
+                              "maxText":   spliceModel.getStructValue("Weld Pressure","max"),
+                              "minText":   spliceModel.getStructValue("Weld Pressure","min")
+                             })
+        settingsModel.append({"tipText":   qsTr("Amplitude"),
+                              "topText":   qsTr(""),
+                              "bottomText":spliceModel.getStructValue("Amplitude","current"),
+                              "maxText":   spliceModel.getStructValue("Amplitude","max"),
+                              "minText":   spliceModel.getStructValue("Amplitude","min")
+                             })
+        settingsModel.append({"tipText":   qsTr("Width"),
+                              "topText":   qsTr(""),
+                              "bottomText":spliceModel.getStructValue("Width","current"),
+                              "maxText":   spliceModel.getStructValue("Width","max"),
+                              "minText":   spliceModel.getStructValue("Width","min")
+                             })
         if (tabBar.currentIndex == 1)
             freshProcess()
     }
@@ -293,11 +308,9 @@ Item {
             Label {
                 id: properties
                 color: "#8295a0"
-//                text: qsTr("PROPERTIES")
                 anchors.top: wireName.bottom
                 anchors.left: parent.left
                 anchors.leftMargin: 10
-//                anchors.topMargin: 10
                 font.family: "arial"
                 font.pointSize: 16
                 height: 1
@@ -328,7 +341,6 @@ Item {
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
-                            //colorLoader.source = "qrc:/UI/MyColor.qml"
                             colorLoader.sourceComponent = colorPicker
                         }
                     }
@@ -449,16 +461,6 @@ Item {
                 property var color: "" //stripeBack.color
                 property var stripeType: -1
                 property alias wireColor: stripeBack.color
-//                onColorChanged: {
-//                    if(detailIsChang)
-//                        return
-//                    spliceDetailsItem.selectWireStripeColor = itemStripe.color
-//                }
-//                onStripeTypeChanged: {
-//                    if(detailIsChang)
-//                        return
-//                    spliceDetailsItem.selectWireStripeType = itemStripe.stripeType
-//                }
 
                 Label {
                     id: labelStripe
@@ -514,22 +516,6 @@ Item {
                         visible: itemStripe.stripeType == 3 ? true : false
                         anchors.centerIn: parent
                     }
-//                    Row {
-//                        height: parent.height
-//                        anchors.horizontalCenter: parent.horizontalCenter
-//                        spacing: 20
-//                        visible: itemStripe.stripeType == 3 ? true : false
-//                        Rectangle {
-//                            color: "black"
-//                            width: 5
-//                            height: parent.height
-//                        }
-//                        Rectangle {
-//                            color: "black"
-//                            width: 5
-//                            height: parent.height
-//                        }
-//                    }
                 }
             }
 
@@ -538,8 +524,6 @@ Item {
                 Image {
                     property var radioCheck: -1
                     id: backStripe
-//                    width: 550
-//                    height: 270
                     source: "qrc:/images/images/colorPickerBg.png"
                     width: 852
                     height: 504
@@ -562,22 +546,6 @@ Item {
                                 font.pointSize: 20
                                 font.family: "Arial"
                             }
-//                            Row {
-//                                height: parent.height
-//                                anchors.horizontalCenter: parent.horizontalCenter
-//                                spacing: 20
-//                                Rectangle {
-//                                    color: "black"
-//                                    width: 5
-//                                    height: parent.height
-//                                }
-//                                Rectangle {
-//                                    color: "black"
-//                                    width: 5
-//                                    height: parent.height
-//                                }
-//                            }
-
 
                             Rectangle {
                                 width: parent.width + 10
@@ -602,8 +570,6 @@ Item {
                                 }
                             }
                         }
-
-
 
                         Rectangle {
                             width: 180
@@ -639,7 +605,6 @@ Item {
                                         radioCheck = 0
                                 }
                             }
-
                         }
                         Rectangle {
                             id: rectRotation
@@ -716,14 +681,12 @@ Item {
                                 }
                             }
                         }
-
                     }
                     Loader {
                         anchors.bottom: parent.bottom
                         sourceComponent: colorPicker
                     }
                 }
-
             }
 
             Item {
@@ -749,9 +712,6 @@ Item {
                     width: 100
                     height: 34
                     inputWidth: 100 //parent.width * 0.3
-//                    inputHeight: 34//parent.height
-//                    horizontalAlignment: Qt.AlignHCenter
-//                    maxSize: 20
                     opacity: 0.7
                     onInputFocusChanged: {
                         if (edit2.inputFocus) {
@@ -821,20 +781,6 @@ Item {
                 color: "#375566"
                 height: 1
             }
-
-//            Label {
-//                id: position
-//                color: "#8295a0"
-//                text: qsTr("POSITION")
-//                anchors.top: line3.bottom
-//                anchors.topMargin: 5
-//                font.family: "arial"
-//                font.pointSize: 14
-//                opacity: 0.5
-//                anchors.left: parent.left
-//                anchors.leftMargin: 10
-//            }
-
 
             Item {
                 id: itemSide
@@ -1098,7 +1044,6 @@ Item {
                     font.pointSize: 14
                     anchors.right: parent.right
                     anchors.rightMargin: 290
-//                    anchors.verticalCenter: wireDirection.verticalCenter
                 }
                 MyCombox {
                     id: typeDirection
@@ -1158,7 +1103,6 @@ Item {
                 anchors.right: parent.right
                 anchors.rightMargin: 10
                 onClicked: {
-// QString type,QString wireName,int wireId,int operatorId,QString color,QString stripeColor,QString stripeType,QString gauge,int wireType,int side,int verside,int position
                     var wireType = typeSwitch.state == "left" ? 0 : 1
                     var side = wireDirection.state == "left" ? 0 : 1
                     var verside = basicSwitch.state == "left" ? 0 : 1
@@ -1170,19 +1114,16 @@ Item {
                     else if (bottomRadio.checked)
                         positionside = 2;
 
-                    wireModel.insertValueToTable("insert",wireName.inputText,-1,hmiAdaptor.getCurrentOperatorId(),rectcolor.color,itemStripe.color,itemStripe.stripeType, spliceDetailsItem.selectWireGauge, spliceDetailsItem.selectWireAWG,wireType,side,verside,positionside,typeDirection.currentText)
-
-//                    if (spliceDetailsItem.selectWireId == -1)
-//                    {
-//                        //insert
-//                        wireModel.insertValueToTable("insert",wireName.inputText,-1,hmiAdaptor.getCurrentOperatorId(),rectcolor.color,itemStripe.color,itemStripe.stripeType,edit2.inputText,wireType,side,verside,positionside)
-//                    }
-//                    else
-//                    {
-//                        //update
-//                        wireModel.insertValueToTable("update",wireName.inputText,spliceDetailsItem.selectWireId,hmiAdaptor.getCurrentOperatorId(),rectcolor.color,itemStripe.color,itemStripe.stripeType,edit2.inputText,wireType,side,verside,positionside)
-
-//                    }
+                    wireModel.insertValueToTable("insert",wireName.inputText,-1,
+                                                 hmiAdaptor.getCurrentOperatorId(),
+                                                 rectcolor.color,
+                                                 itemStripe.color,
+                                                 itemStripe.stripeType,
+                                                 spliceDetailsItem.selectWireGauge,
+                                                 spliceDetailsItem.selectWireAWG,
+                                                 wireType,side,verside,positionside,
+                                                 typeDirection.currentText
+                                                 )
                 }
             }
 
@@ -1200,49 +1141,43 @@ Item {
                 id: settingsModel
                 Component.onCompleted: {
                       initSettings()
-//                    settingsModel.append({"topText":"Energy","bottomText":spliceModel.getStructValue("Energy","current"),"maxText":spliceModel.getStructValue("Energy","max"),"minText":spliceModel.getStructValue("Energy","min")})
-//                    settingsModel.append({"topText":"Trigger Pressure","bottomText":spliceModel.getStructValue("Trigger Pressure","current"),"maxText":spliceModel.getStructValue("Trigger Pressure","max"),"minText":spliceModel.getStructValue("Trigger Pressure","min")})
-//                    settingsModel.append({"topText":"Amplitude","bottomText":spliceModel.getStructValue("Amplitude","current"),"maxText":spliceModel.getStructValue("Amplitude","max"),"minText":spliceModel.getStructValue("Amplitude","min")})
-//                    settingsModel.append({"topText":"Weld Pressure","bottomText":spliceModel.getStructValue("Weld Pressure","current"),"maxText":spliceModel.getStructValue("Weld Pressure","max"),"minText":spliceModel.getStructValue("Weld Pressure","min")})
-//                    settingsModel.append({"topText":"Width","bottomText":spliceModel.getStructValue("Width","current"),"maxText":spliceModel.getStructValue("Width","max"),"minText":spliceModel.getStructValue("Width","min")})
-
                 }
             }
             ListModel {
                 id: settingsModel2
                 Component.onCompleted: {
-                    settingsModel2.append({"topText":qsTr(""),
-                        "bottomText":spliceModel.getStructValue("Time-","current"),
-                        "maxText":spliceModel.getStructValue("Time-","max"),
-                        "minText":spliceModel.getStructValue("Time-","min")})
-                    settingsModel2.append({"topText":qsTr(""),
-                        "bottomText":spliceModel.getStructValue("Time+","current"),
-                        "maxText":spliceModel.getStructValue("Time+","max"),
-                        "minText":spliceModel.getStructValue("Time+","min")})
-                    settingsModel2.append({"topText":qsTr(""),
-                        "bottomText":spliceModel.getStructValue("Power-","current"),
-                        "maxText":spliceModel.getStructValue("Power-","max"),
-                        "minText":spliceModel.getStructValue("Power-","min")})
-                    settingsModel2.append({"topText":qsTr(""),
-                        "bottomText":spliceModel.getStructValue("Power+","current"),
-                        "maxText":spliceModel.getStructValue("Power+","max"),
-                        "minText":spliceModel.getStructValue("Power+","min")})
-                    settingsModel2.append({"topText":qsTr(""),
-                        "bottomText":spliceModel.getStructValue("Pre-Height-","current"),
-                        "maxText":spliceModel.getStructValue("Pre-Height-","max"),
-                        "minText":spliceModel.getStructValue("Pre-Height-","min")})
-                    settingsModel2.append({"topText":qsTr(""),
-                        "bottomText":spliceModel.getStructValue("Pre-Height+","current"),
-                        "maxText":spliceModel.getStructValue("Pre-Height+","max"),
-                        "minText":spliceModel.getStructValue("Pre-Height+","min")})
-                    settingsModel2.append({"topText":qsTr(""),
-                        "bottomText":spliceModel.getStructValue("Post-Height-","current"),
-                        "maxText":spliceModel.getStructValue("Post-Height-","max"),
-                        "minText":spliceModel.getStructValue("Post-Height-","min")})
-                    settingsModel2.append({"topText":qsTr(""),
-                        "bottomText":spliceModel.getStructValue("Post-Height+","current"),
-                        "maxText":spliceModel.getStructValue("Post-Height+","max"),
-                        "minText":spliceModel.getStructValue("Post-Height+","min")})
+                    settingsModel2.append({"topText":   qsTr(""),
+                                           "bottomText":spliceModel.getStructValue("Time-","current"),
+                                           "maxText":   spliceModel.getStructValue("Time-","max"),
+                                           "minText":   spliceModel.getStructValue("Time-","min")})
+                    settingsModel2.append({"topText":   qsTr(""),
+                                           "bottomText":spliceModel.getStructValue("Time+","current"),
+                                           "maxText":   spliceModel.getStructValue("Time+","max"),
+                                           "minText":   spliceModel.getStructValue("Time+","min")})
+                    settingsModel2.append({"topText":   qsTr(""),
+                                           "bottomText":spliceModel.getStructValue("Power-","current"),
+                                           "maxText":   spliceModel.getStructValue("Power-","max"),
+                                           "minText":   spliceModel.getStructValue("Power-","min")})
+                    settingsModel2.append({"topText":   qsTr(""),
+                                           "bottomText":spliceModel.getStructValue("Power+","current"),
+                                           "maxText":   spliceModel.getStructValue("Power+","max"),
+                                           "minText":   spliceModel.getStructValue("Power+","min")})
+                    settingsModel2.append({"topText":   qsTr(""),
+                                           "bottomText":spliceModel.getStructValue("Pre-Height-","current"),
+                                           "maxText":   spliceModel.getStructValue("Pre-Height-","max"),
+                                           "minText":   spliceModel.getStructValue("Pre-Height-","min")})
+                    settingsModel2.append({"topText":   qsTr(""),
+                                           "bottomText":spliceModel.getStructValue("Pre-Height+","current"),
+                                           "maxText":   spliceModel.getStructValue("Pre-Height+","max"),
+                                           "minText":   spliceModel.getStructValue("Pre-Height+","min")})
+                    settingsModel2.append({"topText":   qsTr(""),
+                                           "bottomText":spliceModel.getStructValue("Post-Height-","current"),
+                                           "maxText":   spliceModel.getStructValue("Post-Height-","max"),
+                                           "minText":   spliceModel.getStructValue("Post-Height-","min")})
+                    settingsModel2.append({"topText":   qsTr(""),
+                                           "bottomText":spliceModel.getStructValue("Post-Height+","current"),
+                                           "maxText":   spliceModel.getStructValue("Post-Height+","max"),
+                                           "minText":   spliceModel.getStructValue("Post-Height+","min")})
                 }
             }
             Row {
@@ -1258,9 +1193,7 @@ Item {
                     text: qsTr("Setting")
                     font.pointSize: 14
                     font.family: "arial"
-//                    color: "#8295a0"
                     color: "white"
-
                     width: (parent.width-100)/2
                     anchors.verticalCenter: parent.verticalCenter
                     horizontalAlignment: Qt.AlignHCenter
@@ -1269,9 +1202,7 @@ Item {
                     font.pointSize: 14
                     font.family: "arial"
                     width: (parent.width-100)/2
-//                    color: "#8295a0"
                     color: "white"
-
                     text: qsTr("Actual")
                     anchors.verticalCenter: parent.verticalCenter
                     horizontalAlignment: Qt.AlignHCenter
@@ -1288,8 +1219,6 @@ Item {
                     model: resultModel
                     Recsetting {
                         localbordercolor: "#ffffff" //"#48484a"
-//                        headTitle: topText
-//                        centervalue: bottomText
                         width: (settingLayout.width-120)/2
                         height: (settingLayout.height-60)/5
                         centervalue: bottomText
@@ -1305,12 +1234,6 @@ Item {
                 anchors.leftMargin: 10
                 width: parent.width-20
                 height: 250
-//                anchors.bottom: bottomButton.top
-//                anchors.bottomMargin: 10
-//                rows: 4
-//                columns: 2
-//                columnSpacing: 30
-//                rowSpacing: 20
                 Repeater {
                     id: repeater
                     model: settingsModel
@@ -1325,7 +1248,6 @@ Item {
                             color: "white"
                             font.pointSize: 16
                             font.family: "arial"
-//                            verticalAlignment: Qt.AlignVCenter
                             horizontalAlignment: Qt.AlignHCenter
                         }
                         Recsetting {
@@ -1334,7 +1256,6 @@ Item {
                             centervalue: bottomText
                             width: (settingLayout.width-100)/2
                             height: (settingLayout.height-60)/5
-//                            anchors.left: lineTip.right
                             onMouseAreaClick: {
                                 creatWire.selectModel = 1
                                 creatWire.selectIndex = index
@@ -1351,7 +1272,6 @@ Item {
                                     keyNum.maxvalue = maxText
                                 }
                             }
-
                         }
                     }
                 }
@@ -1366,24 +1286,13 @@ Item {
                     qualityTitleModel.append({"title":"Post-\nHeight","bottomText":""})
 
                 }
-
-
-//                ListElement {title:qsTr("Time")}
-//                ListElement {title:qsTr("Peak\nPower")}
-//                ListElement {title:qsTr("Pre-\nHeight")}
-//                ListElement {title:qsTr("Post-\nHeight")}
-
             }
-
-
 
             Column {
                 anchors.top: settingLayout2.top
                 anchors.bottom: settingLayout2.bottom
                 anchors.left: parent.left
-//                anchors.leftMargin: -230
                 width: 100
-//                height: 250
                 Repeater {
                     model: qualityTitleModel
                     Item {
@@ -1406,7 +1315,6 @@ Item {
                 anchors.left: settingLayout2.right
                 anchors.leftMargin: -230
                 width: parent.width-20
-//                height: 250
                 Repeater {
                     model: qualityTitleModel
                     Item {
@@ -1414,8 +1322,6 @@ Item {
                         height: (settingLayout2.height)/4
                         Recsetting {
                             localbordercolor: "#ffffff" //"#48484a"
-                            //                        headTitle: topText
-                            //                        centervalue: bottomText
                             width: (settingLayout2.width-120)/2
                             height: (settingLayout2.height)/8
                             anchors.centerIn: parent
@@ -1439,16 +1345,11 @@ Item {
             Column {
                 id: settingLayout2
                 anchors.top: settingLayout.bottom
-//                anchors.topMargin: tabBar.height + 30
                 anchors.left: parent.left
                 anchors.leftMargin: 110
                 width: parent.width-20
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: 10
-//                rows: 4
-//                columns: 2
-//                columnSpacing: 30
-//                rowSpacing: 20
                 Repeater {
                     id: repeater2
                     model: settingsModel2
@@ -1491,7 +1392,6 @@ Item {
         height: Screen.height * 0.08
         spacing: 0
         onCurrentIndexChanged: {
-            console.log("currentIndex = ",currentIndex)
             if (currentIndex == 0)
             {
                 spliceDetailsItem.centerFuncVisable = true
@@ -1619,7 +1519,6 @@ Item {
             anchors.left: parent.left
             anchors.leftMargin: 20
             clip: true
-            //displayText: qsTr("SPLICE NAME")
         }
         Label {
             id: spliceDetails
@@ -1723,8 +1622,6 @@ Item {
             Image {
                 id: spliceImage
                 anchors.fill: parent
-//                source: "file:///C:/BransonData/Library/SpliceImage/Seed8.BMP"
-//                source: spliceModel.getStructValue("PicPath","") == " " ? "qrc:/images/images/bg.png" : spliceModel.getStructValue("PicPath","")
             }
             Text {
                 anchors.right: parent.right
@@ -1761,9 +1658,6 @@ Item {
 
         Row {
             id: bottomButton
-//                anchors.bottom: parent.bottom
-//                anchors.left: parent.left
-//                anchors.leftMargin: 10
             anchors.left: wireLibrary.left
             anchors.top: wireLibrary.top
             spacing: 24
@@ -2114,10 +2008,6 @@ Item {
                 height: parent.height*0.46+30
                 clip: true
                 spacing: 8
-//                columns: 2
-//                rows:2
-//                columnSpacing: 20
-//                rowSpacing: 6
                 Repeater {
                     id: weldRepeater
                     model: weldSettingModel
@@ -2144,11 +2034,8 @@ Item {
                             anchors.verticalCenter: headName.verticalCenter
                             anchors.left: headName.right
                             width: parent.width/2
-//                            horizontalAlignment: Qt.AlignHCenter
                             height: parent.height
                             inputWidth: parent.width/2
-//                            inputHeight: parent.height
-//                            inputColor: "white"
                             clip: true
                             inputText: textValue
                             onInputFocusChanged: {
@@ -2294,9 +2181,6 @@ Item {
                 height: parent.height*0.24 + 8
                 clip: true
                 spacing: 8
-//                columns: 2
-//                rows: 1
-//                columnSpacing: 20
                 Repeater {
                     id: widthRepeater
                     model: widthModel
@@ -2309,7 +2193,6 @@ Item {
                             anchors.verticalCenter: parent.verticalCenter
                             verticalAlignment: Qt.AlignVCenter
                             anchors.left: parent.left
-//                            anchors.leftMargin: 10
                             width: parent.width/3
                             font.pointSize: 16
                             font.family: "arial"
@@ -2322,11 +2205,8 @@ Item {
                             anchors.left: widthName.right
                             anchors.verticalCenter: widthName.verticalCenter
                             width: parent.width/2
-//                            horizontalAlignment: Qt.AlignHCenter
                             height: parent.height
                             inputWidth: parent.width/2
-//                            inputHeight: parent.height
-//                            inputColor: "white"
                             clip: true
                             inputText: textValue
                             onInputFocusChanged: {
@@ -2377,9 +2257,6 @@ Item {
                 height: parent.height*0.24 + 8
                 clip: true
                 spacing: 8
-//                columns: 2
-//                rows: 1
-//                columnSpacing: 20
                 Repeater {
                     id: heightRepeater
                     model: heightModel
@@ -2392,7 +2269,6 @@ Item {
                             anchors.verticalCenter: parent.verticalCenter
                             verticalAlignment: Qt.AlignVCenter
                             anchors.left: parent.left
-//                            anchors.leftMargin: 10
                             width: parent.width/3
                             font.pointSize: 16
                             font.family: "arial"
@@ -2405,11 +2281,8 @@ Item {
                             anchors.left: heightName.right
                             anchors.verticalCenter: heightName.verticalCenter
                             width: parent.width/2
-//                            horizontalAlignment: Qt.AlignHCenter
                             height: parent.height
                             inputWidth: parent.width/2
-//                            inputHeight: parent.height
-//                            inputColor: "white"
                             clip: true
                             inputText: textValue
                             onInputFocusChanged: {
@@ -2856,7 +2729,6 @@ Item {
         width: parent.width*0.9
         height: parent.width*0.4
         visible: false
-//        listModel: wireModel
         listModel: spliceModel
 
         titleName: qsTr("Wire Library")

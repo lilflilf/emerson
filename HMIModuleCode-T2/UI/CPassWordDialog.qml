@@ -112,45 +112,7 @@ Item {
                 border.color: "#0079c1"
                 border.width: 2
             }
-
-            onTextChanged: {
-//                if (mima.text.length == 4) {
-//                    if (hmiAdaptor.borrowLogin(mima.text,pageName)) {
-//                        if (pageName == "Teach Mode") {
-//                            mimaShow.text = ""
-//                            mima.text = ""
-//                            passwdDialog.visible = false
-//                        } else {
-//                            mainRoot.menuInit(passwdDialog.index)
-//                            mimaShow.text = ""
-//                            mima.text = ""
-//                            passwdDialog.visible = false
-//                        }
-//                    }
-//                }
-            }
         }
-
-//        CButton {
-//            width: 40
-//            height: 42
-//            anchors.top: mima.top
-//            anchors.left: mima.right
-//            onClicked: {
-//                if (hmiAdaptor.borrowLogin(mima.text,pageName)) {
-//                    if (pageName == "Teach Mode") {
-//                        mimaShow.text = ""
-//                        mima.text = ""
-//                        passwdDialog.visible = false
-//                    } else {
-//                        mainRoot.menuInit(passwdDialog.index)
-//                        mimaShow.text = ""
-//                        mima.text = ""
-//                        passwdDialog.visible = false
-//                    }
-//                }
-//            }
-//        }
 
         Text {
             id: mimaShow

@@ -19,11 +19,10 @@ Item {
     id: toolChange
     property bool bIsList: false
     property var listIndex: -1
-    width: Screen.width*0.7
-    height: Screen.height*0.6
-
     property int powerfactor: -1
 
+    width: Screen.width*0.7
+    height: Screen.height*0.6
     function initPage()
     {
         powerfactor = hmiAdaptor.getAdvancedMaintenanceMaxPower() / 10
@@ -106,25 +105,13 @@ Item {
             width: 280
             height: 280
             source: "qrc:/images/images/maintenance-5.png"
-//            source: "file:///c:/ToolChangeImage/group2/wiredemo.jpg"
         }
         Image {
             width: 280
             height: 280
             source: "qrc:/images/images/maintenance-6.png"
-//            source: "file:///c:/ToolChangeImage/group2/wiredemo.jpg"
         }
     }
-
-
-//    ANVILARMCLICK,
-//    ANVILCLICK,
-//    GATHERCLICK,
-//    CUTTERCLICK,
-//    CRASHCLICK,
-//    SAFETYCLICK,
-//    CONVERTERCOOLINGCLICK,
-//    TOOLINGCOOLINGCLICK,
 
     Component {
         id: buttonBackTrue
@@ -229,16 +216,19 @@ Item {
     ListModel {
         id: listModel
         Component.onCompleted: {
-            listModel.append({"titleHead":qsTr("Power Supply"),"value":hmiAdaptor.getAdvancedMaintenanceValue(1,"current"),
-                             "maxValue":hmiAdaptor.getAdvancedMaintenanceValue(1,"max"),
-                             "minValue":hmiAdaptor.getAdvancedMaintenanceValue(1,"min")})
+            listModel.append({"titleHead":qsTr("Power Supply"),
+                              "value":    hmiAdaptor.getAdvancedMaintenanceValue(1,"current"),
+                              "maxValue": hmiAdaptor.getAdvancedMaintenanceValue(1,"max"),
+                              "minValue": hmiAdaptor.getAdvancedMaintenanceValue(1,"min")})
             listModel.append({"titleHead":qsTr("Frequency"),"value":"0Hz"})
-            listModel.append({"titleHead":qsTr("Tune Point"),"value":hmiAdaptor.getAdvancedMaintenanceValue(2,"current"),
-                                 "maxValue":hmiAdaptor.getAdvancedMaintenanceValue(2,"max"),
-                                 "minValue":hmiAdaptor.getAdvancedMaintenanceValue(2,"min")})
-            listModel.append({"titleHead":qsTr("Frequency Offset"),"value":hmiAdaptor.getAdvancedMaintenanceValue(3,"current"),
-                                 "maxValue":hmiAdaptor.getAdvancedMaintenanceValue(3,"max"),
-                                 "minValue":hmiAdaptor.getAdvancedMaintenanceValue(3,"min")})
+            listModel.append({"titleHead":qsTr("Tune Point"),
+                              "value":    hmiAdaptor.getAdvancedMaintenanceValue(2,"current"),
+                              "maxValue": hmiAdaptor.getAdvancedMaintenanceValue(2,"max"),
+                              "minValue": hmiAdaptor.getAdvancedMaintenanceValue(2,"min")})
+            listModel.append({"titleHead":qsTr("Frequency Offset"),
+                              "value":    hmiAdaptor.getAdvancedMaintenanceValue(3,"current"),
+                              "maxValue": hmiAdaptor.getAdvancedMaintenanceValue(3,"max"),
+                              "minValue": hmiAdaptor.getAdvancedMaintenanceValue(3,"min")})
         }
     }
 
@@ -321,9 +311,7 @@ Item {
         anchors.top: progressBar.bottom
         anchors.topMargin: 20
         anchors.right: progressBar.right
-//        anchors.rightMargin: 50
         anchors.left: progressBar.left
-//        anchors.leftMargin: 50
         spacing: 20
         CButton {
             id: test1
@@ -403,7 +391,6 @@ Item {
 
     Grid {
         id: testSetting
-//        anchors.horizontalCenter: rowButton3.horizontalCenter
         anchors.bottom: buttonCoumn.bottom
         rowSpacing: 10
         columnSpacing: 60
@@ -463,7 +450,6 @@ Item {
             font.pixelSize: 20
             color: "white"
             anchors.verticalCenter: parent.verticalCenter
-            //                    visible: index == 1 ? false : true
         }
         Switch2 {
             width: (rowButton2.width-20)/4
@@ -488,11 +474,6 @@ Item {
         MouseArea {
             anchors.fill: parent
             onClicked: {
-//                if (templateModel.count == 0 && template2.visible && temPlateDialog.visible == false) {
-//                    backGround.visible = false
-//                    backGround.opacity = 0
-//                    template2.visible = false
-//                }
             }
         }
     }
@@ -545,25 +526,4 @@ Item {
             }
         }
     }
-
-//    Row {
-//        id: rowButton
-//        anchors.bottom: parent.bottom
-//        anchors.bottomMargin: 20
-//        anchors.left: buttonCoumn.right
-//        anchors.leftMargin: 20
-//        anchors.right: parent.right
-//        anchors.rightMargin: 20
-//        spacing: 20
-//        CButton {
-//            iconSource: "qrc:/images/images/cancel.png"
-//            text: qsTr("Cancel")
-//            width: (rowButton.width-20)/2
-//        }
-//        CButton {
-//            iconSource: "qrc:/images/images/OK.png"
-//            text: qsTr("OK")
-//            width: (rowButton.width-20)/2
-//        }
-//    }
 }
