@@ -116,13 +116,13 @@ Window {
             source = "Create Splice"
             break;
         case -5:
-            source = "Operate"
+            source = "Operate Splice"
             break;
         case -6:
-            source = "Operate"
+            source = "Operate Sequence"
             break;
         case -7:
-            source = "Operate"
+            source = "Operate Harness"
             break;
         case 0:
             source = "Create Harness"
@@ -538,8 +538,17 @@ Window {
             statusBar.visible = true
             welcome.source = ""
             hmiAdaptor.readWorkFlow()
-            if (hmiAdaptor.getWorkFlow("WorkMode") != 3)
-                mainRoot.checkNeedPassWd(-5)
+            var mode = hmiAdaptor.getWorkFlow("WorkMode")
+            if (mode != 3)
+            {
+                if (mode == 0)
+                    mainRoot.checkNeedPassWd(-5)
+                else if (mode == 1)
+                    mainRoot.checkNeedPassWd(-6)
+                else if (mode == 2)
+                    mainRoot.checkNeedPassWd(-7)
+
+            }
 
         }
     }

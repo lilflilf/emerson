@@ -831,8 +831,8 @@ bool HmiAdaptor::login(QString passwd)
 
 bool HmiAdaptor::borrowLogin(QString passwd, QString pageName)
 {
-    if (passwd == "0000")
-        return true;
+//    if (passwd == "0000")
+//        return true;
     OperatorElement myOperator;
     bool isLog = operatorModel->login(passwd, &myOperator);
     if (isLog)
@@ -853,7 +853,7 @@ bool HmiAdaptor::borrowLogin(QString passwd, QString pageName)
         }
         if (funcIndex == -1) {
             if (myOperator.PermissionLevel != OperatorElement::PHYKEY)
-                return true;
+                return false;
             else if (myOperator.PermissionLevel == OperatorElement::PHYKEY)
                 return bIsPhysicalKey;
         }
@@ -959,7 +959,6 @@ bool HmiAdaptor::permissionsettingExecute(QString code)
 bool HmiAdaptor::needPassWord(QString pageName)
 {
     permissionsettingExecute("_Recall");
-
     int i;
     int funcIndex = -1;
     int levelIndex = -1;
@@ -973,8 +972,9 @@ bool HmiAdaptor::needPassWord(QString pageName)
             break;
         }
     }
+
     if (funcIndex == -1)
-        return false;
+        return true;
     levelIndex = (int)interfaceClass->CurrentOperator.PermissionLevel;
 
     if (levelIndex == 0)
@@ -988,7 +988,6 @@ bool HmiAdaptor::needPassWord(QString pageName)
     else if (levelIndex == 4)
         reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level4;
 
-    qDebug() << "needPassWord" << pageName << funcIndex << levelIndex << reb;
     return !reb;
 }
 
@@ -1815,7 +1814,6 @@ int HmiAdaptor::timeChangeToInt(QString time)
 {
     QDateTime temptime = QDateTime::fromString(time, "yyyy-MM-dd hh:mm:ss");
     int ret = temptime.toTime_t();
-    qDebug() << "timeChangeToInt" << time << ret;
     return ret;
 }
 

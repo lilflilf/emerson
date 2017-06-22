@@ -2486,7 +2486,7 @@ QVariant OperatorModel::data(const QModelIndex &index, int role) const
                 case OperatorElement::LEVEL2:
                 case OperatorElement::LEVEL3:
                 case OperatorElement::LEVEL4:
-                    value = QVariant::fromValue(permissionSetting->FiveLevelIdentifier.at(myOperator.PermissionLevel-1));
+                    value = QVariant::fromValue(permissionSetting->FiveLevelIdentifier.at(myOperator.PermissionLevel));
                     break;
                 case OperatorElement::INITIAL:
                     value = "Initial";
