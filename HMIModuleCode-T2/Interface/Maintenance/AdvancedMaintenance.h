@@ -125,6 +125,8 @@ public:
     void TunePointText(QString TunePointHzStr);
     void FrequencyOffsetText(QString FrequencyHzStr);
     void RecallAdvancedParameter();
+    bool GetReliabilityOption();
+    void SetReliabilityOption(bool status);
 
 public:
     explicit AdvancedMaintenance();

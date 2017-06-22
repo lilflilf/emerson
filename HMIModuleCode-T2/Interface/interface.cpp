@@ -128,6 +128,11 @@ void InterfaceClass::ShownAlarmSign()
     emit ThereAreAlarmItemsSignal();
 }
 
+void InterfaceClass::UpdateAlarmList()
+{
+    emit ThereAreSomeAlarmReseted();
+}
+
 //void InterfaceClass::dlgMaintWarning()
 //{
 //    M10INI *ptr_M10INI = M10INI::Instance();

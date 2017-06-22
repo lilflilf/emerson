@@ -57,6 +57,7 @@ public:
     void cMsgBox(struct BransonMessageBox* MsgBox);
     void DispearMsgBox();
     void ShownAlarmSign();
+    void UpdateAlarmList();
     void LockOnAlarm(OperatorElement::PASSWORDCONTROL ControlLevel);
     static void HotRestartSys(void* _Obj);
 private:
@@ -65,6 +66,7 @@ signals:
     void EnableErrorMessageSignal(struct BransonMessageBox &MsgBox);
     void DisableErrorMessageSignal(struct BransonMessageBox &MsgBox);
     void ThereAreAlarmItemsSignal();
+    void ThereAreSomeAlarmReseted();
 public slots:
     void AnyAlarmEventSlot(bool &bResult);
 protected:
