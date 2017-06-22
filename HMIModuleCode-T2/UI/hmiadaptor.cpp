@@ -865,6 +865,8 @@ bool HmiAdaptor::borrowLogin(QString passwd, QString pageName)
             {
                 reb = bIsPhysicalKey & permissionSetting->CurrentPermissionList.at(funcIndex).PhyKey;
                 reb =  reb & permissionSetting->CurrentPermissionList.at(funcIndex).Level1;
+                if (!bIsPhysicalKey)
+                    emit signalPhysicalKeyMessage();
             }
             else
                 reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level1;
@@ -874,6 +876,8 @@ bool HmiAdaptor::borrowLogin(QString passwd, QString pageName)
             {
                 reb = bIsPhysicalKey & permissionSetting->CurrentPermissionList.at(funcIndex).PhyKey;
                 reb =  reb & permissionSetting->CurrentPermissionList.at(funcIndex).Level2;
+                if (!bIsPhysicalKey)
+                    emit signalPhysicalKeyMessage();
             }
             else
                 reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level2;
@@ -883,6 +887,8 @@ bool HmiAdaptor::borrowLogin(QString passwd, QString pageName)
             {
                 reb = bIsPhysicalKey & permissionSetting->CurrentPermissionList.at(funcIndex).PhyKey;
                 reb =  reb & permissionSetting->CurrentPermissionList.at(funcIndex).Level3;
+                if (!bIsPhysicalKey)
+                    emit signalPhysicalKeyMessage();
             }
             else
                 reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level3;
@@ -892,6 +898,8 @@ bool HmiAdaptor::borrowLogin(QString passwd, QString pageName)
             {
                 reb = bIsPhysicalKey & permissionSetting->CurrentPermissionList.at(funcIndex).PhyKey;
                 reb =  reb & permissionSetting->CurrentPermissionList.at(funcIndex).Level4;
+                if (!bIsPhysicalKey)
+                    emit signalPhysicalKeyMessage();
             }
             else
                 reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level4;
@@ -900,8 +908,10 @@ bool HmiAdaptor::borrowLogin(QString passwd, QString pageName)
             interfaceClass->CurrentOperator = myOperator;
         return reb;
     }
-    else
+    else {
+        emit signalWrongPassword();
         return false;
+    }
 }
 
 int HmiAdaptor::getCurrentOperatorId()

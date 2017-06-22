@@ -202,7 +202,6 @@ Item {
         }
         Keys.onPressed: {
             var temp;
-            console.log(event.text)
             if (event.key == Qt.Key_Backspace) {
                 mima.remove(mima.text.length-1,mima.text.length)
                 mimaShow.text = mimaShow.text.substring(0,mimaShow.text.length - 1)

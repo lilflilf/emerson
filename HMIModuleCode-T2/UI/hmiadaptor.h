@@ -225,6 +225,7 @@ signals:
 
     void signalPhysicalKeySignal(bool status);
     void signalPhysicalKeyMessage();
+    void signalWrongPassword();
     void signalRecvFromJs(QString indexId);
     void signalAdvanceMaintenancePowerAndFrequency(const int power, const QString frequency);
 public slots:

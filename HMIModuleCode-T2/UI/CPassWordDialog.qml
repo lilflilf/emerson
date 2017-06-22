@@ -24,6 +24,10 @@ Item {
             title.text = qsTr("Scan or Enter ID(Please insert physicalkey)")
             itemChange.start()
         }
+        onSignalWrongPassword: {
+            title.text = qsTr("Scan or Enter ID(Wrong PassWord)")
+            itemChange.start()
+        }
     }
     Timer {
         id: itemChange
@@ -127,6 +131,8 @@ Item {
             visible: false
             Keys.enabled: true
             Keys.onReturnPressed: {
+                if (hmiAdaptor.login(mima.text))
+                    passWordInputOk()
             }
             Keys.onPressed: {
                 var temp;
