@@ -237,7 +237,7 @@ void AlarmMessage::ShowMaintenanceText(int SpliceID, QString AlarmMsg, enum ALAR
         tmpMsgBox.MsgTitle = QObject::tr("Alarm");
         tmpMsgBox.TipsMode = (RESETCancel | Alarm);
         tmpMsgBox.OKfunc_ptr = AlarmMessage::ResetAnyAlarm;
-        tmpMsgBox.Cancelfunc_ptr = AlarmMessage::GiveupAlarmReset;
+        tmpMsgBox.Cancelfunc_ptr = NULL;
         tmpMsgBox._Object = this;
         _Interface->cMsgBox(&tmpMsgBox);
         AlarmPresent = true;
@@ -249,6 +249,7 @@ void AlarmMessage::ResetAnyAlarm(void* _obj)
     AlarmElement CurrentAlarm;
     bool bResult = false;
     M102IA *_M102IA = M102IA::Instance();
+    InterfaceClass* _Interface = InterfaceClass::Instance();
     DBAlarmLogTable *_AlarmLog = DBAlarmLogTable::Instance();
     _M102IA->Generate_Beep();
     AlarmMessage* _Alarm = (AlarmMessage*)_obj;
@@ -266,6 +267,7 @@ void AlarmMessage::ResetAnyAlarm(void* _obj)
         }
     }
     _Alarm->mAlarmIDList.clear();
+    _Interface->UpdateAlarmList();
 }
 
 void AlarmMessage::GiveupAlarmReset(void* _obj)
