@@ -574,15 +574,15 @@ Item {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
+                    selectCheck.checked = !selectCheck.checked
                     if (selectCheck.checked)
-                        idList.push(alarmModel.getValue(index,"AlarmId"))
+                        idList.push(alarmModel.getAlarmValue(index,"AlarmId"))
                     else {
-                        var count = idList.indexOf(alarmModel.getValue(index,"AlarmId"))
+                        var count = idList.indexOf(alarmModel.getAlarmValue(index,"AlarmId"))
                         if (count > -1)
                             idList.splice(count, 1)
                     }
 //                    selectIndx = index
-                    selectCheck.checked = !selectCheck.checked
                 }
             }
             Rectangle {
@@ -592,7 +592,7 @@ Item {
                 opacity: 0//opacityValue
                 RadioButton {
                     id: selectCheck
-                    exclusiveGroup: listviewPositionGroup
+//                    exclusiveGroup: listviewPositionGroup
                     visible: false
                     onCheckedChanged: {
                         if (checked)

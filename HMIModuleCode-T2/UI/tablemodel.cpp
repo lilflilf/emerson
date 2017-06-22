@@ -2849,26 +2849,28 @@ QVariant AlarmModel::data(const QModelIndex &index, int role) const
     }
     else
     {
+        QList<int> list;
+        list = alarms->keys();
         int columnIdx = role - Qt::UserRole - 1;
-        int rowId;
-        UNUSED(rowId);
-        QMap<int,QString>::iterator it; //遍历map
-        int i = 0;
-        for ( it = alarms->begin(); it != alarms->end(); ++it ) {
-            if (i == index.row()){
-                rowId = it.key();
-                break;
-            }
-            else {
-                i++;
-            }
-        }
+//        int rowId;
+//        UNUSED(rowId);
+//        QMap<int,QString>::iterator it; //遍历map
+//        int i = 0;
+//        for ( it = alarms->begin(); it != alarms->end(); ++it ) {
+//            if (i == index.row()){
+//                rowId = it.key();
+//                break;
+//            }
+//            else {
+//                i++;
+//            }
+//        }
 //        list << "CreatedDate" << "Alarm/ErrorType" << "Alarm/ErrorLevel" << "Message" << "SpliceName";
 
         AlarmElement myAlarm;
         PresetElement splice;
 
-        m_alarmAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myAlarm);
+        m_alarmAdaptor->QueryOneRecordFromTable(list[index.row()],alarms->value(list[index.row()]),&myAlarm);
         m_spliceAdaptor->QueryOneRecordFromTable(myAlarm.SpliceID,&splice);
         QString temp;
         if (columnIdx == 0)
@@ -2994,8 +2996,11 @@ QVariant AlarmModel::getAlarmValue(int index, QString key)
     }
     //        list << "CreatedDate" << "Alarm/ErrorType" << "Alarm/ErrorLevel" << "Message" << "SpliceName";
 
+    QList<int> list;
+    list = alarms->keys();
+
     AlarmElement myAlarm;
-    m_alarmAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myAlarm);
+    m_alarmAdaptor->QueryOneRecordFromTable(list[index],alarms->value(list[index]),&myAlarm);
     m_spliceAdaptor->QueryOneRecordFromTable(myAlarm.SpliceID,&m_splice);
     QHash<QString, QVariant> AlarmModelHash;
     AlarmModelHash.insert("AlarmId",myAlarm.AlarmID);

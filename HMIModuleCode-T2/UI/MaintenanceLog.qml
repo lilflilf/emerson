@@ -475,6 +475,7 @@ Item {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
+                    selectCheck.checked = !selectCheck.checked
                     if (selectCheck.checked)
                         idList.push(maintenanceLogModel.getValue(index,"MaintenanceLogId"))
                     else {
@@ -482,7 +483,6 @@ Item {
                         if (count > -1)
                             idList.splice(count, 1)
                     }
-                    selectCheck.checked = !selectCheck.checked
                 }
             }
             Rectangle {
@@ -493,7 +493,7 @@ Item {
                 RadioButton {
                     id: selectCheck
                     visible: false
-                    exclusiveGroup: positionGroup
+//                    exclusiveGroup: positionGroup
                     onCheckedChanged: {
                         if (checked)
                             backGround.opacity = 0.3

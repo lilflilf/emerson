@@ -282,6 +282,8 @@ Item {
                     width: parent.width -200
                     height: parent.height
                     onClicked: {
+                        selectIndx = index
+                        selectCheck.checked = !selectCheck.checked
                         if (selectCheck.checked)
                             idList.push(weldHistoryModel.getValue(index,"WeldHistoryId"))
                         else {
@@ -289,8 +291,6 @@ Item {
                             if (count > -1)
                                 idList.splice(count, 1)
                         }
-                        selectIndx = index
-                        selectCheck.checked = !selectCheck.checked
                     }
                 }
 
@@ -301,7 +301,7 @@ Item {
                     opacity: 0//opacityValue
                     RadioButton {
                         id: selectCheck
-                        exclusiveGroup: listviewPositionGroup
+//                        exclusiveGroup: listviewPositionGroup
                         visible: false
                         onCheckedChanged: {
                             if (checked)
