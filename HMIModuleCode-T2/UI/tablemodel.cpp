@@ -3030,9 +3030,9 @@ void AlarmModel::getAlarmbIsShowFlag()
 {
     QMap<int, QString> tempalarms;
     m_alarmAdaptor->QueryOnlyUseField("IsReseted",QVariant(false),&tempalarms);
-    if (tempalarms.count()) {
+    if (tempalarms.count() > 0) {
         emit signalShowFlag(true);
-    } else {
+    } else if (tempalarms.count() == 0) {
         emit signalShowFlag(false);
     }
 }

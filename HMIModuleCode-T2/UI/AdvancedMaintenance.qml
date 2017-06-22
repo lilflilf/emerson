@@ -490,6 +490,7 @@ Item {
         maxvalue: "4"
         minvalue: "1"
         currentValue: "4"
+        pointVisable: true
         onVisibleChanged: {
             if (!keyNum.visible)
                 keyNum.addVisable = true
@@ -511,7 +512,6 @@ Item {
                     else {
                         recsetting1.centervalue = keyNum.inputText
                         hmiAdaptor.setAdvancedMaintenanceValue(0,keyNum.inputText)
-                        console.log("third 0")
                     }
                     backGround.visible = false
                     backGround.opacity = 0

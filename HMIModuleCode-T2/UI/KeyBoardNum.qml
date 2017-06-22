@@ -24,6 +24,8 @@ Item {
     property alias timeRun: timer.running
     property alias validator: newvalue.validator
     property bool addVisable: true
+    property bool pointVisable: false
+
     signal currentClickIndex(int index)
     width: parent.width
     height: parent.height
@@ -318,6 +320,12 @@ Item {
 //                            }
                         }
                     }
+                    MouseArea {
+                        anchors.fill: parent
+                        visible: index == 14 ? true : false
+                        enabled: pointVisable
+                    }
+
                     MouseArea {
                         anchors.fill: parent
                         visible: index == 12 ? true : false

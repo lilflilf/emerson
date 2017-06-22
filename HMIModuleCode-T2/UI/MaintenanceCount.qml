@@ -530,13 +530,32 @@ Item {
         currentValue: "4"
         onCurrentClickIndex: {
             if (index == 15) {
+                var tempString
                 clickDone(keyNum.inputText)
                 hmiAdaptor.maintenanceCountSetLimit(listModel.get(toolChange.select).mytitle, keyNum.inputText)
                 if (bIsEditLimit1) {
-                    listModel.set(toolChange.select,{"mylimit":keyNum.inputText})
+                    if (toolChange.select == 0)
+                        tempString = hmiAdaptor.dataProcessing("HornCountLimit", keyNum.inputText)
+                    else if (toolChange.select == 1)
+                        tempString = hmiAdaptor.dataProcessing("AnvilCountLimit", keyNum.inputText)
+                    else if (toolChange.select == 2)
+                        tempString = hmiAdaptor.dataProcessing("GatherCountLimit", keyNum.inputText)
+                    else if (toolChange.select == 3)
+                        tempString = hmiAdaptor.dataProcessing("GuideCountLimit", keyNum.inputText)
+
+                    listModel.set(toolChange.select,{"mylimit":tempString})
                 }
                 else {
-                    listModel.set(toolChange.select,{"mylimit1":keyNum.inputText})
+                    if (toolChange.select == 0)
+                        tempString = hmiAdaptor.dataProcessing("HornEnergyLimit", keyNum.inputText)
+                    else if (toolChange.select == 1)
+                        tempString = hmiAdaptor.dataProcessing("AnvilEnergyLimit", keyNum.inputText)
+                    else if (toolChange.select == 2)
+                        tempString = hmiAdaptor.dataProcessing("GatherEnergyLimit", keyNum.inputText)
+                    else if (toolChange.select == 3)
+                        tempString = hmiAdaptor.dataProcessing("GuideEnergyLimit", keyNum.inputText)
+
+                    listModel.set(toolChange.select,{"mylimit1":tempString})
                 }
 
                 toolChange.focusChanged()

@@ -310,9 +310,6 @@ protected:
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
     QHash<int, QByteArray> roleNames() const;
 
-//signals:
-
-
 public slots:
     void setRoles(const QStringList &names);
     Q_INVOKABLE QVariant getAlarmValue(int index, QString key);
@@ -331,6 +328,8 @@ public slots:
     Q_INVOKABLE void editNew(int weldId, QString weldName);
 signals:
     void signalShowFlag(bool bIsShow);
+    void signalThereAreSomeAlarmReseted();
+
 private:
     QHash<int, QByteArray> m_roleNames;
     VariantToString *variantToString;
