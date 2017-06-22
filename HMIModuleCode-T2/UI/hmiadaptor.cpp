@@ -102,6 +102,7 @@ HmiAdaptor::HmiAdaptor(QObject *parent) : QObject(parent)
     connect(calibration,SIGNAL(WidthCalibrationFinish(bool)),this,SIGNAL(widthCalibrationFinish(bool)));
     connect(calibration,SIGNAL(HeightCalibrationFinish(bool)),this,SIGNAL(heightCalibrationFinish(bool)));
     connect(interfaceClass,SIGNAL(ThereAreAlarmItemsSignal()),this,SLOT(slotGetAlarmFlag()));
+    connect(interfaceClass, SIGNAL(ThereAreSomeAlarmReseted()), alarmModel, SIGNAL(signalThereAreSomeAlarmReseted()));
 
     connect(operateProcess,SIGNAL(WeldCycleCompleted(bool)),this,SLOT(slotWeldCycleCompleted(bool)));
     m_spliceAdaptor = DBPresetTable::Instance();

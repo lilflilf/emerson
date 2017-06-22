@@ -43,6 +43,9 @@ Item {
         onSignalShowFlag: {
             alarmButton.visible = bIsShow
         }
+        onSignalThereAreSomeAlarmReseted: {
+            hmiAdaptor.setAlarmModelList(false);
+        }
     }
 
     MouseArea {
@@ -1221,7 +1224,6 @@ T: 203-796-0400 F: 203-796-0363")
                     alarmlog.visible = false
                     background.opacity = 0
                     dialog.visible = false
-                    console.log("33333333333333333",listView.selectIndx)
                     alarmModel.updateAlarmLog(alarmModel.getAlarmValue(listView.selectIndx,"AlarmId"))
                 }
              }
