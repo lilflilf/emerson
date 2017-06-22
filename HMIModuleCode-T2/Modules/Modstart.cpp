@@ -82,6 +82,11 @@ MODstart::MODstart()
 //        {
 //            dlgSelectMode.Show vbModal
 //        }
+        _M2010->ReceiveFlags.PhysicalKeyData = false;
+        _M102IA->IACommand(IAComGetPhysicalKey);
+        _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.PhysicalKeyData);
+//        DEBUG_PRINT(_M2010->ReceiveFlags.PhysicalKeyData);
+
         _M2010->ReceiveFlags.ActuatorType = false;
         _M102IA->IACommand(IAComGetActuator);
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.ActuatorType);
@@ -186,11 +191,6 @@ MODstart::MODstart()
         _M102IA->IACommand(IAComGetFrequencyOffset);
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.FreqOffsetData);
 //        DEBUG_PRINT(_M2010->ReceiveFlags.FreqOffsetData);
-
-        _M2010->ReceiveFlags.PhysicalKeyData = false;
-        _M102IA->IACommand(IAComGetPhysicalKey);
-        _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.PhysicalKeyData);
-//        DEBUG_PRINT(_M2010->ReceiveFlags.PhysicalKeyData);
 
         _M2010->ReceiveFlags.ReliabilityModeData = false;
         _M102IA->IACommand(IAComGetReliabilityMode);

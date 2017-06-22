@@ -18,6 +18,12 @@ Item {
     height: Screen.height
     property int index: -1
     property var pageName: ""
+    onVisibleChanged: {
+        if (passwdDialog.visible == true) {
+            mimaShow.forceActiveFocus()
+        }
+    }
+
     Connections {
         target: hmiAdaptor
         onSignalPhysicalKeyMessage: {
@@ -189,9 +195,6 @@ Item {
                     mimaShow.text = mimaShow.text + "●"
                     mima.text = mima.text + "9"
                 }
-            }
-            Component.onCompleted: {
-                forceActiveFocus()
             }
         }
         Row {

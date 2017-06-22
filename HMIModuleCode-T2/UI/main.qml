@@ -389,6 +389,7 @@ Window {
         statusBar.visible = false
         contentLoader.source = ""
         welcome.source = "qrc:/UI/Welcome.qml"
+        console.log("llllllllllllllllllllllll")
     }
 
     function showDialog(okVisable,cancelVisable,okText,cancelText,typeIco,titleText,centerText)
