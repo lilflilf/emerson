@@ -653,7 +653,7 @@ double UtilityClass::StringToFormatedData(ScreenShowDataType TypeIndex, QString 
     QByteArray tmpArray = ShownData.toLatin1();
     const char *s = tmpArray.data();
     int i = 0;
-    while(((*s >= '0') && (*s <= '9')) || (*s == '.'))
+    while(((*s >= '0') && (*s <= '9')) || (*s == '.') || (*s == '-'))
     {
         s++;
         i++;
