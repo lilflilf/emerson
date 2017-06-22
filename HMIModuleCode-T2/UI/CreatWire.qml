@@ -1857,7 +1857,7 @@ Item {
             height: 150
             Text {
                 id: weldModel
-                text: qsTr("Weld Model")
+                text: qsTr("Weld Mode")
                 color: "white"
                 font.pointSize: 16
                 font.family: "arial"

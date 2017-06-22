@@ -64,7 +64,7 @@ Status_Data &Status_Data::operator= (const Status_Data &StatusDataObj)
         this->PasswordData[i].PWPermissions = StatusDataObj.PasswordData[i].PWPermissions;
     }
     this->CurrentFunIndex.clear();
-    for(int i = 0; i < CurrentFunIndex.size(); i++)
+    for(int i = 0; i < StatusDataObj.CurrentFunIndex.size(); i++)
     {
         this->CurrentFunIndex.insert(i, StatusDataObj.CurrentFunIndex.at(i));
     }
