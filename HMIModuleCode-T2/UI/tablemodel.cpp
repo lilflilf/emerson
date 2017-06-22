@@ -3058,32 +3058,31 @@ QVariant WeldHistoryModel::data(const QModelIndex &index, int role) const
     }
     else
     {
+        QList<int> indexList;
+        indexList = historys->keys();
+
         int columnIdx = role - Qt::UserRole - 1;
-        int rowId;
-        UNUSED(rowId);
-        QMap<int,QString>::iterator it; //遍历map
-        int i = 0;
-        for ( it = historys->begin(); it != historys->end(); ++it ) {
-            if (i == index.row()){
-                rowId = it.key();
-                break;
-            }
-            else {
-                i++;
-            }
-        }
+//        int rowId;
+//        UNUSED(rowId);
+//        QMap<int,QString>::iterator it; //遍历map
+//        int i = 0;
+//        for ( it = historys->begin(); it != historys->end(); ++it ) {
+//            if (i == index.row()){
+//                rowId = it.key();
+//                break;
+//            }
+//            else {
+//                i++;
+//            }
+//        }
         WeldResultElement myHistory;
-        qDebug() << "m_weldHistoryAdaptor" << QDateTime::currentDateTime().toTime_t();
-        m_weldHistoryAdaptor->QueryOneRecordFromTable(it.key(),it.value(),&myHistory);
+        m_weldHistoryAdaptor->QueryOneRecordFromTable(indexList[index.row()],historys->value(indexList[index.row()]),&myHistory);
         PresetElement presetElement;
         m_spliceTable->QueryOneRecordFromTable(myHistory.CurrentSplice.PartID,myHistory.CurrentSplice.PartName,&presetElement);
-        qDebug() << "m_spliceTable" << QDateTime::currentDateTime().toTime_t();
-
 //        list << "WeldHistoryId" << "SpliceName" << "SequenceName" << "HarnessName" << "OperatorName" << "DateCreated" << "OperateMode" << "Alarm"
 //             << "CrossSection" << "WeldMode" << "Energy" << "TriggerPressure" << "WeldPressure" << "Amplitude" << "Width"
 //             << "Time+" << "Timer-" << "Time" << "Power+" << "Power-" << "Power" << "Pre-Height+" << "Pre-Height-"
 //             << "Pre-Height" << "Height+" << "Height-" << "Height" << "SampleRatio" <<"GraphData";
-
 
         QString temp;
         if (columnIdx == 0)
@@ -3179,6 +3178,7 @@ void WeldHistoryModel::setModelList(unsigned int time_from, unsigned int time_to
 {
     beginResetModel();
     historys->clear();
+    historyList.clear();
     if (m_weldHistoryAdaptor->QueryOnlyUseTime(time_from,time_to,historys))
         qDebug( )<< "WeldHistoryModel 3" << historys->count();
     endResetModel();
@@ -3190,8 +3190,9 @@ void WeldHistoryModel::setModelList(QString WorkOrderName, QString PartName, QSt
 {
     beginResetModel();
     historys->clear();
+    historyList.clear();
     if (m_weldHistoryAdaptor->QueryBySomeFields(historys,WorkOrderName,PartName,SpliceName,time_from,time_to,OrderField,Orderby))
-        qDebug( )<< "WeldHistoryModel 2" << historys->count();
+        qDebug( )<< "WeldHistoryModel 2" << historys->count() << historys->keys();
     endResetModel();
 }
 
@@ -3199,6 +3200,7 @@ void WeldHistoryModel::setModelList()
 {
     beginResetModel();
     historys->clear();
+    historyList.clear();
     if (m_weldHistoryAdaptor->QueryEntireTable(historys))
         qDebug( )<< "WeldHistoryModel 1" << historys->count();
     endResetModel();
@@ -3262,7 +3264,7 @@ void WeldHistoryModel::weldResultSearch(QString WorkOrderName, QString PartName,
         partName = PartName;
     if (SpliceName != "All")
         spliceName = SpliceName;
-    qDebug()<<"weldResultSearch"<<WorkOrderName<<PartName<<SpliceName;
+    qDebug()<<"weldResultSearch"<<WorkOrderName<<PartName<<SpliceName  ;
     setModelList(workOrderName,partName,spliceName,time_from,time_to,OrderField,Orderby);
 }
 

@@ -468,10 +468,10 @@ Item {
                         searchArea.visible = false
                         switch(searchArea.buttonIndex) {
                         case 1:
-                            workOrderName.text = searchList.model.getValue(searchArea.selectNum,"name")
+                            workOrderName.text = searchList.model.getValue(searchArea.selectNum,"SequenceName")
                             break;
                         case 2:
-                            partName.text = searchList.model.getValue(searchArea.selectNum,"PartName")
+                            partName.text = searchList.model.getValue(searchArea.selectNum,"HarnessName")
                             break;
                         case 3:
                             spliceName.text = searchList.model.getValue(searchArea.selectNum,"SpliceName")
@@ -714,7 +714,7 @@ Item {
                         newCalendar.visible = false
                     var fromtime = hmiAdaptor.timeChangeToInt(mycalendar1.text + " " + mycalendar2.text)
                     var totime = hmiAdaptor.timeChangeToInt(mytimeSelect1.text + " " + mytimeSelect2.text)
-                    weldHistoryModel.weldResultSearch(workOrderName.text,partName.text,spliceName.text,fromtime,totime)
+                    weldHistoryModel.weldResultSearch(partName.text,workOrderName.text,spliceName.text,fromtime,totime)
                 }
             }
             CButton {

@@ -1814,7 +1814,9 @@ bool HmiAdaptor::comepareCurrentValue(QString minValue, QString maxValue, QStrin
 int HmiAdaptor::timeChangeToInt(QString time)
 {
     QDateTime temptime = QDateTime::fromString(time, "yyyy-MM-dd hh:mm:ss");
-    return temptime.toTime_t();
+    int ret = temptime.toTime_t();
+    qDebug() << "timeChangeToInt" << time << ret;
+    return ret;
 }
 
 void HmiAdaptor::setProcess(QString operateMode)
