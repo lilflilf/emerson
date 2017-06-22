@@ -806,12 +806,12 @@ bool HmiAdaptor::login(QString passwd)
     bool isLog = operatorModel->login(passwd, &myOperator);
     if (isLog)
     {
-        if (myOperator.PermissionLevel == OperatorElement::PHYKEY) {
-            if (isLog && !bIsPhysicalKey)
-                emit signalPhysicalKeyMessage();
-            isLog = isLog & bIsPhysicalKey;
-        }
-        if (isLog)
+//        if (myOperator.PermissionLevel == OperatorElement::PHYKEY) {
+//            if (isLog && !bIsPhysicalKey)
+//                emit signalPhysicalKeyMessage();
+//            isLog = isLog & bIsPhysicalKey;
+//        }
+//        if (isLog)
             interfaceClass->CurrentOperator = myOperator;
     }
     else
@@ -844,6 +844,11 @@ bool HmiAdaptor::borrowLogin(QString passwd, QString pageName)
         bool reb = false;
         QList<struct PermissionSettingForScreen> funcNameList;
         funcNameList = permissionSetting->CurrentPermissionList;
+        if ((int)myOperator.PermissionLevel >= 5)
+        {
+            interfaceClass->CurrentOperator = myOperator;
+            return true;
+        }
         for (i = 0; i < funcNameList.length();i++)
         {
             if (pageName == funcNameList[i].Identifier) {
@@ -852,25 +857,44 @@ bool HmiAdaptor::borrowLogin(QString passwd, QString pageName)
             }
         }
         if (funcIndex == -1) {
-            if (myOperator.PermissionLevel != OperatorElement::PHYKEY)
-                return false;
-            else if (myOperator.PermissionLevel == OperatorElement::PHYKEY)
-                return bIsPhysicalKey;
+            return false;
         }
         levelIndex = (int)myOperator.PermissionLevel;
-        if (levelIndex == 1)
-            reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level1;
-        else if (levelIndex == 2)
-            reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level2;
-        else if (levelIndex == 3)
-            reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level3;
-        else if (levelIndex == 4)
-            reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level4;
-        else if (levelIndex == 0) {
-            reb = permissionSetting->CurrentPermissionList.at(funcIndex).PhyKey;
-            if (!bIsPhysicalKey)
-                emit signalPhysicalKeyMessage();
-            reb = bIsPhysicalKey;
+        if (levelIndex == 1) {
+            if (permissionSetting->CurrentPermissionList.at(funcIndex).PhyKey)
+            {
+                reb = bIsPhysicalKey & permissionSetting->CurrentPermissionList.at(funcIndex).PhyKey;
+                reb =  reb & permissionSetting->CurrentPermissionList.at(funcIndex).Level1;
+            }
+            else
+                reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level1;
+        }
+        else if (levelIndex == 2) {
+            if (permissionSetting->CurrentPermissionList.at(funcIndex).PhyKey)
+            {
+                reb = bIsPhysicalKey & permissionSetting->CurrentPermissionList.at(funcIndex).PhyKey;
+                reb =  reb & permissionSetting->CurrentPermissionList.at(funcIndex).Level2;
+            }
+            else
+                reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level2;
+        }
+        else if (levelIndex == 3) {
+            if (permissionSetting->CurrentPermissionList.at(funcIndex).PhyKey)
+            {
+                reb = bIsPhysicalKey & permissionSetting->CurrentPermissionList.at(funcIndex).PhyKey;
+                reb =  reb & permissionSetting->CurrentPermissionList.at(funcIndex).Level3;
+            }
+            else
+                reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level3;
+        }
+        else if (levelIndex == 4) {
+            if (permissionSetting->CurrentPermissionList.at(funcIndex).PhyKey)
+            {
+                reb = bIsPhysicalKey & permissionSetting->CurrentPermissionList.at(funcIndex).PhyKey;
+                reb =  reb & permissionSetting->CurrentPermissionList.at(funcIndex).Level4;
+            }
+            else
+                reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level4;
         }
         if (reb)
             interfaceClass->CurrentOperator = myOperator;
@@ -965,6 +989,8 @@ bool HmiAdaptor::needPassWord(QString pageName)
     bool reb = true;
     QList<struct PermissionSettingForScreen> funcNameList;
     funcNameList = permissionSetting->CurrentPermissionList;
+    if ((int)interfaceClass->CurrentOperator.PermissionLevel >= 5)
+        return false;
     for (i = 0; i < funcNameList.length();i++)
     {
         if (pageName == funcNameList[i].Identifier) {
@@ -972,21 +998,49 @@ bool HmiAdaptor::needPassWord(QString pageName)
             break;
         }
     }
-
     if (funcIndex == -1)
         return true;
     levelIndex = (int)interfaceClass->CurrentOperator.PermissionLevel;
 
-    if (levelIndex == 0)
-        reb = permissionSetting->CurrentPermissionList.at(funcIndex).PhyKey;
-    else if (levelIndex == 1)
-        reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level1;
+    if (levelIndex == 1) {
+        if (permissionSetting->CurrentPermissionList.at(funcIndex).PhyKey)
+        {
+            reb = bIsPhysicalKey & permissionSetting->CurrentPermissionList.at(funcIndex).PhyKey;
+            reb = reb & permissionSetting->CurrentPermissionList.at(funcIndex).Level1;
+        }
+        else
+            reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level1;
+    }
     else if (levelIndex == 2)
-        reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level2;
+    {
+        if (permissionSetting->CurrentPermissionList.at(funcIndex).PhyKey)
+        {
+            reb = bIsPhysicalKey & permissionSetting->CurrentPermissionList.at(funcIndex).PhyKey;
+            reb = reb & permissionSetting->CurrentPermissionList.at(funcIndex).Level2;
+        }
+        else
+            reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level2;
+    }
     else if (levelIndex == 3)
-        reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level3;
+    {
+        if (permissionSetting->CurrentPermissionList.at(funcIndex).PhyKey)
+        {
+            reb = bIsPhysicalKey & permissionSetting->CurrentPermissionList.at(funcIndex).PhyKey;
+            reb = reb & permissionSetting->CurrentPermissionList.at(funcIndex).Level3;
+        }
+        else
+            reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level3;
+    }
     else if (levelIndex == 4)
-        reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level4;
+    {
+        if (permissionSetting->CurrentPermissionList.at(funcIndex).PhyKey)
+        {
+            reb = bIsPhysicalKey & permissionSetting->CurrentPermissionList.at(funcIndex).PhyKey;
+            reb = reb & permissionSetting->CurrentPermissionList.at(funcIndex).Level4;
+        }
+        else
+            reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level4;
+    }
 
     return !reb;
 }

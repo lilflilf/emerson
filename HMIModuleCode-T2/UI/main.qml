@@ -107,13 +107,13 @@ Window {
             source = "Create Splice"
             break;
         case -2:
-            source = "Create Splice"
+            source = "Teach Mode"
             break;
         case -3:
-            source = "Create Splice"
+            source = "Teach Mode"
             break;
         case -4:
-            source = "Create Splice"
+            source = "Teach Mode"
             break;
         case -5:
             source = "Operate Splice"
@@ -131,7 +131,7 @@ Window {
             source = "Create Sequence"
             break;
         case 2:
-            source = "Operate"
+            source = "Operate Splice"
             break;
         case 3:
             source = "Test"
@@ -179,11 +179,13 @@ Window {
             source = "Data/Communication"
             break;
         case 19:
-            source = "qrc:/UI/EditWire.qml"
+            source = "Edit Wire"
             break;
         case 21:
-            source = "qrc:/Ui/UserManual.qml"
+            source = "User Manual"
             break;
+        case 22:
+
         default:
             break;
         }
@@ -363,7 +365,7 @@ Window {
 //            contentLoader.source = "qrc:/UI/BransonSetting.qml"
 //            break;
         case 19:
-            headBar.titleText = qsTr("Edit Existing")
+            headBar.titleText = qsTr("Edit Wire")
 //            contentLoader.source = "qrc:/UI/EditWire.qml"
             stackview.push("qrc:/UI/EditWire.qml")
             break;
