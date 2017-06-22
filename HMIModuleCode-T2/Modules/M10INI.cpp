@@ -254,6 +254,8 @@ void M10INI::SetDefaultPassword(Status_Data* _DataStruct)
     _DataStruct->ModularPassword[1].Password = QObject::tr("DSKSK01");
     _DataStruct->ModularPassword[2].Identifier = QObject::tr("ENABLEKSK2D");
     _DataStruct->ModularPassword[2].Password = QObject::tr("ENKSK2D");
+    for(int i = 0; i< 26; i++)
+        _DataStruct->CurrentFunIndex.append(i);
 }
 
 void M10INI::SetAWGToMMTable(Status_Data* _DataStruct)

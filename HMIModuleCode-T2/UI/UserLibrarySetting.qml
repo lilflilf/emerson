@@ -537,6 +537,7 @@ Item {
                     level = 4
                 }
 
+                console.log("fffffffffffff",level)
                 if (operatorDialog.bIsEdit) {
                     operatorModel.updateOperator(operatorModel.getOperatorValue(selectIndx,"operatorId"),operatorNameInput.inputText,passwordInput.inputText,level)
                     operatorDialog.bIsEdit = false

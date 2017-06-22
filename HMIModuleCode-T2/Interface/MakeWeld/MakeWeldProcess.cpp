@@ -31,6 +31,7 @@ MakeWeldProcess::MakeWeldProcess(QObject *parent) : QObject(parent)
     WeldCycleStatus = true;
     PowerGraphReady = false;
     HeightGraphReady = false;
+    IsWeldingStatus = false;
 
     connect(_M102IA, SIGNAL(WeldCycleSignal(bool&)),
             this,SLOT(WeldResultEventSlot(bool&)));
@@ -372,6 +373,7 @@ bool MakeWeldProcess::_start()
         }
         m_pReadySM->_start();
         m_pReadySM->ReadyState = ReadyStateMachine::READYON;
+        IsWeldingStatus = true;
     }
     return bResult;
 }
@@ -392,6 +394,7 @@ bool MakeWeldProcess::_stop()
         qDebug()<<"Weld Process stop"<<_Thread->wait();
         delete _Thread;
         _ThreadList->pop_front();
+        IsWeldingStatus = false;
     }
     //Delect Thread and release resource
     m_pReadySM->_stop();
@@ -563,4 +566,9 @@ void MakeWeldProcess::EraseLastEntry()
             _Statistics->CalcConfLimits(&_Interface->StatusData);
         }
     }
+}
+
+bool MakeWeldProcess::GetWeldStatus()
+{
+    return IsWeldingStatus;
 }
