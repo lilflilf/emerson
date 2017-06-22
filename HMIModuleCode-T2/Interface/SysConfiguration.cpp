@@ -169,7 +169,7 @@ Status_Data &Status_Data::operator= (const Status_Data &StatusDataObj)
     {
         this->carTemplate.insert(it.key(),it.value());
     }
-    this->ReliablityMode = StatusDataObj.ReliablityMode;
+    this->ReliabilityMode = StatusDataObj.ReliabilityMode;
     this->PhysicalKeyMode = StatusDataObj.PhysicalKeyMode;
     return *this;
 }
@@ -363,6 +363,7 @@ bool Status_Data::ReadStatusDataFromQSetting()
     FootPedalFlag = settings.value("FootPedalFlag").value<bool>();
     ServerPort = settings.value("ServerPort").value<int>();
     ModularProductionEnabled = settings.value("ModularProductionEnabled").value<bool>();
+    ReliabilityMode = settings.value("ReliabilityMode").value<bool>();
 
     ActuatorModuleNumber = settings.value("ActuatorModuleNumber").value<QString>();
     ActuatorPartNumber = settings.value("ActuatorPartNumber").value<QString>();
@@ -557,6 +558,7 @@ void Status_Data::WriteStatusDataToQSetting()
     settings.setValue("FootPedalFlag", FootPedalFlag);
     settings.setValue("ServerPort", ServerPort);
     settings.setValue("ModularProductionEnabled", ModularProductionEnabled);
+    settings.setValue("ReliabilityMode", ReliabilityMode);
 
     settings.setValue("ActuatorModuleNumber", ActuatorModuleNumber);
     settings.setValue("ActuatorPartNumber", ActuatorPartNumber);

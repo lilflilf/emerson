@@ -189,7 +189,7 @@ enum IASig{
     IASigActuatorSerialNum, //0x2B
     IASigResetReady,        //0x2C
     IASigHeightGraph,       //0x2D
-    IASigReliablityMode,    //0x2E
+    IASigReliabilityMode,    //0x2E
     IASigPhysicalKeyMode,   //0x2F
     IASigPartNumber,        //0x30
     IASigAlarm,             //0x31

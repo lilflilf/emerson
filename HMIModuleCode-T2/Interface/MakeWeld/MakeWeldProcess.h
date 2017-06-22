@@ -28,7 +28,8 @@ public:
     NecessaryInfo CurrentNecessaryInfo;
     WeldResultElement CurrentWeldResult;
 private:
-    static ThreadClass* m_pThread;
+//    static ThreadClass* m_pThread;
+    static QList<ThreadClass*> *_ThreadList;
     ReadyStateMachine *m_pReadySM;
     int m_triedCount;
     GRAPHSTEP CurrentStep;

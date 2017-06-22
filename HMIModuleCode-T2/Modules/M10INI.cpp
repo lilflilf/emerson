@@ -498,6 +498,8 @@ void M10INI::Init_StatusData()
     _Interface->DefaultStatusData.CutOffOption.Cutter4PreHeightAlarm = false;
     _Interface->DefaultStatusData.CutOffOption.Cutter4TimeAlarm = false;
 
+    _Interface->DefaultStatusData.ReliabilityMode = false;
+
     QDateTime tmp = QDateTime::fromString("10/20/2016","MM/dd/yyyy");
     _Interface->DefaultStatusData.MaintenanceDateStarted[0] = tmp.toTime_t();
     tmp = QDateTime::fromString("01/20/2015", "MM/dd/yyyy");

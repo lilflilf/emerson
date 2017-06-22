@@ -459,9 +459,9 @@ Item {
             anchors.right: parent.right
             textLeft: qsTr("ON")
             textRight: qsTr("OFF")
-            state: "right"
+            state: hmiAdaptor.getAdvancedMaintenanceReliability()
             onStateChanged: {
-                hmiAdaptor.setAdvancedMaintenanceValue(1,keyNum.inputText)
+                hmiAdaptor.setAdvancedMaintenanceReliability(state)
             }
         }
     }

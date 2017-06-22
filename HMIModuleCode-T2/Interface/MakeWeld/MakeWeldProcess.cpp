@@ -14,7 +14,7 @@
 #include <QDateTime>
 #include <QDebug>
 MakeWeldProcess* MakeWeldProcess::_instance = NULL;
-ThreadClass* MakeWeldProcess::m_pThread = NULL;
+QList<ThreadClass*>* MakeWeldProcess::_ThreadList = NULL;
 MakeWeldProcess* MakeWeldProcess::Instance()
 {
     if(_instance == NULL){
@@ -27,6 +27,7 @@ MakeWeldProcess::MakeWeldProcess(QObject *parent) : QObject(parent)
 {
     M102IA* _M102IA = M102IA::Instance();
     m_pReadySM = ReadyStateMachine::Instance();
+    _ThreadList = new QList<ThreadClass*>();
     WeldCycleStatus = true;
     PowerGraphReady = false;
     HeightGraphReady = false;
@@ -284,8 +285,9 @@ void MakeWeldProcess::WeldCycleDaemonThread(void* _obj)
     if(StopThreadFlag == true)
     {
         emit _ObjectPtr->WeldCycleCompleted(_ObjectPtr->WeldCycleStatus);
-        m_pThread->setStopEnabled(true);
-        m_pThread->setSuspendEnabled(true);
+        ThreadClass* _pThread = _ThreadList->at(0);
+        _pThread->setStopEnabled(true);
+        _pThread->setSuspendEnabled(true);
         _M102IA->RawPowerDataGraph.GraphDataList.clear();
         _M102IA->RawHeightDataGraph.GraphDataList.clear();
         _ObjectPtr->PowerGraphReady = false;
@@ -312,9 +314,10 @@ void MakeWeldProcess::WeldResultEventSlot(bool& bResult)
         _M10runMode->UpdateMaintenanceData(); //Increment Maintenance Counters here
         _M10runMode->CheckMaintenanceData();
     }
-    m_pThread->setStopEnabled(false);
-    m_pThread->setSuspendEnabled(false);
-    m_pThread->start();
+    ThreadClass* _pThread = _ThreadList->at(0);
+    _pThread->setStopEnabled(false);
+    _pThread->setSuspendEnabled(false);
+    _pThread->start();
 }
 
 void MakeWeldProcess::PowerGraphEventSlot(bool &bResult)
@@ -358,9 +361,10 @@ bool MakeWeldProcess::_start()
         bResult = false;
         DEBUG_PRINT("_M102IA->SendCommandSetRunMode(ON");
     }else{
-        m_pThread = new ThreadClass(0, (void*)(MakeWeldProcess::WeldCycleDaemonThread), this);
-        m_pThread->setStopEnabled(false);
-        m_pThread->setSuspendEnabled(false);
+        ThreadClass* _pThread = new ThreadClass(0, (void*)(MakeWeldProcess::WeldCycleDaemonThread), this);
+        _ThreadList->append(_pThread);
+        _pThread->setStopEnabled(false);
+        _pThread->setSuspendEnabled(false);
         if(CurrentSplice.TestSetting.TeachModeSetting.TeachModeType != TEACHMODESETTING::UNDEFINED)
         {
             _M10runMode->init_m20_data_events(&CurrentSplice);
@@ -379,13 +383,15 @@ bool MakeWeldProcess::_stop()
     struct BransonMessageBox tmpMsgBox;
     bool bResult = true;
     //Delete Thread and release resource
-    if(m_pThread != NULL)
+    ThreadClass* _Thread = NULL;
+    if(_ThreadList->size() > 0)
     {
-        m_pThread->setSuspendEnabled(true);
-        m_pThread->setStopEnabled(true);
-        qDebug()<<"Weld Process stop"<<m_pThread->wait();
-        delete m_pThread;
-        m_pThread = NULL;
+        _Thread = _ThreadList->at(0);
+        _Thread->setSuspendEnabled(true);
+        _Thread->setStopEnabled(true);
+        qDebug()<<"Weld Process stop"<<_Thread->wait();
+        delete _Thread;
+        _ThreadList->pop_front();
     }
     //Delect Thread and release resource
     m_pReadySM->_stop();

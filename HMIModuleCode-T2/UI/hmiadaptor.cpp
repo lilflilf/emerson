@@ -779,6 +779,26 @@ void HmiAdaptor::releasedAdvancedMaintenance100Sonics()
     advanceMaintenance->RunSonics100UnPressed();
 }
 
+QString HmiAdaptor::getAdvancedMaintenanceReliability()
+{
+    QString Status;
+    if(advanceMaintenance->GetReliabilityOption() == true)
+        Status = "left";
+    else
+        Status = "right";
+    return Status;
+}
+
+void HmiAdaptor::setAdvancedMaintenanceReliability(QString status)
+{
+    bool bStatus;
+    if(status == "right")
+        bStatus = false;
+    else
+        bStatus = true;
+    advanceMaintenance->SetReliabilityOption(bStatus);
+}
+
 bool HmiAdaptor::login(QString passwd)
 {
     OperatorElement myOperator;

@@ -45,6 +45,8 @@ public:
 
     Q_INVOKABLE int operateGetMaintenanceCount(int type);
     Q_INVOKABLE int getAdvancedMaintenanceMaxPower();
+    Q_INVOKABLE QString getAdvancedMaintenanceReliability();
+    Q_INVOKABLE void setAdvancedMaintenanceReliability(QString);
     Q_INVOKABLE QString maintenanceCountGetImage(int index);
     Q_INVOKABLE QString getAdvancedMaintenanceValue(int index, QString key);
     Q_INVOKABLE QString maintenanceCountGetValue(int code, int index);

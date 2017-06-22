@@ -1045,8 +1045,8 @@ int M102IA::ParseHexStructure(QString HexString, int tmpDataSignature)
         _M2010->ReceiveFlags.HeightGraphData = true;
         emit HeightGraphSignal(_M2010->ReceiveFlags.HeightGraphData);
         break;
-    case IASigReliablityMode:
-        _Interface->StatusData.ReliablityMode =
+    case IASigReliabilityMode:
+        _Interface->StatusData.ReliabilityMode =
                 MakeHexWordNumber(HexString.mid(9, 4));
         _M2010->ReceiveFlags.ReliabilityModeData = true;
         break;

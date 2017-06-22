@@ -192,6 +192,11 @@ MODstart::MODstart()
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.PhysicalKeyData);
 //        DEBUG_PRINT(_M2010->ReceiveFlags.PhysicalKeyData);
 
+        _M2010->ReceiveFlags.ReliabilityModeData = false;
+        _M102IA->IACommand(IAComGetReliabilityMode);
+        _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.ReliabilityModeData);
+        DEBUG_PRINT(_M2010->ReceiveFlags.ReliabilityModeData);
+
         //Prepare Current VersaGraphics Version String.
         _Interface->CurrentVersions.SoftwareVersion = App.Major + "." + App.Minor + "." + App.Revision;
 

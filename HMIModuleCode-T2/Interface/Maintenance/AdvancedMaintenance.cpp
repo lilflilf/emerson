@@ -596,3 +596,22 @@ void AdvancedMaintenance::RecallAdvancedParameter()
                                     _Utility->txtData[DINFreqOffset].min);
 
 }
+
+bool AdvancedMaintenance::GetReliabilityOption()
+{
+    InterfaceClass* _Interface = InterfaceClass::Instance();
+    return _Interface->StatusData.ReliabilityMode;
+}
+
+void AdvancedMaintenance::SetReliabilityOption(bool status)
+{
+    InterfaceClass* _Interface = InterfaceClass::Instance();
+    M2010* _M2010 = M2010::Instance();
+    M102IA* _M102IA = M102IA::Instance();
+    int iReliability = (int)status;
+    _Interface->StatusData.ReliabilityMode = status;
+    _M2010->ReceiveFlags.ReliabilityModeData = false;
+    _M102IA->SendIACommand(IAComSetReliabilityMode, iReliability);
+    _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.ReliabilityModeData);
+    _Interface->StatusData.WriteStatusDataToQSetting();
+}
