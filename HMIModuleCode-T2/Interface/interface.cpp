@@ -175,18 +175,18 @@ void InterfaceClass::AnyAlarmEventSlot(bool &bResult)
 //    DEBUG_PRINT("AnyAlarmEventSlot");
 }
 
-void InterfaceClass::LockOnAlarm(OperatorElement::PASSWORDCONTROL ControlLevel)
+void InterfaceClass::LockOnAlarm()
 {
     M2010* _M2010 = M2010::Instance();
     M102IA* _M102IA = M102IA::Instance();
     int LockAlarm = 0;
-    switch(ControlLevel)
+    switch(CurrentOperator.PermissionLevel)
     {
     case OperatorElement::LEVEL1:
     case OperatorElement::LEVEL2:
     case OperatorElement::LEVEL3:
     case OperatorElement::LEVEL4:
-        if((StatusData.PasswordData[ControlLevel].PWPermissions & BIT25) == BIT25)
+        if((StatusData.PasswordData[CurrentOperator.PermissionLevel].PWPermissions & BIT25) == BIT25)
             LockAlarm = ON;
         else
             LockAlarm = OFF;
@@ -200,6 +200,8 @@ void InterfaceClass::LockOnAlarm(OperatorElement::PASSWORDCONTROL ControlLevel)
         LockAlarm = OFF;
         break;
     }
+    qDebug()<<"Lock Alarm: "<<LockAlarm;
+    qDebug()<<"StatusData.LockonAlarm"<< StatusData.LockonAlarm;
     if(LockAlarm != StatusData.LockonAlarm)
     {
         StatusData.LockonAlarm = LockAlarm;

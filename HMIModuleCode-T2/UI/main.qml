@@ -185,7 +185,8 @@ Window {
             source = "User Manual"
             break;
         case 22:
-
+            source = "Lock On Alarm"
+            break;
         default:
             break;
         }
@@ -194,6 +195,8 @@ Window {
             passwdLog.index = index
             passwdLog.pageName = source
         } else {
+            if (index == 22)
+                return
             menuInit(index)
         }
     }

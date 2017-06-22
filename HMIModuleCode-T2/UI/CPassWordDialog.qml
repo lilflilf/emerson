@@ -21,11 +21,11 @@ Item {
     Connections {
         target: hmiAdaptor
         onSignalPhysicalKeyMessage: {
-            title.text = qsTr("Scan or Enter ID(Please insert physicalkey)")
+            title.text = qsTr("Scan or Enter ID(Please insert physical key)")
             itemChange.start()
         }
         onSignalWrongPassword: {
-            title.text = qsTr("Scan or Enter ID(Wrong PassWord)")
+            title.text = qsTr("Scan or Enter ID(Please use the correct Password)")
             itemChange.start()
         }
     }
@@ -116,6 +116,9 @@ Item {
                 border.color: "#0079c1"
                 border.width: 2
             }
+            MouseArea {
+                anchors.fill: parent
+            }
         }
 
         Text {
@@ -131,8 +134,12 @@ Item {
             visible: false
             Keys.enabled: true
             Keys.onReturnPressed: {
-                if (hmiAdaptor.login(mima.text))
-                    passWordInputOk()
+                if (hmiAdaptor.borrowLogin(mima.text,pageName)) {
+                        mainRoot.menuInit(passwdDialog.index)
+                        mimaShow.text = ""
+                        mima.text = ""
+                        passwdDialog.visible = false
+                }
             }
             Keys.onPressed: {
                 var temp;

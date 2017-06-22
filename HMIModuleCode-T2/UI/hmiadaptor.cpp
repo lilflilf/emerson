@@ -813,6 +813,7 @@ bool HmiAdaptor::login(QString passwd)
 //        }
 //        if (isLog)
             interfaceClass->CurrentOperator = myOperator;
+            interfaceClass->LockOnAlarm();
     }
     else
     {
@@ -847,6 +848,7 @@ bool HmiAdaptor::borrowLogin(QString passwd, QString pageName)
         if ((int)myOperator.PermissionLevel >= 5)
         {
             interfaceClass->CurrentOperator = myOperator;
+            interfaceClass->LockOnAlarm();
             return true;
         }
         for (i = 0; i < funcNameList.length();i++)
@@ -904,8 +906,11 @@ bool HmiAdaptor::borrowLogin(QString passwd, QString pageName)
             else
                 reb = permissionSetting->CurrentPermissionList.at(funcIndex).Level4;
         }
-        if (reb)
+        if (reb) {
             interfaceClass->CurrentOperator = myOperator;
+            interfaceClass->LockOnAlarm();
+        }
+
         return reb;
     }
     else {
@@ -2672,6 +2677,14 @@ QString HmiAdaptor::dataProcessing(QString type, QString value)
 
     qDebug() << type << str << unit->StringToFormatedData(DINHornCountLimit, value);
     return str;
+
+}
+
+bool HmiAdaptor::findAlarm()
+{
+    if (bransonMessageBox.TipsMode & Alarm)
+        return true;
+    return false;
 
 }
 

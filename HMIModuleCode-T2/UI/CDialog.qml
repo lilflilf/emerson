@@ -83,8 +83,21 @@ Item {
             pointSize: 16
             text: ""
             onClicked: {
-                dialog.visible = false
-                cliceTo(true)
+                if (hmiAdaptor.findAlarm())
+                {
+                    if (hmiAdaptor.needPassWord("Lock On Alarm"))
+                        mainRoot.checkNeedPassWd(22)
+                    else
+                    {
+                        dialog.visible = false
+                        cliceTo(true)
+                    }
+                }
+                else
+                {
+                    dialog.visible = false
+                    cliceTo(true)
+                }
             }
         }
         CButton {

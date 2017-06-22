@@ -1218,13 +1218,18 @@ T: 203-796-0400 F: 203-796-0363")
             textColor: "white"
             onClicked: {
                 if (listView.selectIndx != -1) {
-                    personColumn.visible = false
-                    background.visible = false
-                    helpTitle.visible = false
-                    alarmlog.visible = false
-                    background.opacity = 0
-                    dialog.visible = false
-                    alarmModel.updateAlarmLog(alarmModel.getAlarmValue(listView.selectIndx,"AlarmId"))
+                    if (hmiAdaptor.needPassWord("Lock On Alarm"))
+                        mainRoot.checkNeedPassWd(22)
+                    else
+                    {
+                        personColumn.visible = false
+                        background.visible = false
+                        helpTitle.visible = false
+                        alarmlog.visible = false
+                        background.opacity = 0
+                        dialog.visible = false
+                        alarmModel.updateAlarmLog(alarmModel.getAlarmValue(listView.selectIndx,"AlarmId"))
+                    }
                 }
              }
         }

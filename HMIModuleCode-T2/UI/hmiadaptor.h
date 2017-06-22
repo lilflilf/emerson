@@ -172,7 +172,7 @@ public:
     Q_INVOKABLE QString getLanguageImage();
 
     Q_INVOKABLE QString dataProcessing(QString type, QString value);
-
+    Q_INVOKABLE bool findAlarm();
     BransonMessageBox bransonMessageBox;
     InterfaceClass *interfaceClass;
     M102IA *m102ia;
