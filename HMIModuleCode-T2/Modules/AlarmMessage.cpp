@@ -288,7 +288,7 @@ void AlarmMessage::RunModeMouseButton()
     _M102IA->IACommand(IAComSigLightOff);
     _M102IA->IACommand(IAComClrAlarms);
     struct BransonMessageBox tmpMsgBox;
-    if(_M102IA->SendCommandSetRunMode(1) == false)
+    if(_M102IA->SendCommandSetRunMode(ON) == false)
     {
         tmpMsgBox.MsgTitle = QObject::tr("ERROR");
         tmpMsgBox.MsgPrompt = QObject::tr("Can't get any Response from controller!");

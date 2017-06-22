@@ -1612,6 +1612,7 @@ void HmiAdaptor::slotWeldCycleCompleted(bool result)
 
 void HmiAdaptor::slotGetAlarmFlag()
 {
+    qDebug() << "slotGetAlarmFlag";
     emit alarmModel->signalShowFlag(true);
 }
 

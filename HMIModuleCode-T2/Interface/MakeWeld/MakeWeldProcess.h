@@ -36,6 +36,7 @@ private:
     bool WeldCycleStatus;
     bool PowerGraphReady;
     bool HeightGraphReady;
+    bool IsWeldingStatus;
 
 private:
     void UpdateIAFields();
@@ -57,6 +58,7 @@ public:
     void StopTeachMode();
     void TeachModeProcess();
     void EraseLastEntry();
+    bool GetWeldStatus();
 public:
     static MakeWeldProcess* Instance();
 private:

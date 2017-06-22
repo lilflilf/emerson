@@ -103,7 +103,7 @@ int DBAlarmLogTable::InsertRecordIntoTable(void *_obj)
     if (bResult == false)   //run SQL
         qDebug() << "Alarm Table SQL ERROR:"<< query.lastError();
     else
-        query.lastInsertId().toInt(&bResult);
+        iResult = query.lastInsertId().toInt(&bResult);
     if(bResult == false)
         iResult = ERROR;
     AlarmLogDBObj.close();

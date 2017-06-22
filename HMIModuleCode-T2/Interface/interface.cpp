@@ -125,11 +125,13 @@ void InterfaceClass::DispearMsgBox()
 
 void InterfaceClass::ShownAlarmSign()
 {
+    qDebug() << "ThereAreAlarmItemsSignal";
     emit ThereAreAlarmItemsSignal();
 }
 
 void InterfaceClass::UpdateAlarmList()
 {
+    qDebug() << "ThereAreSomeAlarmReseted";
     emit ThereAreSomeAlarmReseted();
 }
 
