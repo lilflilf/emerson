@@ -117,11 +117,11 @@ Item {
             anchors.bottomMargin: 20
             visible: line1.visible
             onPressed: {
-                if (calibration.currentIndex == 3)
+                if (calibration.currentIndex == 4)
                     hmiAdaptor.calibrationMaintenanceExecute(2)
             }
             onReleased: {
-                if (calibration.currentIndex == 3) {
+                if (calibration.currentIndex == 4) {
                     hmiAdaptor.calibrationMaintenanceExecute(3)
                 }
             }
