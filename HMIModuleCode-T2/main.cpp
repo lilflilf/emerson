@@ -41,6 +41,7 @@ int main(int argc, char *argv[])
 
 //    QGuiApplication::setAttribute(Qt::AA_UseOpenGLES);
     QGuiApplication app(argc, argv);
+    app.setWindowIcon(QIcon(":/images/images/vg02.ico"));
 //    QtWebView::initialize();
     QtWebEngine::initialize();
     QString locale = QLocale::system().name();

@@ -196,5 +196,6 @@
         <file>images/keyBoard+.png</file>
         <file>images/arrowRight.png</file>
         <file>images/arrowLeft.png</file>
+        <file>images/vg02.ico</file>
     </qresource>
 </RCC>
