@@ -522,6 +522,7 @@ Item {
         maxvalue: "4"
         minvalue: "1"
         currentValue: "4"
+        pointVisable: true
         onCurrentClickIndex: {
             if (index == 15) {
                 if (hmiAdaptor.comepareCurrentValue(keyNum.minvalue,keyNum.maxvalue,keyNum.inputText)) {

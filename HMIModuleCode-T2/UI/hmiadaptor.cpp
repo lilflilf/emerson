@@ -2562,6 +2562,29 @@ QString HmiAdaptor::dataProcessing(QString type, QString value)
         str = m_variantToString->CutOffSpliceTimeToString(m_stringToVariant->CutOffSpliceTimeToInt(value)).Current;
     else if (type == "UnLoad Time")
         str = m_variantToString->AntiSideSpliceTimeToString(m_stringToVariant->AntiSideSpliceTimeToInt(value)).Current;
+
+    else if (type == "HornCountLimit")
+        str = unit->FormatedDataToString(DINHornCountLimit, unit->StringToFormatedData(DINHornCountLimit, value));
+    else if (type == "HornEnergyLimit")
+        str = unit->FormatedDataToString(DINHornEnergyLimit, unit->StringToFormatedData(DINHornEnergyLimit, value));
+    else if (type == "AnvilCountLimit")
+        str = unit->FormatedDataToString(DINAnvilCountLimit, unit->StringToFormatedData(DINAnvilCountLimit, value));
+    else if (type == "AnvilEnergyLimit")
+        str = unit->FormatedDataToString(DINAnvilEnergyLimit, unit->StringToFormatedData(DINAnvilEnergyLimit, value));
+    else if (type == "GatherCountLimit")
+        str = unit->FormatedDataToString(DINGatherCountLimit, unit->StringToFormatedData(DINGatherCountLimit, value));
+    else if (type == "GatherEnergyLimit")
+        str = unit->FormatedDataToString(DINGatherEnergyLimit, unit->StringToFormatedData(DINGatherEnergyLimit, value));
+    else if (type == "GuideCountLimit")
+        str = unit->FormatedDataToString(DINGuideCountLimit, unit->StringToFormatedData(DINGuideCountLimit, value));
+    else if (type == "GuideEnergyLimit")
+        str = unit->FormatedDataToString(DINGuideEnergyLimit, unit->StringToFormatedData(DINGuideEnergyLimit, value));
+
+    else if (type == "Amplitude")
+        str = unit->FormatedDataToString(DINAmplitude, unit->StringToFormatedData(DINAmplitude, value));
+
+
+    qDebug() << type << str << unit->StringToFormatedData(DINHornCountLimit, value);
     return str;
 
 }
