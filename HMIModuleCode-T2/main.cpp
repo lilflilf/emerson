@@ -65,8 +65,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("maintenanceLogModel",hmiAdaptor->maintenanceLogModel);
     engine.rootContext()->setContextProperty("sequenceModel",hmiAdaptor->sequenceModel);
 
-    MODstart::Instance();
-
     engine.load(QUrl(QStringLiteral("qrc:/UI/main.qml")));
+    MODstart::Instance();
     return app.exec();
 }
