@@ -432,7 +432,7 @@ void M10INI::Init_StatusData()
     _Interface->DefaultStatusData.Cust_Data.SigmaRunQuantity = 15;
     //Now store the new file data
 
-    _Interface->DefaultStatusData.ComInfo.COMport = 1;
+    _Interface->DefaultStatusData.ComInfo.COMport = 2;
     _Interface->DefaultStatusData.ComInfo.BaudRate = 115200;
     _Interface->DefaultStatusData.MachineType = ACTNEWSPLICER; //Need To Fix
     _Interface->DefaultStatusData.MachineDate = "";

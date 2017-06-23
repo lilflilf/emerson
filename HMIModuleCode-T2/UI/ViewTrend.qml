@@ -719,6 +719,7 @@ Item {
         id: bottomText
         anchors.left: qualityListViewTwo.left
         anchors.top: selectButton.bottom
+        anchors.topMargin: 10
         font.family: "arial"
         font.pointSize: 16
         color: "white"
@@ -757,6 +758,8 @@ Item {
         id: leftTextList
         anchors.left: qualityListViewTwo.left
         anchors.top: bottomText.bottom
+        anchors.topMargin: -10
+
         columnSpacing: 5
         columns: 2
         Repeater {
@@ -827,6 +830,7 @@ Item {
         anchors.left: leftTextList.right
         anchors.leftMargin: 30
         anchors.top: selectButton.bottom
+        anchors.topMargin: 10
         font.family: "arial"
         font.pointSize: 16
         color: "white"
@@ -846,6 +850,8 @@ Item {
         id: rightTextList
         anchors.left: bottomText2.left
         anchors.top: bottomText2.bottom
+        anchors.topMargin: -10
+
         Repeater {
             model: rightTextModel
             delegate: Row {

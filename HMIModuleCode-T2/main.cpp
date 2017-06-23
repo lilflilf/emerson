@@ -7,7 +7,6 @@
 #include "Modules/M10INI.h"
 #include <QQuickView>
 #include <QQmlEngine>
-#include "TestCase/databasetest.h"
 #include "UI/alpainteditem.h"
 #include "UI/hmiadaptor.h"
 #include "Interface/Maintenance/AdvancedMaintenance.h"

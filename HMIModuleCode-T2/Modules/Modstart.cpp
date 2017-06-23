@@ -39,7 +39,6 @@ MODstart::MODstart()
     M10INI  *_M10INI  = M10INI::Instance();
     M2010   *_M2010   = M2010::Instance();
     M102IA  *_M102IA  = M102IA::Instance();
-//    M10runMode *_M10runMode = M10runMode::Instance();
     ModRunSetup*    _ModRunSetup  = ModRunSetup::Instance();
     InterfaceClass* _Interface    = InterfaceClass::Instance();
     BransonServer*  _Server       = BransonServer::Instance();
@@ -51,7 +50,7 @@ MODstart::MODstart()
 
     App.Major    = "26";
     App.Minor    = "73";
-    App.Revision = "814-L2-T7";
+    App.Revision = "814-L2-T8";
 
     _Interface->FirstScreenComesUp = false;
     _MDefine->ModeChangeFlag = false;
