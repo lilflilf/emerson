@@ -389,7 +389,6 @@ Window {
         statusBar.visible = false
         contentLoader.source = ""
         welcome.source = "qrc:/UI/Welcome.qml"
-        console.log("llllllllllllllllllllllll")
     }
 
     function showDialog(okVisable,cancelVisable,okText,cancelText,typeIco,titleText,centerText)
@@ -547,12 +546,14 @@ Window {
             var mode = hmiAdaptor.getWorkFlow("WorkMode")
             if (mode != 3)
             {
-                if (mode == 0)
-                    mainRoot.checkNeedPassWd(-5)
-                else if (mode == 1)
-                    mainRoot.checkNeedPassWd(-6)
-                else if (mode == 2)
-                    mainRoot.checkNeedPassWd(-7)
+                mainRoot.checkNeedPassWd(-5)
+
+//                if (mode == 0)
+//                    mainRoot.checkNeedPassWd(-5)
+//                else if (mode == 1)
+//                    mainRoot.checkNeedPassWd(-6)
+//                else if (mode == 2)
+//                    mainRoot.checkNeedPassWd(-7)
 
             }
 
