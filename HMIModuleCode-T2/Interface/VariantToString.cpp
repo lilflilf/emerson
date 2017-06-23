@@ -525,28 +525,31 @@ QString VariantToString::AlarmToString(unsigned int Alarm)
         else
         {
             str.clear();
-            if ((Alarm & TimeFault) == TimeFault)
+            if (((Alarm & TimeMinFault) == TimeMinFault) ||
+                    ((Alarm & TimeMaxFault) == TimeMaxFault))
                 str = "T";
-            if ((Alarm & PowerFault) == PowerFault)
+            if (((Alarm & PowerMinFault) == PowerMinFault) ||
+                    ((Alarm & PowerMaxFault) == PowerMaxFault))
             {
                 if(str.isEmpty() == true)
                     str += "P";
                 else
                     str += "/P";
             }
-            if ((Alarm & HeightFault) == HeightFault)
+            if (((Alarm & HeightMinFault) == HeightMinFault) ||
+                    ((Alarm & HeightMaxFault) == HeightMaxFault))
             {
                 if(str.isEmpty() == true)
                     str += "H";
                 else
                     str += "/H";
             }
-            if ((Alarm & WidthFault) == WidthFault)
+            if ((Alarm & CutterFault) == CutterFault)
             {
                 if(str.isEmpty() == true)
-                    str += "W";
+                    str += "C";
                 else
-                    str += "/W";
+                    str += "/C";
             }
         }
     }

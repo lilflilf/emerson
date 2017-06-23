@@ -2,13 +2,18 @@
 #define VARIANTTOSTRING_H
 #include <QString>
 #include "Modules/UtilityClass.h"
+//#include "Modules/typedef.h"
 
-#define OverLoadFault 0x01
-#define TimeFault     0x20
-#define PowerFault    0x40
-#define HeightFault   0x80
-#define WidthFault    0x800
-#define AlarmsFault   (OverLoadFault | TimeFault | PowerFault | HeightFault | WidthFault)
+#define OverLoadFault   0x1 //BIT0
+#define TimeMinFault    0x20 //BIT5
+#define PowerMinFault   0x40 //BIT6
+#define HeightMinFault  0x80 //BIT7
+//#define WidthFault    0x800
+#define CutterFault     0x20000 //BIT17
+#define TimeMaxFault    0x200000 //BIT21
+#define PowerMaxFault   0x400000 //BIT22
+#define HeightMaxFault  0x800000 //BIT23
+#define AlarmsFault  (OverLoadFault | TimeMinFault | PowerMinFault | HeightMinFault | CutterFault | TimeMaxFault | PowerMaxFault | HeightMaxFault)
 
 class VariantToString
 {

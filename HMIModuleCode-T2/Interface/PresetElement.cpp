@@ -12,7 +12,7 @@ PresetElement::PresetElement()
     CreatedDate = 0;
     OperatorID = -1;
 
-    CrossSection = -1;
+    CrossSection = 0;
     PresetPicNamePath.clear();
     Verified = false;
 

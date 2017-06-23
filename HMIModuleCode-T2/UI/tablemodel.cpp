@@ -3104,8 +3104,8 @@ QVariant WeldHistoryModel::data(const QModelIndex &index, int role) const
         else if (columnIdx == 6)
             value = QVariant::fromValue(myHistory.OperateMode);
         else if (columnIdx == 7) {
-                    temp = variantToString->AlarmTypeToString((ALARMTYPE)myHistory.ActualResult.ActualAlarmflags);
-                    value = QVariant::fromValue(temp);
+            temp = variantToString->AlarmToString(myHistory.ActualResult.ActualAlarmflags);
+            value = QVariant::fromValue(temp);
         }
         else if (columnIdx == 8)
             value = QVariant::fromValue(variantToString->CrossSectionToString(presetElement.CrossSection));
@@ -3322,7 +3322,7 @@ QVariant WeldHistoryModel::getValue(int index, QString key)
     WeldHistoryModelHash.insert("Height+",variantToString->Height_PlusToString(presetElement.WeldSettings.QualitySetting.Height.Plus));
     WeldHistoryModelHash.insert("Height-",variantToString->Height_MinusToString(presetElement.WeldSettings.QualitySetting.Height.Minus));
     WeldHistoryModelHash.insert("Height",variantToString->ActualHeightToString(myHistory.ActualResult.ActualPostheight));
-    WeldHistoryModelHash.insert("AlarmType",variantToString->AlarmTypeToString((ALARMTYPE)myHistory.ActualResult.ActualAlarmflags)); //myHistory.ActualResult.ActualAlarmflags
+    WeldHistoryModelHash.insert("AlarmType",variantToString->AlarmToString(myHistory.ActualResult.ActualAlarmflags)); //myHistory.ActualResult.ActualAlarmflags
     WeldHistoryModelHash.insert("SampleRatio",variantToString->SampleRatioToString(myHistory.SampleRatio));
     WeldHistoryModelHash.insert("GraphData","GraphData");
     if (key == "") {

@@ -306,7 +306,7 @@ Window {
 //            contentLoader.source = "qrc:/UI/MaintenanceLog.qml"
             break;
         case 9:
-            headBar.titleText = qsTr("Work Order History")
+            headBar.titleText = qsTr("Weld Result History")
             stackview.push("qrc:/UI/ViewWorkOrder.qml")
 
 //            contentLoader.source = "qrc:/UI/ViewWorkOrder.qml"

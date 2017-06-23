@@ -277,7 +277,7 @@ Item {
     }
     ListModel {
         id: viewDataList
-        ListElement {menuKey:qsTr("Work Order History")}
+        ListElement {menuKey:qsTr("Weld Result History")}
         ListElement {menuKey:qsTr("Statistical Trend")}
         ListElement {menuKey:qsTr("Error/Alarm Log")}
         ListElement {menuKey:qsTr("Library")}
@@ -433,7 +433,7 @@ Item {
                                     mainRoot.checkNeedPassWd(13)
 //                                    title.text = qsTr("Version Information")
                                 }
-                                else if (menuKey == qsTr("Work Order History")){
+                                else if (menuKey == qsTr("Weld Result History")){
                                     mainRoot.clearStackView()
                                     mainRoot.checkNeedPassWd(9)
 //                                    title.text = qsTr("Work Order History")

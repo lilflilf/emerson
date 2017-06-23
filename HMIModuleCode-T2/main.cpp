@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
     qmlRegisterType<ALPaintedItem>("ALPaintedItem", 1, 0, "ALPaintedItem");
 
-//    QGuiApplication::setAttribute(Qt::AA_UseOpenGLES);
+    QGuiApplication::setAttribute(Qt::AA_UseOpenGLES);
     QGuiApplication app(argc, argv);
     app.setWindowIcon(QIcon(":/images/images/vg02.ico"));
 //    QtWebView::initialize();
