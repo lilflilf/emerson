@@ -320,7 +320,7 @@ Item {
                 hmiAdaptor.setWorkFlow(3, 0,"")
 
                 hmiAdaptor.setWorkFlow(1, sequenceModel.getValue(selectIndx,"SequenceId"),"Operate")
-                mainRoot.checkNeedPassWd(-6)
+                mainRoot.checkNeedPassWd(-5)
                 if (listView.model == sequenceModel)
                     mainRoot.headTitle = qsTr("Operate Sequence")
                 else
@@ -503,7 +503,7 @@ Item {
                         hmiAdaptor.setWorkValue("WorkCount","-1")
                     }
 
-                    mainRoot.checkNeedPassWd(-7)
+                    mainRoot.checkNeedPassWd(-5)
                     mainRoot.headTitle = qsTr("Operate Harness")
                 }
             }

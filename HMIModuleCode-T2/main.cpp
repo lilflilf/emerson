@@ -7,7 +7,6 @@
 #include "Modules/M10INI.h"
 #include <QQuickView>
 #include <QQmlEngine>
-#include "TestCase/databasetest.h"
 #include "UI/alpainteditem.h"
 #include "UI/hmiadaptor.h"
 #include "Interface/Maintenance/AdvancedMaintenance.h"
@@ -65,6 +64,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("alarmModel",hmiAdaptor->alarmModel);
     engine.rootContext()->setContextProperty("maintenanceLogModel",hmiAdaptor->maintenanceLogModel);
     engine.rootContext()->setContextProperty("sequenceModel",hmiAdaptor->sequenceModel);
+
     engine.load(QUrl(QStringLiteral("qrc:/UI/main.qml")));
     MODstart::Instance();
     return app.exec();
