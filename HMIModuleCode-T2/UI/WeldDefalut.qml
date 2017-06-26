@@ -172,6 +172,7 @@ Item {
         cutterModel.append({"headText":qsTr("Post-Height"),"switchState":hmiAdaptor.weldDefaultsGetCutterNum("Post-Height","")})
         onoroff.state = hmiAdaptor.weldDefaultsGetCutterNum("Anti-Side","current")
         loadValue.inputText = hmiAdaptor.weldDefaultsGetCutterNum("Unload Time","current")  //qsTr("0.00mm")
+        lockOnAlarmSwitch.state = hmiAdaptor.weldDefaultsGetCutterNum("LockOnAlarm", "current")
     }
 
     function weldDefaultUpdate()
@@ -881,12 +882,40 @@ Item {
             }
         }
 
+        Text {
+            id: lockOnAlarmName
+            anchors.top: cutterColumn.bottom
+            anchors.topMargin: 10
+            anchors.left: cutterColumn.left
+//                verticalAlignment: Qt.AlignVCenter
+            font.pointSize: 16
+            font.family: "arial"
+            text: qsTr("Lock On Alarm")
+            color: "white"
+            clip: true
+        }
+
+        Switch2{
+            id: lockOnAlarmSwitch
+            anchors.verticalCenter: lockOnAlarmName.verticalCenter
+            anchors.right: cutteronoroff.right
+            width: 150
+            textLeft: qsTr("ON")
+            textRight: qsTr("OFF")
+            state: hmiAdaptor.weldDefaultsGetCutterNum("LockOnAlarm","current")
+            clip: true
+//            onStateChanged: {
+//                hmiAdaptor.weldDefaultsSetCutterNum("LockOnAlarm", lockOnAlarmSwitch.state)
+//            }
+        }
+
+
             Text {
                 id: thirdSwitchName
                 anchors.left: cutterColumn.right
                 anchors.leftMargin: 24
                 anchors.verticalCenter: cutterText.verticalCenter
-                text: "Anti-Side"
+                text: qsTr("Anti-Side")
                 verticalAlignment: Qt.AlignVCenter
                 color: "white"
                 font.pointSize: 16
@@ -949,7 +978,6 @@ Item {
                     }
                 }
             }
-
 
         CButton {
             width: okButton.width
@@ -1262,7 +1290,7 @@ Item {
             hmiAdaptor.weldDefaultsSetCutterNum("Peak Power",cutterModel.get(1).switchState)
             hmiAdaptor.weldDefaultsSetCutterNum("Pre-Height",cutterModel.get(2).switchState)
             hmiAdaptor.weldDefaultsSetCutterNum("Post-Height",cutterModel.get(3).switchState)
-
+            hmiAdaptor.weldDefaultsSetCutterNum("LockOnAlarm", lockOnAlarmSwitch.state)
 
 
             hmiAdaptor.weldDefaultsSetValue(boolArray, stringArray, sampIndex, cooling1.centervalue,cooling2.centervalue)

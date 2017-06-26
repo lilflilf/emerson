@@ -175,41 +175,41 @@ void InterfaceClass::AnyAlarmEventSlot(bool &bResult)
 //    DEBUG_PRINT("AnyAlarmEventSlot");
 }
 
-void InterfaceClass::LockOnAlarm()
-{
-    M2010* _M2010 = M2010::Instance();
-    M102IA* _M102IA = M102IA::Instance();
-    int LockAlarm = 0;
-    switch(CurrentOperator.PermissionLevel)
-    {
-    case OperatorElement::LEVEL1:
-    case OperatorElement::LEVEL2:
-    case OperatorElement::LEVEL3:
-    case OperatorElement::LEVEL4:
-        if((StatusData.PasswordData[CurrentOperator.PermissionLevel].PWPermissions & BIT25) == BIT25)
-            LockAlarm = ON;
-        else
-            LockAlarm = OFF;
-        break;
-    case OperatorElement::PHYKEY:
-    case OperatorElement::INITIAL:
-    case OperatorElement::BRANSON:
-        LockAlarm = OFF;
-        break;
-    default:
-        LockAlarm = OFF;
-        break;
-    }
-    qDebug()<<"Lock Alarm: "<<LockAlarm;
-    qDebug()<<"StatusData.LockonAlarm"<< StatusData.LockonAlarm;
-    if(LockAlarm != StatusData.LockonAlarm)
-    {
-        StatusData.LockonAlarm = LockAlarm;
-        _M2010->ReceiveFlags.LockOnAlarmData = false;
-        _M102IA->SendIACommand(IAComSetLockonAlarm, StatusData.LockonAlarm);
-        _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.LockOnAlarmData);
-    }
-}
+//void InterfaceClass::LockOnAlarm()
+//{
+//    M2010* _M2010 = M2010::Instance();
+//    M102IA* _M102IA = M102IA::Instance();
+//    int LockAlarm = 0;
+//    switch(CurrentOperator.PermissionLevel)
+//    {
+//    case OperatorElement::LEVEL1:
+//    case OperatorElement::LEVEL2:
+//    case OperatorElement::LEVEL3:
+//    case OperatorElement::LEVEL4:
+//        if((StatusData.PasswordData[CurrentOperator.PermissionLevel].PWPermissions & BIT25) == BIT25)
+//            LockAlarm = ON;
+//        else
+//            LockAlarm = OFF;
+//        break;
+//    case OperatorElement::PHYKEY:
+//    case OperatorElement::INITIAL:
+//    case OperatorElement::BRANSON:
+//        LockAlarm = OFF;
+//        break;
+//    default:
+//        LockAlarm = OFF;
+//        break;
+//    }
+//    qDebug()<<"Lock Alarm: "<<LockAlarm;
+//    qDebug()<<"StatusData.LockonAlarm"<< StatusData.LockonAlarm;
+//    if(LockAlarm != StatusData.LockonAlarm)
+//    {
+//        StatusData.LockonAlarm = LockAlarm;
+//        _M2010->ReceiveFlags.LockOnAlarmData = false;
+//        _M102IA->SendIACommand(IAComSetLockonAlarm, StatusData.LockonAlarm);
+//        _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.LockOnAlarmData);
+//    }
+//}
 
 void InterfaceClass::HotRestartSys(void *_Obj)
 {

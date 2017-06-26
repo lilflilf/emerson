@@ -38,6 +38,7 @@ struct WeldSettingForScreen
 
     Cutter CutOffOption;
     AntiSide AntiSideOption;
+    bool LockOnAlarm;
 };
 
 struct FormulaRangeRef

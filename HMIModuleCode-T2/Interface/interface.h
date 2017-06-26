@@ -58,7 +58,7 @@ public:
     void DispearMsgBox();
     void ShownAlarmSign();
     void UpdateAlarmList();
-    void LockOnAlarm();
+//    void LockOnAlarm();
     static void HotRestartSys(void* _Obj);
 private:
     void CheckBransonFolder();
