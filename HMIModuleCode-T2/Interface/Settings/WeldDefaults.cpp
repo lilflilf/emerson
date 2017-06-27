@@ -496,6 +496,17 @@ void WeldDefaults::_Default()
         _M102IA->SendIACommand(IAComSetCutoff, _M10INI->TempSysConfig.CutoffMode);
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.CutterResponseData);
     }
+
+    if(_Interface->DefaultStatusData.LockonAlarm !=
+            _Interface->StatusData.LockonAlarm)
+    {
+        _Interface->StatusData.LockonAlarm =
+                _Interface->DefaultStatusData.LockonAlarm;
+        _M2010->ReceiveFlags.LockOnAlarmData = false;
+        _M102IA->SendIACommand(IAComSetLockonAlarm, _Interface->StatusData.LockonAlarm);
+        _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.LockOnAlarmData);
+
+    }
     qDebug()<<"Defult";
     _Interface->StatusData.WriteStatusDataToQSetting();
 }
@@ -605,6 +616,8 @@ bool WeldDefaults::_Recall()
     CurrentWeldSettings.CutOffOption.Cutter4TimeAlarm =
             _Interface->StatusData.CutOffOption.Cutter4TimeAlarm;
 
+    CurrentWeldSettings.LockOnAlarm =
+            _Interface->StatusData.LockonAlarm;
 
     float area = 0;
     float offset = 0;
@@ -989,7 +1002,16 @@ bool WeldDefaults::_Set()
         _M2010->ReceiveFlags.CutterResponseData = false;
         _M102IA->SendIACommand(IAComSetCutoff, _M10INI->TempSysConfig.CutoffMode);
         _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.CutterResponseData);
-        DEBUG_PRINT(_M2010->ReceiveFlags.CutterResponseData);
+//        DEBUG_PRINT(_M2010->ReceiveFlags.CutterResponseData);
+    }
+
+    if(CurrentWeldSettings.LockOnAlarm != ((bool)_Interface->StatusData.LockonAlarm))
+    {
+        _Interface->StatusData.LockonAlarm = (int)CurrentWeldSettings.LockOnAlarm;
+        _M2010->ReceiveFlags.LockOnAlarmData = false;
+        _M102IA->SendIACommand(IAComSetLockonAlarm, _Interface->StatusData.LockonAlarm);
+        _M102IA->WaitForResponseAfterSent(DELAY3SEC, &_M2010->ReceiveFlags.LockOnAlarmData);
+        DEBUG_PRINT(_M2010->ReceiveFlags.LockOnAlarmData);
     }
 
     _Interface->StatusData.KeepDailyHistory = true;

@@ -497,10 +497,12 @@ QString HmiAdaptor::maintenanceCountGetValue(int code, int index)
 
 int HmiAdaptor::operateGetMaintenanceCount(int type)
 {
+    int iResult = 0;
     if (type == 0)
-        return interfaceClass->StatusData.CurrentCountMaintenanceLimits[0];
+        iResult = interfaceClass->StatusData.CurrentCountMaintenanceLimits[0];
     else if (type == 1)
-        return interfaceClass->StatusData.MaintenanceCountLimits[0];
+        iResult = interfaceClass->StatusData.MaintenanceCountLimits[0];
+    return iResult;
 }
 
 QString HmiAdaptor::maintenanceCountGetImage(int index)
@@ -813,7 +815,7 @@ bool HmiAdaptor::login(QString passwd)
 //        }
 //        if (isLog)
             interfaceClass->CurrentOperator = myOperator;
-            interfaceClass->LockOnAlarm();
+//            interfaceClass->LockOnAlarm();
     }
     else
     {
@@ -848,7 +850,7 @@ bool HmiAdaptor::borrowLogin(QString passwd, QString pageName)
         if ((int)myOperator.PermissionLevel >= 5)
         {
             interfaceClass->CurrentOperator = myOperator;
-            interfaceClass->LockOnAlarm();
+//            interfaceClass->LockOnAlarm();
             return true;
         }
         for (i = 0; i < funcNameList.length();i++)
@@ -908,7 +910,7 @@ bool HmiAdaptor::borrowLogin(QString passwd, QString pageName)
         }
         if (reb) {
             interfaceClass->CurrentOperator = myOperator;
-            interfaceClass->LockOnAlarm();
+//            interfaceClass->LockOnAlarm();
         }
 
         return reb;
@@ -1530,6 +1532,14 @@ QString HmiAdaptor::weldDefaultsGetCutterNum(QString key, QString index)
         else
             value = "right";
     }
+    else if (key == "LockOnAlarm")
+    {
+        if (weldDefaults->CurrentWeldSettings.LockOnAlarm)
+            value = "left";
+        else
+            value = "right";
+
+    }
     return value;
 }
 
@@ -1586,6 +1596,13 @@ void HmiAdaptor::weldDefaultsSetCutterNum(QString key, QString index)
             weldDefaults->CurrentWeldSettings.CutOffOption.Cutter4HeightAlarm = true;
         else
             weldDefaults->CurrentWeldSettings.CutOffOption.Cutter4HeightAlarm = false;
+    }
+    else if (key == "LockOnAlarm")
+    {
+        if (index == "left")
+            weldDefaults->CurrentWeldSettings.LockOnAlarm = true;
+        else
+            weldDefaults->CurrentWeldSettings.LockOnAlarm = false;
     }
 }
 
@@ -2035,14 +2052,16 @@ QStringList HmiAdaptor::getCurrentStatisticsParameterList(int index)
 
 int HmiAdaptor::getCurrentStatisticsParameterLimit(QString key, int index)
 {
+    int iResult = 0;
     if (key == "max")
-        return statisticalTrend->CurrentStatisticsParameter[index].UpperSpecLimit;
+        iResult = statisticalTrend->CurrentStatisticsParameter[index].UpperSpecLimit;
     else if (key == "min")
-        return statisticalTrend->CurrentStatisticsParameter[index].LowerSpecLimit;
+        iResult = statisticalTrend->CurrentStatisticsParameter[index].LowerSpecLimit;
     else if (key == "limitMax")
-        return statisticalTrend->CurrentStatisticsParameter[index].UpperControlLimit;
+        iResult = statisticalTrend->CurrentStatisticsParameter[index].UpperControlLimit;
     else if (key == "limitMin")
-        return statisticalTrend->CurrentStatisticsParameter[index].LowerControlLimit;
+        iResult = statisticalTrend->CurrentStatisticsParameter[index].LowerControlLimit;
+    return iResult;
 }
 
 void HmiAdaptor::msgBoxClick(bool clickOK)
