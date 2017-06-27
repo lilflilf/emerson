@@ -207,7 +207,6 @@ Window {
         contentLoader.source = ""
         switch (index) {
         case -1:
-//            contentLoader.source = "qrc:/UI/CreatWire.qml"
             stackview.push("qrc:/UI/CreatWire.qml",{},StackView.Immediate)
             headBar.titleText = qsTr("Create Splice")
             if (bIsTest)
@@ -215,28 +214,23 @@ Window {
 
             break;
         case -2:
-//            contentLoader.source = "qrc:/UI/CreatWire.qml"
-            stackview.push("qrc:/UI/CreatWire.qml",{},StackView.Immediate)
             headBar.titleText = qsTr("Create Splice")
             if (bIsTest)
                 headBar.titleText = qsTr("TeachMode-Standard")
-
+            stackview.push("qrc:/UI/CreatWire.qml",{},StackView.Immediate)
             break;
         case -3:
-//            contentLoader.source = "qrc:/UI/CreatWire.qml"
-            stackview.push("qrc:/UI/CreatWire.qml",{},StackView.Immediate)
             headBar.titleText = qsTr("Create Splice")
             if (bIsTest)
                 headBar.titleText = qsTr("TeachMode-Auto")
-
+            stackview.push("qrc:/UI/CreatWire.qml",{},StackView.Immediate)
             break;
-//            if (loader.source == "qrc:/UI/OperateDetails.qml")
 
         case -4:
-            stackview.push("qrc:/UI/CreatWire.qml",{},StackView.Immediate)
             headBar.titleText = qsTr("Create Splice")
             if (bIsTest)
                 headBar.titleText = qsTr("TeachMode-Sigma")
+            stackview.push("qrc:/UI/CreatWire.qml",{},StackView.Immediate)
             break;
         case -5:
             headBar.titleText = qsTr("Operate Splice")
