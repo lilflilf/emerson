@@ -82,6 +82,8 @@ void MakeWeldProcess::UpdateIAFields()
     _M102IA->IAsetup.TimeToStep = CurrentSplice.WeldSettings.AdvanceSetting.StepWeld.TimeToStep;
     _M102IA->RawPowerDataGraph.GraphDataList.clear();
     _M102IA->RawHeightDataGraph.GraphDataList.clear();
+    CurrentWeldResult.WeldSettings = CurrentSplice.WeldSettings;
+    CurrentWeldResult.CrossSection = CurrentSplice.CrossSection;
 }
 
 void MakeWeldProcess::UpdateWeldResult()
@@ -266,7 +268,7 @@ void MakeWeldProcess::WeldCycleDaemonThread(void* _obj)
             if (_Interface->StatusData.NetworkingEnabled == true)
             {
                 QString StrRecord =
-                        _Statistics->HistoryEvent(&_ObjectPtr->CurrentWeldResult, &_ObjectPtr->CurrentSplice);
+                        _Statistics->HistoryEvent(&_ObjectPtr->CurrentWeldResult);
                 BransonServer *_Server = BransonServer::Instance();
                 _Server->SendDataToClients(StrRecord);
             }

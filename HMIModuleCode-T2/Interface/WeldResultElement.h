@@ -20,10 +20,13 @@ public:
     struct HarnessIndex CurrentHarness;
     struct SequenceIndex CurrentSequence;
     struct PartIndex CurrentSplice;
+    int CrossSection;         //Area of part in mm*mm/100
     int WeldCount;//just for the test mode
     int PartCount;//just for the operate mode
     QString OperateMode;
-    struct WELDRESULT ActualResult;
+    WELDRESULT ActualResult;
+    WELDSETTING WeldSettings;
+
     enum SAMPLERATIO SampleRatio;
     int NoOfSamples;
     QList<int> PowerGraph;

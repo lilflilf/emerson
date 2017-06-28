@@ -42,7 +42,7 @@ bool CSVWeldResultData::ExportData(int ID, QString fileUrl)
             &PresetObj);
     if(bResult == false)
         return bResult;
-    RowStr = _Statistics->HistoryEvent(&WeldResultObj, &PresetObj);
+    RowStr = _Statistics->HistoryEvent(&WeldResultObj);
     HeadStr = _Statistics->HeaderString();
 
     fileSource = fileUrl;
@@ -86,7 +86,7 @@ bool CSVWeldResultData::ExportData(QList<int> IDList, QString fileUrl)
                                                                    &PresetObj);
         if(bResult == false)
             continue;
-        RowStr = _Statistics->HistoryEvent(&WeldResultObj, &PresetObj);
+        RowStr = _Statistics->HistoryEvent(&WeldResultObj);
         ResultList.push_back(RowStr);
     }
     HeadStr = _Statistics->HeaderString();

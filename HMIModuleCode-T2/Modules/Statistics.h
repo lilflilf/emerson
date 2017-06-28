@@ -314,7 +314,7 @@ public:
     void GetLimitsAfterWeld(PresetElement*);
     void start_data_structures();
     void Open_Maint_Log();
-    QString HistoryEvent(WeldResultElement *_WeldResult, PresetElement *_Splice);
+    QString HistoryEvent(WeldResultElement *_WeldResult);
     void RotateOut(StatStats &SumStats, int OldData);
 
 

@@ -680,13 +680,17 @@ Item {
             }
             else if (workMode == 1)
             {
-                cycleCount++
-                if (cycleCount > qliantity)
-                    return
-                partCount2.text = qsTr(counterString) + cycleCount + "/" + qliantity;
-                progressBar2.value = cycleCount
-                workIndex = 0
-                selectSplice(spliceList[0])
+                cdialog.visible = true
+                hmiAdaptor.operateProcessExec("Stop")
+                hmiAdaptor.setWorkFlow(3, 0, "");
+                return
+//                cycleCount++
+//                if (cycleCount > qliantity)
+//                    return
+//                partCount2.text = qsTr(counterString) + cycleCount + "/" + qliantity;
+//                progressBar2.value = cycleCount
+//                workIndex = 0
+//                selectSplice(spliceList[0])
 
 
             }

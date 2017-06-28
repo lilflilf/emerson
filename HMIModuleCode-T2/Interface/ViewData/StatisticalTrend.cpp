@@ -102,7 +102,7 @@ bool StatisticalTrend::GetCurrentWeldResultOneByOne(QMap<int, QString>* ResultIn
             RawQualityWindowList[QUALITYPREHEIGHT].push_back(CurrentWeldResultRecord.ActualResult.ActualPreheight);
             DataList[QUALITYPOSTHEIGHT].push_back(postheight);
             RawQualityWindowList[QUALITYPOSTHEIGHT].push_back(CurrentWeldResultRecord.ActualResult.ActualPostheight);
-            RetrievedWeldResultList.push_back(_Statistics->HistoryEvent(&CurrentWeldResultRecord, &CurrentPreset));
+            RetrievedWeldResultList.push_back(_Statistics->HistoryEvent(&CurrentWeldResultRecord));
         }
         ++iterator;
     }

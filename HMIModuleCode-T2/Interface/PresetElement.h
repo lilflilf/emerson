@@ -15,7 +15,7 @@ public:
     QString PresetPicNamePath;
     bool Verified;
 
-    struct WELDSETTING WeldSettings;
+    WELDSETTING WeldSettings;
     unsigned int HashCode;
     int NoOfWires;            //Number of wires in this splice
     /*WireEl(1 To MAX_WIRE_ELEMENTS) As WireElement*/

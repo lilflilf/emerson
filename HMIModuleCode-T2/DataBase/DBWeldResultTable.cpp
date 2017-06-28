@@ -16,20 +16,40 @@ const QString SQLSentence[] = {
     "ID INTEGER PRIMARY KEY AUTOINCREMENT, "
     "OperatorName VARCHAR, CreatedDate VARCHAR, WorkOrderID INT, WorkOrderName VARCHAR, "
     "HarnessID INT, HarnessName VARCHAR, SequenceID INT, SequenceName VARCHAR, "
-    "SpliceID INT, SpliceName VARCHAR, SpliceHash INT, "
-    "WeldCount INT, PartCount INT, OperateMode VARCHAR, ActualEnergy INT, ActualTPressure INT, "
-    "ActualPressure INT, ActualAmplitude INT, ActualAmplitude2 INT, ActualWidth INT, "
-    "ActualTime INT, ActualPeakPower INT, ActualPreheight INT, ActualPostheight INT, "
-    "ActualAlarmFlags INT, SampleRatio INT, NoOfSamples INT, CurrentGraphDirectory VARCHAR)",
+    "SpliceID INT, SpliceName VARCHAR, SpliceHash INT, "        /* 12 items */
+    "CrossSection INT, WeldCount INT, PartCount INT, "
+    "OperateMode VARCHAR, ActualEnergy INT, ActualTPressure INT, "
+    "ActualPressure INT, ActualAmplitude INT, ActualAmplitude2 INT, "
+    "ActualWidth INT, ActualTime INT, ActualPeakPower INT, "
+    "ActualPreheight INT, ActualPostheight INT, "
+    "ActualAlarmFlags INT, "                                    /* 15 items */
+    /*QualityWindowSetting*/
+    "TimePlus INT, TimeMinus INT, PowerPlus INT, PowerMinus INT, "
+    "PreheightPlus INT, PreheightMinus INT, HeightPlus INT, HeightMinus INT, "
+    "ForcePlus INT, ForceMinus INT, "                           /* 10 items */
+    /*AdvanceSetting*/
+    "WeldMode INT, StepWeldMode INT, EnergyToStep INT, TimeToStep INT, "
+    "PowerToStep INT, Amplitude2 INT, PreBurst INT, HoldTime INT, "
+    "SqueezeTime INT, AfterBurstDelay INT, AfterBurstDuring INT, " /* 11 items */
+    "SampleRatio INT, NoOfSamples INT, CurrentGraphDirectory VARCHAR)", /* 3 items*/
 
     "INSERT INTO WeldResultHistory ( "         /*1 Insert record into WeldResult Table*/
     "OperatorName, CreatedDate, WorkOrderID, WorkOrderName, HarnessID, "
-    "HarnessName, SequenceID, SequenceName, SpliceID, SpliceName, SpliceHash, WeldCount, "
-    "PartCount, OperateMode, ActualEnergy, ActualTPressure, ActualPressure, ActualAmplitude, "
-    "ActualAmplitude2, ActualWidth, ActualTime, ActualPeakPower, ActualPreheight, "
-    "ActualPostheight, ActualAlarmFlags, SampleRatio, NoOfSamples, CurrentGraphDirectory) "
-    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
-    "?, ?, ?, ?, ?, ?)",
+    "HarnessName, SequenceID, SequenceName, SpliceID, SpliceName, SpliceHash, " /* 11 items*/
+    "CrossSection, WeldCount, PartCount, OperateMode, ActualEnergy, ActualTPressure, "
+    "ActualPressure, ActualAmplitude, ActualAmplitude2, ActualWidth, ActualTime, "
+    "ActualPeakPower, ActualPreheight, ActualPostheight, ActualAlarmFlags, "    /* 15 items*/
+    "TimePlus, TimeMinus, PowerPlus, PowerMinus, PreheightPlus, PreheightMinus, "
+    "HeightPlus, HeightMinus, ForcePlus, ForceMinus, "                          /* 10 items */
+    "WeldMode, StepWeldMode, EnergyToStep, TimeToStep, PowerToStep, Amplitude2, "
+    "PreBurst, HoldTime, SqueezeTime, AfterBurstDelay, AfterBurstDuring, "      /* 11 items */
+
+    "SampleRatio, NoOfSamples, CurrentGraphDirectory) "                         /* 3 items */
+    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
+    "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
+    "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
+    "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
+    "?, ?, ?",
 
     "SELECT ID, OperatorName FROM WeldResultHistory",
                                                /*2 Query Entire WeldResult Table */
@@ -46,11 +66,20 @@ const QString SQLSentence[] = {
 
     "UPDATE WeldResultHistory SET "
     "OperatorName = ?, CreatedDate = ?, WorkOrderID = ?, WorkOrderName = ?, HarnessID = ?, "
-    "HarnessName = ?, SequenceID = ?, SequenceName = ?, SpliceID = ?, SpliceName = ?, SpliceHash = ?, "
-    "WeldCount = ?, PartCount = ?, OperateMode = ?, ActualEnergy = ?, ActualTPressure = ?, "
-    "ActualPressure = ?, ActualAmplitude = ?, ActualAmplitude2 = ?, ActualWidth = ?, "
-    "ActualTime = ?, ActualPeakPower = ?, ActualPreheight = ?, ActualPostheight = ?, "
-    "ActualAlarmFlags = ?, SampleRatio = ?, NoOfSamples = ?, CurrentGraphDirectory = ?, "
+    "HarnessName = ?, SequenceID = ?, SequenceName = ?, SpliceID = ?, "
+    "SpliceName = ?, SpliceHash = ?, " /* 11 items */
+    "CrossSection = ?, WeldCount = ?, PartCount = ?, OperateMode = ?, "
+    "ActualEnergy = ?, ActualTPressure = ?, ActualPressure = ?, ActualAmplitude = ?, "
+    "ActualAmplitude2 = ?, ActualWidth = ?, ActualTime = ?, ActualPeakPower = ?, "
+    "ActualPreheight = ?, ActualPostheight = ?, "
+    "ActualAlarmFlags = ?, "           /* 15 items */
+    "TimePlus = ?, TimeMinus = ?, PowerPlus = ?, PowerMinus = ?, PreheightPlus = ?, "
+    "PreheightMinus = ?, HeightPlus = ?, HeightMinus = ?, ForcePlus = ?, "
+    "ForceMinus = ?, "                 /* 10 items*/
+    "WeldMode = ?, StepWeldMode = ?, EnergyToStep = ?, TimeToStep = ?, PowerToStep = ?, "
+    "Amplitude2 = ?, PreBurst = ?, HoldTime = ?, SqueezeTime = ?, AfterBurstDelay = ?, "
+    "AfterBurstDuring = ?, "           /* 11 items*/
+    "SampleRatio = ?, NoOfSamples = ?, CurrentGraphDirectory = ?, "
     "WHERE ID = ?",                             /*7 Update One Record to WeldResult Table*/
 };
 
@@ -172,7 +201,8 @@ int DBWeldResultTable::InsertRecordIntoTable(void *_obj)
         query.addBindValue(((WeldResultElement*)_obj)->CurrentSequence.SequenceName);
         query.addBindValue(((WeldResultElement*)_obj)->CurrentSplice.PartID);
         query.addBindValue(((WeldResultElement*)_obj)->CurrentSplice.PartName);
-        query.addBindValue(((WeldResultElement*)_obj)->CurrentSplice.PartHash);
+        query.addBindValue(((WeldResultElement*)_obj)->CurrentSplice.PartHash); /* 11 items */
+        query.addBindValue(((WeldResultElement*)_obj)->CrossSection);
         query.addBindValue(((WeldResultElement*)_obj)->WeldCount);
         query.addBindValue(((WeldResultElement*)_obj)->PartCount);
         query.addBindValue(((WeldResultElement*)_obj)->OperateMode);
@@ -186,7 +216,31 @@ int DBWeldResultTable::InsertRecordIntoTable(void *_obj)
         query.addBindValue(((WeldResultElement*)_obj)->ActualResult.ActualPeakPower);
         query.addBindValue(((WeldResultElement*)_obj)->ActualResult.ActualPreheight);
         query.addBindValue(((WeldResultElement*)_obj)->ActualResult.ActualPostheight);
-        query.addBindValue(((WeldResultElement*)_obj)->ActualResult.ActualAlarmflags);
+        query.addBindValue(((WeldResultElement*)_obj)->ActualResult.ActualAlarmflags); /* 15 items */
+
+        query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Time.Plus);
+        query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Time.Minus);
+        query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Power.Plus);
+        query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Power.Minus);
+        query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Preheight.Plus);
+        query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Preheight.Minus);
+        query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Height.Plus);
+        query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Height.Minus);
+        query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Force.Plus);
+        query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Force.Minus); /* 10 items */
+
+        query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.WeldMode);
+        query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.StepWeld.StepWeldMode);
+        query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.StepWeld.EnergyToStep);
+        query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.StepWeld.TimeToStep);
+        query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.StepWeld.PowerToStep);
+        query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.StepWeld.Amplitude2);
+        query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.PreBurst);
+        query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.HoldTime);
+        query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.SqzTime);
+        query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.ABDelay);
+        query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.ABDur); /* 11 items */
+
         query.addBindValue(((WeldResultElement*)_obj)->SampleRatio);
         query.addBindValue(((WeldResultElement*)_obj)->PowerGraph.size()); //NoOfSamples
         query.addBindValue(sPathName);
@@ -286,7 +340,9 @@ bool DBWeldResultTable::QueryOneRecordFromTable(int ID, QString OperatorName, vo
     ((WeldResultElement*)_obj)->CurrentSplice.PartName
             = query.value("SpliceName").toString();
     ((WeldResultElement*)_obj)->CurrentSplice.PartHash
-            = query.value("SpliceHash").toInt();
+            = query.value("SpliceHash").toInt();       /* 11 items*/
+
+    ((WeldResultElement*)_obj)->CrossSection = query.value("CrossSection").toInt();
     ((WeldResultElement*)_obj)->WeldCount = query.value("WeldCount").toInt();
     ((WeldResultElement*)_obj)->PartCount = query.value("PartCount").toInt();
     ((WeldResultElement*)_obj)->OperateMode = query.value("OperateMode").toString();
@@ -311,7 +367,52 @@ bool DBWeldResultTable::QueryOneRecordFromTable(int ID, QString OperatorName, vo
     ((WeldResultElement*)_obj)->ActualResult.ActualPostheight
             = query.value("ActualPostHeight").toInt();
     ((WeldResultElement*)_obj)->ActualResult.ActualAlarmflags
-            = query.value("ActualAlarmFlags").toInt();
+            = query.value("ActualAlarmFlags").toInt(); /* 14 items */
+
+    ((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Time.Plus
+            = query.value("TimePlus").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Time.Minus
+            = query.value("TimeMinus").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Power.Plus
+            = query.value("PowerPlus").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Power.Minus
+            = query.value("PowerMinus").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Preheight.Plus
+            = query.value("PreheightPlus").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Preheight.Minus
+            = query.value("PreheightMinus").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Height.Plus
+            = query.value("HeightPlus").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Height.Minus
+            = query.value("HeightMinus").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Force.Plus
+            = query.value("ForcePlus").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Force.Minus
+            = query.value("ForceMinus").toInt(); /* 10 items */
+
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.WeldMode
+            = (ADVANCESETTING::WELDMODE)query.value("WeldMode").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.StepWeld.StepWeldMode
+            = (STEPWELD::STEPWELDMODE)query.value("StepWeldMode").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.StepWeld.EnergyToStep
+            = query.value("EnergyToStep").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.StepWeld.TimeToStep
+            = query.value("TimeToStep").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.StepWeld.PowerToStep
+            = query.value("PowerToStep").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.StepWeld.Amplitude2
+            = query.value("Amplitude2").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.PreBurst
+            = query.value("PreBurst").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.HoldTime
+            = query.value("HoldTime").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.SqzTime
+            = query.value("SqueezeTime").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.ABDelay
+            = query.value("AfterBurstDelay").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.ABDur
+            = query.value("AfterBurstDuring").toInt(); /* 11 items */
+
     ((WeldResultElement*)_obj)->SampleRatio
             = (WeldResultElement::SAMPLERATIO)query.value("SampleRatio").toInt();
     ((WeldResultElement*)_obj)->NoOfSamples
@@ -370,8 +471,10 @@ bool DBWeldResultTable::QueryOneRecordFromTable(int ID, void *_obj)
             = query.value("SpliceID").toInt();
     ((WeldResultElement*)_obj)->CurrentSplice.PartName
             = query.value("SpliceName").toString();
-    ((WeldResultElement*)_obj)->CurrentSplice.PartHash
+    ((WeldResultElement*)_obj)->CurrentSplice.PartHash  /* 12 items */
             = query.value("SpliceHash").toInt();
+
+    ((WeldResultElement*)_obj)->CrossSection = query.value("CrossSection").toInt();
     ((WeldResultElement*)_obj)->WeldCount = query.value("WeldCount").toInt();
     ((WeldResultElement*)_obj)->PartCount = query.value("PartCount").toInt();
     ((WeldResultElement*)_obj)->OperateMode = query.value("OperateMode").toString();
@@ -395,8 +498,53 @@ bool DBWeldResultTable::QueryOneRecordFromTable(int ID, void *_obj)
             = query.value("ActualPreheight").toInt();
     ((WeldResultElement*)_obj)->ActualResult.ActualPostheight
             = query.value("ActualPostHeight").toInt();
-    ((WeldResultElement*)_obj)->ActualResult.ActualAlarmflags
+    ((WeldResultElement*)_obj)->ActualResult.ActualAlarmflags /* 14 items */
             = query.value("ActualAlarmFlags").toInt();
+
+    ((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Time.Plus
+            = query.value("TimePlus").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Time.Minus
+            = query.value("TimeMinus").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Power.Plus
+            = query.value("PowerPlus").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Power.Minus
+            = query.value("PowerMinus").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Preheight.Plus
+            = query.value("PreheightPlus").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Preheight.Minus
+            = query.value("PreheightMinus").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Height.Plus
+            = query.value("HeightPlus").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Height.Minus
+            = query.value("HeightMinus").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Force.Plus
+            = query.value("ForcePlus").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Force.Minus
+            = query.value("ForceMinus").toInt();              /* 10 items */
+
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.WeldMode
+            = (ADVANCESETTING::WELDMODE)query.value("WeldMode").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.StepWeld.StepWeldMode
+            = (STEPWELD::STEPWELDMODE)query.value("StepWeldMode").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.StepWeld.EnergyToStep
+            = query.value("EnergyToStep").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.StepWeld.TimeToStep
+            = query.value("TimeToStep").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.StepWeld.PowerToStep
+            = query.value("PowerToStep").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.StepWeld.Amplitude2
+            = query.value("Amplitude2").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.PreBurst
+            = query.value("PreBurst").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.HoldTime
+            = query.value("HoldTime").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.SqzTime
+            = query.value("SqueezeTime").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.ABDelay
+            = query.value("AfterBurstDelay").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.ABDur
+            = query.value("AfterBurstDuring").toInt();        /* 11 items */
+
     ((WeldResultElement*)_obj)->SampleRatio
             = (WeldResultElement::SAMPLERATIO)query.value("SampleRatio").toInt();
     ((WeldResultElement*)_obj)->NoOfSamples
@@ -443,7 +591,8 @@ bool DBWeldResultTable::QueryOneRecordFromTable(int ID, QStringList &ResultStr)
     ResultStr.append(query.value("SequenceName").toString());
     ResultStr.append(query.value("SpliceID").toString());
     ResultStr.append(query.value("SpliceName").toString());
-    ResultStr.append(query.value("SpliceHash").toString());
+    ResultStr.append(query.value("SpliceHash").toString()); /* 12 items * */
+    ResultStr.append(query.value("CrossSection").toString());
     ResultStr.append(query.value("WeldCount").toString());
     ResultStr.append(query.value("PartCount").toString());
     ResultStr.append(query.value("OperateMode").toString());
@@ -457,7 +606,31 @@ bool DBWeldResultTable::QueryOneRecordFromTable(int ID, QStringList &ResultStr)
     ResultStr.append(query.value("ActualPeakPower").toString());
     ResultStr.append(query.value("ActualPreheight").toString());
     ResultStr.append(query.value("ActualPostHeight").toString());
-    ResultStr.append(query.value("ActualAlarmFlags").toString());
+    ResultStr.append(query.value("ActualAlarmFlags").toString()); /* 15 items */
+
+    ResultStr.append(query.value("TimePlus").toString());
+    ResultStr.append(query.value("TimeMinus").toString());
+    ResultStr.append(query.value("PowerPlus").toString());
+    ResultStr.append(query.value("PowerMinus").toString());
+    ResultStr.append(query.value("PreheightPlus").toString());
+    ResultStr.append(query.value("PreheightMinus").toString());
+    ResultStr.append(query.value("HeightPlus").toString());
+    ResultStr.append(query.value("HeightMinus").toString());
+    ResultStr.append(query.value("ForcePlus").toString());
+    ResultStr.append(query.value("ForceMinus").toString());  /* 10 items */
+
+    ResultStr.append(query.value("WeldMode").toString());
+    ResultStr.append(query.value("StepWeldMode").toString());
+    ResultStr.append(query.value("EnergyToStep").toString());
+    ResultStr.append(query.value("TimeToStep").toString());
+    ResultStr.append(query.value("PowerToStep").toString());
+    ResultStr.append(query.value("Amplitude2").toString());
+    ResultStr.append(query.value("PreBurst").toString());
+    ResultStr.append(query.value("HoldTime").toString());
+    ResultStr.append(query.value("SqueezeTime").toString());
+    ResultStr.append(query.value("AfterBurstDelay").toString());
+    ResultStr.append(query.value("AfterBurstDuring").toString()); /* 11 items */
+
     ResultStr.append(query.value("SampleRatio").toString());
     ResultStr.append(query.value("NoOfSamples").toString());
     ResultStr.append(query.value("CurrentGraphDirectory").toString());
@@ -533,7 +706,8 @@ bool DBWeldResultTable::UpdateRecordIntoTable(void *_obj)
     query.addBindValue(((WeldResultElement*)_obj)->CurrentSequence.SequenceName);
     query.addBindValue(((WeldResultElement*)_obj)->CurrentSplice.PartID);
     query.addBindValue(((WeldResultElement*)_obj)->CurrentSplice.PartName);
-    query.addBindValue(((WeldResultElement*)_obj)->CurrentSplice.PartHash);
+    query.addBindValue(((WeldResultElement*)_obj)->CurrentSplice.PartHash); /* 11 items */
+    query.addBindValue(((WeldResultElement*)_obj)->CrossSection);
     query.addBindValue(((WeldResultElement*)_obj)->WeldCount);
     query.addBindValue(((WeldResultElement*)_obj)->PartCount);
     query.addBindValue(((WeldResultElement*)_obj)->OperateMode);
@@ -547,7 +721,31 @@ bool DBWeldResultTable::UpdateRecordIntoTable(void *_obj)
     query.addBindValue(((WeldResultElement*)_obj)->ActualResult.ActualPeakPower);
     query.addBindValue(((WeldResultElement*)_obj)->ActualResult.ActualPreheight);
     query.addBindValue(((WeldResultElement*)_obj)->ActualResult.ActualPostheight);
-    query.addBindValue(((WeldResultElement*)_obj)->ActualResult.ActualAlarmflags);
+    query.addBindValue(((WeldResultElement*)_obj)->ActualResult.ActualAlarmflags); /* 14 items */
+
+    query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Time.Plus);
+    query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Time.Minus);
+    query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Power.Plus);
+    query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Power.Minus);
+    query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Preheight.Plus);
+    query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Preheight.Minus);
+    query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Height.Plus);
+    query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Height.Minus);
+    query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Force.Plus);
+    query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Force.Minus); /* 10 items */
+
+    query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.WeldMode);
+    query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.StepWeld.StepWeldMode);
+    query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.StepWeld.EnergyToStep);
+    query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.StepWeld.TimeToStep);
+    query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.StepWeld.PowerToStep);
+    query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.StepWeld.Amplitude2);
+    query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.PreBurst);
+    query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.HoldTime);
+    query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.SqzTime);
+    query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.ABDelay);
+    query.addBindValue(((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.ABDur); /* 11 items */
+
     query.addBindValue(((WeldResultElement*)_obj)->SampleRatio);
     query.addBindValue(((WeldResultElement*)_obj)->PowerGraph.size()); //NoOfSamples
     UtilityClass *_Utility = UtilityClass::Instance();
@@ -1046,6 +1244,7 @@ bool DBWeldResultTable::QueryOneRecordWithGraph(int ID, QString OperatorName, vo
             = query.value("SpliceName").toString();
     ((WeldResultElement*)_obj)->CurrentSplice.PartHash
             = query.value("SpliceHash").toInt();
+    ((WeldResultElement*)_obj)->CrossSection = query.value("CrossSection").toInt();
     ((WeldResultElement*)_obj)->WeldCount = query.value("WeldCount").toInt();
     ((WeldResultElement*)_obj)->PartCount = query.value("PartCount").toInt();
     ((WeldResultElement*)_obj)->OperateMode = query.value("OperateMode").toString();
@@ -1071,6 +1270,51 @@ bool DBWeldResultTable::QueryOneRecordWithGraph(int ID, QString OperatorName, vo
             = query.value("ActualPostHeight").toInt();
     ((WeldResultElement*)_obj)->ActualResult.ActualAlarmflags
             = query.value("ActualAlarmFlags").toInt();
+
+    ((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Time.Plus
+            = query.value("TimePlus").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Time.Minus
+            = query.value("TimeMinus").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Power.Plus
+            = query.value("PowerPlus").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Power.Minus
+            = query.value("PowerMinus").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Preheight.Plus
+            = query.value("PreheightPlus").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Preheight.Minus
+            = query.value("PreheightMinus").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Height.Plus
+            = query.value("HeightPlus").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Height.Minus
+            = query.value("HeightMinus").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Force.Plus
+            = query.value("ForcePlus").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Force.Minus
+            = query.value("ForceMinus").toInt(); /* 10 items */
+
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.WeldMode
+            = (ADVANCESETTING::WELDMODE)query.value("WeldMode").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.StepWeld.StepWeldMode
+            = (STEPWELD::STEPWELDMODE)query.value("StepWeldMode").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.StepWeld.EnergyToStep
+            = query.value("EnergyToStep").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.StepWeld.TimeToStep
+            = query.value("TimeToStep").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.StepWeld.PowerToStep
+            = query.value("PowerToStep").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.StepWeld.Amplitude2
+            = query.value("Amplitude2").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.PreBurst
+            = query.value("PreBurst").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.HoldTime
+            = query.value("HoldTime").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.SqzTime
+            = query.value("SqueezeTime").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.ABDelay
+            = query.value("AfterBurstDelay").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.ABDur
+            = query.value("AfterBurstDuring").toInt(); /* 11 items */
+
     ((WeldResultElement*)_obj)->SampleRatio
             = (WeldResultElement::SAMPLERATIO)query.value("SampleRatio").toInt();
     QString sPathName = query.value("CurrentGraphDirectory").toString();
@@ -1140,6 +1384,7 @@ bool DBWeldResultTable::QueryOneRecordWithGraph(int ID, void *_obj)
             = query.value("SpliceName").toString();
     ((WeldResultElement*)_obj)->CurrentSplice.PartHash
             = query.value("SpliceHash").toInt();
+    ((WeldResultElement*)_obj)->CrossSection = query.value("CrossSection").toInt();
     ((WeldResultElement*)_obj)->WeldCount = query.value("WeldCount").toInt();
     ((WeldResultElement*)_obj)->PartCount = query.value("PartCount").toInt();
     ((WeldResultElement*)_obj)->OperateMode = query.value("OperateMode").toString();
@@ -1165,6 +1410,51 @@ bool DBWeldResultTable::QueryOneRecordWithGraph(int ID, void *_obj)
             = query.value("ActualPostHeight").toInt();
     ((WeldResultElement*)_obj)->ActualResult.ActualAlarmflags
             = query.value("ActualAlarmFlags").toInt();
+
+    ((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Time.Plus
+            = query.value("TimePlus").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Time.Minus
+            = query.value("TimeMinus").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Power.Plus
+            = query.value("PowerPlus").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Power.Minus
+            = query.value("PowerMinus").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Preheight.Plus
+            = query.value("PreheightPlus").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Preheight.Minus
+            = query.value("PreheightMinus").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Height.Plus
+            = query.value("HeightPlus").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Height.Minus
+            = query.value("HeightMinus").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Force.Plus
+            = query.value("ForcePlus").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.QualitySetting.Force.Minus
+            = query.value("ForceMinus").toInt(); /* 10 items */
+
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.WeldMode
+            = (ADVANCESETTING::WELDMODE)query.value("WeldMode").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.StepWeld.StepWeldMode
+            = (STEPWELD::STEPWELDMODE)query.value("StepWeldMode").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.StepWeld.EnergyToStep
+            = query.value("EnergyToStep").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.StepWeld.TimeToStep
+            = query.value("TimeToStep").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.StepWeld.PowerToStep
+            = query.value("PowerToStep").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.StepWeld.Amplitude2
+            = query.value("Amplitude2").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.PreBurst
+            = query.value("PreBurst").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.HoldTime
+            = query.value("HoldTime").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.SqzTime
+            = query.value("SqueezeTime").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.ABDelay
+            = query.value("AfterBurstDelay").toInt();
+    ((WeldResultElement*)_obj)->WeldSettings.AdvanceSetting.ABDur
+            = query.value("AfterBurstDuring").toInt(); /* 11 items */
+
     ((WeldResultElement*)_obj)->SampleRatio
             = (WeldResultElement::SAMPLERATIO)query.value("SampleRatio").toInt();
     QString sPathName = query.value("CurrentGraphDirectory").toString();

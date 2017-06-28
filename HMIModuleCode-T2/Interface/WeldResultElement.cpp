@@ -14,6 +14,7 @@ WeldResultElement::WeldResultElement()
     CurrentSequence.SequenceName.clear();
     CurrentSplice.PartID = -1;
     CurrentSplice.PartName.clear();
+    CrossSection = -1;
     WeldCount = -1;
     PartCount = -1;
     OperateMode.clear();
@@ -57,6 +58,8 @@ WeldResultElement WeldResultElement::operator=(const WeldResultElement &WeldResu
     this->CurrentSequence.SequenceName = WeldResultObject.CurrentSequence.SequenceName;
     this->CurrentSplice.PartID = WeldResultObject.CurrentSplice.PartID;
     this->CurrentSplice.PartName = WeldResultObject.CurrentSplice.PartName;
+    this->CrossSection = WeldResultObject.CrossSection;
+
     this->WeldCount = WeldResultObject.WeldCount;
     this->PartCount = WeldResultObject.PartCount;
     this->OperateMode = WeldResultObject.OperateMode;
@@ -72,6 +75,8 @@ WeldResultElement WeldResultElement::operator=(const WeldResultElement &WeldResu
     this->ActualResult.ActualTime = WeldResultObject.ActualResult.ActualTime;
     this->ActualResult.ActualTPressure = WeldResultObject.ActualResult.ActualTPressure;
     this->ActualResult.ActualWidth = WeldResultObject.ActualResult.ActualWidth;
+    this->WeldSettings =  WeldResultObject.WeldSettings;
+
     this->SampleRatio = WeldResultObject.SampleRatio;
 
     this->PowerGraph = WeldResultObject.PowerGraph;

@@ -37,7 +37,7 @@ struct Qual
    int Minus;
 };
 
-struct STEPWELD
+class STEPWELD
 {
 public:
     enum STEPWELDMODE
@@ -47,7 +47,8 @@ public:
         STEPPOWER,
         STEPDISABLE,
     };
-    enum STEPWELDMODE StepWeldMode;
+public:
+    STEPWELDMODE StepWeldMode;
     int EnergyToStep;         //
     int TimeToStep;           //
     int PowerToStep;          //
@@ -209,11 +210,94 @@ public:
     bool TestingDone;
 };
 
-struct WELDSETTING
+class WELDSETTING
 {
-    struct BASICWELDSETTING BasicSetting;
-    struct QUALITYWINDONSETTING QualitySetting;
+public:
+    BASICWELDSETTING BasicSetting;
+    QUALITYWINDONSETTING QualitySetting;
     ADVANCESETTING AdvanceSetting;
+public:
+    WELDSETTING &operator= (const WELDSETTING &WeldSettingObj)
+    {
+        if(this == &WeldSettingObj)
+            return *this;
+        this->BasicSetting.Amplitude = WeldSettingObj.BasicSetting.Amplitude;
+        this->BasicSetting.Energy = WeldSettingObj.BasicSetting.Energy;
+        this->BasicSetting.Pressure = WeldSettingObj.BasicSetting.Pressure;
+        this->BasicSetting.TrigPres = WeldSettingObj.BasicSetting.TrigPres;
+        this->BasicSetting.Width = WeldSettingObj.BasicSetting.Width;
+
+        this->QualitySetting.Force.Minus = WeldSettingObj.QualitySetting.Force.Minus;
+        this->QualitySetting.Force.Plus = WeldSettingObj.QualitySetting.Force.Plus;
+
+        this->QualitySetting.Height.Minus = WeldSettingObj.QualitySetting.Height.Minus;
+        this->QualitySetting.Height.Plus = WeldSettingObj.QualitySetting.Height.Plus;
+
+        this->QualitySetting.Power.Minus = WeldSettingObj.QualitySetting.Power.Minus;
+        this->QualitySetting.Power.Plus = WeldSettingObj.QualitySetting.Power.Plus;
+
+        this->QualitySetting.Preheight.Minus = WeldSettingObj.QualitySetting.Preheight.Minus;
+        this->QualitySetting.Preheight.Plus = WeldSettingObj.QualitySetting.Preheight.Plus;
+
+        this->QualitySetting.Time.Minus = WeldSettingObj.QualitySetting.Time.Minus;
+        this->QualitySetting.Time.Plus = WeldSettingObj.QualitySetting.Time.Plus;
+
+        this->AdvanceSetting.ABDelay = WeldSettingObj.AdvanceSetting.ABDelay;
+        this->AdvanceSetting.ABDur = WeldSettingObj.AdvanceSetting.ABDur;
+
+        this->AdvanceSetting.AntiSideOption.AntiSideMode =
+                WeldSettingObj.AdvanceSetting.AntiSideOption.AntiSideMode;
+        this->AdvanceSetting.AntiSideOption.AntiSideSpliceTime =
+                WeldSettingObj.AdvanceSetting.AntiSideOption.AntiSideSpliceTime;
+
+        this->AdvanceSetting.CutOffOption.CutOff = WeldSettingObj.AdvanceSetting.CutOffOption.CutOff;
+        this->AdvanceSetting.CutOffOption.CutOffSpliceTime =
+                WeldSettingObj.AdvanceSetting.CutOffOption.CutOffSpliceTime;
+        this->AdvanceSetting.CutOffOption.Cutter4HeightAlarm =
+                WeldSettingObj.AdvanceSetting.CutOffOption.Cutter4HeightAlarm;
+        this->AdvanceSetting.CutOffOption.Cutter4PowerAlarm =
+                WeldSettingObj.AdvanceSetting.CutOffOption.Cutter4PowerAlarm;
+        this->AdvanceSetting.CutOffOption.Cutter4PreHeightAlarm =
+                WeldSettingObj.AdvanceSetting.CutOffOption.Cutter4PreHeightAlarm;
+        this->AdvanceSetting.CutOffOption.Cutter4TimeAlarm =
+                WeldSettingObj.AdvanceSetting.CutOffOption.Cutter4TimeAlarm;
+        this->AdvanceSetting.HoldTime = WeldSettingObj.AdvanceSetting.HoldTime;
+        this->AdvanceSetting.OffsetOption.DisplayHeight =
+                WeldSettingObj.AdvanceSetting.OffsetOption.DisplayHeight;
+        this->AdvanceSetting.OffsetOption.DisplayWidth =
+                WeldSettingObj.AdvanceSetting.OffsetOption.DisplayWidth;
+        this->AdvanceSetting.OffsetOption.MeasuredHeight =
+                WeldSettingObj.AdvanceSetting.OffsetOption.MeasuredHeight;
+        this->AdvanceSetting.OffsetOption.MeasuredWidth =
+                WeldSettingObj.AdvanceSetting.OffsetOption.MeasuredWidth;
+        this->AdvanceSetting.PreBurst = WeldSettingObj.AdvanceSetting.PreBurst;
+        this->AdvanceSetting.ShrinkTube.ShrinkMutex =
+                WeldSettingObj.AdvanceSetting.ShrinkTube.ShrinkMutex;
+        this->AdvanceSetting.ShrinkTube.ShrinkOption =
+                WeldSettingObj.AdvanceSetting.ShrinkTube.ShrinkOption;
+        this->AdvanceSetting.ShrinkTube.ShrinkTemperature =
+                WeldSettingObj.AdvanceSetting.ShrinkTube.ShrinkTemperature;
+        this->AdvanceSetting.ShrinkTube.ShrinkTime =
+                WeldSettingObj.AdvanceSetting.ShrinkTube.ShrinkTime;
+        this->AdvanceSetting.ShrinkTube.ShrinkTubeID =
+                WeldSettingObj.AdvanceSetting.ShrinkTube.ShrinkTubeID;
+
+        this->AdvanceSetting.SqzTime = WeldSettingObj.AdvanceSetting.SqzTime;
+        this->AdvanceSetting.StepWeld.StepWeldMode =
+                WeldSettingObj.AdvanceSetting.StepWeld.StepWeldMode;
+        this->AdvanceSetting.StepWeld.Amplitude2 =
+                WeldSettingObj.AdvanceSetting.StepWeld.Amplitude2;
+        this->AdvanceSetting.StepWeld.EnergyToStep =
+                WeldSettingObj.AdvanceSetting.StepWeld.EnergyToStep;
+        this->AdvanceSetting.StepWeld.PowerToStep =
+                WeldSettingObj.AdvanceSetting.StepWeld.PowerToStep;
+        this->AdvanceSetting.StepWeld.TimeToStep =
+                WeldSettingObj.AdvanceSetting.StepWeld.TimeToStep;
+        this->AdvanceSetting.WeldMode = WeldSettingObj.AdvanceSetting.WeldMode;
+
+        return *this;
+    }
+
 };
 
 //Part Structure

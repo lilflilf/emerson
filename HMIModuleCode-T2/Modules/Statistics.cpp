@@ -302,7 +302,7 @@ QString Statistics::GraphData(enum ScreenShowDataType DataType, QList<int> *_Gra
 //Create a tab deliminated file for loading into an Excel worksheet
 //It stores all the Actual data regarding a Preset in the .tsv file during welding.
 //Also Displays Amplitude2 along with Amplitude1 if Amplitude Step is enabled
-QString Statistics::HistoryEvent(WeldResultElement *_WeldResult, PresetElement *_Splice)
+QString Statistics::HistoryEvent(WeldResultElement *_WeldResult)
 {
     InterfaceClass *_Interface = InterfaceClass::Instance();
     UtilityClass *_Utility = UtilityClass::Instance();
@@ -364,7 +364,7 @@ QString Statistics::HistoryEvent(WeldResultElement *_WeldResult, PresetElement *
 
     QString SequenceName = _WeldResult->CurrentSequence.SequenceName;
     QString HarnessName = _WeldResult->CurrentHarness.HarnessName;
-    sEvent += "\t" + SequenceName + "\t" + HarnessName + "\t" + _Splice->SpliceName;
+    sEvent += "\t" + SequenceName + "\t" + HarnessName + "\t" + _WeldResult->CurrentSplice.PartName;
     sEvent += "\t\t" + _Utility->FormatedDataToString(DINEnergy,
             _WeldResult->ActualResult.ActualEnergy);
     if(_M2010->Machine != Welder)
@@ -374,28 +374,28 @@ QString Statistics::HistoryEvent(WeldResultElement *_WeldResult, PresetElement *
             _WeldResult->ActualResult.ActualTPressure);
     sEvent += "\t" + _Utility->FormatedDataToString(DINPressure,
             _WeldResult->ActualResult.ActualPressure);
-    if(_Splice->WeldSettings.AdvanceSetting.StepWeld.StepWeldMode != STEPWELD::STEPDISABLE)
+    if(_WeldResult->WeldSettings.AdvanceSetting.StepWeld.StepWeldMode != STEPWELD::STEPDISABLE)
         sEvent += "\t" + _Utility->FormatedDataToString(DINAmplitude, _WeldResult->ActualResult.ActualAmplitude) +
                 "/" + _Utility->FormatedDataToString(DINAmplitude2, _WeldResult->ActualResult.ActualAmplitude2);
     else
         sEvent += "\t" + _Utility->FormatedDataToString(DINAmplitude,
                 _WeldResult->ActualResult.ActualAmplitude);
     sEvent += "\t\t" + _Utility->FormatedDataToString(DINTimePl,
-            _Splice->WeldSettings.QualitySetting.Time.Plus);
+            _WeldResult->WeldSettings.QualitySetting.Time.Plus);
     sEvent += "\t" + _Utility->FormatedDataToString(DINTimeMs,
-            _Splice->WeldSettings.QualitySetting.Time.Minus);
+            _WeldResult->WeldSettings.QualitySetting.Time.Minus);
     sEvent += "\t" + _Utility->FormatedDataToString(DINPowerPl,
-            _Splice->WeldSettings.QualitySetting.Power.Plus);
+            _WeldResult->WeldSettings.QualitySetting.Power.Plus);
     sEvent += "\t" + _Utility->FormatedDataToString(DINPowerMs,
-            _Splice->WeldSettings.QualitySetting.Power.Minus);
+            _WeldResult->WeldSettings.QualitySetting.Power.Minus);
     sEvent += "\t" + _Utility->FormatedDataToString(DINPre_HgtPl,
-            _Splice->WeldSettings.QualitySetting.Preheight.Plus);
+            _WeldResult->WeldSettings.QualitySetting.Preheight.Plus);
     sEvent += "\t" + _Utility->FormatedDataToString(DINPre_HgtMs,
-            _Splice->WeldSettings.QualitySetting.Preheight.Minus);
+            _WeldResult->WeldSettings.QualitySetting.Preheight.Minus);
     sEvent += "\t" + _Utility->FormatedDataToString(DINHeightPl,
-            _Splice->WeldSettings.QualitySetting.Height.Plus);
+            _WeldResult->WeldSettings.QualitySetting.Height.Plus);
     sEvent += "\t" + _Utility->FormatedDataToString(DINHeightMs,
-            _Splice->WeldSettings.QualitySetting.Height.Minus);
+            _WeldResult->WeldSettings.QualitySetting.Height.Minus);
 
     sEvent += "\t\t" + _Utility->FormatedDataToString(DINActTime,
             _WeldResult->ActualResult.ActualTime);
