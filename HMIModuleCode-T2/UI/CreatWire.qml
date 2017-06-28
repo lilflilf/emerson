@@ -42,6 +42,7 @@ Item {
         "#3F48CC","#A349A4","#ffffff","#c3c3c3","#b97a57","#ffaec9","#ffc90e","#efe4b0","#b5e61d","#99d9ea","#7092be","#c8bfe7"]
 
     Component.onCompleted: {
+        currentCycle.visible = false
         if (mainRoot.bIsEditSplice)
         {
             bIsEditSplice = true
@@ -56,14 +57,25 @@ Item {
             countDown.start()
             currentCount = 0
             if (mainRoot.headTitle == "TeachMode-Standard")
+            {
                 sampleSize = spliceModel.getTeachModeValue("TestStandardQty","current")
+                currentCycle.text = qsTr("Current Cycle: ") + currentCount + " / " + qsTr("Sample Size: ") + sampleSize
+                currentCycle.visible = true
+            }
             else if (mainRoot.headTitle == "TeachMode-Auto")
+            {
                 sampleSize = spliceModel.getTeachModeValue("TestAutoQty","current")
+                currentCycle.text = qsTr("Current Cycle: ") + currentCount + " / " + qsTr("Sample Size: ") + sampleSize
+                currentCycle.visible = true
+            }
             else if (mainRoot.headTitle == "TeachMode-Sigma")
+            {
                 sampleSize = spliceModel.getTeachModeValue("TestSigmaQty","current")
-
-            currentCycle.text = currentCount + "/" + sampleSize
-
+                currentCycle.text = qsTr("Current Cycle: ") + currentCount + " / " + qsTr("Sample Size: ") + sampleSize
+                currentCycle.visible = true
+            }
+            else
+                currentCycle.visible = false
         }
         firstComeIn = false
 
@@ -72,7 +84,7 @@ Item {
         target: hmiAdaptor
         onSignalWeldCycleCompleted: {
             currentCount++
-            currentCycle.text = currentCount + "/" + sampleSize
+            currentCycle.text = qsTr("Current Cycle: ") + currentCount + " / " + qsTr("Sample Size: ") + sampleSize
             if (currentCount == sampleSize)
             {
                 cdialog.visible = true
@@ -2996,7 +3008,7 @@ Item {
             if (!reb)
             {
                 currentCount = 0
-                currentCycle.text = currentCount + "/" + sampleSize
+                currentCycle.text = qsTr("Current Cycle: ") + currentCount + " / " + qsTr("Sample Size: ") + sampleSize
             }
             else
             {

@@ -93,7 +93,7 @@ Item {
             font.pixelSize: 25
             clip: true
             font.family: "arial"
-            text: qsTr("#Of Steps")
+            text: qsTr("# of Steps")
         }
         Text {
             id: modeName
@@ -103,7 +103,7 @@ Item {
             font.pixelSize: 25
             clip: true
             font.family: "arial"
-            text: qsTr("Splice Qty in total")
+            text: qsTr("Splice Quantity in Total")
         }
     }
     Rectangle {
