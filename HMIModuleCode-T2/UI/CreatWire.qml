@@ -34,6 +34,8 @@ Item {
     property bool bIsStep: false
     property bool bIsEditSplice: false
     property string stepSetText: ""
+    property var currentCount: 0
+    property var sampleSize: 0
     signal signalSaveSplice(var spliceId,var bIsEdit)
 
     property variant colorArray: ["#000000","#7f7f7f","#880015","#ED1C24","#FF7F27","#FFF200","#22B14C","#00A2E8",
@@ -52,9 +54,30 @@ Item {
         if (mainRoot.bIsTest)
         {
             countDown.start()
+            currentCount = 0
+            if (mainRoot.headTitle == "TeachMode-Standard")
+                sampleSize = spliceModel.getTeachModeValue("TestStandardQty","current")
+            else if (mainRoot.headTitle == "TeachMode-Auto")
+                sampleSize = spliceModel.getTeachModeValue("TestAutoQty","current")
+            else if (mainRoot.headTitle == "TeachMode-Sigma")
+                sampleSize = spliceModel.getTeachModeValue("TestSigmaQty","current")
+
+            currentCycle.text = currentCount + "/" + sampleSize
+
         }
         firstComeIn = false
 
+    }
+    Connections {
+        target: hmiAdaptor
+        onSignalWeldCycleCompleted: {
+            currentCount++
+            currentCycle.text = currentCount + "/" + sampleSize
+            if (currentCount == sampleSize)
+            {
+                cdialog.visible = true
+            }
+        }
     }
 
     Component.onDestruction: {
@@ -1566,6 +1589,7 @@ Item {
                 }
             }
         }
+
         Text {
             id: insulation
             anchors.top: spliceDetails.bottom
@@ -1575,6 +1599,18 @@ Item {
             font.family: "arial"
             color: "white"
             opacity: 0.5
+        }
+
+        Text {
+            id: currentCycle
+            anchors.bottom: wireSwitch.top
+            anchors.bottomMargin: 10
+            anchors.right: parent.right
+            anchors.rightMargin: 20
+            color: "white"
+            font.pointSize: 16
+            font.family: "arial"
+            text: qsTr("text") + "/" + spliceModel.getTeachModeValue("TestStandardQty","current")
         }
 
         Switch2 {
@@ -1686,6 +1722,8 @@ Item {
                 text: qsTr("Cancel")
                 onClicked: {
                     mainRoot.popStackView()
+                    mainRoot.headTitle = qsTr("Operate")
+
                 }
             }
         }
@@ -2943,6 +2981,30 @@ Item {
         width: Screen.width * 0.43
         height: Screen.height * 0.5
         anchors.centerIn: parent
+    }
+
+    CDialog {
+        id: cdialog
+        anchors.centerIn: parent
+        okvisible: true
+        okText: "OK"
+        cancelvisible: true
+        cancelText: "CANCEL"
+        centerText: "Finished Samples!\nSave the data and start to operate"
+        visible: false
+        onCliceTo: {
+            if (!reb)
+            {
+                currentCount = 0
+                currentCycle.text = currentCount + "/" + sampleSize
+            }
+            else
+            {
+                //do some save
+                mainRoot.popStackView()
+                mainRoot.headTitle = qsTr("Operate")
+            }
+        }
     }
 
 //    Rectangle {

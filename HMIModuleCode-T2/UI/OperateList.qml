@@ -24,7 +24,9 @@ Item {
         }
         else if (mainRoot.headTitle == "Operate Harness"){
             listView.model = partModel
-            nameText.text = qsTr("HARNESS NAME")
+            nameText.text = qsTr("Harness Name")
+            stepName.text = qsTr("#Of Splice")
+            modeName.text = qsTr("Process Mode")
         }
     }
     Text {
@@ -72,7 +74,7 @@ Item {
             font.pixelSize: 25
             clip: true
             font.family: "arial"
-            text: qsTr("SEQUENCE NAME")
+            text: qsTr("Sequence Name")
         }
         Text {
             anchors.verticalCenter: parent.verticalCenter
@@ -81,25 +83,27 @@ Item {
             font.pixelSize: 25
             clip: true
             font.family: "arial"
-            text: qsTr("DATE CREATED")
+            text: qsTr("Date Created")
         }
         Text {
+            id: stepName
             anchors.verticalCenter: parent.verticalCenter
             color: "white"
             width: (parent.width-120)/4
             font.pixelSize: 25
             clip: true
             font.family: "arial"
-            text: qsTr("#OF STEPS")
+            text: qsTr("#Of Steps")
         }
         Text {
+            id: modeName
             anchors.verticalCenter: parent.verticalCenter
             color: "white"
             width: (parent.width-120)/4
             font.pixelSize: 25
             clip: true
             font.family: "arial"
-            text: qsTr("QUANTITY")
+            text: qsTr("Splice Qty in total")
         }
     }
     Rectangle {
@@ -241,7 +245,7 @@ Item {
                 anchors.left: headMiddle.right
                 anchors.leftMargin: 40
                 width: (parent.width-120)/4
-                text: listView.model == sequenceModel ? QUANTITY : ""
+                text: listView.model == sequenceModel ? QUANTITY : ProcessMode
                 elide: Text.ElideRight
                 color: "white"
                 clip: true

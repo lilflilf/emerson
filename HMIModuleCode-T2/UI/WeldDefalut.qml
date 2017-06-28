@@ -842,7 +842,7 @@ Item {
             anchors.topMargin: 20
             anchors.left: cutterText.left
             width: 350
-            height: parent.height*0.46+30
+            height: parent.height*0.46
             clip: true
             spacing: 10
             visible: cutteronoroff.state == "left" ? true : false
@@ -884,7 +884,7 @@ Item {
 
         Text {
             id: lockOnAlarmName
-            anchors.top: cutterColumn.bottom
+            anchors.top: cutterColumn.visible ? cutterColumn.bottom : loadName2.bottom
             anchors.topMargin: 10
             anchors.left: cutterColumn.left
 //                verticalAlignment: Qt.AlignVCenter
