@@ -59,19 +59,25 @@ Item {
             if (mainRoot.headTitle == "TeachMode-Standard")
             {
                 sampleSize = spliceModel.getTeachModeValue("TestStandardQty","current")
-                currentCycle.text = qsTr("Current Cycle: ") + currentCount + " / " + qsTr("Sample Size: ") + sampleSize
+//                currentCycle.text = qsTr("Current / Sample: ") + currentCount + " / " + sampleSize
+                currentCycle.text = currentCount + " / " + sampleSize
+
                 currentCycle.visible = true
             }
             else if (mainRoot.headTitle == "TeachMode-Auto")
             {
                 sampleSize = spliceModel.getTeachModeValue("TestAutoQty","current")
-                currentCycle.text = qsTr("Current Cycle: ") + currentCount + " / " + qsTr("Sample Size: ") + sampleSize
+//                currentCycle.text = qsTr("Current Cycle: ") + currentCount + " / " + qsTr("Sample Size: ") + sampleSize
+                currentCycle.text = currentCount + " / " + sampleSize
+
                 currentCycle.visible = true
             }
             else if (mainRoot.headTitle == "TeachMode-Sigma")
             {
                 sampleSize = spliceModel.getTeachModeValue("TestSigmaQty","current")
-                currentCycle.text = qsTr("Current Cycle: ") + currentCount + " / " + qsTr("Sample Size: ") + sampleSize
+//                currentCycle.text = qsTr("Current Cycle: ") + currentCount + " / " + qsTr("Sample Size: ") + sampleSize
+                currentCycle.text = currentCount + " / " + sampleSize
+
                 currentCycle.visible = true
             }
             else
@@ -1614,15 +1620,72 @@ Item {
         }
 
         Text {
-            id: currentCycle
+            id: currentCycleTips2
             anchors.bottom: wireSwitch.top
             anchors.bottomMargin: 10
+            anchors.right: currentCycleTips.left
+            anchors.rightMargin: 20
+            color: "white"
+            font.pointSize: 16
+            font.family: "arial"
+            horizontalAlignment: Qt.AlignHCenter
+            text: qsTr("Current\ncycle")
+            visible: currentCycle.visible
+
+        }
+        Text {
+            anchors.bottom: wireSwitch.top
+//            anchors.bottomMargin: 10
+            anchors.right: currentCycleTips.left
+            anchors.rightMargin: 5
+            color: "white"
+            font.pointSize: 40
+            font.family: "arial"
+            horizontalAlignment: Qt.AlignHCenter
+            text: qsTr("/")
+            visible: currentCycle.visible
+
+        }
+
+        Text {
+            id: currentCycleTips
+            anchors.bottom: wireSwitch.top
+            anchors.bottomMargin: 10
+            anchors.right: currentCycle.left
+            anchors.rightMargin: 20
+            color: "white"
+            font.pointSize: 16
+            font.family: "arial"
+            horizontalAlignment: Qt.AlignHCenter
+            text: qsTr("Simple\nsize")
+            visible: currentCycle.visible
+        }
+
+        Text {
+            anchors.bottom: wireSwitch.top
+            anchors.bottomMargin: 20
+            anchors.right: currentCycle.left
+            anchors.rightMargin: 5
+            color: "white"
+            font.pointSize: 20
+            font.family: "arial"
+            horizontalAlignment: Qt.AlignHCenter
+            text: qsTr(":")
+            visible: currentCycle.visible
+
+        }
+
+        Text {
+            id: currentCycle
+            anchors.bottom: wireSwitch.top
+            anchors.bottomMargin: 20
             anchors.right: parent.right
             anchors.rightMargin: 20
             color: "white"
             font.pointSize: 16
             font.family: "arial"
             text: qsTr("text") + "/" + spliceModel.getTeachModeValue("TestStandardQty","current")
+            anchors.verticalCenter: currentCycleTips.horizontalCenter
         }
 
         Switch2 {
@@ -3008,7 +3071,9 @@ Item {
             if (!reb)
             {
                 currentCount = 0
-                currentCycle.text = qsTr("Current Cycle: ") + currentCount + " / " + qsTr("Sample Size: ") + sampleSize
+//                currentCycle.text = qsTr("Current Cycle: ") + currentCount + " / " + qsTr("Sample Size: ") + sampleSize
+                currentCycle.text = currentCount + " / " + sampleSize
+
             }
             else
             {
