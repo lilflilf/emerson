@@ -49,6 +49,7 @@ Window {
     {
         headBar.titleText = myTitleText
     }
+
     function checkAllInterface(index)
     {
         if (index == 20) {
@@ -61,6 +62,7 @@ Window {
             checkNeedPassWd(index)
         }
     }
+
     function popStackView()
     {
         var last = stackview.depth
