@@ -11,7 +11,7 @@ Item {
     Connections {
         target: hmiAdaptor
         onSignalPhysicalKeyMessage: {
-            title4.text = qsTr("Scan or Enter ID(Please insert physicalkey)")
+            title4.text = qsTr("Scan or Enter ID(Please insert physical key)")
             itemChange.start()
         }
     }

@@ -1166,7 +1166,7 @@ bool HmiAdaptor::weldDefaultsGetSwitch(QString index)
         else if (weldDefaults->CurrentWeldSettings.CurrentCoolingMode == Status_Data::ON)
             reb = true;
     }
-    else if (index == "cooling(1sec/100J)") {
+    else if (index == "Cooling(1sec/100J)") {
         if (weldDefaults->CurrentWeldSettings.CurrentCoolingMode == Status_Data::ENERGYMODE)
             reb = true;
         else if (weldDefaults->CurrentWeldSettings.CurrentCoolingMode == Status_Data::OFF)
@@ -2518,7 +2518,7 @@ void HmiAdaptor::setLanguage(int row, int column)
             (BRANSON_INI_STRUCT::LangSupport) (row * 7 + column);
     interfaceClass->StatusData.WriteStatusDataToQSetting();
     BransonMessageBox tmpMsgBox;
-    tmpMsgBox.MsgPrompt = QObject::tr("All the setting will be avaliable after the system restart.");
+    tmpMsgBox.MsgPrompt = QObject::tr("All the setting will be available after the system restart.");
     tmpMsgBox.MsgTitle = QObject::tr("Information");
     tmpMsgBox.TipsMode = (OKOnly + Information);
     tmpMsgBox.OKfunc_ptr = InterfaceClass::HotRestartSys;

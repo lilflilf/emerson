@@ -144,8 +144,8 @@ enum ActualIndexer{      //Indexes for Labels on Setup Screen
 
 #define VERSION_NUM_FILE "VersionNum.ini"
 #define AWG2MM_TABLE_FILE "AWG2AreaTable.ini"
-#define TESTVERSION       QObject::tr("-T5")
-#define DESCRIPTION       QObject::tr("TEST VERSION")
+#define TESTVERSION       "-T5"
+#define DESCRIPTION       "TEST VERSION"
 
 //Administrator option flags
 #define ADMINOButton         0x01

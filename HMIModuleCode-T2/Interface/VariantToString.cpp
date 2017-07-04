@@ -562,19 +562,19 @@ QString VariantToString::SampleRatioToString(WeldResultElement::SAMPLERATIO rati
     switch(ratio)
     {
     case WeldResultElement::SampleWith1ms:
-        str = QObject::tr("1ms");
+        str = "1ms";
         break;
     case WeldResultElement::SampleWith5ms:
-        str = QObject::tr("5ms");
+        str = "5ms";
         break;
     case WeldResultElement::SampleWith10ms:
-        str = QObject::tr("10ms");
+        str = "10ms";
         break;
     case WeldResultElement::SampleWith20ms:
-        str = QObject::tr("20ms");
+        str = "20ms";
         break;
     default:
-        str = QObject::tr("1ms");
+        str = "1ms";
         break;
     }
     return str;
@@ -773,7 +773,7 @@ QString VariantToString::AlarmLevelToString(QString AlarmType)
         str = QObject::tr("Mid-level");
     else if(AlarmType == QObject::tr("Gather energy 80% alarm"))
         str = QObject::tr("Mid-level");
-    else if(AlarmType == QObject::tr("Guide energy 80% alarmm"))
+    else if(AlarmType == QObject::tr("Guide energy 80% alarm"))
         str = QObject::tr("Mid-level");
 
     else if(AlarmType == QObject::tr("Overload"))

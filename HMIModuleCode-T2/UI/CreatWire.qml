@@ -881,7 +881,7 @@ Item {
                     anchors.left: parent.left
                     anchors.leftMargin: width + 10
                     textLeft: qsTr("Basic")
-                    textRight: qsTr("Adv")
+                    textRight: qsTr("Adv.")
                     state: "left"
                     opacity: 0.8
                     onOnChanged: {
@@ -2105,7 +2105,7 @@ Item {
             ListModel {
                 id: weldSettingModel
                 Component.onCompleted: {
-                    weldSettingModel.append({"headText":qsTr("Pre Burst:"),"textValue":spliceModel.getStructValue("Pre Burst","current"),"maxText":spliceModel.getStructValue("Pre Burst","max"),"minText":spliceModel.getStructValue("Pre Burst","min")})
+                    weldSettingModel.append({"headText":qsTr("Pre-Burst:"),"textValue":spliceModel.getStructValue("Pre Burst","current"),"maxText":spliceModel.getStructValue("Pre Burst","max"),"minText":spliceModel.getStructValue("Pre Burst","min")})
                     weldSettingModel.append({"headText":qsTr("After Burst:"),"textValue":spliceModel.getStructValue("After Burst","current"),"maxText":spliceModel.getStructValue("After Burst","max"),"minText":spliceModel.getStructValue("After Burst","min")})
                     weldSettingModel.append({"headText":qsTr("Squeeze:"),"textValue":spliceModel.getStructValue("Squeeze Time","current"),"maxText":spliceModel.getStructValue("Squeeze Time","max"),"minText":spliceModel.getStructValue("Squeeze Time","min")})
                     weldSettingModel.append({"headText":qsTr("Hold:"),"textValue":spliceModel.getStructValue("Hold Time","current"),"maxText":spliceModel.getStructValue("Hold Time","max"),"minText":spliceModel.getStructValue("Hold Time","min")})
@@ -2270,7 +2270,7 @@ Item {
                 anchors.left: weldSetting.right
                 anchors.leftMargin: 10
                 verticalAlignment: Qt.AlignVCenter
-                text: qsTr("Width off-set:")
+                text: qsTr("Width offset:")
                 color: "white"
                 font.pointSize: 16
                 font.family: "arial"
@@ -2347,7 +2347,7 @@ Item {
                 anchors.topMargin: 8
                 anchors.left: widthSettingText.left
                 verticalAlignment: Qt.AlignVCenter
-                text: qsTr("Height off-set:")
+                text: qsTr("Height offset:")
                 color: "white"
                 font.pointSize: 16
                 font.family: "arial"

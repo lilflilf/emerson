@@ -159,7 +159,7 @@ Item {
         cooling1.centervalue = hmiAdaptor.weldDefaultsGetValue(-1)[1]
         cooling2.centervalue = hmiAdaptor.weldDefaultsGetValue(-1)[4]
         coolingTooling.state = hmiAdaptor.weldDefaultsGetSwitch("Cooling Tooling") ? "right" : "left"
-        coolingsec.state = hmiAdaptor.weldDefaultsGetSwitch("cooling(1sec/100J)") ? "right" : "left"
+        coolingsec.state = hmiAdaptor.weldDefaultsGetSwitch("Cooling(1sec/100J)") ? "right" : "left"
 
         //        awg.state = hmiAdaptor.weldDefaultsGetSwitch("Unit Conversion") ? "right" : "left"
 
@@ -370,7 +370,7 @@ Item {
                 font.family: "arial"
                 font.pixelSize: 20
                 color: "white"
-                text: qsTr("cooling(1sec/100J)")
+                text: qsTr("Cooling(1sec/100J)")
             }
             Switch2 {
                 id: coolingsec
@@ -380,7 +380,7 @@ Item {
                 height: 50
                 textLeft: qsTr("OFF")
                 textRight: qsTr("ON")
-                state: hmiAdaptor.weldDefaultsGetSwitch("cooling(1sec/100J)") ? "right" : "left"
+                state: hmiAdaptor.weldDefaultsGetSwitch("Cooling(1sec/100J)") ? "right" : "left"
                 clip: true
                 onStateChanged: {
                     if (coolingsec.state == "right")

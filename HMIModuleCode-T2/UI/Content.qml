@@ -84,7 +84,7 @@ Item {
         tabButton2.enabled = false
         tabButton2.textVisable = false
         tabButton1.tabbutton1text = qsTr("Sequence")
-        workname.text = qsTr("Qty")
+        workname.text = qsTr("Quantity")
         edit6.defaultText = qsTr("Sequence Name")
         save.text = qsTr("SAVE SEQUENCE")
         upload.text = qsTr("EDIT EXISTING\nSEQUENCE")
@@ -522,7 +522,7 @@ Item {
                 anchors.leftMargin: 10
                 width: parent.width * 0.6
                 textLeft: qsTr("Basic")
-                textRight: qsTr("Adv")
+                textRight: qsTr("Adv.")
                 state: partModel.getPartOnlineOrOffLine() ? "right" : "left"
                 opacity: 0.8
                 clip: true
@@ -612,7 +612,7 @@ Item {
                 width: parent.width-20
                 height: 50
                 inputWidth: edit2.width/3
-                tipsText: qsTr("Max Splices per Workstations")
+                tipsText: qsTr("Max Splices / Workstation")
 //                regExp: RegExpValidator{regExp: /([1-9]|1[0-9]|20)/}
                 opacity: 0.7
                 inputText: partModel.getWorkStationMaxSplicePerStation()
@@ -729,7 +729,7 @@ Item {
                 width: parent.width-20
                 height: 50
                 inputWidth: edit5.width/3
-                tipsText: qsTr("Max Splice Per Zone")
+                tipsText: qsTr("Max Splices / Zone")
                 opacity: 0.7
                 inputText: partModel.getWorkStationMaxSplicePerZone()
                 onInputFocusChanged: {

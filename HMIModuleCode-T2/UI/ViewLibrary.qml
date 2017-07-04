@@ -417,7 +417,7 @@ Item {
 
             shrinkTitleModel.append({title:qsTr("Insulation Name")})
             shrinkTitleModel.append({title:qsTr("Temp(℃)")})
-            shrinkTitleModel.append({title:qsTr("Time(S)")})
+            shrinkTitleModel.append({title:qsTr("Time(s)")})
 
             partTitleModel.append({"title":qsTr("HarnessName")})
             partTitleModel.append({"title":qsTr("DateCreated")})

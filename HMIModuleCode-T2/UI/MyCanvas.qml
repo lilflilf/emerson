@@ -83,7 +83,7 @@ Item {
             anchors.topMargin: 5
             color: "white"
             font.pointSize: 12
-            text: qsTr("TIME(mm)")
+            text: qsTr("TIME(s)")
             font.family: "arial"
 
         }
@@ -150,7 +150,7 @@ Item {
             anchors.bottomMargin: 5
             color: "white"
             font.pointSize: 12
-            text: qsTr("POST-HEIGHT(mm)")
+            text: qsTr("POST HEIGHT(mm)")
             font.family: "arial"
             anchors.right: rightLine.left
         }

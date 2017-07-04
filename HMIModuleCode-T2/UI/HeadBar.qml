@@ -38,6 +38,7 @@ Item {
     Component.onCompleted: {
         hmiAdaptor.setAlarmModelList(false);
     }
+
     Connections{
         target: alarmModel
         onSignalShowFlag: {
@@ -74,6 +75,7 @@ Item {
             color: "#052a40"
             visible: false
         }
+
         Image {
             id: backGround
             anchors.fill: parent
@@ -81,6 +83,7 @@ Item {
             width: 60//parent.width*0.68
             source: "qrc:/images/images/menu.png"
         }
+
         MouseArea {
             anchors.fill: parent
             onClicked: {

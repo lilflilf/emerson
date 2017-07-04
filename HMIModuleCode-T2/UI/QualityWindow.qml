@@ -65,7 +65,7 @@ Item {
 
     Text {
         id: qualityWindowTitle
-        text: qsTr("QualityWindow")
+        text: qsTr("Quality Window")
         font.family: "arial"
         font.pointSize: 16
         color: "white"
@@ -83,7 +83,7 @@ Item {
                 qualityListViewTwo.visible = true
                 myCanvas.visible = false
                 qualityListView.visible = true
-                qualityWindowTitle.text = qsTr("QualityWindow")
+                qualityWindowTitle.text = qsTr("Quality Window")
             }
             else {
                 myCanvas.visible = true
@@ -228,13 +228,13 @@ Item {
                     text: qsTr("POWER")
                     Component.onCompleted: {
                         if (index == 0)
-                            bottomText.text = qsTr("TIME")
+                            bottomText.text = qsTr("TIME(s)")
                         else if (index == 1)
-                            bottomText.text = qsTr("POWER")
+                            bottomText.text = qsTr("POWER(W)")
                         else if (index == 2)
-                            bottomText.text = qsTr("PRE-HEIGHT")
+                            bottomText.text = qsTr("PRE-HEIGHT(mm)")
                         else if (index == 3)
-                            bottomText.text = qsTr("POST-HEIGHT")
+                            bottomText.text = qsTr("POST HEIGHT(mm)")
                     }
                 }
                 Item {

@@ -459,7 +459,7 @@ void MODstart::CheckVersionFile(VersionList CurrVersions)
     {
         Versionchanged = true;
         tmpMsgBox.MsgTitle = QObject::tr("Warning");
-        tmpMsgBox.MsgPrompt = QObject::tr("VersaGraphix version has changed,check setup and calibration.");
+        tmpMsgBox.MsgPrompt = QObject::tr("VersaGraphix version has changed, check setup and calibration.");
         tmpMsgBox.TipsMode = Exclamation;
         tmpMsgBox.OKfunc_ptr = NULL;\
         tmpMsgBox.Cancelfunc_ptr = NULL;
@@ -472,7 +472,7 @@ void MODstart::CheckVersionFile(VersionList CurrVersions)
     {
         Versionchanged = true;
         tmpMsgBox.MsgTitle = QObject::tr("Warning");
-        tmpMsgBox.MsgPrompt = QObject::tr("Controller version has changed,check setup and calibration.");
+        tmpMsgBox.MsgPrompt = QObject::tr("Controller version has changed, check setup and calibration.");
         tmpMsgBox.TipsMode = Exclamation;
         tmpMsgBox.OKfunc_ptr = NULL;
         tmpMsgBox.Cancelfunc_ptr = NULL;
@@ -485,7 +485,7 @@ void MODstart::CheckVersionFile(VersionList CurrVersions)
         Versionchanged = true;
         Versionchanged = true;
         tmpMsgBox.MsgTitle = QObject::tr("Warning");
-        tmpMsgBox.MsgPrompt = QObject::tr("Actuator version has changed,check setup and calibration.");
+        tmpMsgBox.MsgPrompt = QObject::tr("Actuator version has changed, check setup and calibration.");
         tmpMsgBox.TipsMode = Exclamation;
         tmpMsgBox.OKfunc_ptr = NULL;
         tmpMsgBox.Cancelfunc_ptr = NULL;

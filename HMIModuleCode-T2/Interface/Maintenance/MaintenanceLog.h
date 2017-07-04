@@ -21,7 +21,7 @@ const QString MaintenanceMessageString[] = {
     QObject::tr("Tooling Change Process Start"),//8
     QObject::tr("Tooling Change Process Finish"),//9
     QObject::tr("Anvil Arm Movement"),//10
-    QObject::tr("Avil Movement"),//11
+    QObject::tr("Anvil Movement"),//11
     QObject::tr("Gather Movement"),//12
     QObject::tr("Cutter Movement"),//13
     QObject::tr("Crash Movement"),//14

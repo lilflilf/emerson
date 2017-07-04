@@ -117,7 +117,7 @@ void ShrinkTubeSerial::comShrinkTubeReadEventSlot()
             tmpMsgBox.MsgTitle = QObject::tr("Information");
             tmpMsgBox.TipsMode = (OKOnly + Information);
         }else{
-            tmpMsgBox.MsgPrompt = QObject::tr("Tube Shrinker has rejected ddata.\n"
+            tmpMsgBox.MsgPrompt = QObject::tr("Tube Shrinker has rejected data.\n"
                                               "Please check and retry");
             tmpMsgBox.MsgTitle = QObject::tr("Exclamation");
             tmpMsgBox.TipsMode = (OKOnly + Exclamation);

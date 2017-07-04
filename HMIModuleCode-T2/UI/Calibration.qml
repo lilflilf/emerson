@@ -76,7 +76,8 @@ Item {
         }
         Text {
             id: content
-            text: qsTr("This process calibrates and adjusts the Width and Height control system.Please press and hold the start button on this sereen or the start switch on the actuator.")
+            text: qsTr("This process calibrates and adjusts the Width and Height control system.\n
+Please press and hold the start button on this screen.")
             color: "white"
             font.family: "arial"
             font.pointSize: 20
@@ -214,7 +215,9 @@ Item {
                     else if (calibration.currentIndex == 3)
                     {
                         title.text = qsTr("Calibration - Amplitude")
-                        content.text = qsTr("This process calibrates the Amplitude. Please set an Amplitude measuring instrument and press and hold the start button on this screen to run Ultrasonic. Then, please enter the Amplitude value.")
+                        content.text = qsTr("This process calibrates the Amplitude. \n
+Please set an Amplitude measuring instrument and press and hold the start button on this screen to run Ultrasonics. \n
+Then, please enter the measured Amplitude value.")
                         button1.text = qsTr("Start")
                         button2.text = qsTr("Cancel")
                         image.source = "qrc:/images/images/maintenance-2.png"

@@ -36,7 +36,7 @@ Item {
 
         Text {
             id: seach
-            text: qsTr("Seach")
+            text: qsTr("Search")
             font.family: "arial"
             color: "white"
             font.pointSize: 16
@@ -733,9 +733,9 @@ Item {
             leftTextModel.append({"mytitle":qsTr("Energy:"),"myvalue":"",})
             leftTextModel.append({"mytitle":qsTr("Peak Power:"),"myvalue":""})
             leftTextModel.append({"mytitle":qsTr("Weld Pressure:"),"myvalue":""})
-            leftTextModel.append({"mytitle":qsTr("Pre-Heigh:"),"myvalue":""})
+            leftTextModel.append({"mytitle":qsTr("Pre-Height:"),"myvalue":""})
             leftTextModel.append({"mytitle":qsTr("Trigger Pressure:"),"myvalue":""})
-            leftTextModel.append({"mytitle":qsTr("Post-Heigh:"),"myvalue":""})
+            leftTextModel.append({"mytitle":qsTr("Post-Height:"),"myvalue":""})
             leftTextModel.append({"mytitle":qsTr("Amplitude:"),"myvalue":""})
 //            leftTextModel.append({"mytitle":qsTr("Part Name:"),"myvalue":""})
             leftTextModel.append({"mytitle":qsTr(""),"myvalue":""})

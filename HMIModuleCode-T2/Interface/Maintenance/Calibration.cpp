@@ -176,7 +176,7 @@ void Calibration::HeightCalibration()
         }else if (_M102IA->HeightCalResult == 0)
         {
             tmpMsgBox.MsgTitle = QObject::tr("Information");
-            tmpMsgBox.MsgPrompt = QObject::tr("UnSuccessful! Try again...");
+            tmpMsgBox.MsgPrompt = QObject::tr("Unsuccessful! Try again...");
             tmpMsgBox.TipsMode = Information;
             tmpMsgBox.OKfunc_ptr = NULL;
             tmpMsgBox.Cancelfunc_ptr = NULL;
@@ -190,7 +190,7 @@ void Calibration::HeightCalibration()
         }
     }else{
         tmpMsgBox.MsgTitle = QObject::tr("Information");
-        tmpMsgBox.MsgPrompt = QObject::tr("UnSuccessful! Try again...");
+        tmpMsgBox.MsgPrompt = QObject::tr("Unsuccessful! Try again...");
         tmpMsgBox.TipsMode = Information;
         tmpMsgBox.OKfunc_ptr = NULL;
         tmpMsgBox.Cancelfunc_ptr = NULL;

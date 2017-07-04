@@ -133,7 +133,7 @@ Item {
         }
         Text {
             width: 150
-            text: qsTr("100% Alarm")
+            text: qsTr("100% Lock")
             color: "white"
             font.family: "arial"
             font.pixelSize: 25

@@ -780,7 +780,7 @@ Item {
                     anchors.left: parent.left
                     anchors.leftMargin: width + 10
                     textLeft: qsTr("Basic")
-                    textRight: qsTr("Adv")
+                    textRight: qsTr("Adv.")
                     state: "left"
                     opacity: 0.8
                     onOnChanged: {

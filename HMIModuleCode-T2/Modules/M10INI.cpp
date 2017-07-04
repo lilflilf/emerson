@@ -248,12 +248,12 @@ void M10INI::SetDefaultPassword(Status_Data* _DataStruct)
     _DataStruct->PasswordData[4].Identifier = QObject::tr("Level 4");
     _DataStruct->PasswordData[4].Password.clear();
     _DataStruct->PasswordData[4].PWPermissions = 0;
-    _DataStruct->ModularPassword[0].Identifier = QObject::tr("ENABLEKSK");
-    _DataStruct->ModularPassword[0].Password = QObject::tr("ENKSK01");
-    _DataStruct->ModularPassword[1].Identifier = QObject::tr("DISABLEKSK");
-    _DataStruct->ModularPassword[1].Password = QObject::tr("DSKSK01");
-    _DataStruct->ModularPassword[2].Identifier = QObject::tr("ENABLEKSK2D");
-    _DataStruct->ModularPassword[2].Password = QObject::tr("ENKSK2D");
+    _DataStruct->ModularPassword[0].Identifier = "ENABLEKSK";
+    _DataStruct->ModularPassword[0].Password = "ENKSK01";
+    _DataStruct->ModularPassword[1].Identifier = "DISABLEKSK";
+    _DataStruct->ModularPassword[1].Password = "DSKSK01";
+    _DataStruct->ModularPassword[2].Identifier = "ENABLEKSK2D";
+    _DataStruct->ModularPassword[2].Password = "ENKSK2D";
     for(int i = 0; i< 26; i++)
         _DataStruct->CurrentFunIndex.append(i);
 }

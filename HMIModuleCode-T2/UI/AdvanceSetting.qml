@@ -420,7 +420,7 @@ Item {
         anchors.rightMargin: 20
         width: 300
         height: 79
-        text: qsTr("Defalut Setting")
+        text: qsTr("Default Setting")
         textColor: "white"
         onClicked: {
             setadvancesetingdefalut()
