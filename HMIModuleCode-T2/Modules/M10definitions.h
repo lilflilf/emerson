@@ -29,27 +29,7 @@ enum OPERATOR_SCREEN_WELD_INDICATOR{
     High,
 };
 
-//enum MENUCLICKOPTION{
-//    CreateSpliceScreen = 2,
-//    CreateSeqScreen = 4,
-//    EditScreen = 6,
-//    SavePresetScreen = 8,
-//    SavePresetAsScreen = 10,
-//    FileManagerScreen = 12,
-//    OperatorScreen = 14,
-//    NewPresetScreen = 16,
-//    NewSeqScreen = 18,
-//    SetupScreen = 20,
-//    TeachScreen = 22,
-//    ConfigScreen = 24,
-//    MaintScreen = 26,
-//    AdminScreen = 28,
-//    GraphScreen = 30,
-//    StatScreen = 32,
-//    ErrLogScreen = 34,
-//    HistoryScreen = 36,
-//    AboutScreen = 38,
-//};
+
 
 enum SpotDataNames{
     SDNEnergy,

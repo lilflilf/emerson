@@ -395,6 +395,7 @@ Item {
 
             spliceModel.saveTeachMode()
             signalAdvanceOk()
+            headBar.selectsubIndex = 23
         }
     }
     CButton {
@@ -410,6 +411,7 @@ Item {
         textColor: "white"
         onClicked: {
             signalCancel()
+            headBar.selectsubIndex = 23
         }
     }
     CButton {

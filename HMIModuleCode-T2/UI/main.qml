@@ -88,6 +88,7 @@ Window {
         spliceModel.editNew(spliceId)
         mainRoot.checkNeedPassWd(-1)
         mainRoot.titleTextChanged(qsTr("Edit Splice"))
+
     }
 
     function checkNeedPassWd(index)

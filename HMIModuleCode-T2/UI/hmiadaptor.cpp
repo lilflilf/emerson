@@ -1827,6 +1827,7 @@ QString HmiAdaptor::getStringUnit(QString value)
     }
     return unit;
 }
+
 QString HmiAdaptor::getStringValue(QString value)
 {
     QString num;
@@ -2469,7 +2470,7 @@ QVariant HmiAdaptor::getWorkValue(QString workKey)
 
 QList<int> HmiAdaptor::getWorkMissList()
 {
-    QMap<int,QString>::iterator it; //遍历map
+    QMap<int,QString>::iterator it; //map searching loop
     QList<int> list;
     for ( it = interfaceClass->CurrentWorkOrder.MissPartList.begin(); it != interfaceClass->CurrentWorkOrder.MissPartList.end(); ++it ) {
         list.append(it.key());
@@ -2726,4 +2727,54 @@ void HmiAdaptor::viewLibraryMovePart(int id, QString name)
 void HmiAdaptor::viewLibraryMoveSplice(int id, QString name)
 {
     emit signalMoveSplice(id,name);
+}
+
+QString HmiAdaptor::getHelpMenuContent(int selectsubIndex)
+{
+    QString ContentStr = QObject::tr("HMI Metal Welding Software\n\n"
+                         "Branson Ultrasonics Corp.\n"
+                         "41 Eagle Road Danbury, CT 06810 USA\n"
+                         "T: 203-796-0400 F: 203-796-0363");
+    switch(selectsubIndex)
+    {
+    case InterfaceClass::SpliceScreen: /* = 0 */
+    case InterfaceClass::SequenceScreen: /* = 1 */
+    case InterfaceClass::HarnessScreen: /* = 2 */
+    case InterfaceClass::WireScreen: /* = 3 */
+    case InterfaceClass::SetupScreen: /* = 4 */
+    case InterfaceClass::AdvanceSettingScreen: /* = 5 */
+    case InterfaceClass::HarnessSettingScreen: /* = 6 */
+    case InterfaceClass::InsulationScreen: /* = 7 */
+    case InterfaceClass::TestScreen: /* = 10 */
+    case InterfaceClass::SpliceListScreen: /* = 20 */
+    case InterfaceClass::SequenceListScreen: /* = 21 */
+    case InterfaceClass::HarnessListScreen: /* = 22 */
+    case InterfaceClass::OperateSpliceSettingScreen: /* = 23 */
+    case InterfaceClass::TeachModeAdvancedSettingScreen: /* = 24 */
+    case InterfaceClass::OperateSpliceScreen: /* = 25 */
+    case InterfaceClass::OperateSequenceScreen: /* = 26 */
+    case InterfaceClass::OperateHarnessSettingScreen: /* = 27 */
+    case InterfaceClass::OperateHarnessScreen:
+    case InterfaceClass::WeldResultHistoryScreen: /* = 30 */
+    case InterfaceClass::StatisticalTrendScreen: /* = 31 */
+    case InterfaceClass::ErrorAlarmLogScreen: /* = 32 */
+    case InterfaceClass::LibraryScreen: /* = 33 */
+//    case InterfaceClass::VersionInformationScreen: /* = 34 */
+    case InterfaceClass::CalibrationScreen: /* = 40 */
+    case InterfaceClass::ToolChangeScreen: /* = 41 */
+    case InterfaceClass::AdvancedMaintenanceScreen: /* = 42 */
+    case InterfaceClass::MaintenanceCounterScreen: /* = 43 */
+    case InterfaceClass::MaintenanceLogScreen: /* = 44 */
+    case InterfaceClass::UserManual: /* = 45 */
+    case InterfaceClass::PermissionSettingScreen: /* = 50 */
+    case InterfaceClass::WeldDefault1Screen: /* = 51 */
+    case InterfaceClass::OperatorLibraryScreen: /* = 52 */
+    case InterfaceClass::DataCommunicationScreen: /* = 53 */
+    case InterfaceClass::WeldDefault2Screen: /* = 54 */
+        ContentStr = HelpContent[selectsubIndex];
+        break;
+    default:
+        break;
+    }
+    return ContentStr;
 }

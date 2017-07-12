@@ -40,6 +40,7 @@ Item {
     }
 
     signal signalInputNum(string text)
+
     Image {
         anchors.fill: parent
         source: "qrc:/images/images/dialogbg.png"
@@ -209,6 +210,7 @@ Item {
             textColor: "white"
             onClicked: {
                 if (diagram.state == "right") {
+                    headBar.selectsubIndex = 24
                     if (standard.bIsCheck)
                         signalAdvanceSettingStart(0)
                     else if (auto.bIsCheck)
@@ -247,6 +249,7 @@ Item {
                 if(diagram.state == "left") {
                     spliceModel.setTeachModeValue("TeachMode","0","","")
                     signalTestStart(0)
+                    headBar.selectsubIndex = 25
                 }
                 else if (diagram.state == "right") {
                     if (standard.bIsCheck)

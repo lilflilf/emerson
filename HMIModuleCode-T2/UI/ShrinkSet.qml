@@ -194,6 +194,7 @@ Item {
             iconSource: "qrc:/images/images/cancel.png"
             onClicked: {
                 cancelClick()
+                headBar.selectsubIndex = 5
             }
         }
         CButton {
@@ -208,7 +209,7 @@ Item {
             iconSource: "qrc:/images/images/OK.png"
             onClicked: {
                 sureClick()
-
+                headBar.selectsubIndex = 5
             }
         }
         Rectangle {

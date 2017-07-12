@@ -116,7 +116,7 @@ Item {
             partTask.visible = false
         }
         else if (flag == 2) {
-            mainRoot.headTitle = "Operate Harness"
+            mainRoot.headTitle = qsTr("Operate Harness")
             spliceList = partModel.getSpliceList(hmiAdaptor.getWorkFlow("WorkId"))
             if (partModel.getPartOnlineOrOffLine()) {
                 showFlag = 1
@@ -228,6 +228,7 @@ Item {
 
 //        hmiAdaptor.operateProcessExec("Start")
     }
+
     Component.onDestruction: {
         hmiAdaptor.operateProcessExec("Stop")
     }
@@ -889,6 +890,7 @@ Item {
                 mainRoot.operateToEdit(spliceList[0])
             else
                 mainRoot.operateToEdit(spliceList[progressBar.current-1])
+            headBar.selectsubIndex = 0
         }
     }
 

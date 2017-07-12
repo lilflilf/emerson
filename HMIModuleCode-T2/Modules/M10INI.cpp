@@ -375,7 +375,7 @@ void M10INI::Init_StatusData()
     InterfaceClass *_Interface = InterfaceClass::Instance();
     _Interface->DefaultStatusData.RevCode = INVALID;
     _Interface->DefaultStatusData.CreatedDate = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
-    _Interface->DefaultStatusData.StartScreen = CreateNew_SCREEN;
+//    _Interface->DefaultStatusData.StartScreen = CreateNew_SCREEN;
     _Interface->DefaultStatusData.Soft_Settings.Lang_Support = BRANSON_INI_STRUCT::ENGLISH_lang;
     _Interface->DefaultStatusData.Soft_Settings.Horn_Calibrate = MAXAMPLITUDE;
     _Interface->DefaultStatusData.Soft_Settings.AutoPreburst = 0;

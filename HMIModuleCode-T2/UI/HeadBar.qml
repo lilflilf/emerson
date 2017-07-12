@@ -19,7 +19,9 @@ Item {
     z: 10
     id: headBar
     property alias titleText: title.text
-    property var selectIndex: 0
+    property var selectIndex: -1
+    property var selectsubIndex: -1
+    property var backupsubIndex: -1
     property alias keyVisible: keyButton.visible
     property alias cutterVisible: cutterButton.visible
     width: Screen.width
@@ -192,6 +194,7 @@ Item {
                                             creatMenu.height = settingList.count * 50
                                         }
                                         headBar.selectIndex = index
+                                        headBar.selectsubIndex = index * 10
                                         creatMenu.anchors.topMargin = index * 50
 
                                     }
@@ -261,6 +264,7 @@ Item {
         ListElement {menuKey:qsTr("Harness")}
 
     }
+
     ListModel {
         id: operateMenuList
         ListElement {menuKey:qsTr("Splice")}
@@ -268,6 +272,7 @@ Item {
         ListElement {menuKey:qsTr("Harness")}
 
     }
+
     ListModel {
         id: maintenanceList
         ListElement {menuKey:qsTr("Calibration")}
@@ -276,8 +281,8 @@ Item {
         ListElement {menuKey:qsTr("Maintenance Counter")}
         ListElement {menuKey:qsTr("Maintenance log")}
         ListElement {menuKey:qsTr("User Manual")}
-
     }
+
     ListModel {
         id: viewDataList
         ListElement {menuKey:qsTr("Weld Result History")}
@@ -287,6 +292,7 @@ Item {
         ListElement {menuKey:qsTr("Version Information")}
 
     }
+
     ListModel {
         id: settingList
         ListElement {menuKey:qsTr("Permission Setting")}
@@ -294,7 +300,6 @@ Item {
         ListElement {menuKey:qsTr("Operator Library")}
         ListElement {menuKey:qsTr("Data/Communication")}
 //        ListElement {menuKey:"Branson Setting"}
-
     }
 
     Item {
@@ -364,6 +369,7 @@ Item {
 //                                    mainRoot.checkNeedPassWd(1)
 ////                                    title.text = qsTr("Edit Existing")
 //                                }
+                                headBar.selectsubIndex = headBar.selectIndex * 10 + index
                                 if (menuKey == qsTr("Splice")){
                                     mainRoot.clearStackView()
                                     if (childMenu.model == creatMenuList)
@@ -503,6 +509,7 @@ Item {
         anchors.left: btn.right
         anchors.verticalCenter: parent.verticalCenter
     }
+
     Image {
         id: personButton
         anchors.right: parent.right
@@ -531,6 +538,7 @@ Item {
             }
         }
     }
+
     Image {
         id: helpButton
         anchors.right: personButton.left
@@ -546,7 +554,6 @@ Item {
                 background.visible = true
                 dialog.visible = true
                 helpTitle.visible = true
-//                helpTitle.text = qsTr("Create Part:")
                 helpValue.visible = true
                 okButton.visible = true
                 background.opacity = 0.5
@@ -559,6 +566,7 @@ Item {
             }
         }
     }
+
     Image {
         id: languageButton
         anchors.right: helpButton.left
@@ -586,6 +594,7 @@ Item {
             }
         }
     }
+
     Image {
         id: alarmButton
         anchors.right: languageButton.left
@@ -605,6 +614,7 @@ Item {
             }
         }
     }
+
     Image {
         id: keyButton
         anchors.right: alarmButton.left
@@ -625,6 +635,7 @@ Item {
             }
         }
     }
+
     Image {
         id: cutterButton
         anchors.right: keyButton.left
@@ -664,6 +675,7 @@ Item {
             anchors.fill: parent
         }
     }
+
     ListModel {
         id: listModel
         Component.onCompleted: {
@@ -733,6 +745,7 @@ Item {
             visible: language.visible
             source: "qrc:/images/images/up.png"
         }
+
         Image {
             id: scrollDown
             anchors.bottom: okButton.top
@@ -744,6 +757,7 @@ Item {
             visible: language.visible
             source: "qrc:/images/images/down.png"
         }
+
         Rectangle {
             id: scrollbar
             width: 10
@@ -763,7 +777,6 @@ Item {
                 height: language.visibleArea.heightRatio * scrollbar.height;
                 color: "#ccbfbf"
                 radius: 10
-                // 鼠标区域
                 MouseArea {
                     id: mouseArea
                     anchors.fill: button
@@ -771,13 +784,14 @@ Item {
                     drag.axis: Drag.YAxis
                     drag.minimumY: 0
                     drag.maximumY: scrollbar.height - button.height
-                    // 拖动
+                    // drag & drop
                     onMouseYChanged: {
                         language.contentY = button.y / scrollbar.height * language.contentHeight
                     }
                 }
             }
         }
+
         ListView {
             id: language
             property int selectrow: -1
@@ -849,6 +863,7 @@ Item {
                 }
             }
         }
+
         Text {
             id: helpTitle
             visible: false
@@ -861,42 +876,49 @@ Item {
             color: "white"
             text: qsTr("")
         }
+
         Column {
+
             anchors.centerIn: parent
             Text {
-                font.pixelSize: 20
-                font.family: "arial"
-                color: "white"
-                visible: helpValue.visible
-                text: qsTr("HMI Metal Welding Software\n")
-            }
-            Text {
                 id: helpValue
+                property bool bIsHyperlink: false
                 visible: false
                 font.pixelSize: 20
                 font.family: "arial"
                 color: "white"
-                text: qsTr("Branson Ultrasonics Corp.
-41 Eagle Road Danbury, CT 06810 USA
-T: 203-796-0400 F: 203-796-0363")
+                text: hmiAdaptor.getHelpMenuContent(headBar.selectsubIndex)
             }
+
             Text {
-                visible: helpValue.visible
+                id: helpLink
+                visible: helpValue.bIsHyperlink
                 font.pixelSize: 20
                 font.family: "arial"
                 text: '<html></style><a href="http://www.bransonultrasonics.com">www.bransonultrasonics.com</a></html>'
                 onLinkActivated: Qt.openUrlExternally(link)
             }
         }
+
         Image {
+            id: emersonLog
             anchors.right: parent.right
             visible: helpValue.visible
             source: "qrc:/images/images/logo1.png"
             scale: 0.5
             anchors.top: parent.top
-            anchors.topMargin: -height/4
-            anchors.rightMargin: -width/4
+            anchors.topMargin: -(height * (1 - 0.5) / 2)
+            anchors.rightMargin: -(width * (1 - 0.5) / 2)
         }
+        Image {
+            visible: helpValue.visible
+            source: "qrc:/images/images/logo2.png"
+            scale: 0.7
+            anchors.leftMargin: -(width * (1 - 0.8) / 2)
+            anchors.verticalCenter: emersonLog.verticalCenter
+            anchors.left: parent.left
+        }
+
         Column {
             id: personColumn
             visible: false

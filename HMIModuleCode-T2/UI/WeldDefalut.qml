@@ -41,10 +41,10 @@ Item {
         repeaterModel2.append({"headTitle":qsTr("Cooling"),"leftText":qsTr("OFF"),"righttext":qsTr("ON"),"switchState":hmiAdaptor.weldDefaultsGetSwitch("Cooling")})
 //        repeaterModel2.append({"headTitle":qsTr("Lock on Alarm"),"leftText":qsTr("OFF"),"righttext":qsTr("ON"),"switchState":hmiAdaptor.weldDefaultsGetSwitch("Cooling")})
 
-        graphModel.append({"graphText":"1MS","isSelect":hmiAdaptor.weldDefaultsGetSwitch("Graph Data Sampling 1ms")})
-        graphModel.append({"graphText":"5MS","isSelect":hmiAdaptor.weldDefaultsGetSwitch("Graph Data Sampling 5ms")})
-        graphModel.append({"graphText":"10MS","isSelect":hmiAdaptor.weldDefaultsGetSwitch("Graph Data Sampling 10ms")})
-        graphModel.append({"graphText":"20MS","isSelect":hmiAdaptor.weldDefaultsGetSwitch("Graph Data Sampling 20ms")})
+        graphModel.append({"graphText":"1ms","isSelect":hmiAdaptor.weldDefaultsGetSwitch("Graph Data Sampling 1ms")})
+        graphModel.append({"graphText":"5ms","isSelect":hmiAdaptor.weldDefaultsGetSwitch("Graph Data Sampling 5ms")})
+        graphModel.append({"graphText":"10ms","isSelect":hmiAdaptor.weldDefaultsGetSwitch("Graph Data Sampling 10ms")})
+        graphModel.append({"graphText":"20ms","isSelect":hmiAdaptor.weldDefaultsGetSwitch("Graph Data Sampling 20ms")})
 
         var list = new Array();
         list = hmiAdaptor.weldDefaultsGetValue(-1)
@@ -209,27 +209,34 @@ Item {
         anchors.fill: parent
         source: "qrc:/images/images/bg.png"
     }
+
     ExclusiveGroup {
         id: mos;
     }
+
     ExclusiveGroup {
         id: mos2;
     }
+
     ListModel {
         id: coolingModel
     }
+
     ListModel {
         id: graphModel
     }
+
     ListModel {
         id: formulaModel
     }
+
     ListModel {
         id: widthModel
     }
     ListModel {
         id: pressureModel
     }
+
     ListModel {
         id: amplitudeModel
     }
@@ -237,15 +244,19 @@ Item {
     ListModel {
         id: repeaterModel
     }
+
     ListModel {
         id: repeaterModel2
     }
+
     ListModel {
         id: crossSectionDisplayModel
     }
+
     ListModel {
         id: pressureDisplayModel
     }
+
     ListModel {
         id: lengthDisplayModel
     }
@@ -738,6 +749,7 @@ Item {
         iconSource: "qrc:/images/images/arrowRight.png"
         onClicked: {
             itemCutter.visible = true
+            headBar.selectsubIndex = 54
         }
     }
     Item {
@@ -989,6 +1001,7 @@ Item {
             iconSource: "qrc:/images/images/arrowLeft.png"
             onClicked: {
                 itemCutter.visible = false
+                headBar.selectsubIndex = 51
             }
         }
     }

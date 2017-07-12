@@ -327,6 +327,7 @@ Item {
             gaugeChanged("add",wireModel.getStructValue("Gauge"))
         }
     }
+
     function deleteWire()
     {
         if (selectPosition == "topRight") {

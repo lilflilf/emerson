@@ -1033,6 +1033,10 @@ Item {
 
             onClicked: {
                 settingRightArea.visible = false
+                if(forground.visible == true)
+                    headBar.selectsubIndex = 0
+                else
+                    headBar.selectsubIndex = 3
             }
         }
     }

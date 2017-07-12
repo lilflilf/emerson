@@ -135,7 +135,6 @@ Item {
         }
     }
 
-
     function selectPartUpdataPage(id,name)
     {
         hmiAdaptor.setEditPartId(id)
@@ -184,9 +183,9 @@ Item {
             }
             loader.source = ""
             if (bIsSequence)
-                mainRoot.titleTextChanged("Create Sequence")
+                mainRoot.titleTextChanged(qsTr("Create Sequence"))
             else
-                mainRoot.titleTextChanged("Create Harness")
+                mainRoot.titleTextChanged(qsTr("Create Harness"))
 
         }
     }
@@ -277,7 +276,7 @@ Item {
         width: Screen.width * 0.3
         height: parent.height
         id: swipeView
-        currentIndex: tabBar.currentIndex
+        currentIndex:  tabBar.currentIndex
         Page {
             id: splice
             z: 10
@@ -502,6 +501,7 @@ Item {
                 anchors.fill: parent
                 color: "#052a40"
             }
+
             Label {
                 id: processMode
                 anchors.top: parent.top
@@ -513,6 +513,7 @@ Item {
                 font.family: "arial"
                 font.pointSize: 16
             }
+
             // default right is on, left is off
             Switch2 {
                 id: basicSwitch
@@ -554,6 +555,7 @@ Item {
                     }
                 }
             }
+
             Label {
                 id: lab1
                 color: "#8295a0"
@@ -602,6 +604,7 @@ Item {
                     boardlayout.clearBoardLayout()
                 }
             }
+
             MiniKeyNumInput {
                 id: edit2
                 visible: !bIsBasic
@@ -633,6 +636,7 @@ Item {
                     boardlayout.reSetBoardLayoutColor(edit2.inputText,edit1.inputText)
                 }
             }
+
             Label {
                 id: lab2
                 visible: !bIsBasic
@@ -645,6 +649,7 @@ Item {
                 font.family: "arial"
                 font.pointSize: 16
             }
+
             MiniKeyNumInput {
                 id: edit3
                 visible: !bIsBasic
@@ -719,6 +724,7 @@ Item {
                     workStationcolor.clearCurrentStationCount(edit1.inputText)
                 }
             }
+
             MiniKeyNumInput {
                 id: edit5
                 visible: !bIsBasic
@@ -750,6 +756,7 @@ Item {
             }
         }
     }
+
     TabBar {        
         width: Screen.width * 0.3
         id: tabBar
@@ -758,6 +765,13 @@ Item {
         anchors.leftMargin: 10
         height: Screen.height * 0.08
         spacing: 0
+        onCurrentIndexChanged: {
+            if(currentIndex == 0)
+                headBar.selectsubIndex = 2
+            else if(currentIndex == 1)
+                headBar.selectsubIndex = 6
+        }
+
         TabButton {
             id: tabButton1
             property alias tabbutton1text: tabbutton1Text.text
@@ -1119,6 +1133,7 @@ Item {
                     mainRoot.checkNeedPassWd(-1)
 //                    loader.source = "qrc:/UI/CreatWire.qml"
                     mainRoot.titleTextChanged(qsTr("Edit Splice"))
+                    headBar.selectsubIndex = 0
                 }
 
             }

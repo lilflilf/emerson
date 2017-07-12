@@ -265,6 +265,7 @@ Item {
 
                     topRadio.checked = true
                     tabPositionGroup.current = null
+                    headBar.selectsubIndex = 3
                     if (selectPosition == "rightList" || selectPosition == "leftList")
                         midRadio.checked = true
                     else if (selectPosition == "topLeft" || selectPosition == "topRight")
@@ -296,6 +297,7 @@ Item {
                 }
                 onWireDetailHide: {
                     forground.visible = true
+                    headBar.selectsubIndex = 0
                 }
             }
 
@@ -1325,7 +1327,6 @@ Item {
                     qualityTitleModel.append({"title":"Peak\nPower","bottomText":""})
                     qualityTitleModel.append({"title":"Pre-\nHeight","bottomText":""})
                     qualityTitleModel.append({"title":"Post-\nHeight","bottomText":""})
-
                 }
             }
 
@@ -1424,7 +1425,6 @@ Item {
         }
     }
 
-
     TabBar {
         width: Screen.width * 0.3
         id: tabBar
@@ -1441,6 +1441,10 @@ Item {
                 addWire.visible = true
                 bottomButton.visible = false
                 hmiAdaptor.operateProcessExec("Stop")
+                if(forground.visible == true)
+                    headBar.selectsubIndex = 0
+                else
+                    headBar.selectsubIndex = 3
             }
             else if (currentIndex == 1)
             {
@@ -1456,6 +1460,7 @@ Item {
                     hmiAdaptor.setProcess("Create")
                 hmiAdaptor.operateProcessExec("Execute")
                 hmiAdaptor.operateProcessExec("Start")
+                headBar.selectsubIndex = 4
             }
         }
 
@@ -1642,7 +1647,7 @@ Item {
             font.pointSize: 40
             font.family: "arial"
             horizontalAlignment: Qt.AlignHCenter
-            text: qsTr("/")
+            text: "/"
             visible: currentCycle.visible
 
         }
@@ -1670,7 +1675,7 @@ Item {
             font.pointSize: 20
             font.family: "arial"
             horizontalAlignment: Qt.AlignHCenter
-            text: qsTr(":")
+            text: ":"
             visible: currentCycle.visible
 
         }
@@ -1685,7 +1690,7 @@ Item {
             font.pointSize: 16
             font.family: "arial"
             text: qsTr("text") + "/" + spliceModel.getTeachModeValue("TestStandardQty","current")
-            anchors.verticalCenter: currentCycleTips.horizontalCenter
+            anchors.verticalCenter: currentCycleTips.verticalCenter
         }
 
         Switch2 {
@@ -1714,6 +1719,10 @@ Item {
             centerVisable: true
             onNoWireSelected: {
                 forground.visible = noWire
+                if(noWire)
+                    headBar.selectsubIndex = 0
+                else
+                    headBar.selectsubIndex = 3
             }
         }
 
@@ -1781,6 +1790,7 @@ Item {
                 text: qsTr("ADVANCED\nSETTING")
                 onClicked: {
                     settingRightArea.visible = true
+                    headBar.selectsubIndex = 5;
                 }
             }
             CButton {
@@ -1798,7 +1808,7 @@ Item {
                 onClicked: {
                     mainRoot.popStackView()
                     mainRoot.headTitle = qsTr("Operate")
-
+                    headBar.selectsubIndex = headBar.selectIndex * 10
                 }
             }
         }
@@ -1936,7 +1946,7 @@ Item {
                 wireModel.updateSpliceIdToWire(list, spliceId)
                 if(creatWire.bIsFromLib)
                     return
-
+                headBar.selectsubIndex = headBar.selectIndex * 10
 //                if (spliceId != -1 && !creatWire.bIsEditSplice)
                  mainRoot.signalSaveSplice(spliceId,creatWire.bIsEditSplice)
                  mainRoot.popStackView()
@@ -2606,6 +2616,7 @@ Item {
                     backGround.visible = true
                     backGround.opacity = 0.5
                     shrinkSet.visible = true
+                    headBar.selectsubIndex = 7
                 }
             }
         }
@@ -2632,6 +2643,7 @@ Item {
                 textColor: "white"
                 onClicked: {
                     settingRightArea.visible = false
+                    headBar.selectsubIndex = 4
                 }
             }
 
@@ -2666,7 +2678,7 @@ Item {
 //                    spliceModel.setProcessValue("CutterPostHeight",cutterModel.get(3).switchState == "left" ? true : false)
 
                     settingRightArea.visible = false
-
+                    headBar.selectsubIndex = 4
                 }
             }
         }

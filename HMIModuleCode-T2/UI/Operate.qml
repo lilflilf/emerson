@@ -205,7 +205,7 @@ Item {
             height: listView.visibleArea.heightRatio * scrollbar.height;
             color: "#ccbfbf"
             radius: 10
-            // 鼠标区域
+            // Mouse Area
             MouseArea {
                 id: mouseArea
                 anchors.fill: button
@@ -430,6 +430,7 @@ Item {
                 spliceModel.editNew(spliceModel.getValue(selectIndx,"SpliceId"))
                 //            mainRoot.checkNeedPassWd(-1)
                 testDialog.setData()
+                headBar.selectsubIndex = 23
             }
         }
     }

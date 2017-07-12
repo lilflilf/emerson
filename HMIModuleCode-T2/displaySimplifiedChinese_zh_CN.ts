@@ -6,12 +6,12 @@
     <message>
         <location filename="UI/AddExistingSpliceWire.qml" line="361"/>
         <source>Select</source>
-        <translation type="unfinished"></translation>
+        <translation>选择</translation>
     </message>
     <message>
         <location filename="UI/AddExistingSpliceWire.qml" line="395"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>取消</translation>
     </message>
 </context>
 <context>
@@ -22,7 +22,7 @@
         <location filename="UI/AdvanceSetting.qml" line="69"/>
         <location filename="UI/AdvanceSetting.qml" line="89"/>
         <source>Upper</source>
-        <translation type="unfinished"></translation>
+        <translation>上限</translation>
     </message>
     <message>
         <location filename="UI/AdvanceSetting.qml" line="39"/>
@@ -30,49 +30,49 @@
         <location filename="UI/AdvanceSetting.qml" line="79"/>
         <location filename="UI/AdvanceSetting.qml" line="99"/>
         <source>Lower</source>
-        <translation type="unfinished"></translation>
+        <translation>下限</translation>
     </message>
     <message>
         <location filename="UI/AdvanceSetting.qml" line="109"/>
         <source>Quantity</source>
-        <translation type="unfinished"></translation>
+        <translation>数量</translation>
     </message>
     <message>
         <location filename="UI/AdvanceSetting.qml" line="150"/>
         <source>Standard</source>
-        <translation type="unfinished"></translation>
+        <translation>标准</translation>
     </message>
     <message>
         <location filename="UI/AdvanceSetting.qml" line="161"/>
         <source>Auto</source>
-        <translation type="unfinished"></translation>
+        <translation>自动</translation>
     </message>
     <message>
         <location filename="UI/AdvanceSetting.qml" line="172"/>
         <source>Sigma</source>
-        <translation type="unfinished"></translation>
+        <translation>西格玛</translation>
     </message>
     <message>
         <location filename="UI/AdvanceSetting.qml" line="236"/>
         <source>SampleSize</source>
         <oldsource>Sample Size</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>样品尺寸</translation>
     </message>
     <message>
         <location filename="UI/AdvanceSetting.qml" line="379"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>确认</translation>
     </message>
     <message>
-        <location filename="UI/AdvanceSetting.qml" line="409"/>
+        <location filename="UI/AdvanceSetting.qml" line="410"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>取消</translation>
     </message>
     <message>
-        <location filename="UI/AdvanceSetting.qml" line="423"/>
+        <location filename="UI/AdvanceSetting.qml" line="425"/>
         <source>Default Setting</source>
         <oldsource>Defalut Setting</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>默认值</translation>
     </message>
 </context>
 <context>
@@ -80,107 +80,107 @@
     <message>
         <location filename="UI/AdvancedMaintenance.qml" line="140"/>
         <source>1-Anvil Arm</source>
-        <translation type="unfinished"></translation>
+        <translation>1-底模臂</translation>
     </message>
     <message>
         <location filename="UI/AdvancedMaintenance.qml" line="148"/>
         <source>2-Gather</source>
-        <translation type="unfinished"></translation>
+        <translation>2-聚线块</translation>
     </message>
     <message>
         <location filename="UI/AdvancedMaintenance.qml" line="156"/>
         <source>3-Safety</source>
-        <translation type="unfinished"></translation>
+        <translation>3-安全盖</translation>
     </message>
     <message>
         <location filename="UI/AdvancedMaintenance.qml" line="172"/>
         <source>4-Cutter</source>
-        <translation type="unfinished"></translation>
+        <translation>4-切刀</translation>
     </message>
     <message>
         <location filename="UI/AdvancedMaintenance.qml" line="180"/>
         <source>5-Cooling Tooling</source>
-        <translation type="unfinished"></translation>
+        <translation>5-模具冷却</translation>
     </message>
     <message>
         <location filename="UI/AdvancedMaintenance.qml" line="188"/>
         <source>6-Cooling Converter</source>
-        <translation type="unfinished"></translation>
+        <translation>6-换能器冷却</translation>
     </message>
     <message>
         <location filename="UI/AdvancedMaintenance.qml" line="196"/>
         <source>7-Crash</source>
-        <translation type="unfinished"></translation>
+        <translation>7-挡块</translation>
     </message>
     <message>
         <location filename="UI/AdvancedMaintenance.qml" line="219"/>
         <source>Power Supply</source>
-        <translation type="unfinished"></translation>
+        <translation>发生器</translation>
     </message>
     <message>
         <location filename="UI/AdvancedMaintenance.qml" line="223"/>
         <source>Frequency</source>
-        <translation type="unfinished"></translation>
+        <translation>频率</translation>
     </message>
     <message>
         <location filename="UI/AdvancedMaintenance.qml" line="224"/>
         <source>Tune Point</source>
-        <translation type="unfinished"></translation>
+        <translation>谐振点</translation>
     </message>
     <message>
         <location filename="UI/AdvancedMaintenance.qml" line="228"/>
         <source>Frequency Offset</source>
-        <translation type="unfinished"></translation>
+        <translation>频率偏置</translation>
     </message>
     <message>
         <location filename="UI/AdvancedMaintenance.qml" line="244"/>
         <source>Sonics and Power Test</source>
-        <translation type="unfinished"></translation>
+        <translation>超声和功率测试</translation>
     </message>
     <message>
         <location filename="UI/AdvancedMaintenance.qml" line="256"/>
         <source>Power</source>
-        <translation type="unfinished"></translation>
+        <translation>功率</translation>
     </message>
     <message>
         <location filename="UI/AdvancedMaintenance.qml" line="318"/>
         <source>Run Sonics</source>
-        <translation type="unfinished"></translation>
+        <translation>超声运行</translation>
     </message>
     <message>
         <location filename="UI/AdvancedMaintenance.qml" line="325"/>
         <source>Run Sonics 100%</source>
-        <translation type="unfinished"></translation>
+        <translation>超声100%运行</translation>
     </message>
     <message>
         <location filename="UI/AdvancedMaintenance.qml" line="346"/>
         <source>Amplitude</source>
-        <translation type="unfinished"></translation>
+        <translation>振幅</translation>
     </message>
     <message>
         <location filename="UI/AdvancedMaintenance.qml" line="373"/>
         <source>Reset</source>
-        <translation type="unfinished"></translation>
+        <translation>复位</translation>
     </message>
     <message>
         <location filename="UI/AdvancedMaintenance.qml" line="382"/>
         <source>Power Supply and Frequency Setting</source>
-        <translation type="unfinished"></translation>
+        <translation>发生器和频率设置</translation>
     </message>
     <message>
         <location filename="UI/AdvancedMaintenance.qml" line="450"/>
         <source>Reliability</source>
-        <translation type="unfinished"></translation>
+        <translation>可靠性</translation>
     </message>
     <message>
         <location filename="UI/AdvancedMaintenance.qml" line="460"/>
         <source>ON</source>
-        <translation type="unfinished"></translation>
+        <translation>开启</translation>
     </message>
     <message>
         <location filename="UI/AdvancedMaintenance.qml" line="461"/>
         <source>OFF</source>
-        <translation type="unfinished"></translation>
+        <translation>关闭</translation>
     </message>
 </context>
 <context>
@@ -188,87 +188,87 @@
     <message>
         <location filename="UI/BransonSetting.qml" line="23"/>
         <source>Power Supply</source>
-        <translation type="unfinished"></translation>
+        <translation>发生器</translation>
     </message>
     <message>
         <location filename="UI/BransonSetting.qml" line="24"/>
         <source>Calibrated Amplitude</source>
-        <translation type="unfinished"></translation>
+        <translation>校准的振幅</translation>
     </message>
     <message>
         <location filename="UI/BransonSetting.qml" line="25"/>
         <source>Tune Point</source>
-        <translation type="unfinished"></translation>
+        <translation>谐振点</translation>
     </message>
     <message>
         <location filename="UI/BransonSetting.qml" line="26"/>
         <source>Frequency Offset</source>
-        <translation type="unfinished"></translation>
+        <translation>频率偏置</translation>
     </message>
     <message>
         <location filename="UI/BransonSetting.qml" line="39"/>
         <source>Sonics Test</source>
-        <translation type="unfinished"></translation>
+        <translation>超声测试</translation>
     </message>
     <message>
         <location filename="UI/BransonSetting.qml" line="66"/>
         <source>Run Sonics</source>
-        <translation type="unfinished"></translation>
+        <translation>超声运行</translation>
     </message>
     <message>
         <location filename="UI/BransonSetting.qml" line="75"/>
         <source>Run Sonics 100%</source>
-        <translation type="unfinished"></translation>
+        <translation>超声100%运行</translation>
     </message>
     <message>
         <location filename="UI/BransonSetting.qml" line="88"/>
         <source>power</source>
-        <translation type="unfinished"></translation>
+        <translation>功率</translation>
     </message>
     <message>
         <location filename="UI/BransonSetting.qml" line="137"/>
         <source>Shrink Tube</source>
-        <translation type="unfinished"></translation>
+        <translation>收缩管</translation>
     </message>
     <message>
         <location filename="UI/BransonSetting.qml" line="145"/>
         <source>Shrink Tube Test</source>
-        <translation type="unfinished"></translation>
+        <translation>收缩管测试</translation>
     </message>
     <message>
         <location filename="UI/BransonSetting.qml" line="156"/>
         <source>Network(Ethernet)</source>
-        <translation type="unfinished"></translation>
+        <translation>网络(以太网)</translation>
     </message>
     <message>
         <location filename="UI/BransonSetting.qml" line="164"/>
         <source>Client IP Setting</source>
-        <translation type="unfinished"></translation>
+        <translation>客户端IP设置</translation>
     </message>
     <message>
         <location filename="UI/BransonSetting.qml" line="173"/>
         <source>Ping Test</source>
-        <translation type="unfinished"></translation>
+        <translation>Ping测试</translation>
     </message>
     <message>
         <location filename="UI/BransonSetting.qml" line="182"/>
         <source>Reset</source>
-        <translation type="unfinished"></translation>
+        <translation>复位</translation>
     </message>
     <message>
         <location filename="UI/BransonSetting.qml" line="192"/>
         <source>Default Setting</source>
-        <translation type="unfinished"></translation>
+        <translation>默认值</translation>
     </message>
     <message>
         <location filename="UI/BransonSetting.qml" line="202"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>取消</translation>
     </message>
     <message>
         <location filename="UI/BransonSetting.qml" line="212"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>确认</translation>
     </message>
 </context>
 <context>
@@ -276,23 +276,23 @@
     <message>
         <location filename="UI/CPassWordDialog.qml" line="30"/>
         <source>Scan or Enter ID(Please insert physical key)</source>
-        <translation type="unfinished"></translation>
+        <translation>扫描或输入ID(请插入钥匙)</translation>
     </message>
     <message>
         <location filename="UI/CPassWordDialog.qml" line="34"/>
         <source>Scan or Enter ID(Please use the correct Password)</source>
-        <translation type="unfinished"></translation>
+        <translation>扫描或输入ID(请输入正确的密码)</translation>
     </message>
     <message>
         <location filename="UI/CPassWordDialog.qml" line="44"/>
         <location filename="UI/CPassWordDialog.qml" line="104"/>
         <source>Scan or Enter ID</source>
-        <translation type="unfinished"></translation>
+        <translation>扫描或输入ID</translation>
     </message>
     <message>
         <location filename="UI/CPassWordDialog.qml" line="300"/>
         <source>CANCEL</source>
-        <translation type="unfinished"></translation>
+        <translation>取消</translation>
     </message>
 </context>
 <context>
@@ -300,7 +300,7 @@
     <message>
         <location filename="UI/Calibration.qml" line="68"/>
         <source>Calibration-Width and Height</source>
-        <translation type="unfinished"></translation>
+        <translation>校准-宽度和高度</translation>
     </message>
     <message>
         <location filename="UI/Calibration.qml" line="79"/>
@@ -310,26 +310,28 @@ Please press and hold the start button on this screen.</source>
         <oldsource>This process calibrates and adjusts the Width and Height control system.
 
 Please press and hold the start button on this sereen or the start switch on the actuator.</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>此过程校准并调整控制系统的宽度和高度。
+
+请按住屏幕上的启动按钮并保持。</translation>
     </message>
     <message>
         <location filename="UI/Calibration.qml" line="115"/>
         <source>Sonics</source>
-        <translation type="unfinished"></translation>
+        <translation>超声波</translation>
     </message>
     <message>
         <location filename="UI/Calibration.qml" line="140"/>
         <location filename="UI/Calibration.qml" line="207"/>
         <location filename="UI/Calibration.qml" line="221"/>
         <source>Start</source>
-        <translation type="unfinished"></translation>
+        <translation>启动</translation>
     </message>
     <message>
         <location filename="UI/Calibration.qml" line="169"/>
         <location filename="UI/Calibration.qml" line="174"/>
         <location filename="UI/Calibration.qml" line="194"/>
         <source>enter value here</source>
-        <translation type="unfinished"></translation>
+        <translation>在此输入数值</translation>
     </message>
     <message>
         <location filename="UI/Calibration.qml" line="189"/>
@@ -337,29 +339,29 @@ Please press and hold the start button on this sereen or the start switch on the
         <location filename="UI/Calibration.qml" line="208"/>
         <location filename="UI/Calibration.qml" line="222"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>取消</translation>
     </message>
     <message>
         <location filename="UI/Calibration.qml" line="191"/>
         <location filename="UI/Calibration.qml" line="213"/>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>返回</translation>
     </message>
     <message>
         <location filename="UI/Calibration.qml" line="193"/>
         <location filename="UI/Calibration.qml" line="230"/>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation>保存</translation>
     </message>
     <message>
         <location filename="UI/Calibration.qml" line="212"/>
         <source>Next</source>
-        <translation type="unfinished"></translation>
+        <translation>下一个</translation>
     </message>
     <message>
         <location filename="UI/Calibration.qml" line="217"/>
         <source>Calibration - Amplitude</source>
-        <translation type="unfinished"></translation>
+        <translation>校准-振幅</translation>
     </message>
     <message>
         <location filename="UI/Calibration.qml" line="218"/>
@@ -369,7 +371,11 @@ Please set an Amplitude measuring instrument and press and hold the start button
 
 Then, please enter the measured Amplitude value.</source>
         <oldsource>This process calibrates the Amplitude. Please set an Amplitude measuring instrument and press and hold the start button on this screen to run Ultrasonic. Then, please enter the Amplitude value.</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>此程序用于校准幅度。
+
+请设置一个振幅测量仪器，按下屏幕上的启动开关并保持来运行超声。
+
+随后请输入振幅测量值</translation>
     </message>
 </context>
 <context>
@@ -377,49 +383,49 @@ Then, please enter the measured Amplitude value.</source>
     <message>
         <location filename="UI/Content.qml" line="86"/>
         <source>Sequence</source>
-        <translation type="unfinished"></translation>
+        <translation>序列</translation>
     </message>
     <message>
         <location filename="UI/Content.qml" line="87"/>
         <source>Quantity</source>
-        <translation type="unfinished"></translation>
+        <translation>数量</translation>
     </message>
     <message>
         <location filename="UI/Content.qml" line="88"/>
-        <location filename="UI/Content.qml" line="434"/>
+        <location filename="UI/Content.qml" line="433"/>
         <source>Sequence Name</source>
-        <translation type="unfinished"></translation>
+        <translation>序列名称</translation>
     </message>
     <message>
         <location filename="UI/Content.qml" line="89"/>
         <source>SAVE SEQUENCE</source>
-        <translation type="unfinished"></translation>
+        <translation>保存序列</translation>
     </message>
     <message>
         <location filename="UI/Content.qml" line="90"/>
-        <location filename="UI/Content.qml" line="430"/>
+        <location filename="UI/Content.qml" line="429"/>
         <source>EDIT EXISTING
 SEQUENCE</source>
-        <translation type="unfinished"></translation>
+        <translation>编辑现有序列</translation>
     </message>
     <message>
         <location filename="UI/Content.qml" line="97"/>
-        <location filename="UI/Content.qml" line="299"/>
-        <location filename="UI/Content.qml" line="915"/>
+        <location filename="UI/Content.qml" line="298"/>
+        <location filename="UI/Content.qml" line="929"/>
         <source>Splice</source>
-        <translation type="unfinished"></translation>
+        <translation>线束焊接</translation>
     </message>
     <message>
         <location filename="UI/Content.qml" line="98"/>
-        <location filename="UI/Content.qml" line="313"/>
+        <location filename="UI/Content.qml" line="312"/>
         <source>Zone/Workstation</source>
-        <translation type="unfinished"></translation>
+        <translation>区域/工作站</translation>
     </message>
     <message>
         <location filename="UI/Content.qml" line="99"/>
-        <location filename="UI/Content.qml" line="421"/>
+        <location filename="UI/Content.qml" line="420"/>
         <source>Harness Name</source>
-        <translation type="unfinished"></translation>
+        <translation>线束名称</translation>
     </message>
     <message>
         <location filename="UI/Content.qml" line="100"/>
@@ -428,132 +434,142 @@ SEQUENCE</source>
     </message>
     <message>
         <location filename="UI/Content.qml" line="101"/>
-        <location filename="UI/Content.qml" line="417"/>
+        <location filename="UI/Content.qml" line="416"/>
         <source>EDIT EXISTING
 HARNESS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="UI/Content.qml" line="113"/>
-        <location filename="UI/Content.qml" line="204"/>
+        <location filename="UI/Content.qml" line="203"/>
         <source>Edit Existing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="271"/>
+        <location filename="UI/Content.qml" line="186"/>
+        <source>Create Sequence</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="UI/Content.qml" line="188"/>
+        <source>Create Harness</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="UI/Content.qml" line="270"/>
         <source>  Insulation: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="271"/>
+        <location filename="UI/Content.qml" line="270"/>
         <source> Temp:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="271"/>
+        <location filename="UI/Content.qml" line="270"/>
         <source> Time:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="273"/>
-        <location filename="UI/Content.qml" line="944"/>
+        <location filename="UI/Content.qml" line="272"/>
+        <location filename="UI/Content.qml" line="958"/>
         <source>TOTAL CROSS SECTION </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="367"/>
+        <location filename="UI/Content.qml" line="366"/>
         <source>+ ADD NEW SPLICE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="383"/>
+        <location filename="UI/Content.qml" line="382"/>
         <source>+ ADD EXISTING SPLICE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="394"/>
-        <location filename="UI/Content.qml" line="1339"/>
+        <location filename="UI/Content.qml" line="393"/>
+        <location filename="UI/Content.qml" line="1354"/>
         <source>Add Existing Splice</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="395"/>
+        <location filename="UI/Content.qml" line="394"/>
         <source>SPLICE NAME</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="396"/>
+        <location filename="UI/Content.qml" line="395"/>
         <source>DATE CREATED</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="397"/>
+        <location filename="UI/Content.qml" line="396"/>
         <source>OperatorName</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="398"/>
+        <location filename="UI/Content.qml" line="397"/>
         <source>CROSS SECTION</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="400"/>
+        <location filename="UI/Content.qml" line="399"/>
         <source># OF WIRES</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="409"/>
+        <location filename="UI/Content.qml" line="408"/>
         <source>IMPORT SPLICE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="420"/>
-        <location filename="UI/Content.qml" line="1339"/>
+        <location filename="UI/Content.qml" line="419"/>
+        <location filename="UI/Content.qml" line="1354"/>
         <source>Add Harness</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="422"/>
-        <location filename="UI/Content.qml" line="435"/>
-        <location filename="UI/Content.qml" line="1341"/>
+        <location filename="UI/Content.qml" line="421"/>
+        <location filename="UI/Content.qml" line="434"/>
+        <location filename="UI/Content.qml" line="1356"/>
         <source>Date Created</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="423"/>
-        <location filename="UI/Content.qml" line="437"/>
+        <location filename="UI/Content.qml" line="422"/>
+        <location filename="UI/Content.qml" line="436"/>
         <source>Total Steps</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="424"/>
+        <location filename="UI/Content.qml" line="423"/>
         <source>Process Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="433"/>
+        <location filename="UI/Content.qml" line="432"/>
         <source>Add Sequence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="436"/>
-        <location filename="UI/Content.qml" line="1342"/>
+        <location filename="UI/Content.qml" line="435"/>
+        <location filename="UI/Content.qml" line="1357"/>
         <source>User Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="452"/>
+        <location filename="UI/Content.qml" line="451"/>
         <source>SAVE PART</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="467"/>
-        <location filename="UI/Content.qml" line="1225"/>
+        <location filename="UI/Content.qml" line="466"/>
+        <location filename="UI/Content.qml" line="1240"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="467"/>
+        <location filename="UI/Content.qml" line="466"/>
         <source>Please Set WorkStation!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -563,178 +579,178 @@ HARNESS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="524"/>
+        <location filename="UI/Content.qml" line="525"/>
         <source>Basic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="525"/>
+        <location filename="UI/Content.qml" line="526"/>
         <source>Adv.</source>
         <oldsource>Adv</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="565"/>
-        <location filename="UI/Content.qml" line="1152"/>
+        <location filename="UI/Content.qml" line="567"/>
+        <location filename="UI/Content.qml" line="1167"/>
         <source>WORKSTATIONS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="581"/>
+        <location filename="UI/Content.qml" line="583"/>
         <source>#of Workstations</source>
         <oldsource># of Workstations</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="615"/>
+        <location filename="UI/Content.qml" line="618"/>
         <source>Max Splices / Workstation</source>
         <oldsource>Max Splices per Workstations</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="644"/>
+        <location filename="UI/Content.qml" line="648"/>
         <source>BOARD LAYOUT</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="658"/>
+        <location filename="UI/Content.qml" line="663"/>
         <source>Rows</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="698"/>
+        <location filename="UI/Content.qml" line="703"/>
         <source>Columns</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="732"/>
+        <location filename="UI/Content.qml" line="738"/>
         <source>Max Splices / Zone</source>
         <oldsource>Max Splices per Zone</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="774"/>
+        <location filename="UI/Content.qml" line="788"/>
         <source>SPLICE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="800"/>
+        <location filename="UI/Content.qml" line="814"/>
         <source>SETTINGS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="842"/>
+        <location filename="UI/Content.qml" line="856"/>
         <source>PART NAME</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="873"/>
+        <location filename="UI/Content.qml" line="887"/>
         <source>Template</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="906"/>
+        <location filename="UI/Content.qml" line="920"/>
         <source>Board Layout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="914"/>
+        <location filename="UI/Content.qml" line="928"/>
         <source>Board</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="931"/>
+        <location filename="UI/Content.qml" line="945"/>
         <source>Wire</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="932"/>
+        <location filename="UI/Content.qml" line="946"/>
         <source>Image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="1110"/>
+        <location filename="UI/Content.qml" line="1124"/>
         <source>EDIT SPLICE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="1121"/>
+        <location filename="UI/Content.qml" line="1135"/>
         <source>Edit Splice</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="1133"/>
+        <location filename="UI/Content.qml" line="1148"/>
         <source>DELETE SPLICE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="1216"/>
+        <location filename="UI/Content.qml" line="1231"/>
         <source>Please Input Sequence Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="1216"/>
+        <location filename="UI/Content.qml" line="1231"/>
         <source>Please Input Harness Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="1340"/>
-        <location filename="UI/Content.qml" line="1619"/>
+        <location filename="UI/Content.qml" line="1355"/>
+        <location filename="UI/Content.qml" line="1634"/>
         <source>Part Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="1340"/>
+        <location filename="UI/Content.qml" line="1355"/>
         <source>Splice Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="1342"/>
+        <location filename="UI/Content.qml" line="1357"/>
         <source># OF SPLICE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="1343"/>
+        <location filename="UI/Content.qml" line="1358"/>
         <source>Cross Section</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="1345"/>
+        <location filename="UI/Content.qml" line="1360"/>
         <source>Total Wires</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="1414"/>
+        <location filename="UI/Content.qml" line="1429"/>
         <source>Add New</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="1586"/>
+        <location filename="UI/Content.qml" line="1601"/>
         <source>Part Number Template -Add New</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="1596"/>
+        <location filename="UI/Content.qml" line="1611"/>
         <source>Template Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="1641"/>
+        <location filename="UI/Content.qml" line="1656"/>
         <source>Save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="1661"/>
+        <location filename="UI/Content.qml" line="1676"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="1799"/>
+        <location filename="UI/Content.qml" line="1814"/>
         <source>Up</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Content.qml" line="1810"/>
+        <location filename="UI/Content.qml" line="1825"/>
         <source>Down</source>
         <translation type="unfinished"></translation>
     </message>
@@ -743,7 +759,7 @@ HARNESS</source>
     <name>CreatWire</name>
     <message>
         <location filename="UI/CreatWire.qml" line="169"/>
-        <location filename="UI/CreatWire.qml" line="2027"/>
+        <location filename="UI/CreatWire.qml" line="2037"/>
         <source>Energy</source>
         <translation type="unfinished"></translation>
     </message>
@@ -783,470 +799,460 @@ HARNESS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="316"/>
+        <location filename="UI/CreatWire.qml" line="318"/>
         <source>No Wires Selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="341"/>
+        <location filename="UI/CreatWire.qml" line="343"/>
         <source>WIRE NAME</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="369"/>
-        <location filename="UI/CreatWire.qml" line="1828"/>
-        <location filename="UI/CreatWire.qml" line="2851"/>
+        <location filename="UI/CreatWire.qml" line="371"/>
+        <location filename="UI/CreatWire.qml" line="1838"/>
+        <location filename="UI/CreatWire.qml" line="2863"/>
         <source>Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="456"/>
-        <location filename="UI/CreatWire.qml" line="935"/>
-        <location filename="UI/CreatWire.qml" line="1026"/>
+        <location filename="UI/CreatWire.qml" line="458"/>
+        <location filename="UI/CreatWire.qml" line="937"/>
+        <location filename="UI/CreatWire.qml" line="1028"/>
         <source>CANCEL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="465"/>
-        <location filename="UI/CreatWire.qml" line="935"/>
-        <location filename="UI/CreatWire.qml" line="1026"/>
-        <location filename="UI/CreatWire.qml" line="2709"/>
-        <location filename="UI/CreatWire.qml" line="2830"/>
+        <location filename="UI/CreatWire.qml" line="467"/>
+        <location filename="UI/CreatWire.qml" line="937"/>
+        <location filename="UI/CreatWire.qml" line="1028"/>
+        <location filename="UI/CreatWire.qml" line="2721"/>
+        <location filename="UI/CreatWire.qml" line="2842"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="509"/>
+        <location filename="UI/CreatWire.qml" line="511"/>
         <source>Stripe</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="553"/>
-        <location filename="UI/CreatWire.qml" line="584"/>
+        <location filename="UI/CreatWire.qml" line="555"/>
+        <location filename="UI/CreatWire.qml" line="586"/>
         <source>None</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="742"/>
+        <location filename="UI/CreatWire.qml" line="744"/>
         <source>Size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="787"/>
+        <location filename="UI/CreatWire.qml" line="789"/>
         <source>Conductor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="800"/>
+        <location filename="UI/CreatWire.qml" line="802"/>
         <source>Copper</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="801"/>
+        <location filename="UI/CreatWire.qml" line="803"/>
         <source>Alum</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="836"/>
+        <location filename="UI/CreatWire.qml" line="838"/>
         <source>Side</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="849"/>
+        <location filename="UI/CreatWire.qml" line="851"/>
         <source>Left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="850"/>
+        <location filename="UI/CreatWire.qml" line="852"/>
         <source>Right</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="870"/>
+        <location filename="UI/CreatWire.qml" line="872"/>
         <source>Location</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="883"/>
+        <location filename="UI/CreatWire.qml" line="885"/>
         <source>Basic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="884"/>
+        <location filename="UI/CreatWire.qml" line="886"/>
         <source>Adv.</source>
         <oldsource>Adv</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="916"/>
+        <location filename="UI/CreatWire.qml" line="918"/>
         <source>Top</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="935"/>
-        <location filename="UI/CreatWire.qml" line="1026"/>
+        <location filename="UI/CreatWire.qml" line="937"/>
+        <location filename="UI/CreatWire.qml" line="1028"/>
         <source>Would you want to move the activated wire to the selected position?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="975"/>
+        <location filename="UI/CreatWire.qml" line="977"/>
         <source>Middle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="1007"/>
+        <location filename="UI/CreatWire.qml" line="1009"/>
         <source>Bottom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="1083"/>
+        <location filename="UI/CreatWire.qml" line="1085"/>
         <source>Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="1113"/>
+        <location filename="UI/CreatWire.qml" line="1115"/>
         <source>EDIT EXISTING
 SPLICE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="1127"/>
+        <location filename="UI/CreatWire.qml" line="1129"/>
         <source>Splice Library</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="1128"/>
+        <location filename="UI/CreatWire.qml" line="1130"/>
         <source>Splice Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="1129"/>
+        <location filename="UI/CreatWire.qml" line="1131"/>
         <source>Date Created</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="1130"/>
+        <location filename="UI/CreatWire.qml" line="1132"/>
         <source>User Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="1131"/>
+        <location filename="UI/CreatWire.qml" line="1133"/>
         <source>Cross Section</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="1132"/>
+        <location filename="UI/CreatWire.qml" line="1134"/>
         <source>Total Wires</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="1140"/>
+        <location filename="UI/CreatWire.qml" line="1142"/>
         <source>SAVE TO WIRE
 LIBRARY</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="1234"/>
+        <location filename="UI/CreatWire.qml" line="1236"/>
         <source>Setting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="1247"/>
+        <location filename="UI/CreatWire.qml" line="1249"/>
         <source>Actual</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="1379"/>
+        <location filename="UI/CreatWire.qml" line="1380"/>
         <source>Quality Window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="1472"/>
+        <location filename="UI/CreatWire.qml" line="1477"/>
         <source>WIRE BUILDER</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="1499"/>
+        <location filename="UI/CreatWire.qml" line="1504"/>
         <source>WELD SETTINGS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="1558"/>
+        <location filename="UI/CreatWire.qml" line="1563"/>
         <source>SPLICE NAME</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="1569"/>
+        <location filename="UI/CreatWire.qml" line="1574"/>
         <source>SpliceDetails</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="1579"/>
+        <location filename="UI/CreatWire.qml" line="1584"/>
         <source>TOTAL CROSS SECTION </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="1632"/>
+        <location filename="UI/CreatWire.qml" line="1637"/>
         <source>Current
 cycle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="1645"/>
-        <source>/</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="UI/CreatWire.qml" line="1660"/>
+        <location filename="UI/CreatWire.qml" line="1665"/>
         <source>Simple
 size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="1673"/>
-        <source>:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="UI/CreatWire.qml" line="1687"/>
+        <location filename="UI/CreatWire.qml" line="1692"/>
         <source>text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="1697"/>
+        <location filename="UI/CreatWire.qml" line="1702"/>
         <source>Wire</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="1698"/>
+        <location filename="UI/CreatWire.qml" line="1703"/>
         <source>Image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="1742"/>
+        <location filename="UI/CreatWire.qml" line="1751"/>
         <source>Click to Select Picture</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="1781"/>
+        <location filename="UI/CreatWire.qml" line="1790"/>
         <source>ADVANCED
 SETTING</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="1789"/>
+        <location filename="UI/CreatWire.qml" line="1799"/>
         <source>Graph</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="1797"/>
+        <location filename="UI/CreatWire.qml" line="1807"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="1800"/>
-        <location filename="UI/CreatWire.qml" line="3082"/>
+        <location filename="UI/CreatWire.qml" line="1810"/>
+        <location filename="UI/CreatWire.qml" line="3094"/>
         <source>Operate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="1815"/>
+        <location filename="UI/CreatWire.qml" line="1825"/>
         <source>WIRE LIBRARY</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="1824"/>
-        <location filename="UI/CreatWire.qml" line="2847"/>
+        <location filename="UI/CreatWire.qml" line="1834"/>
+        <location filename="UI/CreatWire.qml" line="2859"/>
         <source>Wire Library</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="1825"/>
-        <location filename="UI/CreatWire.qml" line="2848"/>
+        <location filename="UI/CreatWire.qml" line="1835"/>
+        <location filename="UI/CreatWire.qml" line="2860"/>
         <source>WireName</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="1826"/>
-        <location filename="UI/CreatWire.qml" line="2849"/>
+        <location filename="UI/CreatWire.qml" line="1836"/>
+        <location filename="UI/CreatWire.qml" line="2861"/>
         <source>DateCreated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="1827"/>
-        <location filename="UI/CreatWire.qml" line="2850"/>
+        <location filename="UI/CreatWire.qml" line="1837"/>
+        <location filename="UI/CreatWire.qml" line="2862"/>
         <source>OperatorName</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="1829"/>
-        <location filename="UI/CreatWire.qml" line="2852"/>
+        <location filename="UI/CreatWire.qml" line="1839"/>
+        <location filename="UI/CreatWire.qml" line="2864"/>
         <source>Gauge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="1840"/>
+        <location filename="UI/CreatWire.qml" line="1850"/>
         <source>+ ADD WIRE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="1856"/>
+        <location filename="UI/CreatWire.qml" line="1866"/>
         <source>DELETE WIRE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="1867"/>
+        <location filename="UI/CreatWire.qml" line="1877"/>
         <source>SAVE SPLICE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="1973"/>
+        <location filename="UI/CreatWire.qml" line="1983"/>
         <source>Weld Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="2028"/>
+        <location filename="UI/CreatWire.qml" line="2038"/>
         <source>Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="2029"/>
+        <location filename="UI/CreatWire.qml" line="2039"/>
         <source>Height</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="2030"/>
+        <location filename="UI/CreatWire.qml" line="2040"/>
         <source>Energy/Height</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="2031"/>
-        <location filename="UI/CreatWire.qml" line="2752"/>
-        <location filename="UI/CreatWire.qml" line="2761"/>
+        <location filename="UI/CreatWire.qml" line="2041"/>
+        <location filename="UI/CreatWire.qml" line="2764"/>
+        <location filename="UI/CreatWire.qml" line="2773"/>
         <source>Step-Energy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="2032"/>
-        <location filename="UI/CreatWire.qml" line="2753"/>
-        <location filename="UI/CreatWire.qml" line="2766"/>
+        <location filename="UI/CreatWire.qml" line="2042"/>
+        <location filename="UI/CreatWire.qml" line="2765"/>
+        <location filename="UI/CreatWire.qml" line="2778"/>
         <source>Step-Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="2033"/>
-        <location filename="UI/CreatWire.qml" line="2754"/>
-        <location filename="UI/CreatWire.qml" line="2771"/>
+        <location filename="UI/CreatWire.qml" line="2043"/>
+        <location filename="UI/CreatWire.qml" line="2766"/>
+        <location filename="UI/CreatWire.qml" line="2783"/>
         <source>Step-Power</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="2108"/>
+        <location filename="UI/CreatWire.qml" line="2118"/>
         <source>Pre-Burst:</source>
         <oldsource>Pre Burst:</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="2109"/>
+        <location filename="UI/CreatWire.qml" line="2119"/>
         <source>After Burst:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="2110"/>
+        <location filename="UI/CreatWire.qml" line="2120"/>
         <source>Squeeze:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="2111"/>
+        <location filename="UI/CreatWire.qml" line="2121"/>
         <source>Hold:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="2273"/>
+        <location filename="UI/CreatWire.qml" line="2283"/>
         <source>Width offset:</source>
         <oldsource>Width off-set:</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="2282"/>
-        <location filename="UI/CreatWire.qml" line="2326"/>
-        <location filename="UI/CreatWire.qml" line="2359"/>
-        <location filename="UI/CreatWire.qml" line="2402"/>
+        <location filename="UI/CreatWire.qml" line="2292"/>
+        <location filename="UI/CreatWire.qml" line="2336"/>
+        <location filename="UI/CreatWire.qml" line="2369"/>
+        <location filename="UI/CreatWire.qml" line="2412"/>
         <source>Displayed:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="2283"/>
-        <location filename="UI/CreatWire.qml" line="2360"/>
+        <location filename="UI/CreatWire.qml" line="2293"/>
+        <location filename="UI/CreatWire.qml" line="2370"/>
         <source>Actual:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="2350"/>
+        <location filename="UI/CreatWire.qml" line="2360"/>
         <source>Height offset:</source>
         <oldsource>Height off-set:</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="2425"/>
+        <location filename="UI/CreatWire.qml" line="2435"/>
         <source>Insulation:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="2463"/>
+        <location filename="UI/CreatWire.qml" line="2473"/>
         <source>ON</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="2464"/>
+        <location filename="UI/CreatWire.qml" line="2474"/>
         <source>OFF</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="2604"/>
+        <location filename="UI/CreatWire.qml" line="2614"/>
         <source>Insulation Setting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="2631"/>
+        <location filename="UI/CreatWire.qml" line="2642"/>
         <source>Back</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="2640"/>
+        <location filename="UI/CreatWire.qml" line="2652"/>
         <source>Save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="2701"/>
+        <location filename="UI/CreatWire.qml" line="2713"/>
         <source>Please Input Splice Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="2728"/>
-        <location filename="UI/CreatWire.qml" line="2735"/>
+        <location filename="UI/CreatWire.qml" line="2740"/>
+        <location filename="UI/CreatWire.qml" line="2747"/>
         <source>  Insulation: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="2728"/>
-        <location filename="UI/CreatWire.qml" line="2735"/>
+        <location filename="UI/CreatWire.qml" line="2740"/>
+        <location filename="UI/CreatWire.qml" line="2747"/>
         <source> Temp:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="2728"/>
-        <location filename="UI/CreatWire.qml" line="2735"/>
+        <location filename="UI/CreatWire.qml" line="2740"/>
+        <location filename="UI/CreatWire.qml" line="2747"/>
         <source> Time:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="2755"/>
+        <location filename="UI/CreatWire.qml" line="2767"/>
         <source>Amplitude A</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/CreatWire.qml" line="2756"/>
+        <location filename="UI/CreatWire.qml" line="2768"/>
         <source>Amplitude B</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1455,149 +1461,149 @@ Mode</source>
 <context>
     <name>HeadBar</name>
     <message>
-        <location filename="UI/HeadBar.qml" line="121"/>
-        <location filename="UI/HeadBar.qml" line="502"/>
+        <location filename="UI/HeadBar.qml" line="123"/>
+        <location filename="UI/HeadBar.qml" line="508"/>
         <source>Create</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/HeadBar.qml" line="124"/>
+        <location filename="UI/HeadBar.qml" line="126"/>
         <source>Test</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/HeadBar.qml" line="125"/>
+        <location filename="UI/HeadBar.qml" line="127"/>
         <source>Operate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/HeadBar.qml" line="126"/>
+        <location filename="UI/HeadBar.qml" line="128"/>
         <source>View Data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/HeadBar.qml" line="127"/>
+        <location filename="UI/HeadBar.qml" line="129"/>
         <source>Maintenance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/HeadBar.qml" line="128"/>
+        <location filename="UI/HeadBar.qml" line="130"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/HeadBar.qml" line="259"/>
-        <location filename="UI/HeadBar.qml" line="266"/>
-        <location filename="UI/HeadBar.qml" line="367"/>
+        <location filename="UI/HeadBar.qml" line="262"/>
+        <location filename="UI/HeadBar.qml" line="270"/>
+        <location filename="UI/HeadBar.qml" line="373"/>
         <source>Splice</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/HeadBar.qml" line="260"/>
-        <location filename="UI/HeadBar.qml" line="267"/>
-        <location filename="UI/HeadBar.qml" line="378"/>
+        <location filename="UI/HeadBar.qml" line="263"/>
+        <location filename="UI/HeadBar.qml" line="271"/>
+        <location filename="UI/HeadBar.qml" line="384"/>
         <source>Sequence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/HeadBar.qml" line="261"/>
-        <location filename="UI/HeadBar.qml" line="268"/>
-        <location filename="UI/HeadBar.qml" line="389"/>
+        <location filename="UI/HeadBar.qml" line="264"/>
+        <location filename="UI/HeadBar.qml" line="272"/>
+        <location filename="UI/HeadBar.qml" line="395"/>
         <source>Harness</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/HeadBar.qml" line="273"/>
-        <location filename="UI/HeadBar.qml" line="400"/>
+        <location filename="UI/HeadBar.qml" line="278"/>
+        <location filename="UI/HeadBar.qml" line="406"/>
         <source>Calibration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/HeadBar.qml" line="274"/>
-        <location filename="UI/HeadBar.qml" line="405"/>
+        <location filename="UI/HeadBar.qml" line="279"/>
+        <location filename="UI/HeadBar.qml" line="411"/>
         <source>Tool Change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/HeadBar.qml" line="275"/>
-        <location filename="UI/HeadBar.qml" line="410"/>
+        <location filename="UI/HeadBar.qml" line="280"/>
+        <location filename="UI/HeadBar.qml" line="416"/>
         <source>Advanced Maintenance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/HeadBar.qml" line="276"/>
-        <location filename="UI/HeadBar.qml" line="415"/>
+        <location filename="UI/HeadBar.qml" line="281"/>
+        <location filename="UI/HeadBar.qml" line="421"/>
         <source>Maintenance Counter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/HeadBar.qml" line="277"/>
-        <location filename="UI/HeadBar.qml" line="420"/>
+        <location filename="UI/HeadBar.qml" line="282"/>
+        <location filename="UI/HeadBar.qml" line="426"/>
         <source>Maintenance log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/HeadBar.qml" line="278"/>
-        <location filename="UI/HeadBar.qml" line="425"/>
+        <location filename="UI/HeadBar.qml" line="283"/>
+        <location filename="UI/HeadBar.qml" line="431"/>
         <source>User Manual</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/HeadBar.qml" line="283"/>
-        <location filename="UI/HeadBar.qml" line="439"/>
+        <location filename="UI/HeadBar.qml" line="288"/>
+        <location filename="UI/HeadBar.qml" line="445"/>
         <source>Weld Result History</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/HeadBar.qml" line="284"/>
-        <location filename="UI/HeadBar.qml" line="444"/>
+        <location filename="UI/HeadBar.qml" line="289"/>
+        <location filename="UI/HeadBar.qml" line="450"/>
         <source>Statistical Trend</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/HeadBar.qml" line="285"/>
-        <location filename="UI/HeadBar.qml" line="449"/>
+        <location filename="UI/HeadBar.qml" line="290"/>
+        <location filename="UI/HeadBar.qml" line="455"/>
         <source>Error/Alarm Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/HeadBar.qml" line="286"/>
-        <location filename="UI/HeadBar.qml" line="429"/>
+        <location filename="UI/HeadBar.qml" line="291"/>
+        <location filename="UI/HeadBar.qml" line="435"/>
         <source>Library</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/HeadBar.qml" line="287"/>
-        <location filename="UI/HeadBar.qml" line="434"/>
+        <location filename="UI/HeadBar.qml" line="292"/>
+        <location filename="UI/HeadBar.qml" line="440"/>
         <source>Version Information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/HeadBar.qml" line="292"/>
-        <location filename="UI/HeadBar.qml" line="454"/>
+        <location filename="UI/HeadBar.qml" line="298"/>
+        <location filename="UI/HeadBar.qml" line="460"/>
         <source>Permission Setting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/HeadBar.qml" line="293"/>
-        <location filename="UI/HeadBar.qml" line="459"/>
+        <location filename="UI/HeadBar.qml" line="299"/>
+        <location filename="UI/HeadBar.qml" line="465"/>
         <source>Weld Defaults</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/HeadBar.qml" line="294"/>
-        <location filename="UI/HeadBar.qml" line="464"/>
+        <location filename="UI/HeadBar.qml" line="300"/>
+        <location filename="UI/HeadBar.qml" line="470"/>
         <source>Operator Library</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/HeadBar.qml" line="295"/>
-        <location filename="UI/HeadBar.qml" line="469"/>
+        <location filename="UI/HeadBar.qml" line="301"/>
+        <location filename="UI/HeadBar.qml" line="475"/>
         <source>Data/Communication</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/HeadBar.qml" line="522"/>
+        <location filename="UI/HeadBar.qml" line="529"/>
         <source>Current Operator: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -1607,72 +1613,59 @@ Mode</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="UI/HeadBar.qml" line="871"/>
-        <source>HMI Metal Welding Software
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="UI/HeadBar.qml" line="879"/>
-        <source>Branson Ultrasonics Corp.
-41 Eagle Road Danbury, CT 06810 USA
-T: 203-796-0400 F: 203-796-0363</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="UI/HeadBar.qml" line="912"/>
+        <location filename="UI/HeadBar.qml" line="934"/>
         <source>Switch User</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/HeadBar.qml" line="926"/>
+        <location filename="UI/HeadBar.qml" line="948"/>
         <source>Shut Down</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/HeadBar.qml" line="935"/>
-        <location filename="UI/HeadBar.qml" line="979"/>
-        <location filename="UI/HeadBar.qml" line="1248"/>
+        <location filename="UI/HeadBar.qml" line="957"/>
+        <location filename="UI/HeadBar.qml" line="1001"/>
+        <location filename="UI/HeadBar.qml" line="1270"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/HeadBar.qml" line="955"/>
+        <location filename="UI/HeadBar.qml" line="977"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/HeadBar.qml" line="1013"/>
+        <location filename="UI/HeadBar.qml" line="1035"/>
         <source>Alarm Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/HeadBar.qml" line="1017"/>
+        <location filename="UI/HeadBar.qml" line="1039"/>
         <source>CreatedDate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/HeadBar.qml" line="1018"/>
+        <location filename="UI/HeadBar.qml" line="1040"/>
         <source>Alarm/ErrorType</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/HeadBar.qml" line="1019"/>
+        <location filename="UI/HeadBar.qml" line="1041"/>
         <source>Alarm/ErrorLevel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/HeadBar.qml" line="1020"/>
+        <location filename="UI/HeadBar.qml" line="1042"/>
         <source>Message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/HeadBar.qml" line="1021"/>
+        <location filename="UI/HeadBar.qml" line="1043"/>
         <source>SpliceName</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/HeadBar.qml" line="1220"/>
+        <location filename="UI/HeadBar.qml" line="1242"/>
         <source>Reset</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1986,19 +1979,19 @@ The value is out of the range.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Operate.qml" line="657"/>
-        <location filename="UI/Operate.qml" line="661"/>
+        <location filename="UI/Operate.qml" line="658"/>
+        <location filename="UI/Operate.qml" line="662"/>
         <source>Operate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Operate.qml" line="685"/>
+        <location filename="UI/Operate.qml" line="686"/>
         <source>Teach Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/Operate.qml" line="727"/>
         <location filename="UI/Operate.qml" line="728"/>
+        <location filename="UI/Operate.qml" line="729"/>
         <source>#of Splices</source>
         <oldsource># of Splices</oldsource>
         <translation type="unfinished"></translation>
@@ -2008,8 +2001,13 @@ The value is out of the range.</source>
     <name>OperateDetails</name>
     <message>
         <location filename="UI/OperateDetails.qml" line="100"/>
-        <location filename="UI/OperateDetails.qml" line="846"/>
+        <location filename="UI/OperateDetails.qml" line="847"/>
         <source>MAINTENANCE COUNTER: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="UI/OperateDetails.qml" line="119"/>
+        <source>Operate Harness</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2023,118 +2021,118 @@ The value is out of the range.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/OperateDetails.qml" line="279"/>
+        <location filename="UI/OperateDetails.qml" line="280"/>
         <source>Total Cross Section: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/OperateDetails.qml" line="283"/>
+        <location filename="UI/OperateDetails.qml" line="284"/>
         <source>Insulation: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/OperateDetails.qml" line="407"/>
+        <location filename="UI/OperateDetails.qml" line="408"/>
         <source>Splice: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/OperateDetails.qml" line="430"/>
+        <location filename="UI/OperateDetails.qml" line="431"/>
         <source>Diagram</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/OperateDetails.qml" line="431"/>
+        <location filename="UI/OperateDetails.qml" line="432"/>
         <source>Image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/OperateDetails.qml" line="476"/>
+        <location filename="UI/OperateDetails.qml" line="477"/>
         <source>Insulation: 1 Temp(℃):260 Time(s):09.0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/OperateDetails.qml" line="486"/>
+        <location filename="UI/OperateDetails.qml" line="487"/>
         <source>Total Cross Section: 2.3mm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/OperateDetails.qml" line="565"/>
+        <location filename="UI/OperateDetails.qml" line="566"/>
         <source>CURRENT SPLICE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/OperateDetails.qml" line="589"/>
+        <location filename="UI/OperateDetails.qml" line="590"/>
         <source>NEXT SPLICE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/OperateDetails.qml" line="613"/>
+        <location filename="UI/OperateDetails.qml" line="614"/>
         <source>MISSED SPLICE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/OperateDetails.qml" line="642"/>
+        <location filename="UI/OperateDetails.qml" line="643"/>
         <source>Complete
 Missed
 Splie</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/OperateDetails.qml" line="720"/>
+        <location filename="UI/OperateDetails.qml" line="721"/>
         <source>Harness Name:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/OperateDetails.qml" line="732"/>
-        <location filename="UI/OperateDetails.qml" line="743"/>
+        <location filename="UI/OperateDetails.qml" line="733"/>
+        <location filename="UI/OperateDetails.qml" line="744"/>
         <source>Progress and Tracking</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/OperateDetails.qml" line="754"/>
+        <location filename="UI/OperateDetails.qml" line="755"/>
         <source>Work Station: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/OperateDetails.qml" line="754"/>
-        <location filename="UI/OperateDetails.qml" line="767"/>
+        <location filename="UI/OperateDetails.qml" line="755"/>
+        <location filename="UI/OperateDetails.qml" line="768"/>
         <source>HARNESS TASKS: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/OperateDetails.qml" line="869"/>
-        <location filename="UI/OperateDetails.qml" line="928"/>
+        <location filename="UI/OperateDetails.qml" line="870"/>
+        <location filename="UI/OperateDetails.qml" line="930"/>
         <source>EDIT COUNTER</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/OperateDetails.qml" line="884"/>
+        <location filename="UI/OperateDetails.qml" line="885"/>
         <source>EDIT SPLICE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/OperateDetails.qml" line="937"/>
+        <location filename="UI/OperateDetails.qml" line="939"/>
         <source>CurrentCycle:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/OperateDetails.qml" line="953"/>
-        <location filename="UI/OperateDetails.qml" line="958"/>
+        <location filename="UI/OperateDetails.qml" line="955"/>
+        <location filename="UI/OperateDetails.qml" line="960"/>
         <source>Reset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/OperateDetails.qml" line="969"/>
+        <location filename="UI/OperateDetails.qml" line="971"/>
         <source>Batch Size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/OperateDetails.qml" line="1022"/>
+        <location filename="UI/OperateDetails.qml" line="1024"/>
         <source>CANCEL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/OperateDetails.qml" line="1032"/>
+        <location filename="UI/OperateDetails.qml" line="1034"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2159,70 +2157,67 @@ Splie</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/OperateList.qml" line="77"/>
+        <location filename="UI/OperateList.qml" line="79"/>
         <source>Sequence Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/OperateList.qml" line="86"/>
+        <location filename="UI/OperateList.qml" line="88"/>
         <source>Date Created</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/OperateList.qml" line="96"/>
+        <location filename="UI/OperateList.qml" line="98"/>
         <source># of Steps</source>
         <oldsource>#of Steps</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/OperateList.qml" line="106"/>
+        <location filename="UI/OperateList.qml" line="108"/>
         <source>Splice Quantity in Total</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/OperateList.qml" line="316"/>
+        <location filename="UI/OperateList.qml" line="327"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/OperateList.qml" line="329"/>
+        <location filename="UI/OperateList.qml" line="22"/>
+        <location filename="UI/OperateList.qml" line="340"/>
         <source>Operate Sequence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/OperateList.qml" line="331"/>
-        <location filename="UI/OperateList.qml" line="511"/>
+        <location filename="UI/OperateList.qml" line="25"/>
+        <location filename="UI/OperateList.qml" line="344"/>
+        <location filename="UI/OperateList.qml" line="526"/>
         <source>Operate Harness</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/OperateList.qml" line="369"/>
+        <location filename="UI/OperateList.qml" line="383"/>
         <source>HarnessName:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/OperateList.qml" line="383"/>
-        <location filename="UI/OperateList.qml" line="394"/>
+        <location filename="UI/OperateList.qml" line="397"/>
+        <location filename="UI/OperateList.qml" line="408"/>
         <source>Batch Size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/OperateList.qml" line="425"/>
+        <location filename="UI/OperateList.qml" line="439"/>
         <source>Unconstrained</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/OperateList.qml" line="454"/>
-        <source>1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="UI/OperateList.qml" line="479"/>
+        <location filename="UI/OperateList.qml" line="493"/>
         <source>CANCEL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/OperateList.qml" line="489"/>
+        <location filename="UI/OperateList.qml" line="504"/>
         <source>START</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2380,7 +2375,7 @@ Splie</source>
         <location filename="Modules/M10RunMode.cpp" line="459"/>
         <location filename="Modules/M10RunMode.cpp" line="476"/>
         <location filename="Modules/ShrinkTubeSerial.cpp" line="117"/>
-        <location filename="UI/hmiadaptor.cpp" line="2522"/>
+        <location filename="UI/hmiadaptor.cpp" line="2523"/>
         <source>Information</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2827,13 +2822,13 @@ Splie</source>
     </message>
     <message>
         <location filename="Interface/SysConfiguration.h" line="72"/>
-        <location filename="Modules/M10definitions.h" line="142"/>
+        <location filename="Modules/M10definitions.h" line="122"/>
         <source>ADMIN</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="Interface/SysConfiguration.h" line="73"/>
-        <location filename="Modules/M10definitions.h" line="143"/>
+        <location filename="Modules/M10definitions.h" line="123"/>
         <source>TECH</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3551,9 +3546,351 @@ Please check and retry</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/hmiadaptor.cpp" line="2521"/>
+        <location filename="UI/hmiadaptor.cpp" line="2522"/>
         <source>All the setting will be available after the system restart.</source>
         <oldsource>All the setting will be avaliable after the system restart.</oldsource>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="UI/hmiadaptor.cpp" line="2734"/>
+        <source>HMI Metal Welding Software
+
+Branson Ultrasonics Corp.
+41 Eagle Road Danbury, CT 06810 USA
+T: 203-796-0400 F: 203-796-0363</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Interface.h" line="17"/>
+        <source>&lt;WIRE BUILDER&gt; build wires for specific splice
+&lt;EDIT EXISTING SPLICE&gt; edit existing splices built before
+&lt;WIRE LIBRARY&gt; go to wire library to select wires
+&lt;ADD WIRE&gt; add wires into splice
+&lt;DELETE WIRE&gt; delete wires from splice
+&lt;SAVE SPLICE&gt; save splice
+&lt;Image&gt; insert image for the splice
+&lt;SPLICE NAME&gt; input splice name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Interface.h" line="26"/>
+        <source>&lt;Up&gt; move selected splice upward
+&lt;Down&gt; move selected splice downward
+&lt;ADD NEW SPLICE&gt; add new splice to a sequence
+&lt;ADD EXISTING SPLICE&gt; add existing splice to a sequence
+&lt;EDIT EXISTING SEQUENCE&gt; edit an exsting sequence
+&lt;SAVE SEQUENCE&gt; save a sequence
+&lt;EDIT SPLICE&gt; edit the selected splice
+&lt;DELETE SPLICE&gt; delete the selected splice</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Interface.h" line="35"/>
+        <source>&lt;Up&gt; move selected splice upward
+&lt;Down&gt; move selected splice downward
+&lt;ADD NEW SPLICE&gt; add new splice to a harness
+&lt;ADD EXISTING SPLICE&gt; add new splice to a harness
+&lt;EDIT EXISTING HARNESS&gt; edit an existing harness
+&lt;SAVE HARNESS&gt; save a harness
+&lt;EDIT SPLICE&gt; edit the selected splice
+&lt;DELETE SPLICE&gt; delete the selected splice</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Interface.h" line="44"/>
+        <source>&lt;WIRE BUILDER&gt; build wires for specific splice
+&lt;SAVE TO WIRE LIBRARY&gt; save selected wire into wire library
+&lt;Color&gt; edit color of selected wire
+&lt;Stripe&gt; edit stripe type of selected wire
+&lt;Conductor&gt; edit material of selected wire
+&lt;Side&gt; specify the side when insert the selected wire
+&lt;Location&gt; specify the location when lay the selected wire</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Interface.h" line="52"/>
+        <source>&lt;WELD SETTINGS&gt; SET WELDING PARAMETERS AND
+                  QUALITY WINDOW
+&lt;ADVANCED SETTING&gt; go into advanced settings
+&lt;Graph&gt; display power graph and height graph
+&lt;Cancel&gt; cancel the change
+&lt;SAVE SPLICE&gt; save settings to specific splice</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Interface.h" line="59"/>
+        <source>&lt;Weld Model&gt; select welding mode
+&lt;Insulation&gt; enable/disable communications with downstream
+              Raychem shrink tube machine
+&lt;Pre Burst&gt; set pre-burst time
+&lt;After Burst&gt; set after burst duration time
+&lt;Squeeze&gt; set squeeze time
+&lt;Hold&gt; set hold time
+&lt;Displayed&gt; input actual width/height displayed on splicer machine
+&lt;Actual&gt; input actual width/height of work piece measured by meter
+&lt;SAVE&gt; save settings to specific splice</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Interface.h" line="70"/>
+        <source>&lt;Basic/Adv.&gt; enter basic or advanced setting mode
+&lt;Board/Splice&gt; enter board or splice setting
+&lt;WORKSTATION&gt; input number of workstation and max splices
+              per workstation
+&lt;BOARD LAYOUT&gt; input number of row and column, as well as
+                  max splice per zone
+&lt;EDIT SPLICE&gt; edit the selected splice
+&lt;DELETE SPLICE&gt; delete the selected splice</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Interface.h" line="79"/>
+        <source>&lt;Shrink tube ID&gt; set shrink tube ID
+&lt;Temp&gt; set shrink temperature
+&lt;Time&gt; set shrink time
+&lt;Mutex Lock&gt; enable/disable Mutex function</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Interface.h" line="86"/>
+        <location filename="Interface/Interface.h" line="97"/>
+        <source>&lt;OK&gt; select a splice and click OK for confirm</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Interface.h" line="99"/>
+        <source>&lt;OK&gt; select a squence and click OK for confirm</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Interface.h" line="101"/>
+        <source>&lt;OK&gt; select a harness and click OK for confirm</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Interface.h" line="103"/>
+        <source>&lt;OK&gt; select a splice and click OK for confirm
+&lt;Sample Size&gt; set sample size or unconstrained when teach mode off
+&lt;Teach Mode&gt; select teach mode standard/auto/sigma
+&lt;Advanced Setting&gt; enter advanced settings for teach mode
+&lt;Start&gt; start operation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Interface.h" line="109"/>
+        <source>&lt;Upper&gt; set allowable max deviation percentages
+&lt;Lower&gt; set allowable min deviation percentages
+&lt;Quantity&gt; set sample size
+&lt;Default Setting&gt; use default settings
+&lt;Cancel&gt; cancel changes
+&lt;OK&gt; confirm all changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Interface.h" line="116"/>
+        <source>&lt;EDIT SPLICE&gt; edit current splice</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Interface.h" line="118"/>
+        <source>&lt;EDIT SPLICE&gt; edit one splice of sequence</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Interface.h" line="120"/>
+        <source>&lt;Batch Size&gt; specify batch size or unconstrained batch size
+&lt;START&gt; start to operate harness
+&lt;CANCEL&gt; cancel selection of harness</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Interface.h" line="124"/>
+        <source>&lt;EDIT SPLICE&gt; edit one splice of harness</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Interface.h" line="127"/>
+        <source>&lt;Sequence Name&gt; specify sequence name to check associated weld
+                  result history
+&lt;Harness Name&gt; specify harness name to check associated weld
+                  result history
+&lt;Splice Name&gt; specify splice name to check associated weld
+              result history
+&lt;Data and Time&gt; specify starting and ending date and time to check
+                  associated weld result history
+&lt;APPLY&gt; apply search method
+&lt;Back&gt;
+&lt;Export Data&gt; export data to local PC or external memory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Interface.h" line="139"/>
+        <source>&lt;Splice Name&gt; specify sequence name to check associated statistical trend
+&lt;Date and Time&gt; specify starting and ending date and time to check
+                  associated statistical trend
+&lt;APPLY&gt; apply search method
+&lt;Export Data&gt; export data to local PC or external memory
+&lt;Time&gt; display statistical trend in terms of welding time
+&lt;Peak Power&gt; display statistical trend in terms of peak power
+&lt;Pre-Height&gt; display statistical trend in terms of pre-height
+&lt;Post Height&gt; display statistical trend in terms of post height</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Interface.h" line="149"/>
+        <source>&lt;Alarm/Error&gt; specify alarm or error type to check associated log
+&lt;Date and Time&gt; specify starting and ending date and time to check
+                  associated log
+&lt;APPLY&gt; apply search method
+&lt;Export Data&gt; export data to local PC or external memory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Interface.h" line="155"/>
+        <source>&lt;Splice&gt; enter into splice library
+&lt;Sequence&gt; enter into sequence library
+&lt;Harness&gt; enter into harness library
+&lt;Wire&gt; enter into wire library
+&lt;Insulation&gt; enter into insulation library
+&lt;Edit&gt; edit selected item
+&lt;Delete&gt; delete selected item
+&lt;Export&gt; export data to local PC or external memory
+&lt;Import&gt; import data from local PC or externam memory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Interface.h" line="171"/>
+        <source>&lt;Start&gt; start calibration
+&lt;Cancel&gt; cancel calibration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Interface.h" line="174"/>
+        <source>&lt;NEXT STEP&gt; move forward to next step of tool change
+&lt;BACK&gt; move forward to previous step of tool change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Interface.h" line="177"/>
+        <source>&lt;1-Anvil Arm&gt; check status of anvil arm
+&lt;2-Gather&gt; check status of gather
+&lt;3-Safety&gt; check status of safety
+&lt;4-Cutter&gt; check status of cutter
+&lt;5-Cooling Tooling&gt; check status of cooling air for tooling
+&lt;6-Cooling Converter&gt; check status of cooling air for converter
+&lt;7-Crash&gt; check status of crash stopper
+&lt;Run Sonics&gt; fire ultrasonic energy at the current amplitude setting
+&lt;Run Sonics 100%&gt; fire ultrasonic energy at 100% amplitude
+                  Used when calibrating amplitude
+&lt;Amplidude&gt; set the amplitude value based on the gauge reading
+&lt;Reset&gt; reset alarm</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Interface.h" line="190"/>
+        <source>&lt;Counter&gt; increase after each weld cycle up to limits set by user
+&lt;Limit&gt; set the maintenance limits for the listed items in number of
+          weld cycle or in kilo-joule units
+&lt;Reset&gt; reset the counter to zero after maintenance or replacement
+&lt;80% Alarm&gt; enable or disable alarm trigger when counter increase up
+              to 80% of setting
+&lt;100% Lock&gt; enable or disable machine lock when counter increase up
+              to 100% of setting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Interface.h" line="199"/>
+        <source>&lt;Maintenance Type&gt; select maintenance type to search associated
+                       maintenance log
+&lt;Date and Time&gt; specify starting and ending date and time to search
+                  associated maintenance log
+&lt;APPLY&gt; apply search method
+&lt;Export Data&gt; export data to local PC or external memory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Interface.h" line="206"/>
+        <source>&lt;Search&gt; input keyword for search
+&lt;Previous&gt; move backward to the previous matched keyword
+&lt;Back&gt; move forward to the next matched keyword</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Interface.h" line="214"/>
+        <source>&lt;Function Name&gt; select functions linked to permission level
+&lt;Level 1&gt; input category name and check box of associated
+          functions permitted
+&lt;Level 2&gt; input category name and check box of associated
+          functions permitted
+&lt;Level 3&gt; input category name and check box of associated
+          functions permitted
+&lt;Level 4&gt; input category name and check box of associated
+          functions permitted
+&lt;Default&gt; back to default setting of function list
+&lt;Cancel&gt; cancel the new settings
+&lt;OK&gt; apply the new settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Interface.h" line="227"/>
+        <source>&lt;Width Encoder&gt; enable or disable width encoder
+&lt;Height Encoder&gt; enable or disable height encoder
+&lt;Foot Pedal Abort&gt; enable or disable foot pedal abort
+&lt;Seek&gt; enable or disable frequency seek
+&lt;Cooling&gt; enable the setting of a predetermined amount of
+          time the cooling air will stay on after a splice
+&lt;Cooling(1sec/100J)&gt; automatically sets cooling duration 
+                      after a splice to 1 second per 100J of energy applied
+&lt;Cooling Tooling&gt; set the delay period after a splice and 
+                  before cooling is turned on
+&lt;Graph Data Sampling&gt; set sampling frequency(1/5/10/20ms) 
+                      to generate a graph of power(Watts vs. Time)
+&lt;Display&gt; set display units
+&lt;Formula&gt; set three different splice area range and associated 
+          offset &amp; multiplier to formulate a recommended weld settings
+&lt;Default&gt; go back to system default settings
+&lt;Cancel&gt; cancel all changes
+&lt;OK&gt; apply all changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Interface.h" line="246"/>
+        <source>&lt;Add New&gt; add new operator
+&lt;Operator Name&gt; input operator’s name
+&lt;Password&gt; input operator’s password
+&lt;permission level&gt; select operator’s permission level
+&lt;Cancel&gt; cancel all the changes
+&lt;OK&gt; apply all the changes
+&lt;Edit&gt; edit existing operators
+&lt;Delete&gt; delete existing operators</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Interface.h" line="255"/>
+        <source>&lt;Network(Ethernet)&gt; enable or disable Ethernet network communication
+&lt;Remote Data Logging&gt; enable or disable the controller to send weld
+                      results out the Ethernet port at the end of each weld cycle
+&lt;Modular Production Mode&gt; enable or disable KSK network communication
+&lt;Graph Data&gt; enable or disable the controller to send the power graph
+&lt;Shrink Tube Test&gt; test the communication with shrink tube machine
+&lt;Server Port&gt; set the server port that will be used to communicate
+              between the controller and user data logging application</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Interface/Interface.h" line="264"/>
+        <source>&lt;Anti-Side&gt; enable or disable anti-side function
+&lt;Unload&gt; set the time the gather will be open for the operator to remove
+          a splice when it’s done
+&lt;Cutter&gt; enable or disable cutting function
+&lt;Load&gt; set the time the cutter will apply
+&lt;Time&gt; enable or disable cutting function according to time quality window
+&lt;Peak Power&gt; enable or disable cutting function according to
+              peak power quality window
+&lt;Pre-Height&gt; enable or disable cutting function according to pre-height
+              quality window
+&lt;Post-Height&gt; enable or disable cutting function according to post-height
+              quality window</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3648,7 +3985,7 @@ Please check and retry</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/ShrinkSet.qml" line="206"/>
+        <location filename="UI/ShrinkSet.qml" line="207"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3753,63 +4090,63 @@ Teach Mode:Standard
 <context>
     <name>TestSetingDialog</name>
     <message>
-        <location filename="UI/TestSetingDialog.qml" line="52"/>
+        <location filename="UI/TestSetingDialog.qml" line="53"/>
         <source>Test Parameters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/TestSetingDialog.qml" line="64"/>
+        <location filename="UI/TestSetingDialog.qml" line="65"/>
         <source>Sample Size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/TestSetingDialog.qml" line="82"/>
+        <location filename="UI/TestSetingDialog.qml" line="83"/>
         <source>Unconstrained</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/TestSetingDialog.qml" line="122"/>
+        <location filename="UI/TestSetingDialog.qml" line="123"/>
         <source>#of Splices</source>
         <oldsource># of Splices</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/TestSetingDialog.qml" line="143"/>
+        <location filename="UI/TestSetingDialog.qml" line="144"/>
         <source>Teach Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/TestSetingDialog.qml" line="153"/>
+        <location filename="UI/TestSetingDialog.qml" line="154"/>
         <source>OFF</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/TestSetingDialog.qml" line="154"/>
+        <location filename="UI/TestSetingDialog.qml" line="155"/>
         <source>ON</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/TestSetingDialog.qml" line="170"/>
+        <location filename="UI/TestSetingDialog.qml" line="171"/>
         <source>Standard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/TestSetingDialog.qml" line="184"/>
+        <location filename="UI/TestSetingDialog.qml" line="185"/>
         <source>Auto</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/TestSetingDialog.qml" line="197"/>
+        <location filename="UI/TestSetingDialog.qml" line="198"/>
         <source>Sigma</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/TestSetingDialog.qml" line="208"/>
+        <location filename="UI/TestSetingDialog.qml" line="209"/>
         <source>Advanced Setting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/TestSetingDialog.qml" line="231"/>
+        <location filename="UI/TestSetingDialog.qml" line="233"/>
         <source>Start</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4942,12 +5279,12 @@ Teach Mode:Standard
         <location filename="UI/WeldDefalut.qml" line="39"/>
         <location filename="UI/WeldDefalut.qml" line="40"/>
         <location filename="UI/WeldDefalut.qml" line="41"/>
-        <location filename="UI/WeldDefalut.qml" line="381"/>
-        <location filename="UI/WeldDefalut.qml" line="412"/>
-        <location filename="UI/WeldDefalut.qml" line="812"/>
-        <location filename="UI/WeldDefalut.qml" line="874"/>
-        <location filename="UI/WeldDefalut.qml" line="904"/>
-        <location filename="UI/WeldDefalut.qml" line="932"/>
+        <location filename="UI/WeldDefalut.qml" line="392"/>
+        <location filename="UI/WeldDefalut.qml" line="423"/>
+        <location filename="UI/WeldDefalut.qml" line="824"/>
+        <location filename="UI/WeldDefalut.qml" line="886"/>
+        <location filename="UI/WeldDefalut.qml" line="916"/>
+        <location filename="UI/WeldDefalut.qml" line="944"/>
         <source>OFF</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4957,12 +5294,12 @@ Teach Mode:Standard
         <location filename="UI/WeldDefalut.qml" line="39"/>
         <location filename="UI/WeldDefalut.qml" line="40"/>
         <location filename="UI/WeldDefalut.qml" line="41"/>
-        <location filename="UI/WeldDefalut.qml" line="382"/>
-        <location filename="UI/WeldDefalut.qml" line="413"/>
-        <location filename="UI/WeldDefalut.qml" line="811"/>
-        <location filename="UI/WeldDefalut.qml" line="873"/>
-        <location filename="UI/WeldDefalut.qml" line="903"/>
-        <location filename="UI/WeldDefalut.qml" line="931"/>
+        <location filename="UI/WeldDefalut.qml" line="393"/>
+        <location filename="UI/WeldDefalut.qml" line="424"/>
+        <location filename="UI/WeldDefalut.qml" line="823"/>
+        <location filename="UI/WeldDefalut.qml" line="885"/>
+        <location filename="UI/WeldDefalut.qml" line="915"/>
+        <location filename="UI/WeldDefalut.qml" line="943"/>
         <source>ON</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5087,124 +5424,124 @@ Teach Mode:Standard
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/WeldDefalut.qml" line="373"/>
+        <location filename="UI/WeldDefalut.qml" line="384"/>
         <source>Cooling(1sec/100J)</source>
         <oldsource>cooling(1sec/100J)</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/WeldDefalut.qml" line="404"/>
+        <location filename="UI/WeldDefalut.qml" line="415"/>
         <source>Cooling Tooling</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/WeldDefalut.qml" line="433"/>
+        <location filename="UI/WeldDefalut.qml" line="444"/>
         <source>Duration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/WeldDefalut.qml" line="470"/>
+        <location filename="UI/WeldDefalut.qml" line="481"/>
         <source>Delay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/WeldDefalut.qml" line="533"/>
+        <location filename="UI/WeldDefalut.qml" line="544"/>
         <source>Graph Data Sampling</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/WeldDefalut.qml" line="563"/>
+        <location filename="UI/WeldDefalut.qml" line="574"/>
         <source>Display</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/WeldDefalut.qml" line="588"/>
+        <location filename="UI/WeldDefalut.qml" line="599"/>
         <source>Cross Section</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/WeldDefalut.qml" line="641"/>
-        <location filename="UI/WeldDefalut.qml" line="1173"/>
+        <location filename="UI/WeldDefalut.qml" line="652"/>
+        <location filename="UI/WeldDefalut.qml" line="1186"/>
         <source>Pressure</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/WeldDefalut.qml" line="694"/>
+        <location filename="UI/WeldDefalut.qml" line="705"/>
         <source>Length</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/WeldDefalut.qml" line="761"/>
+        <location filename="UI/WeldDefalut.qml" line="773"/>
         <source>Load</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/WeldDefalut.qml" line="797"/>
+        <location filename="UI/WeldDefalut.qml" line="809"/>
         <source>Cutter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/WeldDefalut.qml" line="893"/>
+        <location filename="UI/WeldDefalut.qml" line="905"/>
         <source>Lock On Alarm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/WeldDefalut.qml" line="918"/>
+        <location filename="UI/WeldDefalut.qml" line="930"/>
         <source>Anti-Side</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/WeldDefalut.qml" line="956"/>
+        <location filename="UI/WeldDefalut.qml" line="968"/>
         <source>Unload</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/WeldDefalut.qml" line="1020"/>
+        <location filename="UI/WeldDefalut.qml" line="1033"/>
         <source>Formula</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/WeldDefalut.qml" line="1068"/>
+        <location filename="UI/WeldDefalut.qml" line="1081"/>
         <source>Cross Section Range</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/WeldDefalut.qml" line="1091"/>
+        <location filename="UI/WeldDefalut.qml" line="1104"/>
         <source>Cross Section Range </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/WeldDefalut.qml" line="1145"/>
+        <location filename="UI/WeldDefalut.qml" line="1158"/>
         <source>Energy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/WeldDefalut.qml" line="1159"/>
+        <location filename="UI/WeldDefalut.qml" line="1172"/>
         <source>Width</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/WeldDefalut.qml" line="1186"/>
+        <location filename="UI/WeldDefalut.qml" line="1199"/>
         <source>Amplitude</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/WeldDefalut.qml" line="1217"/>
+        <location filename="UI/WeldDefalut.qml" line="1230"/>
         <source>Offset+(Area*Multiplier)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/WeldDefalut.qml" line="1229"/>
+        <location filename="UI/WeldDefalut.qml" line="1242"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/WeldDefalut.qml" line="1310"/>
+        <location filename="UI/WeldDefalut.qml" line="1323"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/WeldDefalut.qml" line="1324"/>
+        <location filename="UI/WeldDefalut.qml" line="1337"/>
         <source>Default Setting</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5244,145 +5581,145 @@ Teach Mode:Standard
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/main.qml" line="213"/>
-        <location filename="UI/main.qml" line="219"/>
-        <location filename="UI/main.qml" line="225"/>
-        <location filename="UI/main.qml" line="232"/>
+        <location filename="UI/main.qml" line="214"/>
+        <location filename="UI/main.qml" line="220"/>
+        <location filename="UI/main.qml" line="226"/>
+        <location filename="UI/main.qml" line="233"/>
         <source>Create Splice</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/main.qml" line="215"/>
+        <location filename="UI/main.qml" line="216"/>
         <source>Test Splice</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/main.qml" line="221"/>
+        <location filename="UI/main.qml" line="222"/>
         <source>TeachMode-Standard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/main.qml" line="227"/>
+        <location filename="UI/main.qml" line="228"/>
         <source>TeachMode-Auto</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/main.qml" line="234"/>
+        <location filename="UI/main.qml" line="235"/>
         <source>TeachMode-Sigma</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/main.qml" line="238"/>
+        <location filename="UI/main.qml" line="239"/>
         <source>Operate Splice</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/main.qml" line="242"/>
+        <location filename="UI/main.qml" line="243"/>
         <source>Operate Sequence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/main.qml" line="246"/>
+        <location filename="UI/main.qml" line="247"/>
         <source>Operate Harness</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/main.qml" line="253"/>
+        <location filename="UI/main.qml" line="254"/>
         <source>Create Harness</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/main.qml" line="259"/>
+        <location filename="UI/main.qml" line="260"/>
         <source>Create Sequence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/main.qml" line="262"/>
+        <location filename="UI/main.qml" line="263"/>
         <source>Operate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/main.qml" line="268"/>
+        <location filename="UI/main.qml" line="269"/>
         <source>Test</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/main.qml" line="274"/>
+        <location filename="UI/main.qml" line="275"/>
         <source>Calibration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/main.qml" line="280"/>
+        <location filename="UI/main.qml" line="281"/>
         <source>Tool Change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/main.qml" line="287"/>
+        <location filename="UI/main.qml" line="288"/>
         <source>Advanced Maintenance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/main.qml" line="293"/>
+        <location filename="UI/main.qml" line="294"/>
         <source>Maintenance Counter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/main.qml" line="299"/>
+        <location filename="UI/main.qml" line="300"/>
         <source>Maintenance log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/main.qml" line="305"/>
+        <location filename="UI/main.qml" line="306"/>
         <source>Weld Result History</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/main.qml" line="311"/>
+        <location filename="UI/main.qml" line="312"/>
         <source>Statistical Trend</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/main.qml" line="317"/>
+        <location filename="UI/main.qml" line="318"/>
         <source>Error/Alarm Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/main.qml" line="323"/>
+        <location filename="UI/main.qml" line="324"/>
         <source>Library</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/main.qml" line="330"/>
+        <location filename="UI/main.qml" line="331"/>
         <source>Version Information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/main.qml" line="336"/>
+        <location filename="UI/main.qml" line="337"/>
         <source>Permission Setting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/main.qml" line="343"/>
+        <location filename="UI/main.qml" line="344"/>
         <source>Weld Defaults</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/main.qml" line="350"/>
+        <location filename="UI/main.qml" line="351"/>
         <source>Operator Library</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/main.qml" line="357"/>
+        <location filename="UI/main.qml" line="358"/>
         <source>Data Communication</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/main.qml" line="367"/>
+        <location filename="UI/main.qml" line="368"/>
         <source>Edit Wire</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UI/main.qml" line="372"/>
+        <location filename="UI/main.qml" line="373"/>
         <source>User Manual</source>
         <translation type="unfinished"></translation>
     </message>

@@ -67,12 +67,12 @@ void PermissionSetting::InitializeFRAM()
 
 void PermissionSetting::_Default()
 {
-    HMI_PRINT;
+    DEBUG_PRINT("reserve function");
 }
 
 void PermissionSetting::LockOnAlarm()
 {
-    HMI_PRINT;
+    DEBUG_PRINT("reserve function");
 }
 
 bool PermissionSetting::_Recall()

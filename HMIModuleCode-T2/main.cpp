@@ -26,9 +26,9 @@
 #endif
 int main(int argc, char *argv[])
 {
-    RECT rt = {0,0,0,0};
-    SystemParametersInfo(SPI_GETWORKAREA,0,&rt,0);
-    int axisy = GetSystemMetrics(SM_CYSCREEN)-rt.bottom;
+    RECT rt = {0, 0, 0, 0};
+    SystemParametersInfo(SPI_GETWORKAREA, 0, &rt, 0);
+    int axisy = GetSystemMetrics(SM_CYSCREEN) - rt.bottom;
 
     int width = GetSystemMetrics(SM_CXSCREEN);
     int height = GetSystemMetrics(SM_CYSCREEN);
@@ -54,16 +54,16 @@ int main(int argc, char *argv[])
 
     HmiAdaptor *hmiAdaptor = new HmiAdaptor();
     hmiAdaptor->taskBarHeight = axisy;
-    engine.rootContext()->setContextProperty("hmiAdaptor",hmiAdaptor);
-    engine.rootContext()->setContextProperty("workOrderModel",hmiAdaptor->workOrderModel);
-    engine.rootContext()->setContextProperty("spliceModel",hmiAdaptor->spliceModel);
-    engine.rootContext()->setContextProperty("partModel",hmiAdaptor->harnessModel);
-    engine.rootContext()->setContextProperty("operatorModel",hmiAdaptor->operatorModel);
-    engine.rootContext()->setContextProperty("wireModel",hmiAdaptor->wireModel);
-    engine.rootContext()->setContextProperty("weldHistoryModel",hmiAdaptor->weldHistoryModel);
-    engine.rootContext()->setContextProperty("alarmModel",hmiAdaptor->alarmModel);
-    engine.rootContext()->setContextProperty("maintenanceLogModel",hmiAdaptor->maintenanceLogModel);
-    engine.rootContext()->setContextProperty("sequenceModel",hmiAdaptor->sequenceModel);
+    engine.rootContext()->setContextProperty("hmiAdaptor", hmiAdaptor);
+    engine.rootContext()->setContextProperty("workOrderModel", hmiAdaptor->workOrderModel);
+    engine.rootContext()->setContextProperty("spliceModel", hmiAdaptor->spliceModel);
+    engine.rootContext()->setContextProperty("partModel", hmiAdaptor->harnessModel);
+    engine.rootContext()->setContextProperty("operatorModel", hmiAdaptor->operatorModel);
+    engine.rootContext()->setContextProperty("wireModel", hmiAdaptor->wireModel);
+    engine.rootContext()->setContextProperty("weldHistoryModel", hmiAdaptor->weldHistoryModel);
+    engine.rootContext()->setContextProperty("alarmModel", hmiAdaptor->alarmModel);
+    engine.rootContext()->setContextProperty("maintenanceLogModel", hmiAdaptor->maintenanceLogModel);
+    engine.rootContext()->setContextProperty("sequenceModel", hmiAdaptor->sequenceModel);
 
     engine.load(QUrl(QStringLiteral("qrc:/UI/main.qml")));
     MODstart::Instance();

@@ -396,7 +396,7 @@ Item {
             textColor: "white"
             onClicked: {
                 signalAddExistCancel()
-                listView.delegate =null
+                listView.delegate = null
             }
         }
     }

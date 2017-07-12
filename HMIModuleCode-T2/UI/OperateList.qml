@@ -19,16 +19,17 @@ Item {
         id: listviewPositionGroup;
     }
     Component.onCompleted: {
-        if (mainRoot.headTitle == "Operate Sequence"){
+        if (mainRoot.headTitle == qsTr("Operate Sequence")){
             listView.model = sequenceModel
         }
-        else if (mainRoot.headTitle == "Operate Harness"){
+        else if (mainRoot.headTitle == qsTr("Operate Harness")){
             listView.model = partModel
             nameText.text = qsTr("Harness Name")
             stepName.text = qsTr("#Of Splice")
             modeName.text = qsTr("Process Mode")
         }
     }
+
     Text {
         id: scanEdit
         visible: false
@@ -56,6 +57,7 @@ Item {
             scanEdit.text = scanEdit.text + event.text
         }
     }
+
     Row {
         id: headTitle
         anchors.top: parent.top
@@ -106,6 +108,7 @@ Item {
             text: qsTr("Splice Quantity in Total")
         }
     }
+
     Rectangle {
         id: tipsRec
         anchors.top: headTitle.bottom
@@ -117,6 +120,7 @@ Item {
         height: 1
         color: "#ffffff"
     }
+
     Rectangle {
         id: tipsRec2
         anchors.top: tipsRec.bottom
@@ -143,6 +147,7 @@ Item {
         highlightResizeVelocity: 500000
         highlightMoveVelocity: 500000
     }
+
     Image {
         id: scrollUp
         anchors.top: tipsRec2.bottom
@@ -153,6 +158,7 @@ Item {
         visible: listView.contentHeight > listView.height ? true : false
         source: "qrc:/images/images/up.png"
     }
+
     Image {
         id: scrollDown
         anchors.bottom: bottomTip.top
@@ -163,6 +169,7 @@ Item {
         visible: listView.contentHeight > listView.height ? true : false
         source: "qrc:/images/images/down.png"
     }
+
     Rectangle {
         id: scrollbar
         width: 10
@@ -197,6 +204,7 @@ Item {
             }
         }
     }
+
     Component {
         id: listDelegate
         Item {
@@ -283,6 +291,7 @@ Item {
             }
         }
     }
+
     Rectangle {
         id: bottomTip
         anchors.bottom: bottomTip2.top
@@ -293,6 +302,7 @@ Item {
         height: 1
         color: "#ffffff"
     }
+
     Rectangle {
         id: bottomTip2
         anchors.bottom: selectOk.top
@@ -304,6 +314,7 @@ Item {
         height: 1
         color: "#0d0f11"
     }
+
     CButton {
         id: selectOk
         anchors.bottom: parent.bottom
@@ -318,7 +329,6 @@ Item {
         clip: true
         textColor: "white"
         onClicked: {
-
             if (listView.model == sequenceModel)
             {
                 hmiAdaptor.setWorkFlow(3, 0,"")
@@ -326,13 +336,17 @@ Item {
                 hmiAdaptor.setWorkFlow(1, sequenceModel.getValue(selectIndx,"SequenceId"),"Operate")
                 mainRoot.checkNeedPassWd(-5)
                 if (listView.model == sequenceModel)
+                {
                     mainRoot.headTitle = qsTr("Operate Sequence")
+                    headBar.selectsubIndex = 26
+                }
                 else
                     mainRoot.headTitle = qsTr("Operate Harness")
             }
             else if (listView.model == partModel )
             {
                 harnessSetting.visible = true
+                headBar.selectsubIndex = 27
             }
 
 
@@ -451,7 +465,7 @@ Item {
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
                 color: "white"
-                text: qsTr("1")
+                text: "1"
             }
             MouseArea {
                 anchors.fill: parent
@@ -480,6 +494,7 @@ Item {
                 textColor: "white"
                 onClicked: {
                     harnessSetting.visible = false
+                    headBar.selectsubIndex = 22
                 }
             }
             CButton {
@@ -509,6 +524,7 @@ Item {
 
                     mainRoot.checkNeedPassWd(-5)
                     mainRoot.headTitle = qsTr("Operate Harness")
+                    headBar.selectsubIndex = 28
                 }
             }
         }

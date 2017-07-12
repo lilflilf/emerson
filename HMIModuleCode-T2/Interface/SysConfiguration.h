@@ -114,29 +114,29 @@
 
 #define BRANSON_LASTWELD_FILE  "BransonLastWeld.bin" //Array DataCell() is stored in this file
 
-enum SCREEN_MODE{
-    No_SCREEN = -1,
-    CreateNew_SCREEN = 0,
-    EditExisting_SCREEN,
-    Operate_SCREEN,
-    Test_SCREEN,
-    TeachMode_SCREEN,
-    Calibration_SCREEN,
-    ToolChange_SCREEN,
-    AdvancedMaintenance_SCREEN,
-    MaintenanceCounter_SCREEN,
-    MaintenanceLog_SCREEN,
-    WorkOrderHistory_SCREEN,
-    StatisticalTrend_SCREEN,
-    ErrorAlarmLog_SCREEN,
-    Library_SCREEN,
-    VersionInformation_SCREEN,
-    PermissionSetting_SCREEN,
-    WeldDefaults_SCREEN,
-    OperatorLibrary_SCREEN,
-    DataCommunication_SCREEN,
-    LockOnAlarm_SCREEN,
-};
+//enum SCREEN_MODE{
+//    No_SCREEN = -1,
+//    CreateNew_SCREEN = 0,
+//    EditExisting_SCREEN,
+//    Operate_SCREEN,
+//    Test_SCREEN,
+//    TeachMode_SCREEN,
+//    Calibration_SCREEN,
+//    ToolChange_SCREEN,
+//    AdvancedMaintenance_SCREEN,
+//    MaintenanceCounter_SCREEN,
+//    MaintenanceLog_SCREEN,
+//    WorkOrderHistory_SCREEN,
+//    StatisticalTrend_SCREEN,
+//    ErrorAlarmLog_SCREEN,
+//    Library_SCREEN,
+//    VersionInformation_SCREEN,
+//    PermissionSetting_SCREEN,
+//    WeldDefaults_SCREEN,
+//    OperatorLibrary_SCREEN,
+//    DataCommunication_SCREEN,
+//    LockOnAlarm_SCREEN,
+//};
 
 //Structure for the Amtech.Bin (Software Settings File)
 class BRANSON_INI_STRUCT
